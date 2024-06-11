@@ -1,0 +1,6 @@
+.vs/
+BuildOutput/
+Data/
+External/
+Shader/
+*.ini
