@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "System/HighResolutionTimer.h"
 #include "Graphics/Graphics.h"
+#include "Scene/SceneManager.h"
 #include "Debug/DebugManager.h"
 
 class Framework
@@ -23,7 +24,7 @@ private:
 	const HWND				hWnd;
 	HighResolutionTimer		timer;
 	Graphics				graphics;
-
+	SceneManager			sceneManager;
 #ifdef _DEBUG
 	DebugManager			debugManager;
 #endif // _DEBUG

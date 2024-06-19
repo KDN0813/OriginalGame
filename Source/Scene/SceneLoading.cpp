@@ -17,7 +17,7 @@ void SceneLoading::Update(float elapsed_time)
 {
     if (next_scene->IsReady())
     {
-        SceneManager::Instance().ChangeScene(next_scene);
+        SceneManager::Instance()->ChangeScene(next_scene);
     }
 }
 

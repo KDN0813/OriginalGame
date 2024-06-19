@@ -22,9 +22,6 @@
     <Filter Include="Source\Graphics">
       <UniqueIdentifier>{2ac7cb79-cb10-43d1-856f-e51f0f698e73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Scene">
-      <UniqueIdentifier>{ca6d74c2-93d3-4d60-8896-3b3611a6adf8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\System">
       <UniqueIdentifier>{9dcb018c-170d-45ca-92b7-446961fd5e1b}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,9 @@
     </Filter>
     <Filter Include="Source\System\ClassBase">
       <UniqueIdentifier>{b29adac1-2d83-416a-b92a-b8a3028dd894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene">
+      <UniqueIdentifier>{ca6d74c2-93d3-4d60-8896-3b3611a6adf8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +105,9 @@
     <ClInclude Include="Source\Debug\DebugManager.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\SceneTest.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="Source\Debug\DebugManager.cpp">
       <Filter>Source\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneTest.cpp">
+      <Filter>Source\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

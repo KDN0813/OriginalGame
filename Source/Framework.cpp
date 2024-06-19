@@ -2,8 +2,8 @@
 #include <sstream>
 
 #include "Graphics/Graphics.h"
+#include "Scene/SceneTest.h"
 #include "Scene/SceneTitle.h"
-#include "Scene/SceneGame.h"
 #include "Scene/SceneManager.h"
 #include "Framework.h"
 
@@ -17,17 +17,21 @@ Framework::Framework(HWND hWnd)
 	, debugManager(hWnd, graphics.GetDevice())
 #endif // _DEBUG
 {
-	SceneManager::Instance().ChangeScene(new SceneGame);
+#ifdef _DEBUG
+	sceneManager.ChangeScene(new SceneTest);
+#else
+	SceneManager::Instance().ChangeScene(new SceneTitle);
+#endif // _DEBUG
 }
 
 Framework::~Framework()
 {
-	SceneManager::Instance().Clear();
+	sceneManager.Clear();
 }
 
 void Framework::Update(float elapsed_time)
 {
-	SceneManager::Instance().Update(elapsed_time);
+	sceneManager.Update(elapsed_time);
 }
 
 void Framework::Render(float elapsed_time)
@@ -39,15 +43,9 @@ void Framework::Render(float elapsed_time)
 	debugManager.GetImGuiRenderer()->NewFrame();
 #endif // _DEBUG
 
-	SceneManager::Instance().Render();
+	sceneManager.Render();
 
 #ifdef _DEBUG
-	if (ImGui::Begin("FrameWork"))
-	{
-		ImGui::Text("test");
-	}
-	ImGui::End();
-
 	debugManager.GetImGuiRenderer()->Render(dc);
 #endif // _DEBUG
 

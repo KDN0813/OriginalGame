@@ -1,18 +1,13 @@
 #pragma once
 
+#include "System/ClassBase/Singleton.h"
 #include "Scene.h"
 
-class SceneManager
+class SceneManager : public Singleton<SceneManager>
 {
-private:
-    SceneManager(){}
-    ~SceneManager(){}
 public:
-    static SceneManager& Instance()
-    {
-        static SceneManager instance;
-        return instance;
-    }
+    SceneManager() :Singleton(this) {}
+    ~SceneManager(){}
 
     void Update(float elpsedTime);
 
