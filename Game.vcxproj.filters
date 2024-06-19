@@ -28,8 +28,11 @@
     <Filter Include="Source\System">
       <UniqueIdentifier>{9dcb018c-170d-45ca-92b7-446961fd5e1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Test">
+    <Filter Include="Source\Debug">
       <UniqueIdentifier>{2cdb24f8-acba-4b48-812a-4eb9b4bbc590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\ClassBase">
+      <UniqueIdentifier>{b29adac1-2d83-416a-b92a-b8a3028dd894}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,7 +90,21 @@
     <ClInclude Include="Source\Scene\SceneTitle.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Test\Test.h" />
+    <ClInclude Include="Source\Debug\Test.h">
+      <Filter>Source\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Debug\ImGuiRenderer.h">
+      <Filter>Source\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ClassBase\CopyDisable.h">
+      <Filter>Source\System\ClassBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ClassBase\Singleton.h">
+      <Filter>Source\System\ClassBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Debug\DebugManager.h">
+      <Filter>Source\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -129,8 +146,27 @@
     <ClCompile Include="Source\Scene\SceneTitle.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Test\Test.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\Debug\Test.cpp">
+      <Filter>Source\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Debug\ImGuiRenderer.cpp">
+      <Filter>Source\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Debug\DebugManager.cpp">
+      <Filter>Source\Debug</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Hlsl\ImGui.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Hlsl\ImGuiPS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\ImGuiVS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

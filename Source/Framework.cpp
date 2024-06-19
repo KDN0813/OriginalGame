@@ -13,6 +13,9 @@ static const int syncInterval = 1;
 Framework::Framework(HWND hWnd)
 	: hWnd(hWnd)
 	, graphics(hWnd)
+#ifdef _DEBUG
+	, debugManager(hWnd, graphics.GetDevice())
+#endif // _DEBUG
 {
 	SceneManager::Instance().ChangeScene(new SceneGame);
 }
@@ -30,10 +33,23 @@ void Framework::Update(float elapsed_time)
 void Framework::Render(float elapsed_time)
 {
 	std::lock_guard<std::mutex> lock(graphics.GetMutex());
-
 	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
 
+#ifdef _DEBUG
+	debugManager.GetImGuiRenderer()->NewFrame();
+#endif // _DEBUG
+
 	SceneManager::Instance().Render();
+
+#ifdef _DEBUG
+	if (ImGui::Begin("FrameWork"))
+	{
+		ImGui::Text("test");
+	}
+	ImGui::End();
+
+	debugManager.GetImGuiRenderer()->Render(dc);
+#endif // _DEBUG
 
 	graphics.GetSwapChain()->Present(syncInterval, 0);
 }
@@ -74,6 +90,11 @@ int Framework::Run()
 
 LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+#ifdef _DEBUG
+	if (this->debugManager.GetImGuiRenderer()->HandleMessage(hWnd, msg, wParam, lParam))
+		return true;
+#endif _DEBUG
+
 	switch (msg)
 	{
 	case WM_PAINT:
