@@ -3,4 +3,5 @@ BuildOutput/
 Data/
 External/
 Shader/
+DebugData/
 *.ini

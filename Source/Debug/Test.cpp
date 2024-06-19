@@ -30,7 +30,7 @@ void CerealTest::Deserialize(const char* creal_file_name)
 
 void CerealTest::DrawImGui()
 {
-    const char* creal_file_name = "test.mae";
+    const char* creal_file_name = "DebugData/test.mae";
 
     if (ImGui::Begin("CerealTest"))
     {
