@@ -34,6 +34,9 @@
     <Filter Include="Source\Scene">
       <UniqueIdentifier>{ca6d74c2-93d3-4d60-8896-3b3611a6adf8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Model">
+      <UniqueIdentifier>{0c85ee8f-02b8-425a-b475-37ec364eb53a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -108,6 +111,9 @@
     <ClInclude Include="Source\Scene\SceneTest.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Model\ModelResource.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -160,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneTest.cpp">
       <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\ModelResource.cpp">
+      <Filter>Source\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

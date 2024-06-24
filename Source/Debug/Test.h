@@ -2,20 +2,6 @@
 
 #include <DirectXMath.h>
 #include <string>
-#include <cereal/archives/binary.hpp>
-
-namespace DirectX
-{
-    template<class T>
-    void serialize(T& archive, DirectX::XMFLOAT3& v)
-    {
-        archive(
-            cereal::make_nvp("x", v.x),
-            cereal::make_nvp("y", v.y),
-            cereal::make_nvp("z", v.z)
-        );
-    };
-}
 
 // シリアライズ・デシリアライズテストクラス
 class CerealTest
@@ -26,15 +12,12 @@ public:
 
     struct PlayerData
     {
-        //std::string name;
+        std::string name;
         DirectX::XMFLOAT3 pos;
         int hp;
 
         template<class T>
-        void serialize(T& archive)
-        {
-            archive(pos, hp);
-        }
+        void serialize(T& archive);
     };
 
     void Serialize(const char* creal_file_name);
