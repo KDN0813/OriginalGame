@@ -3,6 +3,37 @@
 #include <fstream>
 #include <imgui.h>
 
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+
+#pragma region serialize
+
+namespace DirectX
+{
+    template<class T>
+    void serialize(T& archive, DirectX::XMFLOAT3& v)
+    {
+        archive(
+            cereal::make_nvp("x", v.x),
+            cereal::make_nvp("y", v.y),
+            cereal::make_nvp("z", v.z)
+        );
+    };
+}
+
+template<class T>
+void CerealTest::PlayerData::serialize(T& archive)
+{
+    archive(
+        CEREAL_NVP(name),
+        CEREAL_NVP(pos),
+        CEREAL_NVP(hp)
+    );
+}
+
+#pragma endregion serialize
+
+
 CerealTest::CerealTest()
     :player_data()
 {
@@ -23,8 +54,10 @@ void CerealTest::Deserialize(const char* creal_file_name)
         // 存在する場合(バイナリファイル読み込む)
         std::ifstream ifs(creal_file_name, std::ios::binary);
         //// シリアライズインプット
-        cereal::BinaryInputArchive deserialization(ifs);
-        deserialization(this->player_data);
+        cereal::BinaryInputArchive archive(ifs);
+        archive(
+            CEREAL_NVP(this->player_data)
+        );
     }
 }
 
@@ -45,8 +78,20 @@ void CerealTest::DrawImGui()
 
         if (ImGui::TreeNode("PlayerData"))
         {
+            ImGui::Text(this->player_data.name.c_str());
             ImGui::InputFloat3("pos", &this->player_data.pos.x);
             ImGui::InputInt("hp", &this->player_data.hp);
+
+            if (ImGui::Button("ChangeName"))
+            {
+                this->player_data.name = "maeyama";
+            }
+            if (ImGui::Button("reset"))
+            {
+                this->player_data.name = "";
+                this->player_data.hp = 0;
+                this->player_data.pos = {};
+            }
             ImGui::TreePop();
         }
     }
