@@ -114,6 +114,9 @@
     <ClInclude Include="Source\Model\ModelResource.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Model\Model.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -168,6 +171,9 @@
       <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model\ModelResource.cpp">
+      <Filter>Source\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\Model.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
   </ItemGroup>

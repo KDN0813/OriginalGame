@@ -160,7 +160,7 @@ void ModelResource::Keyframe::serialize(Archive& archive, int version)
 {
 	archive(
 		CEREAL_NVP(seconds),
-		CEREAL_NVP(nodeKeys)
+		CEREAL_NVP(node_keys)
 	);
 }
 

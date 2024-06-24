@@ -6,6 +6,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
+// TODO (06/24)–â‘è‚ª”­¶orƒQ[ƒ€‚ÌŠî”ÕŠ®¬‰ü‘P‚·‚é
 class ModelResource
 {
 public:
@@ -101,7 +102,7 @@ public:
 	struct Keyframe
 	{
 		float						seconds;
-		std::vector<NodeKeyData>	nodeKeys;
+		std::vector<NodeKeyData>	node_keys;
 
 		template<class Archive>
 		void serialize(Archive& archive, int version);
