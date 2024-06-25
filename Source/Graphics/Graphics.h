@@ -4,6 +4,7 @@
 #include <d3d11.h>
 #include <wrl.h>
 #include <mutex>
+#include <vector>
 
 class Graphics
 {
@@ -30,6 +31,19 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	render_target_view;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D>			depth_stencil_buffer;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	depth_stencil_view;
+
+	enum class SAMPLER_STATE { POINT_WRAP, LINEAR_WRAP, ANISOTROPIC_WRAP, MAX };
+	std::vector<Microsoft::WRL::ComPtr<ID3D11SamplerState>> sampler_states;
+
+	enum class DEPTH_STATE { ZT_ON_ZW_ON/*深度テスト_ON 深度バッファ書き込み_ON*/, ZT_ON_ZW_OFF, ZT_OFF_ZW_ON, ZT_OFF_ZW_OFF, MAX };
+	std::vector<Microsoft::WRL::ComPtr<ID3D11DepthStencilState>> depth_stencil_states;
+
+	enum class BLEND_STATE { NONE, ALPHA, MAX };
+	std::vector<Microsoft::WRL::ComPtr<ID3D11BlendState>> blend_states;
+
+	enum class RASTER_STATE { SOLID, WIREFRAME, CULL_NONE, WIREFRAME_CULL_NONE, MAX };
+	std::vector<Microsoft::WRL::ComPtr<ID3D11RasterizerState>> rasterizer_states;
+
 	float	screen_width;
 	float	screen_height;
 	std::mutex										mutex;
