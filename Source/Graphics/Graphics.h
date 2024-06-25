@@ -44,6 +44,12 @@ private:
 	enum class RASTER_STATE { SOLID, WIREFRAME, CULL_NONE, WIREFRAME_CULL_NONE, MAX };
 	std::vector<Microsoft::WRL::ComPtr<ID3D11RasterizerState>> rasterizer_states;
 
+	// TODO (06/25)開発方針が定まったら改造する
+	// ピクセルシェーダー
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> default_pixel_shaders;
+	// 頂点シェーダー
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> default_vertex_shaders;
+
 	float	screen_width;
 	float	screen_height;
 	std::mutex										mutex;

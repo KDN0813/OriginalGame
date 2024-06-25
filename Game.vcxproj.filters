@@ -37,6 +37,9 @@
     <Filter Include="Source\Model">
       <UniqueIdentifier>{0c85ee8f-02b8-425a-b475-37ec364eb53a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics\Shader">
+      <UniqueIdentifier>{cdf9168e-e230-433a-87ea-e82a34d842be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -117,6 +120,7 @@
     <ClInclude Include="Source\Model\Model.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -175,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="Source\Model\Model.cpp">
       <Filter>Source\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\Shader.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

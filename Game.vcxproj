@@ -122,6 +122,7 @@
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\RenderContext.h" />
+    <ClInclude Include="Source\Graphics\Shader\Shader.h" />
     <ClInclude Include="Source\Model\Model.h" />
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Source\Debug\Test.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\Shader.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Model\Model.cpp" />
     <ClCompile Include="Source\Model\ModelResource.cpp" />
