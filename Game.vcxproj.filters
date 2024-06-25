@@ -40,6 +40,9 @@
     <Filter Include="Source\Graphics\Shader">
       <UniqueIdentifier>{cdf9168e-e230-433a-87ea-e82a34d842be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Camera">
+      <UniqueIdentifier>{c0ab7f37-94f4-4e08-9a70-9fe6e877b34f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -121,6 +124,9 @@
       <Filter>Source\Model</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Shader\Shader.h" />
+    <ClInclude Include="Source\Camera\Camera.h">
+      <Filter>Source\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -183,6 +189,9 @@
     <ClCompile Include="Source\Graphics\Shader\Shader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Camera\Camera.cpp">
+      <Filter>Source\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli">
@@ -199,7 +208,10 @@
     <FxCompile Include="Hlsl\ImGuiVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="Hlsl\StaticMesh_VS.hlsl">
+    <FxCompile Include="Hlsl\StaticMeshVS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\StaticMeshPS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

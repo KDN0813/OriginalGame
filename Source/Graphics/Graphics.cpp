@@ -254,12 +254,19 @@ Graphics::Graphics(HWND hWnd)
 
 	// TODO (06/25)開発方針が定まったら改造する
 	{
+		D3D11_INPUT_ELEMENT_DESC input_element_desc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
 		// 頂点シェーダーをの生成
-		//hr = CreateVsFromCso(device.Get(), "", this->default_vertex_shaders.GetAddressOf());
+		hr = CreateVsFromCso(device.Get(), "Shader\\StaticMeshVS.cso", this->default_vertex_shaders.GetAddressOf()
+			, this->default_input_layout.GetAddressOf(), input_element_desc, ARRAYSIZE(input_element_desc));
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// ピクセルシェーダーの生成
-		//hr = CreatePsFromCso(this->device.Get(), "", this->default_pixel_shaders.GetAddressOf());
+		hr = CreatePsFromCso(this->device.Get(), "Shader\\StaticMeshPS.cso", this->default_pixel_shaders.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }

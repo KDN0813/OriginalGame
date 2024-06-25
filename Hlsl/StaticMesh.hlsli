@@ -2,7 +2,7 @@ struct VS_OUT
 {
     float4 position : SV_POSITION;      // 頂点座標
     float4 color : COLOR;               // 色
-    //float2 texcoord : TEXCOORD;         // テクスチャ
+    float2 texcoord : TEXCOORD;         // テクスチャ
 };
 cbuffer OBJECT_CONSTANT_BUFFER : register(b0)
 {
