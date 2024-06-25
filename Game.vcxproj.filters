@@ -188,12 +188,18 @@
     <None Include="Hlsl\ImGui.hlsli">
       <Filter>HLSL</Filter>
     </None>
+    <None Include="Hlsl\StaticMesh.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Hlsl\ImGuiPS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\ImGuiVS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\StaticMesh_VS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

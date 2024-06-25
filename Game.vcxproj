@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli" />
+    <None Include="Hlsl\StaticMesh.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Hlsl\ImGuiPS.hlsl">
@@ -168,6 +169,10 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Hlsl\ImGuiVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\StaticMesh_VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>

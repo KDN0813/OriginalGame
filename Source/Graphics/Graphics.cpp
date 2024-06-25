@@ -1,6 +1,6 @@
-#include "System/Misc.h"
 #include "Graphics/Graphics.h"
-
+#include "System/Misc.h"
+#include "Graphics/Shader/Shader.h"
 
 Graphics* Graphics::instance = nullptr;
 
@@ -102,10 +102,10 @@ Graphics::Graphics(HWND hWnd)
 		depth_stencil_buffer_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 		depth_stencil_buffer_desc.CPUAccessFlags = 0;
 		depth_stencil_buffer_desc.MiscFlags = 0;
-		hr = device->CreateTexture2D(&depth_stencil_buffer_desc, nullptr, depth_stencil_buffer.GetAddressOf());
+		hr = this->device->CreateTexture2D(&depth_stencil_buffer_desc, nullptr, this->depth_stencil_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
-		hr = device->CreateDepthStencilView(this->depth_stencil_buffer.Get(), nullptr, this->depth_stencil_view.GetAddressOf());
+		hr = this->device->CreateDepthStencilView(this->depth_stencil_buffer.Get(), nullptr, this->depth_stencil_view.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -119,12 +119,12 @@ Graphics::Graphics(HWND hWnd)
 		viewport.Height = static_cast<float>(screen_height_uint);
 		viewport.MinDepth = 0.0f;
 		viewport.MaxDepth = 1.0f;
-		immediate_context->RSSetViewports(1, &viewport);
+		this->immediate_context->RSSetViewports(1, &viewport);
 	}
 
 	// サンプラーステート
 	{
-		sampler_states.resize(static_cast<size_t>(SAMPLER_STATE::MAX));
+		this->sampler_states.resize(static_cast<size_t>(SAMPLER_STATE::MAX));
 
 		D3D11_SAMPLER_DESC sampler_desc{};
 		sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
@@ -140,54 +140,54 @@ Graphics::Graphics(HWND hWnd)
 		sampler_desc.BorderColor[3] = 0;
 		sampler_desc.MinLOD = 0;
 		sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
-		hr = device->CreateSamplerState(&sampler_desc, sampler_states[static_cast<size_t>(SAMPLER_STATE::POINT_WRAP)].GetAddressOf());
+		hr = this->device->CreateSamplerState(&sampler_desc, this->sampler_states[static_cast<size_t>(SAMPLER_STATE::POINT_WRAP)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		hr = device->CreateSamplerState(&sampler_desc, sampler_states[static_cast<size_t>(SAMPLER_STATE::LINEAR_WRAP)].GetAddressOf());
+		hr = this->device->CreateSamplerState(&sampler_desc, this->sampler_states[static_cast<size_t>(SAMPLER_STATE::LINEAR_WRAP)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
 		sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		hr = device->CreateSamplerState(&sampler_desc, sampler_states[static_cast<size_t>(SAMPLER_STATE::ANISOTROPIC_WRAP)].GetAddressOf());
+		hr = this->device->CreateSamplerState(&sampler_desc, this->sampler_states[static_cast<size_t>(SAMPLER_STATE::ANISOTROPIC_WRAP)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
 	// 深度ステンシルステートの生成
 	{
-		depth_stencil_states.resize(static_cast<size_t>(DEPTH_STATE::MAX));
+		this->depth_stencil_states.resize(static_cast<size_t>(DEPTH_STATE::MAX));
 
 		D3D11_DEPTH_STENCIL_DESC depth_stencil_desc{};
 		depth_stencil_desc.DepthEnable = TRUE;
 		depth_stencil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		depth_stencil_desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-		hr = device->CreateDepthStencilState(&depth_stencil_desc, depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].GetAddressOf());
+		hr = this->device->CreateDepthStencilState(&depth_stencil_desc, this->depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		depth_stencil_desc.DepthEnable = TRUE;
 		depth_stencil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 		depth_stencil_desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-		hr = device->CreateDepthStencilState(&depth_stencil_desc, depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_OFF)].GetAddressOf());
+		hr = this->device->CreateDepthStencilState(&depth_stencil_desc, this->depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_OFF)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		depth_stencil_desc.DepthEnable = FALSE;
 		depth_stencil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		depth_stencil_desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-		hr = device->CreateDepthStencilState(&depth_stencil_desc, depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_ON)].GetAddressOf());
+		hr = this->device->CreateDepthStencilState(&depth_stencil_desc, this->depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_ON)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		depth_stencil_desc.DepthEnable = FALSE;
 		depth_stencil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 		depth_stencil_desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-		hr = device->CreateDepthStencilState(&depth_stencil_desc, depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].GetAddressOf());
+		hr = this->device->CreateDepthStencilState(&depth_stencil_desc, this->depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
 	// ブレンドステートの生成
 	{
-		blend_states.resize(static_cast<size_t>(BLEND_STATE::MAX));
+		this->blend_states.resize(static_cast<size_t>(BLEND_STATE::MAX));
 
 		D3D11_BLEND_DESC blend_desc{};
 		blend_desc.AlphaToCoverageEnable = FALSE;
@@ -200,7 +200,7 @@ Graphics::Graphics(HWND hWnd)
 		blend_desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 		blend_desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		blend_desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-		hr = device->CreateBlendState(&blend_desc, blend_states[static_cast<size_t>(BLEND_STATE::NONE)].GetAddressOf());
+		hr = this->device->CreateBlendState(&blend_desc, this->blend_states[static_cast<size_t>(BLEND_STATE::NONE)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		blend_desc.AlphaToCoverageEnable = FALSE;
 		blend_desc.IndependentBlendEnable = FALSE;
@@ -212,12 +212,12 @@ Graphics::Graphics(HWND hWnd)
 		blend_desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
 		blend_desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		blend_desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-		hr = device->CreateBlendState(&blend_desc, blend_states[static_cast<size_t>(BLEND_STATE::ALPHA)].GetAddressOf());
+		hr = this->device->CreateBlendState(&blend_desc, this->blend_states[static_cast<size_t>(BLEND_STATE::ALPHA)].GetAddressOf());
 	}
 
 	// ラスタライザーステートの生成
 	{
-		rasterizer_states.resize(static_cast<size_t>(RASTER_STATE::MAX));
+		this->rasterizer_states.resize(static_cast<size_t>(RASTER_STATE::MAX));
 
 		D3D11_RASTERIZER_DESC rasterizer_desc{};
 		rasterizer_desc.FillMode = D3D11_FILL_SOLID;
@@ -230,25 +230,36 @@ Graphics::Graphics(HWND hWnd)
 		rasterizer_desc.ScissorEnable = FALSE;
 		rasterizer_desc.MultisampleEnable = FALSE;
 		rasterizer_desc.AntialiasedLineEnable = FALSE;
-		hr = device->CreateRasterizerState(&rasterizer_desc, rasterizer_states[static_cast<size_t>(RASTER_STATE::SOLID)].GetAddressOf());
+		hr = this->device->CreateRasterizerState(&rasterizer_desc, this->rasterizer_states[static_cast<size_t>(RASTER_STATE::SOLID)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		rasterizer_desc.FillMode = D3D11_FILL_WIREFRAME;
 		rasterizer_desc.CullMode = D3D11_CULL_BACK;
 		rasterizer_desc.AntialiasedLineEnable = TRUE;
-		hr = device->CreateRasterizerState(&rasterizer_desc, rasterizer_states[static_cast<size_t>(RASTER_STATE::WIREFRAME)].GetAddressOf());
+		hr = this->device->CreateRasterizerState(&rasterizer_desc, this->rasterizer_states[static_cast<size_t>(RASTER_STATE::WIREFRAME)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		rasterizer_desc.FillMode = D3D11_FILL_SOLID;
 		rasterizer_desc.CullMode = D3D11_CULL_NONE;
 		rasterizer_desc.AntialiasedLineEnable = TRUE;
-		hr = device->CreateRasterizerState(&rasterizer_desc, rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].GetAddressOf());
+		hr = this->device->CreateRasterizerState(&rasterizer_desc, this->rasterizer_states[static_cast<size_t>(RASTER_STATE::CULL_NONE)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		rasterizer_desc.FillMode = D3D11_FILL_WIREFRAME;
 		rasterizer_desc.CullMode = D3D11_CULL_NONE;
 		rasterizer_desc.AntialiasedLineEnable = TRUE;
-		hr = device->CreateRasterizerState(&rasterizer_desc, rasterizer_states[static_cast<size_t>(RASTER_STATE::WIREFRAME_CULL_NONE)].GetAddressOf());
+		hr = this->device->CreateRasterizerState(&rasterizer_desc, this->rasterizer_states[static_cast<size_t>(RASTER_STATE::WIREFRAME_CULL_NONE)].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// TODO (06/25)開発方針が定まったら改造する
+	{
+		// 頂点シェーダーをの生成
+		//hr = CreateVsFromCso(device.Get(), "", this->default_vertex_shaders.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// ピクセルシェーダーの生成
+		//hr = CreatePsFromCso(this->device.Get(), "", this->default_pixel_shaders.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
