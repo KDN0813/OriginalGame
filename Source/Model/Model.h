@@ -5,7 +5,7 @@
 #include <DirectXMath.h>
 #include "Model/ModelResource.h"
 
-// TODO İŒv‚ª’è‚Ü‚è‚µ‚¾‚¢‰ü‘P‚·‚é
+// TODO (06/25)ŠJ”­wj‚ª’è‚Ü‚èŸ‘æ‰ü‘P
 class Model
 {
 public:

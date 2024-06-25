@@ -6,7 +6,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
-// TODO (06/24)–â‘è‚ª”­¶orƒQ[ƒ€‚ÌŠî”ÕŠ®¬‰ü‘P‚·‚é
+// TODO (06/24)ŠJ”­wj‚ª’è‚Ü‚èŸ‘æ‰ü‘P
 class ModelResource
 {
 public:
