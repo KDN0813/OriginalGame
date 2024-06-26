@@ -3,6 +3,8 @@
 #include "imgui.h"
 #include "Debug/Test.h"
 
+#include "Camera/Camera.h"
+
 SceneTest::SceneTest()
 	:test_boject("Data/Model/Jammo/Jammo.mdl")
 {
@@ -11,6 +13,20 @@ SceneTest::SceneTest()
 void SceneTest::Initialize()
 {
 	cereal_test = {};
+
+	Graphics& graphics = Graphics::Instance();
+	Camera& camera = Camera::Intance();
+	camera.SetLookAt(
+		DirectX::XMFLOAT3(0, 10, -10),
+		DirectX::XMFLOAT3(0, 0, 0),
+		DirectX::XMFLOAT3(0, 1, 0)
+	);
+	camera.SetPerspectiveFov(
+		DirectX::XMConvertToRadians(45),
+		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
+		0.1f,
+		1000.0f
+	);
 }
 
 void SceneTest::Finalize()
@@ -29,7 +45,7 @@ void SceneTest::Render()
 	ID3D11RenderTargetView* rtv = graphics.GetRenderTargetView();
 	ID3D11DepthStencilView* dsv = graphics.GetDepthStencilView();
 
-	FLOAT color[] = { 0.0f, 1.0f, 0.5f, 1.0f };
+	FLOAT color[] = { 0.5f, 1.0f, 0.5f, 1.0f };
 	dc->ClearRenderTargetView(rtv, color);
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->OMSetRenderTargets(1, &rtv, dsv);

@@ -324,7 +324,9 @@ void Graphics::Begin(ID3D11DeviceContext* dc, const RenderContext rc)
 	dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
 
 	dc->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::NONE)].Get(), nullptr, 0xFFFFFFFF);
-
+	dc->OMSetDepthStencilState(depth_stencil_states[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].Get(), 0);
+	dc->RSSetState(rasterizer_states[static_cast<size_t>(RASTER_STATE::WIREFRAME_CULL_NONE)].Get());
+	
 	// シーン用定数バッファ更新
 	SceneConstantBuffer cb_scene;
 	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&rc.view);
