@@ -6,6 +6,8 @@
 #include <mutex>
 #include <vector>
 
+#include "Graphics/RenderContext.h"
+
 class Graphics
 {
 public:
@@ -22,6 +24,13 @@ public:
 	float GetScreenWidth() const { return screen_width; }
 	float GetScreenHeight() const { return screen_height; }
 	std::mutex& GetMutex() { return mutex; }
+
+	// TODO (06/25)開発方針が定まったら改造する
+#pragma region
+	void Begin(ID3D11DeviceContext* dc, const RenderContext rc);
+	void Draw(ID3D11DeviceContext* dc, const class Model* model);
+	void End(ID3D11DeviceContext* dc);
+#pragma endregion
 
 private:
 	static Graphics*								instance;
@@ -52,6 +61,23 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> default_vertex_shaders;
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> default_input_layout;
+
+	static const int MaxBones = 128;
+	struct CbScene
+	{
+		DirectX::XMFLOAT4X4	view_projection;
+	};
+	struct CbMesh
+	{
+		DirectX::XMFLOAT4X4	bone_transforms[MaxBones];
+	};
+	struct CbSubset
+	{
+		DirectX::XMFLOAT4	material_color;
+	};
+	Microsoft::WRL::ComPtr<ID3D11Buffer> scene_constant_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> mesh_constant_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> subset_constant_buffer;
 #pragma endregion
 
 	float	screen_width;

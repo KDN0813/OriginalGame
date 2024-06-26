@@ -1,6 +1,7 @@
 #include "Graphics/Graphics.h"
 #include "System/Misc.h"
 #include "Graphics/Shader/Shader.h"
+#include "Model/Model.h"
 
 Graphics* Graphics::instance = nullptr;
 
@@ -268,9 +269,116 @@ Graphics::Graphics(HWND hWnd)
 		// ピクセルシェーダーの生成
 		hr = CreatePsFromCso(this->device.Get(), "Shader\\StaticMeshPS.cso", this->default_pixel_shaders.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// 定数バッファの作成
+		{
+			// シーン用バッファの作成
+			D3D11_BUFFER_DESC desc;
+			::memset(&desc, 0, sizeof(desc));
+			desc.Usage = D3D11_USAGE_DEFAULT;
+			desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			desc.CPUAccessFlags = 0;
+			desc.MiscFlags = 0;
+			desc.ByteWidth = sizeof(CbScene);
+			desc.StructureByteStride = 0;
+
+			HRESULT hr = device->CreateBuffer(&desc, 0, scene_constant_buffer.GetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+			// メッシュ用バッファ
+			desc.ByteWidth = sizeof(CbMesh);
+			hr = device->CreateBuffer(&desc, 0, mesh_constant_buffer.GetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+			// サブセット用バッファ
+			desc.ByteWidth = sizeof(CbSubset);
+			hr = device->CreateBuffer(&desc, 0, subset_constant_buffer.GetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		}
 	}
 }
 
 Graphics::~Graphics()
+{
+}
+
+void Graphics::Begin(ID3D11DeviceContext* dc, const RenderContext rc)
+{
+	dc->VSSetShader(this->default_vertex_shaders.Get(), nullptr, 0);
+	dc->PSSetShader(this->default_pixel_shaders.Get(), nullptr, 0);
+	dc->IASetInputLayout(this->default_input_layout.Get());
+
+	// 定数バッファの設定
+	ID3D11Buffer* constantBuffers[] =
+	{
+		this->scene_constant_buffer.Get(),
+		this->mesh_constant_buffer.Get(),
+		this->subset_constant_buffer.Get(),
+	};
+	dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
+	dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
+
+	dc->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::NONE)].Get(), nullptr, 0xFFFFFFFF);
+
+	// シーン用定数バッファ更新
+	CbScene cbScene;
+	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&rc.view);
+	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&rc.projection);
+	DirectX::XMStoreFloat4x4(&cbScene.view_projection, View * Projection);
+	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &cbScene, 0, 0);
+}
+
+void Graphics::Draw(ID3D11DeviceContext* dc, const Model* model)
+{
+	const ModelResource* resource = model->GetResource();
+	const std::vector<Model::Node>& nodes = model->GetNodes();
+
+	for (const ModelResource::Mesh& mesh : resource->GetMeshes())
+	{
+		// メッシュ用定数バッファ更新
+		CbMesh cbMesh;
+		::memset(&cbMesh, 0, sizeof(cbMesh));
+		if (mesh.node_indices.size() > 0)
+		{
+			for (size_t i = 0; i < mesh.node_indices.size(); ++i)
+			{
+				DirectX::XMMATRIX world_transform = DirectX::XMLoadFloat4x4(&nodes.at(mesh.node_indices.at(i)).worldTransform);
+				DirectX::XMMATRIX offset_transform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
+				DirectX::XMMATRIX bone_transform = offset_transform * world_transform;
+				DirectX::XMStoreFloat4x4(&cbMesh.bone_transforms[i], bone_transform);
+			}
+		}
+		else
+		{
+			cbMesh.bone_transforms[0] = nodes.at(mesh.node_index).worldTransform;
+		}
+		dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
+
+		UINT stride = sizeof(ModelResource::Vertex);
+		UINT offset = 0;
+		dc->IASetVertexBuffers(0, 1, mesh.vertex_buffer.GetAddressOf(), &stride, &offset);
+		dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		for (const ModelResource::Subset& subset : mesh.subsets)
+		{
+			CbSubset cbSubset;
+			cbSubset.material_color = subset.material->color;
+			dc->UpdateSubresource(subset_constant_buffer.Get(), 0, 0, &cbSubset, 0, 0);
+			dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
+
+			ID3D11SamplerState* sampler_state[] =
+			{
+				sampler_states[static_cast<size_t>(SAMPLER_STATE::POINT_WRAP)].Get(),
+				sampler_states[static_cast<size_t>(SAMPLER_STATE::LINEAR_WRAP)].Get(),
+				sampler_states[static_cast<size_t>(SAMPLER_STATE::ANISOTROPIC_WRAP)].Get(),
+			};
+			dc->PSSetSamplers(0, 3, sampler_state);
+			dc->DrawIndexed(subset.index_count, subset.start_index, 0);
+		}
+	}
+}
+
+void Graphics::End(ID3D11DeviceContext* dc)
 {
 }
