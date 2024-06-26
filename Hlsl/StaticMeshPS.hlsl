@@ -6,7 +6,7 @@ SamplerState sampler_states[3] : register(s0);
 #define LINER 1
 #define ANISTROPIC 2
 
-float4 main(VS_OUT pin) : SV_TARGET
+float4 main(VsOut pin) : SV_TARGET
 {
     return color_map.Sample(sampler_states[POINT], pin.texcoord) * pin.color;
 }

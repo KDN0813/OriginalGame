@@ -289,21 +289,21 @@ void ModelResource::BuildModel(ID3D11Device* device, const char* dirname)
 
 		// 頂点バッファ
 		{
-			D3D11_BUFFER_DESC bufferDesc = {};
+			D3D11_BUFFER_DESC buffer_desc = {};
 			D3D11_SUBRESOURCE_DATA subresource_data = {};
 
-			bufferDesc.ByteWidth = static_cast<UINT>(sizeof(Vertex) * mesh.vertices.size());
+			buffer_desc.ByteWidth = static_cast<UINT>(sizeof(Vertex) * mesh.vertices.size());
 			//bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-			bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			bufferDesc.CPUAccessFlags = 0;
-			bufferDesc.MiscFlags = 0;
-			bufferDesc.StructureByteStride = 0;
+			buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
+			buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			buffer_desc.CPUAccessFlags = 0;
+			buffer_desc.MiscFlags = 0;
+			buffer_desc.StructureByteStride = 0;
 			subresource_data.pSysMem = mesh.vertices.data();
 			subresource_data.SysMemPitch = 0;
 			subresource_data.SysMemSlicePitch = 0;
 
-			HRESULT hr = device->CreateBuffer(&bufferDesc, &subresource_data, mesh.vertex_buffer.GetAddressOf());
+			HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, mesh.vertex_buffer.GetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		}
 

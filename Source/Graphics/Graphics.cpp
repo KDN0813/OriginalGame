@@ -258,7 +258,12 @@ Graphics::Graphics(HWND hWnd)
 		D3D11_INPUT_ELEMENT_DESC input_element_desc[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TANGENT",  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
 		// 頂点シェーダーをの生成
@@ -279,19 +284,19 @@ Graphics::Graphics(HWND hWnd)
 			desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 			desc.CPUAccessFlags = 0;
 			desc.MiscFlags = 0;
-			desc.ByteWidth = sizeof(CbScene);
+			desc.ByteWidth = sizeof(SceneConstantBuffer);
 			desc.StructureByteStride = 0;
 
 			HRESULT hr = device->CreateBuffer(&desc, 0, scene_constant_buffer.GetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 			// メッシュ用バッファ
-			desc.ByteWidth = sizeof(CbMesh);
+			desc.ByteWidth = sizeof(MeshConstantBuffer);
 			hr = device->CreateBuffer(&desc, 0, mesh_constant_buffer.GetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 			// サブセット用バッファ
-			desc.ByteWidth = sizeof(CbSubset);
+			desc.ByteWidth = sizeof(SubsetConstantBuffer);
 			hr = device->CreateBuffer(&desc, 0, subset_constant_buffer.GetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		}
@@ -321,11 +326,11 @@ void Graphics::Begin(ID3D11DeviceContext* dc, const RenderContext rc)
 	dc->OMSetBlendState(blend_states[static_cast<size_t>(BLEND_STATE::NONE)].Get(), nullptr, 0xFFFFFFFF);
 
 	// シーン用定数バッファ更新
-	CbScene cbScene;
+	SceneConstantBuffer cb_scene;
 	DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&rc.view);
 	DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&rc.projection);
-	DirectX::XMStoreFloat4x4(&cbScene.view_projection, View * Projection);
-	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &cbScene, 0, 0);
+	DirectX::XMStoreFloat4x4(&cb_scene.view_projection, View * Projection);
+	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &cb_scene, 0, 0);
 }
 
 void Graphics::Draw(ID3D11DeviceContext* dc, const Model* model)
@@ -336,8 +341,8 @@ void Graphics::Draw(ID3D11DeviceContext* dc, const Model* model)
 	for (const ModelResource::Mesh& mesh : resource->GetMeshes())
 	{
 		// メッシュ用定数バッファ更新
-		CbMesh cbMesh;
-		::memset(&cbMesh, 0, sizeof(cbMesh));
+		MeshConstantBuffer cb_mesh;
+		::memset(&cb_mesh, 0, sizeof(cb_mesh));
 		if (mesh.node_indices.size() > 0)
 		{
 			for (size_t i = 0; i < mesh.node_indices.size(); ++i)
@@ -345,14 +350,14 @@ void Graphics::Draw(ID3D11DeviceContext* dc, const Model* model)
 				DirectX::XMMATRIX world_transform = DirectX::XMLoadFloat4x4(&nodes.at(mesh.node_indices.at(i)).worldTransform);
 				DirectX::XMMATRIX offset_transform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
 				DirectX::XMMATRIX bone_transform = offset_transform * world_transform;
-				DirectX::XMStoreFloat4x4(&cbMesh.bone_transforms[i], bone_transform);
+				DirectX::XMStoreFloat4x4(&cb_mesh.bone_transforms[i], bone_transform);
 			}
 		}
 		else
 		{
-			cbMesh.bone_transforms[0] = nodes.at(mesh.node_index).worldTransform;
+			cb_mesh.bone_transforms[0] = nodes.at(mesh.node_index).worldTransform;
 		}
-		dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
+		dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &cb_mesh, 0, 0);
 
 		UINT stride = sizeof(ModelResource::Vertex);
 		UINT offset = 0;
@@ -362,9 +367,9 @@ void Graphics::Draw(ID3D11DeviceContext* dc, const Model* model)
 
 		for (const ModelResource::Subset& subset : mesh.subsets)
 		{
-			CbSubset cbSubset;
-			cbSubset.material_color = subset.material->color;
-			dc->UpdateSubresource(subset_constant_buffer.Get(), 0, 0, &cbSubset, 0, 0);
+			SubsetConstantBuffer cb_subset;
+			cb_subset.material_color = subset.material->color;
+			dc->UpdateSubresource(subset_constant_buffer.Get(), 0, 0, &cb_subset, 0, 0);
 			dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
 
 			ID3D11SamplerState* sampler_state[] =
@@ -381,4 +386,7 @@ void Graphics::Draw(ID3D11DeviceContext* dc, const Model* model)
 
 void Graphics::End(ID3D11DeviceContext* dc)
 {
+	dc->VSSetShader(nullptr, nullptr, 0);
+	dc->PSSetShader(nullptr, nullptr, 0);
+	dc->IASetInputLayout(nullptr);
 }

@@ -63,15 +63,15 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> default_input_layout;
 
 	static const int MaxBones = 128;
-	struct CbScene
+	struct SceneConstantBuffer
 	{
 		DirectX::XMFLOAT4X4	view_projection;
 	};
-	struct CbMesh
+	struct MeshConstantBuffer
 	{
 		DirectX::XMFLOAT4X4	bone_transforms[MaxBones];
 	};
-	struct CbSubset
+	struct SubsetConstantBuffer
 	{
 		DirectX::XMFLOAT4	material_color;
 	};

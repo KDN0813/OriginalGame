@@ -1,21 +1,20 @@
-struct VS_OUT
+struct VsOut
 {
     float4 position : SV_POSITION;      // 頂点座標
     float4 color : COLOR;               // 色
     float2 texcoord : TEXCOORD;         // テクスチャ
 };
-cbuffer OBJECT_CONSTANT_BUFFER : register(b0)
-{
-    row_major float4x4 world;           // ワールド行列
-    float4 material_color;              // マテリアルのカラー
-};
-#define MAX_BONES 128
-cbuffer CbMesh : register(b1)
-{
-    row_major float4x4 boneTransforms[MAX_BONES];
-};
-cbuffer SCENE_CONSTANT_BUFFER : register(b3)
+
+cbuffer SceneConstantBuffer : register(b3)
 {
     row_major float4x4 view_projection; // ビュー行列
-    //float4 camera_position;             // カメラの位置
+};
+#define MAX_BONES 128
+cbuffer MeshConstantBuffer : register(b1)
+{
+    row_major float4x4 bone_transforms[MAX_BONES];
+};
+cbuffer SubsetConstantBuffer : register(b0)
+{
+    float4 material_color;              // マテリアルのカラー
 };
