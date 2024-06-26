@@ -3,9 +3,14 @@
 #include "imgui.h"
 #include "Debug/Test.h"
 
+SceneTest::SceneTest()
+	:test_boject("Data/Model/Jammo/Jammo.mdl")
+{
+}
+
 void SceneTest::Initialize()
 {
-	cerealTest = {};
+	cereal_test = {};
 }
 
 void SceneTest::Finalize()
@@ -14,6 +19,7 @@ void SceneTest::Finalize()
 
 void SceneTest::Update(float elapsed_time)
 {
+	test_boject.Update(elapsed_time);
 }
 
 void SceneTest::Render()
@@ -28,6 +34,8 @@ void SceneTest::Render()
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->OMSetRenderTargets(1, &rtv, dsv);
 
+	test_boject.Render();
+
 #ifdef _DEBUG
 	DrawImGui();
 #endif // _DEBUG
@@ -35,5 +43,6 @@ void SceneTest::Render()
 
 void SceneTest::DrawImGui()
 {
-	this->cerealTest.DrawImGui();
+	this->cereal_test.DrawImGui();
+	this->test_boject.DrawImGUi();
 }

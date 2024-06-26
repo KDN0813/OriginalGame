@@ -3,6 +3,8 @@
 #include <DirectXMath.h>
 #include <string>
 
+#include "Model/Model.h"
+
 // シリアライズ・デシリアライズテストクラス
 class CerealTest
 {
@@ -26,4 +28,26 @@ public:
     void DrawImGui();
 public:
     PlayerData player_data;
+};
+
+class TestObject
+{
+public:
+    TestObject(const char* filename);
+    ~TestObject() {};
+    
+
+    void Update(float elapsedTime);
+    void Render();
+
+    void DrawImGUi();
+private:
+    void UpdateTransform();
+
+private:
+    std::unique_ptr<Model> model;
+    DirectX::XMFLOAT3 position;
+    DirectX::XMFLOAT3 angle;
+    DirectX::XMFLOAT3 scale;
+    DirectX::XMFLOAT4X4 transform;
 };

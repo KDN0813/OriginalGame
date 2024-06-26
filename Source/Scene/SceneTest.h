@@ -6,7 +6,7 @@
 class SceneTest : public Scene
 {
 public:
-    SceneTest() {};
+    SceneTest();
     ~SceneTest() override {};
 
     void Initialize() override;
@@ -18,6 +18,7 @@ public:
     void DrawImGui();
 #endif // _DEBUG
 private:
-    CerealTest cerealTest;
+    CerealTest cereal_test;
+    TestObject test_boject;
 };
 
