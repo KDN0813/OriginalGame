@@ -1,6 +1,7 @@
 #include "SceneDebug.h"
 #include "Graphics/Graphics.h"
 #include "imgui.h"
+#include "System/Misc.h"
 #include "Debug/DebugCereal.h"
 
 #include "Camera/Camera.h"
@@ -21,6 +22,38 @@ SceneDebug::SceneDebug()
 			};
 			objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
 		}
+	}
+
+	obj_max = objects.size();
+	// インスタンスごとのデータ作成
+	{
+		inputData.resize(obj_max);
+		for (size_t i = 0; i < obj_max; ++i)
+		{
+			inputData[i] = objects[i]->GetTransform();
+		}
+	}
+
+	// インスタンスごとの行列を保持するバッファ作成
+	{
+		D3D11_BUFFER_DESC buffer_desc = {};
+		D3D11_SUBRESOURCE_DATA subresource_data = {};
+
+		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT4X4) * obj_max);
+		buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
+		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		buffer_desc.CPUAccessFlags = 0;
+		buffer_desc.MiscFlags = 0;
+		buffer_desc.StructureByteStride = 0;
+
+		subresource_data.pSysMem = inputData.data();
+		subresource_data.SysMemPitch = 0;
+		subresource_data.SysMemSlicePitch = 0;
+
+		Graphics& graphics = Graphics::Instance();
+		ID3D11Device* device = graphics.GetDevice();
+		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, inputBuffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
 
@@ -84,10 +117,8 @@ void SceneDebug::Render()
 
 		shader->Begin(dc, rc);
 		
-		for (auto& obj : objects)
-		{
-			obj->Render(dc, shader);
-		}
+
+
 		stage.Render(dc, shader);
 
 		shader->End(dc);

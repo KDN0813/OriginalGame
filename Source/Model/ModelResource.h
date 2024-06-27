@@ -69,7 +69,7 @@ public:
 		void serialize(Archive& archive, int version);
 	};
 
-	struct Mesh
+	struct Mesh	// 1ÉpÅ[Éc
 	{
 		std::vector<Vertex>						vertices;
 		std::vector<UINT>						indices;

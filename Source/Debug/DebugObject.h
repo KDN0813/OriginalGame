@@ -18,6 +18,7 @@ public:
     // ŠeŽíÝ’èEŽæ“¾ŠÖ”
     const DirectX::XMFLOAT3& GetPosition() const { return this->position; }
     void SetPosition(DirectX::XMFLOAT3& pos) { this->position = pos; }
+    const DirectX::XMFLOAT4X4& GetTransform()const { return this->transform; }
 
     virtual void DrawImGUi();
 private:
