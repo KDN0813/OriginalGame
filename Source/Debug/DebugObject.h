@@ -15,6 +15,9 @@ public:
     virtual void Update(float elapsedTime);
     virtual void Render(ID3D11DeviceContext* dc, Shader* shader);
 
+    // ŠeŽíŽæ“¾ŠÖ”
+    const DirectX::XMFLOAT3& GetPosition() const { return this->position; }
+
     virtual void DrawImGUi();
 private:
     void UpdateTransform();

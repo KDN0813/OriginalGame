@@ -13,14 +13,15 @@ SceneDebug::SceneDebug()
 void SceneDebug::Initialize()
 {
 	Graphics& graphics = Graphics::Instance();
+	// カメラ初期設定
 	Camera& camera = Camera::Intance();
 	camera.SetLookAt(
-		DirectX::XMFLOAT3(0, 10, -10),
-		DirectX::XMFLOAT3(0, 0, 0),
-		DirectX::XMFLOAT3(0, 1, 0)
+		DirectX::XMFLOAT3(0.0f, 0.0f, -10.0f),
+		DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+		DirectX::XMFLOAT3(0.0f, 10.0f, 0.0f)
 	);
 	camera.SetPerspectiveFov(
-		DirectX::XMConvertToRadians(45),
+		DirectX::XMConvertToRadians(45.0f),
 		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
 		0.1f,
 		1000.0f
@@ -33,6 +34,12 @@ void SceneDebug::Finalize()
 
 void SceneDebug::Update(float elapsed_time)
 {
+	// カメラコントローラー更新処理
+	DirectX::XMFLOAT3 target = player.GetPosition();
+	target.y += 0.5f;	// プレイヤーの腰当たりをターゲットに設定
+	cameraController.SetTarget(target);
+	cameraController.Update(elapsed_time);
+
 	player.Update(elapsed_time);
 }
 

@@ -117,6 +117,7 @@
     <ClInclude Include="External\imgui\imstb_textedit.h" />
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
+    <ClInclude Include="Source\Camera\CameraController.h" />
     <ClInclude Include="Source\Debug\DebugObject.h" />
     <ClInclude Include="Source\Debug\DebugManager.h" />
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
@@ -127,6 +128,9 @@
     <ClInclude Include="Source\Graphics\Shader\TemporaryShader.h" />
     <ClInclude Include="Source\Graphics\Shader\Shader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderLoader.h" />
+    <ClInclude Include="Source\Input\GamePad.h" />
+    <ClInclude Include="Source\Input\Input.h" />
+    <ClInclude Include="Source\Input\Mouse.h" />
     <ClInclude Include="Source\Model\Model.h" />
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
@@ -148,6 +152,7 @@
     <ClCompile Include="External\imgui\imgui_draw.cpp" />
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
+    <ClCompile Include="Source\Camera\CameraController.cpp" />
     <ClCompile Include="Source\Debug\DebugObject.cpp" />
     <ClCompile Include="Source\Debug\DebugManager.cpp" />
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
@@ -156,6 +161,9 @@
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\Graphics\Shader\TemporaryShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderLoader.cpp" />
+    <ClCompile Include="Source\Input\GamePad.cpp" />
+    <ClCompile Include="Source\Input\Input.cpp" />
+    <ClCompile Include="Source\Input\Mouse.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Model\Model.cpp" />
     <ClCompile Include="Source\Model\ModelResource.cpp" />

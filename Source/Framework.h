@@ -4,6 +4,7 @@
 #include "System/HighResolutionTimer.h"
 #include "Graphics/Graphics.h"
 #include "Scene/SceneManager.h"
+#include "Input/Input.h"
 #include "Debug/DebugManager.h"
 
 class Framework
@@ -25,6 +26,7 @@ private:
 	HighResolutionTimer		timer;
 	Graphics				graphics;
 	SceneManager			sceneManager;
+	Input					input;
 #ifdef _DEBUG
 	DebugManager			debugManager;
 #endif // _DEBUG

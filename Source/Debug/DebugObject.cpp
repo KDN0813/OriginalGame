@@ -60,5 +60,7 @@ void DebugObject::UpdateTransform()
 
 void DebugPlayer::Update(float elapsedTime)
 {
+
+
     DebugObject::Update(elapsedTime);
 }

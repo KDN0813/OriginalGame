@@ -13,6 +13,7 @@ static const int syncInterval = 1;
 Framework::Framework(HWND hWnd)
 	: hWnd(hWnd)
 	, graphics(hWnd)
+	, input(hWnd)
 #ifdef _DEBUG
 	, debugManager(hWnd, graphics.GetDevice())
 #endif // _DEBUG
@@ -31,6 +32,8 @@ Framework::~Framework()
 
 void Framework::Update(float elapsed_time)
 {
+	input.Update();
+
 	sceneManager.Update(elapsed_time);
 }
 
