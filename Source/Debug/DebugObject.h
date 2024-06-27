@@ -9,13 +9,13 @@ class DebugObject
 {
 public:
     DebugObject(const char* filename);
-    ~DebugObject() {};
+    virtual ~DebugObject() {};
 
 
-    void Update(float elapsedTime);
-    void Render(ID3D11DeviceContext* dc, Shader* shader);
+    virtual void Update(float elapsedTime);
+    virtual void Render(ID3D11DeviceContext* dc, Shader* shader);
 
-    void DrawImGUi();
+    virtual void DrawImGUi();
 private:
     void UpdateTransform();
 
@@ -25,5 +25,14 @@ private:
     DirectX::XMFLOAT3 angle;
     DirectX::XMFLOAT3 scale;
     DirectX::XMFLOAT4X4 transform;
+};
+
+// デバッグ用プレイヤー
+class DebugPlayer : public DebugObject
+{
+public:
+    DebugPlayer(const char* filename):DebugObject(filename){}
+
+    void Update(float elapsedTime)override;
 };
 

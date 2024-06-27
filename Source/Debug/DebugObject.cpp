@@ -27,13 +27,20 @@ void DebugObject::Render(ID3D11DeviceContext* dc, Shader* shader)
 
 void DebugObject::DrawImGUi()
 {
+#ifdef _DEBUG
     if (ImGui::Begin("DebugObject"))
     {
-        ImGui::InputFloat3("position", &this->position.x);
-        ImGui::InputFloat3("angle", &this->angle.x);
-        ImGui::InputFloat3("scale", &this->scale.x);
+        ImGui::DragFloat3("position", &this->position.x, 0.01f);
+        ImGui::DragFloat3("angle", &this->angle.x, 0.05f);
+        float scale_dummy = this->scale.x;
+        ImGui::DragFloat("scale", &scale_dummy, 0.0001f);
+        if (this->scale.x != scale_dummy)
+        {
+            this->scale.x = this->scale.y = this->scale.z = scale_dummy;
+        }
     }
     ImGui::End();
+#endif _DEBUG
 }
 
 void DebugObject::UpdateTransform()
@@ -48,4 +55,10 @@ void DebugObject::UpdateTransform()
     DirectX::XMMATRIX W = S * R * T;
     // 計算したワールド行列を取り出す
     DirectX::XMStoreFloat4x4(&transform, W);
+}
+
+
+void DebugPlayer::Update(float elapsedTime)
+{
+    DebugObject::Update(elapsedTime);
 }
