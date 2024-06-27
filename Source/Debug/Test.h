@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Model/Model.h"
+#include "Graphics/Shader/Shader.h"
 
 // シリアライズ・デシリアライズテストクラス
 class CerealTest
@@ -38,7 +39,7 @@ public:
     
 
     void Update(float elapsedTime);
-    void Render();
+    void Render(Shader* shader);
 
     void DrawImGUi();
 private:

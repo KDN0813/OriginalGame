@@ -1,7 +1,9 @@
 #include "Graphics/Graphics.h"
 #include "System/Misc.h"
-#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/ShaderLoader.h"
 #include "Model/Model.h"
+
+#include "Graphics/Shader/LambertShader.h"
 
 Graphics* Graphics::instance = nullptr;
 
@@ -300,6 +302,8 @@ Graphics::Graphics(HWND hWnd)
 			hr = device->CreateBuffer(&desc, 0, subset_constant_buffer.GetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		}
+
+		shaderT = std::make_unique<LambertShader>(this->device.Get());
 	}
 }
 

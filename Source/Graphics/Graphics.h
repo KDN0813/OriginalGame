@@ -8,6 +8,8 @@
 
 #include "Graphics/RenderContext.h"
 
+#include "Graphics/Shader/Shader.h"
+
 class Graphics
 {
 public:
@@ -30,6 +32,8 @@ public:
 	void Begin(ID3D11DeviceContext* dc, const RenderContext rc);
 	void Draw(ID3D11DeviceContext* dc, const class Model* model);
 	void End(ID3D11DeviceContext* dc);
+
+	Shader* GetShader() const { return this->shaderT.get(); }
 #pragma endregion
 
 private:
@@ -78,6 +82,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> scene_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> mesh_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> subset_constant_buffer;
+
+	std::unique_ptr<Shader> shaderT;
 #pragma endregion
 
 	float	screen_width;

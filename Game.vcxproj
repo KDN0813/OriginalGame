@@ -123,7 +123,9 @@
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\RenderContext.h" />
+    <ClInclude Include="Source\Graphics\Shader\LambertShader.h" />
     <ClInclude Include="Source\Graphics\Shader\Shader.h" />
+    <ClInclude Include="Source\Graphics\Shader\ShaderLoader.h" />
     <ClInclude Include="Source\Model\Model.h" />
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
@@ -150,7 +152,8 @@
     <ClCompile Include="Source\Debug\Test.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
-    <ClCompile Include="Source\Graphics\Shader\Shader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\LambertShader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ShaderLoader.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Model\Model.cpp" />
     <ClCompile Include="Source\Model\ModelResource.cpp" />
@@ -163,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli" />
+    <None Include="Hlsl\Lambert.hlsli" />
     <None Include="Hlsl\StaticMesh.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +177,12 @@
     <FxCompile Include="Hlsl\ImGuiVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\LambertPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\LambertVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Hlsl\StaticMeshPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

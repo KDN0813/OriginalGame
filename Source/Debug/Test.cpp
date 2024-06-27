@@ -117,7 +117,7 @@ void TestObject::Update(float elapsedTime)
     this->model->UpdateTransform(this->transform);
 }
 
-void TestObject::Render()
+void TestObject::Render(Shader* shader)
 {
     Graphics& graphics = Graphics::Instance();
     ID3D11DeviceContext* dc = graphics.GetDeviceContext();
@@ -126,9 +126,9 @@ void TestObject::Render()
     rc.view = camera.GetView();
     rc.projection = camera.getProjection();
 
-    graphics.Begin(dc, rc);
-    graphics.Draw(dc, this->model.get());
-    graphics.End(dc);
+    shader->Begin(dc, rc);
+    shader->Draw(dc, this->model.get());
+    shader->End(dc);
 }
 
 void TestObject::DrawImGUi()
