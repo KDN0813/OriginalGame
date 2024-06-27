@@ -6,7 +6,7 @@
 #include "Camera/Camera.h"
 
 SceneDebug::SceneDebug()
-	:test_boject("Data/Model/Jammo/Jammo.mdl")
+	:player("Data/Model/Jammo/Jammo.mdl")
 {
 }
 
@@ -35,7 +35,7 @@ void SceneDebug::Finalize()
 
 void SceneDebug::Update(float elapsed_time)
 {
-	test_boject.Update(elapsed_time);
+	player.Update(elapsed_time);
 }
 
 void SceneDebug::Render()
@@ -50,7 +50,22 @@ void SceneDebug::Render()
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->OMSetRenderTargets(1, &rtv, dsv);
 
-	test_boject.Render(graphics.GetShader());
+	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
+	{
+		Graphics& graphics = Graphics::Instance();
+		ID3D11DeviceContext* dc = graphics.GetDeviceContext();
+		Shader* shader = graphics.GetShader();
+		Camera& camera = Camera::Intance();
+		RenderContext rc;
+		rc.view = camera.GetView();
+		rc.projection = camera.getProjection();
+
+		shader->Begin(dc, rc);
+		
+		player.Render(dc,shader);
+
+		shader->End(dc);
+	}
 
 #ifdef _DEBUG
 	DrawImGui();
@@ -60,5 +75,5 @@ void SceneDebug::Render()
 void SceneDebug::DrawImGui()
 {
 	this->cereal_test.DrawImGui();
-	this->test_boject.DrawImGUi();
+	this->player.DrawImGUi();
 }

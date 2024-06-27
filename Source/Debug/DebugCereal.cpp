@@ -65,7 +65,7 @@ void DebugCereal::DrawImGui()
 {
     const char* creal_file_name = "DebugData/test.mae";
 
-    if (ImGui::Begin("CerealTest"))
+    if (ImGui::Begin("DebugCereal"))
     {
         if (ImGui::Button("Serialize"))
         {

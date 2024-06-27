@@ -20,6 +20,6 @@ public:
 #endif // _DEBUG
 private:
     DebugCereal cereal_test;
-    DebugObject test_boject;
+    DebugObject player;
 };
 

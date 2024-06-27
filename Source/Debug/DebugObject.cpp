@@ -20,23 +20,14 @@ void DebugObject::Update(float elapsedTime)
     this->model->UpdateTransform(this->transform);
 }
 
-void DebugObject::Render(Shader* shader)
+void DebugObject::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
-    Graphics& graphics = Graphics::Instance();
-    ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-    Camera& camera = Camera::Intance();
-    RenderContext rc;
-    rc.view = camera.GetView();
-    rc.projection = camera.getProjection();
-
-    shader->Begin(dc, rc);
     shader->Draw(dc, this->model.get());
-    shader->End(dc);
 }
 
 void DebugObject::DrawImGUi()
 {
-    if (ImGui::Begin("TestObject"))
+    if (ImGui::Begin("DebugObject"))
     {
         ImGui::InputFloat3("position", &this->position.x);
         ImGui::InputFloat3("angle", &this->angle.x);

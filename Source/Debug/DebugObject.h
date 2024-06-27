@@ -13,7 +13,7 @@ public:
 
 
     void Update(float elapsedTime);
-    void Render(Shader* shader);
+    void Render(ID3D11DeviceContext* dc, Shader* shader);
 
     void DrawImGUi();
 private:
