@@ -22,5 +22,6 @@ public:
 private:
     CameraController cameraController;
     DebugObject player;
+    DebugObject stage;
 };
 

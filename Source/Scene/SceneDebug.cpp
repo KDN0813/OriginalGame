@@ -7,6 +7,7 @@
 
 SceneDebug::SceneDebug()
 	:player("Data/Model/Jammo/Jammo.mdl")
+	, stage("Data/Model/ExampleStage/ExampleStage.mdl")
 {
 }
 
@@ -68,6 +69,7 @@ void SceneDebug::Render()
 		shader->Begin(dc, rc);
 		
 		player.Render(dc,shader);
+		stage.Render(dc, shader);
 
 		shader->End(dc);
 	}

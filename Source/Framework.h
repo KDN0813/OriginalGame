@@ -5,6 +5,7 @@
 #include "Graphics/Graphics.h"
 #include "Scene/SceneManager.h"
 #include "Input/Input.h"
+#include "Model/ModelResourceManager.h"
 #include "Debug/DebugManager.h"
 
 class Framework
@@ -27,6 +28,7 @@ private:
 	Graphics				graphics;
 	SceneManager			sceneManager;
 	Input					input;
+	ModelResourceManager	resourceManager;
 #ifdef _DEBUG
 	DebugManager			debugManager;
 #endif // _DEBUG

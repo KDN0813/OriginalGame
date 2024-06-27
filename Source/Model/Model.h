@@ -14,8 +14,9 @@ public:
 
 	struct Node
 	{
-		const char*			name;
-		Node*				parent;
+		Node() = default;
+		const char* name;
+		Node* parent;
 		DirectX::XMFLOAT3	scale;
 		DirectX::XMFLOAT4	rotate;
 		DirectX::XMFLOAT3	translate;

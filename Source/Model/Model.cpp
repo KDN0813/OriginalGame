@@ -1,6 +1,6 @@
 #include "Graphics/Graphics.h"
 #include "Model/Model.h"
-#include "Model/ModelResource.h"
+#include "Model/ModelResourceManager.h"
 
 // コンストラクタ
 Model::Model(const char* filename)
@@ -13,11 +13,11 @@ Model::Model(const char* filename)
 	, dummy()
 {
 	// リソース読み込み
-#if 1
+#if 0
 	resource = std::make_shared<ModelResource>();
 	resource->Load(Graphics::Instance().GetDevice(), filename);
 #else
-	resource = ResourceManager::Instance().LoadModelResource(filename);
+	resource = ModelResourceManager::Instance()->LoadModelResource(filename);
 #endif
 
 	// ノード
