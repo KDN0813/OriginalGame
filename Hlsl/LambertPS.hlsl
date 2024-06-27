@@ -1,11 +1,11 @@
 
 #include "Lambert.hlsli"
 
-Texture2D diffuseMap : register(t0);
-SamplerState diffuseMapSamplerState : register(s0);
+Texture2D diffuse_map : register(t0);
+SamplerState diffuse_map_sampler_state : register(s0);
 
-float4 main(VS_OUT pin) : SV_TARGET
+float4 main(VsOut pin) : SV_TARGET
 {
-    return diffuseMap.Sample(diffuseMapSamplerState, pin.texcoord) * pin.color;
+    return diffuse_map.Sample(diffuse_map_sampler_state, pin.texcoord) * pin.color;
 }
 
