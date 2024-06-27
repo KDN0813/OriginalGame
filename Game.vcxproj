@@ -179,7 +179,6 @@
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli" />
     <None Include="Hlsl\Temporary.hlsli" />
-    <None Include="Hlsl\StaticMesh.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Hlsl\ImGuiPS.hlsl">
@@ -195,14 +194,6 @@
     </FxCompile>
     <FxCompile Include="Hlsl\TemporaryVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Hlsl\StaticMeshPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Hlsl\StaticMeshVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,3 +1,14 @@
+struct VsIn
+{
+    float4 position : POSITION;
+    float3 normal : NORMAL;
+    float3 tangent : TANGENT;
+    float2 texcoord : TEXCOORD;
+    float4 color : COLOR;
+    float4 bone_weights : WEIGHTS;
+    uint4 bone_indices : BONES;
+};
+
 struct VsOut
 {
 	float4 position : SV_POSITION;
