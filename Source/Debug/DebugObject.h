@@ -8,15 +8,16 @@
 class DebugObject
 {
 public:
-    DebugObject(const char* filename);
+    DebugObject(const char* filename, DirectX::XMFLOAT3 position = {});
     virtual ~DebugObject() {};
 
 
     virtual void Update(float elapsedTime);
     virtual void Render(ID3D11DeviceContext* dc, Shader* shader);
 
-    // ŠeŽíŽæ“¾ŠÖ”
+    // ŠeŽíÝ’èEŽæ“¾ŠÖ”
     const DirectX::XMFLOAT3& GetPosition() const { return this->position; }
+    void SetPosition(DirectX::XMFLOAT3& pos) { this->position = pos; }
 
     virtual void DrawImGUi();
 private:

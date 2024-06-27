@@ -13,12 +13,7 @@ Model::Model(const char* filename)
 	, dummy()
 {
 	// リソース読み込み
-#if 0
-	resource = std::make_shared<ModelResource>();
-	resource->Load(Graphics::Instance().GetDevice(), filename);
-#else
 	resource = ModelResourceManager::Instance()->LoadModelResource(filename);
-#endif
 
 	// ノード
 	const std::vector<ModelResource::Node>& resNodes = resource->GetNodes();

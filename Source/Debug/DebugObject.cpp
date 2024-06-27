@@ -4,9 +4,9 @@
 #include "Graphics/Graphics.h"
 #include "Camera/Camera.h"
 
-DebugObject::DebugObject(const char* filename)
+DebugObject::DebugObject(const char* filename, DirectX::XMFLOAT3 position)
     :model(std::make_unique<Model>(filename))
-    , position()
+    , position(position)
     , angle()
     , scale({ 0.01f,0.01f ,0.01f })
     , transform()

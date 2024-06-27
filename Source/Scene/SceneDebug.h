@@ -21,7 +21,7 @@ public:
 #endif // _DEBUG
 private:
     CameraController cameraController;
-    DebugObject player;
+    std::vector<std::unique_ptr<DebugObject>> objects;
     DebugObject stage;
 };
 

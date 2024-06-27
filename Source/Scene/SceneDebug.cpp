@@ -6,9 +6,22 @@
 #include "Camera/Camera.h"
 
 SceneDebug::SceneDebug()
-	:player("Data/Model/Jammo/Jammo.mdl")
-	, stage("Data/Model/ExampleStage/ExampleStage.mdl")
+	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
 {
+	float offset = 3.0f;
+	for (int x = 0; x < 5; ++x)
+	{
+		for (int z = 0; z < 5; ++z)
+		{
+			DirectX::XMFLOAT3 pos =
+			{
+				static_cast<float>(x) * offset,
+				0.0f,
+				static_cast<float>(z) * offset,
+			};
+			objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
+		}
+	}
 }
 
 void SceneDebug::Initialize()
@@ -36,12 +49,15 @@ void SceneDebug::Finalize()
 void SceneDebug::Update(float elapsed_time)
 {
 	// カメラコントローラー更新処理
-	DirectX::XMFLOAT3 target = player.GetPosition();
+	DirectX::XMFLOAT3 target = objects[0]->GetPosition();
 	target.y += 0.5f;	// プレイヤーの腰当たりをターゲットに設定
 	cameraController.SetTarget(target);
 	cameraController.Update(elapsed_time);
 
-	player.Update(elapsed_time);
+	for (auto& obj : objects)
+	{
+		obj->Update(elapsed_time);
+	}
 }
 
 void SceneDebug::Render()
@@ -68,7 +84,10 @@ void SceneDebug::Render()
 
 		shader->Begin(dc, rc);
 		
-		player.Render(dc,shader);
+		for (auto& obj : objects)
+		{
+			obj->Render(dc, shader);
+		}
 		stage.Render(dc, shader);
 
 		shader->End(dc);
@@ -81,5 +100,5 @@ void SceneDebug::Render()
 
 void SceneDebug::DrawImGui()
 {
-	this->player.DrawImGUi();
+	//this->player.DrawImGUi();
 }
