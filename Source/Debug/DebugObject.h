@@ -20,8 +20,9 @@ public:
     void SetPosition(DirectX::XMFLOAT3& pos) { this->position = pos; }
     const DirectX::XMFLOAT4X4& GetTransform()const { return this->transform; }
 
+    const Model* GetModel()const { return this->model.get(); }
     virtual void DrawImGUi();
-private:
+
     void UpdateTransform();
 
 private:

@@ -30,6 +30,7 @@ SceneDebug::SceneDebug()
 		inputData.resize(obj_max);
 		for (size_t i = 0; i < obj_max; ++i)
 		{
+			objects[i]->UpdateTransform();
 			inputData[i] = objects[i]->GetTransform();
 		}
 	}
@@ -117,9 +118,9 @@ void SceneDebug::Render()
 
 		shader->Begin(dc, rc);
 		
+		shader->DrawInstance(dc, objects[0]->GetModel(), this->inputBuffer.Get(),this->obj_max);
 
-
-		stage.Render(dc, shader);
+		//stage.Render(dc, shader);
 
 		shader->End(dc);
 	}

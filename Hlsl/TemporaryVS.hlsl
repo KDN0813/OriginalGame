@@ -14,8 +14,9 @@ VsOut main(VsIn vs_in)
     }
 
     VsOut vout;
-	vout.position = mul(float4(p, 1.0f), view_projection);
-
+	//vout.position = mul(float4(p, 1.0f), view_projection);
+    vout.position = mul(mul(float4(p, 1.0f), view_projection), vs_in.mat);
+	
 	//float3 N = normalize(n);
 	
     vout.color.rgb = vs_in.color.rgb * material_color.rgb;
