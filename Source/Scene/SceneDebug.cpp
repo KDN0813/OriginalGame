@@ -1,16 +1,16 @@
-#include "SceneTest.h"
+#include "SceneDebug.h"
 #include "Graphics/Graphics.h"
 #include "imgui.h"
-#include "Debug/Test.h"
+#include "Debug/DebugCereal.h"
 
 #include "Camera/Camera.h"
 
-SceneTest::SceneTest()
+SceneDebug::SceneDebug()
 	:test_boject("Data/Model/Jammo/Jammo.mdl")
 {
 }
 
-void SceneTest::Initialize()
+void SceneDebug::Initialize()
 {
 	cereal_test = {};
 
@@ -29,16 +29,16 @@ void SceneTest::Initialize()
 	);
 }
 
-void SceneTest::Finalize()
+void SceneDebug::Finalize()
 {
 }
 
-void SceneTest::Update(float elapsed_time)
+void SceneDebug::Update(float elapsed_time)
 {
 	test_boject.Update(elapsed_time);
 }
 
-void SceneTest::Render()
+void SceneDebug::Render()
 {
 	Graphics& graphics = Graphics::Instance();
 	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
@@ -57,7 +57,7 @@ void SceneTest::Render()
 #endif // _DEBUG
 }
 
-void SceneTest::DrawImGui()
+void SceneDebug::DrawImGui()
 {
 	this->cereal_test.DrawImGui();
 	this->test_boject.DrawImGUi();

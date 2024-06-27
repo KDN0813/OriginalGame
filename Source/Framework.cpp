@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "Graphics/Graphics.h"
-#include "Scene/SceneTest.h"
+#include "Scene/SceneDebug.h"
 #include "Scene/SceneTitle.h"
 #include "Scene/SceneManager.h"
 #include "Framework.h"
@@ -18,7 +18,7 @@ Framework::Framework(HWND hWnd)
 #endif // _DEBUG
 {
 #ifdef _DEBUG
-	sceneManager.ChangeScene(new SceneTest);
+	sceneManager.ChangeScene(new SceneDebug);
 #else
 	SceneManager::Instance().ChangeScene(new SceneTitle);
 #endif // _DEBUG

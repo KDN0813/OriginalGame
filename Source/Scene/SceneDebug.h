@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Scene/Scene.h"
-#include "Debug/Test.h"
+#include "Debug/DebugCereal.h"
+#include "Debug/DebugObject.h"
 
-class SceneTest : public Scene
+class SceneDebug : public Scene
 {
 public:
-    SceneTest();
-    ~SceneTest() override {};
+    SceneDebug();
+    ~SceneDebug() override {};
 
     void Initialize() override;
     void Finalize() override;
@@ -18,7 +19,7 @@ public:
     void DrawImGui();
 #endif // _DEBUG
 private:
-    CerealTest cereal_test;
-    TestObject test_boject;
+    DebugCereal cereal_test;
+    DebugObject test_boject;
 };
 

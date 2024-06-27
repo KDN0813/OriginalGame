@@ -1,13 +1,10 @@
-#include "Test.h"
+#include "DebugCereal.h"
 #include <filesystem>
 #include <fstream>
 #include <imgui.h>
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>
-
-#include "Graphics/Graphics.h"
-#include "Camera/Camera.h"
 
 #pragma region serialize
 
@@ -25,7 +22,7 @@ namespace DirectX
 }
 
 template<class T>
-void CerealTest::PlayerData::serialize(T& archive)
+void DebugCereal::PlayerData::serialize(T& archive)
 {
     archive(
         CEREAL_NVP(name),
@@ -37,12 +34,12 @@ void CerealTest::PlayerData::serialize(T& archive)
 #pragma endregion serialize
 
 
-CerealTest::CerealTest()
+DebugCereal::DebugCereal()
     :player_data()
 {
 }
 
-void CerealTest::Serialize(const char* creal_file_name)
+void DebugCereal::Serialize(const char* creal_file_name)
 {
     std::ofstream ofs(creal_file_name, std::ios::binary);
     // シリアライズアウトプット
@@ -50,7 +47,7 @@ void CerealTest::Serialize(const char* creal_file_name)
     serialization(this->player_data);
 }
 
-void CerealTest::Deserialize(const char* creal_file_name)
+void DebugCereal::Deserialize(const char* creal_file_name)
 {
     if (std::filesystem::exists(creal_file_name))
     {
@@ -64,7 +61,7 @@ void CerealTest::Deserialize(const char* creal_file_name)
     }
 }
 
-void CerealTest::DrawImGui()
+void DebugCereal::DrawImGui()
 {
     const char* creal_file_name = "DebugData/test.mae";
 
@@ -99,59 +96,4 @@ void CerealTest::DrawImGui()
         }
     }
     ImGui::End();
-}
-
-TestObject::TestObject(const char* filename)
-    :model(std::make_unique<Model>(filename))
-    , position()
-    , angle()
-    , scale({ 0.01f,0.01f ,0.01f })
-    , transform()
-{
-}
-
-void TestObject::Update(float elapsedTime)
-{
-    this->UpdateTransform();
-
-    this->model->UpdateTransform(this->transform);
-}
-
-void TestObject::Render(Shader* shader)
-{
-    Graphics& graphics = Graphics::Instance();
-    ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-    Camera& camera = Camera::Intance();
-    RenderContext rc;
-    rc.view = camera.GetView();
-    rc.projection = camera.getProjection();
-
-    shader->Begin(dc, rc);
-    shader->Draw(dc, this->model.get());
-    shader->End(dc);
-}
-
-void TestObject::DrawImGUi()
-{
-    if (ImGui::Begin("TestObject"))
-    {
-        ImGui::InputFloat3("position", &this->position.x);
-        ImGui::InputFloat3("angle", &this->angle.x);
-        ImGui::InputFloat3("scale", &this->scale.x);
-    }
-    ImGui::End();
-}
-
-void TestObject::UpdateTransform()
-{
-    // スケール行列を作成
-    DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-    //回転行列を作成
-    DirectX::XMMATRIX R= DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
-    // 位置行列を作成
-    DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
-    // 3つの行列を組み合わせ、ワールド行列を作成
-    DirectX::XMMATRIX W = S * R * T;
-    // 計算したワールド行列を取り出す
-    DirectX::XMStoreFloat4x4(&transform, W);
 }

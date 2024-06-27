@@ -43,6 +43,9 @@
     <Filter Include="Source\Camera">
       <UniqueIdentifier>{c0ab7f37-94f4-4e08-9a70-9fe6e877b34f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Debug\Renderer">
+      <UniqueIdentifier>{7e27d001-8732-4576-897d-a731f2094d0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -65,15 +68,6 @@
     </ClInclude>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
       <Filter>External\DirectXTex</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\Graphics.h">
-      <Filter>Source\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\RenderContext.h">
-      <Filter>Source\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\HighResolutionTimer.h">
       <Filter>Source\System</Filter>
@@ -99,10 +93,7 @@
     <ClInclude Include="Source\Scene\SceneTitle.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Debug\Test.h">
-      <Filter>Source\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Debug\ImGuiRenderer.h">
+    <ClInclude Include="Source\Debug\DebugCereal.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h">
@@ -111,10 +102,7 @@
     <ClInclude Include="Source\System\ClassBase\Singleton.h">
       <Filter>Source\System\ClassBase</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Debug\DebugManager.h">
-      <Filter>Source\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneTest.h">
+    <ClInclude Include="Source\Scene\SceneDebug.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Model\ModelResource.h">
@@ -123,9 +111,35 @@
     <ClInclude Include="Source\Model\Model.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\Shader.h" />
     <ClInclude Include="Source\Camera\Camera.h">
       <Filter>Source\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\ShaderLoader.h">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\LambertShader.h">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\Shader.h">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\RenderContext.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Graphics.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework.h">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Debug\DebugObject.h">
+      <Filter>Source\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Debug\ImGuiRenderer.h">
+      <Filter>Source\Debug\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Debug\DebugManager.h">
+      <Filter>Source\Debug\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -147,9 +161,6 @@
     <ClCompile Include="Source\Framework.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Graphics.cpp">
-      <Filter>Source\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -168,16 +179,10 @@
     <ClCompile Include="Source\Scene\SceneTitle.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Debug\Test.cpp">
+    <ClCompile Include="Source\Debug\DebugCereal.cpp">
       <Filter>Source\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Debug\ImGuiRenderer.cpp">
-      <Filter>Source\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Debug\DebugManager.cpp">
-      <Filter>Source\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\SceneTest.cpp">
+    <ClCompile Include="Source\Scene\SceneDebug.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model\ModelResource.cpp">
@@ -186,11 +191,26 @@
     <ClCompile Include="Source\Model\Model.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\Shader.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera\Camera.cpp">
       <Filter>Source\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\ShaderLoader.cpp">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Graphics.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\LambertShader.cpp">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Debug\DebugObject.cpp">
+      <Filter>Source\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Debug\ImGuiRenderer.cpp">
+      <Filter>Source\Debug\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Debug\DebugManager.cpp">
+      <Filter>Source\Debug\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +218,9 @@
       <Filter>HLSL</Filter>
     </None>
     <None Include="Hlsl\StaticMesh.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="Hlsl\Lambert.hlsli">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
@@ -212,6 +235,12 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\StaticMeshPS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\LambertPS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\LambertVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>
