@@ -1,5 +1,5 @@
 
-#include "Lambert.hlsli"
+#include "Temporary.hlsli"
 
 // ランバードシェーダーの計算こっちでやってるぽい
 // →色の計算をこっちで行ってる

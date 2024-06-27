@@ -1,5 +1,5 @@
 
-#include "Lambert.hlsli"
+#include "Temporary.hlsli"
 
 Texture2D diffuse_map : register(t0);
 SamplerState diffuse_map_sampler_state : register(s0);

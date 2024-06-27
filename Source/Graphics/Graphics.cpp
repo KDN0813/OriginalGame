@@ -3,7 +3,7 @@
 #include "Graphics/Shader/ShaderLoader.h"
 #include "Model/Model.h"
 
-#include "Graphics/Shader/LambertShader.h"
+#include "Graphics/Shader/TemporaryShader.h"
 
 Graphics* Graphics::instance = nullptr;
 
@@ -258,7 +258,7 @@ Graphics::Graphics(HWND hWnd)
 	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
 	// シェーダの作成
 	{
-		shader = std::make_unique<LambertShader>(this->device.Get());
+		shader = std::make_unique<TemporaryShader>(this->device.Get());
 	}
 }
 

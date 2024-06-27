@@ -8,7 +8,6 @@ struct VsOut
 cbuffer SceneConstantBuffer : register(b0)
 {
     row_major float4x4 view_projection;
-	float4				lightDirection;
 };
 
 #define MAX_BONES 128
