@@ -9,9 +9,9 @@ SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
 {
 	float offset = 3.0f;
-	for (int x = 0; x < 5; ++x)
+	for (int x = 0; x < 10; ++x)
 	{
-		for (int z = 0; z < 5; ++z)
+		for (int z = 0; z < 10; ++z)
 		{
 			DirectX::XMFLOAT3 pos =
 			{
