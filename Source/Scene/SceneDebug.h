@@ -19,7 +19,6 @@ public:
     void DrawImGui();
 #endif // _DEBUG
 private:
-    DebugCereal cereal_test;
     DebugObject player;
 };
 

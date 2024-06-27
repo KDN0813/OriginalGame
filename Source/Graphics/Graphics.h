@@ -27,14 +27,8 @@ public:
 	float GetScreenHeight() const { return screen_height; }
 	std::mutex& GetMutex() { return mutex; }
 
-	// TODO (06/25)開発方針が定まったら改造する
-#pragma region
-	void Begin(ID3D11DeviceContext* dc, const RenderContext rc);
-	void Draw(ID3D11DeviceContext* dc, const class Model* model);
-	void End(ID3D11DeviceContext* dc);
-
-	Shader* GetShader() const { return this->shaderT.get(); }
-#pragma endregion
+	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
+	Shader* GetShader() const { return this->shader.get(); }
 
 private:
 	static Graphics*								instance;
@@ -57,34 +51,8 @@ private:
 	enum class RASTER_STATE { SOLID, WIREFRAME, CULL_NONE, WIREFRAME_CULL_NONE, MAX };
 	std::vector<Microsoft::WRL::ComPtr<ID3D11RasterizerState>> rasterizer_states;
 
-	// TODO (06/25)開発方針が定まったら改造する
-#pragma region
-	// ピクセルシェーダー
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> default_pixel_shaders;
-	// 頂点シェーダー
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> default_vertex_shaders;
-	// 入力レイアウト
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> default_input_layout;
-
-	static const int MaxBones = 128;
-	struct SceneConstantBuffer
-	{
-		DirectX::XMFLOAT4X4	view_projection;
-	};
-	struct MeshConstantBuffer
-	{
-		DirectX::XMFLOAT4X4	bone_transforms[MaxBones];
-	};
-	struct SubsetConstantBuffer
-	{
-		DirectX::XMFLOAT4	material_color;
-	};
-	Microsoft::WRL::ComPtr<ID3D11Buffer> scene_constant_buffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> mesh_constant_buffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> subset_constant_buffer;
-
-	std::unique_ptr<Shader> shaderT;
-#pragma endregion
+	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
+	std::unique_ptr<Shader> shader;
 
 	float	screen_width;
 	float	screen_height;

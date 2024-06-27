@@ -12,8 +12,6 @@ SceneDebug::SceneDebug()
 
 void SceneDebug::Initialize()
 {
-	cereal_test = {};
-
 	Graphics& graphics = Graphics::Instance();
 	Camera& camera = Camera::Intance();
 	camera.SetLookAt(
@@ -74,6 +72,5 @@ void SceneDebug::Render()
 
 void SceneDebug::DrawImGui()
 {
-	this->cereal_test.DrawImGui();
 	this->player.DrawImGUi();
 }
