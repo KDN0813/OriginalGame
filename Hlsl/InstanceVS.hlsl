@@ -5,16 +5,18 @@
 // ¨F‚ÌŒvZ‚ğ‚±‚Á‚¿‚Ås‚Á‚Ä‚é
 VsOut main(VsIn vs_in)
 {
-    float3 p = { 0, 0, 0 };
-    float3 n = { 0, 0, 0 };
-    for (int i = 0; i < 4; i++)
-    {
-        p += (vs_in.bone_weights[i] * mul(vs_in.position, bone_transforms[vs_in.bone_indices[i]])).xyz;
-        n += (vs_in.bone_weights[i] * mul(float4(vs_in.normal.xyz, 0), bone_transforms[vs_in.bone_indices[i]])).xyz;
-    }
+    //float3 p = { 0, 0, 0 };
+    //float3 n = { 0, 0, 0 };
+    //for (int i = 0; i < 4; i++)
+    //{
+    //    p += (vs_in.bone_weights[i] * mul(vs_in.position, bone_transforms[vs_in.bone_indices[i]])).xyz;
+    //    n += (vs_in.bone_weights[i] * mul(float4(vs_in.normal.xyz, 0), bone_transforms[vs_in.bone_indices[i]])).xyz;
+    //}
 
     VsOut vout;
-    vout.position = mul(float4(p, 1.0f), view_projection);
+    vout.position = mul(mul(vs_in.position, bone_transforms[0]), view_projection);
+    //vout.position = mul(mul(vs_in.position, vs_in.mat), view_projection);
+    //vout.position = mul(float4(p, 1.0f), view_projection);
     //vout.position = mul(mul(float4(p, 1.0f), view_projection), vs_in.mat);
     //vout.position = mul(mul(vs_in.position, view_projection), vs_in.mat);
     //vout.position = mul(vs_in.position, view_projection);
