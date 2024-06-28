@@ -8,7 +8,7 @@ DebugObject::DebugObject(const char* filename, DirectX::XMFLOAT3 position)
     :model(std::make_unique<Model>(filename))
     , position(position)
     , angle()
-    , scale({ 0.01f,0.01f ,0.01f })
+    , scale({ 1.0f,1.0f ,1.0f })
     , transform()
 {
 }

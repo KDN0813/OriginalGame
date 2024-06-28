@@ -10,9 +10,9 @@ SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
 {
 	float offset = 3.0f;
-	for (int x = 0; x < 10; ++x)
+	for (int x = 0; x < 1; ++x)
 	{
-		for (int z = 0; z < 10; ++z)
+		for (int z = 0; z < 1; ++z)
 		{
 			DirectX::XMFLOAT3 pos =
 			{
@@ -20,7 +20,8 @@ SceneDebug::SceneDebug()
 				0.0f,
 				static_cast<float>(z) * offset,
 			};
-			objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
+			//objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
+			objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Cube/Cube.mdl", pos));
 		}
 	}
 
@@ -118,6 +119,8 @@ void SceneDebug::Render()
 
 		shader->Begin(dc, rc);
 		
+		//objects[0]->Render(dc, shader);
+
 		shader->DrawInstance(dc, objects[0]->GetModel(), this->inputBuffer.Get(),this->obj_max);
 
 		//stage.Render(dc, shader);
@@ -132,5 +135,5 @@ void SceneDebug::Render()
 
 void SceneDebug::DrawImGui()
 {
-	//this->player.DrawImGUi();
+	this->objects[0]->DrawImGUi();
 }
