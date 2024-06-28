@@ -7,56 +7,9 @@
 #include "Camera/Camera.h"
 
 SceneDebug::SceneDebug()
-	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
+	: object_manager("Data/Model/Cube/Cube.mdl")
+	, stage("Data/Model/ExampleStage/ExampleStage.mdl")
 {
-	float offset = 3.0f;
-	for (int x = 0; x < 1; ++x)
-	{
-		for (int z = 0; z < 1; ++z)
-		{
-			DirectX::XMFLOAT3 pos =
-			{
-				static_cast<float>(x) * offset,
-				0.0f,
-				static_cast<float>(z) * offset,
-			};
-			//objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
-			objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Cube/Cube.mdl", pos));
-		}
-	}
-
-	obj_max = objects.size();
-	// インスタンスごとのデータ作成
-	{
-		inputData.resize(obj_max);
-		for (size_t i = 0; i < obj_max; ++i)
-		{
-			objects[i]->UpdateTransform();
-			inputData[i] = objects[i]->GetTransform();
-		}
-	}
-
-	// インスタンスごとの行列を保持するバッファ作成
-	{
-		D3D11_BUFFER_DESC buffer_desc = {};
-		D3D11_SUBRESOURCE_DATA subresource_data = {};
-
-		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT4X4) * obj_max);
-		buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
-		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		buffer_desc.CPUAccessFlags = 0;
-		buffer_desc.MiscFlags = 0;
-		buffer_desc.StructureByteStride = 0;
-
-		subresource_data.pSysMem = inputData.data();
-		subresource_data.SysMemPitch = 0;
-		subresource_data.SysMemSlicePitch = 0;
-
-		Graphics& graphics = Graphics::Instance();
-		ID3D11Device* device = graphics.GetDevice();
-		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, inputBuffer.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
 }
 
 void SceneDebug::Initialize()
@@ -84,15 +37,12 @@ void SceneDebug::Finalize()
 void SceneDebug::Update(float elapsed_time)
 {
 	// カメラコントローラー更新処理
-	DirectX::XMFLOAT3 target = objects[0]->GetPosition();
+	DirectX::XMFLOAT3 target = object_manager.GetDebugObject(0)->GetPosition();
 	target.y += 0.5f;	// プレイヤーの腰当たりをターゲットに設定
 	cameraController.SetTarget(target);
 	cameraController.Update(elapsed_time);
 
-	for (auto& obj : objects)
-	{
-		obj->Update(elapsed_time);
-	}
+	object_manager.Update(elapsed_time);
 }
 
 void SceneDebug::Render()
@@ -124,7 +74,12 @@ void SceneDebug::Render()
 
 			//objects[0]->Render(dc, shader);
 
-			instance_shader->DrawInstance(dc, objects[0]->GetModel(), this->inputBuffer.Get(), this->obj_max);
+			instance_shader->DrawInstance(
+				dc,
+				object_manager.GetModel(),
+				object_manager.GetInputBuffer(),
+				object_manager.GetObjeCount()
+			);
 
 			instance_shader->End(dc);
 		}
@@ -146,5 +101,5 @@ void SceneDebug::Render()
 
 void SceneDebug::DrawImGui()
 {
-	this->objects[0]->DrawImGUi();
+	this->object_manager.DrawImGUi();
 }

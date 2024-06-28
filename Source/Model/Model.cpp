@@ -1,4 +1,5 @@
 #include "Graphics/Graphics.h"
+#include "System/Misc.h"
 #include "Model/Model.h"
 #include "Model/ModelResourceManager.h"
 
@@ -45,6 +46,30 @@ Model::Model(const char* filename)
 		0.0f, 0.0f, 0.0f, 1.0f 
 	};
 	UpdateTransform(transform);
+
+	// インスタンス描画準備
+	{
+		instance = std::make_unique<Instance>();
+
+
+		D3D11_BUFFER_DESC buffer_desc = {};
+		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT4X4) * nodes.size());
+		buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		buffer_desc.MiscFlags = 0;
+		buffer_desc.StructureByteStride = 0;
+
+		D3D11_SUBRESOURCE_DATA subresource_data = {};
+		subresource_data.pSysMem = instance.get();
+		subresource_data.SysMemPitch = 0;
+		subresource_data.SysMemSlicePitch = 0;
+
+		Graphics& graphics = Graphics::Instance();
+		ID3D11Device* device = graphics.GetDevice();
+		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->instance_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
 }
 
 // 変換行列計算

@@ -12,7 +12,7 @@ public:
     virtual ~DebugObject() {};
 
 
-    virtual void Update(float elapsedTime);
+    virtual void Update(float elapsed_time);
     virtual void Render(ID3D11DeviceContext* dc, Shader* shader);
 
     // 各種設定・取得関数
@@ -31,6 +31,31 @@ private:
     DirectX::XMFLOAT3 angle;
     DirectX::XMFLOAT3 scale;
     DirectX::XMFLOAT4X4 transform;
+};
+
+class ObjectManager
+{
+public:
+    ObjectManager(const char* filename);
+    ~ObjectManager() {};
+
+    void Update(float elapsedTime);
+
+    void DrawImGUi();
+
+    // 各種取得関数
+    const size_t GetObjeCount()const { return objects.size(); }
+    const DebugObject* GetDebugObject(size_t index)const { return this->objects[index].get(); }
+    const Model* GetModel() { return this->objects[0]->GetModel(); }
+    ID3D11Buffer* GetInputBuffer() const { return this->inputBuffer.Get(); }
+
+public:
+    static const size_t OBJECT_MAX = 200;
+private:
+    std::vector<std::unique_ptr<DebugObject>> objects;
+
+    Microsoft::WRL::ComPtr<ID3D11Buffer> inputBuffer;  // インスタンスごとの行列を保持するバッファ 
+    std::vector<DirectX::XMFLOAT4X4> inputData;
 };
 
 // デバッグ用プレイヤー

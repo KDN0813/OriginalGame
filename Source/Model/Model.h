@@ -12,6 +12,10 @@ public:
 	Model(const char* filename);
 	~Model() {}
 
+	struct Instance
+	{
+		DirectX::XMFLOAT4X4 world_transform;//GPUに送るtransform
+	};
 	struct Node
 	{
 		Node() = default;
@@ -58,4 +62,8 @@ private:
 	bool animation_loo_flag;
 	bool animation_end_flag;
 	bool dummy[3]{};
+
+	// インスタンス描画用
+	std::unique_ptr<Instance> instance;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_buffer;
 };
