@@ -46,6 +46,9 @@
     <Filter Include="Source\Debug\Renderer">
       <UniqueIdentifier>{7e27d001-8732-4576-897d-a731f2094d0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\input">
+      <UniqueIdentifier>{5d9628b3-07f4-4e74-8cee-ea916ae1ee83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -117,9 +120,6 @@
     <ClInclude Include="Source\Graphics\Shader\ShaderLoader.h">
       <Filter>Source\Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\LambertShader.h">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\Shader\Shader.h">
       <Filter>Source\Graphics\Shader</Filter>
     </ClInclude>
@@ -129,9 +129,6 @@
     <ClInclude Include="Source\Graphics\Graphics.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework.h">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Debug\DebugObject.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
@@ -140,6 +137,27 @@
     </ClInclude>
     <ClInclude Include="Source\Debug\DebugManager.h">
       <Filter>Source\Debug\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\GamePad.h">
+      <Filter>Source\input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Mouse.h">
+      <Filter>Source\input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Input.h">
+      <Filter>Source\input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model\ModelResourceManager.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\CameraController.h">
+      <Filter>Source\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\TemporaryShader.h">
+      <Filter>Source\Graphics\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -200,9 +218,6 @@
     <ClCompile Include="Source\Graphics\Graphics.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\LambertShader.cpp">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Debug\DebugObject.cpp">
       <Filter>Source\Debug</Filter>
     </ClCompile>
@@ -212,15 +227,30 @@
     <ClCompile Include="Source\Debug\DebugManager.cpp">
       <Filter>Source\Debug\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\TemporaryShader.cpp">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Mouse.cpp">
+      <Filter>Source\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\ModelResourceManager.cpp">
+      <Filter>Source\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\GamePad.cpp">
+      <Filter>Source\input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Input.cpp">
+      <Filter>Source\input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\CameraController.cpp">
+      <Filter>Source\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="Hlsl\StaticMesh.hlsli">
-      <Filter>HLSL</Filter>
-    </None>
-    <None Include="Hlsl\Lambert.hlsli">
+    <None Include="Hlsl\Temporary.hlsli">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
@@ -231,16 +261,10 @@
     <FxCompile Include="Hlsl\ImGuiVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="Hlsl\StaticMeshVS.hlsl">
+    <FxCompile Include="Hlsl\TemporaryPS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="Hlsl\StaticMeshPS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\LambertPS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\LambertVS.hlsl">
+    <FxCompile Include="Hlsl\TemporaryVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>
