@@ -4,6 +4,7 @@
 #include "Model/Model.h"
 
 #include "Graphics/Shader/TemporaryShader.h"
+#include "Graphics/Shader/InstanceShader.h"
 
 Graphics* Graphics::instance = nullptr;
 
@@ -258,7 +259,8 @@ Graphics::Graphics(HWND hWnd)
 	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
 	// シェーダの作成
 	{
-		shader = std::make_unique<TemporaryShader>(this->device.Get());
+		instance_shader = std::make_unique<InstanceShader>(this->device.Get());
+		temporary_shader = std::make_unique<TemporaryShader>(this->device.Get());
 	}
 }
 

@@ -7,13 +7,15 @@ struct VsIn
     float4 color : COLOR;
     float4 bone_weights : WEIGHTS;
     uint4 bone_indices : BONES;
+    column_major float4x4 mat : MATRIX; // インスタンスごとに設定される行列
+    uint InstanceId : SV_InstanceID; // インスタンスＩＤ
 };
 
 struct VsOut
 {
-	float4 position : SV_POSITION;
-	float2 texcoord : TEXCOORD;
-	float4 color    : COLOR;
+    float4 position : SV_POSITION;
+    float2 texcoord : TEXCOORD;
+    float4 color : COLOR;
 };
 
 cbuffer SceneConstantBuffer : register(b0)

@@ -111,21 +111,32 @@ void SceneDebug::Render()
 	{
 		Graphics& graphics = Graphics::Instance();
 		ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-		Shader* shader = graphics.GetShader();
+		Shader* instance_shader = graphics.GetInstanceShader();
+		Shader* temporary_shader = graphics.GetTemporaryShader();
 		Camera& camera = Camera::Intance();
 		RenderContext rc;
 		rc.view = camera.GetView();
 		rc.projection = camera.getProjection();
 
-		shader->Begin(dc, rc);
-		
-		//objects[0]->Render(dc, shader);
+		// インスタンシング描画
+		{
+			instance_shader->Begin(dc, rc);
 
-		shader->DrawInstance(dc, objects[0]->GetModel(), this->inputBuffer.Get(),this->obj_max);
+			//objects[0]->Render(dc, shader);
 
-		//stage.Render(dc, shader);
+			instance_shader->DrawInstance(dc, objects[0]->GetModel(), this->inputBuffer.Get(), this->obj_max);
 
-		shader->End(dc);
+			instance_shader->End(dc);
+		}
+
+		// 通常描画
+		{
+			temporary_shader->Begin(dc, rc);
+
+			stage.Render(dc, temporary_shader);
+
+			temporary_shader->End(dc);
+		}
 	}
 
 #ifdef _DEBUG

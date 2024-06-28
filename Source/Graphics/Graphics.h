@@ -28,7 +28,8 @@ public:
 	std::mutex& GetMutex() { return mutex; }
 
 	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
-	Shader* GetShader() const { return this->shader.get(); }
+	Shader* GetInstanceShader() const { return this->instance_shader.get(); }
+	Shader* GetTemporaryShader() const { return this->temporary_shader.get(); }
 
 private:
 	static Graphics*								instance;
@@ -52,7 +53,8 @@ private:
 	std::vector<Microsoft::WRL::ComPtr<ID3D11RasterizerState>> rasterizer_states;
 
 	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
-	std::unique_ptr<Shader> shader;
+	std::unique_ptr<Shader> instance_shader;
+	std::unique_ptr<Shader> temporary_shader;
 
 	float	screen_width;
 	float	screen_height;
