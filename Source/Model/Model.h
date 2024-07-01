@@ -10,7 +10,13 @@ class Model
 {
 public:
 	Model(const char* filename);
-	~Model() {}
+	~Model();
+
+	static const int MaxBones = 128;
+	struct Instance
+	{
+		DirectX::XMFLOAT4X4	boneTransforms[MaxBones];
+	};
 
 	struct Node
 	{
@@ -22,6 +28,7 @@ public:
 		DirectX::XMFLOAT3	translate;
 		DirectX::XMFLOAT4X4	localTransform;
 		DirectX::XMFLOAT4X4	worldTransform;
+		Instance* instance;
 
 		std::vector<Node*>	children;
 	};

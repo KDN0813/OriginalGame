@@ -34,6 +34,8 @@ Model::Model(const char* filename)
 		{
 			dst.parent->children.emplace_back(&dst);
 		}
+
+		dst.instance = new Instance();
 	}
 
 	// 行列計算
@@ -45,6 +47,18 @@ Model::Model(const char* filename)
 		0.0f, 0.0f, 0.0f, 1.0f 
 	};
 	UpdateTransform(transform);
+}
+
+Model::~Model()
+{
+	for (auto& node : nodes)
+	{
+		if (node.instance != nullptr)
+		{
+			delete node.instance;
+			node.instance = nullptr;
+		}
+	}
 }
 
 // 変換行列計算

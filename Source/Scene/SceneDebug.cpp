@@ -24,39 +24,6 @@ SceneDebug::SceneDebug()
 			objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Cube/Cube.mdl", pos));
 		}
 	}
-
-	obj_max = objects.size();
-	// インスタンスごとのデータ作成
-	{
-		inputData.resize(obj_max);
-		for (size_t i = 0; i < obj_max; ++i)
-		{
-			objects[i]->UpdateTransform();
-			inputData[i] = objects[i]->GetTransform();
-		}
-	}
-
-	// インスタンスごとの行列を保持するバッファ作成
-	{
-		D3D11_BUFFER_DESC buffer_desc = {};
-		D3D11_SUBRESOURCE_DATA subresource_data = {};
-
-		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT4X4) * obj_max);
-		buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
-		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		buffer_desc.CPUAccessFlags = 0;
-		buffer_desc.MiscFlags = 0;
-		buffer_desc.StructureByteStride = 0;
-
-		subresource_data.pSysMem = inputData.data();
-		subresource_data.SysMemPitch = 0;
-		subresource_data.SysMemSlicePitch = 0;
-
-		Graphics& graphics = Graphics::Instance();
-		ID3D11Device* device = graphics.GetDevice();
-		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, inputBuffer.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
 }
 
 void SceneDebug::Initialize()
@@ -111,7 +78,7 @@ void SceneDebug::Render()
 	{
 		Graphics& graphics = Graphics::Instance();
 		ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-		Shader* instance_shader = graphics.GetInstanceShader();
+		InstanceShader* instance_shader = graphics.GetInstanceShader();
 		Shader* temporary_shader = graphics.GetTemporaryShader();
 		Camera& camera = Camera::Intance();
 		RenderContext rc;
@@ -120,11 +87,11 @@ void SceneDebug::Render()
 
 		// インスタンシング描画
 		{
-			instance_shader->Begin(dc, rc);
+			instance_shader->Begin(dc, rc, objects[0]->GetModel());
 
 			//objects[0]->Render(dc, shader);
 
-			instance_shader->DrawInstance(dc, objects[0]->GetModel(), this->inputBuffer.Get(), this->obj_max);
+			instance_shader->Draw(dc);
 
 			instance_shader->End(dc);
 		}

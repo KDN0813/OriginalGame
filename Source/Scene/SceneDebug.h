@@ -24,9 +24,5 @@ private:
     CameraController cameraController;
     std::vector<std::unique_ptr<DebugObject>> objects;
     DebugObject stage;
-
-    size_t obj_max;
-    Microsoft::WRL::ComPtr<ID3D11Buffer> inputBuffer;  // インスタンスごとの行列を保持するバッファ 
-    std::vector<DirectX::XMFLOAT4X4> inputData;
 };
 

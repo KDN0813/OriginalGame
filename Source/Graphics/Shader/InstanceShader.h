@@ -4,16 +4,15 @@
 #include <wrl.h>
 #include "Graphics/Shader/Shader.h"
 
-class InstanceShader : public Shader
+class InstanceShader
 {
 public:
 	InstanceShader(ID3D11Device* device);
-	~InstanceShader() override {}
+	~InstanceShader(){}
 
-	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc) override;
-	void Draw(ID3D11DeviceContext* dc, const Model* model) override;
-	void DrawInstance(ID3D11DeviceContext* dc, const Model* model, ID3D11Buffer* inputBuffer/*インスタンス毎のtransform*/, int instance_count) override;
-	void End(ID3D11DeviceContext* dc) override;
+	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc, const Model* model);
+	void Draw(ID3D11DeviceContext* dc);
+	void End(ID3D11DeviceContext* dc);
 
 private:
 	static const int MaxBones = 128;
@@ -47,4 +46,10 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depthStencilState;
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
+
+	size_t obj_max;
+	const size_t InstanceMax = 100;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> instanceBuffer;  // インスタンスごとの行列を保持するバッファ 
+	std::vector<ModelResource::Mesh> meshs;
+	std::vector<Model::Node> nodes;
 };

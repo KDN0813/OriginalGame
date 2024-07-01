@@ -168,8 +168,8 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 	}
 }
 
-// 描画開始
-void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
+// 描画設定、描画するモデルのメッシュ・ノード情報取得
+void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, const Model* model)
 {
 	dc->VSSetShader(vertexShader.Get(), nullptr, 0);
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
@@ -198,61 +198,19 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	DirectX::XMStoreFloat4x4(&cbScene.viewProjection, V * P);
 
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
-}
 
-// 描画
-void InstanceShader::Draw(ID3D11DeviceContext* dc, const Model* model)
-{
-	const ModelResource* resource = model->GetResource();
-	const std::vector<Model::Node>& nodes = model->GetNodes();
-
-	for (const ModelResource::Mesh& mesh : resource->GetMeshes())
+	// メッシュ・ノードの取得
 	{
-		// メッシュ用定数バッファ更新
-		MeshConstantBuffer cbMesh;
-		::memset(&cbMesh, 0, sizeof(cbMesh));
-		if (mesh.node_indices.size() > 0)
-		{
-			for (size_t i = 0; i < mesh.node_indices.size(); ++i)
-			{
-				DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&nodes.at(mesh.node_indices.at(i)).worldTransform);
-				DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
-				DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
-				DirectX::XMStoreFloat4x4(&cbMesh.boneTransforms[i], boneTransform);
-			}
-		}
-		else
-		{
-			cbMesh.boneTransforms[0] = nodes.at(mesh.node_index).worldTransform;
-		}
-		dc->UpdateSubresource(meshConstantBuffer.Get(), 0, 0, &cbMesh, 0, 0);
-
-		UINT stride = sizeof(ModelResource::Vertex);
-		UINT offset = 0;
-		dc->IASetVertexBuffers(0, 1, mesh.vertex_buffer.GetAddressOf(), &stride, &offset);
-		dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		for (const ModelResource::Subset& subset : mesh.subsets)
-		{
-			SubsetConstantBuffer cbSubset;
-			cbSubset.materialColor = subset.material->color;
-			dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
-			dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
-			dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-
-			dc->DrawIndexed(subset.index_count, subset.start_index, 0);
-			//dc->DrawIndexedInstanced(subset.index_count,/*インスタンスの数*/,subset.start_index,0);
-		}
+		const ModelResource* resource = model->GetResource();
+		this->meshs = resource->GetMeshes();
+		this->nodes = model->GetNodes();
 	}
 }
 
-void InstanceShader::DrawInstance(ID3D11DeviceContext* dc, const Model* model, ID3D11Buffer* inputBuffer, int instance_count)
+// ボーントランスフォームの更新を行う
+void InstanceShader::Draw(ID3D11DeviceContext* dc)
 {
-	const ModelResource* resource = model->GetResource();
-	const std::vector<Model::Node>& nodes = model->GetNodes();
-
-	for (const ModelResource::Mesh& mesh : resource->GetMeshes())
+	for (const ModelResource::Mesh& mesh : meshs)
 	{
 		// メッシュ用定数バッファ更新
 		MeshConstantBuffer cbMesh;
@@ -281,7 +239,7 @@ void InstanceShader::DrawInstance(ID3D11DeviceContext* dc, const Model* model, I
 
 		// 頂点バッファ設定
 #if 1
-		ID3D11Buffer* pBuf[2] = { mesh.vertex_buffer.Get(), inputBuffer };
+		ID3D11Buffer* pBuf[2] = { mesh.vertex_buffer.Get(), this->instanceBuffer.Get()};
 		UINT stride[2] = { sizeof(ModelResource::Vertex), sizeof(DirectX::XMFLOAT4X4) };
 		UINT offset[2] = { 0, 0 };
 		dc->IASetVertexBuffers(0, 2, pBuf, stride, offset);
@@ -309,10 +267,20 @@ void InstanceShader::DrawInstance(ID3D11DeviceContext* dc, const Model* model, I
 	}
 }
 
-// 描画終了
+// 描画
 void InstanceShader::End(ID3D11DeviceContext* dc)
 {
-	dc->VSSetShader(nullptr, nullptr, 0);
-	dc->PSSetShader(nullptr, nullptr, 0);
-	dc->IASetInputLayout(nullptr);
+	// 描画
+	{
+		for (const ModelResource::Mesh& mesh :this->meshs)
+		{
+
+		}
+	}
+
+	{
+		dc->VSSetShader(nullptr, nullptr, 0);
+		dc->PSSetShader(nullptr, nullptr, 0);
+		dc->IASetInputLayout(nullptr);
+	}
 }
