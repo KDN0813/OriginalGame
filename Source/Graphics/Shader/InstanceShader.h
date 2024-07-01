@@ -47,9 +47,9 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
 
-	size_t obj_max;
+	size_t instance_count;
 	const size_t INSTANCE_MAX = 100;
-	std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> instanceBuffers;	// 各メッシュ毎のインスタンスバッファ
+	std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> instance_buffers;	// 各メッシュ毎のインスタンスバッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> Test;	// 各メッシュ毎のインスタンスバッファ
 	std::vector<ModelResource::Mesh> meshs;
 

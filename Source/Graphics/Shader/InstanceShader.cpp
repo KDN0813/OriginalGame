@@ -176,16 +176,15 @@ InstanceShader::InstanceShader(ID3D11Device* device, const Model* model)
 
 	// インスタンスごとのデータを保持するバッファ
 	{
-		this->obj_max = this->meshs.size();
-		this->instanceBuffers.resize(obj_max);
+		this->instance_buffers.resize(this->meshs.size());
 
 		D3D11_BUFFER_DESC buffer_desc = {};
 		D3D11_SUBRESOURCE_DATA subresource_data = {};
 
-		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT4X4) * obj_max);
-		buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
+		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT4X4) * instance_count);
+		buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
 		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		buffer_desc.CPUAccessFlags = 0;
+		buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		buffer_desc.MiscFlags = 0;
 		buffer_desc.StructureByteStride = 0;
 
@@ -198,7 +197,7 @@ InstanceShader::InstanceShader(ID3D11Device* device, const Model* model)
 
 		Graphics& graphics = Graphics::Instance();
 		ID3D11Device* device = graphics.GetDevice();
-		for (auto& buffer : this->instanceBuffers)
+		for (auto& buffer : this->instance_buffers)
 		{
 			HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, buffer.GetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
@@ -218,6 +217,8 @@ InstanceShader::~InstanceShader()
 // 描画設定、描画するモデルのメッシュ・ノード情報取得
 void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
+	HRESULT hr = S_OK;
+
 	dc->VSSetShader(vertexShader.Get(), nullptr, 0);
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
 	dc->IASetInputLayout(inputLayout.Get());
@@ -245,6 +246,19 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	DirectX::XMStoreFloat4x4(&cbScene.viewProjection, V * P);
 
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
+
+	// バッファの書き込み開始
+	{
+		for (size_t i = 0; i < this->meshs.size(); ++i)
+		{
+			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			hr = dc->Map(instance_buffers[i].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		}
+	}
+
+	// 描画数のリセット
+	this->instance_count = 0;
 }
 
 // ボーントランスフォームの更新を行う
@@ -279,6 +293,9 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, const Model* model)
 		}
 		dc->UpdateSubresource(meshConstantBuffer.Get(), 0, 0, &cbMesh, 0, 0);
 	}
+
+	// 描画数増やす
+	++this->instance_count;
 }
 
 // 描画
@@ -290,7 +307,7 @@ void InstanceShader::End(ID3D11DeviceContext* dc)
 		for (const ModelResource::Mesh& mesh :this->meshs)
 		{
 			// 頂点バッファ設定
-			ID3D11Buffer* pBuf[2] = { mesh.vertex_buffer.Get(), this->instanceBuffers[draw_cout].Get()};
+			ID3D11Buffer* pBuf[2] = { mesh.vertex_buffer.Get(), this->instance_buffers[draw_cout].Get()};
 			UINT stride[2] = { sizeof(ModelResource::Vertex), sizeof(DirectX::XMFLOAT4X4) };
 			UINT offset[2] = { 0, 0 };
 			dc->IASetVertexBuffers(0, 2, pBuf, stride, offset);
