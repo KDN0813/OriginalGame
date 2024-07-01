@@ -11,7 +11,7 @@ public:
 	~InstanceShader();
 
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
-	void Draw(ID3D11DeviceContext* dc);
+	void Draw(ID3D11DeviceContext* dc, const Model* model);
 	void End(ID3D11DeviceContext* dc);
 
 private:
@@ -52,7 +52,6 @@ private:
 	std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> instanceBuffers;	// 各メッシュ毎のインスタンスバッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> Test;	// 各メッシュ毎のインスタンスバッファ
 	std::vector<ModelResource::Mesh> meshs;
-	std::vector<Model::Node> nodes;
 
 	Model::Instance* instance;
 };

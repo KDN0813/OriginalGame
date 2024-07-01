@@ -95,7 +95,7 @@ void SceneDebug::Render()
 
 			//objects[0]->Render(dc, shader);
 
-			instance_shader->Draw(dc);
+			instance_shader->Draw(dc,objects[0]->GetModel());
 
 			instance_shader->End(dc);
 		}

@@ -172,7 +172,6 @@ InstanceShader::InstanceShader(ID3D11Device* device, const Model* model)
 	{
 		const ModelResource* resource = model->GetResource();
 		this->meshs = resource->GetMeshes();
-		this->nodes = model->GetNodes();
 	}
 
 	// インスタンスごとのデータを保持するバッファ
@@ -249,8 +248,10 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 }
 
 // ボーントランスフォームの更新を行う
-void InstanceShader::Draw(ID3D11DeviceContext* dc)
+void InstanceShader::Draw(ID3D11DeviceContext* dc, const Model* model)
 {
+	const std::vector<Model::Node>& nodes = model->GetNodes();
+
 	for (const ModelResource::Mesh& mesh : meshs)
 	{
 		// メッシュ用定数バッファ更新
