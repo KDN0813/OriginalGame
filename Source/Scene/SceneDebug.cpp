@@ -24,6 +24,11 @@ SceneDebug::SceneDebug()
 			objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Cube/Cube.mdl", pos));
 		}
 	}
+
+	// シェーダー作成
+	{
+		instance_shader = std::make_unique<InstanceShader>(Graphics::Instance().GetDevice(), objects[0]->GetModel());
+	}
 }
 
 void SceneDebug::Initialize()
@@ -78,7 +83,6 @@ void SceneDebug::Render()
 	{
 		Graphics& graphics = Graphics::Instance();
 		ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-		InstanceShader* instance_shader = graphics.GetInstanceShader();
 		Shader* temporary_shader = graphics.GetTemporaryShader();
 		Camera& camera = Camera::Intance();
 		RenderContext rc;
@@ -87,7 +91,7 @@ void SceneDebug::Render()
 
 		// インスタンシング描画
 		{
-			instance_shader->Begin(dc, rc, objects[0]->GetModel());
+			instance_shader->Begin(dc, rc);
 
 			//objects[0]->Render(dc, shader);
 

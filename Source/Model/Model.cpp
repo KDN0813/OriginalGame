@@ -35,7 +35,7 @@ Model::Model(const char* filename)
 			dst.parent->children.emplace_back(&dst);
 		}
 
-		dst.instance = new Instance();
+		//dst.instance = new Instance();
 	}
 
 	// s—ñŒvZ

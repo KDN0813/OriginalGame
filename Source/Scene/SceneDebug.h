@@ -3,6 +3,7 @@
 #include "Scene/Scene.h"
 #include <vector>
 #include "Camera/CameraController.h"
+#include "Graphics/Shader/InstanceShader.h"
 #include "Debug/DebugCereal.h"
 #include "Debug/DebugObject.h"
 
@@ -24,5 +25,6 @@ private:
     CameraController cameraController;
     std::vector<std::unique_ptr<DebugObject>> objects;
     DebugObject stage;
+    std::unique_ptr<InstanceShader> instance_shader;
 };
 

@@ -7,10 +7,10 @@
 class InstanceShader
 {
 public:
-	InstanceShader(ID3D11Device* device);
-	~InstanceShader(){}
+	InstanceShader(ID3D11Device* device, const Model* model);
+	~InstanceShader();
 
-	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc, const Model* model);
+	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
 	void Draw(ID3D11DeviceContext* dc);
 	void End(ID3D11DeviceContext* dc);
 
@@ -48,8 +48,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
 
 	size_t obj_max;
-	const size_t InstanceMax = 100;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> instanceBuffer;  // インスタンスごとの行列を保持するバッファ 
+	const size_t INSTANCE_MAX = 100;
+	std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> instanceBuffers;	// 各メッシュ毎のインスタンスバッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> Test;	// 各メッシュ毎のインスタンスバッファ
 	std::vector<ModelResource::Mesh> meshs;
 	std::vector<Model::Node> nodes;
+
+	Model::Instance* instance;
 };

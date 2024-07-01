@@ -9,7 +9,6 @@
 #include "Graphics/RenderContext.h"
 
 #include "Graphics/Shader/Shader.h"
-#include "Graphics/Shader/InstanceShader.h"
 
 class Graphics
 {
@@ -29,7 +28,6 @@ public:
 	std::mutex& GetMutex() { return mutex; }
 
 	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
-	InstanceShader* GetInstanceShader() const { return this->instance_shader.get(); }
 	Shader* GetTemporaryShader() const { return this->temporary_shader.get(); }
 
 private:
@@ -54,7 +52,6 @@ private:
 	std::vector<Microsoft::WRL::ComPtr<ID3D11RasterizerState>> rasterizer_states;
 
 	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
-	std::unique_ptr<InstanceShader> instance_shader;
 	std::unique_ptr<Shader> temporary_shader;
 
 	float	screen_width;

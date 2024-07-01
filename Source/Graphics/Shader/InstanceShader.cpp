@@ -1,7 +1,8 @@
 #include "System/Misc.h"
 #include "Graphics/Shader/InstanceShader.h"
+#include "Graphics/Graphics.h"
 
-InstanceShader::InstanceShader(ID3D11Device* device)
+InstanceShader::InstanceShader(ID3D11Device* device, const Model* model)
 {
 	// 頂点シェーダー
 	{
@@ -166,10 +167,57 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 		HRESULT hr = device->CreateSamplerState(&desc, samplerState.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
+
+	// メッシュ・ノードの取得
+	{
+		const ModelResource* resource = model->GetResource();
+		this->meshs = resource->GetMeshes();
+		this->nodes = model->GetNodes();
+	}
+
+	// インスタンスごとのデータを保持するバッファ
+	{
+		this->obj_max = this->meshs.size();
+		this->instanceBuffers.resize(obj_max);
+
+		D3D11_BUFFER_DESC buffer_desc = {};
+		D3D11_SUBRESOURCE_DATA subresource_data = {};
+
+		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT4X4) * obj_max);
+		buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
+		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		buffer_desc.CPUAccessFlags = 0;
+		buffer_desc.MiscFlags = 0;
+		buffer_desc.StructureByteStride = 0;
+
+		//Model::Instance* instance = new Model::Instance[this->INSTANCE_MAX * meshs.size()];
+		instance = new Model::Instance[this->INSTANCE_MAX * meshs.size()];
+
+		subresource_data.pSysMem = instance;
+		subresource_data.SysMemPitch = 0;
+		subresource_data.SysMemSlicePitch = 0;
+
+		Graphics& graphics = Graphics::Instance();
+		ID3D11Device* device = graphics.GetDevice();
+		for (auto& buffer : this->instanceBuffers)
+		{
+			HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, buffer.GetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		}
+	}
+}
+
+InstanceShader::~InstanceShader()
+{
+	if (instance != nullptr)
+	{
+		delete[] instance;
+		instance = nullptr;
+	}
 }
 
 // 描画設定、描画するモデルのメッシュ・ノード情報取得
-void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, const Model* model)
+void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
 	dc->VSSetShader(vertexShader.Get(), nullptr, 0);
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
@@ -198,13 +246,6 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, con
 	DirectX::XMStoreFloat4x4(&cbScene.viewProjection, V * P);
 
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
-
-	// メッシュ・ノードの取得
-	{
-		const ModelResource* resource = model->GetResource();
-		this->meshs = resource->GetMeshes();
-		this->nodes = model->GetNodes();
-	}
 }
 
 // ボーントランスフォームの更新を行う
@@ -236,34 +277,6 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc)
 			//};
 		}
 		dc->UpdateSubresource(meshConstantBuffer.Get(), 0, 0, &cbMesh, 0, 0);
-
-		// 頂点バッファ設定
-#if 1
-		ID3D11Buffer* pBuf[2] = { mesh.vertex_buffer.Get(), this->instanceBuffer.Get()};
-		UINT stride[2] = { sizeof(ModelResource::Vertex), sizeof(DirectX::XMFLOAT4X4) };
-		UINT offset[2] = { 0, 0 };
-		dc->IASetVertexBuffers(0, 2, pBuf, stride, offset);
-#else
-		UINT stride = sizeof(ModelResource::Vertex);
-		UINT offset = 0;
-		dc->IASetVertexBuffers(0, 1, mesh.vertex_buffer.GetAddressOf(), &stride, &offset);
-#endif
-
-		dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		for (const ModelResource::Subset& subset : mesh.subsets)
-		{
-			SubsetConstantBuffer cbSubset;
-			cbSubset.materialColor = subset.material->color;
-			dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
-			dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
-			dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-
-			dc->DrawIndexed(subset.index_count, subset.start_index, 0);
-			//dc->DrawIndexedInstanced(subset.index_count, instance_count, subset.start_index, 0, 0);
-			//dc->DrawIndexedInstanced(subset.index_count, instance_count, subset.start_index, 0, 0);
-		}
 	}
 }
 
@@ -272,10 +285,32 @@ void InstanceShader::End(ID3D11DeviceContext* dc)
 {
 	// 描画
 	{
+		size_t draw_cout = 0;
 		for (const ModelResource::Mesh& mesh :this->meshs)
 		{
+			// 頂点バッファ設定
+			ID3D11Buffer* pBuf[2] = { mesh.vertex_buffer.Get(), this->instanceBuffers[draw_cout].Get()};
+			UINT stride[2] = { sizeof(ModelResource::Vertex), sizeof(DirectX::XMFLOAT4X4) };
+			UINT offset[2] = { 0, 0 };
+			dc->IASetVertexBuffers(0, 2, pBuf, stride, offset);
 
+			dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+			for (const ModelResource::Subset& subset : mesh.subsets)
+			{
+				SubsetConstantBuffer cbSubset;
+				cbSubset.materialColor = subset.material->color;
+				dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
+				dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
+				dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+
+				dc->DrawIndexed(subset.index_count, subset.start_index, 0);
+				//dc->DrawIndexedInstanced(subset.index_count, instance_count, subset.start_index, 0, 0);
+				//dc->DrawIndexedInstanced(subset.index_count, instance_count, subset.start_index, 0, 0);
+			}
 		}
+		++draw_cout;
 	}
 
 	{
