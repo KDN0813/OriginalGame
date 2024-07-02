@@ -8,7 +8,7 @@
 
 SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
-	, instancing_model(std::make_unique<InstancingModel>("Data/Model/Cube/Cube.mdl"))
+	, instancing_model(std::make_unique<InstancingModel>("Data/Model/Jammo/Jammo.mdl"))
 {
 	float offset = 3.0f;
 	for (int x = 0; x < 10; ++x)
@@ -21,9 +21,12 @@ SceneDebug::SceneDebug()
 				0.0f,
 				static_cast<float>(z) * offset,
 			};
+
+			models.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
+
 			const int index = instancing_model->AllocateInstancingIndex();
 			DirectX::XMMATRIX m;
-			m = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			m = DirectX::XMMatrixScaling(0.5f, 0.5f, 0.5f);
 			m *= DirectX::XMMatrixRotationY(0);
 			m *= DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 			DirectX::XMFLOAT4X4 tm;
@@ -89,6 +92,7 @@ void SceneDebug::Render()
 		rc.projection = camera.getProjection();
 
 		// インスタンシング描画
+#if 1
 		{
 			instance_shader->Begin(dc, rc);
 
@@ -109,10 +113,18 @@ void SceneDebug::Render()
 
 			instance_shader->End(dc);
 		}
+#endif
 
 		// 通常描画
 		{
 			temporary_shader->Begin(dc, rc);
+
+#if 0
+			for (auto& o : models)
+			{
+				o->Render(dc, temporary_shader);
+			}
+#endif
 
 			stage.Render(dc, temporary_shader);
 

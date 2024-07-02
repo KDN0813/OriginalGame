@@ -204,7 +204,7 @@ void InstanceShader::SetBuffers(ID3D11DeviceContext* dc, const BufferData& buffe
 	dc->IASetInputLayout(inputLayout.Get());
 
 	// メッシュ用定数バッファ更新
-	InstancingMeshConstantBuffer cbMesh;
+	InstancingMeshConstantBuffer cbMesh{};
 	memcpy_s(cbMesh.worldTransforms, sizeof(cbMesh.worldTransforms),
 		buffer_data.transform, sizeof(DirectX::XMFLOAT4X4) * instancing_count);
 	dc->UpdateSubresource(instancing_mesh_constantt_buffer.Get(), 0, 0, &cbMesh, 0, 0);
