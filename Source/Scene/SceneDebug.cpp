@@ -8,12 +8,12 @@
 
 SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
-	, instancing_model(std::make_unique<InstancingModel>("Cube.mdl"))
+	, instancing_model(std::make_unique<InstancingModel>("Data/Model/Cube/Cube.mdl"))
 {
 	float offset = 3.0f;
-	for (int x = 0; x < 1; ++x)
+	for (int x = 0; x < 10; ++x)
 	{
-		for (int z = 0; z < 1; ++z)
+		for (int z = 0; z < 10; ++z)
 		{
 			DirectX::XMFLOAT3 pos =
 			{
@@ -127,5 +127,4 @@ void SceneDebug::Render()
 
 void SceneDebug::DrawImGui()
 {
-	this->objects[0]->DrawImGUi();
 }

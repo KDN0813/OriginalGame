@@ -23,7 +23,7 @@ cbuffer SceneConstantBuffer : register(b0)
 };
 
 #define MAX_INSTANCES 512
-cbuffer InstancingMeshConstantBuffer : register(b2)
+cbuffer InstancingMeshConstantBuffer : register(b1)
 {
     row_major float4x4 worldTransform[MAX_INSTANCES];
 };

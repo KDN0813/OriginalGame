@@ -78,7 +78,7 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// インスタンシング描画用バッファ
-		desc.ByteWidth = sizeof(InstancingMeshConstantBuffer) * MAX_INSTANCES;
+		desc.ByteWidth = sizeof(InstancingMeshConstantBuffer);
 
 		hr = device->CreateBuffer(&desc, 0, instancing_mesh_constantt_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
@@ -166,9 +166,9 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 // 描画設定、描画するモデルのメッシュ・ノード情報取得
 void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
-	dc->VSSetShader(vertexShader.Get(), nullptr, 0);
+	//dc->VSSetShader(vertexShader.Get(), nullptr, 0);
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
-	dc->IASetInputLayout(inputLayout.Get());
+	//dc->IASetInputLayout(inputLayout.Get());
 
 	ID3D11Buffer* constantBuffers[] =
 	{
