@@ -8,6 +8,7 @@
 
 SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
+	, instancing_model(std::make_unique<InstancingModel>("Cube.mdl"))
 {
 	float offset = 3.0f;
 	for (int x = 0; x < 1; ++x)
@@ -20,8 +21,15 @@ SceneDebug::SceneDebug()
 				0.0f,
 				static_cast<float>(z) * offset,
 			};
+			const int index = instancing_model->AllocateInstancingIndex();
+			DirectX::XMMATRIX m;
+			m = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			m *= DirectX::XMMatrixRotationY(0);
+			m *= DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+			DirectX::XMFLOAT4X4 tm;
+			DirectX::XMStoreFloat4x4(&tm, m);
+			instancing_model->UpdateTransform(index, tm);
 			//objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
-			objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Cube/Cube.mdl", pos));
 		}
 	}
 }
@@ -51,15 +59,10 @@ void SceneDebug::Finalize()
 void SceneDebug::Update(float elapsed_time)
 {
 	// カメラコントローラー更新処理
-	DirectX::XMFLOAT3 target = objects[0]->GetPosition();
+	DirectX::XMFLOAT3 target = {};
 	target.y += 0.5f;	// プレイヤーの腰当たりをターゲットに設定
 	cameraController.SetTarget(target);
 	cameraController.Update(elapsed_time);
-
-	for (auto& obj : objects)
-	{
-		obj->Update(elapsed_time);
-	}
 }
 
 void SceneDebug::Render()
@@ -87,11 +90,22 @@ void SceneDebug::Render()
 
 		// インスタンシング描画
 		{
-			instance_shader->Begin(dc, rc, objects[0]->GetModel());
+			instance_shader->Begin(dc, rc);
 
 			//objects[0]->Render(dc, shader);
 
-			instance_shader->Draw(dc);
+			const ModelResource* model_resource = this->instancing_model->GetResource();
+
+			for (const ModelResource::Mesh& mesh : model_resource->GetMeshes())
+			{
+				for (const ModelResource::Subset& subset : mesh.subsets)
+				{
+					instance_shader->SetBuffers(dc, this->instancing_model->GetBufferData(mesh));
+
+					//	サブセット単位で描画
+					instance_shader->DrawSubset(dc, subset);
+				}
+			}
 
 			instance_shader->End(dc);
 		}

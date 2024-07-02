@@ -7,8 +7,7 @@ struct VsIn
     float4 color : COLOR;
     float4 bone_weights : WEIGHTS;
     uint4 bone_indices : BONES;
-    column_major float4x4 mat : MATRIX; // インスタンスごとに設定される行列
-    uint InstanceId : SV_InstanceID; // インスタンスＩＤ
+    uint instance_id : SV_INSTANCEID;
 };
 
 struct VsOut
@@ -23,10 +22,10 @@ cbuffer SceneConstantBuffer : register(b0)
     row_major float4x4 view_projection;
 };
 
-#define MAX_BONES 128
-cbuffer MeshConstantBuffer : register(b1)
+#define MAX_INSTANCES 512
+cbuffer InstancingMeshConstantBuffer : register(b2)
 {
-    row_major float4x4 bone_transforms[MAX_BONES];
+    row_major float4x4 worldTransform[MAX_INSTANCES];
 };
 
 cbuffer SubsetConstantBuffer : register(b2)

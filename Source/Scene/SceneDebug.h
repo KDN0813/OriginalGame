@@ -5,6 +5,7 @@
 #include "Camera/CameraController.h"
 #include "Debug/DebugCereal.h"
 #include "Debug/DebugObject.h"
+#include "Model/InstancingModel.h"
 
 class SceneDebug : public Scene
 {
@@ -22,7 +23,7 @@ public:
 #endif // _DEBUG
 private:
     CameraController cameraController;
-    std::vector<std::unique_ptr<DebugObject>> objects;
     DebugObject stage;
+    std::unique_ptr<InstancingModel> instancing_model;
 };
 

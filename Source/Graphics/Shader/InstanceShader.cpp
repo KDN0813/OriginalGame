@@ -2,6 +2,7 @@
 #include "Graphics/Shader/InstanceShader.h"
 
 InstanceShader::InstanceShader(ID3D11Device* device)
+	:instancing_count(0)
 {
 	// 頂点シェーダー
 	{
@@ -34,12 +35,6 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
-			// 入力アセンブラにジオメトリ処理用の行列を追加設定する
-			{ "MATRIX",   0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			{ "MATRIX",   1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			{ "MATRIX",   2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-			{ "MATRIX",   3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
 		};
 		hr = device->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), csoData.get(), csoSize, inputLayout.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
@@ -82,10 +77,10 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 		HRESULT hr = device->CreateBuffer(&desc, 0, sceneConstantBuffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
-		// メッシュ用バッファ
-		desc.ByteWidth = sizeof(MeshConstantBuffer);
+		// インスタンシング描画用バッファ
+		desc.ByteWidth = sizeof(InstancingMeshConstantBuffer) * MAX_INSTANCES;
 
-		hr = device->CreateBuffer(&desc, 0, meshConstantBuffer.GetAddressOf());
+		hr = device->CreateBuffer(&desc, 0, instancing_mesh_constantt_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// サブセット用バッファ
@@ -169,7 +164,7 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 }
 
 // 描画設定、描画するモデルのメッシュ・ノード情報取得
-void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, const Model* model)
+void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
 	dc->VSSetShader(vertexShader.Get(), nullptr, 0);
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
@@ -178,7 +173,7 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, con
 	ID3D11Buffer* constantBuffers[] =
 	{
 		sceneConstantBuffer.Get(),
-		meshConstantBuffer.Get(),
+		instancing_mesh_constantt_buffer.Get(),
 		subsetConstantBuffer.Get()
 	};
 	dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
@@ -198,86 +193,45 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, con
 	DirectX::XMStoreFloat4x4(&cbScene.viewProjection, V * P);
 
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
-
-	// メッシュ・ノードの取得
-	{
-		const ModelResource* resource = model->GetResource();
-		this->meshs = resource->GetMeshes();
-		this->nodes = model->GetNodes();
-	}
 }
 
 // ボーントランスフォームの更新を行う
-void InstanceShader::Draw(ID3D11DeviceContext* dc)
+void InstanceShader::SetBuffers(ID3D11DeviceContext* dc, const BufferData& buffer_data)
 {
-	for (const ModelResource::Mesh& mesh : meshs)
-	{
-		// メッシュ用定数バッファ更新
-		MeshConstantBuffer cbMesh;
-		::memset(&cbMesh, 0, sizeof(cbMesh));
-		if (mesh.node_indices.size() > 0)
-		{
-			for (size_t i = 0; i < mesh.node_indices.size(); ++i)
-			{
-				DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&nodes.at(mesh.node_indices.at(i)).worldTransform);
-				DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
-				DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
-				DirectX::XMStoreFloat4x4(&cbMesh.boneTransforms[i], boneTransform);
-			}
-		}
-		else
-		{
-			cbMesh.boneTransforms[0] = nodes.at(mesh.node_index).worldTransform;
-			//{
-			//	1.0f,0.0f,0.0f,0.0f,
-			//	0.0f,1.0f,0.0f,0.0f,
-			//	0.0f,0.0f,1.0f,0.0f,
-			//	0.0f,0.0f,0.0f,1.0f,
-			//};
-		}
-		dc->UpdateSubresource(meshConstantBuffer.Get(), 0, 0, &cbMesh, 0, 0);
+	instancing_count = buffer_data.instancingCount;
 
-		// 頂点バッファ設定
-#if 1
-		ID3D11Buffer* pBuf[2] = { mesh.vertex_buffer.Get(), this->instanceBuffer.Get()};
-		UINT stride[2] = { sizeof(ModelResource::Vertex), sizeof(DirectX::XMFLOAT4X4) };
-		UINT offset[2] = { 0, 0 };
-		dc->IASetVertexBuffers(0, 2, pBuf, stride, offset);
-#else
-		UINT stride = sizeof(ModelResource::Vertex);
-		UINT offset = 0;
-		dc->IASetVertexBuffers(0, 1, mesh.vertex_buffer.GetAddressOf(), &stride, &offset);
-#endif
+	dc->VSSetShader(vertexShader.Get(), nullptr, 0);
+	dc->IASetInputLayout(inputLayout.Get());
 
-		dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// メッシュ用定数バッファ更新
+	InstancingMeshConstantBuffer cbMesh;
+	memcpy_s(cbMesh.worldTransforms, sizeof(cbMesh.worldTransforms),
+		buffer_data.transform, sizeof(DirectX::XMFLOAT4X4) * instancing_count);
+	dc->UpdateSubresource(instancing_mesh_constantt_buffer.Get(), 0, 0, &cbMesh, 0, 0);
 
-		for (const ModelResource::Subset& subset : mesh.subsets)
-		{
-			SubsetConstantBuffer cbSubset;
-			cbSubset.materialColor = subset.material->color;
-			dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
-			dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
-			dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+	UINT stride = sizeof(ModelResource::Vertex);
+	UINT offset = 0;
+	dc->IASetVertexBuffers(0, 1, buffer_data.mesh.vertex_buffer.GetAddressOf(), &stride, &offset);
+	dc->IASetIndexBuffer(buffer_data.mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
 
-			dc->DrawIndexed(subset.index_count, subset.start_index, 0);
-			//dc->DrawIndexedInstanced(subset.index_count, instance_count, subset.start_index, 0, 0);
-			//dc->DrawIndexedInstanced(subset.index_count, instance_count, subset.start_index, 0, 0);
-		}
-	}
+// サブセット単位で描画
+void InstanceShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset)
+{
+	SubsetConstantBuffer cbSubset;
+	cbSubset.materialColor = subset.material->color;
+	dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
+	dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
+	dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+	dc->DrawIndexed(subset.index_count, subset.start_index, 0);
+
+	dc->DrawIndexedInstanced(subset.index_count, instancing_count, subset.start_index, 0, 0);
 }
 
 // 描画
 void InstanceShader::End(ID3D11DeviceContext* dc)
 {
-	// 描画
-	{
-		for (const ModelResource::Mesh& mesh :this->meshs)
-		{
-
-		}
-	}
-
 	{
 		dc->VSSetShader(nullptr, nullptr, 0);
 		dc->PSSetShader(nullptr, nullptr, 0);

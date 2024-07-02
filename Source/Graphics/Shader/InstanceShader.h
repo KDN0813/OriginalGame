@@ -10,8 +10,9 @@ public:
 	InstanceShader(ID3D11Device* device);
 	~InstanceShader(){}
 
-	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc, const Model* model);
-	void Draw(ID3D11DeviceContext* dc);
+	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
+	void SetBuffers(ID3D11DeviceContext* dc, const BufferData& buffer_data);
+	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
 	void End(ID3D11DeviceContext* dc);
 
 private:
@@ -22,9 +23,10 @@ private:
 		DirectX::XMFLOAT4X4	viewProjection;
 	};
 
-	struct MeshConstantBuffer
+	static const int MAX_INSTANCES = 512;
+	struct InstancingMeshConstantBuffer
 	{
-		DirectX::XMFLOAT4X4	boneTransforms[MaxBones];
+		DirectX::XMFLOAT4X4 worldTransforms[MAX_INSTANCES];
 	};
 
 	struct SubsetConstantBuffer
@@ -34,7 +36,7 @@ private:
 
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>			meshConstantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			instancing_mesh_constantt_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertexShader;
@@ -46,10 +48,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depthStencilState;
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
-
-	size_t obj_max;
-	const size_t InstanceMax = 100;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> instanceBuffer;  // インスタンスごとの行列を保持するバッファ 
-	std::vector<ModelResource::Mesh> meshs;
-	std::vector<Model::Node> nodes;
+	int instancing_count;
 };
