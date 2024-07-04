@@ -99,7 +99,10 @@ void SceneDebug::Render()
 			//objects[0]->Render(dc, shader);
 
 			const ModelResource* model_resource = this->instancing_model->GetResource();
-
+			//	同じモデルリソースを持つ物をリスト化しておく
+			//	Model{ ModelResource };
+			//	std::map<ModelResource, std::vector<Model>> < 良くはない
+			//	
 			for (const ModelResource::Mesh& mesh : model_resource->GetMeshes())
 			{
 				for (const ModelResource::Subset& subset : mesh.subsets)

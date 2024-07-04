@@ -6,12 +6,30 @@
 #include "Graphics/Shader/Shader.h"
 
 // インスタンシングモデル
+// ①nodeがないので必用。
+// 　nodeが使えるようにInstancingModelを改造する
+// ②Shader側で定数バッファを使って行列を送っているが、
+//	定数バッファのサイズが足りなくなる。
+//  StructuredBufferを使って行列を送るようにする。
 class InstancingModel
 {
 public:
+	struct Node
+	{
+		Node() = default;
+		const char* name;
+		Node* parent;
+		DirectX::XMFLOAT3	scale;
+		DirectX::XMFLOAT4	rotate;
+		DirectX::XMFLOAT3	translate;
+		DirectX::XMFLOAT4X4	localTransform;
+		DirectX::XMFLOAT4X4	worldTransform;
+
+		std::vector<Node*>	children;
+	};
 	struct InstancingData
 	{
-		DirectX::XMFLOAT4X4	transform;
+		Node nodes[128];
 		bool exist;		// 使用中か
 		bool dummy[3];
 	};
