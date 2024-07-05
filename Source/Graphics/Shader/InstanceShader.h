@@ -26,7 +26,7 @@ private:
 	static const int MAX_INSTANCES = 512;
 	struct InstancingMeshConstantBuffer
 	{
-		DirectX::XMFLOAT4X4 worldTransforms[MAX_INSTANCES];
+		DirectX::XMFLOAT4X4 boneTransforms[MAX_INSTANCES][MaxBones];
 	};
 
 	struct SubsetConstantBuffer

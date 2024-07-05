@@ -107,7 +107,13 @@ void SceneDebug::Render()
 			{
 				for (const ModelResource::Subset& subset : mesh.subsets)
 				{
-					instance_shader->SetBuffers(dc, this->instancing_model->GetBufferData(mesh));
+					std::vector<Model> models;
+					BufferData	bufferData(mesh);
+					for (auto& model : models)
+					{
+						bufferData.transform[bufferData.instancingCount++][boneID] = model.GetNodes().transform;
+					}
+					instance_shader->SetBuffers(dc, bufferData);
 
 					//	サブセット単位で描画
 					instance_shader->DrawSubset(dc, subset);

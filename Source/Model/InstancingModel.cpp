@@ -36,7 +36,32 @@ void InstancingModel::UpdateTransform(int instancingIndex, const DirectX::XMFLOA
 {
     // TODO (07/01)④行列計算
     if (0 <= instancingIndex && instancingIndex < InstancingMax)
-        this->instancing_data[instancingIndex].transform = transform;
+    {
+        for (Node& node : this->instancing_data[instancingIndex].nodes)
+        {
+            // ローカル行列算出
+            DirectX::XMMATRIX S = DirectX::XMMatrixScaling(node.scale.x, node.scale.y, node.scale.z);
+            DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&node.rotate));
+            DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(node.translate.x, node.translate.y, node.translate.z);
+            DirectX::XMMATRIX LocalTransform = S * R * T;
+
+            // ワールド行列算出
+            DirectX::XMMATRIX ParentTransform;
+            if (node.parent != nullptr)
+            {
+                ParentTransform = DirectX::XMLoadFloat4x4(&node.parent->worldTransform);
+            }
+            else
+            {
+                ParentTransform = transform;
+            }
+            DirectX::XMMATRIX WorldTransform = LocalTransform * ParentTransform;
+
+            // 計算結果を格納
+            DirectX::XMStoreFloat4x4(&node.localTransform, LocalTransform);
+            DirectX::XMStoreFloat4x4(&node.worldTransform, WorldTransform);
+        }
+    }
 }
 
 BufferData InstancingModel::GetBufferData(const ModelResource::Mesh& mesh) const
