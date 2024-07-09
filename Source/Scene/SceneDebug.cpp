@@ -20,10 +20,9 @@ struct MyRGBA
 	DirectX::XMFLOAT3 color;
 };
 
+const int width{ 512 }, height{ 512 }; //幅と高さ
 int OutPutImage() 
 {
-	const int width{ 512 }, height{ 512 }; //幅と高さ
-
 	std::unique_ptr<RGBA[][width]> rgba(new(std::nothrow) RGBA[height][width]);
 	//RGBA rgbas[height][width]{};
 
@@ -82,7 +81,61 @@ SceneDebug::SceneDebug()
 		}
 	}
 
-	OutPutImage();
+	//OutPutImage();
+
+	// 出力テクスチャ(仮)作成
+	{
+		//const Graphics& graphics = Graphics::Instance();
+		//ID3D11Device* device = graphics.GetDevice();
+		//ID3D11DeviceContext* deviceContext = graphics.GetDeviceContext();
+
+		//HRESULT hr = S_OK;
+
+		//const int iPixSize = 32;//縦横ピクセル数
+
+		////テクスチャの作成
+		//Microsoft::WRL::ComPtr<ID3D11Texture2D> D3DTexture;
+		//D3D11_TEXTURE2D_DESC td;
+		//td.Width = iPixSize;
+		//td.Height = iPixSize;
+		//td.MipLevels = 1;
+		//td.ArraySize = 1;
+		//td.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		//td.SampleDesc.Count = 1;
+		//td.SampleDesc.Quality = 0;
+		//td.Usage = D3D11_USAGE_DYNAMIC;
+		//td.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		//td.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		//td.MiscFlags = 0;
+		//hr = device->CreateTexture2D(&td, nullptr, &D3DTexture);
+		//_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		////テクスチャ書き替え
+		//D3D11_MAPPED_SUBRESOURCE msr;
+		//deviceContext->Map(D3DTexture.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+
+		//uint8_t srcData[width * height * 4] = { 0 };//ビットマップを黒で初期化
+		//for (int i = 0; i < iPixSize * iPixSize * 4; i += 4)
+		//{
+		//	srcData[i] = static_cast<uint8_t>(rand() % 255);//Red
+		//	srcData[i + 1] = static_cast<uint8_t>(rand() % 255);//Green
+		//	srcData[i + 2] = static_cast<uint8_t>(rand() % 255);//Blue
+		//}
+		//memcpy(msr.pData, srcData, sizeof(srcData));
+
+		//deviceContext->Unmap(D3DTexture.Get(), 0);
+
+		//// png書き出し
+		//{
+		//	std::unique_ptr<RGBA[][width]> rgba(new(std::nothrow) RGBA[height][width]);
+		//	//RGBA rgbas[height][width]{};
+
+
+		//	if (!rgba) return;
+
+		//	//stbi_write_png("picture_0.png", width, height, static_cast<int>(sizeof(RGBA)), rgba.get(), 0);
+		//}
+	}
 }
 
 void SceneDebug::Initialize()
