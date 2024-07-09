@@ -6,6 +6,52 @@
 
 #include "Camera/Camera.h"
 
+#pragma region 画像出力
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
+
+struct RGBA {
+	uint8_t r, g, b, a; //赤, 緑, 青, 透過
+	RGBA() = default;
+	constexpr RGBA(const uint8_t r_, const uint8_t g_, const uint8_t b_, const uint8_t a_) :r(r_), g(g_), b(b_), a(a_) {}
+};
+struct MyRGBA
+{
+	DirectX::XMFLOAT3 color;
+};
+
+int OutPutImage() 
+{
+	const int width{ 512 }, height{ 512 }; //幅と高さ
+
+	std::unique_ptr<RGBA[][width]> rgba(new(std::nothrow) RGBA[height][width]);
+	//RGBA rgbas[height][width]{};
+
+	// std::vectorを使用して2次元配列を作成
+	std::vector<std::vector<RGBA>> rgbas;
+	rgbas.resize(height);
+	for (auto& r : rgbas)
+	{
+		r.resize(width);
+	}
+
+	// 配列の初期化（例：すべてのピクセルを赤に設定）
+	for (size_t y = 0; y < height; ++y) {
+		for (size_t x = 0; x < width; ++x) {
+			rgba[y][x].r = 255;
+			rgba[y][x].g = 0;
+			rgba[y][x].b = 0;
+			rgba[y][x].a = 255;
+		}
+	}
+
+	if (!rgba) return -1;
+
+	stbi_write_png("picture_0.png", width, height, static_cast<int>(sizeof(RGBA)), rgba.get(), 0);
+	//stbi_write_png("picture_0.png", width, height, static_cast<int>(sizeof(RGBA)), rgbas.data(), 0);
+}
+#pragma endregion 画像出力
+
 SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
 	, instancing_model(std::make_unique<InstancingModel>("Data/Model/Jammo/Jammo.mdl"))
@@ -35,6 +81,8 @@ SceneDebug::SceneDebug()
 			//objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
 		}
 	}
+
+	OutPutImage();
 }
 
 void SceneDebug::Initialize()
