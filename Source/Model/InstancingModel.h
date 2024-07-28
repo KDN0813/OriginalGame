@@ -15,6 +15,20 @@ public:
 		bool exist;		// 使用中か
 		bool dummy[3];
 	};
+
+	struct Node
+	{
+		Node() = default;
+		const char* name;
+		Node* parent;
+		DirectX::XMFLOAT3	scale;
+		DirectX::XMFLOAT4	rotate;
+		DirectX::XMFLOAT3	translate;
+		DirectX::XMFLOAT4X4	localTransform;
+		DirectX::XMFLOAT4X4	worldTransform;
+
+		std::vector<Node*>	children;
+	};
 public:
 	InstancingModel(const char* filename);
 	~InstancingModel() {};
@@ -38,5 +52,24 @@ private:
 	std::shared_ptr<ModelResource>	resource;
 	std::vector<InstancingData> instancing_data;
 	size_t instance_cout;
+
+	// 
+	struct BoneTransformTextureData
+	{
+		std::vector<DirectX::XMFLOAT4X4> matrices;
+
+	};
+	// BTT(ボーントランスフォームテクスチャ)
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bone_transform_texture;
+
+	// BTT計算用関数
+	void PlayAnimation(int index);
+	void UpdateAnimation(float elapsed_time);
+	bool IsPlayAnimation()const;
+	void UpdateTransform();
+	// BTT計算用変数
+	std::vector<Node> nodes;
+	int current_animation_index = -1;	// 値が(-1)なら停止している
+	float current_animation_seconds = 0.0f;	// 経過時間
 };
 

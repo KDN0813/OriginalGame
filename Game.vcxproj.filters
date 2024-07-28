@@ -255,7 +255,7 @@
       <Filter>Source\Graphics\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model\InstancingModel.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
