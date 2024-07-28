@@ -293,8 +293,8 @@ void ModelResource::BuildModel(ID3D11Device* device, const char* dirname)
 			D3D11_SUBRESOURCE_DATA subresource_data = {};
 
 			buffer_desc.ByteWidth = static_cast<UINT>(sizeof(Vertex) * mesh.vertices.size());
-			//bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
+			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+			//buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
 			buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			buffer_desc.CPUAccessFlags = 0;
 			buffer_desc.MiscFlags = 0;
@@ -304,6 +304,24 @@ void ModelResource::BuildModel(ID3D11Device* device, const char* dirname)
 			subresource_data.SysMemSlicePitch = 0;
 
 			HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, mesh.vertex_buffer.GetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		}
+
+		// bone_transform_data_buffer作成
+		{
+			D3D11_BUFFER_DESC buffer_desc = {};
+			D3D11_SUBRESOURCE_DATA subresource_data = {};
+
+			// TODO (07/24) デバッグ用設定
+			mesh.bone_transform_datas.emplace_back();
+
+			buffer_desc.ByteWidth = static_cast<UINT>(sizeof(Vertex) * mesh.bone_transform_datas.size());
+			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+			//buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
+			buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			subresource_data.pSysMem = mesh.bone_transform_datas.data();
+
+			HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, mesh.bone_transform_data_buffer.GetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		}
 
