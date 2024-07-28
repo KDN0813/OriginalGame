@@ -1,4 +1,6 @@
 #include "InstancingModel.h"
+#include "System/Misc.h"
+#include "Graphics/Graphics.h"
 #include "Model/ModelResourceManager.h"
 
 InstancingModel::InstancingModel(const char* filename)
@@ -11,7 +13,10 @@ InstancingModel::InstancingModel(const char* filename)
     instancing_data.resize(InstancingMax);
 
     // BTT作成
-    {
+	{
+		ID3D11Device* device = Graphics::Instance().GetDevice();
+		HRESULT hr{ S_OK };
+
 		// ノード情報取得
 		{
 			// ノード
@@ -36,21 +41,21 @@ InstancingModel::InstancingModel(const char* filename)
 			}
 		}
 
-        // ボーントランスフォーム計算
-        BoneTransformTextureData BTTdata{};
-        {
-            // アニメーションの数ループ
-            for (size_t anime_index = 0; anime_index < resource->GetAnimations().size(); ++anime_index)
-            {
+		// ボーントランスフォーム計算
+		BoneTransformTextureData BTTdata{};
+		{
+			// アニメーションの数ループ
+			for (size_t anime_index = 0; anime_index < resource->GetAnimations().size(); ++anime_index)
+			{
 				PlayAnimation(anime_index);
-                // アニメーションが終了するまでループ
-                while (IsPlayAnimation())
-                {
-                    // アニメーション更新
+				// アニメーションが終了するまでループ
+				while (IsPlayAnimation())
+				{
+					// アニメーション更新
 					UpdateAnimation(0.01f);
 					UpdateTransform();
 
-                    // ボーントランスフォーム計算
+					// ボーントランスフォーム計算
 					// 全てのメッシュで回す
 					for (const ModelResource::Mesh& mesh : resource->GetMeshes())
 					{
@@ -71,24 +76,39 @@ InstancingModel::InstancingModel(const char* filename)
 							matrices = nodes.at(mesh.node_index).worldTransform;
 						}
 					}
-                }
+				}
 
-            }
-        }
+			}
+		}
 
-        // シェーダーリソースビューの作成
-        {
-            //D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-            //srvDesc.Format = DXGI_FORMAT_UNKNOWN;
-            //srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-            //srvDesc.Buffer.FirstElement = 0;
-            //srvDesc.Buffer.NumElements = static_cast<UINT>(BTTdata.matrices.size());
-            //matrices_datas.matrices.clear();
-            //
-            //HRESULT hr = device->CreateShaderResourceView(matrices_buffer.Get(), &srvDesc, this->bone_transform_texture.ReleaseAndGetAddressOf());
-            //_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-        }
-    }
+		// bone_transform_bufferの作成
+		{
+			D3D11_BUFFER_DESC buffer_desc{};
+			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+			buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // SRV としてバインドする
+			buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 構造体バッファに設定
+			buffer_desc.ByteWidth = (sizeof(BoneTransformTextureData) * BTTdata.matrices.size());	// バッファサイズ設定
+			buffer_desc.StructureByteStride = sizeof(BoneTransformTextureData);	// 構造体の各要素のサイズ設定
+			D3D11_SUBRESOURCE_DATA subresource_data{};
+			subresource_data.pSysMem = BTTdata.matrices.data();	// 初期データ設定
+
+			hr = device->CreateBuffer(&buffer_desc, &subresource_data, bone_transform_buffer.ReleaseAndGetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		}
+
+		// シェーダーリソースビューの作成
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+			srvDesc.Buffer.FirstElement = 0;	// 要素の先頭インデックス
+			srvDesc.Buffer.NumElements = static_cast<UINT>(BTTdata.matrices.size());	// 要素の数
+			BTTdata.matrices.clear();
+
+			hr = device->CreateShaderResourceView(bone_transform_buffer.Get(), &srvDesc, this->bone_transform_texture.ReleaseAndGetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		}
+	}
 }
 
 int InstancingModel::AllocateInstancingIndex()

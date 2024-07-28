@@ -59,7 +59,7 @@ private:
 		std::vector<DirectX::XMFLOAT4X4> matrices;
 
 	};
-	// BTT(ボーントランスフォームテクスチャ)
+	Microsoft::WRL::ComPtr<ID3D11Buffer> bone_transform_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bone_transform_texture;
 
 	// BTT計算用関数
