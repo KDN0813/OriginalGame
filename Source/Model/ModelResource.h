@@ -64,7 +64,6 @@ public:
 		DirectX::XMFLOAT4	color = { 1, 1, 1, 1 };
 		DirectX::XMFLOAT4	bone_weight = { 1, 0, 0, 0 };
 		DirectX::XMUINT4	bone_index = { 0, 0, 0, 0 };
-
 		template<class Archive>
 		void serialize(Archive& archive, int version);
 	};

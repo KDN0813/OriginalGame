@@ -18,6 +18,7 @@ float4 main(VsOut pin) : SV_TARGET
         transform._14
     };
     
-    return color;
+    //return color;
+    return pin.color;
 }
 

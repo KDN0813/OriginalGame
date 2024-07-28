@@ -9,6 +9,12 @@ VsOut main(VsIn vs_in, BoneTransformData BTData)
     vout.color.rgb = vs_in.color.rgb * material_color.rgb;
     vout.color.a = vs_in.color.a * material_color.a;
     vout.texcoord = vs_in.texcoord;
+    
+    // TODO (デバッグ用)
+    vout.color.r = (float) (BTData.bone_size) / 255.0f;
+    vout.color.g = 0.0f;
+    vout.color.b = 0.0f;
+    vout.color.a = 1.0f;
 
     return vout;
 }
