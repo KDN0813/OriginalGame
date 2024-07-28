@@ -37,3 +37,15 @@ struct BoneTransform
 {
     row_major float4x4 transform;
 };
+
+//== BoneTransformTextureを取り出すのに必要なパラメータ ==
+struct BoneTransformData
+{
+    int bone_size;                  // 1回の描画で使用するボーントランスフォームの数
+    int mesh_first_bone_index;      // 描画するメッシュの先頭のボーントランスフォームのインデックス
+    int animation_first_bone_index; // 使うアニメーションの先頭のボーントランスフォームのインデックス
+};
+cbuffer AnimationData
+{
+    int frame; // 現在のフレーム
+};
