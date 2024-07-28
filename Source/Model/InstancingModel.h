@@ -54,11 +54,13 @@ private:
 	std::vector<InstancingData> instancing_data;
 	size_t instance_cout;
 
-	// 
+	struct BoneTransform
+	{
+		DirectX::XMFLOAT4X4 transform;
+	};
 	struct BoneTransformTextureData
 	{
-		std::vector<DirectX::XMFLOAT4X4> matrices;
-
+		std::vector<BoneTransform> bone_transforms;
 	};
 	Microsoft::WRL::ComPtr<ID3D11Buffer> bone_transform_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bone_transform_texture;

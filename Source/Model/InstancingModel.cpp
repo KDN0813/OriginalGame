@@ -61,16 +61,16 @@ InstancingModel::InstancingModel(const char* filename)
 					{
 						if (mesh.node_indices.size() > 0)
 						{
-							auto& matrices = BTTdata.matrices.emplace_back();
+							auto& add_data = BTTdata.bone_transforms.emplace_back();
 							for (size_t i = 0; i < mesh.node_indices.size(); ++i)
 							{
 								DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&nodes.at(mesh.node_indices.at(i)).worldTransform);
 								DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
 								DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
-								DirectX::XMStoreFloat4x4(&matrices, boneTransform);
+								DirectX::XMStoreFloat4x4(&add_data.transform, boneTransform);
 
 								// TODO(デバッグ用処理)
-								DirectX::XMFLOAT4X4& transform = matrices;
+								DirectX::XMFLOAT4X4& transform = add_data.transform;
 								transform._11 = { 0.0f };
 								transform._12 = { 0.0f };
 								transform._13 = { 1.0f };
@@ -79,8 +79,8 @@ InstancingModel::InstancingModel(const char* filename)
 						}
 						else
 						{
-							auto& matrices = BTTdata.matrices.emplace_back();
-							matrices = nodes.at(mesh.node_index).worldTransform;
+							auto& add_data = BTTdata.bone_transforms.emplace_back();
+							add_data.transform = nodes.at(mesh.node_index).worldTransform;
 						}
 					}
 				}
@@ -88,9 +88,9 @@ InstancingModel::InstancingModel(const char* filename)
 			}
 		}
 		// TODO(デバッグ用処理)
-		DirectX::XMFLOAT4X4& transform = BTTdata.matrices[0];
+		DirectX::XMFLOAT4X4& transform = BTTdata.bone_transforms[0].transform;
 		transform._11 = { 1.0f };
-		transform._12 = { 1.0f };
+		transform._12 = { 0.0f };
 		transform._13 = { 1.0f };
 		transform._14 = { 1.0f };
 
@@ -100,10 +100,10 @@ InstancingModel::InstancingModel(const char* filename)
 			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
 			buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // SRV としてバインドする
 			buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 構造体バッファに設定
-			buffer_desc.ByteWidth = (sizeof(BoneTransformTextureData) * BTTdata.matrices.size());	// バッファサイズ設定
-			buffer_desc.StructureByteStride = sizeof(BoneTransformTextureData);	// 構造体の各要素のサイズ設定
+			buffer_desc.ByteWidth = (sizeof(BoneTransform) * BTTdata.bone_transforms.size());	// バッファサイズ設定
+			buffer_desc.StructureByteStride = sizeof(BoneTransform);	// 構造体の各要素のサイズ設定
 			D3D11_SUBRESOURCE_DATA subresource_data{};
-			subresource_data.pSysMem = BTTdata.matrices.data();	// 初期データ設定
+			subresource_data.pSysMem = BTTdata.bone_transforms.data();	// 初期データ設定
 
 			hr = device->CreateBuffer(&buffer_desc, &subresource_data, bone_transform_buffer.ReleaseAndGetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
@@ -115,8 +115,8 @@ InstancingModel::InstancingModel(const char* filename)
 			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
 			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
 			srvDesc.Buffer.FirstElement = 0;	// 要素の先頭インデックス
-			srvDesc.Buffer.NumElements = static_cast<UINT>(BTTdata.matrices.size());	// 要素の数
-			BTTdata.matrices.clear();
+			srvDesc.Buffer.NumElements = static_cast<UINT>(BTTdata.bone_transforms.size());	// 要素の数
+			BTTdata.bone_transforms.clear();
 
 			hr = device->CreateShaderResourceView(bone_transform_buffer.Get(), &srvDesc, this->bone_transform_texture.ReleaseAndGetAddressOf());
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
