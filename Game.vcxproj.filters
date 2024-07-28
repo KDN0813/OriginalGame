@@ -285,5 +285,8 @@
     <FxCompile Include="Hlsl\InstanceVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="Hlsl\InstancePS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

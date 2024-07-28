@@ -44,7 +44,7 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 	{
 		// ファイルを開く
 		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\TemporaryPS.cso", "rb");
+		fopen_s(&fp, "Shader\\InstancePS.cso", "rb");
 		_ASSERT_EXPR_A(fp, "CSO File not found");
 
 		// ファイルのサイズを求める
@@ -164,7 +164,7 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 }
 
 // 描画設定、描画するモデルのメッシュ・ノード情報取得
-void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
+void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3D11ShaderResourceView** bone_transform_texture)
 {
 	//dc->VSSetShader(vertexShader.Get(), nullptr, 0);
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
@@ -193,6 +193,9 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	DirectX::XMStoreFloat4x4(&cbScene.viewProjection, V * P);
 
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
+
+	// BTT設定
+	dc->PSSetShaderResources(1, 1, bone_transform_texture);
 }
 
 // ボーントランスフォームの更新を行う

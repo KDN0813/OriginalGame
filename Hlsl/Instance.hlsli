@@ -32,3 +32,8 @@ cbuffer SubsetConstantBuffer : register(b2)
 {
     float4 material_color;
 };
+
+struct BoneTransform
+{
+    row_major float4x4 transform;
+};

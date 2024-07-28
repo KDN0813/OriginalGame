@@ -10,7 +10,7 @@ public:
 	InstanceShader(ID3D11Device* device);
 	~InstanceShader(){}
 
-	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
+	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3D11ShaderResourceView** bone_transform_texture);
 	void SetBuffers(ID3D11DeviceContext* dc, const BufferData& buffer_data);
 	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
 	void End(ID3D11DeviceContext* dc);

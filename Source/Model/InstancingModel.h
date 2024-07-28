@@ -48,6 +48,7 @@ public:
 	// シェーダーへの設定用バッファ情報取得
 	BufferData GetBufferData(const ModelResource::Mesh& mesh) const;
 
+	ID3D11ShaderResourceView** GetBoneTransformTexture() { return this->bone_transform_texture.GetAddressOf(); }
 private:
 	std::shared_ptr<ModelResource>	resource;
 	std::vector<InstancingData> instancing_data;

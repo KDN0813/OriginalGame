@@ -80,6 +80,12 @@ InstancingModel::InstancingModel(const char* filename)
 
 			}
 		}
+		// TODO(デバッグ用処理)
+		DirectX::XMFLOAT4X4& transform = BTTdata.matrices[0];
+		transform._11 = { 1.0f };
+		transform._12 = { 0.0f };
+		transform._13 = { 1.0f };
+		transform._14 = { 1.0f };
 
 		// bone_transform_bufferの作成
 		{
