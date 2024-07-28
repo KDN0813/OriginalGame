@@ -68,6 +68,13 @@ InstancingModel::InstancingModel(const char* filename)
 								DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
 								DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
 								DirectX::XMStoreFloat4x4(&matrices, boneTransform);
+
+								// TODO(デバッグ用処理)
+								DirectX::XMFLOAT4X4& transform = matrices;
+								transform._11 = { 0.0f };
+								transform._12 = { 0.0f };
+								transform._13 = { 1.0f };
+								transform._14 = { 1.0f };
 							}
 						}
 						else
@@ -83,7 +90,7 @@ InstancingModel::InstancingModel(const char* filename)
 		// TODO(デバッグ用処理)
 		DirectX::XMFLOAT4X4& transform = BTTdata.matrices[0];
 		transform._11 = { 1.0f };
-		transform._12 = { 0.0f };
+		transform._12 = { 1.0f };
 		transform._13 = { 1.0f };
 		transform._14 = { 1.0f };
 
