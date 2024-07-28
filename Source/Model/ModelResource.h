@@ -76,9 +76,9 @@ public:
 	 */
 	struct BoneTransformData
 	{
-		UINT bone_size = { 0 };						
-		UINT mesh_first_bone_index = { 0 };			
-		UINT animation_first_bone_index = { 0 };	
+		UINT bone_size = { 0 };
+		UINT mesh_first_bone_index = { 0 };
+		UINT animation_first_bone_index = { 0 };
 	};
 
 	struct Mesh	// 1ÉpÅ[Éc
@@ -157,8 +157,8 @@ protected:
 	int FindNodeIndex(NodeId nodeId) const;
 
 protected:
-	std::vector<Node>		nodes;		
-	std::vector<Material>	materials;	
-	std::vector<Mesh>		meshes;		
-	std::vector<Animation>	animations;	
+	std::vector<Node>		nodes;
+	std::vector<Material>	materials;
+	std::vector<Mesh>		meshes;
+	std::vector<Animation>	animations;
 };

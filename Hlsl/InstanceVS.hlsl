@@ -1,7 +1,7 @@
 
 #include "Instance.hlsli"
 
-VsOut main(VsIn vs_in)
+VsOut main(VsIn vs_in, BoneTransformData BTData)
 {
     VsOut vout;
     vout.position = mul(mul(vs_in.position, worldTransform[vs_in.instance_id]), view_projection);
