@@ -35,10 +35,10 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			
-			{ "BONE_SIZE",					0, DXGI_FORMAT_R32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "MESH_FIRST_BONE_INDEX",		0, DXGI_FORMAT_R32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "ANIMATION_FIRST_BONE_INDEX",	0, DXGI_FORMAT_R32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+			{ "BONE_SIZE",					0, DXGI_FORMAT_R32_UINT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "MESH_FIRST_BONE_INDEX",		0, DXGI_FORMAT_R32_UINT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "ANIMATION_FIRST_BONE_INDEX",	0, DXGI_FORMAT_R32_UINT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		hr = device->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), csoData.get(), csoSize, inputLayout.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
@@ -227,7 +227,7 @@ void InstanceShader::SetBuffers(ID3D11DeviceContext* dc, const BufferData& buffe
 		sizeof(ModelResource::BoneTransformData),
 	};
 	UINT offset[_countof(vertex_buffers)] = { 0 };
-	dc->IASetVertexBuffers(0, 1, vertex_buffers, strides, offset);
+	dc->IASetVertexBuffers(0, 2, vertex_buffers, strides, offset);
 	dc->IASetIndexBuffer(buffer_data.mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
@@ -240,7 +240,7 @@ void InstanceShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Su
 	dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
 	dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
 	dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-	dc->DrawIndexed(subset.index_count, subset.start_index, 0);
+	//dc->DrawIndexed(subset.index_count, subset.start_index, 0);
 
 	dc->DrawIndexedInstanced(subset.index_count, instancing_count, subset.start_index, 0, 0);
 }
