@@ -200,7 +200,6 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3
 
 	// BTT設定
 	dc->VSSetShaderResources(1, 1, bone_transform_texture);
-	dc->PSSetShaderResources(1, 1, bone_transform_texture);
 }
 
 // ボーントランスフォームの更新を行う
