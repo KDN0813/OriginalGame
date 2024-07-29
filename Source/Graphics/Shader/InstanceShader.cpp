@@ -199,6 +199,7 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
 
 	// BTTİ’è
+	dc->VSSetShaderResources(1, 1, bone_transform_texture);
 	dc->PSSetShaderResources(1, 1, bone_transform_texture);
 }
 
@@ -240,7 +241,6 @@ void InstanceShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Su
 	dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
 	dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
 	dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-	//dc->DrawIndexed(subset.index_count, subset.start_index, 0);
 
 	dc->DrawIndexedInstanced(subset.index_count, instancing_count, subset.start_index, 0, 0);
 }

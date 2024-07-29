@@ -1,6 +1,8 @@
 
 #include "Instance.hlsli"
 
+StructuredBuffer<BoneTransform> bone_transform_texture : register(t1);
+
 VsOut main(VsIn vs_in, BoneTransformData BTData)
 {
     VsOut vout;
@@ -11,11 +13,18 @@ VsOut main(VsIn vs_in, BoneTransformData BTData)
     vout.texcoord = vs_in.texcoord;
     
     // TODO (デバッグ用)
-    vout.color.r = (float) (BTData.bone_size) / 255.0f;
-    vout.color.g = 0.0f;
-    vout.color.b = 0.0f;
-    vout.color.a = 1.0f;
-
+    //vout.color.r = (float) (BTData.bone_size) / 255.0f;
+    //vout.color.g = 0.0f;
+    //vout.color.b = 0.0f;
+    //vout.color.a = 1.0f;
+    float4x4 transform = bone_transform_texture[0].transform;
+    vout.color = float4(
+        transform._11,
+        transform._12,
+        transform._13,
+        transform._14
+    );
+    
     return vout;
 }
 
