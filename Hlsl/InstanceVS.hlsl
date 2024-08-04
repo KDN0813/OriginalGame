@@ -4,18 +4,14 @@
 StructuredBuffer<BoneTransform> bone_transform_texture : register(t1);
 StructuredBuffer<WorldTransform> w_transform : register(t2);
 
-VsOut main(
-    VsInVertex vs_in_vertex
-    ,VsInInstancing vs_in_instancing
-    , VsInBoneTransformData vs_in_BTData
-)
+VsOut main(VsIn vs_in)
 {
     VsOut vout;
-    vout.position = mul(mul(vs_in_vertex.position, w_transform[vs_in_vertex.instance_id].transform), view_projection);
+    vout.position = mul(mul(vs_in.position, w_transform[vs_in.instance_id].transform), view_projection);
 	
-    vout.color.rgb = vs_in_vertex.color.rgb * material_color.rgb;
-    vout.color.a = vs_in_vertex.color.a * material_color.a;
-    vout.texcoord = vs_in_vertex.texcoord;
+    vout.color.rgb = vs_in.color.rgb * material_color.rgb;
+    vout.color.a = vs_in.color.a * material_color.a;
+    vout.texcoord = vs_in.texcoord;
     
     // TODO (デバッグ用)
 #if 0
@@ -40,8 +36,8 @@ VsOut main(
 	float3 n = { 0, 0, 0 };
 	for (int i = 0; i < 4; i++)
 	{
-        p += (vs_in_vertex.bone_weights[i] * mul(vs_in_vertex.position, bone_transforms[vs_in_vertex.bone_indices[i]])).xyz;
-        n += (vs_in_vertex.bone_weights[i] * mul(float4(vs_in_vertex.normal.xyz, 0), bone_transforms[vs_in_vertex.bone_indices[i]])).xyz;
+        p += (vs_in.bone_weights[i] * mul(vs_in.position, bone_transforms[vs_in.bone_indices[i]])).xyz;
+        n += (vs_in.bone_weights[i] * mul(float4(vs_in.normal.xyz, 0), bone_transforms[vs_in.bone_indices[i]])).xyz;
     }
 
     VsOut vout;
@@ -49,7 +45,7 @@ VsOut main(
 	
 	//float3 N = normalize(n);
 	
-    vout.color.rgb = vs_in_vertex.color.rgb * material_color.rgb;
-    vout.color.a = vs_in_vertex.color.a * material_color.a;
-    vout.texcoord = vs_in_vertex.texcoord;
+    vout.color.rgb = vs_in.color.rgb * material_color.rgb;
+    vout.color.a = vs_in.color.a * material_color.a;
+    vout.texcoord = vs_in.texcoord;
 */

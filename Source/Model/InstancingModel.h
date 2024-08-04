@@ -9,7 +9,10 @@
 class InstancingModel
 {
 public:
-	struct InstancingData
+	static const int MAX_INSTANCES = 512;
+
+public:
+	struct TransformData
 	{
 		DirectX::XMFLOAT4X4	transform;
 		bool exist;		// 使用中か
@@ -18,7 +21,6 @@ public:
 
 	struct Node
 	{
-		Node() = default;
 		const char* name;
 		Node* parent;
 		DirectX::XMFLOAT3	scale;
@@ -52,13 +54,13 @@ public:
 	// シェーダーへの設定用バッファ情報取得
 	BufferData GetBufferData(const ModelResource::Mesh& mesh) const;
 
-	const std::vector<InstancingModel::InstancingData>& GetInstancingData() { return this->instancing_data; }
+	const std::vector<InstancingModel::TransformData>& GetInstancingData() { return this->instancing_data; }
 
 	ID3D11ShaderResourceView** GetBoneTransformTexture() { return this->bone_transform_texture.GetAddressOf(); }
 	ID3D11ShaderResourceView** GetWorldTransformStructuredBuffer() { return this->world_transform_structured_buffer.GetAddressOf(); }
 private:
 	std::shared_ptr<ModelResource>	resource;
-	std::vector<InstancingData> instancing_data;
+	std::vector<TransformData> instancing_data;
 	size_t instance_cout;
 
 	struct BoneTransform
@@ -94,11 +96,7 @@ private:
 	{
 		DirectX::XMFLOAT4X4 transform{};
 	};
-	std::vector<WorldTransform>				instancing_datas;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>	instancing_data_buffer;
-
-	static const int MAX_INSTANCES = 512;
-
+	// インスタンス毎のワールドトランスフォームをGPUに渡すためのデータ
 	WorldTransform* world_transforms = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> world_transform_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> world_transform_structured_buffer;
