@@ -67,7 +67,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bone_transform_texture;
 
 	/**
-	* ボーントランスフォームを取得するために必要なパラメータ
+	* ボーントランスフォームを取得するために必要なパラメータ(VsInBoneTransformData)
 	* \param bone_size 1回の描画で使用するボーントランスフォームの数
 	* \param mesh_first_bone_index 描画するメッシュの先頭のボーントランスフォームのインデックス
 	* \param animation_first_bone_index 使うアニメーションの先頭のボーントランスフォームのインデックス
@@ -82,6 +82,14 @@ private:
 	};
 	std::vector<BoneTransformData>			bone_transform_datas;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>	bone_transform_data_buffer;
+	
+	// インスタンス毎のデータ(VsInInstancing)
+	struct WorldTransform
+	{
+		DirectX::XMFLOAT4X4 world_transform{};
+	};
+	std::vector<WorldTransform>				instancing_datas;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>	instancing_data_buffer;
 
 	// BTT計算用関数
 	void PlayAnimation(int index);

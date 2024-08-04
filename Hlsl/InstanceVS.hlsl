@@ -3,18 +3,22 @@
 
 StructuredBuffer<BoneTransform> bone_transform_texture : register(t1);
 
-VsOut main(VsIn vs_in, BoneTransformData BTData)
+VsOut main(
+    VsInVertex vs_in_vertex
+    ,VsInInstancing vs_in_instancing
+    , VsInBoneTransformData vs_in_BTData
+)
 {
     VsOut vout;
-    vout.position = mul(mul(vs_in.position, worldTransform[vs_in.instance_id]), view_projection);
+    vout.position = mul(mul(vs_in_vertex.position, worldTransform[vs_in_vertex.instance_id]), view_projection);
 	
-    vout.color.rgb = vs_in.color.rgb * material_color.rgb;
-    vout.color.a = vs_in.color.a * material_color.a;
-    vout.texcoord = vs_in.texcoord;
+    vout.color.rgb = vs_in_vertex.color.rgb * material_color.rgb;
+    vout.color.a = vs_in_vertex.color.a * material_color.a;
+    vout.texcoord = vs_in_vertex.texcoord;
     
     // TODO (デバッグ用)
 #if 0
-    vout.color.r = (float) (BTData.bone_size) / 255.0f;
+    vout.color.r = (float) (vs_in_BTData.bone_size) / 255.0f;
     vout.color.g = 0.0f;
     vout.color.b = 0.0f;
     vout.color.a = 1.0f;
@@ -35,8 +39,8 @@ VsOut main(VsIn vs_in, BoneTransformData BTData)
 	float3 n = { 0, 0, 0 };
 	for (int i = 0; i < 4; i++)
 	{
-        p += (vs_in.bone_weights[i] * mul(vs_in.position, bone_transforms[vs_in.bone_indices[i]])).xyz;
-        n += (vs_in.bone_weights[i] * mul(float4(vs_in.normal.xyz, 0), bone_transforms[vs_in.bone_indices[i]])).xyz;
+        p += (vs_in_vertex.bone_weights[i] * mul(vs_in_vertex.position, bone_transforms[vs_in_vertex.bone_indices[i]])).xyz;
+        n += (vs_in_vertex.bone_weights[i] * mul(float4(vs_in_vertex.normal.xyz, 0), bone_transforms[vs_in_vertex.bone_indices[i]])).xyz;
     }
 
     VsOut vout;
@@ -44,7 +48,7 @@ VsOut main(VsIn vs_in, BoneTransformData BTData)
 	
 	//float3 N = normalize(n);
 	
-    vout.color.rgb = vs_in.color.rgb * material_color.rgb;
-    vout.color.a = vs_in.color.a * material_color.a;
-    vout.texcoord = vs_in.texcoord;
+    vout.color.rgb = vs_in_vertex.color.rgb * material_color.rgb;
+    vout.color.a = vs_in_vertex.color.a * material_color.a;
+    vout.texcoord = vs_in_vertex.texcoord;
 */
