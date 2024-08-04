@@ -99,6 +99,7 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 			D3D11_BUFFER_DESC buffer_desc{};
 			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
 			buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // SRV としてバインドする
+			buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // CPU書き込みアクセスを許可
 			buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 構造体バッファに設定
 			buffer_desc.ByteWidth = (sizeof(BoneTransform) * BTTdata.bone_transforms.size());	// バッファサイズ設定
 			buffer_desc.StructureByteStride = sizeof(BoneTransform);	// 構造体の各要素のサイズ設定

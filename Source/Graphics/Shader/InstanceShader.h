@@ -24,10 +24,13 @@ private:
 	};
 
 	static const int MAX_INSTANCES = 512;
-	struct InstancingMeshConstantBuffer
+	struct WorldTransform
 	{
-		DirectX::XMFLOAT4X4 worldTransforms[MAX_INSTANCES];
+		DirectX::XMFLOAT4X4 transforms;
 	};
+	WorldTransform* world_transforms;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> world_transform_buffer;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> world_transform_structured_buffer;
 
 	struct SubsetConstantBuffer
 	{
@@ -36,7 +39,6 @@ private:
 
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>			instancing_mesh_constantt_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertexShader;

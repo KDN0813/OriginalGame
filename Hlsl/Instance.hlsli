@@ -1,3 +1,4 @@
+// 【入力データ】
 struct VsInVertex
 {
     float4 position : POSITION;
@@ -22,6 +23,7 @@ struct VsInBoneTransformData
     uint frame : FRAME; // 現在のフレーム
 };
 
+// 【出力データ】
 struct VsOut
 {
     float4 position : SV_POSITION;
@@ -29,23 +31,26 @@ struct VsOut
     float4 color : COLOR;
 };
 
-cbuffer SceneConstantBuffer : register(b0)
-{
-    row_major float4x4 view_projection;
-};
 
-#define MAX_INSTANCES 512
-cbuffer InstancingMeshConstantBuffer : register(b1)
+// 【構造体】
+struct WorldTransform
 {
-    row_major float4x4 worldTransform[MAX_INSTANCES];
-};
-
-cbuffer SubsetConstantBuffer : register(b2)
-{
-    float4 material_color;
+    row_major float4x4 transform;
 };
 
 struct BoneTransform
 {
     row_major float4x4 transform;
+};
+
+
+// 【定数バッファ】
+cbuffer SceneConstantBuffer : register(b0)
+{
+    row_major float4x4 view_projection;
+};
+
+cbuffer SubsetConstantBuffer : register(b1)
+{
+    float4 material_color;
 };
