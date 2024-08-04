@@ -2,12 +2,12 @@
 #include "Instance.hlsli"
 
 StructuredBuffer<BoneTransform> bone_transform_texture : register(t1);
-StructuredBuffer<WorldTransform> w_transform : register(t2);
+StructuredBuffer<InstanceData> instance_data : register(t2);
 
 VsOut main(VsIn vs_in)
 {
     VsOut vout;
-    vout.position = mul(mul(vs_in.position, w_transform[vs_in.instance_id].transform), view_projection);
+    vout.position = mul(mul(vs_in.position, instance_data[vs_in.instance_id].world_transform), view_projection);
 	
     vout.color.rgb = vs_in.color.rgb * material_color.rgb;
     vout.color.a = vs_in.color.a * material_color.a;
@@ -15,7 +15,7 @@ VsOut main(VsIn vs_in)
     
     // TODO (デバッグ用)
 #if 0
-    vout.color.r = (float) (vs_in_BTData.bone_size) / 255.0f;
+    vout.color.r = (float) (instance_data[vs_in.instance_id].bone_transform_data.animation_first_bone_index) / 255.0f;
     vout.color.g = 0.0f;
     vout.color.b = 0.0f;
     vout.color.a = 1.0f;

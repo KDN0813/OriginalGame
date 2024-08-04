@@ -88,7 +88,7 @@ public:
 	// 各種取得・設定関数
 	const ModelResource* GetResource() const { return resource.get(); }
 	ID3D11ShaderResourceView** GetBoneTransformTexture() { return this->bone_transform_texture.GetAddressOf(); }
-	ID3D11ShaderResourceView** GetWorldTransformStructuredBuffer() { return this->world_transform_structured_buffer.GetAddressOf(); }
+	ID3D11ShaderResourceView** GetWorldTransformStructuredBuffer() { return this->instance_data_structured_buffer.GetAddressOf(); }
 
 	// TODO(08/04)計算位置変更する
 	// BTT計算用関数
@@ -105,9 +105,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bone_transform_texture;
 
 	// インスタンス毎のワールドトランスフォームをGPUに渡すためのデータ
-	WorldTransform* world_transforms = nullptr;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> world_transform_buffer;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> world_transform_structured_buffer;
+	InstanceData* instance_data = nullptr;	// インスタンス毎のデータ配列の先頭のポインタ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 
 	
 	// TODO(08/04)計算位置変更する

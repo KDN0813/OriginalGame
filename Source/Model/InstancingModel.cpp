@@ -123,27 +123,27 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 		}
 	}
 
-	// world_transforms作成
+	// instance_data_buffer作成
 	{
-		WorldTransform* world_transforms = new WorldTransform[MAX_INSTANCES * resource->GetMeshes().size()];
+		InstanceData* instance_data = new InstanceData[MAX_INSTANCES * resource->GetMeshes().size()];
 
 		D3D11_BUFFER_DESC buffer_desc{};
 		buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
 		buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // SRV としてバインドする
 		buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 構造体バッファに設定
 		buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		buffer_desc.ByteWidth = (sizeof(WorldTransform) * MAX_INSTANCES * resource->GetMeshes().size());	// バッファサイズ設定
-		buffer_desc.StructureByteStride = sizeof(WorldTransform);	// 構造体の各要素のサイズ設定
+		buffer_desc.ByteWidth = (sizeof(InstanceData) * MAX_INSTANCES * resource->GetMeshes().size());	// バッファサイズ設定
+		buffer_desc.StructureByteStride = sizeof(InstanceData);	// 構造体の各要素のサイズ設定
 		D3D11_SUBRESOURCE_DATA subresource_data{};
-		subresource_data.pSysMem = world_transforms;	// 初期データ設定
+		subresource_data.pSysMem = instance_data;	// 初期データ設定
 
-		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->world_transform_buffer.ReleaseAndGetAddressOf());
+		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->instance_data_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
-		delete[] world_transforms;
+		delete[] instance_data;
 	}
 
-	// world_transform_bufferの作成
+	// instance_data_structured_bufferの作成
 	{
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -151,7 +151,7 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 		srvDesc.Buffer.FirstElement = 0;	// 要素の先頭インデックス
 		srvDesc.Buffer.NumElements = static_cast<UINT>(MAX_INSTANCES);	// 要素の数
 
-		HRESULT hr = device->CreateShaderResourceView(this->world_transform_buffer.Get(), &srvDesc, this->world_transform_structured_buffer.ReleaseAndGetAddressOf());
+		HRESULT hr = device->CreateShaderResourceView(this->instance_data_buffer.Get(), &srvDesc, this->instance_data_structured_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
@@ -190,10 +190,10 @@ void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& i
 	instancing_count = 0;
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource{};
-	HRESULT hr = dc->Map(world_transform_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	HRESULT hr = dc->Map(instance_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
-	this->world_transforms = reinterpret_cast<WorldTransform*>(mappedResource.pData);
+	this->instance_data = reinterpret_cast<InstanceData*>(mappedResource.pData);
 
 	// world_transformsを更新
 	{
@@ -202,10 +202,11 @@ void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& i
 			if (!transform_datas[i].exist)
 				continue;
 
-			world_transforms[instancing_count++] = transform_datas[i].transform;
+			this->instance_data[instancing_count++].bone_transform_data.animation_first_bone_index = 100;
+			this->instance_data[instancing_count++].world_transform = transform_datas[i].transform;
 		}
 
-		dc->Unmap(world_transform_buffer.Get(), 0);
+		dc->Unmap(instance_data_buffer.Get(), 0);
 	}
 }
 
