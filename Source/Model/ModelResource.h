@@ -67,23 +67,10 @@ public:
 		template<class Archive>
 		void serialize(Archive& archive, int version);
 	};
-	/**
-	 * ボーントランスフォームを取得するために必要なパラメータ
-	 * \param bone_size 1回の描画で使用するボーントランスフォームの数
-	 * \param mesh_first_bone_index 描画するメッシュの先頭のボーントランスフォームのインデックス
-	 * \param animation_first_bone_index 使うアニメーションの先頭のボーントランスフォームのインデックス
-	 */
-	struct BoneTransformData
-	{
-		UINT bone_size = { 0 };
-		UINT mesh_first_bone_index = { 0 };
-		UINT animation_first_bone_index = { 0 };
-	};
 
 	struct Mesh	// 1パーツ
 	{
 		std::vector<Vertex>						vertices;
-		std::vector<BoneTransformData>			bone_transform_datas;
 		std::vector<UINT>						indices;
 		std::vector<Subset>						subsets;
 
@@ -95,7 +82,6 @@ public:
 		DirectX::XMFLOAT3						bounds_max;
 
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	vertex_buffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer>	bone_transform_data_buffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	index_buffer;
 
 		template<class Archive>

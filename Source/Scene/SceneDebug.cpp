@@ -53,8 +53,11 @@ int OutPutImage()
 
 SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
-	, instancing_model(std::make_unique<InstancingModel>("Data/Model/Jammo/Jammo.mdl"))
 {
+	Graphics& graphics = Graphics::Instance();
+	ID3D11Device* device = graphics.GetDevice();
+	instancing_model = std::make_unique<InstancingModel>(device,"Data/Model/Jammo/Jammo.mdl");
+
 	float offset = 3.0f;
 	for (int x = 0; x < 10; ++x)
 	{

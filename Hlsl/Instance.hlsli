@@ -44,8 +44,5 @@ struct BoneTransformData
     uint bone_size : BONE_SIZE; // 1回の描画で使用するボーントランスフォームの数
     uint mesh_first_bone_index : MESH_FIRST_BONE_INDEX; // 描画するメッシュの先頭のボーントランスフォームのインデックス
     uint animation_first_bone_index : ANIMATION_FIRST_BONE_INDEX; // 使うアニメーションの先頭のボーントランスフォームのインデックス
-};
-cbuffer AnimationData
-{
-    int frame; // 現在のフレーム
+    uint frame : FRAME; // 現在のフレーム
 };

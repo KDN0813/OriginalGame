@@ -307,29 +307,6 @@ void ModelResource::BuildModel(ID3D11Device* device, const char* dirname)
 			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		}
 
-		// bone_transform_data_buffer作成
-		{
-			D3D11_BUFFER_DESC buffer_desc = {};
-			D3D11_SUBRESOURCE_DATA subresource_data = {};
-
-			// TODO (07/24) デバッグ用設定
-			mesh.bone_transform_datas.resize(mesh.vertices.size());
-			for (auto& debug : mesh.bone_transform_datas)
-			{
-				debug ={};
-				debug.bone_size = 100;
-			}
-
-			buffer_desc.ByteWidth = static_cast<UINT>(sizeof(BoneTransformData) * mesh.bone_transform_datas.size());
-			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-			//buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
-			buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			subresource_data.pSysMem = mesh.bone_transform_datas.data();
-
-			HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, mesh.bone_transform_data_buffer.GetAddressOf());
-			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		}
-
 		// インデックスバッファ
 		{
 			D3D11_BUFFER_DESC bufferDesc = {};

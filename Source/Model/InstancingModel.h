@@ -29,8 +29,9 @@ public:
 
 		std::vector<Node*>	children;
 	};
+
 public:
-	InstancingModel(const char* filename);
+	InstancingModel(ID3D11Device* device,const char* filename);
 	~InstancingModel() {};
 
 	// 使われていない番号を割り当てて返す
@@ -64,6 +65,23 @@ private:
 	};
 	Microsoft::WRL::ComPtr<ID3D11Buffer> bone_transform_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bone_transform_texture;
+
+	/**
+	* ボーントランスフォームを取得するために必要なパラメータ
+	* \param bone_size 1回の描画で使用するボーントランスフォームの数
+	* \param mesh_first_bone_index 描画するメッシュの先頭のボーントランスフォームのインデックス
+	* \param animation_first_bone_index 使うアニメーションの先頭のボーントランスフォームのインデックス
+	* \param frame アニメーションのフレーム
+	*/
+	struct BoneTransformData
+	{
+		UINT bone_size = { 0 };
+		UINT mesh_first_bone_index = { 0 };
+		UINT animation_first_bone_index = { 0 };
+		UINT frame = { 0 };
+	};
+	std::vector<BoneTransformData>			bone_transform_datas;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>	bone_transform_data_buffer;
 
 	// BTT計算用関数
 	void PlayAnimation(int index);
