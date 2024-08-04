@@ -4,13 +4,12 @@
 #include "Model/ModelResourceManager.h"
 
 InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
-    :instance_cout()
 {
     // TODO (07/01)①モデル作成
         // リソース読み込み
     resource = ModelResourceManager::Instance()->LoadModelResource(filename);
 
-    instancing_data.resize(InstancingMax);
+    transform_datas.resize(InstancingMax);
 
     // BTT作成
 	{
@@ -124,24 +123,6 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 		}
 	}
 
-	// bone_transform_data_buffer作成
-	{
-		D3D11_BUFFER_DESC buffer_desc = {};
-		D3D11_SUBRESOURCE_DATA subresource_data = {};
-
-		// TODO (07/24) デバッグ用設定
-		this->bone_transform_datas.resize(InstancingMax);
-
-		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(BoneTransformData) * InstancingMax);
-		//buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-		buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
-		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		subresource_data.pSysMem = this->bone_transform_datas.data();
-
-		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->bone_transform_data_buffer.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
 	// world_transforms作成
 	{
 		WorldTransform* world_transforms = new WorldTransform[MAX_INSTANCES * resource->GetMeshes().size()];
@@ -180,9 +161,9 @@ int InstancingModel::AllocateInstancingIndex()
     // TODO (07/01)②使われていない番号を割り当てて返す
     for (int i = 0; i < InstancingMax; ++i)
     {
-        if (!instancing_data[i].exist)
+        if (!transform_datas[i].exist)
         {
-            instancing_data[i].exist = true;
+            transform_datas[i].exist = true;
             return i;
         }
     }
@@ -193,14 +174,14 @@ void InstancingModel::FreeInstancingIndex(int instancingIndex)
 {
     // TODO (07/01)③割り当てられた番号を解放する
     if (0 <= instancingIndex && instancingIndex < InstancingMax)
-        instancing_data[instancingIndex].exist = false;
+        transform_datas[instancingIndex].exist = false;
 }
 
 void InstancingModel::UpdateTransform(int instancingIndex, const DirectX::XMFLOAT4X4& transform)
 {
     // TODO (07/01)④行列計算
     if (0 <= instancingIndex && instancingIndex < InstancingMax)
-        this->instancing_data[instancingIndex].transform = transform;
+        this->transform_datas[instancingIndex].transform = transform;
 }
 
 void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& instancing_count)
@@ -208,37 +189,24 @@ void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& i
 	// TODO (08/04)続き書く
 	instancing_count = 0;
 
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	D3D11_MAPPED_SUBRESOURCE mappedResource{};
 	HRESULT hr = dc->Map(world_transform_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
-	this->world_transforms = reinterpret_cast<InstancingModel::WorldTransform*>(mappedResource.pData);
+	this->world_transforms = reinterpret_cast<WorldTransform*>(mappedResource.pData);
 
 	// world_transformsを更新
 	{
 		for (int i = 0; i < InstancingMax; ++i)
 		{
-			if (!instancing_data[i].exist)
+			if (!transform_datas[i].exist)
 				continue;
 
-			world_transforms[instancing_count++].transform = instancing_data[i].transform;
+			world_transforms[instancing_count++] = transform_datas[i].transform;
 		}
 
 		dc->Unmap(world_transform_buffer.Get(), 0);
 	}
-}
-
-BufferData InstancingModel::GetBufferData(const ModelResource::Mesh& mesh) const
-{
-    BufferData	bufferData(mesh);
-    for (int i = 0; i < InstancingMax; ++i)
-    {
-        if (!this->instancing_data[i].exist)
-            continue;
-
-        bufferData.transform[bufferData.instancingCount++] = this->instancing_data[i].transform;
-    }
-    return bufferData;
 }
 
 void InstancingModel::PlayAnimation(int index)
