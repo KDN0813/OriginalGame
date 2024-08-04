@@ -200,20 +200,7 @@ void SceneDebug::Render()
 		{
 			instance_shader->Begin(dc, rc, this->instancing_model->GetBoneTransformTexture());
 
-			//objects[0]->Render(dc, shader);
-
-			const ModelResource* model_resource = this->instancing_model->GetResource();
-
-			for (const ModelResource::Mesh& mesh : model_resource->GetMeshes())
-			{
-				for (const ModelResource::Subset& subset : mesh.subsets)
-				{
-					instance_shader->SetBuffers(dc, this->instancing_model->GetBufferData(mesh));
-
-					//	サブセット単位で描画
-					instance_shader->DrawSubset(dc, subset);
-				}
-			}
+			instance_shader->Draw(dc, this->instancing_model.get());
 
 			instance_shader->End(dc);
 		}

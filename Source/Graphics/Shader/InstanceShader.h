@@ -11,10 +11,10 @@ public:
 	~InstanceShader(){}
 
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3D11ShaderResourceView** bone_transform_texture);
-	void SetBuffers(ID3D11DeviceContext* dc, const BufferData& buffer_data);
-	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
+	void Draw(ID3D11DeviceContext* dc, class InstancingModel* model_resource);
 	void End(ID3D11DeviceContext* dc);
 
+	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
 private:
 	static const int MaxBones = 128;
 
@@ -24,19 +24,11 @@ private:
 	};
 
 	static const int MAX_INSTANCES = 512;
-	struct WorldTransform
-	{
-		DirectX::XMFLOAT4X4 transforms;
-	};
-	WorldTransform* world_transforms;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> world_transform_buffer;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> world_transform_structured_buffer;
 
 	struct SubsetConstantBuffer
 	{
 		DirectX::XMFLOAT4	materialColor;
 	};
-
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;

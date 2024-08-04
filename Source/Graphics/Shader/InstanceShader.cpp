@@ -1,5 +1,6 @@
 #include "System/Misc.h"
 #include "Graphics/Shader/InstanceShader.h"
+#include "Model/InstancingModel.h"
 
 InstanceShader::InstanceShader(ID3D11Device* device)
 	:instancing_count(0)
@@ -168,33 +169,6 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 		HRESULT hr = device->CreateSamplerState(&desc, samplerState.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
-
-	// world_transforms作成
-	{
-		D3D11_BUFFER_DESC buffer_desc{};
-		buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
-		buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // SRV としてバインドする
-		buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 構造体バッファに設定
-		buffer_desc.ByteWidth = (sizeof(WorldTransform) * MAX_INSTANCES);	// バッファサイズ設定
-		buffer_desc.StructureByteStride = sizeof(WorldTransform);	// 構造体の各要素のサイズ設定
-		D3D11_SUBRESOURCE_DATA subresource_data{};
-		subresource_data.pSysMem = nullptr;	// 初期データ設定
-
-		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->world_transform_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
-	// world_transform_bufferの作成
-	{
-		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-		srvDesc.Format = DXGI_FORMAT_UNKNOWN;
-		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-		srvDesc.Buffer.FirstElement = 0;	// 要素の先頭インデックス
-		srvDesc.Buffer.NumElements = static_cast<UINT>(MAX_INSTANCES);	// 要素の数
-
-		HRESULT hr = device->CreateShaderResourceView(this->world_transform_buffer.Get(), &srvDesc, this->world_transform_structured_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
 }
 
 // 描画設定、描画するモデルのメッシュ・ノード情報取得
@@ -229,41 +203,46 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3
 
 	// BTT設定
 	dc->VSSetShaderResources(1, 1, bone_transform_texture);
-
-	// w_transform設定
-	dc->VSSetShaderResources(2, 1, world_transform_structured_buffer.GetAddressOf());
-
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT hr = dc->Map(world_transform_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-	this->world_transforms = reinterpret_cast<WorldTransform*>(mappedResource.pData);
 }
 
-// ボーントランスフォームの更新を行う
-void InstanceShader::SetBuffers(ID3D11DeviceContext* dc, const BufferData& buffer_data)
+void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 {
-	instancing_count = buffer_data.instancingCount;
+	const ModelResource* model_resource = model->GetResource();
 
-	dc->VSSetShader(vertexShader.Get(), nullptr, 0);
-	dc->IASetInputLayout(inputLayout.Get());
+	// w_transform更新
+	model->UpdateWorldTransformBuffer(dc, instancing_count);
+	// w_transform設定
+	dc->VSSetShaderResources(2, 1, model->GetWorldTransformStructuredBuffer());
 
-
-
-	ID3D11Buffer* vertex_buffers[] =
+	for (const ModelResource::Mesh& mesh : model_resource->GetMeshes())
 	{
-		buffer_data.mesh.vertex_buffer.Get(),
-		//buffer_data.mesh.bone_transform_data_buffer.Get()
-	};
-	UINT strides[] =
-	{
-		sizeof(ModelResource::Vertex),
-		//sizeof(InstancingModel::BoneTransformData),
-	};
-	UINT offset[_countof(vertex_buffers)] = { 0 };
-	dc->IASetVertexBuffers(0, _countof(vertex_buffers), vertex_buffers, strides, offset);
-	dc->IASetIndexBuffer(buffer_data.mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		for (const ModelResource::Subset& subset : mesh.subsets)
+		{
+			// バッファ設定
+			{
+				dc->VSSetShader(vertexShader.Get(), nullptr, 0);
+				dc->IASetInputLayout(inputLayout.Get());
+
+				ID3D11Buffer* vertex_buffers[] =
+				{
+					mesh.vertex_buffer.Get(),
+					//buffer_data.mesh.bone_transform_data_buffer.Get()
+				};
+				UINT strides[] =
+				{
+					sizeof(ModelResource::Vertex),
+					//sizeof(InstancingModel::BoneTransformData),
+				};
+				UINT offset[_countof(vertex_buffers)] = { 0 };
+				dc->IASetVertexBuffers(0, _countof(vertex_buffers), vertex_buffers, strides, offset);
+				dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+				dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			}
+
+			//	サブセット単位で描画
+			DrawSubset(dc, subset);
+		}
+	}
 }
 
 // サブセット単位で描画
@@ -282,6 +261,7 @@ void InstanceShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Su
 void InstanceShader::End(ID3D11DeviceContext* dc)
 {
 	{
+		instancing_count = 0;
 		dc->VSSetShader(nullptr, nullptr, 0);
 		dc->PSSetShader(nullptr, nullptr, 0);
 		dc->IASetInputLayout(nullptr);
