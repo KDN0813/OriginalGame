@@ -39,16 +39,16 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 			{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 
 			//VsInInstancing
-			{ "W_TRANSFORM",    0, DXGI_FORMAT_R32G32B32A32_FLOAT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
-			{ "W_TRANSFORM",    1, DXGI_FORMAT_R32G32B32A32_FLOAT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
-			{ "W_TRANSFORM",    2, DXGI_FORMAT_R32G32B32A32_FLOAT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
-			{ "W_TRANSFORM",    3, DXGI_FORMAT_R32G32B32A32_FLOAT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
+			{ "W_TRANSFORM",    0, DXGI_FORMAT_R32G32B32A32_FLOAT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "W_TRANSFORM",    1, DXGI_FORMAT_R32G32B32A32_FLOAT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "W_TRANSFORM",    2, DXGI_FORMAT_R32G32B32A32_FLOAT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "W_TRANSFORM",    3, DXGI_FORMAT_R32G32B32A32_FLOAT,  1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
 
 			// VsInBoneTransformData
-			{ "BONE_SIZE",					0, DXGI_FORMAT_R32_UINT,  2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
-			{ "MESH_FIRST_BONE_INDEX",		0, DXGI_FORMAT_R32_UINT,  2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
-			{ "ANIMATION_FIRST_BONE_INDEX",	0, DXGI_FORMAT_R32_UINT,  2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
-			{ "FRAME",						0, DXGI_FORMAT_R32_UINT,  2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 0 },
+			{ "BONE_SIZE",					0, DXGI_FORMAT_R32_UINT,  2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "MESH_FIRST_BONE_INDEX",		0, DXGI_FORMAT_R32_UINT,  2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "ANIMATION_FIRST_BONE_INDEX",	0, DXGI_FORMAT_R32_UINT,  2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "FRAME",						0, DXGI_FORMAT_R32_UINT,  2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
 		};
 		hr = device->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), csoData.get(), csoSize, inputLayout.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
@@ -211,8 +211,6 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 
 	// w_transformXV
 	model->UpdateWorldTransformBuffer(dc, instancing_count);
-	// w_transformÝ’è
-	dc->VSSetShaderResources(2, 1, model->GetWorldTransformStructuredBuffer());
 
 	for (const ModelResource::Mesh& mesh : model_resource->GetMeshes())
 	{
@@ -226,12 +224,13 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 				ID3D11Buffer* vertex_buffers[] =
 				{
 					mesh.vertex_buffer.Get(),
+					model->GetInstancingDataBuffer()
 					//buffer_data.mesh.bone_transform_data_buffer.Get()
 				};
 				UINT strides[] =
 				{
 					sizeof(ModelResource::Vertex),
-					//sizeof(InstancingModel::BoneTransformData),
+					sizeof(InstancingModel::WorldTransform),
 				};
 				UINT offset[_countof(vertex_buffers)] = { 0 };
 				dc->IASetVertexBuffers(0, _countof(vertex_buffers), vertex_buffers, strides, offset);

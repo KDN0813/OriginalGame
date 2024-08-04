@@ -12,7 +12,7 @@ struct VsInVertex
 };
 struct VsInInstancing
 {
-    row_major float4x4 world_transform : W_TRANSFORM;
+    row_major float4x4 w_transform : W_TRANSFORM;
 };
 //== BoneTransformTextureを取り出すのに必要なパラメータ ==
 struct VsInBoneTransformData

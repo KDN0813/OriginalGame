@@ -126,20 +126,21 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 
 	// instancing_data_buffer作成
 	{
-		D3D11_BUFFER_DESC buffer_desc = {};
-		D3D11_SUBRESOURCE_DATA subresource_data = {};
+		WorldTransform* world_transforms = new WorldTransform[MAX_INSTANCES * resource->GetMeshes().size()];
 
-		// TODO (07/24) デバッグ用設定
-		this->instancing_datas.resize(InstancingMax);
-
-		buffer_desc.ByteWidth = static_cast<UINT>(sizeof(WorldTransform) * InstancingMax);
-		//buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-		buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
-		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		subresource_data.pSysMem = this->instancing_datas.data();
+		D3D11_BUFFER_DESC buffer_desc{};
+		buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+		buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER; // SRV としてバインドする
+		buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		buffer_desc.ByteWidth = (sizeof(WorldTransform) * MAX_INSTANCES * resource->GetMeshes().size());	// バッファサイズ設定
+		buffer_desc.StructureByteStride = sizeof(WorldTransform);	// 構造体の各要素のサイズ設定
+		D3D11_SUBRESOURCE_DATA subresource_data{};
+		subresource_data.pSysMem = world_transforms;	// 初期データ設定
 
 		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->instancing_data_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		delete[] world_transforms;
 	}
 
 	// bone_transform_data_buffer作成
@@ -157,38 +158,6 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 		subresource_data.pSysMem = this->bone_transform_datas.data();
 
 		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->bone_transform_data_buffer.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
-	// world_transforms作成
-	{
-		WorldTransform* world_transforms = new WorldTransform[MAX_INSTANCES * resource->GetMeshes().size()];
-
-		D3D11_BUFFER_DESC buffer_desc{};
-		buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
-		buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // SRV としてバインドする
-		buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 構造体バッファに設定
-		buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		buffer_desc.ByteWidth = (sizeof(WorldTransform) * MAX_INSTANCES * resource->GetMeshes().size());	// バッファサイズ設定
-		buffer_desc.StructureByteStride = sizeof(WorldTransform);	// 構造体の各要素のサイズ設定
-		D3D11_SUBRESOURCE_DATA subresource_data{};
-		subresource_data.pSysMem = world_transforms;	// 初期データ設定
-
-		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->world_transform_buffer.ReleaseAndGetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		delete[] world_transforms;
-	}
-
-	// world_transform_bufferの作成
-	{
-		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-		srvDesc.Format = DXGI_FORMAT_UNKNOWN;
-		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-		srvDesc.Buffer.FirstElement = 0;	// 要素の先頭インデックス
-		srvDesc.Buffer.NumElements = static_cast<UINT>(MAX_INSTANCES);	// 要素の数
-
-		HRESULT hr = device->CreateShaderResourceView(this->world_transform_buffer.Get(), &srvDesc, this->world_transform_structured_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
@@ -227,7 +196,7 @@ void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& i
 	instancing_count = 0;
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT hr = dc->Map(world_transform_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	HRESULT hr = dc->Map(instancing_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	this->world_transforms = reinterpret_cast<InstancingModel::WorldTransform*>(mappedResource.pData);
@@ -242,21 +211,8 @@ void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& i
 			world_transforms[instancing_count++].transform = instancing_data[i].transform;
 		}
 
-		dc->Unmap(world_transform_buffer.Get(), 0);
+		dc->Unmap(instancing_data_buffer.Get(), 0);
 	}
-}
-
-BufferData InstancingModel::GetBufferData(const ModelResource::Mesh& mesh) const
-{
-    BufferData	bufferData(mesh);
-    for (int i = 0; i < InstancingMax; ++i)
-    {
-        if (!this->instancing_data[i].exist)
-            continue;
-
-        bufferData.transform[bufferData.instancingCount++] = this->instancing_data[i].transform;
-    }
-    return bufferData;
 }
 
 void InstancingModel::PlayAnimation(int index)

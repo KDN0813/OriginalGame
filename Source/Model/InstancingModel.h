@@ -30,6 +30,11 @@ public:
 		std::vector<Node*>	children;
 	};
 
+	static const int MAX_INSTANCES = 512;
+	struct WorldTransform
+	{
+		DirectX::XMFLOAT4X4 transform{};
+	};
 public:
 	InstancingModel(ID3D11Device* dc,const char* filename);
 	~InstancingModel() {};
@@ -49,13 +54,11 @@ public:
 	// 各種取得・設定関数
 	const ModelResource* GetResource() const { return resource.get(); }
 	const size_t GetInstanceCount()const { return this->instance_cout; }
-	// シェーダーへの設定用バッファ情報取得
-	BufferData GetBufferData(const ModelResource::Mesh& mesh) const;
 
 	const std::vector<InstancingModel::InstancingData>& GetInstancingData() { return this->instancing_data; }
 
 	ID3D11ShaderResourceView** GetBoneTransformTexture() { return this->bone_transform_texture.GetAddressOf(); }
-	ID3D11ShaderResourceView** GetWorldTransformStructuredBuffer() { return this->world_transform_structured_buffer.GetAddressOf(); }
+	ID3D11Buffer* GetInstancingDataBuffer() { return this->instancing_data_buffer.Get(); }
 private:
 	std::shared_ptr<ModelResource>	resource;
 	std::vector<InstancingData> instancing_data;
@@ -90,18 +93,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer>	bone_transform_data_buffer;
 	
 	// インスタンス毎のデータ(VsInInstancing)
-	struct WorldTransform
-	{
-		DirectX::XMFLOAT4X4 transform{};
-	};
-	std::vector<WorldTransform>				instancing_datas;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>	instancing_data_buffer;
-
-	static const int MAX_INSTANCES = 512;
-
 	WorldTransform* world_transforms = nullptr;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> world_transform_buffer;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> world_transform_structured_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>	instancing_data_buffer;
 
 	// BTT計算用関数
 	void PlayAnimation(int index);

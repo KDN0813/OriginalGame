@@ -2,7 +2,6 @@
 #include "Instance.hlsli"
 
 StructuredBuffer<BoneTransform> bone_transform_texture : register(t1);
-StructuredBuffer<WorldTransform> w_transform : register(t2);
 
 VsOut main(
     VsInVertex vs_in_vertex
@@ -11,7 +10,7 @@ VsOut main(
 )
 {
     VsOut vout;
-    vout.position = mul(mul(vs_in_vertex.position, w_transform[vs_in_vertex.instance_id].transform), view_projection);
+    vout.position = mul(mul(vs_in_vertex.position, vs_in_instancing.w_transform), view_projection);
 	
     vout.color.rgb = vs_in_vertex.color.rgb * material_color.rgb;
     vout.color.a = vs_in_vertex.color.a * material_color.a;
