@@ -202,8 +202,12 @@ void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& i
 			if (!transform_datas[i].exist)
 				continue;
 
-			this->instance_data[instancing_count++].bone_transform_data.animation_first_bone_index = 100;
-			this->instance_data[instancing_count++].world_transform = transform_datas[i].transform;
+			this->instance_data[instancing_count].bone_transform_data.animation_first_bone_index = 10;
+			this->instance_data[instancing_count].bone_transform_data.bone_size = 20;
+			this->instance_data[instancing_count].bone_transform_data.mesh_first_bone_index = 30;
+			this->instance_data[instancing_count].bone_transform_data.frame = 40;
+			this->instance_data[instancing_count].world_transform = transform_datas[i].transform;
+			++instancing_count;
 		}
 
 		dc->Unmap(instance_data_buffer.Get(), 0);
