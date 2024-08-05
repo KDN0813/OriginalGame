@@ -127,30 +127,6 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 	{
 		const size_t MeshCount = resource->GetMeshes().size();
 		InstanceData* instance_data = new InstanceData[MAX_INSTANCES * MeshCount];
-		// instance_data‰ŠúÝ’è
-		{
-			size_t bone_size = 0;
-			for (auto& mesh : resource->GetMeshes())
-			{
-				bone_size += mesh.node_indices.size();
-			}
-			size_t mesh_first_bone_index = 0;
-			size_t animation_first_bone_index = 0;
-			for (int mesh_index = 0; mesh_index < resource->GetMeshes().size(); ++mesh_index)
-			{
-				for (int i = 0; i < MAX_INSTANCES; ++i)
-				{
-					InstanceData& data = instance_data[(mesh_index * MeshCount) + mesh_index];
-
-					data.bone_transform_data.bone_size = bone_size;
-					data.bone_transform_data.mesh_first_bone_index = mesh_first_bone_index;
-					data.bone_transform_data.animation_first_bone_index;
-					data.bone_transform_data.frame = 0;
-					data.world_transform = {};
-				}
-				mesh_first_bone_index += resource->GetMeshes()[mesh_index].node_indices.size();
-			}
-		}
 
 		D3D11_BUFFER_DESC buffer_desc{};
 		buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -226,7 +202,8 @@ void InstancingModel::UpdateInstanceData(ID3D11DeviceContext* dc, int& instancin
 		{
 			if (!transform_datas[i].exist)
 				continue;
-			this->instance_data[instancing_count].bone_transform_data.frame;
+			this->instance_data[instancing_count].frame = 0;
+			this->instance_data[instancing_count].animation_start_offset = 1;
 			this->instance_data[instancing_count].world_transform = transform_datas[i].transform;
 			++instancing_count;
 		}

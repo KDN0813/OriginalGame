@@ -21,17 +21,10 @@ struct VsOut
 
 
 // 【構造体】
-// BoneTransformTextureを取り出すのに必要なパラメータ
-struct BoneTransformData
-{
-    uint bone_size; // 1回の描画で使用するボーントランスフォームの数
-    uint mesh_first_bone_index; // 描画するメッシュの先頭のボーントランスフォームのインデックス
-    uint animation_first_bone_index; // 使うアニメーションの先頭のボーントランスフォームのインデックス
-    uint frame; // 現在のフレーム
-};
 struct InstanceData
 {
-    BoneTransformData bone_transform_data;
+    uint animation_start_offset;    // バッファ内で使用するアニメーションの開始位置を示すオフセット値
+    uint frame;                     // 現在のフレーム
     row_major float4x4 world_transform;
 };
 struct BoneTransform
@@ -50,3 +43,12 @@ cbuffer SubsetConstantBuffer : register(b1)
 {
     float4 material_color;
 };
+// インスタンシング描画で使用する共通の定数
+cbuffer CommonDataConstantBuffer : register(b2)
+{
+    uint BoneTransformCount; // 1回の描画で使用するボーントランスフォームの数
+};
+cbuffer MeshConstantBuffer : register(b3)
+{
+    uint offset;            // バッファ内でメッシュの開始位置を示すオフセット値
+}

@@ -48,26 +48,14 @@ public:
 	};
 
 	/**
-	* ボーントランスフォームを取得するために必要なパラメータ
-	* \param bone_size 1回の描画で使用するボーントランスフォームの数
-	* \param mesh_first_bone_index 描画するメッシュの先頭のボーントランスフォームのインデックス
-	* \param animation_first_bone_index 使うアニメーションの先頭のボーントランスフォームのインデックス
-	* \param frame アニメーションのフレーム
-	*/
-	struct BoneTransformData
-	{
-		UINT bone_size = { 0 };
-		UINT mesh_first_bone_index = { 0 };
-		UINT animation_first_bone_index = { 0 };
-		UINT frame = { 0 };
-	};
-	/**
-	 * \param bone_transform_data ボーントランスフォームを取得するために必要なパラメータ
+	 * \param animation_start_offset;    // バッファ内で使用するアニメーションの開始位置を示すオフセット値
+	 * \param frame;                     // 現在のフレーム
 	 * \param world_transform ワールドトランスフォーム
 	 */
 	struct InstanceData
 	{
-		BoneTransformData bone_transform_data{};
+		UINT animation_start_offset;    
+		UINT frame;                     
 		WorldTransform world_transform{};
 	};
 public:
@@ -100,7 +88,6 @@ private:
 	std::shared_ptr<ModelResource>	resource;
 
 	// BTT
-	std::vector<BoneTransformData>			bone_transform_datas;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> bone_transform_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bone_transform_texture;
 
