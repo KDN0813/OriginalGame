@@ -82,8 +82,8 @@ public:
 	// 行列計算
 	void UpdateTransform(int instancingIndex, const DirectX::XMFLOAT4X4& transform);
 
-	// world_transform_structured_bufferの更新
-	void UpdateWorldTransformBuffer(ID3D11DeviceContext* device, int& instancing_count);
+	// InstanceDataの更新
+	void UpdateInstanceData(ID3D11DeviceContext* device, int& instancing_count);
 
 	// 各種取得・設定関数
 	const ModelResource* GetResource() const { return resource.get(); }

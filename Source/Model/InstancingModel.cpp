@@ -209,7 +209,7 @@ void InstancingModel::UpdateTransform(int instancingIndex, const DirectX::XMFLOA
         this->transform_datas[instancingIndex].transform = transform;
 }
 
-void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& instancing_count)
+void InstancingModel::UpdateInstanceData(ID3D11DeviceContext* dc, int& instancing_count)
 {
 	// TODO (08/04)‘±‚«‘‚­
 	instancing_count = 0;
@@ -226,8 +226,7 @@ void InstancingModel::UpdateWorldTransformBuffer(ID3D11DeviceContext* dc, int& i
 		{
 			if (!transform_datas[i].exist)
 				continue;
-
-			++this->instance_data[instancing_count].bone_transform_data.frame;
+			this->instance_data[instancing_count].bone_transform_data.frame;
 			this->instance_data[instancing_count].world_transform = transform_datas[i].transform;
 			++instancing_count;
 		}

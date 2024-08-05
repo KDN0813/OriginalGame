@@ -200,7 +200,7 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 	const ModelResource* model_resource = model->GetResource();
 
 	// w_transformXV
-	model->UpdateWorldTransformBuffer(dc, instancing_count);
+	model->UpdateInstanceData(dc, instancing_count);
 	// w_transformÝ’è
 	dc->VSSetShaderResources(2, 1, model->GetWorldTransformStructuredBuffer());
 
