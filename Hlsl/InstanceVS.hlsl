@@ -20,12 +20,14 @@ VsOut main(VsIn vs_in)
     float3 n = { 0, 0, 0 };
     for (int i = 0; i < 4; i++)
     {
-        float4x4 bone_transform = bone_transform_texture[transform_index[i]].transform;
+        float4x4 bone_transform = bone_transform_texture[transform_index[i]].bone_transform;
         p += (vs_in.bone_weights[i] * mul(vs_in.position, bone_transform)).xyz;
         n += (vs_in.bone_weights[i] * mul(float4(vs_in.normal.xyz, 0), bone_transform)).xyz;
     }
-
+    float4x4 world_transform = instance_data[vs_in.instance_id].world_transform;
+    
     VsOut vout;
+    //vout.position = mul(float4(p, 1.0f), mul(world_transform, view_projection));
     vout.position = mul(float4(p, 1.0f), view_projection);
 	
     //vout.position = mul(mul(vs_in.position, instance_data[vs_in.instance_id].world_transform), view_projection);

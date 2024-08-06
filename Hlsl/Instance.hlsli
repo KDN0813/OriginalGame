@@ -29,7 +29,7 @@ struct InstanceData
 };
 struct BoneTransform
 {
-    row_major float4x4 transform;
+    row_major float4x4 bone_transform;
 };
 
 
