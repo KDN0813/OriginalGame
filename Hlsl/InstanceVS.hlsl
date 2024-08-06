@@ -27,8 +27,8 @@ VsOut main(VsIn vs_in)
     float4x4 world_transform = instance_data[vs_in.instance_id].world_transform;
     
     VsOut vout;
-    //vout.position = mul(float4(p, 1.0f), mul(world_transform, view_projection));
-    vout.position = mul(float4(p, 1.0f), view_projection);
+    vout.position = mul(float4(p, 1.0f), mul(world_transform, view_projection));
+    //vout.position = mul(float4(p, 1.0f), view_projection);
 	
     //vout.position = mul(mul(vs_in.position, instance_data[vs_in.instance_id].world_transform), view_projection);
 	

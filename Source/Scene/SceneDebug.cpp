@@ -74,7 +74,7 @@ SceneDebug::SceneDebug()
 
 			const int index = instancing_model->AllocateInstancingIndex();
 			DirectX::XMMATRIX m;
-			m = DirectX::XMMatrixScaling(0.5f, 0.5f, 0.5f);
+			m = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
 			m *= DirectX::XMMatrixRotationY(0);
 			m *= DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 			DirectX::XMFLOAT4X4 tm;
