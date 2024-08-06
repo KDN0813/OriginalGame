@@ -208,8 +208,8 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 		for (size_t mesh_index = 0; mesh_index < mesh_count; ++mesh_index)
 		{
 			const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
-			this->bone_transform_count += mesh.node_indices.size();
 			this->mesh_offsets[mesh_index] = this->bone_transform_count;
+			this->bone_transform_count += mesh.node_indices.size();
 		}
 	}
 }
