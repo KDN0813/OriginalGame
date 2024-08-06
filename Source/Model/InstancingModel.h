@@ -19,6 +19,7 @@ public:
 	struct TransformData
 	{
 		DirectX::XMFLOAT4X4	transform;
+		int anime_frame;	// アニメーションの再生時間
 		bool exist;		// 使用中か
 		bool dummy[3];
 	};
@@ -69,6 +70,8 @@ public:
 	void FreeInstancingIndex(int instancingIndex);
 	// 行列計算
 	void UpdateTransform(int instancingIndex, const DirectX::XMFLOAT4X4& transform);
+	// アニメーション更新
+	void UpdateAnimationFrame(int instancingIndex);
 
 	// InstanceDataの更新
 	void UpdateInstanceData(ID3D11DeviceContext* device, int& instancing_count);
@@ -100,6 +103,11 @@ private:
 	
 	UINT bone_transform_count;			// ボーントランスフォームの数
 	std::vector<UINT> mesh_offsets;		// BTTで使用するメッシュ毎の開始位置までのオフセット値
+	std::vector<UINT> animation_lengths;	// アニメーションの長さ(フレーム数)
+
+	// TODO(08/06)デバッグ用パラメータ
+	int anime_index = 0;
+	bool anime_loop = true;
 
 	// TODO(08/04)計算位置変更する
 	// BTT計算用変数

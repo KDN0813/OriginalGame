@@ -170,6 +170,12 @@ void SceneDebug::Update(float elapsed_time)
 	target.y += 0.5f;	// プレイヤーの腰当たりをターゲットに設定
 	cameraController.SetTarget(target);
 	cameraController.Update(elapsed_time);
+
+	// アニメーション更新
+	for (int i = 0; i < 100; i += 2)
+	{
+		instancing_model->UpdateAnimationFrame(i);
+	}
 }
 
 void SceneDebug::Render()
