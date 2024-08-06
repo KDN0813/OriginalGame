@@ -61,20 +61,31 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 					{
 						if (mesh.node_indices.size() > 0)
 						{
-							auto& add_data = BTTdata.bone_transforms.emplace_back();
 							for (size_t i = 0; i < mesh.node_indices.size(); ++i)
 							{
+								auto& add_data = BTTdata.bone_transforms.emplace_back();
 								DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&nodes.at(mesh.node_indices.at(i)).worldTransform);
 								DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
 								DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
 								DirectX::XMStoreFloat4x4(&add_data.transform, boneTransform);
 
 								// TODO(デバッグ用処理)
-								DirectX::XMFLOAT4X4& transform = add_data.transform;
-								transform._11 = { 0.0f };
-								transform._12 = { 0.0f };
-								transform._13 = { 1.0f };
-								transform._14 = { 1.0f };
+								if (i == 0)
+								{
+									DirectX::XMFLOAT4X4& transform = add_data.transform;
+									transform._11 = { 0.0f };
+									transform._12 = { 1.0f };
+									transform._13 = { 0.0f };
+									transform._14 = { 1.0f };
+								}
+								else
+								{
+									DirectX::XMFLOAT4X4& transform = add_data.transform;
+									transform._11 = { 1.0f };
+									transform._12 = { 0.0f };
+									transform._13 = { 0.0f };
+									transform._14 = { 1.0f };
+								}
 							}
 						}
 						else
@@ -87,12 +98,6 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 
 			}
 		}
-		// TODO(デバッグ用処理)
-		DirectX::XMFLOAT4X4& transform = BTTdata.bone_transforms[0].transform;
-		transform._11 = { 1.0f };
-		transform._12 = { 0.0f };
-		transform._13 = { 1.0f };
-		transform._14 = { 1.0f };
 
 		// bone_transform_bufferの作成
 		{

@@ -21,7 +21,12 @@ VsOut main(VsIn vs_in)
     vout.color.a = 1.0f;
 #else
     
-    float4x4 transform = bone_transform_texture[0].transform;
+    uint frame = 0;
+    
+    uint transform_index = bone_transform_count * frame;
+    
+    //float4x4 transform = bone_transform_texture[2].transform;
+    float4x4 transform = bone_transform_texture[transform_index].transform;
     vout.color = float4(
         transform._11,
         transform._12,
