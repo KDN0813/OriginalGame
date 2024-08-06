@@ -115,6 +115,7 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 									color.z = 0.8f;
 									top_mesh = false;
 								}
+#if 0	// 色によるデバッグ
 								DirectX::XMFLOAT4X4& transform = add_data.transform;
 								transform._11 = { color.x };
 								transform._12 = { color.y };
@@ -122,6 +123,7 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 								transform._14 = { 1.0f };
 								
 								color = {};
+#endif
 #endif // _DEBUG
 							}
 						}
