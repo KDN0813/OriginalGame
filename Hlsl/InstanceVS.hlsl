@@ -23,7 +23,7 @@ VsOut main(VsIn vs_in)
     
     uint frame = 0;
     
-    uint transform_index = bone_transform_count * frame;
+    uint transform_index = (bone_transform_count * frame) + mesh_offset;
     
     //float4x4 transform = bone_transform_texture[2].transform;
     float4x4 transform = bone_transform_texture[transform_index].transform;

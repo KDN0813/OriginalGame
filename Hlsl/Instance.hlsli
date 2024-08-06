@@ -51,6 +51,6 @@ cbuffer CommonDataConstantBuffer : register(b2)
 };
 cbuffer MeshConstantBuffer : register(b3)
 {
-    uint offset;            // バッファ内でメッシュの開始位置を示すオフセット値
+    uint mesh_offset;            // バッファ内でメッシュの開始位置を示すオフセット値
     uint3 mesh_dummy;
 }

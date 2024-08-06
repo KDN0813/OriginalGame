@@ -41,16 +41,38 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 			}
 		}
 
+#ifdef _DEBUG
+		// TODO(08/06)デバッグ用変数
+		bool top_anime = true;	// 各アニメーションの先頭のであるか
+		bool top_mesh = true;	// 各メッシュの先頭であるか
+		bool frame_top = true;	// 各フレームの先頭であるか
+		DirectX::XMFLOAT3 color{};
+#endif // _DEBUG
+
+
 		// ボーントランスフォーム計算
 		BoneTransformTextureData BTTdata{};
 		{
 			// アニメーションの数ループ
 			for (size_t anime_index = 0; anime_index < resource->GetAnimations().size(); ++anime_index)
 			{
+#ifdef _DEBUG
+				// TODO(08/06)BTT確認用デバッグ処理
+				top_anime = true;
+#endif // _DEBUG
+
+
 				PlayAnimation(anime_index);
 				// アニメーションが終了するまでループ
 				while (IsPlayAnimation())
 				{
+#ifdef _DEBUG
+					// TODO(08/06)フレーム先頭色変え
+					frame_top = true;
+
+#endif // _DEBUG
+
+
 					// アニメーション更新
 					UpdateAnimation(0.01f);
 					UpdateTransform();
@@ -59,6 +81,12 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 					// 全てのメッシュで回す
 					for (const ModelResource::Mesh& mesh : resource->GetMeshes())
 					{
+#ifdef _DEBUG
+						// TODO(08/06)メッシュの先頭色変え
+						top_mesh = true;
+
+#endif // _DEBUG
+
 						if (mesh.node_indices.size() > 0)
 						{
 							for (size_t i = 0; i < mesh.node_indices.size(); ++i)
@@ -69,23 +97,32 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 								DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
 								DirectX::XMStoreFloat4x4(&add_data.transform, boneTransform);
 
+#ifdef _DEBUG
 								// TODO(デバッグ用処理)
-								if (i == 0)
+
+								if (top_anime)
 								{
-									DirectX::XMFLOAT4X4& transform = add_data.transform;
-									transform._11 = { 0.0f };
-									transform._12 = { 1.0f };
-									transform._13 = { 0.0f };
-									transform._14 = { 1.0f };
+									color.x = 0.8f;
+									top_anime = false;
 								}
-								else
+								if (frame_top)
 								{
-									DirectX::XMFLOAT4X4& transform = add_data.transform;
-									transform._11 = { 1.0f };
-									transform._12 = { 0.0f };
-									transform._13 = { 0.0f };
-									transform._14 = { 1.0f };
+									color.y = 0.8f;
+									frame_top = false;
 								}
+								if (top_mesh)
+								{
+									color.z = 0.8f;
+									top_mesh = false;
+								}
+								DirectX::XMFLOAT4X4& transform = add_data.transform;
+								transform._11 = { color.x };
+								transform._12 = { color.y };
+								transform._13 = { color.z };
+								transform._14 = { 1.0f };
+								
+								color = {};
+#endif // _DEBUG
 							}
 						}
 						else
