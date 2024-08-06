@@ -19,9 +19,12 @@ public:
 	struct TransformData
 	{
 		DirectX::XMFLOAT4X4	transform;
-		int anime_frame;	// アニメーションの再生時間
+		UINT anime_frame;	// アニメーションの再生時間
+		int anime_index = 0;
+		bool anime_loop = true;
+		bool anime_play = true;
 		bool exist;		// 使用中か
-		bool dummy[3];
+		bool dummy[2];
 	};
 
 	struct Node
@@ -105,9 +108,6 @@ private:
 	std::vector<UINT> mesh_offsets;		// BTTで使用するメッシュ毎の開始位置までのオフセット値
 	std::vector<UINT> animation_lengths;	// アニメーションの長さ(フレーム数)
 
-	// TODO(08/06)デバッグ用パラメータ
-	int anime_index = 0;
-	bool anime_loop = true;
 
 	// TODO(08/04)計算位置変更する
 	// BTT計算用変数

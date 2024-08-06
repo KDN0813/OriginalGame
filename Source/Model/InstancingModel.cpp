@@ -247,20 +247,24 @@ void InstancingModel::UpdateTransform(int instancingIndex, const DirectX::XMFLOA
 
 void InstancingModel::UpdateAnimationFrame(int instancingIndex)
 {
+	TransformData& data = this->transform_datas[instancingIndex];
+
 	if (0 > instancingIndex || instancingIndex >= InstancingMax) return;
-	if (anime_index < 0) return;
+	if (data.anime_index < 0) return;
+	if (!data.anime_play) return;
 
-	++this->transform_datas[instancingIndex].anime_frame;
+	++data.anime_frame;
 
-	if (this->transform_datas[instancingIndex].anime_frame > animation_lengths[anime_index])
+	if (data.anime_frame > animation_lengths[data.anime_index])
 	{
-		if (this->anime_loop)
+		if (data.anime_loop)
 		{
 			this->transform_datas[instancingIndex].anime_frame = 0;
 		}
 		else
 		{
-			anime_index = -1;
+			data.anime_frame = animation_lengths[data.anime_index];
+			data.anime_play = false;
 		}
 	}
 }
@@ -283,7 +287,7 @@ void InstancingModel::UpdateInstanceData(ID3D11DeviceContext* dc, int& instancin
 			if (!transform_datas[i].exist)
 				continue;
 			this->instance_data[instancing_count].frame = transform_datas[i].anime_frame;
-			this->instance_data[instancing_count].animation_start_offset = 1;
+			this->instance_data[instancing_count].animation_start_offset = 0;
 			this->instance_data[instancing_count].world_transform = transform_datas[i].transform;
 			++instancing_count;
 		}
