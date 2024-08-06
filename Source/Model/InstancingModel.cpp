@@ -155,28 +155,6 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 		HRESULT hr = device->CreateShaderResourceView(this->instance_data_buffer.Get(), &srvDesc, this->instance_data_structured_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
-
-	// 定数バッファ
-	{
-		// CommonDataConstantBuffer
-		// シーン用バッファ
-		D3D11_BUFFER_DESC desc;
-		::memset(&desc, 0, sizeof(desc));
-		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		desc.CPUAccessFlags = 0;
-		desc.MiscFlags = 0;
-		desc.ByteWidth = sizeof(CommonDataConstantBuffer);
-		desc.StructureByteStride = 0;
-
-		HRESULT hr = device->CreateBuffer(&desc, 0, common_data_constant_buffer.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		// MeshConstantBuffer
-		desc.ByteWidth = sizeof(MeshConstantBuffer);
-		hr = device->CreateBuffer(&desc, 0, this->mesh_constant_buffer.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
 }
 
 int InstancingModel::AllocateInstancingIndex()

@@ -47,18 +47,6 @@ public:
 		std::vector<BoneTransform> bone_transforms;
 	};
 
-	// インスタンシング描画で使用する共通の定数
-	struct CommonDataConstantBuffer
-	{
-		UINT bone_transform_count; // 1回の描画で使用するボーントランスフォームの数
-		DirectX::XMUINT3 dummy;
-	};
-	struct MeshConstantBuffer
-	{
-		UINT offset;            // バッファ内でメッシュの開始位置を示すオフセット値
-		DirectX::XMUINT3 dummy;
-	};
-
 	/**
 	 * \param animation_start_offset;    // バッファ内で使用するアニメーションの開始位置を示すオフセット値
 	 * \param frame;                     // 現在のフレーム
@@ -89,8 +77,6 @@ public:
 	const ModelResource* GetResource() const { return resource.get(); }
 	ID3D11ShaderResourceView** GetBoneTransformTexture() { return this->bone_transform_texture.GetAddressOf(); }
 	ID3D11ShaderResourceView** GetWorldTransformStructuredBuffer() { return this->instance_data_structured_buffer.GetAddressOf(); }
-	ID3D11Buffer* GetCommonDataConstantBuffer() const { return this->common_data_constant_buffer.Get(); }
-	ID3D11Buffer* GetMeshConstantBuffer() const { return this->mesh_constant_buffer.Get(); }
 
 	// TODO(08/04)計算位置変更する
 	// BTT計算用関数
@@ -109,10 +95,6 @@ private:
 	InstanceData* instance_data = nullptr;	// インスタンス毎のデータ配列の先頭のポインタ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
-
-	// 定数バッファ
-	Microsoft::WRL::ComPtr<ID3D11Buffer> common_data_constant_buffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> mesh_constant_buffer;
 	
 	// TODO(08/04)計算位置変更する
 	// BTT計算用変数

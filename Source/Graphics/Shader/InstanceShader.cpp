@@ -84,6 +84,16 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 
 		hr = device->CreateBuffer(&desc, 0, subsetConstantBuffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// CommonDataConstantBuffer
+		desc.ByteWidth = sizeof(CommonDataConstantBuffer);
+		hr = device->CreateBuffer(&desc, 0, common_data_constant_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// MeshConstantBuffer
+		desc.ByteWidth = sizeof(MeshConstantBuffer);
+		hr = device->CreateBuffer(&desc, 0, this->mesh_constant_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
 	// ブレンドステート
@@ -160,11 +170,9 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 }
 
 // 描画設定、描画するモデルのメッシュ・ノード情報取得
-void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3D11ShaderResourceView** bone_transform_texture)
+void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
-	//dc->VSSetShader(vertexShader.Get(), nullptr, 0);
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
-	//dc->IASetInputLayout(inputLayout.Get());
 
 	const float blend_factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	dc->OMSetBlendState(blendState.Get(), blend_factor, 0xFFFFFFFF);
@@ -182,14 +190,14 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3
 	dc->UpdateSubresource(sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
 
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// BTT設定
-	dc->VSSetShaderResources(1, 1, bone_transform_texture);
 }
 
 void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 {
 	const ModelResource* model_resource = model->GetResource();
+
+	// BTT設定
+	dc->VSSetShaderResources(1, 1, model->GetBoneTransformTexture());
 
 	// 定数buffer設定
 	{
@@ -197,16 +205,16 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 		{
 			sceneConstantBuffer.Get(),
 			subsetConstantBuffer.Get(),
-			model->GetCommonDataConstantBuffer(),
-			model->GetMeshConstantBuffer(),
+			common_data_constant_buffer.Get(),
+			mesh_constant_buffer.Get(),
 		};
 		dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
 		dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
 
-		InstancingModel::CommonDataConstantBuffer common_data_buffer{};
+		CommonDataConstantBuffer common_data_buffer{};
 		common_data_buffer.bone_transform_count = 100;
 		
-		dc->UpdateSubresource(model->GetCommonDataConstantBuffer(), 0, 0, &common_data_buffer, 0, 0);
+		dc->UpdateSubresource(common_data_constant_buffer.Get(), 0, 0, & common_data_buffer, 0, 0);
 	}
 
 	// w_transform更新
@@ -234,12 +242,11 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 				UINT offset[_countof(vertex_buffers)] = { 0 };
 				dc->IASetVertexBuffers(0, _countof(vertex_buffers), vertex_buffers, strides, offset);
 				dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			
+				MeshConstantBuffer mesh_buffer{};
+				mesh_buffer.offset = 50;
+				dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &mesh_buffer, 0, 0);
 			}
-
-			InstancingModel::MeshConstantBuffer mesh_buffer{};
-			mesh_buffer.offset = 50;
-
-			dc->UpdateSubresource(model->GetMeshConstantBuffer(), 0, 0, &mesh_buffer, 0, 0);
 
 			//	サブセット単位で描画
 			DrawSubset(dc, subset);

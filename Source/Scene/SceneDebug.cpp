@@ -198,7 +198,7 @@ void SceneDebug::Render()
 		// インスタンシング描画
 #if 1
 		{
-			instance_shader->Begin(dc, rc, this->instancing_model->GetBoneTransformTexture());
+			instance_shader->Begin(dc, rc);
 
 			instance_shader->Draw(dc, this->instancing_model.get());
 

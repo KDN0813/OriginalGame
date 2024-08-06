@@ -10,7 +10,7 @@ public:
 	InstanceShader(ID3D11Device* device);
 	~InstanceShader(){}
 
-	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3D11ShaderResourceView** bone_transform_texture);
+	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
 	void Draw(ID3D11DeviceContext* dc, class InstancingModel* model_resource);
 	void End(ID3D11DeviceContext* dc);
 
@@ -30,8 +30,22 @@ private:
 		DirectX::XMFLOAT4	materialColor;
 	};
 
+	// インスタンシング描画で使用する共通の定数
+	struct CommonDataConstantBuffer
+	{
+		UINT bone_transform_count; // 1回の描画で使用するボーントランスフォームの数
+		DirectX::XMUINT3 dummy;
+	};
+	struct MeshConstantBuffer
+	{
+		UINT offset;            // バッファ内でメッシュの開始位置を示すオフセット値
+		DirectX::XMUINT3 dummy;
+	};
+
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			common_data_constant_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			mesh_constant_buffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>		pixelShader;
