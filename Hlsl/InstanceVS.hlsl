@@ -12,7 +12,7 @@ VsOut main(VsIn vs_in)
     vout.color.rgb = vs_in.color.rgb * material_color.rgb;
     vout.color.a = vs_in.color.a * material_color.a;
     vout.texcoord = vs_in.texcoord;
-    
+        
     // TODO (デバッグ用)
 #if 0
     vout.color.r = (float) (instance_data[vs_in.instance_id].bone_transform_data.animation_first_bone_index) / 255.0f;
@@ -20,6 +20,7 @@ VsOut main(VsIn vs_in)
     vout.color.b = 0.0f;
     vout.color.a = 1.0f;
 #else
+    
     float4x4 transform = bone_transform_texture[0].transform;
     vout.color = float4(
         transform._11,

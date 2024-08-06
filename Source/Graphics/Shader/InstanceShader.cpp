@@ -166,14 +166,6 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3
 	dc->PSSetShader(pixelShader.Get(), nullptr, 0);
 	//dc->IASetInputLayout(inputLayout.Get());
 
-	ID3D11Buffer* constantBuffers[] =
-	{
-		sceneConstantBuffer.Get(),
-		subsetConstantBuffer.Get()
-	};
-	dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
-	dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
-
 	const float blend_factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	dc->OMSetBlendState(blendState.Get(), blend_factor, 0xFFFFFFFF);
 	dc->OMSetDepthStencilState(depthStencilState.Get(), 0);
@@ -198,6 +190,24 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc, ID3
 void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 {
 	const ModelResource* model_resource = model->GetResource();
+
+	// 定数buffer設定
+	{
+		ID3D11Buffer* constantBuffers[] =
+		{
+			sceneConstantBuffer.Get(),
+			subsetConstantBuffer.Get(),
+			model->GetCommonDataConstantBuffer(),
+			model->GetMeshConstantBuffer(),
+		};
+		dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
+		dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
+
+		InstancingModel::CommonDataConstantBuffer common_data_buffer{};
+		common_data_buffer.bone_transform_count = 100;
+		
+		dc->UpdateSubresource(model->GetCommonDataConstantBuffer(), 0, 0, &common_data_buffer, 0, 0);
+	}
 
 	// w_transform更新
 	model->UpdateInstanceData(dc, instancing_count);
@@ -225,6 +235,11 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 				dc->IASetVertexBuffers(0, _countof(vertex_buffers), vertex_buffers, strides, offset);
 				dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 			}
+
+			InstancingModel::MeshConstantBuffer mesh_buffer{};
+			mesh_buffer.offset = 50;
+
+			dc->UpdateSubresource(model->GetMeshConstantBuffer(), 0, 0, &mesh_buffer, 0, 0);
 
 			//	サブセット単位で描画
 			DrawSubset(dc, subset);

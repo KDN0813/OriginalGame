@@ -46,9 +46,11 @@ cbuffer SubsetConstantBuffer : register(b1)
 // インスタンシング描画で使用する共通の定数
 cbuffer CommonDataConstantBuffer : register(b2)
 {
-    uint BoneTransformCount; // 1回の描画で使用するボーントランスフォームの数
+    uint bone_transform_count; // 1回の描画で使用するボーントランスフォームの数
+    uint3 commondata_dummy;
 };
 cbuffer MeshConstantBuffer : register(b3)
 {
     uint offset;            // バッファ内でメッシュの開始位置を示すオフセット値
+    uint3 mesh_dummy;
 }
