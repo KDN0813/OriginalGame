@@ -4,6 +4,7 @@
 #include "Model/ModelResourceManager.h"
 
 InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
+	:bone_transform_count(0), mesh_offsets()
 {
     // TODO (07/01)①モデル作成
         // リソース読み込み
@@ -154,6 +155,18 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 
 		HRESULT hr = device->CreateShaderResourceView(this->instance_data_buffer.Get(), &srvDesc, this->instance_data_structured_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// ボーントランスフォームの数計算
+	{
+		const size_t mesh_count = resource->GetMeshes().size();
+		mesh_offsets.resize(mesh_count);
+		for (size_t mesh_index = 0; mesh_index < mesh_count; ++mesh_index)
+		{
+			const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
+			this->bone_transform_count += mesh.node_indices.size();
+			this->mesh_offsets[mesh_index] = this->bone_transform_count;
+		}
 	}
 }
 

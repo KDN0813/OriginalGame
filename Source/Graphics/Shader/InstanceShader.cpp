@@ -212,7 +212,7 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 		dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
 
 		CommonDataConstantBuffer common_data_buffer{};
-		common_data_buffer.bone_transform_count = 100;
+		common_data_buffer.bone_transform_count = model->GetBoneTransformCount();
 		
 		dc->UpdateSubresource(common_data_constant_buffer.Get(), 0, 0, & common_data_buffer, 0, 0);
 	}
@@ -222,6 +222,7 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 	// w_transform設定
 	dc->VSSetShaderResources(2, 1, model->GetWorldTransformStructuredBuffer());
 
+	size_t mesh_index = 0;
 	for (const ModelResource::Mesh& mesh : model_resource->GetMeshes())
 	{
 		for (const ModelResource::Subset& subset : mesh.subsets)
@@ -244,12 +245,13 @@ void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model)
 				dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 			
 				MeshConstantBuffer mesh_buffer{};
-				mesh_buffer.offset = 50;
+				mesh_buffer.offset = model->GetMeshOffsets()[mesh_index];
 				dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &mesh_buffer, 0, 0);
 			}
 
 			//	サブセット単位で描画
 			DrawSubset(dc, subset);
+			++mesh_index;
 		}
 	}
 }

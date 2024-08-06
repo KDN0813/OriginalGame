@@ -77,6 +77,8 @@ public:
 	const ModelResource* GetResource() const { return resource.get(); }
 	ID3D11ShaderResourceView** GetBoneTransformTexture() { return this->bone_transform_texture.GetAddressOf(); }
 	ID3D11ShaderResourceView** GetWorldTransformStructuredBuffer() { return this->instance_data_structured_buffer.GetAddressOf(); }
+	const UINT& GetBoneTransformCount()const { return this->bone_transform_count; }
+	const std::vector<UINT>& GetMeshOffsets()const { return this->mesh_offsets; }
 
 	// TODO(08/04)計算位置変更する
 	// BTT計算用関数
@@ -96,6 +98,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 	
+	UINT bone_transform_count;			// ボーントランスフォームの数
+	std::vector<UINT> mesh_offsets;		// BTTで使用するメッシュ毎の開始位置までのオフセット値
+
 	// TODO(08/04)計算位置変更する
 	// BTT計算用変数
 	std::vector<Node> nodes;
