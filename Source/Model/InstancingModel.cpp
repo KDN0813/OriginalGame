@@ -270,7 +270,7 @@ void InstancingModel::UpdateAnimationFrame(int instancingIndex)
 
 	++data.anime_frame;
 
-	if (data.anime_frame > animation_lengths[data.anime_index])
+	if (data.anime_frame >= animation_lengths[data.anime_index])
 	{
 		if (data.anime_loop)
 		{
