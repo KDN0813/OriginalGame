@@ -84,6 +84,12 @@ SceneDebug::SceneDebug()
 		}
 	}
 
+	// アニメーション再生
+	for (int i = 0; i < 100; ++i)
+	{
+		instancing_model->PlayAnime(i, i % 10, true);
+	}
+
 	//OutPutImage();
 
 	// 出力テクスチャ(仮)作成
@@ -172,7 +178,7 @@ void SceneDebug::Update(float elapsed_time)
 	cameraController.Update(elapsed_time);
 
 	// アニメーション更新
-	for (int i = 0; i < 100; i += 2)
+	for (int i = 0; i < 100; ++i)
 	{
 		instancing_model->UpdateAnimationFrame(i);
 	}

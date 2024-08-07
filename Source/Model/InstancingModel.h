@@ -21,8 +21,8 @@ public:
 		DirectX::XMFLOAT4X4	transform;
 		UINT anime_frame;	// アニメーションの再生時間
 		int anime_index = 0;
-		bool anime_loop = true;
-		bool anime_play = true;
+		bool anime_loop = false;
+		bool anime_play = false;
 		bool exist;		// 使用中か
 		bool dummy[2];
 	};
@@ -75,6 +75,8 @@ public:
 	void UpdateTransform(int instancingIndex, const DirectX::XMFLOAT4X4& transform);
 	// アニメーション更新
 	void UpdateAnimationFrame(int instancingIndex);
+	// アニメーションの指定
+	void PlayAnime(int instancingIndex,int animeIndex, bool loop = true);
 
 	// InstanceDataの更新
 	void UpdateInstanceData(ID3D11DeviceContext* device, int& instancing_count);

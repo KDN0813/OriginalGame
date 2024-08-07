@@ -242,6 +242,17 @@ void InstancingModel::FreeInstancingIndex(int instancingIndex)
         transform_datas[instancingIndex].exist = false;
 }
 
+void InstancingModel::PlayAnime(int instancingIndex,int animeIndex, bool loop)
+{
+	if (instancingIndex < 0 || instancingIndex >= InstancingMax) return;
+	if (animeIndex < 0 || animeIndex >= resource->GetAnimations().size()) return;
+
+	transform_datas[instancingIndex].anime_index = animeIndex;
+	transform_datas[instancingIndex].anime_frame = 0;
+	transform_datas[instancingIndex].anime_loop = loop;
+	transform_datas[instancingIndex].anime_play = true;
+}
+
 void InstancingModel::UpdateTransform(int instancingIndex, const DirectX::XMFLOAT4X4& transform)
 {
     // TODO (07/01)áCçsóÒåvéZ

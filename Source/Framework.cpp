@@ -8,7 +8,7 @@
 #include "Framework.h"
 
 // ‚’¼“¯ŠúŠÔŠuİ’è
-static const int syncInterval = 0;
+static const int syncInterval = 1;
 
 Framework::Framework(HWND hWnd)
 	: hWnd(hWnd)

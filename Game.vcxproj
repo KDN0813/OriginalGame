@@ -63,7 +63,7 @@
       <AdditionalIncludeDirectories>.\Source;.\External\DirectXTex;.\External\imgui;.\External\cereal-1.3.0\include;.\External\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,11 +118,13 @@
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\Camera\CameraController.h" />
+    <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Debug\DebugObject.h" />
     <ClInclude Include="Source\Debug\DebugManager.h" />
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
     <ClInclude Include="Source\Debug\DebugCereal.h" />
     <ClInclude Include="Source\Framework.h" />
+    <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\RenderContext.h" />
     <ClInclude Include="Source\Graphics\Shader\InstanceShader.h" />
