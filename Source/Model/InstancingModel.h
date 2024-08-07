@@ -104,9 +104,10 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 	
-	UINT bone_transform_count;			// ボーントランスフォームの数
-	std::vector<UINT> mesh_offsets;		// BTTで使用するメッシュ毎の開始位置までのオフセット値
+	UINT bone_transform_count;				// ボーントランスフォームの数
+	std::vector<UINT> mesh_offsets;			// BTTで使用するメッシュ毎の開始位置までのオフセット値
 	std::vector<UINT> animation_lengths;	// アニメーションの長さ(フレーム数)
+	std::vector<UINT> animation_offsets;	// アニメーションの長さ(フレーム数)
 
 
 	// TODO(08/04)計算位置変更する

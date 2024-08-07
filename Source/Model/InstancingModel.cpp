@@ -41,6 +41,18 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 			}
 		}
 
+		// bone_transform_countの計算
+		{
+			const size_t mesh_count = resource->GetMeshes().size();
+			this->mesh_offsets.resize(mesh_count);
+			for (size_t mesh_index = 0; mesh_index < mesh_count; ++mesh_index)
+			{
+				const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
+				this->mesh_offsets[mesh_index] = this->bone_transform_count;
+				this->bone_transform_count += mesh.node_indices.size();
+			}
+		}
+
 #ifdef _DEBUG
 		// TODO(08/06)デバッグ用変数
 		bool top_anime = true;	// 各アニメーションの先頭のであるか
@@ -50,7 +62,9 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 #endif // _DEBUG
 
 		this->animation_lengths.resize(resource->GetAnimations().size());
+		this->animation_offsets.resize(resource->GetAnimations().size());
 		UINT animation_length = {};
+		UINT animation_length_sum = {};
 		// ボーントランスフォーム計算
 		BoneTransformTextureData BTTdata{};
 		{
@@ -138,6 +152,8 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 					++animation_length;
 				}
 				this->animation_lengths[anime_index] = animation_length;
+				this->animation_offsets[anime_index] = animation_length_sum * bone_transform_count;
+				animation_length_sum += animation_length;
 			}
 		}
 
@@ -202,18 +218,6 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 
 		HRESULT hr = device->CreateShaderResourceView(this->instance_data_buffer.Get(), &srvDesc, this->instance_data_structured_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
-	// ボーントランスフォームの数計算
-	{
-		const size_t mesh_count = resource->GetMeshes().size();
-		this->mesh_offsets.resize(mesh_count);
-		for (size_t mesh_index = 0; mesh_index < mesh_count; ++mesh_index)
-		{
-			const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
-			this->mesh_offsets[mesh_index] = this->bone_transform_count;
-			this->bone_transform_count += mesh.node_indices.size();
-		}
 	}
 }
 
@@ -287,7 +291,7 @@ void InstancingModel::UpdateInstanceData(ID3D11DeviceContext* dc, int& instancin
 			if (!transform_datas[i].exist)
 				continue;
 			this->instance_data[instancing_count].frame = transform_datas[i].anime_frame;
-			this->instance_data[instancing_count].animation_start_offset = 0;
+			this->instance_data[instancing_count].animation_start_offset = animation_offsets[transform_datas[i].anime_index];
 			this->instance_data[instancing_count].world_transform = transform_datas[i].transform;
 			++instancing_count;
 		}
