@@ -129,6 +129,7 @@
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\RenderContext.h" />
     <ClInclude Include="Source\Graphics\Shader\FormerInstanceShader.h" />
+    <ClInclude Include="Source\Graphics\Shader\InstanceShader.h" />
     <ClInclude Include="Source\Graphics\Shader\TemporaryShader.h" />
     <ClInclude Include="Source\Graphics\Shader\Shader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderLoader.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Source\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\Graphics\Shader\FormerInstanceShader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\InstanceShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\TemporaryShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderLoader.cpp" />
     <ClCompile Include="Source\Input\GamePad.cpp" />
