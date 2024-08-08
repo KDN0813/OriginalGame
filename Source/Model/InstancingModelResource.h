@@ -5,8 +5,6 @@
 using BoneTransform = DirectX::XMFLOAT4X4;
 using BoneTransformTextureData = std::vector<BoneTransform>;
 
-class InstancingModelComponent;
-
 class InstancingModelResource
 {
 public:
@@ -34,8 +32,6 @@ private:
     std::vector<UINT> mesh_offsets;			// BTTで使用するメッシュ毎の開始位置までのオフセット値
     std::vector<UINT> animation_lengths;	// アニメーションの長さ(フレーム数)
     std::vector<UINT> animation_offsets;	// BTTで使用するアニメーション毎の開始位置までのオフセット値
-
-    std::vector<InstancingModelComponent*> models;  // 描画するモデル
 #pragma region    ボーントランスフォームテクスチャ作成用
 private:
     struct Node
