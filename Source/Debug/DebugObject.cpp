@@ -20,7 +20,7 @@ void DebugObject::Update(float elapsedTime)
     this->model->UpdateTransform(this->transform);
 }
 
-void DebugObject::Render(ID3D11DeviceContext* dc, Shader* shader)
+void DebugObject::Render(ID3D11DeviceContext* dc, DebugShader* shader)
 {
     shader->Draw(dc, this->model.get());
 }

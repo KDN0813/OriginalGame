@@ -120,6 +120,7 @@
     <ClInclude Include="Source\Camera\CameraController.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\InstancingModelComponent.h" />
+    <ClInclude Include="Source\Component\ShaderComponent.h" />
     <ClInclude Include="Source\Debug\DebugObject.h" />
     <ClInclude Include="Source\Debug\DebugManager.h" />
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
@@ -130,7 +131,7 @@
     <ClInclude Include="Source\Graphics\RenderContext.h" />
     <ClInclude Include="Source\Graphics\Shader\FormerInstanceShader.h" />
     <ClInclude Include="Source\Graphics\Shader\TemporaryShader.h" />
-    <ClInclude Include="Source\Graphics\Shader\Shader.h" />
+    <ClInclude Include="Source\Graphics\Shader\DebugShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderLoader.h" />
     <ClInclude Include="Source\Input\GamePad.h" />
     <ClInclude Include="Source\Input\Input.h" />
@@ -146,7 +147,7 @@
     <ClInclude Include="Source\Scene\SceneManager.h" />
     <ClInclude Include="Source\Scene\SceneDebug.h" />
     <ClInclude Include="Source\Scene\SceneTitle.h" />
-    <ClInclude Include="Source\Shader\BaseShader.h" />
+    <ClInclude Include="Source\Shader\Shader.h" />
     <ClInclude Include="Source\Shader\InstanceShader.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Source\Camera\Camera.cpp" />
     <ClCompile Include="Source\Camera\CameraController.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
+    <ClCompile Include="Source\Component\ShaderComponent.cpp" />
     <ClCompile Include="Source\Debug\DebugObject.cpp" />
     <ClCompile Include="Source\Debug\DebugManager.cpp" />
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
@@ -187,7 +189,7 @@
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneDebug.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
-    <ClCompile Include="Source\Shader\BaseShader.cpp" />
+    <ClCompile Include="Source\Shader\Shader.cpp" />
     <ClCompile Include="Source\Shader\InstanceShader.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
   </ItemGroup>

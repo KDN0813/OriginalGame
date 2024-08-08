@@ -126,7 +126,7 @@
     <ClInclude Include="Source\Graphics\Shader\ShaderLoader.h">
       <Filter>Source\Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\Shader.h">
+    <ClInclude Include="Source\Graphics\Shader\DebugShader.h">
       <Filter>Source\Graphics\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\RenderContext.h">
@@ -189,9 +189,10 @@
     <ClInclude Include="Source\Shader\InstanceShader.h">
       <Filter>Source\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shader\BaseShader.h">
+    <ClInclude Include="Source\Shader\Shader.h">
       <Filter>Source\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\ShaderComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -296,8 +297,11 @@
     <ClCompile Include="Source\Shader\InstanceShader.cpp">
       <Filter>Source\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shader\BaseShader.cpp">
+    <ClCompile Include="Source\Shader\Shader.cpp">
       <Filter>Source\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ShaderComponent.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

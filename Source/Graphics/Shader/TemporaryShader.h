@@ -2,10 +2,10 @@
 
 #include <memory>
 #include <wrl.h>
-#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/DebugShader.h"
 
 // 仮のシェーダ
-class TemporaryShader : public Shader
+class TemporaryShader : public DebugShader
 {
 public:
 	TemporaryShader(ID3D11Device* device);

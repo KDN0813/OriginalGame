@@ -8,7 +8,7 @@
 
 #include "Graphics/RenderContext.h"
 
-#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/DebugShader.h"
 #include "Graphics/Shader/FormerInstanceShader.h"
 
 class Graphics
@@ -30,7 +30,7 @@ public:
 
 	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
 	FormerInstanceShader* GetInstanceShader() const { return this->instance_shader.get(); }
-	Shader* GetTemporaryShader() const { return this->temporary_shader.get(); }
+	DebugShader* GetTemporaryShader() const { return this->temporary_shader.get(); }
 
 private:
 	static Graphics*								instance;
@@ -55,7 +55,7 @@ private:
 
 	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
 	std::unique_ptr<FormerInstanceShader> instance_shader;
-	std::unique_ptr<Shader> temporary_shader;
+	std::unique_ptr<DebugShader> temporary_shader;
 
 	float	screen_width;
 	float	screen_height;

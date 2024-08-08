@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include "Model/ModelResource.h"
-#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/DebugShader.h"
 
 using WorldTransform = DirectX::XMFLOAT4X4;
 

@@ -1,9 +1,9 @@
 #pragma once
-#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/DebugShader.h"
 
 class InstancingModelResource;
 
-class InstanceShader : public Shader
+class InstanceShader : public DebugShader
 {
 public:
 	static const int MaxBones = 128;

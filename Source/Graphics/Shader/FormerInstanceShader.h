@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <wrl.h>
-#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/DebugShader.h"
 
 class FormerInstanceShader
 {

@@ -2,7 +2,7 @@
 
 #include <DirectXMath.h>
 #include "Model/Model.h"
-#include "Graphics/Shader/Shader.h"
+#include "Graphics/Shader/DebugShader.h"
 
 // デバッグ用オブジェクトクラス
 class DebugObject
@@ -13,7 +13,7 @@ public:
 
 
     virtual void Update(float elapsedTime);
-    virtual void Render(ID3D11DeviceContext* dc, Shader* shader);
+    virtual void Render(ID3D11DeviceContext* dc, DebugShader* shader);
 
     // 各種設定・取得関数
     const DirectX::XMFLOAT3& GetPosition() const { return this->position; }
