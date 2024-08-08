@@ -148,7 +148,7 @@
     <ClInclude Include="Source\Scene\SceneDebug.h" />
     <ClInclude Include="Source\Scene\SceneTitle.h" />
     <ClInclude Include="Source\Shader\Shader.h" />
-    <ClInclude Include="Source\Shader\InstanceShader.h" />
+    <ClInclude Include="Source\Shader\InstanceModelShader.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
     <ClInclude Include="Source\System\HighResolutionTimer.h" />
@@ -190,7 +190,7 @@
     <ClCompile Include="Source\Scene\SceneDebug.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
     <ClCompile Include="Source\Shader\Shader.cpp" />
-    <ClCompile Include="Source\Shader\InstanceShader.cpp" />
+    <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
