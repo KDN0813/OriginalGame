@@ -52,6 +52,9 @@
     <Filter Include="Source\Component">
       <UniqueIdentifier>{58fe9b5d-6c4a-41a7-8d55-30c092977c88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\GameObject">
+      <UniqueIdentifier>{f0d7a6ae-ad7a-4d18-a0b6-46175f859f43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -168,11 +171,14 @@
     <ClInclude Include="Source\Component\Component.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene\SceneDebug.h">
       <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\GameObject.h">
+      <Filter>Source\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\InstancingModelComponent.h">
+      <Filter>Source\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,8 +272,11 @@
     <ClCompile Include="Source\Scene\SceneDebug.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\GameObject\GameObject.cpp">
+      <Filter>Source\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\InstancingModelComponent.cpp">
+      <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

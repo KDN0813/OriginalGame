@@ -5,7 +5,7 @@ class GameObject;
 class Component
 {
 protected:
-    Component(GameObject* owner) :owner(owner) {};
+    Component() :owner(nullptr), priority(-1) {};
 
 public:
     /**
@@ -29,5 +29,5 @@ public:
 #endif // _DEBUG
 private:
     GameObject* owner;
-    unsigned int priority = -1;//優先度 初期値は最低
+    unsigned int priority;//優先度 初期値は最低
 };
