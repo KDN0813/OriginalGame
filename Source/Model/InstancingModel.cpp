@@ -10,7 +10,7 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
         // リソース読み込み
     resource = ModelResourceManager::Instance()->LoadModelResource(filename);
 
-    transform_datas.resize(InstancingMax);
+    transform_datas.resize(MAX_INSTANCES);
 
     // BTT作成
 	{
@@ -224,7 +224,7 @@ InstancingModel::InstancingModel(ID3D11Device* device, const char* filename)
 int InstancingModel::AllocateInstancingIndex()
 {
     // TODO (07/01)②使われていない番号を割り当てて返す
-    for (int i = 0; i < InstancingMax; ++i)
+    for (int i = 0; i < MAX_INSTANCES; ++i)
     {
         if (!transform_datas[i].exist)
         {
@@ -238,13 +238,13 @@ int InstancingModel::AllocateInstancingIndex()
 void InstancingModel::FreeInstancingIndex(int instancingIndex)
 {
     // TODO (07/01)③割り当てられた番号を解放する
-    if (0 <= instancingIndex && instancingIndex < InstancingMax)
+    if (0 <= instancingIndex && instancingIndex < MAX_INSTANCES)
         transform_datas[instancingIndex].exist = false;
 }
 
 void InstancingModel::PlayAnime(int instancingIndex,int animeIndex, bool loop)
 {
-	if (instancingIndex < 0 || instancingIndex >= InstancingMax) return;
+	if (instancingIndex < 0 || instancingIndex >= MAX_INSTANCES) return;
 	if (animeIndex < 0 || animeIndex >= resource->GetAnimations().size()) return;
 
 	transform_datas[instancingIndex].anime_index = animeIndex;
@@ -256,7 +256,7 @@ void InstancingModel::PlayAnime(int instancingIndex,int animeIndex, bool loop)
 void InstancingModel::UpdateTransform(int instancingIndex, const DirectX::XMFLOAT4X4& transform)
 {
     // TODO (07/01)④行列計算
-    if (0 <= instancingIndex && instancingIndex < InstancingMax)
+    if (0 <= instancingIndex && instancingIndex < MAX_INSTANCES)
         this->transform_datas[instancingIndex].transform = transform;
 }
 
@@ -264,7 +264,7 @@ void InstancingModel::UpdateAnimationFrame(int instancingIndex)
 {
 	TransformData& data = this->transform_datas[instancingIndex];
 
-	if (0 > instancingIndex || instancingIndex >= InstancingMax) return;
+	if (0 > instancingIndex || instancingIndex >= MAX_INSTANCES) return;
 	if (data.anime_index < 0) return;
 	if (!data.anime_play) return;
 
@@ -297,7 +297,7 @@ void InstancingModel::UpdateInstanceData(ID3D11DeviceContext* dc, int& instancin
 
 	// world_transformsを更新
 	{
-		for (int i = 0; i < InstancingMax; ++i)
+		for (int i = 0; i < MAX_INSTANCES; ++i)
 		{
 			if (!transform_datas[i].exist)
 				continue;

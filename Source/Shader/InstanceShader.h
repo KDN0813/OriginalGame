@@ -1,5 +1,7 @@
 #pragma once
-#include "Shader.h"
+#include "Graphics/Shader/Shader.h"
+
+class InstancingModelResource;
 
 class InstanceShader : public Shader
 {

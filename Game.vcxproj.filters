@@ -55,6 +55,9 @@
     <Filter Include="Source\GameObject">
       <UniqueIdentifier>{f0d7a6ae-ad7a-4d18-a0b6-46175f859f43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Shader">
+      <UniqueIdentifier>{ec1e92e4-5b32-41aa-b3ab-3ce215c1064e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -183,8 +186,11 @@
     <ClInclude Include="Source\Model\InstancingModelResource.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\InstanceShader.h">
-      <Filter>Source\Graphics\Shader</Filter>
+    <ClInclude Include="Source\Shader\InstanceShader.h">
+      <Filter>Source\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\BaseShader.h">
+      <Filter>Source\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,8 +293,11 @@
     <ClCompile Include="Source\Model\InstancingModelResource.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\InstanceShader.cpp">
-      <Filter>Source\Graphics\Shader</Filter>
+    <ClCompile Include="Source\Shader\InstanceShader.cpp">
+      <Filter>Source\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\BaseShader.cpp">
+      <Filter>Source\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
