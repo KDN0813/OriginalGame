@@ -166,13 +166,6 @@ InstanceShader::InstanceShader(ID3D11Device* device)
 	}
 }
 
-void InstanceShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
-{
-	Begin(dc,rc);
-	//Draw();
-	End(dc);
-}
-
 void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
 	dc->PSSetShader(this->pixelShader.Get(), nullptr, 0);
@@ -195,7 +188,7 @@ void InstanceShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void InstanceShader::Draw(ID3D11DeviceContext* dc, InstancingModel* model_resource)
+void InstanceShader::Draw(ID3D11DeviceContext* dc)
 {
 }
 

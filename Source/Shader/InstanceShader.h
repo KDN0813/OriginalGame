@@ -1,23 +1,22 @@
 #pragma once
-#include "Graphics/Shader/DebugShader.h"
+#include "Shader/Shader.h"
+#include "Model/InstancingModelResource.h"
 
 class InstancingModelResource;
 
-class InstanceShader : public DebugShader
+class InstanceShader : public Shader
 {
 public:
 	static const int MaxBones = 128;
 	static const int MAX_INSTANCES = 512;
 public:
 	InstanceShader(ID3D11Device* device);
-	~InstanceShader() {}
-
-	void Render(ID3D11DeviceContext* dc, const RenderContext& rc);
+	~InstanceShader() override {}
 
 private:
-	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
-	void Draw(ID3D11DeviceContext* dc, class InstancingModel* model_resource);
-	void End(ID3D11DeviceContext* dc);
+	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc) override;
+	void Draw(ID3D11DeviceContext* dc) override;
+	void End(ID3D11DeviceContext* dc) override;
 
 	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
 private:
