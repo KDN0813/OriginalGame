@@ -180,7 +180,9 @@
     <ClInclude Include="Source\Component\InstancingModelComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Model\InstancingModelResource.h" />
+    <ClInclude Include="Source\Model\InstancingModelResource.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -280,7 +282,7 @@
       <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model\InstancingModelResource.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
