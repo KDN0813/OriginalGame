@@ -163,6 +163,7 @@
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
     <ClCompile Include="Source\Debug\DebugCereal.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\Graphics\Shader\InstanceShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\TemporaryShader.cpp" />

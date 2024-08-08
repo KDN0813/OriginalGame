@@ -13,8 +13,9 @@ public:
      */
     virtual void Update(float elapsedTime) {};
 
-    // ŠeŽæ“¾ŠÖ”
+    // ŠeŽæ“¾EÝ’èŠÖ”
     const unsigned int GetPriority()const noexcept { return priority; }
+    void SetOwner(GameObject* owner) { this->owner = owner; }
 
 #ifdef _DEBUG
     /**
