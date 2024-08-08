@@ -162,7 +162,7 @@
     <ClInclude Include="Source\Graphics\Shader\TemporaryShader.h">
       <Filter>Source\Graphics\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\InstanceShader.h">
+    <ClInclude Include="Source\Graphics\Shader\FormerInstanceShader.h">
       <Filter>Source\Graphics\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Model\InstancingModel.h">
@@ -266,7 +266,7 @@
     <ClCompile Include="Source\Camera\CameraController.cpp">
       <Filter>Source\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\InstanceShader.cpp">
+    <ClCompile Include="Source\Graphics\Shader\FormerInstanceShader.cpp">
       <Filter>Source\Graphics\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model\InstancingModel.cpp">

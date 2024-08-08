@@ -200,7 +200,7 @@ void SceneDebug::Render()
 	{
 		Graphics& graphics = Graphics::Instance();
 		ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-		InstanceShader* instance_shader = graphics.GetInstanceShader();
+		FormerInstanceShader* instance_shader = graphics.GetInstanceShader();
 		Shader* temporary_shader = graphics.GetTemporaryShader();
 		Camera& camera = Camera::Intance();
 		RenderContext rc;
