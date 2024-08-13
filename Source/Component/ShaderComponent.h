@@ -7,10 +7,10 @@ class Shader;
 class ShaderComponent : public Component
 {
 public:
-    ShaderComponent(Shader* shader) :shader(shader) {};
+    ShaderComponent(Shader* const shader);
 
     void Draw(ID3D11DeviceContext* dc);
 private:
-    Shader* shader;
+    Shader* const shader;
 };
 
