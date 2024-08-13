@@ -198,6 +198,9 @@
     <ClInclude Include="Source\Component\ShaderComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\TransformComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -309,6 +312,9 @@
       <Filter>Source\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\ShaderComponent.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\TransformComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
