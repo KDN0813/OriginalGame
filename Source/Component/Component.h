@@ -7,6 +7,7 @@ class Component
 {
 protected:
     Component() :owner(), priority(-1) {};
+    virtual ~Component() {};
 
 public:
     /**

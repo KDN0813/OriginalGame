@@ -9,6 +9,9 @@
 #include "Model/InstancingModel.h"
 #include "GameObject/GameObject.h"
 
+// シェーダー
+#include "Shader/InstanceModelShader.h"
+
 class SceneDebug : public Scene
 {
 public:
@@ -28,6 +31,9 @@ private:
     DebugObject stage;
     std::vector<std::unique_ptr<DebugObject>> models;
     std::unique_ptr<InstancingModel> instancing_model;
+
+    // シェーダー
+    std::unique_ptr<InstanceModelShader> instance_model_shader;
 
     std::shared_ptr<GameObject> debug_object;
 };

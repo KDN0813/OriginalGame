@@ -48,11 +48,21 @@ SceneDebug::SceneDebug()
 		instancing_model->PlayAnime(i, i % 10, true);
 	}
 
+	// シェーダーの作成
+	{
+		instance_model_shader = std::make_unique<InstanceModelShader>(device);
+	}
 	
 	// デバッグオブジェクト作成
 	{
 		debug_object = std::make_shared<GameObject>();
 		debug_object->AddComponent<TransformComponent>();
+		Shader* const shader = instance_model_shader.get();
+
+		// シェーダー設定
+		std::shared_ptr<ShaderComponent> shader_component = 
+			debug_object->AddComponent<ShaderComponent>(shader);
+		shader->AddShaderComponent(shader_component);
 	}
 }
 
@@ -126,6 +136,9 @@ void SceneDebug::Render()
 			instance_shader->End(dc);
 		}
 #endif
+
+		// インスタンシング描画
+		instance_model_shader->Render(dc, rc);
 
 		// 通常描画
 		{

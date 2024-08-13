@@ -42,11 +42,12 @@ public:
 	 * \return 追加したコンポーネントのポインタを返す
 	 */
 	template<is_Component	ComponentType, typename ... Arguments>
-	void AddComponent(Arguments ... args)
+	std::shared_ptr<ComponentType> AddComponent(Arguments ... args)
 	{	
 		std::shared_ptr<ComponentType> component = std::make_shared<ComponentType>(args...);
 		component->SetOwner(shared_from_this());
 		component_vector.emplace_back(component);
+		return component;
 	}
 
 	/**
