@@ -59,7 +59,8 @@ public:
 	void Update(float elapsedTime);
 
 	// ŠeŽæ“¾ŠÖ”
-	const std::string GetName() const { return name; }
+	void SetName(const char* name) { this->name = name; }
+	const std::string GetName() const { return this->name; }
 
 #ifdef _DEBUG
 	/**
@@ -78,8 +79,25 @@ private:
 	 */
 	void sortComponentsByPriority();
 private:
-	const std::string name;
+	std::string name;
 
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
 	ComponentVector component_vector;
+};
+
+class GameObjectManager
+{
+public:
+	GameObjectManager() {};
+	~GameObjectManager() {};
+
+	std::shared_ptr<GameObject> Create();
+
+	void Update(float elapsedTime);
+
+private:
+	void DrawImGui();
+
+private:
+	std::vector<std::shared_ptr<GameObject>> game_object_vector;
 };

@@ -21,3 +21,34 @@ void GameObject::sortComponentsByPriority()
 
     std::sort(component_vector.begin(), component_vector.end(), sort_func);
 }
+
+
+std::shared_ptr<GameObject> GameObjectManager::Create()
+{
+    std::shared_ptr<GameObject> object = std::make_shared<GameObject>();
+    {
+        static int id = 0;
+        char name[256];
+        ::sprintf_s(name, sizeof(name), "object%d", id++);
+        object->SetName(name);
+    }
+    this->game_object_vector.emplace_back(object);
+    return object;
+}
+
+// TODO(08/13)続きここから
+// とりあえずImGui表示するためにGameObjectManagerを作成する
+// 名前長いのでObjectクラスに変更する
+// こいつにRenderクラス持たせて、描画したいobjectだけDraw関数呼ぶとかできそう
+
+void GameObjectManager::Update(float elapsedTime)
+{
+    for (std::shared_ptr<GameObject>& object : game_object_vector)
+    {
+        object->Update(elapsedTime);
+    }
+}
+
+void GameObjectManager::DrawImGui()
+{
+}
