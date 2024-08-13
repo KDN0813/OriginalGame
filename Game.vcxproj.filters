@@ -192,7 +192,12 @@
     <ClInclude Include="Source\Shader\Shader.h">
       <Filter>Source\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\ShaderComponent.h" />
+    <ClInclude Include="Source\Model\InstancingModelResourceManager.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ShaderComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -300,8 +305,11 @@
     <ClCompile Include="Source\Shader\Shader.cpp">
       <Filter>Source\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp">
+      <Filter>Source\Model</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Component\ShaderComponent.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

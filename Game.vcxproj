@@ -138,6 +138,7 @@
     <ClInclude Include="Source\Input\Mouse.h" />
     <ClInclude Include="Source\Model\InstancingModel.h" />
     <ClInclude Include="Source\Model\InstancingModelResource.h" />
+    <ClInclude Include="Source\Model\InstancingModelResourceManager.h" />
     <ClInclude Include="Source\Model\Model.h" />
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Model\ModelResourceManager.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Model\InstancingModel.cpp" />
     <ClCompile Include="Source\Model\InstancingModelResource.cpp" />
+    <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp" />
     <ClCompile Include="Source\Model\Model.cpp" />
     <ClCompile Include="Source\Model\ModelResource.cpp" />
     <ClCompile Include="Source\Model\ModelResourceManager.cpp" />
