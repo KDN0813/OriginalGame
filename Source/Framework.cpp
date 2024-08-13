@@ -21,7 +21,7 @@ Framework::Framework(HWND hWnd)
 #ifdef _DEBUG
 	sceneManager.ChangeScene(new SceneDebug);
 #else
-	SceneManager::Instance().ChangeScene(new SceneTitle);
+	sceneManager.ChangeScene(new SceneDebug);
 #endif // _DEBUG
 }
 
