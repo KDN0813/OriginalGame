@@ -15,7 +15,7 @@ public:
 	virtual ~Shader() {}
 
 	/**
-	 * \fn Begin
+	 * \fn Render
 	 * \brief •`‰æˆ—(ŠJn‚©‚çI—¹‚Ü‚Å‚ğ‚Ü‚Æ‚ß‚½ŠÖ”)
 	 * 
 	 * \param dc

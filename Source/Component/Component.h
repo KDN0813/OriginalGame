@@ -1,11 +1,12 @@
 #pragma once
+#include <memory>
 
 class GameObject;
 
 class Component
 {
 protected:
-    Component() :owner(nullptr), priority(-1) {};
+    Component() :owner(), priority(-1) {};
 
 public:
     /**
@@ -14,8 +15,9 @@ public:
     virtual void Update(float elapsedTime) {};
 
     // 各取得・設定関数
-    const unsigned int GetPriority()const noexcept { return priority; }
-    void SetOwner(GameObject* owner) { this->owner = owner; }
+    const unsigned int GetPriority()const noexcept { return this->priority; }
+    void SetOwner(std::shared_ptr<GameObject> owner) { this->owner = owner; }
+    std::shared_ptr<GameObject> GetActor() { return this->owner.lock(); }
 
 #ifdef _DEBUG
     /**
@@ -28,6 +30,6 @@ public:
     virtual void DrawDebugPrimitive() {};
 #endif // _DEBUG
 private:
-    GameObject* owner;
+    std::weak_ptr<GameObject>	owner;
     unsigned int priority;//優先度 初期値は最低
 };

@@ -2,12 +2,13 @@
 #include <vector>
 #include <string>
 #include <concepts>
+#include <memory>
 #include "Component/Component.h"
 
 template <class T>
 concept is_Component = requires{ std::is_base_of_v<Component, T>; };
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 	GameObject() {};
@@ -18,35 +19,34 @@ public:
 	 * @brief コンポーネントを取得する
 	 * @tparam ComponentType 取得コンポーネントの型
 	 * 
-	 * \return コンポーネントのポインタを返す
+	 * \return コンポーネントのシェアドポインタを返す
 	 */
 	template<is_Component ComponentType>
-	ComponentType* GetComponent()
+	std::shared_ptr<ComponentType> GetComponent()
 	{
-		ComponentType* return_component = nullptr;
-
-		for (auto& component : components)
+		for (std::shared_ptr<Component>& component : component_vector)
 		{
-			return_component = dynamic_cast<ComponentType*>(component);
-			if (return_component != nullptr) break;
+			std::shared_ptr<ComponentType> return_component 
+				= std::dynamic_pointer_cast<ComponentType>(component);
+			if (return_component == nullptr) continue;
+			return return_component;
 		}
-
-		return return_component;
+		return nullptr;
 	}
 	
 	/**
-	 * @fn TypeComponent
+	 * @fn AddComponent
 	 * @brief コンポーネント追加関数
 	 * @tparam ComponentType 追加するコンポーネントの型
 	 * @tparam Arguments 可変長引数型種
 	 * \return 追加したコンポーネントのポインタを返す
 	 */
 	template<is_Component	ComponentType, typename ... Arguments>
-	ComponentType* AddComponent(Arguments ... args)
+	void AddComponent(Arguments ... args)
 	{	
-		ComponentType* component = new ComponentType(std::forward<Arguments>(args)...);
-		AddComponent(component);
-		return	component;
+		std::shared_ptr<ComponentType> component = std::make_shared<ComponentType>(args...);
+		component->SetOwner(shared_from_this());
+		component_vector.emplace_back(component);
 	}
 
 	/**
@@ -71,12 +71,6 @@ public:
 	void DrawDebugPrimitive() {};
 #endif // _DEBUG
 private:
-	void AddComponent(Component* component)
-	{
-		component->SetOwner(this);
-		components.emplace_back(component);
-	}
-
 	/**
 	 * @fn sortComponentsByPriority
 	 * @brief コンポーネントを優先意順でソートする
@@ -84,5 +78,7 @@ private:
 	void sortComponentsByPriority();
 private:
 	const std::string name;
-	std::vector<Component*> components;
+
+	using ComponentVector = std::vector<std::shared_ptr<Component>>;
+	ComponentVector component_vector;
 };

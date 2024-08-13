@@ -4,9 +4,9 @@
 
 void GameObject::Update(float elapsedTime)
 {
-    sortComponentsByPriority();
+    //sortComponentsByPriority();
 
-    for (auto& component : components)
+    for (auto& component : component_vector)
     {
         component->Update(elapsedTime);
     }
@@ -14,10 +14,10 @@ void GameObject::Update(float elapsedTime)
 
 void GameObject::sortComponentsByPriority()
 {
-    auto sort_func = [](Component* lhs, Component* rhs) -> bool
+    auto sort_func = [](std::shared_ptr<Component>& lhs, std::shared_ptr<Component>& rhs) -> bool
         {
             return lhs->GetPriority() > rhs->GetPriority();
         };
 
-    std::sort(components.begin(), components.end(), sort_func);
+    std::sort(component_vector.begin(), component_vector.end(), sort_func);
 }
