@@ -2,8 +2,6 @@
 #include "Shader/Shader.h"
 #include "Model/InstancingModelResource.h"
 
-class InstancingModelResource;
-
 class InstanceModelShader : public Shader
 {
 public:
@@ -56,7 +54,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depthStencilState;
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
-
-	std::vector<InstancingModelResource> instancing_models;	// •`‰æ‚·‚éƒ‚ƒfƒ‹‚Ìî•ñ
 };
 

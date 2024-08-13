@@ -171,9 +171,17 @@ void InstanceModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& r
 {
 	Begin(dc, rc);
 
-	for (auto& shader_component : shader_components)
+	for (auto& shader_component : shader_component_vector)
 	{
-		shader_component->Draw(dc);
+		if (shader_component.expired() == false)
+		{
+			std::shared_ptr<ShaderComponent> shader = shader_component.lock();
+			shader->Draw(dc);
+		}
+		else
+		{
+			// TODO (08/13) íœˆ—ì¬
+		}
 	}
 
 	End(dc);

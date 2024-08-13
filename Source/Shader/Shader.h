@@ -3,6 +3,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <vector>
+#include <memory>
 #include "Graphics/RenderContext.h"
 
 class ShaderComponent;
@@ -13,6 +14,8 @@ class Shader
 public:
 	Shader() {}
 	virtual ~Shader() {}
+
+	void AddShaderComponent(const std::shared_ptr<ShaderComponent>& shader_component);
 
 	/**
 	 * \fn Render
@@ -48,5 +51,5 @@ private:
 	virtual void End(ID3D11DeviceContext* context) = 0;
 
 protected:
-	std::vector<ShaderComponent*> shader_components;
+	std::vector<std::weak_ptr<ShaderComponent>> shader_component_vector;
 };

@@ -7,6 +7,7 @@
 #include "Camera/Camera.h"
 
 #include "Component/TransformComponent.h"
+#include "Component/ShaderComponent.h"
 
 SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
