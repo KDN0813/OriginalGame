@@ -162,6 +162,48 @@ void SceneDebug::Render()
 #endif // _DEBUG
 }
 
+#ifdef _DEBUG
+
 void SceneDebug::DrawImGui()
 {
+	ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(300.0f, 400.0f), ImGuiCond_FirstUseEver);
+
+	if (ImGui::Begin("DebugMenu", nullptr, ImGuiWindowFlags_MenuBar))
+	{
+		// モード切り替え処理
+		if (ImGui::BeginMenuBar()) 
+		{
+			if (ImGui::BeginMenu("Mode"))
+			{
+				if (ImGui::MenuItem("Object")) 
+				{
+					mode_index = SceneDebug::ImGuiMode::Object;
+				}
+				if (ImGui::MenuItem("System")) 
+				{
+					mode_index = SceneDebug::ImGuiMode::System;
+				}
+
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+
+		// 各モード表示
+		switch (mode_index)
+		{
+		case SceneDebug::ImGuiMode::Object:
+			ImGui::Text("Object");
+			break;
+		case SceneDebug::ImGuiMode::System:
+			ImGui::Text("System");
+			break;
+		default:
+			break;
+		}
+	}
+	ImGui::End();
 }
+
+#endif // _DEBUG
