@@ -55,7 +55,8 @@ SceneDebug::SceneDebug()
 	
 	// デバッグオブジェクト作成
 	{
-		debug_object = std::make_shared<Object>();
+		debug_object2 = object_manager.Create();
+		debug_object = object_manager.Create();
 		debug_object->AddComponent<TransformComponent>();
 		Shader* const shader = instance_model_shader.get();
 
@@ -101,6 +102,8 @@ void SceneDebug::Update(float elapsed_time)
 	{
 		instancing_model->UpdateAnimationFrame(i);
 	}
+
+	object_manager.Update(elapsed_time);
 }
 
 void SceneDebug::Render()
@@ -195,6 +198,7 @@ void SceneDebug::DrawImGui()
 		{
 		case SceneDebug::ImGuiMode::Object:
 			ImGui::Text("Object");
+			object_manager.DrawDebugGUI();
 			break;
 		case SceneDebug::ImGuiMode::System:
 			ImGui::Text("System");

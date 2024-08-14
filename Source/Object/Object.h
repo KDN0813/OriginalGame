@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <set>
 #include <string>
 #include <concepts>
 #include <memory>
@@ -61,6 +62,21 @@ public:
 	// 各取得関数
 	void SetName(const char* name) { this->name = name; }
 	const std::string GetName() const { return this->name; }
+	const char* GetNameCStr() const { return this->name.c_str(); }
+	const bool GetIsActive() { return this->is_active; }
+	void SetIsActive(const bool is_active) { this->is_active = is_active; }
+
+private:
+	/**
+	 * @fn sortComponentsByPriority
+	 * @brief コンポーネントを優先意順でソートする
+	 */
+	void sortComponentsByPriority();
+private:
+	std::string name;
+	bool is_active = true;
+	using ComponentVector = std::vector<std::shared_ptr<Component>>;
+	ComponentVector component_vector;
 
 #ifdef _DEBUG
 	/**
@@ -72,17 +88,6 @@ public:
 	 */
 	void DrawDebugPrimitive() {};
 #endif // _DEBUG
-private:
-	/**
-	 * @fn sortComponentsByPriority
-	 * @brief コンポーネントを優先意順でソートする
-	 */
-	void sortComponentsByPriority();
-private:
-	std::string name;
-
-	using ComponentVector = std::vector<std::shared_ptr<Component>>;
-	ComponentVector component_vector;
 };
 
 class ObjectManager
@@ -95,11 +100,19 @@ public:
 
 	void Update(float elapsedTime);
 
-	void DrawImGui();
 private:
-	void DrawLister();
-	void DrawDetail();
+	std::vector<std::shared_ptr<Object>> object_vector;
+
+#ifdef _DEBUG
+public:
+	void DrawDebugGUI();
 
 private:
-	std::vector<std::shared_ptr<Object>> game_object_vector;
+	// 詳細表示するobjectの選択
+	void DrawLister();
+	// objectの詳細表示
+	void DrawDetail();
+private:
+	std::set<std::shared_ptr<Object>> selection_objects;
+#endif _DEBUG
 };

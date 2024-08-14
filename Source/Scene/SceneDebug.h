@@ -42,5 +42,7 @@ private:
     std::unique_ptr<InstanceModelShader> instance_model_shader;
 
     std::shared_ptr<Object> debug_object;
+    std::shared_ptr<Object> debug_object2;
+    ObjectManager object_manager;
 };
 

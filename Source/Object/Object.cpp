@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include "Object.h"
 #include <algorithm>
 #include "Component/Component.h"
@@ -32,7 +33,7 @@ std::shared_ptr<Object> ObjectManager::Create()
         ::sprintf_s(name, sizeof(name), "object%d", id++);
         object->SetName(name);
     }
-    this->game_object_vector.emplace_back(object);
+    this->object_vector.emplace_back(object);
     return object;
 }
 
@@ -43,16 +44,56 @@ std::shared_ptr<Object> ObjectManager::Create()
 
 void ObjectManager::Update(float elapsedTime)
 {
-    for (std::shared_ptr<Object>& object : game_object_vector)
+    for (std::shared_ptr<Object>& object : object_vector)
     {
         object->Update(elapsedTime);
     }
 }
 
-void ObjectManager::DrawImGui()
+void ObjectManager::DrawDebugGUI()
 {
-    for (std::shared_ptr<Object>& object : game_object_vector)
+    DrawLister();
+    DrawDetail();
+}
+
+void ObjectManager::DrawLister()
+{
+    for (std::shared_ptr<Object>& object : object_vector)
     {
-        object->DrawDebugGUI();
+        ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_Leaf;
+
+        if (selection_objects.find(object) != selection_objects.end())
+        {
+            nodeFlags |= ImGuiTreeNodeFlags_Selected;
+            nodeFlags |= ImGuiTreeNodeFlags_Bullet;
+        }
+
+        // 非アクティブのオブジェクトは灰色に表示させる
+        bool is_active = (!object->GetIsActive());
+        if (is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+
+        ImGui::TreeNodeEx(object.get(), nodeFlags, object->GetNameCStr());
+
+        if (is_active) ImGui::PopStyleColor();
+
+        // 選択
+        if (ImGui::IsItemClicked())
+        {
+            // 単一選択だけ対応しておく
+            ImGuiIO& io = ImGui::GetIO();
+            selection_objects.clear();
+            selection_objects.insert(object);
+        }
+        // (非)アクティブ化
+        if (ImGui::IsItemClicked(1))
+        {
+            object->SetIsActive(!object->GetIsActive());
+        }
+
+        ImGui::TreePop();
     }
+}
+
+void ObjectManager::DrawDetail()
+{
 }
