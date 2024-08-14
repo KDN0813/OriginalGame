@@ -79,10 +79,11 @@ private:
 	ComponentVector component_vector;
 
 #ifdef _DEBUG
+public:
 	/**
 	 * デバックの情報を3D画面上に出力する関数
 	 */
-	void DrawDebugGUI() {};
+	void DrawDebugGUI();
 	/**
 	 * デバックの情報を3D画面上に出力する関数
 	 */
@@ -113,6 +114,6 @@ private:
 	// objectの詳細表示
 	void DrawDetail();
 private:
-	std::set<std::shared_ptr<Object>> selection_objects;
+	std::set<std::shared_ptr<Object>> selection_object_vector;
 #endif _DEBUG
 };

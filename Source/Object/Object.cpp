@@ -23,6 +23,15 @@ void Object::sortComponentsByPriority()
     std::sort(component_vector.begin(), component_vector.end(), sort_func);
 }
 
+#ifdef _DEBUG
+
+void Object::DrawDebugGUI()
+{
+    ImGui::Text(GetNameCStr());
+}
+
+#endif _DEBUG
+
 
 std::shared_ptr<Object> ObjectManager::Create()
 {
@@ -50,6 +59,8 @@ void ObjectManager::Update(float elapsedTime)
     }
 }
 
+#ifdef _DEBUG
+
 void ObjectManager::DrawDebugGUI()
 {
     DrawLister();
@@ -62,7 +73,7 @@ void ObjectManager::DrawLister()
     {
         ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_Leaf;
 
-        if (selection_objects.find(object) != selection_objects.end())
+        if (selection_object_vector.find(object) != selection_object_vector.end())
         {
             nodeFlags |= ImGuiTreeNodeFlags_Selected;
             nodeFlags |= ImGuiTreeNodeFlags_Bullet;
@@ -81,13 +92,13 @@ void ObjectManager::DrawLister()
         {
             // 単一選択だけ対応しておく
             ImGuiIO& io = ImGui::GetIO();
-            selection_objects.clear();
-            selection_objects.insert(object);
+            selection_object_vector.clear();
+            selection_object_vector.insert(object);
         }
         // (非)アクティブ化
         if (ImGui::IsItemClicked(1))
         {
-            object->SetIsActive(!object->GetIsActive());
+            object->SetIsActive(is_active);
         }
 
         ImGui::TreePop();
@@ -96,4 +107,17 @@ void ObjectManager::DrawLister()
 
 void ObjectManager::DrawDetail()
 {
+    ImGui::SetNextWindowPos(ImVec2(970, 10.0f), ImGuiCond_Appearing);
+    ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
+
+    ImGui::Begin("Object Detail", nullptr, ImGuiWindowFlags_None);
+    std::shared_ptr<Object> lastSelected = selection_object_vector.empty() ? nullptr : *selection_object_vector.rbegin();
+    if (lastSelected != nullptr)
+    {
+        lastSelected->DrawDebugGUI();
+    }
+
+    ImGui::End();
 }
+
+#endif // _DEBUG
