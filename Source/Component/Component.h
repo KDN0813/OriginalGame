@@ -16,14 +16,6 @@ public:
     // 名前取得
     virtual const char* GetName()const = 0;
     
-    /**
-     * \fn
-     * \brief 必要なコンポーネントをweak_ptrで取得する。
-     * コンストラクタで取得すると追加順が縛られるため追加が終わってから
-     * この関数を呼び出す
-     */
-    virtual void GetWeakComponent() {};
-    
     // 各取得・設定関数
     const unsigned int GetPriority()const noexcept { return this->priority; }
     void SetOwner(std::shared_ptr<Object> owner) { this->owner = owner; }

@@ -1,7 +1,7 @@
 #include "TransformComponent.h"
 #include <imgui.h>
 
-void TransformComponent::Update(float elapsed_time)
+void Transform3DComponent::Update(float elapsed_time)
 {
 	// ’l‚ª•ÏX‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Îˆ—‚µ‚È‚¢
 	if (!this->change_value) return;
@@ -16,7 +16,7 @@ void TransformComponent::Update(float elapsed_time)
 	DirectX::XMStoreFloat4x4(&transform, W);
 }
 
-const DirectX::XMVECTOR TransformComponent::AddPositionVec(const DirectX::XMVECTOR& vec)
+const DirectX::XMVECTOR Transform3DComponent::AddPositionVec(const DirectX::XMVECTOR& vec)
 {
 	this->change_value = true;
 	DirectX::XMVECTOR ans = DirectX::XMVectorAdd(vec, DirectX::XMLoadFloat3(&this->position));
@@ -24,7 +24,7 @@ const DirectX::XMVECTOR TransformComponent::AddPositionVec(const DirectX::XMVECT
 	return ans;
 }
 
-const DirectX::XMFLOAT3& TransformComponent::AddPosition(const DirectX::XMFLOAT3 vec)
+const DirectX::XMFLOAT3& Transform3DComponent::AddPosition(const DirectX::XMFLOAT3 vec)
 {
 	this->change_value = true;
 	this->position.x += vec.x;
@@ -35,8 +35,11 @@ const DirectX::XMFLOAT3& TransformComponent::AddPosition(const DirectX::XMFLOAT3
 
 #ifdef _DEBUG
 
-void TransformComponent::DrawDebugGUI()
+void Transform3DComponent::DrawDebugGUI()
 {
+	ImGui::InputFloat3("position", &this->position.x);
+	ImGui::InputFloat3("rotation", &this->rotation.x);
+	ImGui::InputFloat3("scale", &this->scale.x);
 }
 
 #endif // _DEBUG

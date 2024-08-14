@@ -8,6 +8,7 @@
 
 #include "Component/TransformComponent.h"
 #include "Component/ShaderComponent.h"
+#include "Component/MovementComponent.h"
 
 SceneDebug::SceneDebug()
 	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
@@ -57,7 +58,9 @@ SceneDebug::SceneDebug()
 	{
 		debug_object2 = object_manager.Create();
 		debug_object = object_manager.Create();
-		debug_object->AddComponent<TransformComponent>();
+		debug_object->AddComponent<Transform3DComponent>();
+		debug_object->AddComponent<MovementComponent>();
+		debug_object;
 		Shader* const shader = instance_model_shader.get();
 
 		// シェーダー設定

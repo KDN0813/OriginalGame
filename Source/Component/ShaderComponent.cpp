@@ -32,7 +32,7 @@ void ShaderComponent::InstancingAdd()
     //this->shader->InstancingAdd();
 }
 
-void ShaderComponent::GetWeakComponent()
+void ShaderComponent::SetWeakComponent()
 {
     //auto owner = GetOwner();
     //this->instancing_model_Wptr = owner->GetComponent<InstancingModelComponent>();

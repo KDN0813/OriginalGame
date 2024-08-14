@@ -37,8 +37,34 @@ public:
 	}
 	
 	/**
+	 * @fn GetComponent
+	 * @brief コンポーネントを取得する
+	 * 引数のweak_ptrのリンクが切れていなければlock関数を用いて値を返す
+	 * 切れていた場合は総当たりで検索する
+	 * @tparam ComponentType 取得コンポーネントの型
+	 * 
+	 * \param componentWptr リンク切れを確認するweak_ptr
+	 * \return コンポーネントのシェアドポインタを返す
+	 */
+	template<is_Component ComponentType>
+	std::shared_ptr<ComponentType> GetComponent(std::weak_ptr<ComponentType> componentWptr)
+	{
+		auto component = componentWptr.lock();
+		if (component)
+		{
+			return component;
+		}
+
+		// コンポーネントを取得する
+		component = GetComponent<ComponentType>();
+		return component;
+	}
+
+	/**
 	 * @fn AddComponent
-	 * @brief コンポーネント追加関数
+	 * @brief コンポーネント追加関数。
+	 * 全てのコンポーネントの追加が終わったらAfterComponentAdded関数を読んでください
+	 * 
 	 * @tparam ComponentType 追加するコンポーネントの型
 	 * @tparam Arguments 可変長引数型種
 	 * \return 追加したコンポーネントのポインタを返す

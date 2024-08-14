@@ -2,11 +2,11 @@
 #include "Component.h"
 #include <DirectXMath.h>
 
-class TransformComponent : public Component
+class Transform3DComponent : public Component
 {
 public:
-    TransformComponent() {};
-    ~TransformComponent() {};
+    Transform3DComponent() {};
+    ~Transform3DComponent() {};
 
     void Update(float elapsed_time)override;
     const char* GetName()const override { return "TransformComponent"; }
