@@ -8,11 +8,11 @@
 template <class T>
 concept is_Component = requires{ std::is_base_of_v<Component, T>; };
 
-class GameObject : public std::enable_shared_from_this<GameObject>
+class Object : public std::enable_shared_from_this<Object>
 {
 public:
-	GameObject() {};
-	~GameObject() {};
+	Object() {};
+	~Object() {};
 
 	/**
 	 * @fn GetComponent
@@ -85,19 +85,21 @@ private:
 	ComponentVector component_vector;
 };
 
-class GameObjectManager
+class ObjectManager
 {
 public:
-	GameObjectManager() {};
-	~GameObjectManager() {};
+	ObjectManager() {};
+	~ObjectManager() {};
 
-	std::shared_ptr<GameObject> Create();
+	std::shared_ptr<Object> Create();
 
 	void Update(float elapsedTime);
 
-private:
 	void DrawImGui();
+private:
+	void DrawLister();
+	void DrawDetail();
 
 private:
-	std::vector<std::shared_ptr<GameObject>> game_object_vector;
+	std::vector<std::shared_ptr<Object>> game_object_vector;
 };

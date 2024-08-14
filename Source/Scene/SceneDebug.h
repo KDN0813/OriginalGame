@@ -7,7 +7,7 @@
 #include "Debug/DebugCereal.h"
 #include "Debug/DebugObject.h"
 #include "Model/InstancingModel.h"
-#include "GameObject/GameObject.h"
+#include "Object/Object.h"
 
 // シェーダー
 #include "Shader/InstanceModelShader.h"
@@ -41,6 +41,6 @@ private:
     // シェーダー
     std::unique_ptr<InstanceModelShader> instance_model_shader;
 
-    std::shared_ptr<GameObject> debug_object;
+    std::shared_ptr<Object> debug_object;
 };
 

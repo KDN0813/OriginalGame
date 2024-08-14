@@ -55,7 +55,7 @@ SceneDebug::SceneDebug()
 	
 	// デバッグオブジェクト作成
 	{
-		debug_object = std::make_shared<GameObject>();
+		debug_object = std::make_shared<Object>();
 		debug_object->AddComponent<TransformComponent>();
 		Shader* const shader = instance_model_shader.get();
 

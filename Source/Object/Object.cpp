@@ -1,8 +1,8 @@
-#include "GameObject.h"
+#include "Object.h"
 #include <algorithm>
 #include "Component/Component.h"
 
-void GameObject::Update(float elapsedTime)
+void Object::Update(float elapsedTime)
 {
     //sortComponentsByPriority();
 
@@ -12,7 +12,7 @@ void GameObject::Update(float elapsedTime)
     }
 }
 
-void GameObject::sortComponentsByPriority()
+void Object::sortComponentsByPriority()
 {
     auto sort_func = [](std::shared_ptr<Component>& lhs, std::shared_ptr<Component>& rhs) -> bool
         {
@@ -23,9 +23,9 @@ void GameObject::sortComponentsByPriority()
 }
 
 
-std::shared_ptr<GameObject> GameObjectManager::Create()
+std::shared_ptr<Object> ObjectManager::Create()
 {
-    std::shared_ptr<GameObject> object = std::make_shared<GameObject>();
+    std::shared_ptr<Object> object = std::make_shared<Object>();
     {
         static int id = 0;
         char name[256];
@@ -41,14 +41,18 @@ std::shared_ptr<GameObject> GameObjectManager::Create()
 // 名前長いのでObjectクラスに変更する
 // こいつにRenderクラス持たせて、描画したいobjectだけDraw関数呼ぶとかできそう
 
-void GameObjectManager::Update(float elapsedTime)
+void ObjectManager::Update(float elapsedTime)
 {
-    for (std::shared_ptr<GameObject>& object : game_object_vector)
+    for (std::shared_ptr<Object>& object : game_object_vector)
     {
         object->Update(elapsedTime);
     }
 }
 
-void GameObjectManager::DrawImGui()
+void ObjectManager::DrawImGui()
 {
+    for (std::shared_ptr<Object>& object : game_object_vector)
+    {
+        object->DrawDebugGUI();
+    }
 }

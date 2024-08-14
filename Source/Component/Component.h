@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-class GameObject;
+class Object;
 
 class Component
 {
@@ -17,8 +17,8 @@ public:
 
     // 各取得・設定関数
     const unsigned int GetPriority()const noexcept { return this->priority; }
-    void SetOwner(std::shared_ptr<GameObject> owner) { this->owner = owner; }
-    std::shared_ptr<GameObject> GetActor() { return this->owner.lock(); }
+    void SetOwner(std::shared_ptr<Object> owner) { this->owner = owner; }
+    std::shared_ptr<Object> GetActor() { return this->owner.lock(); }
 
 #ifdef _DEBUG
     /**
@@ -31,6 +31,6 @@ public:
     virtual void DrawDebugPrimitive() {};
 #endif // _DEBUG
 private:
-    std::weak_ptr<GameObject>	owner;
+    std::weak_ptr<Object>	owner;
     unsigned int priority;//優先度 初期値は最低
 };

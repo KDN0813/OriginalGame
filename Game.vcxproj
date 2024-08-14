@@ -127,7 +127,6 @@
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
     <ClInclude Include="Source\Debug\DebugCereal.h" />
     <ClInclude Include="Source\Framework.h" />
-    <ClInclude Include="Source\GameObject\GameObject.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\RenderContext.h" />
     <ClInclude Include="Source\Graphics\Shader\FormerInstanceShader.h" />
@@ -143,6 +142,7 @@
     <ClInclude Include="Source\Model\Model.h" />
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Model\ModelResourceManager.h" />
+    <ClInclude Include="Source\Object\Object.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\Scene\SceneGame.h" />
     <ClInclude Include="Source\Scene\SceneLoading.h" />
@@ -173,7 +173,6 @@
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
     <ClCompile Include="Source\Debug\DebugCereal.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
-    <ClCompile Include="Source\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\Graphics\Shader\FormerInstanceShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\TemporaryShader.cpp" />
@@ -188,6 +187,7 @@
     <ClCompile Include="Source\Model\Model.cpp" />
     <ClCompile Include="Source\Model\ModelResource.cpp" />
     <ClCompile Include="Source\Model\ModelResourceManager.cpp" />
+    <ClCompile Include="Source\Object\Object.cpp" />
     <ClCompile Include="Source\Scene\SceneGame.cpp" />
     <ClCompile Include="Source\Scene\SceneLoading.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
