@@ -154,7 +154,7 @@ void ObjectManager::DrawLister()
 void ObjectManager::DrawDetail()
 {
     ImGui::SetNextWindowPos(ImVec2(970, 10.0f), ImGuiCond_Appearing);
-    ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
 
     ImGui::Begin("Object Detail", nullptr, ImGuiWindowFlags_None);
     std::shared_ptr<Object> lastSelected = selection_object_vector.empty() ? nullptr : *selection_object_vector.rbegin();
