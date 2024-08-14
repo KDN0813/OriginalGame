@@ -6,7 +6,7 @@ class Object;
 class Component
 {
 protected:
-    Component() :owner(), priority(-1) {};
+    Component(){};
     virtual ~Component() {};
 
 public:
@@ -20,10 +20,13 @@ public:
     const unsigned int GetPriority()const noexcept { return this->priority; }
     void SetOwner(std::shared_ptr<Object> owner) { this->owner = owner; }
     std::shared_ptr<Object> GetOwner() { return this->owner.lock(); }
+    const unsigned int GetComponentID() { return this->component_id; }
+    void SetComponentID(const int unique_id) { this->component_id = unique_id; }
 
 private:
-    std::weak_ptr<Object>	owner;
-    unsigned int priority;//優先度 初期値は最低
+    std::weak_ptr<Object>	owner = {};
+    unsigned int priority = -1;//優先度 初期値は最低
+    unsigned int component_id = {};
 
 #ifdef _DEBUG
 public:
@@ -35,6 +38,9 @@ public:
      * デバックの情報を3D画面上に出力する関数
      */
     virtual void DrawDebugPrimitive() {};
+
+    const bool GetIsActive() { return this->is_active; }
+    void SetIsActive(const bool is_active) { this->is_active = is_active; }
 
 protected:
     bool is_active = false;

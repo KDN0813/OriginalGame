@@ -16,6 +16,31 @@ public:
 	~Object() {};
 
 	/**
+	 * @fn ComponentIDAllocate
+	 * @brief コンポーネントIDを割り振る
+	 * 
+	 * @return 割り振られたID
+	 */
+	int ComponentIDAllocate()
+	{
+		static int id = 0;
+		return id++;
+	}
+	/**
+	 * @fn GetComponentID
+	 * @brief コンポーネントIDを取得
+	 * 
+	 * @tparam コンポーネントの型
+	 * @return コンポーネントID
+	 */
+	template<is_Component ComponentType>
+	int GetComponentID()
+	{
+		static int id = ComponentIDAllocate();
+		return id;
+	}
+
+	/**
 	 * @fn GetComponent
 	 * @brief コンポーネントを取得する
 	 * @tparam ComponentType 取得コンポーネントの型
@@ -74,6 +99,7 @@ public:
 	{	
 		std::shared_ptr<ComponentType> component = std::make_shared<ComponentType>(args...);
 		component->SetOwner(shared_from_this());
+		component->SetComponentID(GetComponentID<ComponentType>());
 		component_vector.emplace_back(component);
 		return component;
 	}

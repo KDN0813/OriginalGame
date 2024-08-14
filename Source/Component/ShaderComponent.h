@@ -12,7 +12,6 @@ public:
     ShaderComponent(Shader* const shader);
 
     const char* GetName()const override { return "ShaderComponent"; }
-    void SetWeakComponent()override;
 
     void Draw(ID3D11DeviceContext* dc);
 

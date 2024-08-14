@@ -1,6 +1,7 @@
 #include <imgui.h>
 #include "Object.h"
 #include <algorithm>
+#include <string>
 #include "Component/Component.h"
 
 void Object::Update(float elapsedTime)
@@ -9,6 +10,10 @@ void Object::Update(float elapsedTime)
 
     for (auto& component : component_vector)
     {
+#ifdef _DEBUG
+        if (!component->GetIsActive()) return;
+#endif // _DEBUG
+
         component->Update(elapsedTime);
     }
 }
@@ -43,6 +48,13 @@ void Object::DrawDebugGUI()
 
     for (std::shared_ptr<Component>& component : component_vector)
     {
+        std::string label = "##" + std::to_string(component->GetComponentID());
+        bool component_is_active = component->GetIsActive();
+        if (ImGui::Checkbox(label.c_str(), &component_is_active))
+        {
+            component->SetIsActive(component_is_active);
+        }
+        ImGui::SameLine();
         if (ImGui::CollapsingHeader(component->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
         {
             component->DrawDebugGUI();
