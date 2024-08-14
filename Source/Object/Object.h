@@ -32,6 +32,7 @@ public:
 			if (return_component == nullptr) continue;
 			return return_component;
 		}
+		assert(true);
 		return nullptr;
 	}
 	

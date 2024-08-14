@@ -1,6 +1,7 @@
 #pragma once
 #include "Shader/Shader.h"
 #include "Model/InstancingModelResource.h"
+#include "Model/ModelResource.h"
 
 class InstanceModelShader : public Shader
 {
@@ -12,6 +13,12 @@ public:
 	~InstanceModelShader() override {}
 
 	void Render(ID3D11DeviceContext* dc, const RenderContext& rc)override;
+
+	//void SetInstancingResource(
+	//	ModelResource* model_resource,
+	//	InstancingModelResource* instancing_model_resource
+	//) override;
+	void InstancingAdd() override;
 private:
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc) override;
 	void Draw(ID3D11DeviceContext* dc) override;
@@ -54,5 +61,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depthStencilState;
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
+
+	// インスタンシング描画に必要なパラメータ
+	ModelResource* model_resource = nullptr;
+	InstancingModelResource* instancing_model_resource = nullptr;
 };
 

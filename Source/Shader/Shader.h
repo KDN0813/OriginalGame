@@ -26,6 +26,24 @@ public:
 	 */
 	virtual void Render(ID3D11DeviceContext* dc, const RenderContext& rc) {};
 
+	/**
+	* \fn SetInstancingResource
+	* \brief インスタンシングリソースの設定
+	* 
+	* \param model_resource モデルリソースのポインタ
+	* \param instancing_model_resource インスタンシングモデルリソースのポインタ
+	*/
+	//virtual void SetInstancingResource(
+	//	ModelResource* model_resource,
+	//	InstancingModelResource* instancing_model_resource
+	//) {};
+	/**
+	 * \fn AddInstance
+	 * \brief インスタンスの追加
+	 */
+	virtual void InstancingAdd() {};
+
+	// TODO(08/14)シェーダーコンポーネントクラスを作成する関数作る
 private:
 	/**
 	 * \fn Begin

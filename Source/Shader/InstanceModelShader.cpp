@@ -1,6 +1,7 @@
 #include "InstanceModelShader.h"
 #include "System/Misc.h"
 #include "Component/ShaderComponent.h"
+#include "Model/InstancingModelResource.h"
 
 InstanceModelShader::InstanceModelShader(ID3D11Device* device)
 {
@@ -169,22 +170,28 @@ InstanceModelShader::InstanceModelShader(ID3D11Device* device)
 
 void InstanceModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
-	Begin(dc, rc);
+	if (shader_component_vector.size() <= 0) return;
 
-	for (auto& shader_component : shader_component_vector)
-	{
-		if (shader_component.expired() == false)
-		{
-			std::shared_ptr<ShaderComponent> shader = shader_component.lock();
-			shader->Draw(dc);
-		}
-		else
-		{
-			// TODO (08/13) 削除処理作成
-		}
-	}
+	Begin(dc, rc);
+	
+	Draw(dc);
 
 	End(dc);
+}
+
+//void InstanceModelShader::SetInstancingResource(
+//	ModelResource* model_resource,
+//	InstancingModelResource* instancing_model_resource
+//)
+//{
+//	// モデルリソースの取得
+//	this->model_resource = model_resource;
+//	// インスタンシングモデルリソースの取得
+//	this->instancing_model_resource = instancing_model_resource;
+//}
+
+void InstanceModelShader::InstancingAdd()
+{
 }
 
 void InstanceModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
@@ -196,6 +203,17 @@ void InstanceModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc
 	dc->OMSetDepthStencilState(this->depthStencilState.Get(), 0);
 	dc->RSSetState(this->rasterizerState.Get());
 	dc->PSSetSamplers(0, 1, this->samplerState.GetAddressOf());
+
+	// 定数buffer設定
+	ID3D11Buffer* constantBuffers[] =
+	{
+		this->sceneConstantBuffer.Get(),
+		this->subsetConstantBuffer.Get(),
+		this->common_data_constant_buffer.Get(),
+		this->mesh_constant_buffer.Get(),
+	};
+	dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
+	dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
 
 	// シーン用定数バッファ更新
 	SceneConstantBuffer cbScene;
@@ -211,68 +229,67 @@ void InstanceModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc
 
 void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 {
-#if 0
-	const ModelResource* model_resource = model->GetResource();
+	//// 先頭のシェーダーコンポーネント取得
+	//int shader_component_index = 0;
+	//auto& fast_shader_component_weekPtr = shader_component_vector[shader_component_index];
+	//while (fast_shader_component_weekPtr.expired() == true)
+	//{
+	//	++shader_component_index;
+	//	if (shader_component_vector.size() <= shader_component_index)
+	//	{
+	//		return;
+	//	}
+	//	fast_shader_component_weekPtr = shader_component_vector[shader_component_index];
+	//}
+	//std::shared_ptr<ShaderComponent> fast_shader_component = fast_shader_component_weekPtr.lock();
 
-	// BTT設定
-	dc->VSSetShaderResources(1, 1, model->GetBoneTransformTexture());
+	//fast_shader_component->SetInstancingResource();
 
-	// 定数buffer設定
-	{
-		ID3D11Buffer* constantBuffers[] =
-		{
-			sceneConstantBuffer.Get(),
-			subsetConstantBuffer.Get(),
-			common_data_constant_buffer.Get(),
-			mesh_constant_buffer.Get(),
-		};
-		dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
-		dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
+	//// 描画するインスタンスデータの追加
+	//for (auto& shader_component : shader_component_vector)
+	//{
+	//	if (shader_component.expired() == false)
+	//	{
+	//		std::shared_ptr<ShaderComponent> shader = shader_component.lock();
+	//		shader->InstancingAdd();
+	//	}
+	//	else
+	//	{
+	//		// TODO (08/13) 削除処理作成
+	//	}
+	//}
 
-		CommonDataConstantBuffer common_data_buffer{};
-		common_data_buffer.bone_transform_count = model->GetBoneTransformCount();
+	//for (const ModelResource::Mesh& mesh : model_resource->GetMeshes())
+	//{
+	//	for (const ModelResource::Subset& subset : mesh.subsets)
+	//	{
+	//		// バッファ設定
+	//		{
+	//			dc->VSSetShader(vertexShader.Get(), nullptr, 0);
+	//			dc->IASetInputLayout(inputLayout.Get());
 
-		dc->UpdateSubresource(common_data_constant_buffer.Get(), 0, 0, &common_data_buffer, 0, 0);
-	}
+	//			ID3D11Buffer* vertex_buffers[] =
+	//			{
+	//				mesh.vertex_buffer.Get(),
+	//			};
+	//			UINT strides[] =
+	//			{
+	//				sizeof(ModelResource::Vertex),
+	//			};
+	//			UINT offset[_countof(vertex_buffers)] = { 0 };
+	//			dc->IASetVertexBuffers(0, _countof(vertex_buffers), vertex_buffers, strides, offset);
+	//			dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	// w_transform更新
-	model->UpdateInstanceData(dc, instancing_count);
-	// w_transform設定
-	dc->VSSetShaderResources(2, 1, model->GetWorldTransformStructuredBuffer());
+	//			MeshConstantBuffer mesh_buffer{};
+	//			mesh_buffer.offset = model->GetMeshOffsets()[mesh_index];
+	//			dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &mesh_buffer, 0, 0);
+	//		}
 
-	size_t mesh_index = 0;
-	for (const ModelResource::Mesh& mesh : model_resource->GetMeshes())
-	{
-		for (const ModelResource::Subset& subset : mesh.subsets)
-		{
-			// バッファ設定
-			{
-				dc->VSSetShader(vertexShader.Get(), nullptr, 0);
-				dc->IASetInputLayout(inputLayout.Get());
-
-				ID3D11Buffer* vertex_buffers[] =
-				{
-					mesh.vertex_buffer.Get(),
-				};
-				UINT strides[] =
-				{
-					sizeof(ModelResource::Vertex),
-				};
-				UINT offset[_countof(vertex_buffers)] = { 0 };
-				dc->IASetVertexBuffers(0, _countof(vertex_buffers), vertex_buffers, strides, offset);
-				dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-
-				MeshConstantBuffer mesh_buffer{};
-				mesh_buffer.offset = model->GetMeshOffsets()[mesh_index];
-				dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &mesh_buffer, 0, 0);
-			}
-
-			//	サブセット単位で描画
-			DrawSubset(dc, subset);
-			++mesh_index;
-		}
-	}
-#endif 
+	//		//	サブセット単位で描画
+	//		DrawSubset(dc, subset);
+	//		++mesh_index;
+	//	}
+	//}
 }
 
 void InstanceModelShader::End(ID3D11DeviceContext* dc)
