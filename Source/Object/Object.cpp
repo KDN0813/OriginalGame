@@ -27,7 +27,29 @@ void Object::sortComponentsByPriority()
 
 void Object::DrawDebugGUI()
 {
-    ImGui::Text(GetNameCStr());
+    ImGui::Checkbox("##:", &this->is_active);
+
+    ImGui::SameLine();
+
+    // 非アクティブのオブジェクトは灰色に表示させる
+    if (!this->is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+
+    char buffer[1024];
+    ::strncpy_s(buffer, sizeof(buffer), GetNameCStr(), sizeof(buffer));
+    if (ImGui::InputText("name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+        SetName(buffer);
+    }
+
+    for (std::shared_ptr<Component>& component : component_vector)
+    {
+        if (ImGui::CollapsingHeader(component->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            component->DrawDebugGUI();
+        }
+    }
+
+    if (!this->is_active) ImGui::PopStyleColor();
 }
 
 #endif _DEBUG

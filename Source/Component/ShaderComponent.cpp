@@ -10,3 +10,11 @@ void ShaderComponent::Draw(ID3D11DeviceContext* dc)
 {
     this->shader->Draw(dc);
 }
+
+#ifdef _DEBUG
+
+void ShaderComponent::DrawDebugGUI()
+{
+}
+
+#endif _DEBUG

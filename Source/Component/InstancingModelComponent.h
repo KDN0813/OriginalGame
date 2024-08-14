@@ -13,6 +13,8 @@ public:
 	
     void Update(float elapsedTime) override;
 
+	const char* GetName()const override { return "InstancingModelComponent"; }
+
 	void PlayAnimetion(int animeIndex, bool loop = true);
 private:
 	std::shared_ptr<InstancingModelResource> model_resource;
