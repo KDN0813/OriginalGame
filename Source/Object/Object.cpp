@@ -7,11 +7,14 @@
 void Object::Update(float elapsedTime)
 {
     //sortComponentsByPriority();
+#ifdef _DEBUG
+    if (!this->is_active) return;
+#endif // _DEBUG
 
     for (auto& component : component_vector)
     {
 #ifdef _DEBUG
-        if (!component->GetIsActive()) return;
+        if (!component->GetIsActive()) continue;
 #endif // _DEBUG
 
         component->Update(elapsedTime);
@@ -48,17 +51,26 @@ void Object::DrawDebugGUI()
 
     for (std::shared_ptr<Component>& component : component_vector)
     {
-        std::string label = "##" + std::to_string(component->GetComponentID());
         bool component_is_active = component->GetIsActive();
+
+        // (非)アクティブ設定
+        std::string label = "##" + std::to_string(component->GetComponentID());
         if (ImGui::Checkbox(label.c_str(), &component_is_active))
         {
             component->SetIsActive(component_is_active);
         }
+
         ImGui::SameLine();
+
+        // 非アクティブのオブジェクトは灰色に表示させる
+        if (!component_is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+        
         if (ImGui::CollapsingHeader(component->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
         {
             component->DrawDebugGUI();
         }
+
+        if (!component_is_active) ImGui::PopStyleColor();
     }
 
     if (!this->is_active) ImGui::PopStyleColor();

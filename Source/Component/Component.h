@@ -43,6 +43,6 @@ public:
     void SetIsActive(const bool is_active) { this->is_active = is_active; }
 
 protected:
-    bool is_active = false;
+    bool is_active = true;
 #endif // _DEBUG
 };
