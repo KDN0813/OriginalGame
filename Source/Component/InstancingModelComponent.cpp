@@ -22,10 +22,32 @@ InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const c
 
 void InstancingModelComponent::Update(float elapsedTime)
 {
+    if (!this->anime_play)return;
+
+    ++this->anime_frame;
+
+    if (this->anime_frame >= this->instancing_model_resource->GetAnimationLengths()[this->anime_index])
+    {
+        if (this->anime_loop)
+        {
+            this->anime_frame = 0;
+        }
+        else
+        {
+            this->anime_frame = this->instancing_model_resource->GetAnimationLengths()[this->anime_index];
+            this->anime_play = false;
+        }
+    }
 }
 
 void InstancingModelComponent::PlayAnimetion(int animeIndex, bool loop)
 {
+    if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
+
+    this->anime_frame = 0;;
+    this->anime_index = animeIndex;
+    this->anime_loop = loop;
+    this->anime_play = true;
 }
 
 const InstanceData InstancingModelComponent::GetInstanceData()
@@ -40,8 +62,8 @@ const InstanceData InstancingModelComponent::GetInstanceData()
 
     InstanceData instance_data
     {
-        this->anime_frame,
          this->instancing_model_resource->GetAnimationOffsets()[this->anime_index],
+        this->anime_frame,
          transform
     };
 

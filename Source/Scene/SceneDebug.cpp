@@ -45,12 +45,13 @@ SceneDebug::SceneDebug()
 					};
 					auto object = object_manager.Create();
 					auto transform = object->AddComponent<Transform3DComponent>();
-					object->AddComponent<InstancingModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
+					auto model = object->AddComponent<InstancingModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
 					// シェーダー設定
 					auto shader_component =
 						object->AddComponent<ShaderComponent>(shader);
 					shader->AddShaderComponent(shader_component);
 
+					model->PlayAnimetion(z);
 					transform->SetPosition(pos);
 					transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
 				}

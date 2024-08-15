@@ -299,7 +299,7 @@ void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 
 	HRESULT hr = dc->Map(instance_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	memcpy_s(mappedResource.pData, sizeof(InstanceData) * this->MAX_INSTANCES,
-		instance_datas, sizeof(InstanceData) * this->instance_count);
+		this->instance_datas, sizeof(InstanceData) * this->instance_count);
 	dc->Unmap(instance_data_buffer.Get(), 0);
 
 	// BTTİ’è
