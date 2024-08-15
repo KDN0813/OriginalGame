@@ -11,24 +11,9 @@ InstancingModelShaderComponent::InstancingModelShaderComponent(InstancingModelSh
 {
 }
 
-void InstancingModelShaderComponent::Draw(ID3D11DeviceContext* dc)
+void InstancingModelShaderComponent::InstancingStart()
 {
-    this->shader->Draw(dc);
-}
-
-bool InstancingModelShaderComponent::SetInstancingResource()
-{    
-    auto ownr = GetOwner();
-    if (auto instancing_model 
-        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr))
-    {
-        return this->shader->SetInstancingResource(
-            instancing_model->GetModelResource(),
-            instancing_model->GetInstancingModelResource()
-        );
-    }
-
-    return false;
+    this->shader->InstancingStart();
 }
 
 void InstancingModelShaderComponent::InstancingAdd()
@@ -39,6 +24,11 @@ void InstancingModelShaderComponent::InstancingAdd()
     {
         this->shader->InstancingAdd(instancing_model->GetInstanceData());
     }
+}
+
+void InstancingModelShaderComponent::InstancingEnd()
+{
+    this->shader->InstancingEnd();
 }
 
 #ifdef _DEBUG

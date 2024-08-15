@@ -10,36 +10,9 @@ class InstancingModelShaderComponent;
 class InstancingModelShader : public Shader
 {
 public:
-	friend InstancingModelShaderComponent;
-public:
 	static const int MaxBones = 128;
 	static const int MAX_INSTANCES = 512;
-public:
-	InstancingModelShader(ID3D11Device* device);
-	~InstancingModelShader() override {}
-
-	void Render(ID3D11DeviceContext* dc, const RenderContext& rc)override;
-
-	/**
-	 * \fn AddShaderComponent
-	 * \brief このシェーダーで描画するobjectのシェーダーコンポーネントを追加
-	 * 
-	 * \param shader_component シェーダーコンポーネント(シェアドポインタ)
-	 */
-	void AddShaderComponent(std::shared_ptr<InstancingModelShaderComponent> shader_component);
-	bool SetInstancingResource(
-		ModelResource * model_resource,
-		InstancingModelResource* instancing_model_resource
-	);
-	void InstancingAdd(const InstanceData instance_data);
 private:
-	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
-	void Draw(ID3D11DeviceContext* dc);
-	void End(ID3D11DeviceContext* dc);
-
-	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
-private:
-
 	struct SceneConstantBuffer
 	{
 		DirectX::XMFLOAT4X4	viewProjection;
@@ -59,6 +32,26 @@ private:
 		UINT offset;				// バッファ内でメッシュの開始位置を示すオフセット値
 		DirectX::XMUINT3 dummy;
 	};
+
+public:
+	InstancingModelShader(ID3D11Device* device);
+	~InstancingModelShader() override {}
+
+	void Render(ID3D11DeviceContext* dc, const RenderContext& rc)override;
+
+	// インスタンシング描画開始
+	void InstancingStart() {};
+	// インスタンスの追加
+	void InstancingAdd(const InstanceData instance_data);
+	// インスタンシング描画修了
+	void InstancingEnd();
+
+private:
+	// インスタンシング描画
+	void InstancingRender() {};
+	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
+
+private:
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;

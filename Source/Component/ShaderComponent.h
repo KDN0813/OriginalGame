@@ -13,10 +13,9 @@ public:
 
     const char* GetName()const override { return "InstanceShaderComponent"; }
 
-    void Draw(ID3D11DeviceContext* dc);
-
-    bool SetInstancingResource();
+    void InstancingStart();
     void InstancingAdd();
+    void InstancingEnd();
 private:
     InstancingModelShader* const shader;
 
