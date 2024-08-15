@@ -3,26 +3,39 @@
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 
-class InstanceModelShader : public Shader
+#include "Component/InstancingModelComponent.h"
+
+class InstancingModelShaderComponent;
+
+class InstancingModelShader : public Shader
 {
+public:
+	friend InstancingModelShaderComponent;
 public:
 	static const int MaxBones = 128;
 	static const int MAX_INSTANCES = 512;
 public:
-	InstanceModelShader(ID3D11Device* device);
-	~InstanceModelShader() override {}
+	InstancingModelShader(ID3D11Device* device);
+	~InstancingModelShader() override {}
 
 	void Render(ID3D11DeviceContext* dc, const RenderContext& rc)override;
 
+	/**
+	 * \fn AddShaderComponent
+	 * \brief このシェーダーで描画するobjectのシェーダーコンポーネントを追加
+	 * 
+	 * \param shader_component シェーダーコンポーネント(シェアドポインタ)
+	 */
+	void AddShaderComponent(std::shared_ptr<InstancingModelShaderComponent> shader_component);
 	bool SetInstancingResource(
 		ModelResource * model_resource,
 		InstancingModelResource* instancing_model_resource
-	) override;
-	void InstancingAdd(const InstanceData instance_data) override;
+	);
+	void InstancingAdd(const InstanceData instance_data);
 private:
-	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc) override;
-	void Draw(ID3D11DeviceContext* dc) override;
-	void End(ID3D11DeviceContext* dc) override;
+	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
+	void Draw(ID3D11DeviceContext* dc);
+	void End(ID3D11DeviceContext* dc);
 
 	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
 private:
@@ -72,6 +85,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 
+	// 描画するインスタンスのシェーダー
+	std::vector<std::weak_ptr<InstancingModelShaderComponent>> shader_component_Wptr_vector;
 private:
 	std::weak_ptr<InstancingModelComponent> instancing_model_Wptr;
 };

@@ -2,19 +2,21 @@
 #include "Shader/Shader.h"
 #include "Object/Object.h"
 
+#include "Shader/InstanceModelShader.h"
+
 #include "Component/InstancingModelComponent.h"
 
-ShaderComponent::ShaderComponent(Shader* const shader)
+InstancingModelShaderComponent::InstancingModelShaderComponent(InstancingModelShader* const shader)
     :shader(shader)
 {
 }
 
-void ShaderComponent::Draw(ID3D11DeviceContext* dc)
+void InstancingModelShaderComponent::Draw(ID3D11DeviceContext* dc)
 {
     this->shader->Draw(dc);
 }
 
-bool ShaderComponent::SetInstancingResource()
+bool InstancingModelShaderComponent::SetInstancingResource()
 {    
     auto ownr = GetOwner();
     if (auto instancing_model 
@@ -29,7 +31,7 @@ bool ShaderComponent::SetInstancingResource()
     return false;
 }
 
-void ShaderComponent::InstancingAdd()
+void InstancingModelShaderComponent::InstancingAdd()
 {
     auto ownr = GetOwner();
     if (auto instancing_model
@@ -41,7 +43,7 @@ void ShaderComponent::InstancingAdd()
 
 #ifdef _DEBUG
 
-void ShaderComponent::DrawDebugGUI()
+void InstancingModelShaderComponent::DrawDebugGUI()
 {
 }
 

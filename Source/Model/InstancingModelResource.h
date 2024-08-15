@@ -42,6 +42,7 @@ private:
     std::vector<UINT> animation_lengths;	// アニメーションの長さ(フレーム数)
     std::vector<UINT> animation_offsets;	// BTTで使用するアニメーション毎の開始位置までのオフセット値
     
+    // Hack 外部で生成して読み込むようにする
 #pragma region    ボーントランスフォームテクスチャ作成用
 private:
     struct Node

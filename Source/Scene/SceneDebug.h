@@ -38,7 +38,7 @@ private:
     std::vector<std::unique_ptr<DebugObject>> models;
 
     // シェーダー
-    std::unique_ptr<InstanceModelShader> instance_model_shader;
+    std::unique_ptr<InstancingModelShader> instance_model_shader;
 
     std::shared_ptr<Object> debug_object;
     std::shared_ptr<Object> debug_object2;

@@ -308,9 +308,6 @@
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp">
       <Filter>Source\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shader\Shader.cpp">
-      <Filter>Source\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>

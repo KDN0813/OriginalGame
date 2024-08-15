@@ -3,22 +3,22 @@
 #include "Component.h"
 #include <memory>
 
-class Shader;
+class InstancingModelShader;
 class InstancingModelComponent;
 
-class ShaderComponent : public Component
+class InstancingModelShaderComponent : public Component
 {
 public:
-    ShaderComponent(Shader* const shader);
+    InstancingModelShaderComponent(InstancingModelShader* const shader);
 
-    const char* GetName()const override { return "ShaderComponent"; }
+    const char* GetName()const override { return "InstanceShaderComponent"; }
 
     void Draw(ID3D11DeviceContext* dc);
 
     bool SetInstancingResource();
     void InstancingAdd();
 private:
-    Shader* const shader;
+    InstancingModelShader* const shader;
 
 private:
     std::weak_ptr<InstancingModelComponent> instancing_model_Wptr;

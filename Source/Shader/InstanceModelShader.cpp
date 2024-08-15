@@ -6,7 +6,7 @@
 
 #include "Component/InstancingModelComponent.h"
 
-InstanceModelShader::InstanceModelShader(ID3D11Device* device)
+InstancingModelShader::InstancingModelShader(ID3D11Device* device)
 {
 	// 頂点シェーダー
 	{
@@ -203,7 +203,7 @@ InstanceModelShader::InstanceModelShader(ID3D11Device* device)
 	}
 }
 
-void InstanceModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
+void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
 	if (shader_component_Wptr_vector.size() <= 0) return;
 
@@ -214,7 +214,12 @@ void InstanceModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& r
 	End(dc);
 }
 
-bool InstanceModelShader::SetInstancingResource(ModelResource* model_resource, InstancingModelResource* instancing_model_resource)
+void InstancingModelShader::AddShaderComponent(std::shared_ptr<InstancingModelShaderComponent> shader_component)
+{
+	this->shader_component_Wptr_vector.emplace_back(shader_component);
+}
+
+bool InstancingModelShader::SetInstancingResource(ModelResource* model_resource, InstancingModelResource* instancing_model_resource)
 {
 	this->model_resource = model_resource;
 	this->instancing_model_resource = instancing_model_resource;
@@ -222,13 +227,13 @@ bool InstanceModelShader::SetInstancingResource(ModelResource* model_resource, I
 	return (this->model_resource != nullptr && this->instancing_model_resource != nullptr);
 }
 
-void InstanceModelShader::InstancingAdd(const InstanceData instance_data)
+void InstancingModelShader::InstancingAdd(const InstanceData instance_data)
 {
 	this->instance_datas[this->instance_count] = instance_data;
 	++this->instance_count;
 }
 
-void InstanceModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
+void InstancingModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
 	dc->PSSetShader(this->pixelShader.Get(), nullptr, 0);
 
@@ -261,7 +266,7 @@ void InstanceModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc
 	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
+void InstancingModelShader::Draw(ID3D11DeviceContext* dc)
 {
 	// 先頭のシェーダーコンポーネント取得
 	int shader_component_index = 0;
@@ -275,7 +280,7 @@ void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 		}
 		fast_shader_component_weekPtr = shader_component_Wptr_vector[shader_component_index];
 	}
-	std::shared_ptr<ShaderComponent> fast_shader_component = fast_shader_component_weekPtr.lock();
+	std::shared_ptr<InstancingModelShaderComponent> fast_shader_component = fast_shader_component_weekPtr.lock();
 
 	// 設定に失敗したら処理を中断
 	if (!fast_shader_component->SetInstancingResource()) return;
@@ -287,7 +292,7 @@ void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 	{
 		if (shader_component_Wptr.expired() == false)
 		{
-			std::shared_ptr<ShaderComponent> shader_component = shader_component_Wptr.lock();
+			std::shared_ptr<InstancingModelShaderComponent> shader_component = shader_component_Wptr.lock();
 			shader_component->InstancingAdd();
 		}
 		else
@@ -347,7 +352,7 @@ void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 	}
 }
 
-void InstanceModelShader::End(ID3D11DeviceContext* dc)
+void InstancingModelShader::End(ID3D11DeviceContext* dc)
 {
 	{
 		dc->VSSetShader(nullptr, nullptr, 0);
@@ -356,7 +361,7 @@ void InstanceModelShader::End(ID3D11DeviceContext* dc)
 	}
 }
 
-void InstanceModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset)
+void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset)
 {
 	SubsetConstantBuffer cbSubset;
 	cbSubset.materialColor = subset.material->color;

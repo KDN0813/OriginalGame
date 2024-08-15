@@ -18,7 +18,7 @@ SceneDebug::SceneDebug()
 	ID3D11Device* device = graphics.GetDevice();
 	// シェーダーの作成
 	{
-		instance_model_shader = std::make_unique<InstanceModelShader>(device);
+		instance_model_shader = std::make_unique<InstancingModelShader>(device);
 	}
 	
 	// デバッグオブジェクト作成
@@ -29,7 +29,7 @@ SceneDebug::SceneDebug()
 		debug_object->AddComponent<MovementComponent>();
 		debug_object;
 
-		Shader* const shader = instance_model_shader.get();
+		InstancingModelShader* const shader = instance_model_shader.get();
 		// インスタンシング描画テスト
 		{
 			float offset = 3.0f;
@@ -48,7 +48,7 @@ SceneDebug::SceneDebug()
 					auto model = object->AddComponent<InstancingModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
 					// シェーダー設定
 					auto shader_component =
-						object->AddComponent<ShaderComponent>(shader);
+						object->AddComponent<InstancingModelShaderComponent>(shader);
 					shader->AddShaderComponent(shader_component);
 
 					model->PlayAnimetion(z);
