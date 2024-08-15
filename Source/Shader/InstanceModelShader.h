@@ -46,6 +46,17 @@ private:
 		UINT offset;				// バッファ内でメッシュの開始位置を示すオフセット値
 		DirectX::XMUINT3 dummy;
 	};
+	/**
+	* \param animation_start_offset バッファ内で使用するアニメーションの開始位置を示すオフセット値
+	* \param frame 現在のフレーム
+	* \param world_transform ワールドトランスフォーム
+	*/
+	struct InstanceData
+	{
+		UINT animation_start_offset;
+		UINT frame;
+		DirectX::XMFLOAT4X4 world_transform{};
+	};
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;
@@ -65,5 +76,11 @@ private:
 	// インスタンシング描画に必要なパラメータ
 	ModelResource* model_resource = nullptr;
 	InstancingModelResource* instancing_model_resource = nullptr;
+
+	// インスタンス毎のワールドトランスフォームをGPUに渡すためのデータ
+	UINT instance_count = 0;
+	InstanceData* instance_data = nullptr;	// インスタンス毎のデータ配列の先頭のポインタ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 };
 

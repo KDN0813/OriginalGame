@@ -1,8 +1,14 @@
 #pragma once
+#include <DirectXMath.h>
+#include <d3d11.h>
+#include <wrl.h>
 #include <memory>
+#include <vector>
 
 using BoneTransform = DirectX::XMFLOAT4X4;
 using BoneTransformTextureData = std::vector<BoneTransform>;
+
+class ModelResource;
 
 class InstancingModelResource
 {
@@ -59,8 +65,8 @@ private:
      */
     void CreateBoneTransformTexture(ID3D11Device* device, ModelResource* resource);
     void PlayAnimation(int index);
-    void UpdateAnimation(float elapsed_time);
-    bool IsPlayAnimation()const;
+    void UpdateAnimation(float elapsed_time, ModelResource* resource);
+    bool IsPlayAnimation(ModelResource* resource)const;
     void UpdateTransform();
 
     std::vector<Node> nodes;

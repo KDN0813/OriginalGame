@@ -63,10 +63,10 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 			animation_length = 0;
 			PlayAnimation(anime_index);
 			// アニメーションが終了するまでループ
-			while (IsPlayAnimation())
+			while (IsPlayAnimation(resource))
 			{
 				// アニメーション更新
-				UpdateAnimation(0.01f);
+				UpdateAnimation(0.01f, resource);
 				UpdateTransform();
 
 				// ボーントランスフォーム計算
@@ -135,10 +135,10 @@ void InstancingModelResource::PlayAnimation(int index)
 	current_animation_seconds = 0.0f;	// 経過時間
 }
 
-void InstancingModelResource::UpdateAnimation(float elapsed_time)
+void InstancingModelResource::UpdateAnimation(float elapsed_time, ModelResource* resource)
 {
 	// 再生中でないなら処理しない
-	if (!IsPlayAnimation()) return;
+	if (!IsPlayAnimation(resource)) return;
 
 	// 指定のアニメーションデータを取得
 	const std::vector<ModelResource::Animation>& animations = resource->GetAnimations();
@@ -209,7 +209,7 @@ void InstancingModelResource::UpdateAnimation(float elapsed_time)
 	}
 }
 
-bool InstancingModelResource::IsPlayAnimation() const
+bool InstancingModelResource::IsPlayAnimation(ModelResource* resource) const
 {
 	if (current_animation_index < 0)return false;
 	if (current_animation_index >= resource->GetAnimations().size()) return false;

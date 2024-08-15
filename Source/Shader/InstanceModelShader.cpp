@@ -167,6 +167,38 @@ InstanceModelShader::InstanceModelShader(ID3D11Device* device)
 		HRESULT hr = device->CreateSamplerState(&desc, this->samplerState.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
+
+	// instance_data_buffer作成
+	{
+		InstanceData* instance_data = new InstanceData[MAX_INSTANCES];
+
+		D3D11_BUFFER_DESC buffer_desc{};
+		buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+		buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // SRV としてバインドする
+		buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 構造体バッファに設定
+		buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		buffer_desc.ByteWidth = (sizeof(InstanceData) * MAX_INSTANCES);	// バッファサイズ設定
+		buffer_desc.StructureByteStride = sizeof(InstanceData);	// 構造体の各要素のサイズ設定
+		D3D11_SUBRESOURCE_DATA subresource_data{};
+		subresource_data.pSysMem = instance_data;	// 初期データ設定
+
+		HRESULT hr = device->CreateBuffer(&buffer_desc, &subresource_data, this->instance_data_buffer.ReleaseAndGetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		delete[] instance_data;
+	}
+
+	// instance_data_structured_bufferの作成
+	{
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+		srvDesc.Buffer.FirstElement = 0;	// 要素の先頭インデックス
+		srvDesc.Buffer.NumElements = static_cast<UINT>(MAX_INSTANCES);	// 要素の数
+
+		HRESULT hr = device->CreateShaderResourceView(this->instance_data_buffer.Get(), &srvDesc, this->instance_data_structured_buffer.ReleaseAndGetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
 }
 
 void InstanceModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
@@ -180,17 +212,6 @@ void InstanceModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& r
 	End(dc);
 }
 
-//void InstanceModelShader::SetInstancingResource(
-//	ModelResource* model_resource,
-//	InstancingModelResource* instancing_model_resource
-//)
-//{
-//	// モデルリソースの取得
-//	this->model_resource = model_resource;
-//	// インスタンシングモデルリソースの取得
-//	this->instancing_model_resource = instancing_model_resource;
-//}
-
 bool InstanceModelShader::SetInstancingResource(ModelResource* model_resource, InstancingModelResource* instancing_model_resource)
 {
 	this->model_resource = model_resource;
@@ -201,6 +222,16 @@ bool InstanceModelShader::SetInstancingResource(ModelResource* model_resource, I
 
 void InstanceModelShader::InstancingAdd()
 {
+	//this->instance_data = reinterpret_cast<InstanceData*>(mappedResource.pData);
+	//for (int i = 0; i < MAX_INSTANCES; ++i)
+	//{
+	//	if (!transform_datas[i].exist)
+	//		continue;
+	//	this->instance_data[instancing_count].frame = transform_datas[i].anime_frame;
+	//	this->instance_data[instancing_count].animation_start_offset = animation_offsets[transform_datas[i].anime_index];
+	//	this->instance_data[instancing_count].world_transform = transform_datas[i].transform;
+	//}
+	//++this->instance_count;
 }
 
 void InstanceModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
@@ -255,7 +286,10 @@ void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 	// 設定に失敗したら処理を中断
 	if (!fast_shader_component->SetInstancingResource()) return;
 
-	// 描画するインスタンスデータの追加
+	// インスタンス毎のデータの更新
+	D3D11_MAPPED_SUBRESOURCE mappedResource{};
+	HRESULT hr = dc->Map(instance_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	this->instance_count = 0;	// インスタンス数リセット
 	for (auto& shader_component_Wptr : shader_component_Wptr_vector)
 	{
 		if (shader_component_Wptr.expired() == false)
@@ -268,9 +302,18 @@ void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 			// TODO (08/13) 削除処理作成
 		}
 	}
+	dc->Unmap(instance_data_buffer.Get(), 0);
 
 	// BTT設定
 	dc->VSSetShaderResources(1, 1, this->instancing_model_resource->GetBoneTransformTexture());
+
+	// 共通定数バッファの更新
+	CommonDataConstantBuffer common_data_buffer{};
+	common_data_buffer.bone_transform_count = this->instancing_model_resource->GetBoneTransformCount();
+	dc->UpdateSubresource(common_data_constant_buffer.Get(), 0, 0, &common_data_buffer, 0, 0);
+
+	// インスタンス毎のデータの設定
+	dc->VSSetShaderResources(2, 1, instance_data_structured_buffer.GetAddressOf());
 
 	size_t mesh_index = 0;
 	for (const ModelResource::Mesh& mesh : this->model_resource->GetMeshes())
