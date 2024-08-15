@@ -14,22 +14,24 @@ void ShaderComponent::Draw(ID3D11DeviceContext* dc)
     this->shader->Draw(dc);
 }
 
-void ShaderComponent::SetInstancingResource()
-{
-    // TODO(08/14)ŠÖ”‰»‚µ‚½‚¢
-    //if (bool expired = this->instancing_model_Wptr.expired(); expired == true)
-    //{
-    //    assert(expired);
-    //
-    //    int a = 0;
-    //}
-    //
-    //this->shader->SetInstancingResource();
+bool ShaderComponent::SetInstancingResource()
+{    
+    auto ownr = GetOwner();
+    if (auto instancing_model 
+        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr))
+    {
+        return this->shader->SetInstancingResource(
+            instancing_model->GetModelResource(),
+            instancing_model->GetInstancingModelResource()
+        );
+    }
+
+    return false;
 }
 
 void ShaderComponent::InstancingAdd()
 {
-    //this->shader->InstancingAdd();
+    this->shader->InstancingAdd();
 }
 
 #ifdef _DEBUG

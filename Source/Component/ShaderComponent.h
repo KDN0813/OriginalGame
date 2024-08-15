@@ -15,10 +15,12 @@ public:
 
     void Draw(ID3D11DeviceContext* dc);
 
-    void SetInstancingResource();
+    bool SetInstancingResource();
     void InstancingAdd();
 private:
     Shader* const shader;
+
+private:
     std::weak_ptr<InstancingModelComponent> instancing_model_Wptr;
 
 #ifdef _DEBUG

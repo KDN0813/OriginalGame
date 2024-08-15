@@ -4,14 +4,14 @@
 
 InstancingModelResource::InstancingModelResource(ID3D11Device* device, const char* filename)
 {
-	resource = ModelResourceManager::Instance()->LoadModelResource(filename);
+	auto resource = ModelResourceManager::Instance()->LoadModelResource(filename);
 
-	CreateBoneTransformTexture(device);
+	CreateBoneTransformTexture(device, resource.get());
 }
 
 #pragma region    ボーントランスフォームテクスチャ作成用
 
-void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device)
+void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, ModelResource* resource)
 {
 	HRESULT hr{ S_OK };
 

@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include "Model/ModelResource.h"
 
 using BoneTransform = DirectX::XMFLOAT4X4;
 using BoneTransformTextureData = std::vector<BoneTransform>;
@@ -20,9 +19,13 @@ public:
     InstancingModelResource(ID3D11Device* device, const char* filename);
     ~InstancingModelResource() {};
 
-private:
-    std::shared_ptr<ModelResource>	resource;
+    const UINT& GetBoneTransformCount() { return this->bone_transform_count; }
+    const std::vector<UINT>& GetMeshOffsets() { return this->mesh_offsets; }
+    const std::vector<UINT>& GetAnimationLengths() { return this->animation_lengths; }
+    const std::vector<UINT>& GetAnimationOffsets() { return this->animation_offsets; }
+    ID3D11ShaderResourceView*const* GetBoneTransformTexture() { return this->bone_transform_texture.GetAddressOf(); }
 
+private:
     // ボーントランスフォームテクスチャ
     Microsoft::WRL::ComPtr<ID3D11Buffer> bone_transform_buffer;
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> bone_transform_texture;
@@ -32,6 +35,7 @@ private:
     std::vector<UINT> mesh_offsets;			// BTTで使用するメッシュ毎の開始位置までのオフセット値
     std::vector<UINT> animation_lengths;	// アニメーションの長さ(フレーム数)
     std::vector<UINT> animation_offsets;	// BTTで使用するアニメーション毎の開始位置までのオフセット値
+    
 #pragma region    ボーントランスフォームテクスチャ作成用
 private:
     struct Node
@@ -53,7 +57,7 @@ private:
      * 
      * \param device ID3D11Deviceのポインタ
      */
-    void CreateBoneTransformTexture(ID3D11Device* device);
+    void CreateBoneTransformTexture(ID3D11Device* device, ModelResource* resource);
     void PlayAnimation(int index);
     void UpdateAnimation(float elapsed_time);
     bool IsPlayAnimation()const;

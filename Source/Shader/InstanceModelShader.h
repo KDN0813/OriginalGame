@@ -14,10 +14,10 @@ public:
 
 	void Render(ID3D11DeviceContext* dc, const RenderContext& rc)override;
 
-	//void SetInstancingResource(
-	//	ModelResource* model_resource,
-	//	InstancingModelResource* instancing_model_resource
-	//) override;
+	bool SetInstancingResource(
+		ModelResource * model_resource,
+		InstancingModelResource* instancing_model_resource
+	) override;
 	void InstancingAdd() override;
 private:
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc) override;

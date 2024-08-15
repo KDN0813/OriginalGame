@@ -19,7 +19,7 @@ Framework::Framework(HWND hWnd)
 #endif // _DEBUG
 {
 #ifdef _DEBUG
-	sceneManager.ChangeScene(new SceneDebug);
+	scene_manager.ChangeScene(new SceneDebug);
 #else
 	sceneManager.ChangeScene(new SceneDebug);
 #endif // _DEBUG
@@ -27,14 +27,14 @@ Framework::Framework(HWND hWnd)
 
 Framework::~Framework()
 {
-	sceneManager.Clear();
+	scene_manager.Clear();
 }
 
 void Framework::Update(float elapsed_time)
 {
 	input.Update();
 
-	sceneManager.Update(elapsed_time);
+	scene_manager.Update(elapsed_time);
 }
 
 void Framework::Render(float elapsed_time)
@@ -46,7 +46,7 @@ void Framework::Render(float elapsed_time)
 	debugManager.GetImGuiRenderer()->NewFrame();
 #endif // _DEBUG
 
-	sceneManager.Render();
+	scene_manager.Render();
 
 #ifdef _DEBUG
 	debugManager.GetImGuiRenderer()->Render(dc);

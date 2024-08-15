@@ -7,6 +7,8 @@
 #include "Graphics/RenderContext.h"
 
 class ShaderComponent;
+class ModelResource;
+class InstancingModelResource;
 
 class Shader
 {
@@ -32,11 +34,12 @@ public:
 	* 
 	* \param model_resource モデルリソースのポインタ
 	* \param instancing_model_resource インスタンシングモデルリソースのポインタ
+	* \return 正しく設定できたらtrueを返す
 	*/
-	//virtual void SetInstancingResource(
-	//	ModelResource* model_resource,
-	//	InstancingModelResource* instancing_model_resource
-	//) {};
+	virtual bool SetInstancingResource(
+		ModelResource* model_resource,
+		InstancingModelResource * instancing_model_resource
+	) { return false; };
 	/**
 	 * \fn AddInstance
 	 * \brief インスタンスの追加
@@ -69,5 +72,5 @@ private:
 	virtual void End(ID3D11DeviceContext* context) = 0;
 
 protected:
-	std::vector<std::weak_ptr<ShaderComponent>> shader_component_vector;
+	std::vector<std::weak_ptr<ShaderComponent>> shader_component_Wptr_vector;
 };

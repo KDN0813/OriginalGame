@@ -13,6 +13,7 @@ public:
     ~ModelResourceManager(){}
     
     // モデルリソース読み込み
+    // Hack (08/15)Device引数に追加する
     std::shared_ptr<ModelResource> LoadModelResource(const char* filename);
 
 private:

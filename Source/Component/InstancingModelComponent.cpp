@@ -1,6 +1,9 @@
 #include "InstancingModelComponent.h"
 
-InstancingModelComponent::InstancingModelComponent()
+#include "Model/InstancingModelResourceManager.h"
+#include "Model/ModelResourceManager.h"
+
+InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const char* filename)
     :transform()
     , anime_frame()
     , anime_index()
@@ -8,6 +11,10 @@ InstancingModelComponent::InstancingModelComponent()
     , anime_play()
 
 {
+    this->instancing_model_resource =
+        InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
+    this->model_resource =
+        ModelResourceManager::Instance()->LoadModelResource(filename);
 }
 
 void InstancingModelComponent::Update(float elapsedTime)

@@ -16,8 +16,10 @@ public:
     const unsigned int GetPriority()const noexcept override { return 1; }
 
 private:
-    std::weak_ptr<Transform3DComponent> transform3D_Wptr;
     DirectX::XMFLOAT3 velocity{};
+
+private:
+    std::weak_ptr<Transform3DComponent> transform3D_Wptr;
 
 #ifdef _DEBUG
 public:
