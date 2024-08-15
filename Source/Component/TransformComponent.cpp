@@ -14,6 +14,7 @@ void Transform3DComponent::Update(float elapsed_time)
 
 	DirectX::XMMATRIX W = S * R * T;
 	DirectX::XMStoreFloat4x4(&transform, W);
+	this->change_value = false;
 }
 
 const DirectX::XMVECTOR Transform3DComponent::AddPositionVec(const DirectX::XMVECTOR& vec)

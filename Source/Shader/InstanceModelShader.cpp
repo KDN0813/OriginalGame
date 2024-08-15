@@ -201,9 +201,6 @@ InstanceModelShader::InstanceModelShader(ID3D11Device* device)
 		HRESULT hr = device->CreateShaderResourceView(this->instance_data_buffer.Get(), &srvDesc, this->instance_data_structured_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
-
-	// instance_data_vectorのサイズ確保
-	this->instance_data_vector.resize(this->MAX_INSTANCES);
 }
 
 void InstanceModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
@@ -227,7 +224,7 @@ bool InstanceModelShader::SetInstancingResource(ModelResource* model_resource, I
 
 void InstanceModelShader::InstancingAdd(const InstanceData instance_data)
 {
-	this->instance_data_vector[this->instance_count] = instance_data;
+	this->instance_datas[this->instance_count] = instance_data;
 	++this->instance_count;
 }
 
@@ -285,7 +282,6 @@ void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 
 	// インスタンス毎のデータの更新
 	D3D11_MAPPED_SUBRESOURCE mappedResource{};
-	HRESULT hr = dc->Map(instance_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	this->instance_count = 0;	// インスタンス数リセット
 	for (auto& shader_component_Wptr : shader_component_Wptr_vector)
 	{
@@ -299,6 +295,11 @@ void InstanceModelShader::Draw(ID3D11DeviceContext* dc)
 			// TODO (08/13) 削除処理作成
 		}
 	}
+
+
+	HRESULT hr = dc->Map(instance_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	memcpy_s(mappedResource.pData, sizeof(InstanceData) * this->MAX_INSTANCES,
+		instance_datas, sizeof(InstanceData) * this->instance_count);
 	dc->Unmap(instance_data_buffer.Get(), 0);
 
 	// BTT設定

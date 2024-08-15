@@ -68,7 +68,7 @@ private:
 
 	// インスタンス毎のワールドトランスフォームをGPUに渡すためのデータ
 	UINT instance_count = 0;
-	std::vector<InstanceData>instance_data_vector{};	// インスタンス毎のデータ
+	InstanceData instance_datas[MAX_INSTANCES];	// インスタンス毎のデータ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 

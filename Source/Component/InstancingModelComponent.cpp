@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include "InstancingModelComponent.h"
 #include "Object/Object.h"
 
@@ -45,4 +46,13 @@ const InstanceData InstancingModelComponent::GetInstanceData()
     };
 
     return instance_data;
+}
+
+void InstancingModelComponent::DrawDebugGUI()
+{
+    //UINT anime_frame;
+    //UINT anime_index;
+    
+    ImGui::Checkbox("anime_loop", &this->anime_loop);
+    ImGui::Checkbox("anime_play", &this->anime_play);
 }

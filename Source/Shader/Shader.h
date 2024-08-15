@@ -12,6 +12,7 @@ class InstancingModelComponent;
 class InstancingModelResource;
 class InstanceData;
 
+// TODO (08/15)インクルードしない方法に変える
 #include "Component/InstancingModelComponent.h"
 
 class Shader

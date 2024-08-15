@@ -6,6 +6,7 @@
 
 #include "Camera/Camera.h"
 
+#include "Component/InstancingModelComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/ShaderComponent.h"
 #include "Component/MovementComponent.h"
@@ -15,40 +16,6 @@ SceneDebug::SceneDebug()
 {
 	Graphics& graphics = Graphics::Instance();
 	ID3D11Device* device = graphics.GetDevice();
-	instancing_model = std::make_unique<InstancingModel>(device,"Data/Model/Jammo/Jammo.mdl");
-
-	float offset = 3.0f;
-	for (int x = 0; x < 10; ++x)
-	{
-		for (int z = 0; z < 10; ++z)
-		{
-			DirectX::XMFLOAT3 pos =
-			{
-				static_cast<float>(x) * offset,
-				0.0f,
-				static_cast<float>(z) * offset,
-			};
-
-			models.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
-
-			const int index = instancing_model->AllocateInstancingIndex();
-			DirectX::XMMATRIX m;
-			m = DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f);
-			m *= DirectX::XMMatrixRotationY(0);
-			m *= DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
-			DirectX::XMFLOAT4X4 tm;
-			DirectX::XMStoreFloat4x4(&tm, m);
-			instancing_model->UpdateTransform(index, tm);
-			//objects.emplace_back(std::make_unique<DebugObject>("Data/Model/Jammo/Jammo.mdl", pos));
-		}
-	}
-
-	// アニメーション再生
-	for (int i = 0; i < 100; ++i)
-	{
-		instancing_model->PlayAnime(i, i % 10, true);
-	}
-
 	// シェーダーの作成
 	{
 		instance_model_shader = std::make_unique<InstanceModelShader>(device);
@@ -61,12 +28,34 @@ SceneDebug::SceneDebug()
 		debug_object->AddComponent<Transform3DComponent>();
 		debug_object->AddComponent<MovementComponent>();
 		debug_object;
-		Shader* const shader = instance_model_shader.get();
 
-		// シェーダー設定
-		std::shared_ptr<ShaderComponent> shader_component = 
-			debug_object->AddComponent<ShaderComponent>(shader);
-		shader->AddShaderComponent(shader_component);
+		Shader* const shader = instance_model_shader.get();
+		// インスタンシング描画テスト
+		{
+			float offset = 3.0f;
+			for (int x = 0; x < 10; ++x)
+			{
+				for (int z = 0; z < 10; ++z)
+				{
+					DirectX::XMFLOAT3 pos =
+					{
+						static_cast<float>(x) * offset,
+						0.0f,
+						static_cast<float>(z) * offset,
+					};
+					auto object = object_manager.Create();
+					auto transform = object->AddComponent<Transform3DComponent>();
+					object->AddComponent<InstancingModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
+					// シェーダー設定
+					auto shader_component =
+						object->AddComponent<ShaderComponent>(shader);
+					shader->AddShaderComponent(shader_component);
+
+					transform->SetPosition(pos);
+					transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+				}
+			}
+		}
 	}
 }
 
@@ -100,12 +89,6 @@ void SceneDebug::Update(float elapsed_time)
 	cameraController.SetTarget(target);
 	cameraController.Update(elapsed_time);
 
-	// アニメーション更新
-	for (int i = 0; i < 100; ++i)
-	{
-		instancing_model->UpdateAnimationFrame(i);
-	}
-
 	object_manager.Update(elapsed_time);
 }
 
@@ -133,20 +116,9 @@ void SceneDebug::Render()
 		rc.projection = camera.getProjection();
 
 		// インスタンシング描画
-#if 1
-		{
-			instance_shader->Begin(dc, rc);
-
-			instance_shader->Draw(dc, this->instancing_model.get());
-
-			instance_shader->End(dc);
-		}
-#endif
-
-		// インスタンシング描画
 		instance_model_shader->Render(dc, rc);
 
-		// 通常描画
+		 // 通常描画
 		{
 			temporary_shader->Begin(dc, rc);
 
