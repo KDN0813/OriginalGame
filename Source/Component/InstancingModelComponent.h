@@ -36,8 +36,6 @@ public:
 	void PlayAnimetion(int animeIndex, bool loop = true);
 
 	// ŠeŽæ“¾EÝ’èŠÖ”
-	const UINT& GetAnimeFrame() { return this->anime_frame; }
-	const UINT& GetAnimeFrame() { return this->anime_frame; }
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
 	ModelResource* GetModelResource() { return this->model_resource.get(); }
 	const InstanceData GetInstanceData();

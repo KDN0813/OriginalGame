@@ -12,6 +12,8 @@ class InstancingModelComponent;
 class InstancingModelResource;
 class InstanceData;
 
+#include "Component/InstancingModelComponent.h"
+
 class Shader
 {
 	friend ShaderComponent;

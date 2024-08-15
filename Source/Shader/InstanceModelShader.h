@@ -3,8 +3,6 @@
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 
-#include "Component/InstancingModelComponent.h"
-
 class InstanceModelShader : public Shader
 {
 public:
