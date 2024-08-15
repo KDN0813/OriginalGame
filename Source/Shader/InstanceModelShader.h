@@ -3,6 +3,8 @@
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 
+#include "Component/InstancingModelComponent.h"
+
 class InstanceModelShader : public Shader
 {
 public:
@@ -18,7 +20,7 @@ public:
 		ModelResource * model_resource,
 		InstancingModelResource* instancing_model_resource
 	) override;
-	void InstancingAdd() override;
+	void InstancingAdd(const InstanceData instance_data) override;
 private:
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc) override;
 	void Draw(ID3D11DeviceContext* dc) override;
@@ -46,17 +48,6 @@ private:
 		UINT offset;				// バッファ内でメッシュの開始位置を示すオフセット値
 		DirectX::XMUINT3 dummy;
 	};
-	/**
-	* \param animation_start_offset バッファ内で使用するアニメーションの開始位置を示すオフセット値
-	* \param frame 現在のフレーム
-	* \param world_transform ワールドトランスフォーム
-	*/
-	struct InstanceData
-	{
-		UINT animation_start_offset;
-		UINT frame;
-		DirectX::XMFLOAT4X4 world_transform{};
-	};
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;
@@ -79,8 +70,11 @@ private:
 
 	// インスタンス毎のワールドトランスフォームをGPUに渡すためのデータ
 	UINT instance_count = 0;
-	InstanceData* instance_data = nullptr;	// インスタンス毎のデータ配列の先頭のポインタ
+	std::vector<InstanceData>instance_data_vector{};	// インスタンス毎のデータ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
+
+private:
+	std::weak_ptr<InstancingModelComponent> instancing_model_Wptr;
 };
 

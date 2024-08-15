@@ -31,7 +31,12 @@ bool ShaderComponent::SetInstancingResource()
 
 void ShaderComponent::InstancingAdd()
 {
-    this->shader->InstancingAdd();
+    auto ownr = GetOwner();
+    if (auto instancing_model
+        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr))
+    {
+        this->shader->InstancingAdd(instancing_model->GetInstanceData());
+    }
 }
 
 #ifdef _DEBUG

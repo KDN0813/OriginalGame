@@ -8,7 +8,9 @@
 
 class ShaderComponent;
 class ModelResource;
+class InstancingModelComponent;
 class InstancingModelResource;
+class InstanceData;
 
 class Shader
 {
@@ -44,7 +46,7 @@ public:
 	 * \fn AddInstance
 	 * \brief インスタンスの追加
 	 */
-	virtual void InstancingAdd() {};
+	virtual void InstancingAdd(const InstanceData) {};
 
 	// TODO(08/14)シェーダーコンポーネントクラスを作成する関数作る
 private:

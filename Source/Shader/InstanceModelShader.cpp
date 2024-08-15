@@ -4,6 +4,8 @@
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 
+#include "Component/InstancingModelComponent.h"
+
 InstanceModelShader::InstanceModelShader(ID3D11Device* device)
 {
 	// 頂点シェーダー
@@ -199,6 +201,9 @@ InstanceModelShader::InstanceModelShader(ID3D11Device* device)
 		HRESULT hr = device->CreateShaderResourceView(this->instance_data_buffer.Get(), &srvDesc, this->instance_data_structured_buffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
+
+	// instance_data_vectorのサイズ確保
+	this->instance_data_vector.resize(this->MAX_INSTANCES);
 }
 
 void InstanceModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
@@ -220,18 +225,10 @@ bool InstanceModelShader::SetInstancingResource(ModelResource* model_resource, I
 	return (this->model_resource != nullptr && this->instancing_model_resource != nullptr);
 }
 
-void InstanceModelShader::InstancingAdd()
+void InstanceModelShader::InstancingAdd(const InstanceData instance_data)
 {
-	//this->instance_data = reinterpret_cast<InstanceData*>(mappedResource.pData);
-	//for (int i = 0; i < MAX_INSTANCES; ++i)
-	//{
-	//	if (!transform_datas[i].exist)
-	//		continue;
-	//	this->instance_data[instancing_count].frame = transform_datas[i].anime_frame;
-	//	this->instance_data[instancing_count].animation_start_offset = animation_offsets[transform_datas[i].anime_index];
-	//	this->instance_data[instancing_count].world_transform = transform_datas[i].transform;
-	//}
-	//++this->instance_count;
+	this->instance_data_vector[this->instance_count] = instance_data;
+	++this->instance_count;
 }
 
 void InstanceModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
@@ -360,4 +357,11 @@ void InstanceModelShader::End(ID3D11DeviceContext* dc)
 
 void InstanceModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset)
 {
+	SubsetConstantBuffer cbSubset;
+	cbSubset.materialColor = subset.material->color;
+	dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
+	dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
+	dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+
+	dc->DrawIndexedInstanced(subset.index_count, this->instance_count, subset.start_index, 0, 0);
 }
