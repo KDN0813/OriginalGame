@@ -12,6 +12,8 @@ public:
     void Update(float elapsed_time)override;
     // –¼‘Oæ“¾
     const char* GetName()const override { return "MovementComponent"; };
+    // —Dæ“x
+    const unsigned int GetPriority()const noexcept override { return 1; }
 
 private:
     std::weak_ptr<Transform3DComponent> transform3D_Wptr;

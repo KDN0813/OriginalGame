@@ -15,9 +15,11 @@ public:
 
     // 名前取得
     virtual const char* GetName()const = 0;
+
+    // 優先度(初期値は最低値)
+    virtual const unsigned int GetPriority()const noexcept { return 0; };
     
     // 各取得・設定関数
-    const unsigned int GetPriority()const noexcept { return this->priority; }
     void SetOwner(std::shared_ptr<Object> owner) { this->owner = owner; }
     std::shared_ptr<Object> GetOwner() { return this->owner.lock(); }
     const unsigned int GetComponentID() { return this->component_id; }
@@ -25,7 +27,6 @@ public:
 
 private:
     std::weak_ptr<Object>	owner = {};
-    unsigned int priority = -1;//優先度 初期値は最低
     unsigned int component_id = {};
 
 #ifdef _DEBUG

@@ -6,7 +6,8 @@
 
 void Object::Update(float elapsedTime)
 {
-    //sortComponentsByPriority();
+    sortComponentsByPriority();
+    
 #ifdef _DEBUG
     if (!this->is_active) return;
 #endif // _DEBUG
@@ -49,6 +50,7 @@ void Object::DrawDebugGUI()
         SetName(buffer);
     }
 
+    int priority = 0;
     for (std::shared_ptr<Component>& component : component_vector)
     {
         bool component_is_active = component->GetIsActive();
@@ -67,6 +69,11 @@ void Object::DrawDebugGUI()
         
         if (ImGui::CollapsingHeader(component->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
         {
+            label = "priority:" + std::to_string(priority++);
+            ImGui::Text(label.c_str());
+            label = "priority Level:" + std::to_string(component->GetPriority());
+            ImGui::Text(label.c_str());
+
             component->DrawDebugGUI();
         }
 
