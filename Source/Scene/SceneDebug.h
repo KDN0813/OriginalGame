@@ -34,14 +34,10 @@ public:
 #endif // _DEBUG
 private:
     CameraController cameraController;
-    DebugObject stage;
-    std::vector<std::unique_ptr<DebugObject>> models;
 
     // シェーダー
     std::unique_ptr<InstancingModelShader> instance_model_shader;
 
-    std::shared_ptr<Object> debug_object;
-    std::shared_ptr<Object> debug_object2;
     ObjectManager object_manager;
 };
 

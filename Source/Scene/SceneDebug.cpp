@@ -6,13 +6,13 @@
 
 #include "Camera/Camera.h"
 
+#include "Component/ModelComponent.h"
 #include "Component/InstancingModelComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/InstancingModelShaderComponent.h"
 #include "Component/MovementComponent.h"
 
 SceneDebug::SceneDebug()
-	: stage("Data/Model/ExampleStage/ExampleStage.mdl")
 {
 	Graphics& graphics = Graphics::Instance();
 	ID3D11Device* device = graphics.GetDevice();
@@ -23,11 +23,12 @@ SceneDebug::SceneDebug()
 	
 	// デバッグオブジェクト作成
 	{
-		debug_object2 = object_manager.Create();
-		debug_object = object_manager.Create();
-		debug_object->AddComponent<Transform3DComponent>();
-		debug_object->AddComponent<MovementComponent>();
-		debug_object;
+		// ステージ
+		auto stage = object_manager.Create();
+		stage->SetName("Stage");
+		stage->AddComponent<ModelComponent>("Data/Model/ExampleStage/ExampleStage.mdl");
+		auto transform = stage->AddComponent<Transform3DComponent>();
+		transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
 
 		InstancingModelShader* const shader = instance_model_shader.get();
 		// インスタンシング描画テスト
