@@ -8,7 +8,7 @@
 
 #include "Component/InstancingModelComponent.h"
 #include "Component/TransformComponent.h"
-#include "Component/ShaderComponent.h"
+#include "Component/InstancingModelShaderComponent.h"
 #include "Component/MovementComponent.h"
 
 SceneDebug::SceneDebug()
