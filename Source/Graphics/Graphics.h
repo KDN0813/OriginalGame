@@ -8,9 +8,6 @@
 
 #include "Graphics/RenderContext.h"
 
-#include "Graphics/Shader/DebugShader.h"
-#include "Graphics/Shader/FormerInstanceShader.h"
-
 class Graphics
 {
 public:
@@ -27,10 +24,6 @@ public:
 	float GetScreenWidth() const { return screen_width; }
 	float GetScreenHeight() const { return screen_height; }
 	std::mutex& GetMutex() { return mutex; }
-
-	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
-	FormerInstanceShader* GetInstanceShader() const { return this->instance_shader.get(); }
-	DebugShader* GetTemporaryShader() const { return this->temporary_shader.get(); }
 
 private:
 	static Graphics*								instance;
@@ -52,10 +45,6 @@ private:
 
 	enum class RASTER_STATE { SOLID, WIREFRAME, CULL_NONE, WIREFRAME_CULL_NONE, MAX };
 	std::vector<Microsoft::WRL::ComPtr<ID3D11RasterizerState>> rasterizer_states;
-
-	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
-	std::unique_ptr<FormerInstanceShader> instance_shader;
-	std::unique_ptr<DebugShader> temporary_shader;
 
 	float	screen_width;
 	float	screen_height;

@@ -1,10 +1,5 @@
 #include "Graphics/Graphics.h"
 #include "System/Misc.h"
-#include "Graphics/Shader/ShaderLoader.h"
-#include "Model/Model.h"
-
-#include "Graphics/Shader/TemporaryShader.h"
-#include "Graphics/Shader/FormerInstanceShader.h"
 
 Graphics* Graphics::instance = nullptr;
 
@@ -254,13 +249,6 @@ Graphics::Graphics(HWND hWnd)
 		rasterizer_desc.AntialiasedLineEnable = TRUE;
 		hr = this->device->CreateRasterizerState(&rasterizer_desc, this->rasterizer_states[static_cast<size_t>(RASTER_STATE::WIREFRAME_CULL_NONE)].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
-	// TODO(06/27) GPUインスタンシング実装後シェーダの設計を考える
-	// シェーダの作成
-	{
-		instance_shader = std::make_unique<FormerInstanceShader>(this->device.Get());
-		temporary_shader = std::make_unique<TemporaryShader>(this->device.Get());
 	}
 }
 

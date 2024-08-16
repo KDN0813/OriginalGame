@@ -37,9 +37,6 @@
     <Filter Include="Source\Model">
       <UniqueIdentifier>{0c85ee8f-02b8-425a-b475-37ec364eb53a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Graphics\Shader">
-      <UniqueIdentifier>{cdf9168e-e230-433a-87ea-e82a34d842be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Camera">
       <UniqueIdentifier>{c0ab7f37-94f4-4e08-9a70-9fe6e877b34f}</UniqueIdentifier>
     </Filter>
@@ -117,26 +114,14 @@
     <ClInclude Include="Source\Model\ModelResource.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Model\Model.h">
-      <Filter>Source\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Camera\Camera.h">
       <Filter>Source\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\ShaderLoader.h">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\DebugShader.h">
-      <Filter>Source\Graphics\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\RenderContext.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Graphics.h">
       <Filter>Source\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Debug\DebugObject.h">
-      <Filter>Source\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Debug\ImGuiRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
@@ -161,15 +146,6 @@
     </ClInclude>
     <ClInclude Include="Source\Camera\CameraController.h">
       <Filter>Source\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\TemporaryShader.h">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\FormerInstanceShader.h">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Model\InstancingModel.h">
-      <Filter>Source\Model</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\Component.h">
       <Filter>Source\Component</Filter>
@@ -207,12 +183,14 @@
     <ClInclude Include="Source\Component\MovementComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shader\ModelShader.h" />
     <ClInclude Include="Source\Component\ModelComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\ModelShaderComponent.h">
       <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\ModelShader.h">
+      <Filter>Source\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,32 +236,17 @@
     <ClCompile Include="Source\Model\ModelResource.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Model\Model.cpp">
-      <Filter>Source\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera\Camera.cpp">
       <Filter>Source\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\ShaderLoader.cpp">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\Graphics.cpp">
       <Filter>Source\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Debug\DebugObject.cpp">
-      <Filter>Source\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp">
       <Filter>Source\Debug\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Debug\DebugManager.cpp">
       <Filter>Source\Debug\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\TemporaryShader.cpp">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\Mouse.cpp">
-      <Filter>Source\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model\ModelResourceManager.cpp">
       <Filter>Source\Model</Filter>
@@ -296,12 +259,6 @@
     </ClCompile>
     <ClCompile Include="Source\Camera\CameraController.cpp">
       <Filter>Source\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\FormerInstanceShader.cpp">
-      <Filter>Source\Graphics\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Model\InstancingModel.cpp">
-      <Filter>Source\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneDebug.cpp">
       <Filter>Source\Scene</Filter>
@@ -338,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="Source\Shader\ModelShader.cpp">
       <Filter>Source\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Mouse.cpp">
+      <Filter>Source\input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
