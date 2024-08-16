@@ -1,5 +1,5 @@
 #include <imgui.h>
-#include "ShaderComponent.h"
+#include "InstancingModelShaderComponent.h"
 #include "Shader/Shader.h"
 #include "Object/Object.h"
 

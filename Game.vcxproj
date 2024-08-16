@@ -122,7 +122,7 @@
     <ClInclude Include="Source\Component\ComponentFunctions.h" />
     <ClInclude Include="Source\Component\InstancingModelComponent.h" />
     <ClInclude Include="Source\Component\MovementComponent.h" />
-    <ClInclude Include="Source\Component\ShaderComponent.h" />
+    <ClInclude Include="Source\Component\InstancingModelShaderComponent.h" />
     <ClInclude Include="Source\Component\TransformComponent.h" />
     <ClInclude Include="Source\Debug\DebugObject.h" />
     <ClInclude Include="Source\Debug\DebugManager.h" />
@@ -169,7 +169,7 @@
     <ClCompile Include="Source\Camera\CameraController.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
     <ClCompile Include="Source\Component\MovementComponent.cpp" />
-    <ClCompile Include="Source\Component\ShaderComponent.cpp" />
+    <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp" />
     <ClCompile Include="Source\Component\TransformComponent.cpp" />
     <ClCompile Include="Source\Debug\DebugObject.cpp" />
     <ClCompile Include="Source\Debug\DebugManager.cpp" />

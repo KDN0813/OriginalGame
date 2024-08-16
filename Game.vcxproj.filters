@@ -192,7 +192,7 @@
     <ClInclude Include="Source\Model\InstancingModelResourceManager.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\ShaderComponent.h">
+    <ClInclude Include="Source\Component\InstancingModelShaderComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\TransformComponent.h">
@@ -311,7 +311,7 @@
     <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\ShaderComponent.cpp">
+    <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\TransformComponent.cpp">

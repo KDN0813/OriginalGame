@@ -1,6 +1,6 @@
 #include "InstanceModelShader.h"
 #include "System/Misc.h"
-#include "Component/ShaderComponent.h"
+#include "Component/InstancingModelShaderComponent.h"
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 
