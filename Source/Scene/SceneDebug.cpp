@@ -119,22 +119,6 @@ void SceneDebug::Render()
 
 		// インスタンシング描画
 		instance_model_shader->Render(dc, rc);
-
-		 // 通常描画
-		{
-			temporary_shader->Begin(dc, rc);
-
-#if 0
-			for (auto& o : models)
-			{
-				o->Render(dc, temporary_shader);
-			}
-#endif
-
-			stage.Render(dc, temporary_shader);
-
-			temporary_shader->End(dc);
-		}
 	}
 
 #ifdef _DEBUG

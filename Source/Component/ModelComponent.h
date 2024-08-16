@@ -60,5 +60,11 @@ private:
 	bool dummy[2]{};
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;
+
+#ifdef _DEBUG
+public:
+	void DrawDebugGUI() override;
+
+#endif // _DEBUG
 };
 

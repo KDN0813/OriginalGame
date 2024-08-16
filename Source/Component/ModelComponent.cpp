@@ -43,6 +43,8 @@ ModelComponent::ModelComponent(const char* filename)
 
 void ModelComponent::Update(float elapsed_time)
 {
+	UpdateAnimation(elapsed_time);
+
 	auto owner = GetOwner();
 	DirectX::XMFLOAT4X4 world_transform;
 	if (auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
@@ -247,4 +249,8 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 		}
 	}
 	return nullptr;
+}
+
+void ModelComponent::DrawDebugGUI()
+{
 }
