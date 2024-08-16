@@ -11,6 +11,7 @@
 
 // シェーダー
 #include "Shader/InstanceModelShader.h"
+#include "Shader/ModelShader.h"
 
 class SceneDebug : public Scene
 {
@@ -37,6 +38,7 @@ private:
 
     // シェーダー
     std::unique_ptr<InstancingModelShader> instance_model_shader;
+    std::unique_ptr<ModelShader> model_shader;
 
     ObjectManager object_manager;
 };

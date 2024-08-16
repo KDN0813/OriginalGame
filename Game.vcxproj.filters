@@ -207,7 +207,13 @@
     <ClInclude Include="Source\Component\MovementComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\ModelComponent.h" />
+    <ClInclude Include="Source\Shader\ModelShader.h" />
+    <ClInclude Include="Source\Component\ModelComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ModelShaderComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -324,8 +330,14 @@
     <ClCompile Include="Source\Component\MovementComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Component\ModelShaderComponent.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Component\ModelComponent.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\ModelShader.cpp">
+      <Filter>Source\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

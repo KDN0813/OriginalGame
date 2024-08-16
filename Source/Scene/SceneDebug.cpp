@@ -7,6 +7,7 @@
 #include "Camera/Camera.h"
 
 #include "Component/ModelComponent.h"
+#include "Component/ModelShaderComponent.h"
 #include "Component/InstancingModelComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/InstancingModelShaderComponent.h"
@@ -19,16 +20,38 @@ SceneDebug::SceneDebug()
 	// シェーダーの作成
 	{
 		instance_model_shader = std::make_unique<InstancingModelShader>(device);
+		model_shader = std::make_unique<ModelShader>(device);
 	}
 	
 	// デバッグオブジェクト作成
 	{
 		// ステージ
-		auto stage = object_manager.Create();
-		stage->SetName("Stage");
-		stage->AddComponent<ModelComponent>("Data/Model/ExampleStage/ExampleStage.mdl");
-		auto transform = stage->AddComponent<Transform3DComponent>();
-		transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
+		{
+			auto stage = object_manager.Create();
+			stage->SetName("Stage");
+			stage->AddComponent<ModelComponent>("Data/Model/ExampleStage/ExampleStage.mdl");
+			auto transform = stage->AddComponent<Transform3DComponent>();
+			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
+			// シェーダー設定
+			auto shader_component =
+				stage->AddComponent<ModelShaderComponent>(model_shader.get());
+			model_shader->AddShaderComponent(shader_component);
+		}
+
+		// ボックス
+		{
+			auto cube = object_manager.Create();
+			cube->SetName("Cube");
+			cube->AddComponent<ModelComponent>("Data/Model/Cube/Cube.mdl");
+			auto transform = cube->AddComponent<Transform3DComponent>();
+			transform->SetScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
+			transform->SetPosition(DirectX::XMFLOAT3(5.0f, 10.0f, 0.0f));
+			transform->SetQuaternion(DirectX::XMFLOAT4(DirectX::XMConvertToRadians(90), 0.0f, 0.0f, 1.0f));
+			// シェーダー設定
+			auto shader_component =
+				cube->AddComponent<ModelShaderComponent>(model_shader.get());
+			model_shader->AddShaderComponent(shader_component);
+		}
 
 		InstancingModelShader* const shader = instance_model_shader.get();
 		// インスタンシング描画テスト
@@ -117,8 +140,11 @@ void SceneDebug::Render()
 		rc.view = camera.GetView();
 		rc.projection = camera.getProjection();
 
+		// モデル描画
+		this->model_shader->Render(dc, rc);
+
 		// インスタンシング描画
-		instance_model_shader->Render(dc, rc);
+		this->instance_model_shader->Render(dc, rc);
 	}
 
 #ifdef _DEBUG
