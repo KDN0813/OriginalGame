@@ -12,6 +12,7 @@ public:
     const char* GetName()const override { return "TransformComponent"; }
 
     const DirectX::XMFLOAT4X4& GetTransform() { return this->transform; }
+    const DirectX::XMMATRIX& GetTransformVec() { return DirectX::XMLoadFloat4x4(&this->transform); }
     void SetTransform(const DirectX::XMFLOAT4X4& transform) { this->transform = transform; }
 
 #pragma region setEget parame

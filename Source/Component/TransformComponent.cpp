@@ -13,7 +13,7 @@ void Transform3DComponent::Update(float elapsed_time)
 	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
 
 	DirectX::XMMATRIX W = S * R * T;
-	DirectX::XMStoreFloat4x4(&transform, W);
+	DirectX::XMStoreFloat4x4(&this->transform, W);
 	this->change_value = false;
 }
 
@@ -38,9 +38,18 @@ const DirectX::XMFLOAT3& Transform3DComponent::AddPosition(const DirectX::XMFLOA
 
 void Transform3DComponent::DrawDebugGUI()
 {
-	ImGui::InputFloat3("position", &this->position.x);
-	ImGui::InputFloat3("rotation", &this->rotation.x);
-	ImGui::InputFloat3("scale", &this->scale.x);
+	if (ImGui::InputFloat3("position", &this->position.x))
+	{
+		this->change_value = true;
+	}
+	if (ImGui::InputFloat3("rotation", &this->rotation.x))
+	{
+		this->change_value = true;
+	}
+	if (ImGui::InputFloat3("scale", &this->scale.x))
+	{
+		this->change_value = true;
+	}
 }
 
 #endif // _DEBUG
