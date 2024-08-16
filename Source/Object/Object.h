@@ -117,6 +117,7 @@ public:
 	const std::string GetName() const { return this->name; }
 	const char* GetNameCStr() const { return this->name.c_str(); }
 	const bool GetIsActive() { return this->is_active; }
+	const bool GetIsRemove() { return this->is_remove; }
 	void SetIsActive(const bool is_active) { this->is_active = is_active; }
 
 private:
@@ -128,6 +129,7 @@ private:
 private:
 	std::string name;
 	bool is_active = true;
+	bool is_remove = false;
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
 	ComponentVector component_vector;
 
@@ -154,8 +156,10 @@ public:
 
 	void Update(float elapsedTime);
 
+	void Remove(std::shared_ptr<Object> object);
 private:
 	std::vector<std::shared_ptr<Object>> object_vector;
+	std::set<std::shared_ptr<Object>> remove_object_vector;
 
 #ifdef _DEBUG
 public:

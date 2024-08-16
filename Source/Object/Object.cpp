@@ -81,6 +81,12 @@ void Object::DrawDebugGUI()
         if (!component_is_active) ImGui::PopStyleColor();
     }
 
+    // 削除ボタン
+    if (ImGui::Button("Remove"))
+    {
+        this->is_remove = true;
+    }
+
     if (!this->is_active) ImGui::PopStyleColor();
 }
 
@@ -100,17 +106,35 @@ std::shared_ptr<Object> ObjectManager::Create()
     return object;
 }
 
-// TODO(08/13)続きここから
-// とりあえずImGui表示するためにGameObjectManagerを作成する
-// 名前長いのでObjectクラスに変更する
-// こいつにRenderクラス持たせて、描画したいobjectだけDraw関数呼ぶとかできそう
-
 void ObjectManager::Update(float elapsedTime)
 {
-    for (std::shared_ptr<Object>& object : object_vector)
+    for (std::shared_ptr<Object>& object : this->object_vector)
     {
         object->Update(elapsedTime);
+        if (object->GetIsRemove()) Remove(object);
     }
+
+    for (const std::shared_ptr<Object>& object : this->remove_object_vector)
+    {
+        std::vector<std::shared_ptr<Object>>::iterator it = std::find(this->object_vector.begin(), this->object_vector.end(), object);
+        if (it != object_vector.end())
+        {
+            this->object_vector.erase(it);
+        }
+#ifdef _DEBUG
+        std::set<std::shared_ptr<Object>>::iterator selection_it = std::find(this->selection_object_vector.begin(), this->selection_object_vector.end(), object);
+        if (selection_it != selection_object_vector.end())
+        {
+            this->selection_object_vector.erase(selection_it);
+        }
+#endif // _DEBUG
+    }
+    this->remove_object_vector.clear();
+}
+
+void ObjectManager::Remove(std::shared_ptr<Object> object)
+{
+    this->remove_object_vector.insert(object);
 }
 
 #ifdef _DEBUG
@@ -165,10 +189,11 @@ void ObjectManager::DrawDetail()
     ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
 
     ImGui::Begin("Object Detail", nullptr, ImGuiWindowFlags_None);
-    std::shared_ptr<Object> lastSelected = selection_object_vector.empty() ? nullptr : *selection_object_vector.rbegin();
-    if (lastSelected != nullptr)
+
+    std::shared_ptr<Object> last_selected = selection_object_vector.empty() ? nullptr : *selection_object_vector.rbegin();
+    if (last_selected != nullptr)
     {
-        lastSelected->DrawDebugGUI();
+        last_selected->DrawDebugGUI();
     }
 
     ImGui::End();

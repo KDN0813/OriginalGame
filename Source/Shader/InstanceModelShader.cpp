@@ -352,6 +352,7 @@ void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, Instancing
 		}
 	}
 }
+
 void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset)
 {
 	SubsetConstantBuffer cbSubset;
