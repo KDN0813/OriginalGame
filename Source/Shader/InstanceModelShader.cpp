@@ -5,6 +5,7 @@
 #include "Model/ModelResource.h"
 
 #include "Component/InstancingModelComponent.h"
+#include "Component/TransformComponent.h"
 
 InstancingModelShader::InstancingModelShader(ID3D11Device* device)
 {
@@ -240,13 +241,6 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
-	// 修了処理
-	{
-		dc->VSSetShader(nullptr, nullptr, 0);
-		dc->PSSetShader(nullptr, nullptr, 0);
-		dc->IASetInputLayout(nullptr);
-	}
-
 	bool is_render_ready = false;	// 描画準備ができているか
 	std::shared_ptr<InstancingModelShaderComponent> shader_component;
 	for (auto& shader_component_Wpt : shader_component_Wptr_vector)
@@ -266,20 +260,98 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 		}
 	}
 
-	if (is_render_ready) shader_component->InstancingEnd();
+	if (is_render_ready) shader_component->InstancingEnd(dc);
+
+	// 修了処理
+	{
+		dc->VSSetShader(nullptr, nullptr, 0);
+		dc->PSSetShader(nullptr, nullptr, 0);
+		dc->IASetInputLayout(nullptr);
+	}
 }
 
-void InstancingModelShader::InstancingAdd(const InstanceData instance_data)
+void InstancingModelShader::InstancingStart()
 {
-	this->instance_datas[this->instance_count] = instance_data;
+	// カウントリセット
+	this->instance_count = 0;
+}
+
+void InstancingModelShader::InstancingAdd(
+	InstancingModelComponent* model,
+	Transform3DComponent* transform
+)
+{
+	this->instance_datas[this->instance_count] =
+	{
+		model->GetAnimationStartOffset(),
+		model->GetAnimeFrame(),
+		transform->GetTransform()
+	};
 	++this->instance_count;
 }
 
-void InstancingModelShader::InstancingEnd()
+void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, InstancingModelComponent* model)
 {
-	InstancingRender();
+	InstancingRender(dc, model);
 }
 
+void InstancingModelShader::AddShaderComponent(std::shared_ptr<InstancingModelShaderComponent> shader_component)
+{
+	shader_component_Wptr_vector.emplace_back(shader_component);
+}
+
+void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, InstancingModelComponent* model)
+{
+	// インスタンシングバッファの更新
+	D3D11_MAPPED_SUBRESOURCE mappedResource{};
+	HRESULT hr = dc->Map(instance_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	memcpy_s(mappedResource.pData, sizeof(InstanceData) * this->MAX_INSTANCES,
+		this->instance_datas, sizeof(InstanceData) * this->instance_count);
+	dc->Unmap(instance_data_buffer.Get(), 0);
+
+	dc->VSSetShaderResources(2, 1, instance_data_structured_buffer.GetAddressOf());
+
+	// ボーントランスフォームテクスチャ設定
+	dc->VSSetShaderResources(1, 1, model->GetInstancingModelResource()->GetBoneTransformTexture());
+	// 共通定数バッファの更新
+	CommonDataConstantBuffer common_data_buffer{};
+	common_data_buffer.bone_transform_count = model->GetInstancingModelResource()->GetBoneTransformCount();
+	dc->UpdateSubresource(common_data_constant_buffer.Get(), 0, 0, &common_data_buffer, 0, 0);
+
+	size_t mesh_index = 0;
+	for (const ModelResource::Mesh& mesh : model->GetModelResource()->GetMeshes())
+	{
+		for (const ModelResource::Subset& subset : mesh.subsets)
+		{
+			// バッファ設定
+			{
+				dc->VSSetShader(vertexShader.Get(), nullptr, 0);
+				dc->IASetInputLayout(inputLayout.Get());
+
+				ID3D11Buffer* vertex_buffers[] =
+				{
+					mesh.vertex_buffer.Get(),
+				};
+				UINT strides[] =
+				{
+					sizeof(ModelResource::Vertex),
+				};
+				UINT offset[_countof(vertex_buffers)] = { 0 };
+				dc->IASetVertexBuffers(0, _countof(vertex_buffers), vertex_buffers, strides, offset);
+				dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+				MeshConstantBuffer mesh_buffer{};
+				mesh_buffer.offset = model->GetInstancingModelResource()->GetMeshOffsets()[mesh_index];
+				dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &mesh_buffer, 0, 0);
+			}
+
+			//	サブセット単位で描画
+			DrawSubset(dc, subset);
+			++mesh_index;
+		}
+	}
+}
 void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset)
 {
 	SubsetConstantBuffer cbSubset;

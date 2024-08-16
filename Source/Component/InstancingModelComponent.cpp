@@ -50,24 +50,10 @@ void InstancingModelComponent::PlayAnimetion(int animeIndex, bool loop)
     this->anime_play = true;
 }
 
-const InstanceData InstancingModelComponent::GetInstanceData()
+const UINT InstancingModelComponent::GetAnimationStartOffset()
 {
-    DirectX::XMFLOAT4X4 transform{};
-
-    auto owner = GetOwner();
-    if (auto transform3D = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
-    {
-        transform = transform3D->GetTransform();
-    }
-
-    InstanceData instance_data
-    {
-         this->instancing_model_resource->GetAnimationOffsets()[this->anime_index],
-        this->anime_frame,
-         transform
-    };
-
-    return instance_data;
+    // TODO(08/13) ƒAƒjƒ”Ô†‚ªˆÈã‚Èê‡ˆ—‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+    return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
 }
 
 void InstancingModelComponent::DrawDebugGUI()

@@ -1,11 +1,12 @@
 #pragma once
+#include <d3d11.h>
 #include "Shader/Shader.h"
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 
-#include "Component/InstancingModelComponent.h"
-
 class InstancingModelShaderComponent;
+class InstancingModelComponent;
+class Transform3DComponent;
 
 class InstancingModelShader : public Shader
 {
@@ -32,7 +33,19 @@ private:
 		UINT offset;				// バッファ内でメッシュの開始位置を示すオフセット値
 		DirectX::XMUINT3 dummy;
 	};
-
+	/**
+	* \brief GPUに送るデータ
+	*
+	* \param animation_start_offset バッファ内で使用するアニメーションの開始位置を示すオフセット値
+	* \param anime_frame 現在のフレーム
+	* \param world_transform ワールドトランスフォーム
+	*/
+	struct InstanceData
+	{
+		UINT animation_start_offset;
+		UINT anime_frame;
+		DirectX::XMFLOAT4X4 world_transform{};
+	};
 public:
 	InstancingModelShader(ID3D11Device* device);
 	~InstancingModelShader() override {}
@@ -40,15 +53,17 @@ public:
 	void Render(ID3D11DeviceContext* dc, const RenderContext& rc)override;
 
 	// インスタンシング描画開始
-	void InstancingStart() {};
+	void InstancingStart();
 	// インスタンスの追加
-	void InstancingAdd(const InstanceData instance_data);
+	void InstancingAdd(InstancingModelComponent* model, Transform3DComponent* transform);
 	// インスタンシング描画修了
-	void InstancingEnd();
+	void InstancingEnd(ID3D11DeviceContext* dc, InstancingModelComponent* model);
 
+	// 描画するobjectのシェーダーを追加
+	void AddShaderComponent(std::shared_ptr<InstancingModelShaderComponent> shader_component);
 private:
 	// インスタンシング描画
-	void InstancingRender() {};
+	void InstancingRender(ID3D11DeviceContext* dc, InstancingModelComponent* model);
 	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
 
 private:
@@ -68,19 +83,13 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
 
-	// インスタンシング描画に必要なパラメータ
-	ModelResource* model_resource = nullptr;
-	InstancingModelResource* instancing_model_resource = nullptr;
-
 	// インスタンス毎のワールドトランスフォームをGPUに渡すためのデータ
-	UINT instance_count = 0;
+	int instance_count = 0;
 	InstanceData instance_datas[MAX_INSTANCES];	// インスタンス毎のデータ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> instance_data_buffer;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 
 	// 描画するインスタンスのシェーダー
 	std::vector<std::weak_ptr<InstancingModelShaderComponent>> shader_component_Wptr_vector;
-private:
-	std::weak_ptr<InstancingModelComponent> instancing_model_Wptr;
 };
 

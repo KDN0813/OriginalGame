@@ -5,6 +5,7 @@
 
 class InstancingModelShader;
 class InstancingModelComponent;
+class Transform3DComponent;
 
 class InstancingModelShaderComponent : public Component
 {
@@ -15,12 +16,13 @@ public:
 
     void InstancingStart();
     void InstancingAdd();
-    void InstancingEnd();
+    void InstancingEnd(ID3D11DeviceContext* dc);
 private:
     InstancingModelShader* const shader;
 
 private:
     std::weak_ptr<InstancingModelComponent> instancing_model_Wptr;
+    std::weak_ptr<Transform3DComponent> transform_Wptr;
 
 #ifdef _DEBUG
 public:
