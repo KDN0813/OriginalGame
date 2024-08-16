@@ -51,6 +51,8 @@ public:
 	~InstancingModelShader() override {}
 
 	void Render(ID3D11DeviceContext* dc, const RenderContext& rc)override;
+	
+	const char* GetName()override { return "InstancingModelShader"; }
 
 	// インスタンシング描画開始
 	void InstancingStart();

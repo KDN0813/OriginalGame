@@ -51,6 +51,8 @@ const UINT InstancingModelComponent::GetAnimationStartOffset()
     return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
 }
 
+#ifdef _DEBUG
+
 void InstancingModelComponent::DrawDebugGUI()
 {
     const int anime_index_max = this->model_resource->GetAnimations().size() - 1;
@@ -76,3 +78,5 @@ void InstancingModelComponent::DrawDebugGUI()
         this->anime_play = true;
     }
 }
+
+#endif // _DEBUG

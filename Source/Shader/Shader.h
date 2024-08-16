@@ -17,6 +17,8 @@ public:
 	 * \param rc
 	 */
 	virtual void Render(ID3D11DeviceContext* dc, const RenderContext& rc) {};
+
+	virtual const char* GetName() = 0;
 };
 
 // TODO(08/15) 関数の仮置き・不必要なら削除する

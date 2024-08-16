@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include "ShaderComponent.h"
 #include "Shader/Shader.h"
 #include "Object/Object.h"
@@ -19,6 +20,12 @@ void InstancingModelShaderComponent::InstancingStart()
 
 void InstancingModelShaderComponent::InstancingAdd()
 {
+#ifdef _DEBUG
+    if (!this->is_active) return;
+    if (!this->GetOwner()->GetIsActive()) return;
+#endif // _DEBUG
+
+
     auto ownr = GetOwner();
     auto instancing_model
         = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr);
@@ -47,6 +54,9 @@ void InstancingModelShaderComponent::InstancingEnd(ID3D11DeviceContext* dc)
 
 void InstancingModelShaderComponent::DrawDebugGUI()
 {
+    std::string shader_name = this->shader->GetName();
+    std::string text = "SetShader:" + shader_name;
+    ImGui::Text(text.c_str());
 }
 
 #endif _DEBUG
