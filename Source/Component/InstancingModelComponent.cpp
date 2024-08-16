@@ -8,11 +8,6 @@
 #include "Component/TransformComponent.h"
 
 InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const char* filename)
-    : anime_frame()
-    , anime_index()
-    , anime_loop()
-    , anime_play()
-
 {
     this->instancing_model_resource =
         InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
@@ -24,7 +19,7 @@ void InstancingModelComponent::Update(float elapsedTime)
 {
     if (!this->anime_play)return;
 
-    ++this->anime_frame;
+    this->anime_frame = (std::max)(static_cast<int>(this->anime_frame) + this->anime_speed, 0);
 
     if (this->anime_frame >= this->instancing_model_resource->GetAnimationLengths()[this->anime_index])
     {
@@ -71,6 +66,7 @@ void InstancingModelComponent::DrawDebugGUI()
     {
         this->anime_frame = static_cast<UINT>(anime_frame_int);
     }
+    ImGui::SliderInt("anime_speed", &this->anime_speed, 0, 10);
 
     ImGui::Checkbox("anime_loop", &this->anime_loop);
     ImGui::Checkbox("anime_play", &this->anime_play);

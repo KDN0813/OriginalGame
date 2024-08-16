@@ -66,7 +66,7 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 			while (IsPlayAnimation(resource))
 			{
 				// アニメーション更新
-				UpdateAnimation(0.01f, resource);
+				UpdateAnimation(0.005f, resource);
 				UpdateTransform();
 
 				// ボーントランスフォーム計算

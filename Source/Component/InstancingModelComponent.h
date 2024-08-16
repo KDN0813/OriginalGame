@@ -30,10 +30,11 @@ private:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
 	std::shared_ptr<ModelResource> model_resource;
 
-	UINT anime_frame;
-	UINT anime_index;
-	bool anime_loop;
-	bool anime_play;
+	UINT anime_frame = 0;
+	UINT anime_index = 0;
+	int anime_speed = 1;
+	bool anime_loop = false;
+	bool anime_play = false;
 
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;
