@@ -93,7 +93,7 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 
 				++animation_length;
 			}
-			this->animation_lengths[anime_index] = animation_length;
+			this->animation_lengths[anime_index] = animation_length - 1;
 			this->animation_offsets[anime_index] = animation_length_sum * bone_transform_count;
 			animation_length_sum += animation_length;
 		}
