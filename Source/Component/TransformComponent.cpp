@@ -42,10 +42,6 @@ void Transform3DComponent::DrawDebugGUI()
 	{
 		this->change_value = true;
 	}
-	if (ImGui::InputFloat3("rotation", &this->rotation.x))
-	{
-		this->change_value = true;
-	}
 	if (ImGui::InputFloat3("scale", &this->scale.x))
 	{
 		this->change_value = true;

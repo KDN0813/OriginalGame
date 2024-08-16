@@ -45,7 +45,7 @@ SceneDebug::SceneDebug()
 			cube->AddComponent<ModelComponent>("Data/Model/Cube/Cube.mdl");
 			auto transform = cube->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
-			transform->SetPosition(DirectX::XMFLOAT3(5.0f, 10.0f, 0.0f));
+			transform->SetPosition(DirectX::XMFLOAT3(5.0f, 2.0f, 0.0f));
 			transform->SetQuaternion(DirectX::XMFLOAT4(DirectX::XMConvertToRadians(90), 0.0f, 0.0f, 1.0f));
 			// シェーダー設定
 			auto shader_component =
