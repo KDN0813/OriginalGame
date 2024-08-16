@@ -251,6 +251,10 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 	return nullptr;
 }
 
+#ifdef _DEBUG
+
 void ModelComponent::DrawDebugGUI()
 {
 }
+
+#endif // _DEBUG
