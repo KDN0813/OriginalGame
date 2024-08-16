@@ -11,6 +11,11 @@ ModelShaderComponent::ModelShaderComponent(ModelShader* const shader)
 
 void ModelShaderComponent::Draw(ID3D11DeviceContext* dc)
 {
+#ifdef _DEBUG
+    if (!this->is_active) return;
+    if (!this->GetOwner()->GetIsActive()) return;
+#endif // _DEBUG
+
     auto owner = GetOwner();
 
     if (auto model = owner->GetComponent<ModelComponent>(this->model_Wptr))
