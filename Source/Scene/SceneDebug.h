@@ -22,22 +22,26 @@ public:
     void Update(float elapsed_time) override;
     void Render() override;
 
-#ifdef _DEBUG
-    enum class ImGuiMode
-    {
-        Object = 0,
-        System,
-    };
-    ImGuiMode mode_index = ImGuiMode::Object;
-    void DrawImGui();
-#endif // _DEBUG
 private:
     CameraController cameraController;
 
     // シェーダー
-    std::unique_ptr<InstancingModelShader> instance_model_shader;
+    std::unique_ptr<InstancingModelShader> instancing_model_shader;
     std::unique_ptr<ModelShader> model_shader;
 
     ObjectManager object_manager;
+
+#ifdef _DEBUG
+    enum class ImGuiMode
+    {
+        Object = 0,
+        Shader,
+        System,
+    };
+    ImGuiMode mode_index = ImGuiMode::Object;
+    void DrawImGui();
+
+    void DrawShaderImGui();
+#endif // _DEBUG
 };
 

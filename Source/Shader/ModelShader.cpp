@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include "ModelShader.h"
 #include "Model/ModelResource.h"
 #include "System/Misc.h"
@@ -275,3 +276,13 @@ void ModelShader::RemoveShaderComponent(ModelShaderComponent* shader_component)
 	if (it == this->shader_component_vec.end()) return;
 	this->shader_component_vec.erase(it);
 }
+
+#ifdef _DEBUG
+
+void ModelShader::DrawDebugGUI()
+{
+	std::string text = "shader_component_vector.size" + std::to_string(this->shader_component_vec.size());
+	ImGui::Text(text.c_str());
+}
+
+#endif // _DEBUG

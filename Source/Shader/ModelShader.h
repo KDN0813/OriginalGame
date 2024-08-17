@@ -58,5 +58,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		sampler_state;
 
 	std::vector<ModelShaderComponent*> shader_component_vec;
+
+#ifdef _DEBUG
+public:
+	void DrawDebugGUI() override;
+
+#endif // _DEBUG
 };
 

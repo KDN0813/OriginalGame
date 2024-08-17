@@ -19,4 +19,10 @@ public:
 	virtual void Render(ID3D11DeviceContext* dc, const RenderContext& rc) = 0;
 
 	virtual const char* GetName() = 0;
+
+#ifdef _DEBUG
+public:
+	virtual void DrawDebugGUI() = 0;
+
+#endif // _DEBUG
 };

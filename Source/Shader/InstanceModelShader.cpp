@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include "InstanceModelShader.h"
 #include "System/Misc.h"
 #include "Component/InstancingModelShaderComponent.h"
@@ -376,3 +377,13 @@ void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResou
 
 	dc->DrawIndexedInstanced(subset.index_count, this->instance_count, subset.start_index, 0, 0);
 }
+
+#ifdef _DEBUG
+
+void InstancingModelShader::DrawDebugGUI()
+{
+	std::string text = "shader_component_vector.size" + std::to_string(this->shader_component_vector.size());
+	ImGui::Text(text.c_str());
+}
+
+#endif // _DEBUG

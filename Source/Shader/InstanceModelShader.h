@@ -106,5 +106,11 @@ private:
 
 	// 描画するインスタンスのシェーダー
 	std::vector<InstancingModelShaderComponent*> shader_component_vector;
+
+#ifdef _DEBUG
+public:
+	void DrawDebugGUI();
+
+#endif // _DEBUG
 };
 

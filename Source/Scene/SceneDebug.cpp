@@ -19,7 +19,7 @@ SceneDebug::SceneDebug()
 	ID3D11Device* device = graphics.GetDevice();
 	// シェーダーの作成
 	{
-		instance_model_shader = std::make_unique<InstancingModelShader>(device);
+		instancing_model_shader = std::make_unique<InstancingModelShader>(device);
 		model_shader = std::make_unique<ModelShader>(device);
 	}
 	
@@ -53,7 +53,7 @@ SceneDebug::SceneDebug()
 			model_shader->AddShaderComponent(shader_component.get());
 		}
 
-		InstancingModelShader* const shader = instance_model_shader.get();
+		InstancingModelShader* const shader = instancing_model_shader.get();
 		// インスタンシング描画テスト
 		{
 			float offset = 3.0f;
@@ -142,7 +142,7 @@ void SceneDebug::Render()
 		this->model_shader->Render(dc, rc);
 
 		// インスタンシング描画
-		this->instance_model_shader->Render(dc, rc);
+		this->instancing_model_shader->Render(dc, rc);
 	}
 
 #ifdef _DEBUG
@@ -168,6 +168,10 @@ void SceneDebug::DrawImGui()
 				{
 					mode_index = SceneDebug::ImGuiMode::Object;
 				}
+				if (ImGui::MenuItem("Shader")) 
+				{
+					mode_index = SceneDebug::ImGuiMode::Shader;
+				}
 				if (ImGui::MenuItem("System")) 
 				{
 					mode_index = SceneDebug::ImGuiMode::System;
@@ -185,6 +189,10 @@ void SceneDebug::DrawImGui()
 			ImGui::Text("Object");
 			object_manager.DrawDebugGUI();
 			break;
+		case SceneDebug::ImGuiMode::Shader:
+			ImGui::Text("System");
+			DrawShaderImGui();
+			break;
 		case SceneDebug::ImGuiMode::System:
 			ImGui::Text("System");
 			break;
@@ -193,6 +201,18 @@ void SceneDebug::DrawImGui()
 		}
 	}
 	ImGui::End();
+}
+
+void SceneDebug::DrawShaderImGui()
+{
+	if (ImGui::CollapsingHeader(model_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		model_shader->DrawDebugGUI();
+	}
+	if (ImGui::CollapsingHeader(instancing_model_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		instancing_model_shader->DrawDebugGUI();
+	}
 }
 
 #endif // _DEBUG
