@@ -15,6 +15,7 @@ public:
     const DirectX::XMMATRIX& GetTransformVec() { return DirectX::XMLoadFloat4x4(&this->transform); }
     void SetTransform(const DirectX::XMFLOAT4X4& transform) { this->transform = transform; }
 
+    const unsigned int GetPriority()const noexcept { return 1; };
 #pragma region setÅEget parame
     const DirectX::XMVECTOR GetPositionVec()const noexcept { return DirectX::XMLoadFloat3(&position); }
     const DirectX::XMFLOAT3& GetPosition()const noexcept { return position; }

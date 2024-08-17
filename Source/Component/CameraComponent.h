@@ -1,0 +1,70 @@
+#pragma once
+#include "Component.h"
+#include <DirectXMath.h>
+
+class Transform3DComponent;
+
+class CameraComponent : public Component
+{
+public:
+    CameraComponent();
+
+public:
+    // 更新関数
+    void Update(float elapsed_time);
+    // 名前取得
+    const char* GetName()const { return "CameraComponent"; };
+    
+	// 指定方向を向く
+	void SetLookAt(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up);
+	// パースペクティブ設定
+	void SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ);
+	// 画角取得
+	float GetFovY() const { return fovY; }
+	// アスペクト比取得
+	float GetAspect() const { return aspect; }
+	// ニアクリップ値取得
+	float GetNearZ() const { return nearZ; }
+	// ファークリップ値取得
+	float GetFarZ() const { return farZ; }
+	// ビュー行列取得
+	const DirectX::XMFLOAT4X4& GetViewTransform() const { return view_transform; }
+	// プロジェクション行列取得
+	const DirectX::XMFLOAT4X4& GetProjectionTransform() const { return projection_transform; }
+	// 視点取得
+	const DirectX::XMFLOAT3& GetEye() const { return eye; }
+	// 注視店取得
+	const DirectX::XMFLOAT3& GetFocus() const { return focus; }
+	// 上方向取得
+	const DirectX::XMFLOAT3& GetUp() const { return up; }
+	// 前方向取得
+	const DirectX::XMFLOAT3& GetFront() const { return front; }
+	// 右方向取得
+	const DirectX::XMFLOAT3& GetRight() const { return right; }
+
+private:
+	float					fovY = DirectX::XMConvertToRadians(45);
+	float					aspect = 16.0f / 9.0f;
+	float					nearZ = 0.1f;
+	float					farZ = 1000.0f;
+
+	DirectX::XMFLOAT3		eye = DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f);
+	DirectX::XMFLOAT3		focus = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3		up = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
+	DirectX::XMFLOAT3		front = DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f);
+	DirectX::XMFLOAT3		right = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
+
+	DirectX::XMFLOAT4X4		view_transform = {};
+	DirectX::XMFLOAT4X4		projection_transform = {};
+
+	DirectX::XMFLOAT3		range = {};
+private:
+	std::weak_ptr<Transform3DComponent> transform_Wptr;
+
+#ifdef _DEBUG
+public:
+    void DrawDebugGUI();
+
+#endif // _DEBUG
+};
+

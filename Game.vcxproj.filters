@@ -192,6 +192,7 @@
     <ClInclude Include="Source\Shader\ModelShader.h">
       <Filter>Source\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\CameraComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -298,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="Source\Input\Mouse.cpp">
       <Filter>Source\input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\CameraComponent.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
