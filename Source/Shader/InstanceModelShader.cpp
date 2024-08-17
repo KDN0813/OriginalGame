@@ -301,6 +301,13 @@ void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* s
 	shader_component_vector.emplace_back(shader_component);
 }
 
+void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent* shader_component)
+{
+	auto it = std::find(this->shader_component_vector.begin(), this->shader_component_vector.end(), shader_component);
+	if (it == this->shader_component_vector.end()) return;
+	this->shader_component_vector.erase(it);
+}
+
 InstancingModelShaderComponent* InstancingModelShader::IsShaderValid(InstancingModelShaderComponent* shader_component)
 {
 	return (shader_component->IsShaderValid())? shader_component : nullptr;

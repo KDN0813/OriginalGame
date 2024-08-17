@@ -11,6 +11,7 @@ class InstancingModelShaderComponent : public Component
 {
 public:
     InstancingModelShaderComponent(InstancingModelShader* const shader);
+    ~InstancingModelShaderComponent();
 
     const char* GetName()const override { return "InstanceShaderComponent"; }
 

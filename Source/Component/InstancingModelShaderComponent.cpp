@@ -13,6 +13,11 @@ InstancingModelShaderComponent::InstancingModelShaderComponent(InstancingModelSh
 {
 }
 
+InstancingModelShaderComponent::~InstancingModelShaderComponent()
+{
+    this->shader->RemoveShaderComponent(this);
+}
+
 void InstancingModelShaderComponent::InstancingStart()
 {
     this->shader->InstancingStart();

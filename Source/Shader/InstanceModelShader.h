@@ -64,6 +64,9 @@ public:
 	// 描画するobjectのシェーダーを追加
 	void AddShaderComponent(InstancingModelShaderComponent* shader_component);
 
+	// objectのシェーダーを削除する
+	void RemoveShaderComponent(InstancingModelShaderComponent* shader_component);
+
 	/**
 	 * \fn InstancingModelShaderComponent
 	 * \brief シェーダーコンポーネントが有効であるか判定する。
