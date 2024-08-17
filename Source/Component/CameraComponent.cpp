@@ -30,6 +30,15 @@ void CameraComponent::Update(float elapsed_time)
 
     target = transform ? transform->GetPosition() : DirectX::XMFLOAT3();
 
+    float sx = ::sinf(rotateX), cx = ::cosf(rotateX);
+    float sy = ::sinf(rotateY), cy = ::cosf(rotateY);
+    DirectX::XMFLOAT3 front =
+    {
+        -cx * sy,
+        -sx,
+        -cx * cy
+    };
+
     DirectX::XMFLOAT3 set_eye =
     {
         target.x - front.x * range,
@@ -102,6 +111,10 @@ void CameraComponent::DrawDebugGUI()
     {
         range = 1.0f;
     }
+
+    ImGui::SliderFloat("rotateY", &rotateY, -DirectX::XM_PI, DirectX::XM_PI);
+    const float RotateX_Max = DirectX::XMConvertToRadians(89.0f);
+    ImGui::SliderFloat("rotateX", &rotateX, -RotateX_Max, RotateX_Max);
 
     if (ImGui::Button("SetMainCamera"))
     {
