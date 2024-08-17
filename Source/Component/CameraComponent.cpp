@@ -1,16 +1,25 @@
 #include <imgui.h>
 #include "CameraComponent.h"
 #include "Object/Object.h"
+#include "Camera/CameraManager.h"
 
 #include "Component/TransformComponent.h"
 
-CameraComponent::CameraComponent()
+CameraComponent::CameraComponent(CameraManager* camera_manager)
+    :camera_manager(camera_manager)
 {
     SetLookAt(
         DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
         DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
         DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
     );
+
+    this->camera_manager->AddCamera(this);
+}
+
+CameraComponent::~CameraComponent()
+{
+    this->camera_manager->RemoveCamera(this);
 }
 
 void CameraComponent::Update(float elapsed_time)
@@ -29,6 +38,11 @@ void CameraComponent::Update(float elapsed_time)
     };
 
     SetLookAt(set_eye, target, DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
+}
+
+void CameraComponent::SetMainCamera()
+{
+    this->camera_manager->SetMainCamera(this);
 }
 
 void CameraComponent::SetLookAt(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up)
@@ -84,6 +98,11 @@ void CameraComponent::DrawDebugGUI()
     ImGui::InputFloat("farZ", &this->farZ);
     ImGui::InputFloat3("focus", &this->farZ);
     ImGui::InputFloat3("range", &this->farZ);
+
+    if (ImGui::Button("SetMainCamera"))
+    {
+        SetMainCamera();
+    }
 }
 
 #endif // _DEBUG

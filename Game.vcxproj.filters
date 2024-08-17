@@ -193,6 +193,7 @@
       <Filter>Source\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\CameraComponent.h" />
+    <ClInclude Include="Source\Camera\CameraManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -301,6 +302,9 @@
       <Filter>Source\input</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\CameraComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\CameraManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,12 +2,14 @@
 #include "Component.h"
 #include <DirectXMath.h>
 
+class CameraManager;
 class Transform3DComponent;
 
 class CameraComponent : public Component
 {
 public:
-    CameraComponent();
+    CameraComponent(CameraManager* camera_manager);
+    ~CameraComponent();
 
 public:
     // 更新関数
@@ -15,6 +17,13 @@ public:
     // 名前取得
     const char* GetName()const { return "CameraComponent"; };
     
+	/**
+	 * \fn SetMainCamera
+	 * \brief メインカメラに設定する
+	 * 
+	 */
+	void SetMainCamera();
+
 	// 指定方向を向く
 	void SetLookAt(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up);
 	// パースペクティブ設定
@@ -41,7 +50,6 @@ public:
 	const DirectX::XMFLOAT3& GetFront() const { return front; }
 	// 右方向取得
 	const DirectX::XMFLOAT3& GetRight() const { return right; }
-
 private:
 	float					fovY = DirectX::XMConvertToRadians(45);
 	float					aspect = 16.0f / 9.0f;
@@ -58,6 +66,8 @@ private:
 	DirectX::XMFLOAT4X4		projection_transform = {};
 
 	DirectX::XMFLOAT3		range = {};
+
+	CameraManager*const	camera_manager;
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;
 
