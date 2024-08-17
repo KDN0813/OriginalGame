@@ -10,7 +10,6 @@
 // シェーダー
 #include "Shader/InstanceModelShader.h"
 #include "Shader/ModelShader.h"
-#include "Camera/CameraManager.h"
 
 class SceneDebug : public Scene
 {
@@ -32,7 +31,6 @@ private:
 
     ObjectManager object_manager;
 
-    CameraManager camera_manager;
 #ifdef _DEBUG
     enum class ImGuiMode
     {

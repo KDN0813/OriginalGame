@@ -7,7 +7,10 @@ class CameraComponent;
 class CameraManager : public Singleton<CameraManager>
 {
 public:
-    CameraManager() :Singleton(this) {};
+    CameraManager() : Singleton(this) {};
+    ~CameraManager() {}
+
+    CameraComponent* GetCameraComponent() { return this->main_camera; }
 
     /**
      * \fn AddCamera

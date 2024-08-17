@@ -9,7 +9,7 @@ CameraComponent::CameraComponent(CameraManager* camera_manager)
     :camera_manager(camera_manager)
 {
     SetLookAt(
-        DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+        DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f),
         DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
         DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
     );
@@ -32,9 +32,9 @@ void CameraComponent::Update(float elapsed_time)
 
     DirectX::XMFLOAT3 set_eye =
     {
-        set_eye.x = target.x - up.x * range.x - front.x * range.x - right.x * range.x,
-        set_eye.y = target.y - up.y * range.y - front.y * range.y - right.y * range.y,
-        set_eye.z = target.z - up.z * range.z - front.z * range.z - right.z * range.z,
+        target.x - front.x * range,
+        target.y - front.y * range,
+        target.z - front.z * range
     };
 
     SetLookAt(set_eye, target, DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
@@ -96,8 +96,12 @@ void CameraComponent::DrawDebugGUI()
 
     ImGui::InputFloat("nearZ", &this->nearZ);
     ImGui::InputFloat("farZ", &this->farZ);
-    ImGui::InputFloat3("focus", &this->farZ);
-    ImGui::InputFloat3("range", &this->farZ);
+    ImGui::InputFloat3("focus", &this->focus.x);
+    ImGui::InputFloat("front_range", &this->range);
+    if (range == 0.0f)
+    {
+        range = 1.0f;
+    }
 
     if (ImGui::Button("SetMainCamera"))
     {

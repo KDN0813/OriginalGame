@@ -65,7 +65,7 @@ private:
 	DirectX::XMFLOAT4X4		view_transform = {};
 	DirectX::XMFLOAT4X4		projection_transform = {};
 
-	DirectX::XMFLOAT3		range = {};
+	float range = 1.0f;
 
 	CameraManager*const	camera_manager;
 private:

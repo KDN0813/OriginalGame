@@ -8,6 +8,7 @@
 #include "Model/ModelResourceManager.h"
 #include "Model/InstancingModelResourceManager.h"
 #include "Debug/DebugManager.h"
+#include "Camera/CameraManager.h"
 
 class Framework
 {
@@ -32,6 +33,7 @@ private:
 	Input							input;
 	ModelResourceManager			resource_manager;
 	InstancingModelResourceManager	instancin_resource_manager;
+	CameraManager					camera_manager;
 #ifdef _DEBUG
 	DebugManager					debugManager;
 #endif // _DEBUG

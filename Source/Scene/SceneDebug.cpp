@@ -3,8 +3,11 @@
 #include "imgui.h"
 #include "System/Misc.h"
 #include "Debug/DebugCereal.h"
+#include "Camera/CameraManager.h"
 
 #include "Camera/Camera.h"
+
+#include "Scene/SceneManager.h"
 
 #include "Component/ModelComponent.h"
 #include "Component/ModelShaderComponent.h"
@@ -12,8 +15,13 @@
 #include "Component/TransformComponent.h"
 #include "Component/InstancingModelShaderComponent.h"
 #include "Component/MovementComponent.h"
+#include "Component/CameraComponent.h"
 
 SceneDebug::SceneDebug()
+{
+}
+
+void SceneDebug::Initialize()
 {
 	Graphics& graphics = Graphics::Instance();
 	ID3D11Device* device = graphics.GetDevice();
@@ -22,7 +30,36 @@ SceneDebug::SceneDebug()
 		instancing_model_shader = std::make_unique<InstancingModelShader>(device);
 		model_shader = std::make_unique<ModelShader>(device);
 	}
-	
+
+	// カメラ作成
+	{
+		Graphics& graphics = Graphics::Instance();
+		// カメラ初期設定
+		Camera& camera = Camera::Intance();
+		camera.SetLookAt(
+			DirectX::XMFLOAT3(0.0f, 0.0f, -10.0f),
+			DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+			DirectX::XMFLOAT3(0.0f, 10.0f, 0.0f)
+		);
+		camera.SetPerspectiveFov(
+			DirectX::XMConvertToRadians(45.0f),
+			graphics.GetScreenWidth() / graphics.GetScreenHeight(),
+			0.1f,
+			1000.0f
+		);
+
+		auto debug_camera = object_manager.Create();
+		debug_camera->SetName("debug_camera");
+		auto camera_Cmp = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance());
+		camera_Cmp->SetPerspectiveFov(
+			DirectX::XMConvertToRadians(45.0f),
+			graphics.GetScreenWidth() / graphics.GetScreenHeight(),
+			0.1f,
+			1000.0f
+		);
+		camera_Cmp->SetMainCamera();
+	}
+
 	// デバッグオブジェクト作成
 	{
 		// ステージ
@@ -84,24 +121,6 @@ SceneDebug::SceneDebug()
 	}
 }
 
-void SceneDebug::Initialize()
-{
-	Graphics& graphics = Graphics::Instance();
-	// カメラ初期設定
-	Camera& camera = Camera::Intance();
-	camera.SetLookAt(
-		DirectX::XMFLOAT3(0.0f, 0.0f, -10.0f),
-		DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT3(0.0f, 10.0f, 0.0f)
-	);
-	camera.SetPerspectiveFov(
-		DirectX::XMConvertToRadians(45.0f),
-		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
-		0.1f,
-		1000.0f
-	);
-}
-
 void SceneDebug::Finalize()
 {
 }
@@ -133,10 +152,13 @@ void SceneDebug::Render()
 	{
 		Graphics& graphics = Graphics::Instance();
 		ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-		Camera& camera = Camera::Intance();
+		//Camera& camera = Camera::Intance();
+
+		CameraManager* camera_manager = CameraManager::Instance();
+		auto camera= camera_manager->GetCameraComponent();
 		RenderContext rc;
-		rc.view = camera.GetView();
-		rc.projection = camera.getProjection();
+		rc.view = camera->GetViewTransform();
+		rc.projection = camera->GetProjectionTransform();
 
 		// モデル描画
 		this->model_shader->Render(dc, rc);

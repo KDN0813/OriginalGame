@@ -192,8 +192,12 @@
     <ClInclude Include="Source\Shader\ModelShader.h">
       <Filter>Source\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\CameraComponent.h" />
-    <ClInclude Include="Source\Camera\CameraManager.h" />
+    <ClInclude Include="Source\Camera\CameraManager.h">
+      <Filter>Source\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\CameraComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -301,11 +305,11 @@
     <ClCompile Include="Source\Input\Mouse.cpp">
       <Filter>Source\input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\CameraComponent.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera\CameraManager.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\CameraComponent.cpp">
+      <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
