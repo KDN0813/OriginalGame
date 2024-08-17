@@ -62,7 +62,17 @@ public:
 	void InstancingEnd(ID3D11DeviceContext* dc, InstancingModelComponent* model);
 
 	// 描画するobjectのシェーダーを追加
-	void AddShaderComponent(std::shared_ptr<InstancingModelShaderComponent> shader_component);
+	void AddShaderComponent(InstancingModelShaderComponent* shader_component);
+
+	/**
+	 * \fn InstancingModelShaderComponent
+	 * \brief シェーダーコンポーネントが有効であるか判定する。
+	 * 描画に必用なパラメータを所持しているか判定する。
+	 * 
+	 * \param shader_component 判定するシェーダーコンポーネント
+	 * \return 有効なら引数のポインタ。有効でないならnullptrを返す
+	 */
+	InstancingModelShaderComponent* IsShaderValid(InstancingModelShaderComponent* shader_component);
 private:
 	// インスタンシング描画
 	void InstancingRender(ID3D11DeviceContext* dc, InstancingModelComponent* model);
@@ -92,6 +102,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 
 	// 描画するインスタンスのシェーダー
-	std::vector<std::weak_ptr<InstancingModelShaderComponent>> shader_component_Wptr_vector;
+	std::vector<InstancingModelShaderComponent*> shader_component_vector;
 };
 

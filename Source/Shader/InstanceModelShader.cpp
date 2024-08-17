@@ -206,7 +206,7 @@ InstancingModelShader::InstancingModelShader(ID3D11Device* device)
 
 void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
-	if (shader_component_Wptr_vector.size() <= 0) return;
+	if (shader_component_vector.size() <= 0) return;
 
 	// 初期設定
 	{
@@ -242,25 +242,25 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 	}
 
 	bool is_render_ready = false;	// 描画準備ができているか
-	std::shared_ptr<InstancingModelShaderComponent> shader_component;
-	for (auto& shader_component_Wpt : shader_component_Wptr_vector)
+	InstancingModelShaderComponent* valid_Sc = nullptr;	// 使用可能なシェーダーコンポーネント
+	for (auto shader_component : this->shader_component_vector)
 	{
-		if (shader_component = shader_component_Wpt.lock())
+		if (!shader_component) continue;
+
+		if (!is_render_ready)
 		{
-			if (!is_render_ready)
-			{
-				shader_component->InstancingStart();
-				shader_component->InstancingAdd();
-				is_render_ready = true;
-			}
-			else
-			{
-				shader_component->InstancingAdd();
-			}
+			// シェーダーコンポーネントが使用可能か判定
+			if (!(valid_Sc = IsShaderValid(shader_component))) continue;
+			shader_component->InstancingStart();
+			shader_component->InstancingAdd();
+			is_render_ready = true;
+		}
+		else
+		{
+			shader_component->InstancingAdd();
 		}
 	}
-
-	if (is_render_ready) shader_component->InstancingEnd(dc);
+	if (is_render_ready) valid_Sc->InstancingEnd(dc);
 
 	// 修了処理
 	{
@@ -295,9 +295,15 @@ void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, InstancingMod
 	InstancingRender(dc, model);
 }
 
-void InstancingModelShader::AddShaderComponent(std::shared_ptr<InstancingModelShaderComponent> shader_component)
+void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* shader_component)
 {
-	shader_component_Wptr_vector.emplace_back(shader_component);
+	if (shader_component == nullptr) return;
+	shader_component_vector.emplace_back(shader_component);
+}
+
+InstancingModelShaderComponent* InstancingModelShader::IsShaderValid(InstancingModelShaderComponent* shader_component)
+{
+	return (shader_component->IsShaderValid())? shader_component : nullptr;
 }
 
 void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, InstancingModelComponent* model)

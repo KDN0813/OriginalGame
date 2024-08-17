@@ -73,7 +73,7 @@ SceneDebug::SceneDebug()
 					// シェーダー設定
 					auto shader_component =
 						object->AddComponent<InstancingModelShaderComponent>(shader);
-					shader->AddShaderComponent(shader_component);
+					shader->AddShaderComponent(shader_component.get());
 
 					model->PlayAnimetion(z);
 					transform->SetPosition(pos);

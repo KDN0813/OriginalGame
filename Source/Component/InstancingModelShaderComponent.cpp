@@ -50,6 +50,17 @@ void InstancingModelShaderComponent::InstancingEnd(ID3D11DeviceContext* dc)
     }
 }
 
+bool InstancingModelShaderComponent::IsShaderValid()
+{
+    auto ownr = GetOwner();
+    auto instancing_model
+        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr);
+    auto transform
+        = ownr->GetComponent<Transform3DComponent>(this->transform_Wptr);
+
+    return (instancing_model && transform);
+}
+
 #ifdef _DEBUG
 
 void InstancingModelShaderComponent::DrawDebugGUI()
