@@ -9,6 +9,11 @@ ModelShaderComponent::ModelShaderComponent(ModelShader* const shader)
 {
 }
 
+ModelShaderComponent::~ModelShaderComponent()
+{
+    this->shader->RemoveShaderComponent(this);
+}
+
 void ModelShaderComponent::Draw(ID3D11DeviceContext* dc)
 {
 #ifdef _DEBUG

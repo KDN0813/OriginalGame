@@ -170,9 +170,9 @@ void ModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
     Begin(dc, rc);
 
-	for (auto& shader_component_Wpt : this->shader_component_Wptr_vec)
+	for (auto shader_component : this->shader_component_vec)
 	{
-		if (auto shader_component = shader_component_Wpt.lock())
+		if (shader_component)
 		{
 			shader_component->Draw(dc);
 		}
@@ -264,7 +264,14 @@ void ModelShader::End(ID3D11DeviceContext* dc)
 	dc->IASetInputLayout(nullptr);
 }
 
-void ModelShader::AddShaderComponent(std::shared_ptr<ModelShaderComponent> shader_component)
+void ModelShader::AddShaderComponent(ModelShaderComponent* shader_component)
 {
-	this->shader_component_Wptr_vec.emplace_back(shader_component);
+	this->shader_component_vec.emplace_back(shader_component);
+}
+
+void ModelShader::RemoveShaderComponent(ModelShaderComponent* shader_component)
+{
+	auto it = std::find(this->shader_component_vec.begin(), this->shader_component_vec.end(), shader_component);
+	if (it == this->shader_component_vec.end()) return;
+	this->shader_component_vec.erase(it);
 }

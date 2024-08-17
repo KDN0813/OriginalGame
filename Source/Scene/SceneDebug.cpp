@@ -35,7 +35,7 @@ SceneDebug::SceneDebug()
 			// シェーダー設定
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
-			model_shader->AddShaderComponent(shader_component);
+			model_shader->AddShaderComponent(shader_component.get());
 		}
 
 		// ボックス
@@ -50,7 +50,7 @@ SceneDebug::SceneDebug()
 			// シェーダー設定
 			auto shader_component =
 				cube->AddComponent<ModelShaderComponent>(model_shader.get());
-			model_shader->AddShaderComponent(shader_component);
+			model_shader->AddShaderComponent(shader_component.get());
 		}
 
 		InstancingModelShader* const shader = instance_model_shader.get();

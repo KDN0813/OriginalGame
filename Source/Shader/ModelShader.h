@@ -38,7 +38,10 @@ public:
 	void End(ID3D11DeviceContext* dc);
 
 	// 描画するobjectのシェーダーを追加
-	void AddShaderComponent(std::shared_ptr<ModelShaderComponent> shader_component);
+	void AddShaderComponent(ModelShaderComponent* shader_component);
+
+	// objectのシェーダーを削除する
+	void RemoveShaderComponent(ModelShaderComponent* shader_component);
 private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			scene_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			mesh_constant_buffer;
@@ -54,6 +57,6 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		sampler_state;
 
-	std::vector<std::weak_ptr<ModelShaderComponent>> shader_component_Wptr_vec;
+	std::vector<ModelShaderComponent*> shader_component_vec;
 };
 

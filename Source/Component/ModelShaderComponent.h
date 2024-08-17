@@ -11,6 +11,7 @@ class ModelShaderComponent : public Component
 {
 public:
     ModelShaderComponent(ModelShader* const shader);
+    ~ModelShaderComponent();
 
     const char* GetName()const override { return "ModelShaderComponent"; }
 
