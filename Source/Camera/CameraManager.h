@@ -7,8 +7,8 @@ class CameraComponent;
 class CameraManager : public Singleton<CameraManager>
 {
 public:
-    CameraManager() : Singleton(this) {};
-    ~CameraManager() {}
+    CameraManager();
+    ~CameraManager();
 
     CameraComponent* GetCameraComponent() { return this->main_camera; }
 
@@ -33,13 +33,17 @@ public:
      * \param camera 設定するCameraComponentのポインタ
      */
     void SetMainCamera(CameraComponent* camera);
+
+    // 更新処理
+    void Update(float elapsed_time);
 private:
     std::vector<CameraComponent*> camera_vector;
     CameraComponent* main_camera = nullptr; // メインカメラ
 #ifdef _DEBUG
 public:
-    void DrawDebugGUI() {}
-
+    void DrawDebugGUI();
+    CameraComponent* debug_camera = nullptr;    // デバッグ用カメラ
+    bool debug_flag = false;
 #endif // _DEBUG
 };
 

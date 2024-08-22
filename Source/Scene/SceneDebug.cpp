@@ -122,6 +122,8 @@ void SceneDebug::Update(float elapsed_time)
 	cameraController.Update(elapsed_time);
 
 	object_manager.Update(elapsed_time);
+
+	CameraManager::Instance()->Update(elapsed_time);
 }
 
 void SceneDebug::Render()
@@ -182,6 +184,10 @@ void SceneDebug::DrawImGui()
 				{
 					mode_index = SceneDebug::ImGuiMode::Shader;
 				}
+				if (ImGui::MenuItem("Camera")) 
+				{
+					mode_index = SceneDebug::ImGuiMode::Camera;
+				}
 				if (ImGui::MenuItem("System")) 
 				{
 					mode_index = SceneDebug::ImGuiMode::System;
@@ -202,6 +208,10 @@ void SceneDebug::DrawImGui()
 		case SceneDebug::ImGuiMode::Shader:
 			ImGui::Text("System");
 			DrawShaderImGui();
+			break;
+		case SceneDebug::ImGuiMode::Camera:
+			ImGui::Text("Camera");
+			CameraManager::Instance()->DrawDebugGUI();
 			break;
 		case SceneDebug::ImGuiMode::System:
 			ImGui::Text("System");

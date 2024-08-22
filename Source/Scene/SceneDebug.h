@@ -36,6 +36,7 @@ private:
     {
         Object = 0,
         Shader,
+        Camera,
         System,
     };
     ImGuiMode mode_index = ImGuiMode::Object;

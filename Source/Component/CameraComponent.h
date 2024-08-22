@@ -34,6 +34,13 @@ public:
 	void SetRotateY(float rotateY) { this->rotateY = rotateY; }
 	// X軸回転度設定
 	void SetRotateX(float rotateX) { this->rotateX = rotateX; }
+
+	// カメラの距離取得
+	float GetRange() const { return this->range; }
+	// Y軸回転度取得
+	float GetRotateY() const { return this->rotateY; }
+	// X軸回転度取得
+	float GetRotateX() const { return this->rotateX; }
 	// 画角取得
 	float GetFovY() const { return fovY; }
 	// アスペクト比取得
