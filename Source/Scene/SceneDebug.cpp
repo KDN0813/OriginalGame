@@ -33,23 +33,9 @@ void SceneDebug::Initialize()
 
 	// ƒJƒƒ‰ì¬
 	{
-		Graphics& graphics = Graphics::Instance();
-		// ƒJƒƒ‰‰ŠúÝ’è
-		Camera& camera = Camera::Intance();
-		camera.SetLookAt(
-			DirectX::XMFLOAT3(0.0f, 0.0f, -10.0f),
-			DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-			DirectX::XMFLOAT3(0.0f, 10.0f, 0.0f)
-		);
-		camera.SetPerspectiveFov(
-			DirectX::XMConvertToRadians(45.0f),
-			graphics.GetScreenWidth() / graphics.GetScreenHeight(),
-			0.1f,
-			1000.0f
-		);
-
 		auto debug_camera = object_manager.Create();
 		debug_camera->SetName("debug_camera");
+		
 		auto camera_Cmp = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance());
 		camera_Cmp->SetPerspectiveFov(
 			DirectX::XMConvertToRadians(45.0f),
@@ -57,6 +43,8 @@ void SceneDebug::Initialize()
 			0.1f,
 			1000.0f
 		);
+		camera_Cmp->SetRange(10.0f);
+		camera_Cmp->SetRotateX(0.4f);
 		camera_Cmp->SetMainCamera();
 	}
 

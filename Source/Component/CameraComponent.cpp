@@ -97,23 +97,9 @@ void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, f
 
 void CameraComponent::DrawDebugGUI()
 {
-    float fovY_degrees = DirectX::XMConvertToDegrees(fovY);
-    if (ImGui::SliderFloat("fovY", &fovY_degrees, 0, 260.0f))
-    {
-        fovY = DirectX::XMConvertToRadians(fovY_degrees);
-    }
-
-    ImGui::InputFloat("nearZ", &this->nearZ);
-    ImGui::InputFloat("farZ", &this->farZ);
-    ImGui::InputFloat3("focus", &this->focus.x);
-    ImGui::InputFloat("front_range", &this->range);
-    if (range == 0.0f)
-    {
-        range = 1.0f;
-    }
-
+    ImGui::SliderFloat("front_range", &this->range, 1.0f, 50.0f);
     ImGui::SliderFloat("rotateY", &rotateY, -DirectX::XM_PI, DirectX::XM_PI);
-    const float RotateX_Max = DirectX::XMConvertToRadians(89.0f);
+    constexpr float RotateX_Max = DirectX::XMConvertToRadians(89.0f);
     ImGui::SliderFloat("rotateX", &rotateX, -RotateX_Max, RotateX_Max);
 
     if (ImGui::Button("SetMainCamera"))

@@ -28,6 +28,12 @@ public:
 	void SetLookAt(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up);
 	// パースペクティブ設定
 	void SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ);
+	// カメラの距離設定
+	void SetRange(float range) { this->range = range; }
+	// Y軸回転度設定
+	void SetRotateY(float rotateY) { this->rotateY = rotateY; }
+	// X軸回転度設定
+	void SetRotateX(float rotateX) { this->rotateX = rotateX; }
 	// 画角取得
 	float GetFovY() const { return fovY; }
 	// アスペクト比取得
