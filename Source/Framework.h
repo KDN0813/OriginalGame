@@ -35,6 +35,6 @@ private:
 	InstancingModelResourceManager	instancin_resource_manager;
 	CameraManager					camera_manager;
 #ifdef _DEBUG
-	DebugManager					debugManager;
+	DebugManager					debug_manager;
 #endif // _DEBUG
 };
