@@ -9,7 +9,7 @@ public:
     SceneManager() :Singleton(this) {}
     ~SceneManager(){}
 
-    void Update(float elpsedTime);
+    void Update(float elpsed_time);
 
     void Render();
 
@@ -18,7 +18,7 @@ public:
     void ChangeScene(Scene* scene);
 
 private:
-    Scene* currentScene = nullptr;
-    Scene* nextScene    = nullptr;
+    Scene* current_scene = nullptr;
+    Scene* next_scene    = nullptr;
 };
 

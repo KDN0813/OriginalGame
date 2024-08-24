@@ -1,14 +1,9 @@
 #include "Graphics/Graphics.h"
 #include "System/Misc.h"
 
-Graphics* Graphics::instance = nullptr;
-
 Graphics::Graphics(HWND hWnd)
+	:Singleton(this)
 {
-	// インスタンス設定
-	_ASSERT_EXPR(instance == nullptr, "already instantiated");
-	instance = this;
-
 	// 画面のサイズを取得する。
 	RECT rc;
 	GetClientRect(hWnd, &rc);

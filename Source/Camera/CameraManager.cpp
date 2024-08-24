@@ -203,11 +203,11 @@ void CameraManager::DrawDebugGUI()
 
 void CameraManager::CreateDebugCamera()
 {
-	Graphics& graphics = Graphics::Instance();
+	Graphics* graphics = Graphics::Instance();
 	this->debug_camera = new CameraComponent(this);
 	this->debug_camera->SetPerspectiveFov(
 		DirectX::XMConvertToRadians(45.0f),
-		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
+		graphics->GetScreenWidth() / graphics->GetScreenHeight(),
 		0.1f,
 		1000.0f
 	);

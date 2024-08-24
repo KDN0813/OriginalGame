@@ -1,53 +1,45 @@
 #include "SceneManager.h"
 
-// 更新処理[10]
-void SceneManager::Update(float elpsedTime)
+void SceneManager::Update(float elpsed_time)
 {
-    if (nextScene != nullptr)
+    if (next_scene != nullptr)
     {
         Clear();
 
-        // 新しいシーンを設定
-        currentScene = nextScene;
-        nextScene = nullptr;
+        current_scene = next_scene;
+        next_scene = nullptr;
 
-        // シーン初期化処理[11]
-        // =(メ)準備が完了していないなら初期化する
-        if (!currentScene->IsReady())
+        if (!current_scene->IsReady())
         {
-            currentScene->Initialize();
+            current_scene->Initialize();
         }
     }
 
-    if (currentScene != nullptr)
+    if (current_scene != nullptr)
     {
-        currentScene->Update(elpsedTime);
+        current_scene->Update(elpsed_time);
     }
 }
 
-// 描画処理[10]
 void SceneManager::Render()
 {
-    if (currentScene != nullptr)
+    if (current_scene != nullptr)
     {
-        currentScene->Render();
+        current_scene->Render();
     }
 }
 
-// シーンクリア[10]
 void SceneManager::Clear()
 {
-    if (currentScene != nullptr)
+    if (current_scene != nullptr)
     {
-        currentScene->Finalize();
-        delete currentScene;
-        currentScene = nullptr;
+        current_scene->Finalize();
+        delete current_scene;
+        current_scene = nullptr;
     }
 }
 
-// シーン切り替え[10]
 void SceneManager::ChangeScene(Scene* scene)
 {
-    // 新しいシーンを設定
-    nextScene = scene;
+    next_scene = scene;
 }

@@ -37,24 +37,24 @@ private:
 
 	HWND												hWnd;
 	INT64												time = 0;
-	INT64												ticksPerSecond = 0;
-	ImGuiMouseCursor									lastMouseCursor = ImGuiMouseCursor_COUNT;
+	INT64												ticks_per_second = 0;
+	ImGuiMouseCursor									last_mouse_cursor = ImGuiMouseCursor_COUNT;
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer>				vertexBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>				indexBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>				constantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>				vertex_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>				index_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>				constant_buffer;
 
-	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertexShader;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader>			pixelShader;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout>			inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertex_shader;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader>			pixel_shader;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout>			input_layout;
 
-	Microsoft::WRL::ComPtr<ID3D11BlendState>			blendState;
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		rasterizerState;
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>		depthStencilState;
+	Microsoft::WRL::ComPtr<ID3D11BlendState>			blend_state;
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		rasterizer_state;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>		depth_stencil_state;
 
-	Microsoft::WRL::ComPtr<ID3D11SamplerState>			samplerState;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	shaderResourceView;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState>			sampler_state;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	shader_resource_view;
 
-	int													vertexCount = 0;
-	int													indexCount = 0;
+	int													vertex_count = 0;
+	int													index_count = 0;
 };

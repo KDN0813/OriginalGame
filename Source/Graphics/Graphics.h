@@ -5,16 +5,15 @@
 #include <wrl.h>
 #include <mutex>
 #include <vector>
+#include "System/ClassBase/Singleton.h"
 
 #include "Graphics/RenderContext.h"
 
-class Graphics
+class Graphics : public Singleton<Graphics>
 {
 public:
 	Graphics(HWND hWnd);
-	~Graphics();
-
-	static Graphics& Instance() { return *instance; }
+	~Graphics() override;
 
 	ID3D11Device* GetDevice() const { return device.Get(); }
 	ID3D11DeviceContext* GetDeviceContext() const { return immediate_context.Get(); }
@@ -26,7 +25,6 @@ public:
 	std::mutex& GetMutex() { return mutex; }
 
 private:
-	static Graphics*								instance;
 	Microsoft::WRL::ComPtr<ID3D11Device>			device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>		immediate_context;
 	Microsoft::WRL::ComPtr<IDXGISwapChain>			swapchain;

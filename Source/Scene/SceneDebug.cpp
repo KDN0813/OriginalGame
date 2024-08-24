@@ -23,8 +23,8 @@ SceneDebug::SceneDebug()
 
 void SceneDebug::Initialize()
 {
-	Graphics& graphics = Graphics::Instance();
-	ID3D11Device* device = graphics.GetDevice();
+	Graphics* graphics = Graphics::Instance();
+	ID3D11Device* device = graphics->GetDevice();
 	// シェーダーの作成
 	{
 		instancing_model_shader = std::make_unique<InstancingModelShader>(device);
@@ -39,7 +39,7 @@ void SceneDebug::Initialize()
 		auto camera_Cmp = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance());
 		camera_Cmp->SetPerspectiveFov(
 			DirectX::XMConvertToRadians(45.0f),
-			graphics.GetScreenWidth() / graphics.GetScreenHeight(),
+			graphics->GetScreenWidth() / graphics->GetScreenHeight(),
 			0.1f,
 			1000.0f
 		);
@@ -128,10 +128,10 @@ void SceneDebug::Update(float elapsed_time)
 
 void SceneDebug::Render()
 {
-	Graphics& graphics = Graphics::Instance();
-	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-	ID3D11RenderTargetView* rtv = graphics.GetRenderTargetView();
-	ID3D11DepthStencilView* dsv = graphics.GetDepthStencilView();
+	Graphics* graphics = Graphics::Instance();
+	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
+	ID3D11RenderTargetView* rtv = graphics->GetRenderTargetView();
+	ID3D11DepthStencilView* dsv = graphics->GetDepthStencilView();
 
 	FLOAT color[] = { 0.5f, 1.0f, 0.5f, 1.0f };
 	dc->ClearRenderTargetView(rtv, color);
@@ -140,8 +140,8 @@ void SceneDebug::Render()
 
 	// 3Dモデルの描画
 	{
-		Graphics& graphics = Graphics::Instance();
-		ID3D11DeviceContext* dc = graphics.GetDeviceContext();
+		Graphics* graphics = Graphics::Instance();
+		ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 		//Camera& camera = Camera::Intance();
 
 		CameraManager* camera_manager = CameraManager::Instance();

@@ -19,7 +19,7 @@ std::shared_ptr<ModelResource> ModelResourceManager::LoadModelResource(const cha
     // 新規モデルリソース作成＆読み込み
     std::shared_ptr<ModelResource>	model;
     model = std::make_shared<ModelResource>();
-    model->Load(Graphics::Instance().GetDevice(), filename);
+    model->Load(Graphics::Instance()->GetDevice(), filename);
  
     // マップに登録
     // キーが登録されていなければ挿入し、あれば代入する

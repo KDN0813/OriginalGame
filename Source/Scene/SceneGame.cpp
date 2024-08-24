@@ -15,10 +15,10 @@ void SceneGame::Update(float elapsedTime)
 
 void SceneGame::Render()
 {
-	Graphics& graphics = Graphics::Instance();
-	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-	ID3D11RenderTargetView* rtv = graphics.GetRenderTargetView();
-	ID3D11DepthStencilView* dsv = graphics.GetDepthStencilView();
+	Graphics* graphics = Graphics::Instance();
+	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
+	ID3D11RenderTargetView* rtv = graphics->GetRenderTargetView();
+	ID3D11DepthStencilView* dsv = graphics->GetDepthStencilView();
 
 	FLOAT color[] = { 0.0f, 1.0f, 0.0f, 1.0f };
 	dc->ClearRenderTargetView(rtv, color);

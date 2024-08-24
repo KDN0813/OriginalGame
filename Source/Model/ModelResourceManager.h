@@ -5,7 +5,6 @@
 #include "System/ClassBase/Singleton.h"
 #include "Model/ModelResource.h"
 
-// リソースマネージャー
 class ModelResourceManager : public Singleton<ModelResourceManager>
 {
 public:
