@@ -14,17 +14,7 @@ CameraManager::CameraManager()
     :Singleton(this)
 {
 #ifdef _DEBUG
-	Graphics& graphics = Graphics::Instance();
-
-    this->debug_camera = new CameraComponent(this);
-	this->debug_camera->SetPerspectiveFov(
-		DirectX::XMConvertToRadians(45.0f),
-		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
-		0.1f,
-		1000.0f
-	);
-	this->debug_camera->SetRange(10.0f);
-	this->debug_camera->SetRotateX(0.4f);
+	CreateDebugCamera();
 #endif // DEBUG
 }
 
@@ -75,10 +65,10 @@ void CameraManager::SetMainCamera(CameraComponent* camera)
 void CameraManager::Update(float elapsed_time)
 {
 #ifdef _DEBUG
-    if (this->debug_camera && this->debug_flag)
+	// TODO (08/22)命名規則内容軽く読む
+    if (this->debug_flag)
     {
-        // メインカメラをデバッグ用カメラに設定
-        if (this->main_camera != this->debug_camera) this->main_camera = this->debug_camera;
+		if (!this->debug_camera) CreateDebugCamera();
 
 		Mouse& mouse = Input::Instance().GetMouse();
 
@@ -194,7 +184,37 @@ void CameraManager::Update(float elapsed_time)
 #endif // _DEBUG
 }
 
+#ifdef _DEBUG
+
 void CameraManager::DrawDebugGUI()
 {
-    ImGui::Checkbox("debugFlag", &debug_flag);
+	if (ImGui::Checkbox("debugFlag", &this->debug_flag))
+	{
+		if (this->debug_flag)
+		{
+			if (!this->debug_camera) CreateDebugCamera();
+			this->temp_camera = this->main_camera;
+			this->main_camera = this->debug_camera;
+		}
+		else
+		{
+			this->main_camera = this->temp_camera;
+		}
+	}
 }
+
+void CameraManager::CreateDebugCamera()
+{
+	Graphics& graphics = Graphics::Instance();
+	this->debug_camera = new CameraComponent(this);
+	this->debug_camera->SetPerspectiveFov(
+		DirectX::XMConvertToRadians(45.0f),
+		graphics.GetScreenWidth() / graphics.GetScreenHeight(),
+		0.1f,
+		1000.0f
+	);
+	this->debug_camera->SetRange(10.0f);
+	this->debug_camera->SetRotateX(0.4f);
+}
+
+#endif // _DEBUG

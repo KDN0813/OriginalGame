@@ -42,8 +42,11 @@ private:
 #ifdef _DEBUG
 public:
     void DrawDebugGUI();
+    void CreateDebugCamera();
+
     CameraComponent* debug_camera = nullptr;    // デバッグ用カメラ
-    bool debug_flag = false;
+    CameraComponent* temp_camera = nullptr;     // メインカメラを一時保存する
+    bool debug_flag = false;;
 #endif // _DEBUG
 };
 
