@@ -148,7 +148,7 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 		timer.Start();
 		break;
 	case WM_MOUSEWHEEL:
-		Input::Instance().GetMouse().SetWheel(GET_WHEEL_DELTA_WPARAM(wParam));
+		Input::Instance()->GetMouse().SetWheel(GET_WHEEL_DELTA_WPARAM(wParam));
 		break;
 	default:
 		return DefWindowProc(hWnd, msg, wParam, lParam);

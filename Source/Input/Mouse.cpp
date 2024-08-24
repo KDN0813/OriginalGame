@@ -13,21 +13,21 @@ Mouse::Mouse(HWND hWnd)
 {
 	RECT rc;
 	GetClientRect(hWnd, &rc);
-	screenWidth = rc.right - rc.left;
-	screenHeight = rc.bottom - rc.top;
+	screen_width = rc.right - rc.left;
+	screen_height = rc.bottom - rc.top;
 }
 
 // 更新
 void Mouse::Update()
 {
 	// スイッチ情報
-	MouseButton newButtonState = 0;
+	MouseButton new_button_state = 0;
 
 	for (int i = 0; i < ARRAYSIZE(KeyMap); ++i)
 	{
 		if (::GetAsyncKeyState(KeyMap[i]) & 0x8000)
 		{
-			newButtonState |= (1 << i);
+			new_button_state |= (1 << i);
 		}
 	}
 
@@ -36,11 +36,11 @@ void Mouse::Update()
 	wheel[0] = 0;
 
 	// ボタン情報更新
-	buttonState[1] = buttonState[0];	// スイッチ履歴
-	buttonState[0] = newButtonState;
+	button_state[1] = button_state[0];	// スイッチ履歴
+	button_state[0] = new_button_state;
 
-	buttonDown = ~buttonState[1] & newButtonState;	// 押した瞬間
-	buttonUp = ~newButtonState & buttonState[1];	// 離した瞬間
+	button_down = ~button_state[1] & new_button_state;	// 押した瞬間
+	button_up = ~new_button_state & button_state[1];	// 離した瞬間
 
 	// カーソル位置の取得
 	POINT cursor;
@@ -52,8 +52,8 @@ void Mouse::Update()
 	GetClientRect(hWnd, &rc);
 	UINT screenW = rc.right - rc.left;
 	UINT screenH = rc.bottom - rc.top;
-	UINT viewportW = screenWidth;
-	UINT viewportH = screenHeight;
+	UINT viewportW = screen_width;
+	UINT viewportH = screen_height;
 
 	// 画面補正
 	positionX[1] = positionX[0];

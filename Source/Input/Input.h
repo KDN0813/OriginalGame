@@ -2,29 +2,26 @@
 
 #include "Input/GamePad.h"
 #include "Input/Mouse.h"
+#include "System/ClassBase/Singleton.h"
 
 // インプット
-class Input
+class Input : public Singleton<Input>
 {
 public:
 	Input(HWND hWnd);
-	~Input() {}
+	~Input() override{}
 
 public:
-	// インスタンス取得
-	static Input& Instance() { return *instance; }
-
 	// 更新処理
 	void Update();
 
 	// ゲームパッド取得
-	GamePad& GetGamePad() { return gamePad; }
+	GamePad& GetGamePad() { return game_pad; }
 
 	// マウス取得
 	Mouse& GetMouse() { return mouse; }
 
 private:
-	static Input*		instance;
-	GamePad				gamePad;
+	GamePad				game_pad;
 	Mouse				mouse;
 };

@@ -34,13 +34,13 @@ public:
 	void SetSlot(int slot) { this->slot = slot; }
 
 	// ボタン入力状態の取得
-	GamePadButton GetButton() const { return buttonState[0]; }
+	GamePadButton GetButton() const { return button_state[0]; }
 
 	// ボタン押下状態の取得
-	GamePadButton GetButtonDown() const { return buttonDown; }
+	GamePadButton GetButtonDown() const { return button_down; }
 
 	// ボタン押上状態の取得
-	GamePadButton GetButtonUp() const { return buttonUp; }
+	GamePadButton GetButtonUp() const { return button_up; }
 
 	// 左スティックX軸入力状態の取得
 	float GetAxisLX() const { return axisLx; }
@@ -61,9 +61,9 @@ public:
 	float GetTriggerR() const { return triggerR; }
 
 private:
-	GamePadButton		buttonState[2] = { 0 };
-	GamePadButton		buttonDown = 0;
-	GamePadButton		buttonUp = 0;
+	GamePadButton		button_state[2] = { 0 };
+	GamePadButton		button_down = 0;
+	GamePadButton		button_up = 0;
 	float				axisLx = 0.0f;
 	float				axisLy = 0.0f;
 	float				axisRx = 0.0f;

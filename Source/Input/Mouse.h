@@ -20,13 +20,13 @@ public:
 	void Update();
 
 	// ボタン入力状態の取得
-	MouseButton GetButton() const { return buttonState[0]; }
+	MouseButton GetButton() const { return button_state[0]; }
 
 	// ボタン押下状態の取得
-	MouseButton GetButtonDown() const { return buttonDown; }
+	MouseButton GetButtonDown() const { return button_down; }
 
 	// ボタン押上状態の取得
-	MouseButton GetButtonUp() const { return buttonUp; }
+	MouseButton GetButtonUp() const { return button_up; }
 
 	// ホイール値の設定
 	void SetWheel(int wheel) { this->wheel[0] += wheel; }
@@ -47,25 +47,25 @@ public:
 	int GetOldPositionY() const { return positionY[1]; }
 
 	// スクリーン幅設定
-	void SetScreenWidth(int width) { screenWidth = width; }
+	void SetScreenWidth(int width) { screen_width = width; }
 
 	// スクリーン高さ設定
-	void SetScreenHeight(int height) { screenHeight = height; }
+	void SetScreenHeight(int height) { screen_height = height; }
 
 	// スクリーン幅取得
-	int GetScreenWidth() const { return screenWidth; }
+	int GetScreenWidth() const { return screen_width; }
 
 	// スクリーン高さ取得
-	int GetScreenHeight() const { return screenHeight; }
+	int GetScreenHeight() const { return screen_height; }
 
 private:
-	MouseButton		buttonState[2] = { 0 };
-	MouseButton		buttonDown = 0;
-	MouseButton		buttonUp = 0;
+	MouseButton		button_state[2] = { 0 };
+	MouseButton		button_down = 0;
+	MouseButton		button_up = 0;
 	int				positionX[2];
 	int				positionY[2];
 	int				wheel[2];
-	int				screenWidth = 0;
-	int				screenHeight = 0;
+	int				screen_width = 0;
+	int				screen_height = 0;
 	HWND			hWnd = nullptr;
 };

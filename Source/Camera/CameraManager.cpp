@@ -67,7 +67,7 @@ void CameraManager::Update(float elapsed_time)
     {
 		if (!this->debug_camera) CreateDebugCamera();
 
-		Mouse& mouse = Input::Instance().GetMouse();
+		Mouse& mouse = Input::Instance()->GetMouse();
 
 		float moveX = (mouse.GetPositionX() - mouse.GetOldPositionX()) * 0.02f;
 		float moveY = (mouse.GetPositionY() - mouse.GetOldPositionY()) * 0.02f;
