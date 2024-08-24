@@ -4,7 +4,7 @@
 
 InstancingModelResource::InstancingModelResource(ID3D11Device* device, const char* filename)
 {
-	auto resource = ModelResourceManager::Instance()->LoadModelResource(filename);
+	auto resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
 
 	CreateBoneTransformTexture(device, resource.get());
 }
@@ -46,7 +46,7 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 		{
 			const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
 			this->mesh_offsets[mesh_index] = this->bone_transform_count;
-			this->bone_transform_count += mesh.node_indices.size();
+			this->bone_transform_count += static_cast<UINT>(mesh.node_indices.size());
 		}
 	}
 
@@ -58,7 +58,7 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 	BoneTransformTextureData BTTdata{};
 	{
 		// アニメーションの数ループ
-		for (size_t anime_index = 0; anime_index < resource->GetAnimations().size(); ++anime_index)
+		for (int anime_index = 0; anime_index < static_cast<int>(resource->GetAnimations().size()); ++anime_index)
 		{
 			animation_length = 0;
 			PlayAnimation(anime_index);
@@ -106,7 +106,7 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 		buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // SRV としてバインドする
 		buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // CPU書き込みアクセスを許可
 		buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;	// 構造体バッファに設定
-		buffer_desc.ByteWidth = (sizeof(BoneTransform) * BTTdata.size());	// バッファサイズ設定
+		buffer_desc.ByteWidth = (sizeof(BoneTransform) * static_cast<UINT>(BTTdata.size()));	// バッファサイズ設定
 		buffer_desc.StructureByteStride = sizeof(BoneTransform);	// 構造体の各要素のサイズ設定
 		D3D11_SUBRESOURCE_DATA subresource_data{};
 		subresource_data.pSysMem = BTTdata.data();	// 初期データ設定

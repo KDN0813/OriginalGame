@@ -45,8 +45,6 @@ void InstancingModelShaderComponent::InstancingAdd()
 
 void InstancingModelShaderComponent::InstancingEnd(ID3D11DeviceContext* dc)
 {
-    // Hack ÅŒã‚Ìobject‚Éƒ‚ƒfƒ‹‚ª‘¶Ý‚µ‚È‚¢‚Æ•`‰æ‚ª‚³‚ê‚È‚¢‚Ì‚Å‰ü‘P‚·‚é
-
     auto ownr = GetOwner();
     if (auto instancing_model
         = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr))

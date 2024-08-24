@@ -4,10 +4,10 @@
 
 #include "Component/TransformComponent.h"
 
-ModelComponent::ModelComponent(const char* filename)
+ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 {
 	// リソース読み込み
-	resource = ModelResourceManager::Instance()->LoadModelResource(filename);
+	resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
 
 	// ノード
 	const std::vector<ModelResource::Node>& res_node_vec = resource->GetNodes();

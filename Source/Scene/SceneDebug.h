@@ -3,7 +3,6 @@
 #include "Scene/Scene.h"
 #include <vector>
 #include <memory>
-#include "Camera/CameraController.h"
 #include "Debug/DebugCereal.h"
 #include "Object/Object.h"
 
@@ -23,7 +22,6 @@ public:
     void Render() override;
 
 private:
-    CameraController cameraController;
 
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;

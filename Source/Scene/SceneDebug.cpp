@@ -5,8 +5,6 @@
 #include "Debug/DebugCereal.h"
 #include "Camera/CameraManager.h"
 
-#include "Camera/Camera.h"
-
 #include "Scene/SceneManager.h"
 
 #include "Component/ModelComponent.h"
@@ -54,7 +52,7 @@ void SceneDebug::Initialize()
 		{
 			auto stage = object_manager.Create();
 			stage->SetName("Stage");
-			stage->AddComponent<ModelComponent>("Data/Model/ExampleStage/ExampleStage.mdl");
+			stage->AddComponent<ModelComponent>(device,"Data/Model/ExampleStage/ExampleStage.mdl");
 			auto transform = stage->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
 			// シェーダー設定
@@ -67,7 +65,7 @@ void SceneDebug::Initialize()
 		{
 			auto cube = object_manager.Create();
 			cube->SetName("Cube");
-			cube->AddComponent<ModelComponent>("Data/Model/Cube/Cube.mdl");
+			cube->AddComponent<ModelComponent>(device,"Data/Model/Cube/Cube.mdl");
 			auto transform = cube->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
 			transform->SetPosition(DirectX::XMFLOAT3(5.0f, 2.0f, 0.0f));
@@ -115,12 +113,6 @@ void SceneDebug::Finalize()
 
 void SceneDebug::Update(float elapsed_time)
 {
-	// カメラコントローラー更新処理
-	DirectX::XMFLOAT3 target = {};
-	target.y += 0.5f;	// プレイヤーの腰当たりをターゲットに設定
-	cameraController.SetTarget(target);
-	cameraController.Update(elapsed_time);
-
 	object_manager.Update(elapsed_time);
 
 	CameraManager::Instance()->Update(elapsed_time);

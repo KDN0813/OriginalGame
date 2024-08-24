@@ -194,7 +194,7 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 // モデル構築
 void ModelResource::BuildModel(ID3D11Device* device, const char* dirname)
 {
-	for (Material& material : materials)
+	for (Material& material : material_vec)
 	{
 		// 相対パスの解決
 		char filename[256];
@@ -279,12 +279,12 @@ void ModelResource::BuildModel(ID3D11Device* device, const char* dirname)
 		}
 	}
 
-	for (Mesh& mesh : meshes)
+	for (Mesh& mesh : meshe_vec)
 	{
 		// サブセット
 		for (Subset& subset : mesh.subsets)
 		{
-			subset.material = &materials.at(subset.material_index);
+			subset.material = &material_vec.at(subset.material_index);
 		}
 
 		// 頂点バッファ
@@ -339,10 +339,10 @@ void ModelResource::Serialize(const char* filename)
 		try
 		{
 			archive(
-				CEREAL_NVP(nodes),
-				CEREAL_NVP(materials),
-				CEREAL_NVP(meshes),
-				CEREAL_NVP(animations)
+				CEREAL_NVP(node_vec),
+				CEREAL_NVP(material_vec),
+				CEREAL_NVP(meshe_vec),
+				CEREAL_NVP(animation_vec)
 			);
 		}
 		catch (...)
@@ -364,10 +364,10 @@ void ModelResource::Deserialize(const char* filename)
 		try
 		{
 			archive(
-				CEREAL_NVP(nodes),
-				CEREAL_NVP(materials),
-				CEREAL_NVP(meshes),
-				CEREAL_NVP(animations)
+				CEREAL_NVP(node_vec),
+				CEREAL_NVP(material_vec),
+				CEREAL_NVP(meshe_vec),
+				CEREAL_NVP(animation_vec)
 			);
 		}
 		catch (...)
@@ -387,10 +387,10 @@ void ModelResource::Deserialize(const char* filename)
 // ノードインデックスを取得する
 int ModelResource::FindNodeIndex(NodeId nodeId) const
 {
-	int node_count = static_cast<int>(nodes.size());
+	int node_count = static_cast<int>(node_vec.size());
 	for (int i = 0; i < node_count; ++i)
 	{
-		if (nodes[i].id == nodeId)
+		if (node_vec[i].id == nodeId)
 		{
 			return i;
 		}

@@ -114,9 +114,6 @@
     <ClInclude Include="Source\Model\ModelResource.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera\Camera.h">
-      <Filter>Source\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\RenderContext.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
@@ -143,9 +140,6 @@
     </ClInclude>
     <ClInclude Include="Source\Model\ModelResourceManager.h">
       <Filter>Source\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera\CameraController.h">
-      <Filter>Source\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\Component.h">
       <Filter>Source\Component</Filter>
@@ -242,9 +236,6 @@
     <ClCompile Include="Source\Model\ModelResource.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera\Camera.cpp">
-      <Filter>Source\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\Graphics.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
@@ -262,9 +253,6 @@
     </ClCompile>
     <ClCompile Include="Source\Input\Input.cpp">
       <Filter>Source\input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera\CameraController.cpp">
-      <Filter>Source\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneDebug.cpp">
       <Filter>Source\Scene</Filter>

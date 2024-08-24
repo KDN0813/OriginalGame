@@ -42,9 +42,9 @@ private:
 	*/
 	struct InstanceData
 	{
-		UINT animation_start_offset;
-		UINT anime_frame;
-		DirectX::XMFLOAT4X4 world_transform{};
+		UINT animation_start_offset = {};
+		UINT anime_frame = {};
+		DirectX::XMFLOAT4X4 world_transform = {};;
 	};
 public:
 	InstancingModelShader(ID3D11Device* device);

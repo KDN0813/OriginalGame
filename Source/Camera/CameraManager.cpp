@@ -63,7 +63,6 @@ void CameraManager::SetMainCamera(CameraComponent* camera)
 void CameraManager::Update(float elapsed_time)
 {
 #ifdef _DEBUG
-	// TODO (08/22)–½–¼‹K‘¥“à—eŒy‚­“Ç‚Þ
     if (this->debug_flag)
     {
 		if (!this->debug_camera) CreateDebugCamera();

@@ -12,7 +12,7 @@ InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const c
     this->instancing_model_resource =
         InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
     this->model_resource =
-        ModelResourceManager::Instance()->LoadModelResource(filename);
+        ModelResourceManager::Instance()->LoadModelResource(device,filename);
 }
 
 void InstancingModelComponent::Update(float elapsedTime)
@@ -47,7 +47,6 @@ void InstancingModelComponent::PlayAnimetion(int animeIndex, bool loop)
 
 const UINT InstancingModelComponent::GetAnimationStartOffset()
 {
-    // TODO(08/13) ƒAƒjƒ”Ô†‚ªˆÈã‚Èê‡ˆ—‚µ‚È‚¢‚æ‚¤‚É‚·‚é
     return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
 }
 
@@ -55,7 +54,7 @@ const UINT InstancingModelComponent::GetAnimationStartOffset()
 
 void InstancingModelComponent::DrawDebugGUI()
 {
-    const int anime_index_max = this->model_resource->GetAnimations().size() - 1;
+    const int anime_index_max = static_cast<int>(this->model_resource->GetAnimations().size() - 1);
     int anime_index_int = static_cast<int>(this->anime_index);
     if (ImGui::SliderInt("anime_index", &anime_index_int, 0, anime_index_max))
     {

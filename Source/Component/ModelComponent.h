@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include <d3d11.h>
 #include <vector>
 #include "Component.h"
 
@@ -23,7 +24,7 @@ public:
 	};
 
 public:
-	ModelComponent(const char* filename);
+	ModelComponent(ID3D11Device* device, const char* filename);
 
 	// çXêVä÷êî
 	void Update(float elapsed_time);

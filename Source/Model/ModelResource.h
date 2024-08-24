@@ -6,7 +6,6 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
-// TODO (06/24)開発指針が定まり次第改善
 class ModelResource
 {
 public:
@@ -120,10 +119,10 @@ public:
 #pragma endregion ModelParam
 
 	// 各種データ取得
-	const std::vector<Mesh>& GetMeshes() const { return meshes; }
-	const std::vector<Node>& GetNodes() const { return nodes; }
-	const std::vector<Animation>& GetAnimations() const { return animations; }
-	const std::vector<Material>& GetMaterials() const { return materials; }
+	const std::vector<Mesh>& GetMeshes() const { return meshe_vec; }
+	const std::vector<Node>& GetNodes() const { return node_vec; }
+	const std::vector<Animation>& GetAnimations() const { return animation_vec; }
+	const std::vector<Material>& GetMaterials() const { return material_vec; }
 
 	// 読み込み
 	void Load(ID3D11Device* device, const char* filename);
@@ -142,8 +141,8 @@ protected:
 	int FindNodeIndex(NodeId nodeId) const;
 
 protected:
-	std::vector<Node>		nodes;
-	std::vector<Material>	materials;
-	std::vector<Mesh>		meshes;
-	std::vector<Animation>	animations;
+	std::vector<Node>		node_vec;
+	std::vector<Material>	material_vec;
+	std::vector<Mesh>		meshe_vec;
+	std::vector<Animation>	animation_vec;
 };
