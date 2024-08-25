@@ -7,9 +7,8 @@ void Transform3DComponent::Update(float elapsed_time)
 	if (!this->change_value) return;
 
 	// ワールド行列の更新
-	DirectX::XMVECTOR Q = DirectX::XMLoadFloat4(&rotation);
 	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-	DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(Q);
+	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
 	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
 
 	DirectX::XMMATRIX W = S * R * T;
@@ -44,6 +43,23 @@ void Transform3DComponent::DrawDebugGUI()
 	}
 	if (ImGui::InputFloat3("scale", &this->scale.x))
 	{
+		this->change_value = true;
+	}
+
+	DirectX::XMFLOAT3 angle_degrees
+	{
+		DirectX::XMConvertToDegrees(this->angle.x),
+		DirectX::XMConvertToDegrees(this->angle.y),
+		DirectX::XMConvertToDegrees(this->angle.z),
+	};
+	if (ImGui::SliderFloat3("angle", &angle_degrees.x, 0, 360.0f));
+	{
+		this->angle =
+		{
+			DirectX::XMConvertToRadians(angle_degrees.x),
+			DirectX::XMConvertToRadians(angle_degrees.y),
+			DirectX::XMConvertToRadians(angle_degrees.z),
+		};
 		this->change_value = true;
 	}
 }

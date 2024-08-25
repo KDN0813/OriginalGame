@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 
 class MovementComponent;
+class Transform3DComponent;
 
 class PlayerComponent : public Component
 {
@@ -16,13 +17,16 @@ public:
 private:
     bool InputMove();
     void Move(float vx, float vz, float speed);
+    void Turn(float elapsed_time, float vx, float vz, float speed);
     DirectX::XMFLOAT3 GetMoveVec() const;
 
 private:
     float move_speed = 10.0f;
+    float turn_speed = 5.0f;
 
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
+    std::weak_ptr<Transform3DComponent> transform_Wptr;
 
 #ifdef _DEBUG
 public:

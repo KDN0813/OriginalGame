@@ -24,10 +24,10 @@ public:
     const DirectX::XMVECTOR AddPositionVec(const DirectX::XMVECTOR& vec);
     const DirectX::XMFLOAT3& AddPosition(const DirectX::XMFLOAT3 vec);
 
-    const DirectX::XMVECTOR GetQuaternionVec()const noexcept { return DirectX::XMLoadFloat4(&rotation); }
-    const DirectX::XMFLOAT4& GetQuaternion()const noexcept { return rotation; }
-    void SetQuaternion(const DirectX::XMVECTOR& quaternion)noexcept { this->change_value = true; DirectX::XMStoreFloat4(&this->rotation, quaternion); }
-    void SetQuaternion(const DirectX::XMFLOAT4& quaternion)noexcept { this->change_value = true; this->rotation = quaternion; }
+    const DirectX::XMVECTOR GetAngleVec()const noexcept { return DirectX::XMLoadFloat3(&angle); }
+    const DirectX::XMFLOAT3& GetAngle()const noexcept { return angle; }
+    void SetAngle(const DirectX::XMVECTOR& angle)noexcept { this->change_value = true; DirectX::XMStoreFloat3(&this->angle, angle); }
+    void SetAngle(const DirectX::XMFLOAT3& angle)noexcept { this->change_value = true; this->angle = angle; }
 
     const DirectX::XMVECTOR GetScaleVec()const noexcept { return DirectX::XMLoadFloat3(&this->scale); }
     const DirectX::XMFLOAT3& GetScale()const noexcept { return scale; }
@@ -38,7 +38,7 @@ public:
 private:
     DirectX::XMFLOAT4X4 transform{};
     DirectX::XMFLOAT3 position{};
-    DirectX::XMFLOAT4 rotation{};
+    DirectX::XMFLOAT3 angle{};
     DirectX::XMFLOAT3 scale{};
     bool change_value = false;
 #ifdef _DEBUG
