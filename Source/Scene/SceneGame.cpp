@@ -25,23 +25,6 @@ void SceneGame::Initialize()
 		model_shader = std::make_unique<ModelShader>(device);
 	}
 
-	// デバッグカメラ作成
-	{
-		auto debug_camera = object_manager.Create();
-		debug_camera->SetName("debug_camera");
-
-		auto camera_Cmp = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance());
-		camera_Cmp->SetPerspectiveFov(
-			DirectX::XMConvertToRadians(45.0f),
-			graphics->GetScreenWidth() / graphics->GetScreenHeight(),
-			0.1f,
-			1000.0f
-		);
-		camera_Cmp->SetRange(10.0f);
-		camera_Cmp->SetRotateX(0.4f);
-		camera_Cmp->SetMainCamera();
-	}
-
 	// オブジェクト作成
 	{
 		// ステージ
@@ -70,6 +53,17 @@ void SceneGame::Initialize()
 			// シェーダー設定
 			auto shader_component =
 				player->AddComponent<ModelShaderComponent>(model_shader.get());
+			// カメラ設定
+			auto camera = player->AddComponent<CameraComponent>(CameraManager::Instance());
+			camera->SetPerspectiveFov(
+				DirectX::XMConvertToRadians(45.0f),
+				graphics->GetScreenWidth() / graphics->GetScreenHeight(),
+				0.1f,
+				1000.0f
+			);
+			camera->SetRange(10.0f);
+			camera->SetRotateX(0.4f);
+			camera->SetMainCamera();
 		}
 	}
 }
