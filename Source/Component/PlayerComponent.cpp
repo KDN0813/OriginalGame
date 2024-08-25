@@ -10,16 +10,18 @@
 
 void PlayerComponent::Update(float elapsed_time)
 {
-    InputMove();
+    InputMove(elapsed_time);
 }
 
-bool PlayerComponent::InputMove()
+bool PlayerComponent::InputMove(float elapsed_time)
 {
     // 移動ベクトルを取得
     DirectX::XMFLOAT3 moveVec = GetMoveVec();
 
     // 移動処理
     Move(moveVec.x, moveVec.z, this->move_speed);
+    // 回転処理
+    Turn(elapsed_time,moveVec.x, moveVec.z, this->move_speed);
 
     return (moveVec.x != 0 || moveVec.y != 0 || moveVec.z != 0);
 }
@@ -38,20 +40,20 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 
 void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
 {
+    // 進行ベクトルが0以下なら処理しない
+    float length = sqrtf(vx * vx + vz * vz);
+    if (length < 0.001) return;
+
     auto owner = GetOwner();
     if (auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
     {
         speed *= elapsed_time;
 
-        // 進行ベクトルが0以下なら処理しない
-        float length = sqrtf(vx * vx + vz * vz);
-        if (length < 0.001) return;
-
         // 単位ベクトル化
         vx /= length;
         vz /= length;
 
-        // 自身の回転値から前方向を求める[03]
+        // 自身の回転値から前方向を求める
         DirectX::XMFLOAT3 angle = transform->GetAngle();
         float frontX = sinf(angle.y);
         float frontZ = cosf(angle.y);
@@ -64,11 +66,11 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
         float rot = 1.0 - dot;
         if (rot > speed) rot = speed;
 
-        // 左右判定を行うために2つの単位ベクトルの外積を計算する[03]
+        // 左右判定を行うために2つの単位ベクトルの外積を計算する
         float cross = (frontZ * vx) - (frontX * vz);
 
         // 2Dの外積値が正の場合か負の場合によって左右判定が行える
-        //  左右判定を行うことによって左右回転を選択する[03]
+        //  左右判定を行うことによって左右回転を選択する
         if (cross < 0.0f)
         {
             angle.y -= rot;
@@ -77,11 +79,12 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
         {
             angle.y += rot;
         }
+
+        transform->SetAngle(angle);
     }
 }
 
 DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
-
 {
     // 入力情報を取得
     Input* input = Input::Instance();

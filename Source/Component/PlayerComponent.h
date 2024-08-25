@@ -15,7 +15,7 @@ public:
     const unsigned int GetPriority()const noexcept override { return 3; };
 
 private:
-    bool InputMove();
+    bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
     void Turn(float elapsed_time, float vx, float vz, float speed);
     DirectX::XMFLOAT3 GetMoveVec() const;
