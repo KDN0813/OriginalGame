@@ -21,7 +21,7 @@ bool PlayerComponent::InputMove(float elapsed_time)
     // ˆÚ“®ˆ—
     Move(moveVec.x, moveVec.z, this->move_speed);
     // ‰ñ“]ˆ—
-    Turn(elapsed_time,moveVec.x, moveVec.z, this->move_speed);
+    Turn(elapsed_time,moveVec.x, moveVec.z, this->turn_speed);
 
     return (moveVec.x != 0 || moveVec.y != 0 || moveVec.z != 0);
 }
