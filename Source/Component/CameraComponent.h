@@ -42,27 +42,27 @@ public:
 	// X軸回転度取得
 	float GetRotateX() const { return this->rotateX; }
 	// 画角取得
-	float GetFovY() const { return fovY; }
+	float GetFovY() const { return this->fovY; }
 	// アスペクト比取得
-	float GetAspect() const { return aspect; }
+	float GetAspect() const { return this->aspect; }
 	// ニアクリップ値取得
-	float GetNearZ() const { return nearZ; }
+	float GetNearZ() const { return this->nearZ; }
 	// ファークリップ値取得
-	float GetFarZ() const { return farZ; }
+	float GetFarZ() const { return this->farZ; }
 	// ビュー行列取得
-	const DirectX::XMFLOAT4X4& GetViewTransform() const { return view_transform; }
+	const DirectX::XMFLOAT4X4& GetViewTransform() const { return this->view_transform; }
 	// プロジェクション行列取得
-	const DirectX::XMFLOAT4X4& GetProjectionTransform() const { return projection_transform; }
+	const DirectX::XMFLOAT4X4& GetProjectionTransform() const { return this->projection_transform; }
 	// 視点取得
-	const DirectX::XMFLOAT3& GetEye() const { return eye; }
+	const DirectX::XMFLOAT3& GetEye() const { return this->eye; }
 	// 注視店取得
-	const DirectX::XMFLOAT3& GetFocus() const { return focus; }
+	const DirectX::XMFLOAT3& GetFocus() const { return this->focus; }
 	// 上方向取得
-	const DirectX::XMFLOAT3& GetUp() const { return up; }
+	const DirectX::XMFLOAT3& GetUp() const { return this->up; }
 	// 前方向取得
-	const DirectX::XMFLOAT3& GetFront() const { return front; }
+	const DirectX::XMFLOAT3& GetFront() const { return this->front; }
 	// 右方向取得
-	const DirectX::XMFLOAT3& GetRight() const { return right; }
+	const DirectX::XMFLOAT3& GetRight() const { return this->right; }
 private:
 	float					fovY = DirectX::XMConvertToRadians(45);
 	float					aspect = 16.0f / 9.0f;

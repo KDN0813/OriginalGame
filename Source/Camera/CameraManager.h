@@ -10,7 +10,7 @@ public:
     CameraManager();
     ~CameraManager();
 
-    CameraComponent* GetCameraComponent() { return this->main_camera; }
+    CameraComponent* GetMainCamera() { return this->main_camera; }
 
     /**
      * \fn AddCamera

@@ -15,8 +15,16 @@ public:
     // 優先度
     const unsigned int GetPriority()const noexcept override { return 1; }
 
+    // 各種設定取得・関数
+    void SetVelocity(DirectX::XMFLOAT3 move_vec) { this->move_vec = move_vec; }
+    void SetVelocityX(float move_vecX) { this->move_vec.x = move_vecX; }
+    void SetVelocityY(float move_vecY) { this->move_vec.y = move_vecY; }
+    void SetVelocityZ(float move_vecZ) { this->move_vec.z = move_vecZ; }
+    void SetMoveSpeed(float speed) { this->speed = speed; }
+
 private:
-    DirectX::XMFLOAT3 velocity{};
+    DirectX::XMFLOAT3 move_vec{};   // 移動方向のベクトル
+    float speed = 1.0f;             // 移動速度
 
 private:
     std::weak_ptr<Transform3DComponent> transform3D_Wptr;

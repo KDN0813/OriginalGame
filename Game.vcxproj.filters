@@ -192,6 +192,9 @@
     <ClInclude Include="Source\Component\CameraComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\PlayerComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -297,6 +300,9 @@
       <Filter>Source\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\CameraComponent.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\PlayerComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>

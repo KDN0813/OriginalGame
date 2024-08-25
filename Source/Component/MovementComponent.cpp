@@ -13,9 +13,9 @@ void MovementComponent::Update(float elapsed_time)
         // ˆÚ“®—Ê
         DirectX::XMFLOAT3 movement =
         {
-            this->velocity.x * elapsed_time,
-            this->velocity.y * elapsed_time,
-            this->velocity.z * elapsed_time,
+            this->move_vec.x * this->speed * elapsed_time,
+            this->move_vec.y * this->speed * elapsed_time,
+            this->move_vec.z * this->speed * elapsed_time,
         };
         transform3D->AddPosition(movement);
     }
@@ -25,7 +25,7 @@ void MovementComponent::Update(float elapsed_time)
 
 void MovementComponent::DrawDebugGUI()
 {
-    ImGui::InputFloat3("velocity", &velocity.x);
+    ImGui::InputFloat3("velocity", &move_vec.x);
 }
 
 #endif _DEBUG

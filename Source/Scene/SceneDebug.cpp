@@ -137,7 +137,7 @@ void SceneDebug::Render()
 		//Camera& camera = Camera::Intance();
 
 		CameraManager* camera_manager = CameraManager::Instance();
-		auto camera= camera_manager->GetCameraComponent();
+		auto camera= camera_manager->GetMainCamera();
 		RenderContext rc;
 		rc.view = camera->GetViewTransform();
 		rc.projection = camera->GetProjectionTransform();

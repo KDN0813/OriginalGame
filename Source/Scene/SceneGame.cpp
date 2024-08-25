@@ -13,6 +13,7 @@
 #include "Component/InstancingModelShaderComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/CameraComponent.h"
+#include "Component/PlayerComponent.h"
 
 void SceneGame::Initialize()
 {
@@ -64,6 +65,8 @@ void SceneGame::Initialize()
 			auto transform = player->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
 			transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+			player->AddComponent<MovementComponent>();
+			player->AddComponent<PlayerComponent>();
 			// シェーダー設定
 			auto shader_component =
 				player->AddComponent<ModelShaderComponent>(model_shader.get());
@@ -101,7 +104,7 @@ void SceneGame::Render()
 		//Camera& camera = Camera::Intance();
 
 		CameraManager* camera_manager = CameraManager::Instance();
-		auto camera = camera_manager->GetCameraComponent();
+		auto camera = camera_manager->GetMainCamera();
 		RenderContext rc;
 		rc.view = camera->GetViewTransform();
 		rc.projection = camera->GetProjectionTransform();

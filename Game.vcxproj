@@ -125,6 +125,7 @@
     <ClInclude Include="Source\Component\ModelShaderComponent.h" />
     <ClInclude Include="Source\Component\MovementComponent.h" />
     <ClInclude Include="Source\Component\InstancingModelShaderComponent.h" />
+    <ClInclude Include="Source\Component\PlayerComponent.h" />
     <ClInclude Include="Source\Component\TransformComponent.h" />
     <ClInclude Include="Source\Debug\DebugManager.h" />
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Source\Component\ModelShaderComponent.cpp" />
     <ClCompile Include="Source\Component\MovementComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp" />
+    <ClCompile Include="Source\Component\PlayerComponent.cpp" />
     <ClCompile Include="Source\Component\TransformComponent.cpp" />
     <ClCompile Include="Source\Debug\DebugManager.cpp" />
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
