@@ -7,6 +7,8 @@
 ModelShaderComponent::ModelShaderComponent(ModelShader* const shader)
     :shader(shader)
 {
+    assert(shader);
+    this->shader->AddShaderComponent(this);
 }
 
 ModelShaderComponent::~ModelShaderComponent()

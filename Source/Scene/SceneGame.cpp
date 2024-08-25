@@ -53,7 +53,20 @@ void SceneGame::Initialize()
 			// シェーダー設定
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
-			model_shader->AddShaderComponent(shader_component.get());
+		}
+
+		// プレイヤー
+		{
+			auto player = object_manager.Create();
+			player->SetName("Player");
+			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
+			model->PlayAnimation(0, true);
+			auto transform = player->AddComponent<Transform3DComponent>();
+			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
+			transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+			// シェーダー設定
+			auto shader_component =
+				player->AddComponent<ModelShaderComponent>(model_shader.get());
 		}
 	}
 }
