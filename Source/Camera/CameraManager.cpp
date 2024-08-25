@@ -187,16 +187,7 @@ void CameraManager::DrawDebugGUI()
 {
 	if (ImGui::Checkbox("debugFlag", &this->debug_flag))
 	{
-		if (this->debug_flag)
-		{
-			if (!this->debug_camera) CreateDebugCamera();
-			this->temp_camera = this->main_camera;
-			this->main_camera = this->debug_camera;
-		}
-		else
-		{
-			this->main_camera = this->temp_camera;
-		}
+		SetDebugCamera();
 	}
 }
 
@@ -212,6 +203,20 @@ void CameraManager::CreateDebugCamera()
 	);
 	this->debug_camera->SetRange(10.0f);
 	this->debug_camera->SetRotateX(0.4f);
+}
+
+void CameraManager::SetDebugCamera()
+{
+	if (this->debug_flag)
+	{
+		if (!this->debug_camera) CreateDebugCamera();
+		this->temp_camera = this->main_camera;
+		this->main_camera = this->debug_camera;
+	}
+	else
+	{
+		this->main_camera = this->temp_camera;
+	}
 }
 
 #endif // _DEBUG

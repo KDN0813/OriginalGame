@@ -43,6 +43,7 @@ private:
 public:
     void DrawDebugGUI();
     void CreateDebugCamera();
+    void SetDebugCamera();
 
     CameraComponent* debug_camera = nullptr;    // デバッグ用カメラ
     CameraComponent* temp_camera = nullptr;     // メインカメラを一時保存する

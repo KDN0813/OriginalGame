@@ -124,9 +124,9 @@ void SceneGame::DrawImGui()
 
 	if (ImGui::Begin("DebugMenu", nullptr, ImGuiWindowFlags_MenuBar))
 	{
-		// モード切り替え処理
 		if (ImGui::BeginMenuBar())
 		{
+			// モード切り替え処理
 			if (ImGui::BeginMenu("Mode"))
 			{
 				if (ImGui::MenuItem("Object"))
@@ -144,6 +144,22 @@ void SceneGame::DrawImGui()
 				if (ImGui::MenuItem("System"))
 				{
 					mode_index = SceneGame::ImGuiMode::System;
+				}
+
+				ImGui::EndMenu();
+			}
+
+			// カメラ切り替え
+			if (ImGui::BeginMenu("Camera"))
+			{
+				bool& debug_flag = CameraManager::Instance()->debug_flag;
+
+				std::string label = debug_flag ? "normal camera" : "debug camera";
+
+				if (ImGui::MenuItem(label.c_str()))
+				{
+					debug_flag = !debug_flag;
+					CameraManager::Instance()->SetDebugCamera();
 				}
 
 				ImGui::EndMenu();
