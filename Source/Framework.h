@@ -30,7 +30,7 @@ private:
 	HighResolutionTimer				timer;
 	Graphics						graphics;
 	SceneManager					scene_manager;
-	Input							input;	// TODO(08/24)Œã‰ñ‚µ
+	Input							input;
 	ModelResourceManager			resource_manager;
 	InstancingModelResourceManager	instancin_resource_manager;
 	CameraManager					camera_manager;

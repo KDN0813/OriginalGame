@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "Graphics/Graphics.h"
-#include "Scene/SceneDebug.h"
+#include "Scene/SceneGame.h"
 #include "Scene/SceneTitle.h"
 #include "Scene/SceneManager.h"
 #include "Framework.h"
@@ -19,7 +19,7 @@ Framework::Framework(HWND hWnd)
 #endif // _DEBUG
 {
 #ifdef _DEBUG
-	scene_manager.ChangeScene(new SceneDebug);
+	scene_manager.ChangeScene(new SceneGame);
 #else
 	scene_manager.ChangeScene(new SceneDebug);
 #endif // _DEBUG
