@@ -106,6 +106,7 @@ private:
 
 	// 描画するインスタンスのシェーダー
 	std::vector<InstancingModelShaderComponent*> shader_component_vector;
+	// TODO (09/03)コンテナを持つコンテナにする
 
 #ifdef _DEBUG
 public:

@@ -50,7 +50,7 @@ public:
 	template<is_Component ComponentType>
 	std::shared_ptr<ComponentType> GetComponent()
 	{
-		for (std::shared_ptr<Component>& component : component_vector)
+		for (std::shared_ptr<Component>& component : component_vec)
 		{
 			std::shared_ptr<ComponentType> return_component 
 				= std::dynamic_pointer_cast<ComponentType>(component);
@@ -100,7 +100,7 @@ public:
 		std::shared_ptr<ComponentType> component = std::make_shared<ComponentType>(args...);
 		component->SetOwner(shared_from_this());
 		component->SetComponentID(GetComponentID<ComponentType>());
-		component_vector.emplace_back(component);
+		component_vec.emplace_back(component);
 		return component;
 	}
 
@@ -111,6 +111,7 @@ public:
 	 * \param elapsedTime åoâﬂéûä‘
 	 */
 	void Update(float elapsedTime);
+	void Start();
 
 	// äeéÊìæä÷êî
 	void SetName(const char* name) { this->name = name; }
@@ -131,7 +132,7 @@ private:
 	bool is_active = true;
 	bool is_remove = false;
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
-	ComponentVector component_vector;
+	ComponentVector component_vec;
 
 #ifdef _DEBUG
 public:
@@ -158,8 +159,9 @@ public:
 
 	void Remove(std::shared_ptr<Object> object);
 private:
-	std::vector<std::shared_ptr<Object>> object_vector;
-	std::set<std::shared_ptr<Object>> remove_object_vector;
+	std::vector<std::shared_ptr<Object>> start_object_vec;
+	std::vector<std::shared_ptr<Object>> update_object_vec;
+	std::set<std::shared_ptr<Object>> remove_object_vec;
 
 #ifdef _DEBUG
 public:
@@ -171,6 +173,6 @@ private:
 	// objectÇÃè⁄ç◊ï\é¶
 	void DrawDetail();
 private:
-	std::set<std::shared_ptr<Object>> selection_object_vector;
+	std::set<std::shared_ptr<Object>> selection_object_vec;
 #endif _DEBUG
 };

@@ -13,7 +13,7 @@ void Object::Update(float elapsedTime)
     if (!this->is_active) return;
 #endif // _DEBUG
 
-    for (auto& component : component_vector)
+    for (auto& component : component_vec)
     {
 #ifdef _DEBUG
         if (!component->GetIsActive()) continue;
@@ -23,6 +23,10 @@ void Object::Update(float elapsedTime)
     }
 }
 
+void Object::Start()
+{
+}
+
 void Object::sortComponentsByPriority()
 {
     auto sort_func = [](std::shared_ptr<Component>& lhs, std::shared_ptr<Component>& rhs) -> bool
@@ -30,7 +34,7 @@ void Object::sortComponentsByPriority()
             return lhs->GetPriority() > rhs->GetPriority();
         };
 
-    std::sort(component_vector.begin(), component_vector.end(), sort_func);
+    std::sort(component_vec.begin(), component_vec.end(), sort_func);
 }
 
 #ifdef _DEBUG
@@ -52,7 +56,7 @@ void Object::DrawDebugGUI()
     }
 
     int priority = 0;
-    for (std::shared_ptr<Component>& component : component_vector)
+    for (std::shared_ptr<Component>& component : component_vec)
     {
         bool component_is_active = component->GetIsActive();
 
@@ -102,39 +106,53 @@ std::shared_ptr<Object> ObjectManager::Create()
         ::sprintf_s(name, sizeof(name), "object%d", id++);
         object->SetName(name);
     }
-    this->object_vector.emplace_back(object);
+    this->start_object_vec.emplace_back(object);
     return object;
 }
 
 void ObjectManager::Update(float elapsedTime)
 {
-    for (std::shared_ptr<Object>& object : this->object_vector)
+    for (std::shared_ptr<Object>& object : this->start_object_vec)
+    {
+        object->Start();
+        this->update_object_vec.emplace_back(object);
+    }
+    this->start_object_vec.clear();
+
+    for (std::shared_ptr<Object>& object : this->update_object_vec)
     {
         object->Update(elapsedTime);
         if (object->GetIsRemove()) Remove(object);
     }
 
-    for (const std::shared_ptr<Object>& object : this->remove_object_vector)
+    for (const std::shared_ptr<Object>& object : this->remove_object_vec)
     {
-        std::vector<std::shared_ptr<Object>>::iterator it = std::find(this->object_vector.begin(), this->object_vector.end(), object);
-        if (it != object_vector.end())
+        std::vector<std::shared_ptr<Object>>::iterator start_it = std::find(this->start_object_vec.begin(), this->start_object_vec.end(), object);
+        if (start_it != this->start_object_vec.end())
         {
-            this->object_vector.erase(it);
+            this->start_object_vec.erase(start_it);
         }
-#ifdef _DEBUG
-        std::set<std::shared_ptr<Object>>::iterator selection_it = std::find(this->selection_object_vector.begin(), this->selection_object_vector.end(), object);
-        if (selection_it != selection_object_vector.end())
+
+        std::vector<std::shared_ptr<Object>>::iterator update_it = std::find(this->update_object_vec.begin(), this->update_object_vec.end(), object);
+        if (update_it != this->update_object_vec.end())
         {
-            this->selection_object_vector.erase(selection_it);
+            this->update_object_vec.erase(update_it);
+        }
+
+#ifdef _DEBUG
+        std::set<std::shared_ptr<Object>>::iterator selection_it = std::find(this->selection_object_vec.begin(), this->selection_object_vec.end(), object);
+        if (selection_it != this->selection_object_vec.end())
+        {
+            this->selection_object_vec.erase(selection_it);
         }
 #endif // _DEBUG
     }
-    this->remove_object_vector.clear();
+    this->remove_object_vec.clear();
 }
 
 void ObjectManager::Remove(std::shared_ptr<Object> object)
 {
-    this->remove_object_vector.insert(object);
+    this->remove_object_vec.insert(object);
 }
 
 #ifdef _DEBUG
@@ -147,11 +165,11 @@ void ObjectManager::DrawDebugGUI()
 
 void ObjectManager::DrawLister()
 {
-    for (std::shared_ptr<Object>& object : object_vector)
+    for (std::shared_ptr<Object>& object : update_object_vec)
     {
         ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_Leaf;
 
-        if (selection_object_vector.find(object) != selection_object_vector.end())
+        if (selection_object_vec.find(object) != selection_object_vec.end())
         {
             nodeFlags |= ImGuiTreeNodeFlags_Selected;
             nodeFlags |= ImGuiTreeNodeFlags_Bullet;
@@ -170,8 +188,8 @@ void ObjectManager::DrawLister()
         {
             // 単一選択だけ対応しておく
             ImGuiIO& io = ImGui::GetIO();
-            selection_object_vector.clear();
-            selection_object_vector.insert(object);
+            selection_object_vec.clear();
+            selection_object_vec.insert(object);
         }
         // (非)アクティブ化
         if (ImGui::IsItemClicked(1))
@@ -190,7 +208,7 @@ void ObjectManager::DrawDetail()
 
     ImGui::Begin("Object Detail", nullptr, ImGuiWindowFlags_None);
 
-    std::shared_ptr<Object> last_selected = selection_object_vector.empty() ? nullptr : *selection_object_vector.rbegin();
+    std::shared_ptr<Object> last_selected = selection_object_vec.empty() ? nullptr : *selection_object_vec.rbegin();
     if (last_selected != nullptr)
     {
         last_selected->DrawDebugGUI();

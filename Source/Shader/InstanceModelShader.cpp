@@ -242,6 +242,8 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
+	// TODO (09/03)全ての要素を回す
+
 	bool is_render_ready = false;	// 描画準備ができているか
 	InstancingModelShaderComponent* valid_Sc = nullptr;	// 使用可能なシェーダーコンポーネント
 	for (auto shader_component : this->shader_component_vector)
@@ -300,6 +302,7 @@ void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* s
 {
 	if (shader_component == nullptr) return;
 	shader_component_vector.emplace_back(shader_component);
+	// TODO (09/03)同じモデルのコンテナがあるなら追加、ないなら要素を追加する
 }
 
 void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent* shader_component)
@@ -307,6 +310,8 @@ void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent
 	auto it = std::find(this->shader_component_vector.begin(), this->shader_component_vector.end(), shader_component);
 	if (it == this->shader_component_vector.end()) return;
 	this->shader_component_vector.erase(it);
+
+	// TODO (09/03)削除した後、コンテナが空なら要素を削除する
 }
 
 InstancingModelShaderComponent* InstancingModelShader::IsShaderValid(InstancingModelShaderComponent* shader_component)

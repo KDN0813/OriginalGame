@@ -11,6 +11,7 @@
 InstancingModelShaderComponent::InstancingModelShaderComponent(InstancingModelShader* const shader)
     :shader(shader)
 {
+    this->shader->AddShaderComponent(this);
 }
 
 InstancingModelShaderComponent::~InstancingModelShaderComponent()
