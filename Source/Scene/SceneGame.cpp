@@ -65,6 +65,42 @@ void SceneGame::Initialize()
 			camera->SetRotateX(0.4f);
 			camera->SetMainCamera();
 		}
+
+		// 敵
+		{
+			for (int x = 0; x < 10; ++x)
+			{
+				for (int y = 0; y < 10; ++y)
+				{
+
+					const char* faile_name_arry[]
+					{
+						{"Data/Model/Jammo/Jammo.mdl"},
+						{"Data/Model/Player/Player.mdl"},
+					};
+
+					auto enemy = object_manager.Create();
+					auto model = enemy->AddComponent<InstancingModelComponent>(device, faile_name_arry[x % 2]);
+					model->PlayAnimetion(x % 10, true);
+					auto transform = enemy->AddComponent<Transform3DComponent>();
+
+					float offset = 2.0f;
+
+					DirectX::XMFLOAT3 pos =
+					{
+						offset * x,
+						0.0f,
+						offset * y ,
+					};
+					transform->SetPosition(pos);
+					transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+
+					// シェーダー設定
+					auto shader_component =
+						enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
+				}
+			}
+		}
 	}
 }
 
