@@ -1,5 +1,6 @@
 #pragma once
 #include <d3d11.h>
+#include <map>
 #include "Shader/Shader.h"
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
@@ -105,8 +106,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 
 	// 描画するインスタンスのシェーダー
-	std::vector<InstancingModelShaderComponent*> shader_component_vec;
-	// TODO (09/03)コンテナを持つコンテナにする
+	// TODO (09/03)コンテナを持つコンテナにする 名前変える
+	std::map<int, std::vector<InstancingModelShaderComponent*>> shader_component_vec_map;
 
 #ifdef _DEBUG
 public:

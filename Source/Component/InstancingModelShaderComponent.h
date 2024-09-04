@@ -26,6 +26,8 @@ public:
      * \return Š‚µ‚Ä‚¢‚é‚È‚çtrue
      */
     bool IsShaderValid();
+
+    int GetModelId();
 private:
     InstancingModelShader* const shader;
 

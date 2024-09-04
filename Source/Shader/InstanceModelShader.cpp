@@ -207,7 +207,7 @@ InstancingModelShader::InstancingModelShader(ID3D11Device* device)
 
 void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
-	if (shader_component_vec.size() <= 0) return;
+	if (shader_component_vec_map.size() <= 0) return;
 
 	// 初期設定
 	{
@@ -243,27 +243,29 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 	}
 
 	// TODO (09/03)全ての要素を回す
-
-	bool is_render_ready = false;	// 描画準備ができているか
-	InstancingModelShaderComponent* valid_Sc = nullptr;	// 使用可能なシェーダーコンポーネント
-	for (auto shader_component : this->shader_component_vec)
+	for (auto shader_component_vec : shader_component_vec_map)
 	{
-		if (!shader_component) continue;
+		bool is_render_ready = false;	// 描画準備ができているか
+		InstancingModelShaderComponent* valid_Sc = nullptr;	// 使用可能なシェーダーコンポーネント
+		for (auto shader_component : shader_component_vec.second)
+		{
+			if (!shader_component) continue;
 
-		if (!is_render_ready)
-		{
-			// シェーダーコンポーネントが使用可能か判定
-			if (!(valid_Sc = IsShaderValid(shader_component))) continue;
-			shader_component->InstancingStart();
-			shader_component->InstancingAdd();
-			is_render_ready = true;
+			if (!is_render_ready)
+			{
+				// シェーダーコンポーネントが使用可能か判定
+				if (!(valid_Sc = IsShaderValid(shader_component))) continue;
+				shader_component->InstancingStart();
+				shader_component->InstancingAdd();
+				is_render_ready = true;
+			}
+			else
+			{
+				shader_component->InstancingAdd();
+			}
 		}
-		else
-		{
-			shader_component->InstancingAdd();
-		}
+		if (is_render_ready) valid_Sc->InstancingEnd(dc);
 	}
-	if (is_render_ready) valid_Sc->InstancingEnd(dc);
 
 	// 修了処理
 	{
@@ -301,17 +303,31 @@ void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, InstancingMod
 void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* shader_component)
 {
 	if (shader_component == nullptr) return;
-	shader_component_vec.emplace_back(shader_component);
+
 	// TODO (09/03)同じモデルのコンテナがあるなら追加、ないなら要素を追加する
+	const int& modelId = shader_component->GetModelId();
+	auto it = shader_component_vec_map.find(modelId);
+	if (it != shader_component_vec_map.end())
+	{
+		shader_component_vec_map[modelId].emplace_back(shader_component);
+	}
+	shader_component_vec_map[modelId].emplace_back(shader_component);
 }
 
 void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent* shader_component)
 {
-	auto it = std::find(this->shader_component_vec.begin(), this->shader_component_vec.end(), shader_component);
-	if (it == this->shader_component_vec.end()) return;
-	this->shader_component_vec.erase(it);
+	if (shader_component == nullptr) return;
 
 	// TODO (09/03)削除した後、コンテナが空なら要素を削除する
+	const int& modelId = shader_component->GetModelId();
+	auto it = shader_component_vec_map.find(modelId);
+	if (it != shader_component_vec_map.end())
+	{
+		auto it = std::find(this->shader_component_vec_map[modelId].begin(), this->shader_component_vec_map[modelId].end(), shader_component);
+		if (it == this->shader_component_vec_map[modelId].end()) return;
+		this->shader_component_vec_map[modelId].erase(it);
+	}
+
 }
 
 InstancingModelShaderComponent* InstancingModelShader::IsShaderValid(InstancingModelShaderComponent* shader_component)
@@ -387,7 +403,7 @@ void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResou
 
 void InstancingModelShader::DrawDebugGUI()
 {
-	std::string text = "shader_component_vector.size" + std::to_string(this->shader_component_vec.size());
+	std::string text = "shader_component_vector.size" + std::to_string(this->shader_component_vec_map.size());
 	ImGui::Text(text.c_str());
 }
 

@@ -19,6 +19,9 @@ std::shared_ptr<InstancingModelResource> InstancingModelResourceManager::LoadMod
     std::shared_ptr<InstancingModelResource> instancing_model 
         = std::make_shared<InstancingModelResource>(device, filename);
 
+    // ƒ‚ƒfƒ‹IDÝ’è
+    instancing_model->SetModelId(ModelIDAllocate());
+
     // ƒ}ƒbƒv‚É“o˜^
     instancing_models[filename] = std::weak_ptr<InstancingModelResource>(instancing_model);
     return instancing_model;

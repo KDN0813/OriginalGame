@@ -69,6 +69,15 @@ bool InstancingModelShaderComponent::IsShaderValid()
     return (instancing_model && transform);
 }
 
+int InstancingModelShaderComponent::GetModelId()
+{
+    // Hack idを変数で持ち、返すようにしたら処理軽くなるかテストする
+    auto ownr = GetOwner();
+    auto instancing_model
+        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr);
+    return instancing_model->GetModelId();
+}
+
 #ifdef _DEBUG
 
 void InstancingModelShaderComponent::DrawDebugGUI()

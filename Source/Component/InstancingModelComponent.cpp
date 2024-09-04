@@ -50,6 +50,11 @@ const UINT InstancingModelComponent::GetAnimationStartOffset()
     return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
 }
 
+const int InstancingModelComponent::GetModelId()
+{
+    return this->instancing_model_resource->GetModelId();
+}
+
 #ifdef _DEBUG
 
 void InstancingModelComponent::DrawDebugGUI()

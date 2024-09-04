@@ -11,6 +11,18 @@ public:
     InstancingModelResourceManager() : Singleton(this) {}
     ~InstancingModelResourceManager() {}
 
+	/**
+	* @fn ModelIDAllocate
+	* @brief ƒ‚ƒfƒ‹ID‚ğŠ„‚èU‚é
+	*
+	* @return Š„‚èU‚ç‚ê‚½ID
+	*/
+	int ModelIDAllocate()
+	{
+		static int id = 0;
+		return id++;
+	}
+
     std::shared_ptr<InstancingModelResource> LoadModelResource(ID3D11Device* device,const char* filename);
 
 private:
