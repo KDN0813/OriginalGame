@@ -10,6 +10,10 @@ protected:
     virtual ~Component() {};
 
 public:
+    // 開始関数
+    virtual void Initialize() {};
+    // 修了関数
+    virtual void Finalize() {};
     // 更新関数
     virtual void Update(float elapsed_time) {};
 

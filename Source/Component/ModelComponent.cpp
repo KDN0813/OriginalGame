@@ -7,10 +7,13 @@
 ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 {
 	// リソース読み込み
-	resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
+	this->resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
+}
 
+void ModelComponent::Initialize()
+{
 	// ノード
-	const std::vector<ModelResource::Node>& res_node_vec = resource->GetNodes();
+	const std::vector<ModelResource::Node>& res_node_vec = this->resource->GetNodes();
 
 	node_vec.resize(res_node_vec.size());
 	for (size_t node_index = 0; node_index < node_vec.size(); ++node_index)

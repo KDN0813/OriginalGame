@@ -111,7 +111,18 @@ public:
 	 * \param elapsedTime 経過時間
 	 */
 	void Update(float elapsedTime);
-	void Start();
+	/**
+	 * \fn Initialize
+	 * \brief 開始関数
+	 * 
+	 */
+	void Initialize();
+	/**
+	* \fn Finalize
+	* \brief 修了関数
+	*
+	*/
+	void Finalize();
 
 	// 各取得関数
 	void SetName(const char* name) { this->name = name; }

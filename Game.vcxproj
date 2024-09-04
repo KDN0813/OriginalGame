@@ -119,7 +119,6 @@
     <ClInclude Include="Source\Camera\CameraManager.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
-    <ClInclude Include="Source\Component\ComponentFunctions.h" />
     <ClInclude Include="Source\Component\InstancingModelComponent.h" />
     <ClInclude Include="Source\Component\ModelComponent.h" />
     <ClInclude Include="Source\Component\ModelShaderComponent.h" />

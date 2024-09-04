@@ -23,8 +23,20 @@ void Object::Update(float elapsedTime)
     }
 }
 
-void Object::Start()
+void Object::Initialize()
 {
+    for (std::shared_ptr<Component>& component : this->component_vec)
+    {
+        component->Initialize();
+    }
+}
+
+void Object::Finalize()
+{
+    for (std::shared_ptr<Component>& component : this->component_vec)
+    {
+        component->Finalize();
+    }
 }
 
 void Object::sortComponentsByPriority()
@@ -114,7 +126,7 @@ void ObjectManager::Update(float elapsedTime)
 {
     for (std::shared_ptr<Object>& object : this->start_object_vec)
     {
-        object->Start();
+        object->Initialize();
         this->update_object_vec.emplace_back(object);
     }
     this->start_object_vec.clear();
@@ -146,6 +158,8 @@ void ObjectManager::Update(float elapsedTime)
             this->selection_object_vec.erase(selection_it);
         }
 #endif // _DEBUG
+
+        object->Finalize();
     }
     this->remove_object_vec.clear();
 }

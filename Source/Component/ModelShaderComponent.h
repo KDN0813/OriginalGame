@@ -11,8 +11,9 @@ class ModelShaderComponent : public Component
 {
 public:
     ModelShaderComponent(ModelShader* const shader);
-    ~ModelShaderComponent();
 
+    void Initialize();
+    void Finalize();
     const char* GetName()const override { return "ModelShaderComponent"; }
 
     void Draw(ID3D11DeviceContext* dc);

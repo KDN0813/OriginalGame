@@ -14,7 +14,8 @@ class InstancingModelComponent : public Component
 public:
 public:
 	InstancingModelComponent(ID3D11Device* device, const char* filename);
-	
+
+
     void Update(float elapsedTime) override;
 
 	const char* GetName()const override { return "InstancingModelComponent"; }

@@ -8,10 +8,14 @@ ModelShaderComponent::ModelShaderComponent(ModelShader* const shader)
     :shader(shader)
 {
     assert(shader);
+}
+
+void ModelShaderComponent::Initialize()
+{
     this->shader->AddShaderComponent(this);
 }
 
-ModelShaderComponent::~ModelShaderComponent()
+void ModelShaderComponent::Finalize()
 {
     this->shader->RemoveShaderComponent(this);
 }

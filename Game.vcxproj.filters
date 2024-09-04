@@ -171,9 +171,6 @@
     <ClInclude Include="Source\Object\Object.h">
       <Filter>Source\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\ComponentFunctions.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\MovementComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>

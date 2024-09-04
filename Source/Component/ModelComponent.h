@@ -26,6 +26,8 @@ public:
 public:
 	ModelComponent(ID3D11Device* device, const char* filename);
 
+	// 開始関数
+	void Initialize();
 	// 更新関数
 	void Update(float elapsed_time);
 	// 名前取得

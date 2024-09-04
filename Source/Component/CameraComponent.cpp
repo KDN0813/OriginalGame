@@ -8,6 +8,10 @@
 CameraComponent::CameraComponent(CameraManager* camera_manager)
     :camera_manager(camera_manager)
 {
+}
+
+void CameraComponent::Initialize()
+{
     SetLookAt(
         DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f),
         DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
@@ -17,7 +21,7 @@ CameraComponent::CameraComponent(CameraManager* camera_manager)
     this->camera_manager->AddCamera(this);
 }
 
-CameraComponent::~CameraComponent()
+void CameraComponent::Finalize()
 {
     this->camera_manager->RemoveCamera(this);
 }

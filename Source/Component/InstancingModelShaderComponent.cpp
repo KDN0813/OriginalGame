@@ -11,10 +11,14 @@
 InstancingModelShaderComponent::InstancingModelShaderComponent(InstancingModelShader* const shader)
     :shader(shader)
 {
+}
+
+void InstancingModelShaderComponent::Initialize()
+{
     this->shader->AddShaderComponent(this);
 }
 
-InstancingModelShaderComponent::~InstancingModelShaderComponent()
+void InstancingModelShaderComponent::Finalize()
 {
     this->shader->RemoveShaderComponent(this);
 }
