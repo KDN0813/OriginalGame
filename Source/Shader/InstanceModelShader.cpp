@@ -207,7 +207,7 @@ InstancingModelShader::InstancingModelShader(ID3D11Device* device)
 
 void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
 {
-	if (shader_component_vector.size() <= 0) return;
+	if (shader_component_vec.size() <= 0) return;
 
 	// 初期設定
 	{
@@ -246,7 +246,7 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 
 	bool is_render_ready = false;	// 描画準備ができているか
 	InstancingModelShaderComponent* valid_Sc = nullptr;	// 使用可能なシェーダーコンポーネント
-	for (auto shader_component : this->shader_component_vector)
+	for (auto shader_component : this->shader_component_vec)
 	{
 		if (!shader_component) continue;
 
@@ -301,15 +301,15 @@ void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, InstancingMod
 void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* shader_component)
 {
 	if (shader_component == nullptr) return;
-	shader_component_vector.emplace_back(shader_component);
+	shader_component_vec.emplace_back(shader_component);
 	// TODO (09/03)同じモデルのコンテナがあるなら追加、ないなら要素を追加する
 }
 
 void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent* shader_component)
 {
-	auto it = std::find(this->shader_component_vector.begin(), this->shader_component_vector.end(), shader_component);
-	if (it == this->shader_component_vector.end()) return;
-	this->shader_component_vector.erase(it);
+	auto it = std::find(this->shader_component_vec.begin(), this->shader_component_vec.end(), shader_component);
+	if (it == this->shader_component_vec.end()) return;
+	this->shader_component_vec.erase(it);
 
 	// TODO (09/03)削除した後、コンテナが空なら要素を削除する
 }
@@ -387,7 +387,7 @@ void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResou
 
 void InstancingModelShader::DrawDebugGUI()
 {
-	std::string text = "shader_component_vector.size" + std::to_string(this->shader_component_vector.size());
+	std::string text = "shader_component_vector.size" + std::to_string(this->shader_component_vec.size());
 	ImGui::Text(text.c_str());
 }
 

@@ -105,7 +105,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 
 	// 描画するインスタンスのシェーダー
-	std::vector<InstancingModelShaderComponent*> shader_component_vector;
+	std::vector<InstancingModelShaderComponent*> shader_component_vec;
 	// TODO (09/03)コンテナを持つコンテナにする
 
 #ifdef _DEBUG
