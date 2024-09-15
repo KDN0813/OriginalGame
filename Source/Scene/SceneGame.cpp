@@ -44,6 +44,7 @@ void SceneGame::Initialize()
 			auto player = object_manager.Create();
 			player->SetName("Player");
 			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
+			//auto model = player->AddComponent<ModelComponent>(device, "Data/Model/yu/unitychan_noAnimation.mdl");
 			model->PlayAnimation(0, true);
 			auto transform = player->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));

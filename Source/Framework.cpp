@@ -8,7 +8,12 @@
 #include "Framework.h"
 
 // êÇíºìØä˙ä‘äuê›íË
+#ifdef _DEBUG
 static const int syncInterval = 0;
+#else
+static const int syncInterval = 1;
+#endif // _DEBUG
+
 
 Framework::Framework(HWND hWnd)
 	: hWnd(hWnd)
@@ -21,7 +26,7 @@ Framework::Framework(HWND hWnd)
 #ifdef _DEBUG
 	scene_manager.ChangeScene(new SceneGame);
 #else
-	scene_manager.ChangeScene(new SceneDebug);
+	scene_manager.ChangeScene(new SceneGame);
 #endif // _DEBUG
 }
 
