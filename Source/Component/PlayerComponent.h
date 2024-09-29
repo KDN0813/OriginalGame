@@ -22,7 +22,7 @@ private:
 
 private:
     float move_speed = 10.0f;
-    float turn_speed = 5.0f;
+    float turn_speed = 15.0f;
 
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
