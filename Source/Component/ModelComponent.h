@@ -2,6 +2,7 @@
 #include <DirectXMath.h>
 #include <d3d11.h>
 #include <vector>
+#include <string	>
 #include "Component.h"
 
 class ModelResource;
@@ -70,7 +71,7 @@ public:
 	void UpdateAnimation(float elapsed_time);
 	// アニメーション再生
 	void PlayAnimation(int index, bool loop, float blend_seconds = 0.2f);
-	void PlayAnimation(AnimeState* animation_info, float blend_seconds);
+	void PlayAnimation(const AnimeState& animation_info, float blend_seconds);
 	// アニメーション再生中か
 	bool IsPlayAnimation()const;
 	// ノード検索
@@ -91,7 +92,7 @@ public:
 	float GetCurrentAnimationSeconds()const { return current_animation_seconds; }
 
 private:
-	std::vector<AnimeState*>				anime_state_pool;	// アニメーション情報	
+	std::vector<AnimeState>				anime_state_pool;	// アニメーション情報	
 
 	std::shared_ptr<ModelResource>	resource;
 	std::vector<Node>				node_vec;
