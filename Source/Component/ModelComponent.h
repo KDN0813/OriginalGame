@@ -31,8 +31,8 @@ struct AnimationTransitionState
 // アニメーション情報
 struct AnimationInfo
 {
-	bool loop = false;
 	AnimeIndex anime_index = -1;
+	bool loop = false;
 	std::vector<AnimationTransitionState*> next_animation_vec;
 };
 
@@ -77,6 +77,11 @@ public:
 
 	// アニメーションの更新
 	void AnimationStateUpdate();
+	// アニメーション状態の設定
+	void SetAnimationState(AnimeIndex anime_index, bool loop);
+	// 遷移状態の設定
+	void AddAnimationTransitionState(AnimeIndex anime_index, AnimeIndex transition_anime_index, AnimationTransitionJudgementBase* judgement, float blend_time);
+
 
 	// 各種データ取得
 	const std::vector<Node>& GetNodes() const { return node_vec; }

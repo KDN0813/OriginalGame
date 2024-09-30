@@ -283,6 +283,23 @@ void ModelComponent::AnimationStateUpdate()
 	}
 }
 
+void ModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop)
+{
+	auto& anime_state = this->animation_info_vec[anime_index];
+	anime_state->anime_index = anime_index;
+	anime_state->loop = loop;
+}
+
+void ModelComponent::AddAnimationTransitionState(AnimeIndex anime_index, AnimeIndex transition_anime_index, AnimationTransitionJudgementBase* judgement, float blend_time)
+{
+	auto& next_animation_vec = this->animation_info_vec[anime_index]->next_animation_vec;
+	// 遷移するアニメーションステート
+	auto& next_transition_anime =  next_animation_vec.emplace_back();
+	next_transition_anime->next_anime_index = transition_anime_index;
+	next_transition_anime->judgement = judgement;
+	next_transition_anime->blend_time = blend_time;
+}
+
 #ifdef _DEBUG
 
 void ModelComponent::DrawDebugGUI()
