@@ -149,6 +149,9 @@
     <ClInclude Include="Source\Shader\ModelShader.h" />
     <ClInclude Include="Source\Shader\Shader.h" />
     <ClInclude Include="Source\Shader\InstanceModelShader.h" />
+    <ClInclude Include="Source\StateMachine\AnimationState.h" />
+    <ClInclude Include="Source\StateMachine\AnimationStateMachine.h" />
+    <ClInclude Include="Source\StateMachine\Judgment.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
     <ClInclude Include="Source\System\HighResolutionTimer.h" />
@@ -191,6 +194,9 @@
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
     <ClCompile Include="Source\Shader\ModelShader.cpp" />
+    <ClCompile Include="Source\StateMachine\AnimationState.cpp" />
+    <ClCompile Include="Source\StateMachine\AnimationStateMachine.cpp" />
+    <ClCompile Include="Source\StateMachine\Judgment.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>

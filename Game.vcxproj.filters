@@ -55,6 +55,9 @@
     <Filter Include="Source\Object">
       <UniqueIdentifier>{f0d7a6ae-ad7a-4d18-a0b6-46175f859f43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\StateMachine">
+      <UniqueIdentifier>{05681424-6923-4dc5-bc9d-2c3df4bbe1e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -192,6 +195,15 @@
     <ClInclude Include="Source\Component\PlayerComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StateMachine\AnimationStateMachine.h">
+      <Filter>Source\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\AnimationState.h">
+      <Filter>Source\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\Judgment.h">
+      <Filter>Source\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -301,6 +313,15 @@
     </ClCompile>
     <ClCompile Include="Source\Component\PlayerComponent.cpp">
       <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\AnimationStateMachine.cpp">
+      <Filter>Source\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\AnimationState.cpp">
+      <Filter>Source\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\Judgment.cpp">
+      <Filter>Source\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
