@@ -13,7 +13,7 @@ ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 void ModelComponent::Initialize()
 {
 	// アニメーションの数にサイズを合わせる
-	this->animation_info_vec.resize(this->resource->GetAnimations().size());
+	this->anime_state_pool.resize(this->resource->GetAnimations().size());
 
 	// ノード
 	const std::vector<ModelResource::Node>& res_node_vec = this->resource->GetNodes();
@@ -240,7 +240,7 @@ void ModelComponent::PlayAnimation(int index, bool loop, float blend_seconds)
 	animation_blend_seconds = blend_seconds;
 }
 
-void ModelComponent::PlayAnimation(AnimationInfo* animation_info , float blend_seconds)
+void ModelComponent::PlayAnimation(AnimeState* animation_info , float blend_seconds)
 {
 	current_animation_index = animation_info->anime_index;
 	current_animation_seconds = 0.0f;
@@ -273,11 +273,11 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 
 void ModelComponent::AnimationStateUpdate()
 {
-	for (auto next_anime_info : this->animation_info_vec[this->current_animation_index]->next_animation_vec)
+	for (auto transition_info : this->anime_state_pool[this->current_animation_index]->transition_info_pool)
 	{
-		if (next_anime_info->judgement->Judgement())
+		if (transition_info->judgement->Judgement())
 		{
-			PlayAnimation(this->animation_info_vec[next_anime_info->next_anime_index], next_anime_info ->blend_time);
+			PlayAnimation(this->anime_state_pool[transition_info->next_anime_index], transition_info ->blend_time);
 			break;
 		}
 	}
@@ -285,14 +285,13 @@ void ModelComponent::AnimationStateUpdate()
 
 void ModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop)
 {
-	auto& anime_state = this->animation_info_vec[anime_index];
-	anime_state->anime_index = anime_index;
+	auto& anime_state = this->anime_state_pool[anime_index];
 	anime_state->loop = loop;
 }
 
-void ModelComponent::AddAnimationTransitionState(AnimeIndex anime_index, AnimeIndex transition_anime_index, AnimationTransitionJudgementBase* judgement, float blend_time)
+void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, AnimeTransitionJudgementBase* judgement, float blend_time)
 {
-	auto& next_animation_vec = this->animation_info_vec[anime_index]->next_animation_vec;
+	auto& next_animation_vec = this->anime_state_pool[anime_index]->transition_info_pool;
 	// 遷移するアニメーションステート
 	auto& next_transition_anime =  next_animation_vec.emplace_back();
 	next_transition_anime->next_anime_index = transition_anime_index;

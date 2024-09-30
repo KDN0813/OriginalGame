@@ -10,30 +10,31 @@ class Transform3DComponent;
 
 using AnimeIndex = size_t;
 
-// アニメーション遷移判定
-class AnimationTransitionJudgementBase
+// 遷移判定
+class AnimeTransitionJudgementBase
 {
 public:
-	AnimationTransitionJudgementBase(){}
-	virtual ~AnimationTransitionJudgementBase() {}
+	AnimeTransitionJudgementBase(){}
+	virtual ~AnimeTransitionJudgementBase() {}
 
 	virtual bool Judgement() = 0;
 };
 
-// 遷移するアニメーション情報
-struct AnimationTransitionState
+// 遷移情報
+struct AnimeTransitionInfo
 {
 	AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
-	AnimationTransitionJudgementBase* judgement = nullptr;		// 遷移判定
+	AnimeTransitionJudgementBase* judgement = nullptr;			// 遷移判定
 	float blend_time = 1.0f;									// ブレンド時間
 };
 
-// アニメーション情報
-struct AnimationInfo
+// アニメーション状態
+struct AnimeState
 {
-	AnimeIndex anime_index = -1;
+	std::string name = {};
+	AnimeIndex anime_index = -1;							// アニメのインデックス
 	bool loop = false;
-	std::vector<AnimationTransitionState*> next_animation_vec;
+	std::vector<AnimeTransitionInfo*> transition_info_pool;
 };
 
 class ModelComponent : public Component
@@ -69,18 +70,18 @@ public:
 	void UpdateAnimation(float elapsed_time);
 	// アニメーション再生
 	void PlayAnimation(int index, bool loop, float blend_seconds = 0.2f);
-	void PlayAnimation(AnimationInfo* animation_info, float blend_seconds);
+	void PlayAnimation(AnimeState* animation_info, float blend_seconds);
 	// アニメーション再生中か
 	bool IsPlayAnimation()const;
 	// ノード検索
 	ModelComponent::Node* FindNode(const char* name);
 
-	// アニメーションの更新
+	// アニメーション状態の更新
 	void AnimationStateUpdate();
 	// アニメーション状態の設定
 	void SetAnimationState(AnimeIndex anime_index, bool loop);
-	// 遷移状態の設定
-	void AddAnimationTransitionState(AnimeIndex anime_index, AnimeIndex transition_anime_index, AnimationTransitionJudgementBase* judgement, float blend_time);
+	// 遷移情報の追加
+	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, AnimeTransitionJudgementBase* judgement, float blend_time);
 
 
 	// 各種データ取得
@@ -90,7 +91,7 @@ public:
 	float GetCurrentAnimationSeconds()const { return current_animation_seconds; }
 
 private:
-	std::vector<AnimationInfo*>				animation_info_vec;	// アニメーション情報	
+	std::vector<AnimeState*>				anime_state_pool;	// アニメーション情報	
 
 	std::shared_ptr<ModelResource>	resource;
 	std::vector<Node>				node_vec;
