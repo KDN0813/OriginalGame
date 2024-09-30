@@ -12,6 +12,9 @@ ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 
 void ModelComponent::Initialize()
 {
+	// アニメーションの数にサイズを合わせる
+	this->animation_info_vec.resize(this->resource->GetAnimations().size());
+
 	// ノード
 	const std::vector<ModelResource::Node>& res_node_vec = this->resource->GetNodes();
 
@@ -46,6 +49,8 @@ void ModelComponent::Initialize()
 
 void ModelComponent::Update(float elapsed_time)
 {
+	AnimationStateUpdate();
+
 	UpdateAnimation(elapsed_time);
 
 	auto owner = GetOwner();
@@ -235,6 +240,18 @@ void ModelComponent::PlayAnimation(int index, bool loop, float blend_seconds)
 	animation_blend_seconds = blend_seconds;
 }
 
+void ModelComponent::PlayAnimation(AnimationInfo* animation_info , float blend_seconds)
+{
+	current_animation_index = animation_info->anime_index;
+	current_animation_seconds = 0.0f;
+
+	animation_loo_flag = animation_info->loop;
+	animation_end_flag = false;
+
+	animation_blend_time = 0.0f;
+	animation_blend_seconds = blend_seconds;
+}
+
 bool ModelComponent::IsPlayAnimation() const
 {
 	if (current_animation_index < 0)return false;
@@ -252,6 +269,18 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 		}
 	}
 	return nullptr;
+}
+
+void ModelComponent::AnimationStateUpdate()
+{
+	for (auto next_anime_info : this->animation_info_vec[this->current_animation_index]->next_animation_vec)
+	{
+		if (next_anime_info->judgement->Judgement())
+		{
+			PlayAnimation(this->animation_info_vec[next_anime_info->next_anime_index], next_anime_info ->blend_time);
+			break;
+		}
+	}
 }
 
 #ifdef _DEBUG

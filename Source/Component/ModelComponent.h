@@ -8,6 +8,34 @@ class ModelResource;
 
 class Transform3DComponent;
 
+using AnimeIndex = size_t;
+
+// アニメーション遷移判定
+class AnimationTransitionJudgementBase
+{
+public:
+	AnimationTransitionJudgementBase(){}
+	virtual ~AnimationTransitionJudgementBase() {}
+
+	virtual bool Judgement() = 0;
+};
+
+// 遷移するアニメーション情報
+struct AnimationTransitionState
+{
+	AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
+	AnimationTransitionJudgementBase* judgement = nullptr;		// 遷移判定
+	float blend_time = 1.0f;									// ブレンド時間
+};
+
+// アニメーション情報
+struct AnimationInfo
+{
+	bool loop = false;
+	AnimeIndex anime_index = -1;
+	std::vector<AnimationTransitionState*> next_animation_vec;
+};
+
 class ModelComponent : public Component
 {
 public:
@@ -41,10 +69,14 @@ public:
 	void UpdateAnimation(float elapsed_time);
 	// アニメーション再生
 	void PlayAnimation(int index, bool loop, float blend_seconds = 0.2f);
+	void PlayAnimation(AnimationInfo* animation_info, float blend_seconds);
 	// アニメーション再生中か
 	bool IsPlayAnimation()const;
 	// ノード検索
 	ModelComponent::Node* FindNode(const char* name);
+
+	// アニメーションの更新
+	void AnimationStateUpdate();
 
 	// 各種データ取得
 	const std::vector<Node>& GetNodes() const { return node_vec; }
@@ -53,6 +85,8 @@ public:
 	float GetCurrentAnimationSeconds()const { return current_animation_seconds; }
 
 private:
+	std::vector<AnimationInfo*>				animation_info_vec;	// アニメーション情報	
+
 	std::shared_ptr<ModelResource>	resource;
 	std::vector<Node>				node_vec;
 
