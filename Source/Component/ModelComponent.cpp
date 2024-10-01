@@ -28,8 +28,8 @@ void ModelComponent::Start()
 	// ノード
 	const std::vector<ModelResource::Node>& res_node_vec = this->resource->GetNodes();
 
-	node_vec.resize(res_node_vec.size());
-	for (size_t node_index = 0; node_index < node_vec.size(); ++node_index)
+	this->node_vec.resize(res_node_vec.size());
+	for (size_t node_index = 0; node_index < this->node_vec.size(); ++node_index)
 	{
 		auto&& src = res_node_vec.at(node_index);
 		auto&& dst = node_vec.at(node_index);
@@ -115,19 +115,19 @@ void ModelComponent::UpdateAnimation(float elapsed_time)
 	// アニメーションブレンド率
 	float blend_rate = 1.0f;
 
-	if (animation_blend_time < animation_blend_seconds)
+	if (this->animation_blend_time < this->animation_blend_seconds)
 	{
-		animation_blend_time += elapsed_time;
-		if (animation_blend_time >= animation_blend_seconds)
+		this->animation_blend_time += elapsed_time;
+		if (this->animation_blend_time >= this->animation_blend_seconds)
 		{
-			animation_blend_time = animation_blend_seconds;
+			this->animation_blend_time = this->animation_blend_seconds;
 		}
 		//　ブレンド率計算
-		blend_rate = animation_blend_time / animation_blend_seconds;
+		blend_rate = this->animation_blend_time / this->animation_blend_seconds;
 		blend_rate *= blend_rate;
 	}
 
-	const std::vector<ModelResource::Animation>& animations = resource->GetAnimations();
+	const std::vector<ModelResource::Animation>& animations = this->resource->GetAnimations();
 	const ModelResource::Animation& animation = animations.at(current_animation_index);
 
 	// キーフレーム取得
@@ -140,21 +140,21 @@ void ModelComponent::UpdateAnimation(float elapsed_time)
 		const ModelResource::Keyframe& keyframe1 = keyframes.at(keyIndex + 1);
 
 		// 経過時間が再生時間内なら
-		if (current_animation_seconds >= keyframe0.seconds &&
-			current_animation_seconds < keyframe1.seconds)
+		if (this->current_animation_seconds >= keyframe0.seconds &&
+			this->current_animation_seconds < keyframe1.seconds)
 		{
 			// 補間率を計算
-			float rate = (current_animation_seconds - keyframe0.seconds)
+			float rate = (this->current_animation_seconds - keyframe0.seconds)
 				/ (keyframe1.seconds - keyframe0.seconds);
 
-			int nodeCount = static_cast<int>(node_vec.size());
+			int nodeCount = static_cast<int>(this->node_vec.size());
 
 			for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
 			{
 				const ModelResource::NodeKeyData& key0 = keyframe0.node_keys.at(nodeIndex);
 				const ModelResource::NodeKeyData& key1 = keyframe1.node_keys.at(nodeIndex);
 
-				Node& node = node_vec[nodeIndex];
+				Node& node = this->node_vec[nodeIndex];
 
 				// アニメーションブレンドするなら
 				if (blend_rate < 1.0f)
@@ -211,68 +211,67 @@ void ModelComponent::UpdateAnimation(float elapsed_time)
 	}
 
 	// 再生終了したら
-	if (animation_end_flag)
+	if (this->animation_end_flag)
 	{
-		animation_end_flag = false;
-		//current_animation_index = -1;
+		this->animation_end_flag = false;
 		return;
 	}
 
-	current_animation_seconds += elapsed_time;
+	this->current_animation_seconds += elapsed_time;
 
 	// 再生時間を超えたら
-	if (current_animation_seconds >= animation.seconds_length)
+	if (this->current_animation_seconds >= animation.seconds_length)
 	{
 		// ループ再生する場合
-		if (animation_loo_flag)
+		if (this->animation_loo_flag)
 		{
 			// 再生時間を戻す
-			current_animation_seconds -= animation.seconds_length;
+			this->current_animation_seconds -= animation.seconds_length;
 			return;
 		}
 		// ループ再生しない場合
 		else
 		{
-			animation_end_flag = true;
+			this->animation_end_flag = true;
 		}
 	}
 }
 
 void ModelComponent::PlayAnimation(int index, bool loop, float blend_seconds)
 {
-	current_animation_index = index;
-	current_animation_seconds = 0.0f;
+	this->current_animation_index = index;
+	this->current_animation_seconds = 0.0f;
 
-	animation_loo_flag = loop;
-	animation_end_flag = false;
+	this->animation_loo_flag = loop;
+	this->animation_end_flag = false;
 
-	animation_blend_time = 0.0f;
-	animation_blend_seconds = blend_seconds;
+	this->animation_blend_time = 0.0f;
+	this->animation_blend_seconds = blend_seconds;
 }
 
 void ModelComponent::PlayAnimation(const AnimeState& animation_info, float blend_seconds)
 {
-	current_animation_index = animation_info.anime_index;
-	current_animation_seconds = 0.0f;
+	this->current_animation_index = animation_info.anime_index;
+	this->current_animation_seconds = 0.0f;
 
-	animation_loo_flag = animation_info.loop;
-	animation_end_flag = false;
+	this->animation_loo_flag = animation_info.loop;
+	this->animation_end_flag = false;
 
-	animation_blend_time = 0.0f;
-	animation_blend_seconds = blend_seconds;
+	this->animation_blend_time = 0.0f;
+	this->animation_blend_seconds = blend_seconds;
 }
 
 bool ModelComponent::IsPlayAnimation() const
 {
-	if (current_animation_index < 0)return false;
-	if (current_animation_index >= resource->GetAnimations().size()) return false;
-	if (animation_end_flag) return false;
+	if (this->current_animation_index < 0)return false;
+	if (this->current_animation_index >= this->resource->GetAnimations().size()) return false;
+	if (this->animation_end_flag) return false;
 	return true;
 }
 
 ModelComponent::Node* ModelComponent::FindNode(const char* name)
 {
-	for (Node& node : node_vec)
+	for (Node& node : this->node_vec)
 	{
 		if (0 == std::strcmp(node.name, name))
 		{
@@ -305,13 +304,13 @@ void ModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop)
 
 void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time)
 {
-	auto& next_animation_vec = this->anime_state_pool[anime_index].transition_info_pool;
+	auto& transition_info_pool = this->anime_state_pool[anime_index].transition_info_pool;
 	// 遷移するアニメーションステート
-	auto& next_transition_anime =  next_animation_vec.emplace_back();
-	next_transition_anime = std::make_unique<AnimeTransitionInfo>();
-	next_transition_anime->next_anime_index = transition_anime_index;
-	next_transition_anime->judgement = std::move(judgement);
-	next_transition_anime->blend_time = blend_time;
+	auto& transition_info =  transition_info_pool.emplace_back();
+	transition_info = std::make_unique<AnimeTransitionInfo>();
+	transition_info->next_anime_index = transition_anime_index;
+	transition_info->judgement = std::move(judgement);
+	transition_info->blend_time = blend_time;
 }
 
 #ifdef _DEBUG
