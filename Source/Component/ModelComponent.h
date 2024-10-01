@@ -84,15 +84,15 @@ public:
 private:
 	std::vector<AnimeState>				anime_state_pool;	// アニメーション情報	
 
-	std::shared_ptr<ModelResource>	resource;
-	std::vector<Node>				node_vec;
+	std::shared_ptr<ModelResource>	resource;	// モデルリソース
+	std::vector<Node>				node_vec;	// ノード
 
-	int current_animation_index  = -1;
-	float current_animation_seconds = 0;
-	float animation_blend_time = 0;
-	float animation_blend_seconds = 0;
-	bool animation_loo_flag = 0;
-	bool animation_end_flag = 0;
+	int current_animation_index  = -1;		// 再生中のアニメーションのインデックス
+	float current_animation_seconds = 0;	// 現在の再生時間
+	float animation_blend_time = 0;			// アニメーションブレンドの時間
+	float animation_blend_seconds = 0;		// アニメーションブレンドの経過時間
+	bool animation_loo_flag = 0;			// ループフラグ
+	bool animation_end_flag = 0;			// 終了フラグ
 	bool dummy[2]{};
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;
