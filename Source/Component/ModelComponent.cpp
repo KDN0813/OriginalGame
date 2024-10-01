@@ -318,23 +318,3 @@ void ModelComponent::DrawDebugGUI()
 }
 
 #endif // _DEBUG
-
-bool AnimeTransitionJudgementBase::Judgement()
-{
-	if (GetAsyncKeyState('Q') & 0x8000)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-bool TestJudgement::Judgement()
-{
-	if (GetAsyncKeyState('E') & 0x8000)
-	{
-		return true;
-	}
-
-	return false;
-}

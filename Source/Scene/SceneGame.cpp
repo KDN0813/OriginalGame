@@ -15,6 +15,8 @@
 #include "Component/CameraComponent.h"
 #include "Component/PlayerComponent.h"
 
+#include "Model/AnimeTransitionJudgementDerived.h"
+
 void SceneGame::Initialize()
 {
 	Graphics* graphics = Graphics::Instance();
@@ -46,8 +48,8 @@ void SceneGame::Initialize()
 			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
 			model->PlayAnimation(0, true);
 			model->SetAnimationState(0, true);
-			model->AddAnimationTransition(0, 1, std::make_unique<AnimeTransitionJudgementBase>(), 1.0f);
-			model->AddAnimationTransition(1, 0, std::make_unique<TestJudgement>(), 1.0f);
+			model->AddAnimationTransition(0, 1, std::make_unique<TestJudgement_Q>(), 1.0f);
+			model->AddAnimationTransition(1, 0, std::make_unique<TestJudgement_E>(), 1.0f);
 			model->SetAnimationState(1, true);
 			
 			auto transform = player->AddComponent<Transform3DComponent>();

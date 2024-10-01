@@ -5,30 +5,13 @@
 #include <string>
 #include <memory>
 #include "Component.h"
+#include "Model/AnimeTransitionJudgement.h"
 
 class ModelResource;
 
 class Transform3DComponent;
 
 using AnimeIndex = size_t;
-
-// ‘JˆÚ”»’è
-class AnimeTransitionJudgementBase
-{
-public:
-	AnimeTransitionJudgementBase(){}
-	virtual ~AnimeTransitionJudgementBase() {}
-
-	virtual bool Judgement();
-};
-
-class TestJudgement : public AnimeTransitionJudgementBase
-{
-public:
-	TestJudgement() {}
-
-	virtual bool Judgement();
-};
 
 // ‘JˆÚî•ñ
 struct AnimeTransitionInfo
