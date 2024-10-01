@@ -58,7 +58,7 @@ void ModelComponent::Start()
 
 void ModelComponent::Update(float elapsed_time)
 {
-	AnimationStateUpdate();
+	UpdateAnimationState();
 
 	UpdateAnimation(elapsed_time);
 
@@ -163,17 +163,17 @@ void ModelComponent::UpdateAnimation(float elapsed_time)
 					// スケールの線形補間
 					DirectX::XMVECTOR S0 = DirectX::XMLoadFloat3(&node.scale);
 					DirectX::XMVECTOR S1 = DirectX::XMLoadFloat3(&key1.scale);
-					DirectX::XMVECTOR S = DirectX::XMVectorLerp(S0, S1, rate);
+					DirectX::XMVECTOR S = DirectX::XMVectorLerp(S0, S1, blend_rate);
 
 					// 角度の球面線形補間
 					DirectX::XMVECTOR R0 = DirectX::XMLoadFloat4(&node.rotate);
 					DirectX::XMVECTOR R1 = DirectX::XMLoadFloat4(&key1.rotate);
-					DirectX::XMVECTOR R = DirectX::XMQuaternionSlerp(R0, R1, rate);
+					DirectX::XMVECTOR R = DirectX::XMQuaternionSlerp(R0, R1, blend_rate);
 
 					// 座標の線形補間
 					DirectX::XMVECTOR T0 = DirectX::XMLoadFloat3(&node.translate);
 					DirectX::XMVECTOR T1 = DirectX::XMLoadFloat3(&key1.translate);
-					DirectX::XMVECTOR T = DirectX::XMVectorLerp(T0, T1, rate);
+					DirectX::XMVECTOR T = DirectX::XMVectorLerp(T0, T1, blend_rate);
 
 					// 補間結果を設定
 					DirectX::XMStoreFloat3(&node.scale, S);
@@ -280,7 +280,7 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 	return nullptr;
 }
 
-void ModelComponent::AnimationStateUpdate()
+void ModelComponent::UpdateAnimationState()
 {
 	if (this->anime_state_pool.size() <= 0) return;
 

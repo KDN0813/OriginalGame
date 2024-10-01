@@ -22,7 +22,7 @@ public:
 	virtual bool Judgement();
 };
 
-class TestJudgement
+class TestJudgement : public AnimeTransitionJudgementBase
 {
 public:
 	TestJudgement() {}
@@ -87,7 +87,7 @@ public:
 	ModelComponent::Node* FindNode(const char* name);
 
 	// アニメーション状態の更新
-	void AnimationStateUpdate();
+	void UpdateAnimationState();
 	// アニメーション状態の設定
 	void SetAnimationState(AnimeIndex anime_index, bool loop);
 	// 遷移情報の追加

@@ -44,10 +44,10 @@ void SceneGame::Initialize()
 			auto player = object_manager.Create();
 			player->SetName("Player");
 			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
-			//auto model = player->AddComponent<ModelComponent>(device, "Data/Model/yu/unitychan_noAnimation.mdl");
 			model->PlayAnimation(0, true);
 			model->SetAnimationState(0, true);
 			model->AddAnimationTransition(0, 1, std::make_unique<AnimeTransitionJudgementBase>(), 1.0f);
+			model->AddAnimationTransition(1, 0, std::make_unique<TestJudgement>(), 1.0f);
 			model->SetAnimationState(1, true);
 			
 			auto transform = player->AddComponent<Transform3DComponent>();
