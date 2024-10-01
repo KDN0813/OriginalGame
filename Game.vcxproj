@@ -128,6 +128,7 @@
     <ClInclude Include="Source\Component\TransformComponent.h" />
     <ClInclude Include="Source\ConstantManager.h" />
     <ClInclude Include="Source\Debug\DebugManager.h" />
+    <ClInclude Include="Source\Debug\ImGuiHelper.h" />
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
     <ClInclude Include="Source\Debug\DebugCereal.h" />
     <ClInclude Include="Source\Framework.h" />

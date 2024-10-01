@@ -60,6 +60,7 @@ void SceneGame::Initialize()
 				// ‘O•ûˆÚ“®
 				model->SetAnimationState(PLAYER_ANIMATION::MOVE_FWD, true);
 				model->AddAnimationTransition(PLAYER_ANIMATION::MOVE_FWD, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_Move>(player, true), 0.5f);
+				model->AddAnimationTransition(PLAYER_ANIMATION::MOVE_FWD, PLAYER_ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.3f);
 
 				// UŒ‚01
 				model->SetAnimationState(PLAYER_ANIMATION::ATTACK01, false);

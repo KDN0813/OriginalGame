@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include "Debug/ImGuiHelper.h"
 #include "ModelComponent.h"
 #include "Object/Object.h"
 #include "Model/ModelResourceManager.h"
@@ -19,6 +20,9 @@ ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 			auto& anime_state = this->anime_state_pool.emplace_back();
 			anime_state.anime_index = index;
 			anime_state.name = animation.name;
+#ifdef _DEBUG
+			this->animation_name_pool.emplace_back(animation.name);
+#endif // _DEBUG
 		}
 	}
 }
@@ -283,6 +287,11 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 
 void ModelComponent::UpdateAnimationState()
 {
+#ifdef _DEBUG
+	if (this->stop_anime_state_update) return;
+#endif // DEBUG
+
+
 	if (this->current_animation_index < 0) return;
 	if (this->anime_state_pool.size() <= 0) return;
 
@@ -317,14 +326,13 @@ void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex t
 
 void ModelComponent::DrawDebugGUI()
 {
-	std::string anime_name = "Play Anime Name:";
-	const int& index = this->current_animation_index;
-	if ((index >= 0) && (index < anime_state_pool.size()))
+	std::string play_anime_name = this->animation_name_pool[this->current_animation_index];
+	if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, this->current_animation_index))
 	{
-		anime_name += anime_state_pool[index].name;
+		auto& anime_state = this->anime_state_pool[this->current_animation_index];
+		PlayAnimation(anime_state, 0.0f);
 	}
-	ImGui::Text(anime_name.c_str());
-	ImGui::InputInt("CurrentAnimationIndex", &current_animation_index);
+	ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
 }
 
 #endif // _DEBUG

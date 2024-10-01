@@ -100,7 +100,9 @@ private:
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI() override;
-
+private:
+	std::vector<std::string> animation_name_pool;
+	bool stop_anime_state_update = false;	// アニメーションステートの更新停止フラグ
 #endif // _DEBUG
 };
 
