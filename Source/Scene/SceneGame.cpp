@@ -49,16 +49,22 @@ void SceneGame::Initialize()
 			auto player = object_manager.Create();
 			player->SetName("Player");
 			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
-			model->PlayAnimation(PLAYER_ANIMATION::IDLE, true);
-			model->SetAnimationState(PLAYER_ANIMATION::IDLE, true);
-			model->AddAnimationTransition(PLAYER_ANIMATION::IDLE, PLAYER_ANIMATION::MOVE_FWD, std::make_unique<Judgement_Move>(player), 0.15f);
-			model->AddAnimationTransition(PLAYER_ANIMATION::IDLE, PLAYER_ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player,GamePad::BTN_X), 0.3f);
-			
-			model->SetAnimationState(PLAYER_ANIMATION::MOVE_FWD, true);
-			model->AddAnimationTransition(PLAYER_ANIMATION::MOVE_FWD, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_Move>(player, true), 0.5f);
-			
-			model->SetAnimationState(PLAYER_ANIMATION::ATTACK01, false);
-			model->AddAnimationTransition(PLAYER_ANIMATION::ATTACK01, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_AnimeEnd>(player), 0.5f);
+			// アニメーション設定
+			{
+				// 待機
+				model->PlayAnimation(PLAYER_ANIMATION::IDLE, true);
+				model->SetAnimationState(PLAYER_ANIMATION::IDLE, true);
+				model->AddAnimationTransition(PLAYER_ANIMATION::IDLE, PLAYER_ANIMATION::MOVE_FWD, std::make_unique<Judgement_Move>(player), 0.15f);
+				model->AddAnimationTransition(PLAYER_ANIMATION::IDLE, PLAYER_ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.3f);
+
+				// 前方移動
+				model->SetAnimationState(PLAYER_ANIMATION::MOVE_FWD, true);
+				model->AddAnimationTransition(PLAYER_ANIMATION::MOVE_FWD, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_Move>(player, true), 0.5f);
+
+				// 攻撃01
+				model->SetAnimationState(PLAYER_ANIMATION::ATTACK01, false);
+				model->AddAnimationTransition(PLAYER_ANIMATION::ATTACK01, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_AnimeEnd>(player), 0.5f);
+			}
 			
 			auto transform = player->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));

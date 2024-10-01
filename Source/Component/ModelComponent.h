@@ -12,7 +12,7 @@ class ModelResource;
 
 class Transform3DComponent;
 
-// 遷移情報
+// アニメーションの遷移情報
 struct AnimeTransitionInfo
 {
 	AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
@@ -23,10 +23,10 @@ struct AnimeTransitionInfo
 // アニメーション状態
 struct AnimeState
 {
-	std::string name = {};
+	std::string name = {};									// アニメーション名
 	AnimeIndex anime_index = -1;							// アニメのインデックス
-	bool loop = false;
-	std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;
+	bool loop = false;										// ループフラグ
+	std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
 };
 
 class ModelComponent : public Component
