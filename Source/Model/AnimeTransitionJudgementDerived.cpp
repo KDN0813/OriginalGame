@@ -1,9 +1,11 @@
 #include <windows.h>
 #include "AnimeTransitionJudgementDerived.h"
 
+#include "Input/Input.h"
 #include "Object/Object.h"
 
 #include "Component/MovementComponent.h"
+#include "Component/ModelComponent.h"
 
 bool TestJudgement_Q::Check()
 {
@@ -34,5 +36,22 @@ bool Judgement_Move::Check()
 	if (!movement) return false;
 	if (!movement->IsMoveXZAxis()) return false;
 
+	return true;
+}
+
+bool Judgement_ButtonDown::Check()
+{
+	GamePad& pad = Input::Instance()->GetGamePad();
+	return (pad.GetButtonDown() & GamePad::BTN_X);
+}
+
+bool Judgement_AnimeEnd::Check()
+{
+	auto owner = this->owner_Wptr.lock();
+	if (!owner) return false;
+	auto model = owner->GetComponent(this->model_Wptr);
+	if (!model) return false;
+	if (model->IsPlayAnimation()) return false;
+	
 	return true;
 }

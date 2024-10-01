@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include "ModelComponent.h"
 #include "Object/Object.h"
 #include "Model/ModelResourceManager.h"
@@ -213,7 +214,7 @@ void ModelComponent::UpdateAnimation(float elapsed_time)
 	if (animation_end_flag)
 	{
 		animation_end_flag = false;
-		current_animation_index = -1;
+		//current_animation_index = -1;
 		return;
 	}
 
@@ -265,6 +266,7 @@ bool ModelComponent::IsPlayAnimation() const
 {
 	if (current_animation_index < 0)return false;
 	if (current_animation_index >= resource->GetAnimations().size()) return false;
+	if (animation_end_flag) return false;
 	return true;
 }
 
@@ -282,6 +284,7 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 
 void ModelComponent::UpdateAnimationState()
 {
+	if (this->current_animation_index < 0) return;
 	if (this->anime_state_pool.size() <= 0) return;
 
 	for (auto& transition_info : this->anime_state_pool[this->current_animation_index].transition_info_pool)
@@ -315,6 +318,14 @@ void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex t
 
 void ModelComponent::DrawDebugGUI()
 {
+	std::string anime_name = "Play Anime Name:";
+	const int& index = this->current_animation_index;
+	if ((index >= 0) && (index < anime_state_pool.size()))
+	{
+		anime_name += anime_state_pool[index].name;
+	}
+	ImGui::Text(anime_name.c_str());
+	ImGui::InputInt("CurrentAnimationIndex", &current_animation_index);
 }
 
 #endif // _DEBUG
