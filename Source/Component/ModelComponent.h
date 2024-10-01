@@ -73,9 +73,8 @@ public:
 	void UpdateAnimationState();
 	// アニメーション状態の設定
 	void SetAnimationState(AnimeIndex anime_index, bool loop);
-	// 遷移情報の追加
+	// 遷移するアニメーションの追加
 	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time);
-
 
 	// 各種データ取得
 	const std::vector<Node>& GetNodes() const { return node_vec; }
