@@ -192,6 +192,15 @@
     <ClInclude Include="Source\Component\PlayerComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ConstantManager.h" />
+    <ClInclude Include="Source\Model\AnimeTransitionJudgement.h" />
+    <ClInclude Include="Source\Model\AnimeTransitionJudgementDerived.h" />
+    <ClInclude Include="Source\Debug\ImGuiHelper.h">
+      <Filter>Source\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model\ModelHelpers.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -301,6 +310,15 @@
     </ClCompile>
     <ClCompile Include="Source\Component\PlayerComponent.cpp">
       <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ConstantManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\AnimeTransitionJudgement.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\AnimeTransitionJudgementDerived.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
