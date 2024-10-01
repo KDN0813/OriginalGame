@@ -10,12 +10,12 @@ ModelShaderComponent::ModelShaderComponent(ModelShader* const shader)
     assert(shader);
 }
 
-void ModelShaderComponent::Initialize()
+void ModelShaderComponent::Start()
 {
     this->shader->AddShaderComponent(this);
 }
 
-void ModelShaderComponent::Finalize()
+void ModelShaderComponent::End()
 {
     this->shader->RemoveShaderComponent(this);
 }

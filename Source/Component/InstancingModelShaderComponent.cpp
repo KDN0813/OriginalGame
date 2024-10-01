@@ -13,12 +13,12 @@ InstancingModelShaderComponent::InstancingModelShaderComponent(InstancingModelSh
 {
 }
 
-void InstancingModelShaderComponent::Initialize()
+void InstancingModelShaderComponent::Start()
 {
     this->shader->AddShaderComponent(this);
 }
 
-void InstancingModelShaderComponent::Finalize()
+void InstancingModelShaderComponent::End()
 {
     this->shader->RemoveShaderComponent(this);
 }

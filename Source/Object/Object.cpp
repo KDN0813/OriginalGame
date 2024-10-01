@@ -27,7 +27,7 @@ void Object::Initialize()
 {
     for (std::shared_ptr<Component>& component : this->component_vec)
     {
-        component->Initialize();
+        component->Start();
     }
 }
 
@@ -35,7 +35,7 @@ void Object::Finalize()
 {
     for (std::shared_ptr<Component>& component : this->component_vec)
     {
-        component->Finalize();
+        component->End();
     }
 }
 

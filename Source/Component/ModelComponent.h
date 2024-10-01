@@ -2,7 +2,8 @@
 #include <DirectXMath.h>
 #include <d3d11.h>
 #include <vector>
-#include <string	>
+#include <string>
+#include <memory>
 #include "Component.h"
 
 class ModelResource;
@@ -18,14 +19,22 @@ public:
 	AnimeTransitionJudgementBase(){}
 	virtual ~AnimeTransitionJudgementBase() {}
 
-	virtual bool Judgement() = 0;
+	virtual bool Judgement();
+};
+
+class TestJudgement
+{
+public:
+	TestJudgement() {}
+
+	virtual bool Judgement();
 };
 
 // 遷移情報
 struct AnimeTransitionInfo
 {
 	AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
-	AnimeTransitionJudgementBase* judgement = nullptr;			// 遷移判定
+	std::unique_ptr<AnimeTransitionJudgementBase> judgement;	// 遷移判定
 	float blend_time = 1.0f;									// ブレンド時間
 };
 
@@ -35,7 +44,7 @@ struct AnimeState
 	std::string name = {};
 	AnimeIndex anime_index = -1;							// アニメのインデックス
 	bool loop = false;
-	std::vector<AnimeTransitionInfo*> transition_info_pool;
+	std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;
 };
 
 class ModelComponent : public Component
@@ -57,7 +66,7 @@ public:
 	ModelComponent(ID3D11Device* device, const char* filename);
 
 	// 開始関数
-	void Initialize();
+	void Start();
 	// 更新関数
 	void Update(float elapsed_time);
 	// 名前取得
@@ -82,7 +91,7 @@ public:
 	// アニメーション状態の設定
 	void SetAnimationState(AnimeIndex anime_index, bool loop);
 	// 遷移情報の追加
-	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, AnimeTransitionJudgementBase* judgement, float blend_time);
+	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time);
 
 
 	// 各種データ取得

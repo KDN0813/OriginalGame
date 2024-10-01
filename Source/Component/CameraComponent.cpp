@@ -10,7 +10,7 @@ CameraComponent::CameraComponent(CameraManager* camera_manager)
 {
 }
 
-void CameraComponent::Initialize()
+void CameraComponent::Start()
 {
     SetLookAt(
         DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f),
@@ -21,7 +21,7 @@ void CameraComponent::Initialize()
     this->camera_manager->AddCamera(this);
 }
 
-void CameraComponent::Finalize()
+void CameraComponent::End()
 {
     this->camera_manager->RemoveCamera(this);
 }

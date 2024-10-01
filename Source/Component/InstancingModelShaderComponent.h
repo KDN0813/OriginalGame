@@ -12,8 +12,8 @@ class InstancingModelShaderComponent : public Component
 public:
     InstancingModelShaderComponent(InstancingModelShader* const shader);
 
-    void Initialize();
-    void Finalize();
+    void Start();
+    void End();
     const char* GetName()const override { return "InstanceShaderComponent"; }
 
     void InstancingStart();

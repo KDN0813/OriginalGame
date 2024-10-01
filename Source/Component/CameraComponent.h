@@ -12,9 +12,9 @@ public:
 
 public:
 	// 開始関数
-	void Initialize()override;
+	void Start()override;
 	// 修了関数
-	void Finalize()override;
+	void End()override;
     // 更新関数
     void Update(float elapsed_time);
     // 名前取得

@@ -46,6 +46,10 @@ void SceneGame::Initialize()
 			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
 			//auto model = player->AddComponent<ModelComponent>(device, "Data/Model/yu/unitychan_noAnimation.mdl");
 			model->PlayAnimation(0, true);
+			model->SetAnimationState(0, true);
+			model->AddAnimationTransition(0, 1, std::make_unique<AnimeTransitionJudgementBase>(), 1.0f);
+			model->SetAnimationState(1, true);
+			
 			auto transform = player->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
 			transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));

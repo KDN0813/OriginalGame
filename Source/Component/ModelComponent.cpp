@@ -8,10 +8,7 @@ ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 {
 	// リソース読み込み
 	this->resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
-}
 
-void ModelComponent::Initialize()
-{
 	// アニメステートの初期設定
 	{
 		this->anime_state_pool.clear();
@@ -23,7 +20,10 @@ void ModelComponent::Initialize()
 			anime_state.name = animation.name;
 		}
 	}
+}
 
+void ModelComponent::Start()
+{
 	// ノード
 	const std::vector<ModelResource::Node>& res_node_vec = this->resource->GetNodes();
 
@@ -284,7 +284,7 @@ void ModelComponent::AnimationStateUpdate()
 {
 	if (this->anime_state_pool.size() <= 0) return;
 
-	for (auto transition_info : this->anime_state_pool[this->current_animation_index].transition_info_pool)
+	for (auto& transition_info : this->anime_state_pool[this->current_animation_index].transition_info_pool)
 	{
 		if (transition_info->judgement->Judgement())
 		{
@@ -300,13 +300,14 @@ void ModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop)
 	anime_state.loop = loop;
 }
 
-void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, AnimeTransitionJudgementBase* judgement, float blend_time)
+void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time)
 {
 	auto& next_animation_vec = this->anime_state_pool[anime_index].transition_info_pool;
 	// 遷移するアニメーションステート
 	auto& next_transition_anime =  next_animation_vec.emplace_back();
+	next_transition_anime = std::make_unique<AnimeTransitionInfo>();
 	next_transition_anime->next_anime_index = transition_anime_index;
-	next_transition_anime->judgement = judgement;
+	next_transition_anime->judgement = std::move(judgement);
 	next_transition_anime->blend_time = blend_time;
 }
 
@@ -317,3 +318,23 @@ void ModelComponent::DrawDebugGUI()
 }
 
 #endif // _DEBUG
+
+bool AnimeTransitionJudgementBase::Judgement()
+{
+	if (GetAsyncKeyState('Q') & 0x8000)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool TestJudgement::Judgement()
+{
+	if (GetAsyncKeyState('E') & 0x8000)
+	{
+		return true;
+	}
+
+	return false;
+}

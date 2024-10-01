@@ -11,9 +11,9 @@ protected:
 
 public:
     // 開始関数
-    virtual void Initialize() {};
-    // 修了関数
-    virtual void Finalize() {};
+    virtual void Start() {};        // Updateが呼ばれる直前に1度だけ呼ばれる
+    // 終了関数
+    virtual void End() {};          // 破棄されるときに呼ばれる     
     // 更新関数
     virtual void Update(float elapsed_time) {};
 
