@@ -21,6 +21,11 @@ void MovementComponent::Update(float elapsed_time)
     }
 }
 
+bool MovementComponent::IsMoveXZAxis()
+{
+    return (this->move_vec.x != 0.0f || this->move_vec.z != 0.0f);
+}
+
 #ifdef _DEBUG
 
 void MovementComponent::DrawDebugGUI()

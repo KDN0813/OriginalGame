@@ -12,7 +12,6 @@ class ModelResource;
 
 class Transform3DComponent;
 
-
 // ‘JˆÚî•ñ
 struct AnimeTransitionInfo
 {

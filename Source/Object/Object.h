@@ -57,7 +57,7 @@ public:
 			if (return_component == nullptr) continue;
 			return return_component;
 		}
-		assert(true);
+		//assert(true);
 		return nullptr;
 	}
 	
@@ -72,16 +72,17 @@ public:
 	 * \return コンポーネントのシェアドポインタを返す
 	 */
 	template<is_Component ComponentType>
-	std::shared_ptr<ComponentType> GetComponent(std::weak_ptr<ComponentType> componentWptr)
+	std::shared_ptr<ComponentType> GetComponent(std::weak_ptr<ComponentType>& componentWptr)
 	{
 		auto component = componentWptr.lock();
 		if (component)
 		{
 			return component;
 		}
-
+		
 		// コンポーネントを取得する
 		component = GetComponent<ComponentType>();
+		componentWptr = component;
 		return component;
 	}
 

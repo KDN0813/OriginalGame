@@ -31,7 +31,7 @@ void ModelShaderComponent::Draw(ID3D11DeviceContext* dc)
 
     if (auto model = owner->GetComponent<ModelComponent>(this->model_Wptr))
     {
-        shader->Draw(dc, model.get());
+        this->shader->Draw(dc, model.get());
     }
 }
 

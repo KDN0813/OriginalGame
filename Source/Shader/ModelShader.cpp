@@ -173,10 +173,7 @@ void ModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
 
 	for (auto shader_component : this->shader_component_vec)
 	{
-		if (shader_component)
-		{
-			shader_component->Draw(dc);
-		}
+		shader_component->Draw(dc);
 	}
 
     End(dc);
@@ -267,7 +264,10 @@ void ModelShader::End(ID3D11DeviceContext* dc)
 
 void ModelShader::AddShaderComponent(ModelShaderComponent* shader_component)
 {
-	this->shader_component_vec.emplace_back(shader_component);
+	if (shader_component)
+	{
+		this->shader_component_vec.emplace_back(shader_component);
+	}
 }
 
 void ModelShader::RemoveShaderComponent(ModelShaderComponent* shader_component)
