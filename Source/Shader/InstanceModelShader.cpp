@@ -306,11 +306,6 @@ void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* s
 
 	// TODO (09/03)同じモデルのコンテナがあるなら追加、ないなら要素を追加する
 	const int& modelId = shader_component->GetModelId();
-	auto it = shader_component_vec_map.find(modelId);
-	if (it != shader_component_vec_map.end())
-	{
-		shader_component_vec_map[modelId].emplace_back(shader_component);
-	}
 	shader_component_vec_map[modelId].emplace_back(shader_component);
 }
 
@@ -327,7 +322,6 @@ void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent
 		if (it == this->shader_component_vec_map[modelId].end()) return;
 		this->shader_component_vec_map[modelId].erase(it);
 	}
-
 }
 
 InstancingModelShaderComponent* InstancingModelShader::IsShaderValid(InstancingModelShaderComponent* shader_component)
