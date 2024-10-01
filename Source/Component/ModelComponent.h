@@ -6,12 +6,12 @@
 #include <memory>
 #include "Component.h"
 #include "Model/AnimeTransitionJudgement.h"
+#include "Model/ModelHelpers.h"
 
 class ModelResource;
 
 class Transform3DComponent;
 
-using AnimeIndex = size_t;
 
 // ‘JˆÚî•ñ
 struct AnimeTransitionInfo

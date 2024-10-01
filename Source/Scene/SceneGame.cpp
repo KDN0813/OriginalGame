@@ -17,6 +17,8 @@
 
 #include "Model/AnimeTransitionJudgementDerived.h"
 
+#include "ConstantManager.h"
+
 void SceneGame::Initialize()
 {
 	Graphics* graphics = Graphics::Instance();
@@ -46,11 +48,12 @@ void SceneGame::Initialize()
 			auto player = object_manager.Create();
 			player->SetName("Player");
 			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
-			model->PlayAnimation(0, true);
-			model->SetAnimationState(0, true);
-			model->AddAnimationTransition(0, 1, std::make_unique<TestJudgement_Q>(), 1.0f);
-			model->AddAnimationTransition(1, 0, std::make_unique<TestJudgement_E>(), 1.0f);
-			model->SetAnimationState(1, true);
+			model->PlayAnimation(PLAYER_ANIMATION::IDLE, true);
+			model->SetAnimationState(PLAYER_ANIMATION::IDLE, true);
+			model->AddAnimationTransition(PLAYER_ANIMATION::IDLE, PLAYER_ANIMATION::MOVE_FWD, std::make_unique<TestJudgement_Q>(), 1.0f);
+			
+			model->SetAnimationState(PLAYER_ANIMATION::MOVE_FWD, true);
+			model->AddAnimationTransition(PLAYER_ANIMATION::MOVE_FWD, PLAYER_ANIMATION::IDLE, std::make_unique<TestJudgement_E>(), 1.0f);
 			
 			auto transform = player->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
