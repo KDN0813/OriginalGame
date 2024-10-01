@@ -5,7 +5,7 @@
 
 #include "Component/MovementComponent.h"
 
-bool TestJudgement_Q::Judgement()
+bool TestJudgement_Q::Check()
 {
 	if (GetAsyncKeyState('Q') & 0x8000)
 	{
@@ -15,7 +15,7 @@ bool TestJudgement_Q::Judgement()
 	return false;
 }
 
-bool TestJudgement_E::Judgement()
+bool TestJudgement_E::Check()
 {
 	if (GetAsyncKeyState('E') & 0x8000)
 	{
@@ -26,7 +26,7 @@ bool TestJudgement_E::Judgement()
 	return false;
 }
 
-bool Judgement_Move::Judgement()
+bool Judgement_Move::Check()
 {
 	auto owner = this->owner_Wptr.lock();
 	if (!owner) return false;
