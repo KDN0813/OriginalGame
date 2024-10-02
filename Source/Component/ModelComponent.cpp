@@ -362,6 +362,22 @@ void ModelComponent::DrawDetail()
 
 	ImGui::Begin("Animation Detail", &is_draw_deletail, ImGuiWindowFlags_None);
 
+	std::string select_anime_name = this->animation_name_pool[this->select_animation_index];
+	if (ImGuiComboUI("Select Animation", select_anime_name, this->animation_name_pool, this->select_animation_index))
+	{
+	}
+
+	auto& selct_anime_state = this->anime_state_pool[this->select_animation_index];
+	ImGui::Checkbox("Loop", &selct_anime_state.loop);
+	for (auto& transition_info : selct_anime_state.transition_info_pool)
+	{
+		auto& transition_anime_state = this->anime_state_pool[transition_info->next_anime_index];
+		if (ImGui::CollapsingHeader(transition_anime_state.name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::InputFloat("Blend Time", &transition_info->blend_time);
+		}
+	}
+
 	ImGui::End();
 }
 

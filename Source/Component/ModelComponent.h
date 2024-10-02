@@ -105,6 +105,7 @@ private:
 	std::vector<std::string> animation_name_pool;
 	bool stop_anime_state_update = false;	// アニメーションステートの更新停止フラグ
 	bool is_draw_deletail = false;
+	int select_animation_index = 0;			// 詳細を表示するアニメーションのインデックス
 	const char* model_name;
 #endif // _DEBUG
 };
