@@ -8,6 +8,11 @@
 
 ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 {
+#ifdef _DEBUG
+	this->model_name = filename;
+#endif // _DEBUG
+
+
 	// リソース読み込み
 	this->resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
 
@@ -227,7 +232,7 @@ void ModelComponent::UpdateAnimation(float elapsed_time)
 	if (this->current_animation_seconds >= animation.seconds_length)
 	{
 		// ループ再生する場合
-		if (this->animation_loo_flag)
+		if (this->animation_loop_flag)
 		{
 			// 再生時間を戻す
 			this->current_animation_seconds -= animation.seconds_length;
@@ -246,7 +251,7 @@ void ModelComponent::PlayAnimation(int index, bool loop, float blend_seconds)
 	this->current_animation_index = index;
 	this->current_animation_seconds = 0.0f;
 
-	this->animation_loo_flag = loop;
+	this->animation_loop_flag = loop;
 	this->animation_end_flag = false;
 
 	this->animation_blend_time = 0.0f;
@@ -258,7 +263,7 @@ void ModelComponent::PlayAnimation(const AnimeState& animation_info, float blend
 	this->current_animation_index = animation_info.anime_index;
 	this->current_animation_seconds = 0.0f;
 
-	this->animation_loo_flag = animation_info.loop;
+	this->animation_loop_flag = animation_info.loop;
 	this->animation_end_flag = false;
 
 	this->animation_blend_time = 0.0f;
@@ -299,7 +304,7 @@ void ModelComponent::UpdateAnimationState()
 	{
 		if (transition_info->judgement->Judgement())
 		{
-			PlayAnimation(this->anime_state_pool[transition_info->next_anime_index], transition_info ->blend_time);
+			PlayAnimation(this->anime_state_pool[transition_info->next_anime_index], transition_info->blend_time);
 			break;
 		}
 	}
@@ -326,13 +331,26 @@ void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex t
 
 void ModelComponent::DrawDebugGUI()
 {
-	std::string play_anime_name = this->animation_name_pool[this->current_animation_index];
-	if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, this->current_animation_index))
+	int& anime_index = this->current_animation_index;
+	if (anime_index < 0) return;
+
+	const auto& animation = this->resource->GetAnimations()[anime_index];
+
+	std::string play_anime_name = this->animation_name_pool[anime_index];
+	ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
+	ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
+	if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
 	{
-		auto& anime_state = this->anime_state_pool[this->current_animation_index];
+		auto& anime_state = this->anime_state_pool[anime_index];
 		PlayAnimation(anime_state, 0.0f);
 	}
-	ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
+	ImGui::Checkbox("Animation Loop Flag", &this->animation_loop_flag);
+
+	ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
+	ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
+	ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
+
+	ImGui::Text(model_name);
 }
 
 #endif // _DEBUG

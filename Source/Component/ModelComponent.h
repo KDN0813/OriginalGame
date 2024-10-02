@@ -91,7 +91,7 @@ private:
 	float current_animation_seconds = 0;	// 現在の再生時間
 	float animation_blend_time = 0;			// アニメーションブレンドの経過時間
 	float animation_blend_seconds = 0;		// アニメーションブレンドの時間
-	bool animation_loo_flag = 0;			// ループフラグ
+	bool animation_loop_flag = 0;			// ループフラグ
 	bool animation_end_flag = 0;			// 終了フラグ
 	bool dummy[2]{};
 private:
@@ -103,6 +103,7 @@ public:
 private:
 	std::vector<std::string> animation_name_pool;
 	bool stop_anime_state_update = false;	// アニメーションステートの更新停止フラグ
+	const char* model_name;
 #endif // _DEBUG
 };
 
