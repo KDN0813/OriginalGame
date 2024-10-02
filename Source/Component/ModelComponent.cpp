@@ -349,8 +349,20 @@ void ModelComponent::DrawDebugGUI()
 	ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
 	ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
 	ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
+	
+	if (this->is_draw_deletail) DrawDetail();
+	else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
 
 	ImGui::Text(model_name);
+}
+
+void ModelComponent::DrawDetail()
+{
+	ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
+
+	ImGui::Begin("Animation Detail", &is_draw_deletail, ImGuiWindowFlags_None);
+
+	ImGui::End();
 }
 
 #endif // _DEBUG
