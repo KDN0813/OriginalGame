@@ -192,14 +192,20 @@
     <ClInclude Include="Source\Component\PlayerComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ConstantManager.h" />
-    <ClInclude Include="Source\Model\AnimeTransitionJudgement.h" />
-    <ClInclude Include="Source\Model\AnimeTransitionJudgementDerived.h" />
     <ClInclude Include="Source\Debug\ImGuiHelper.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Model\ModelHelpers.h">
       <Filter>Source\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model\AnimeTransitionJudgementDerived.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model\AnimeTransitionJudgement.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConstantManager.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -314,11 +320,11 @@
     <ClCompile Include="Source\ConstantManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Model\AnimeTransitionJudgement.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Model\AnimeTransitionJudgementDerived.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\AnimeTransitionJudgement.cpp">
+      <Filter>Source\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
