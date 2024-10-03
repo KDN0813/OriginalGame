@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <imgui.h>
 #include "AnimeTransitionJudgementDerived.h"
 
 #include "Input/Input.h"
@@ -44,6 +45,15 @@ bool Judgement_ButtonDown::Check()
 	GamePad& pad = Input::Instance()->GetGamePad();
 	return (pad.GetButtonDown() & GamePad::BTN_X);
 }
+
+#ifdef _DEBUG
+
+void Judgement_ButtonDown::DrawDebugGUI()
+{
+	ImGui::Text("test_å©Ç¶ÇƒÇÈÅH");
+}
+
+#endif // _DEBUG
 
 bool Judgement_AnimeEnd::Check()
 {

@@ -12,6 +12,9 @@ public:
 	AnimeTransitionJudgementBase(Owner object, bool reversal):owner_Wptr(object), reversal(reversal){}
 	virtual ~AnimeTransitionJudgementBase() {}
 
+	// –¼‘Oæ“¾
+	virtual const char* GetName()const = 0;;
+
 	// reversalƒtƒ‰ƒO‚ªTrue‚È‚çCheck‚Ì³Œë”»’è‚ª‹t“]‚·‚é
 	// ‘JˆÚ”»’è
 	bool Judgement();
@@ -23,5 +26,10 @@ protected:
 	std::weak_ptr<Object> owner_Wptr;
 private:
 	bool reversal;	// ”»’èŒ‹‰Ê‚ğ”½“]‚³‚¹‚éƒtƒ‰ƒO
+
+#ifdef _DEBUG
+public:
+	virtual void DrawDebugGUI() {};
+#endif // _DEBUG
 };
 
