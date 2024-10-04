@@ -30,7 +30,7 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 {
     auto owner = GetOwner();
 
-    if (auto movement = owner->GetComponent<MovementComponent>(movement_Wptr))
+    if (auto movement = owner->EnsureComponentValid<MovementComponent>(movement_Wptr))
     {
         movement->SetVelocityX(vx);
         movement->SetVelocityZ(vz);
@@ -45,7 +45,7 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
     if (length < 0.001) return;
 
     auto owner = GetOwner();
-    if (auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
+    if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
     {
         speed *= elapsed_time;
 

@@ -8,7 +8,7 @@ void MovementComponent::Update(float elapsed_time)
 {
     auto owner = GetOwner();
 
-    if (auto transform3D = owner->GetComponent(transform3D_Wptr))
+    if (auto transform3D = owner->EnsureComponentValid(transform3D_Wptr))
     {
         // ˆÚ“®—Ê
         DirectX::XMFLOAT3 movement =

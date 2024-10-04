@@ -30,7 +30,7 @@ void CameraComponent::Update(float elapsed_time)
 {
     auto owner = GetOwner();
     DirectX::XMFLOAT3 target;
-    auto transform = owner->GetComponent<Transform3DComponent>(transform_Wptr);
+    auto transform = owner->EnsureComponentValid<Transform3DComponent>(transform_Wptr);
 
     target = transform ? transform->GetPosition() : DirectX::XMFLOAT3();
 

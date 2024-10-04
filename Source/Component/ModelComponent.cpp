@@ -74,7 +74,7 @@ void ModelComponent::Update(float elapsed_time)
 
 	auto owner = GetOwner();
 	DirectX::XMFLOAT4X4 world_transform;
-	if (auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
+	if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
 	{
 		world_transform = transform->GetTransform();
 	}

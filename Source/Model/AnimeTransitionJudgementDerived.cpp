@@ -33,7 +33,7 @@ bool Judgement_Move::CheckTransitionCondition()
 {
 	auto owner = this->owner_Wptr.lock();
 	if (!owner) return false;
-	auto movement = owner->GetComponent(this->movement_Wpt);
+	auto movement = owner->EnsureComponentValid(this->movement_Wpt);
 	if (!movement) return false;
 	if (!movement->IsMoveXZAxis()) return false;
 

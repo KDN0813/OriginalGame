@@ -11,7 +11,7 @@ bool AnimeTransitionJudgementBase::PerformTransitionJudgement()
 #endif // _DEBUG
     auto owner = this->owner_Wptr.lock();
     if (!owner) return true;
-    auto model = owner->GetComponent<ModelComponent>(this->model_Wptr);
+    auto model = owner->EnsureComponentValid<ModelComponent>(this->model_Wptr);
     if (!model) return true;
 
     // 遷移準備を待つフラグがオンの場合、遷移の準備が整うまで待機する

@@ -38,9 +38,9 @@ void InstancingModelShaderComponent::InstancingAdd()
 
     auto ownr = GetOwner();
     auto instancing_model
-        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr);
+        = ownr->EnsureComponentValid<InstancingModelComponent>(this->instancing_model_Wptr);
     auto transform
-        = ownr->GetComponent<Transform3DComponent>(this->transform_Wptr);
+        = ownr->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 
     if (instancing_model && transform)
     {
@@ -52,7 +52,7 @@ void InstancingModelShaderComponent::InstancingEnd(ID3D11DeviceContext* dc)
 {
     auto ownr = GetOwner();
     if (auto instancing_model
-        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr))
+        = ownr->EnsureComponentValid<InstancingModelComponent>(this->instancing_model_Wptr))
     {
         this->shader->InstancingEnd(dc, instancing_model.get());
     }
@@ -62,9 +62,9 @@ bool InstancingModelShaderComponent::IsShaderValid()
 {
     auto ownr = GetOwner();
     auto instancing_model
-        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr);
+        = ownr->EnsureComponentValid<InstancingModelComponent>(this->instancing_model_Wptr);
     auto transform
-        = ownr->GetComponent<Transform3DComponent>(this->transform_Wptr);
+        = ownr->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 
     return (instancing_model && transform);
 }
@@ -74,7 +74,7 @@ int InstancingModelShaderComponent::GetModelId()
     // Hack idを変数で持ち、返すようにしたら処理軽くなるかテストする
     auto ownr = GetOwner();
     auto instancing_model
-        = ownr->GetComponent<InstancingModelComponent>(this->instancing_model_Wptr);
+        = ownr->EnsureComponentValid<InstancingModelComponent>(this->instancing_model_Wptr);
     return instancing_model->GetModelId();
 }
 
