@@ -360,33 +360,37 @@ void ModelComponent::DrawDebugGUI()
 
 void ModelComponent::DrawDebugAnimationGUI()
 {
-	ImGui::Checkbox("Stop Anime", &this->stop_anime);
-
+	ImGui::Checkbox("Stop", &this->stop_anime);
+	
 	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’âŽ~’†‚È‚çŠDF‚É‚·‚é
 	if (this->stop_anime) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// ŠDF
-
-	int& anime_index = this->current_animation_index;
-	if (anime_index < 0) return;
-
-	const auto& animation = this->resource->GetAnimations()[anime_index];
-
-	std::string play_anime_name = this->animation_name_pool[anime_index];
-	ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
-	ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
-	if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
+	
+	if (ImGui::CollapsingHeader("AnimationParam", ImGuiTreeNodeFlags_None))
 	{
-		auto& anime_state = this->anime_state_pool[anime_index];
-		PlayAnimation(anime_state, 0.0f);
+
+		int& anime_index = this->current_animation_index;
+		if (anime_index < 0) return;
+
+		const auto& animation = this->resource->GetAnimations()[anime_index];
+
+		std::string play_anime_name = this->animation_name_pool[anime_index];
+		ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
+		ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
+		if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
+		{
+			auto& anime_state = this->anime_state_pool[anime_index];
+			PlayAnimation(anime_state, 0.0f);
+		}
+		ImGui::Checkbox("Animation Loop Flag", &this->animation_loop_flag);
+
+		ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
+		ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
+		ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
+
+		if (this->is_draw_deletail) DrawDetail();
+		else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
+
 	}
-	ImGui::Checkbox("Animation Loop Flag", &this->animation_loop_flag);
-
-	ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
-	ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
-	ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
-
-	if (this->is_draw_deletail) DrawDetail();
-	else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
-
 	if (this->stop_anime) ImGui::PopStyleColor();
 }
 
