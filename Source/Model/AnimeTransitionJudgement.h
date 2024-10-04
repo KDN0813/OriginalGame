@@ -1,15 +1,17 @@
 #pragma once
 #include <memory>
 class Object;
+class ModelComponent;
 
-using Owner = std::shared_ptr<Object>;
+using Owner = Object;
+using OwnerPtr = std::shared_ptr<Owner>;
 
 // アニメーションの遷移判定を行う基底クラス
 class AnimeTransitionJudgementBase
 {
 public:
 	AnimeTransitionJudgementBase() = delete;
-	AnimeTransitionJudgementBase(Owner object, bool reversal):owner_Wptr(object), should_reverse(reversal){}
+	AnimeTransitionJudgementBase(OwnerPtr object, bool reversal ,bool require_transition_ready):owner_Wptr(object), should_reverse(reversal), require_transition_ready(require_transition_ready){}
 	virtual ~AnimeTransitionJudgementBase() {}
 
 	// 名前取得
@@ -27,14 +29,17 @@ protected:
 	virtual bool CheckTransitionCondition() = 0;
 
 protected:
-	std::weak_ptr<Object> owner_Wptr;
+	std::weak_ptr<Owner> owner_Wptr;
+	std::weak_ptr<ModelComponent> model_Wptr;
 private:
-	bool should_reverse;	// 判定結果を反転させるかどうかのフラグ
+	bool should_reverse;			// 判定結果を反転させるかどうかのフラグ
+	bool require_transition_ready;	// 遷移の準備が整っていることが必要かどうかを示すフラグ
 	bool is_active = true;
 
 #ifdef _DEBUG
 public:
-	virtual void DrawDebugGUI() {};
+	void DrawCommonDebugGUI(int unique_id);	// 共通のDebugGUI
+	virtual void DrawDebugGUI(int unique_id) {};
 #endif // _DEBUG
 };
 

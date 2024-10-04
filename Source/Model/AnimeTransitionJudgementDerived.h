@@ -8,8 +8,8 @@ class ModelComponent;
 class TestJudgement_Q : public AnimeTransitionJudgementBase
 {
 public:
-	TestJudgement_Q(Owner object, bool reversal = false)
-		:AnimeTransitionJudgementBase(object, reversal) {}
+	TestJudgement_Q(OwnerPtr object, bool reversal = false, bool require_transition_ready = false)
+		:AnimeTransitionJudgementBase(object, reversal, require_transition_ready) {}
 
 	const char* GetName()const override { return "TestJudgement_Q"; }
 
@@ -19,8 +19,8 @@ public:
 class TestJudgement_E : public AnimeTransitionJudgementBase
 {
 public:
-	TestJudgement_E(Owner object, bool reversal = false)
-		:AnimeTransitionJudgementBase(object, reversal) {}
+	TestJudgement_E(OwnerPtr object, bool reversal = false, bool require_transition_ready = false)
+		:AnimeTransitionJudgementBase(object, reversal, require_transition_ready) {}
 
 	const char* GetName()const override { return "TestJudgement_E"; }
 
@@ -30,8 +30,8 @@ public:
 class Judgement_Move : public AnimeTransitionJudgementBase
 {
 public:
-	Judgement_Move(Owner object, bool reversal = false)
-		:AnimeTransitionJudgementBase(object, reversal) {}
+	Judgement_Move(OwnerPtr object, bool reversal = false, bool require_transition_ready = false)
+		:AnimeTransitionJudgementBase(object, reversal, require_transition_ready) {}
 
 	const char* GetName()const override { return "Move"; }
 
@@ -44,8 +44,8 @@ class Judgement_ButtonDown : public AnimeTransitionJudgementBase
 {
 	using GamePadButton = unsigned int;
 public:
-	Judgement_ButtonDown(Owner object, GamePadButton pad_button,bool reversal = false)
-		:AnimeTransitionJudgementBase(object, reversal), pad_button(pad_button){}
+	Judgement_ButtonDown(OwnerPtr object, GamePadButton pad_button,bool reversal = false, bool require_transition_ready = false)
+		:AnimeTransitionJudgementBase(object, reversal, require_transition_ready), pad_button(pad_button){}
 
 	const char* GetName()const override { return "ButtonDown"; }
 
@@ -55,20 +55,20 @@ private:
 
 #ifdef _DEBUG
 public:
-	void DrawDebugGUI();
+	void DrawDebugGUI(int unique_id) override;
 
 #endif // _DEBUG
 };
 
-class Judgement_AnimeEnd : public AnimeTransitionJudgementBase
+// ‘JˆÚ€”õ‚ªŠ®—¹‚µ‚½‚ç‘JˆÚ‚·‚é
+// ‘JˆÚ€”õ‚ğ‘Ò‚Âƒtƒ‰ƒO‚ªƒIƒ“‚É‚µ‚Ä‚­‚¾‚³‚¢
+class Judgement_TransitionReady : public AnimeTransitionJudgementBase
 {
 public:
-	Judgement_AnimeEnd(Owner object , bool reversal = false)
-		:AnimeTransitionJudgementBase(object, reversal) {}
+	Judgement_TransitionReady(OwnerPtr object , bool reversal = false, bool require_transition_ready = false)
+		:AnimeTransitionJudgementBase(object, reversal, require_transition_ready) {}
 
-	const char* GetName()const override { return "AnimeEnd"; }
+	const char* GetName()const override { return "TransitionReady"; }
 
-	bool CheckTransitionCondition() override;
-private:
-	std::weak_ptr<ModelComponent> model_Wptr;
+	bool CheckTransitionCondition() override { return true; };
 };

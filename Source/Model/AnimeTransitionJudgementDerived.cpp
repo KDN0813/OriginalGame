@@ -48,20 +48,9 @@ bool Judgement_ButtonDown::CheckTransitionCondition()
 
 #ifdef _DEBUG
 
-void Judgement_ButtonDown::DrawDebugGUI()
+void Judgement_ButtonDown::DrawDebugGUI(int unique_id)
 {
 	ImGui::Text("test_Œ©‚¦‚Ä‚éH");
 }
 
 #endif // _DEBUG
-
-bool Judgement_AnimeEnd::CheckTransitionCondition()
-{
-	auto owner = this->owner_Wptr.lock();
-	if (!owner) return false;
-	auto model = owner->GetComponent(this->model_Wptr);
-	if (!model) return false;
-	if (model->IsPlayAnimation()) return false;
-	
-	return true;
-}

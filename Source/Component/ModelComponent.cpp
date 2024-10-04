@@ -283,6 +283,12 @@ bool ModelComponent::IsPlayAnimation() const
 	return true;
 }
 
+bool ModelComponent::IsTransitionReady()
+{
+	// 再生が終了したら準備完了
+	return !IsPlayAnimation();
+}
+
 ModelComponent::Node* ModelComponent::FindNode(const char* name)
 {
 	for (Node& node : this->node_vec)
@@ -386,7 +392,7 @@ void ModelComponent::DrawDetail()
 	ImGuiComboUI("Select Animation", select_anime_name, this->animation_name_pool, this->select_animation_index);
 
 	auto& selct_anime_state = this->anime_state_pool[this->select_animation_index];
-	
+
 	// 再生
 	if (ImGui::Button("Play Animation"))
 	{
@@ -395,34 +401,39 @@ void ModelComponent::DrawDetail()
 
 	ImGui::Checkbox("Loop", &selct_anime_state.loop);
 	// 遷移情報表示
-	int transition_id = 0;
-	for (auto& transition_info : selct_anime_state.transition_info_pool)
+	if (ImGui::CollapsingHeader("Transition Info", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		bool is_judgement_active = transition_info->judgement->GetIsActive();
 
-		std::string label = "##" + std::to_string(transition_id);
-		if (ImGui::Checkbox(label.c_str(), &is_judgement_active))
+		int transition_id = 0;
+		for (auto& transition_info : selct_anime_state.transition_info_pool)
 		{
-			transition_info->judgement->SetIsActive(is_judgement_active);
+			bool is_judgement_active = transition_info->judgement->GetIsActive();
+
+			std::string label = "##" + std::to_string(transition_id);
+			if (ImGui::Checkbox(label.c_str(), &is_judgement_active))
+			{
+				transition_info->judgement->SetIsActive(is_judgement_active);
+			}
+
+			ImGui::SameLine();
+
+			// 非アクティブなら灰色にする
+			if (!is_judgement_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+
+			auto& transition_anime_state = this->anime_state_pool[transition_info->next_anime_index];
+			if (ImGui::CollapsingHeader(transition_anime_state.name.c_str(), ImGuiTreeNodeFlags_None))
+			{
+				ImGui::InputFloat("Blend Time", &transition_info->blend_time);
+				std::string judgement_name = "Judgement:";
+				judgement_name += transition_info->judgement->GetName();
+				ImGui::Text(judgement_name.c_str());
+				transition_info->judgement->DrawCommonDebugGUI(transition_id);
+				transition_info->judgement->DrawDebugGUI(transition_id);
+			}
+
+			++transition_id;
+			if (!is_judgement_active) ImGui::PopStyleColor();
 		}
-
-		ImGui::SameLine();
-		
-		// 非アクティブなら灰色にする
-		if (!is_judgement_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
-
-		auto& transition_anime_state = this->anime_state_pool[transition_info->next_anime_index];
-		if (ImGui::CollapsingHeader(transition_anime_state.name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::InputFloat("Blend Time", &transition_info->blend_time);
-			std::string judgement_name = "Judgement:";
-			judgement_name += transition_info->judgement->GetName();
-			ImGui::Text(judgement_name.c_str());
-			transition_info->judgement->DrawDebugGUI();
-		}
-
-		++transition_id;
-		if (!is_judgement_active) ImGui::PopStyleColor();
 	}
 
 	ImGui::End();

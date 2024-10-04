@@ -64,7 +64,7 @@ void SceneGame::Initialize()
 
 				// UŒ‚01
 				model->SetAnimationState(PLAYER_ANIMATION::ATTACK01, false);
-				model->AddAnimationTransition(PLAYER_ANIMATION::ATTACK01, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_AnimeEnd>(player), 0.5f);
+				model->AddAnimationTransition(PLAYER_ANIMATION::ATTACK01, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.5f);
 			}
 			
 			auto transform = player->AddComponent<Transform3DComponent>();

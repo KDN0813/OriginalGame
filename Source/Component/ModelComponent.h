@@ -63,6 +63,9 @@ public:
 	void PlayAnimation(const AnimeState& animation_info, float blend_seconds);
 	// アニメーション再生中か
 	bool IsPlayAnimation()const;
+	// アニメーションの遷移準備が完了しているか
+	// 遷移判定クラスで遷移準備を待つ設定の時に使用する
+	bool IsTransitionReady();
 	// ノード検索
 	ModelComponent::Node* FindNode(const char* name);
 
