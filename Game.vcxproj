@@ -118,6 +118,7 @@
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Camera\CameraManager.h" />
     <ClInclude Include="Source\Camera\CameraUpdateBehavior.h" />
+    <ClInclude Include="Source\Camera\CameraUpdateBehaviorDerived.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\InstancingModelComponent.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Camera\CameraManager.cpp" />
     <ClCompile Include="Source\Camera\CameraUpdateBehavior.cpp" />
+    <ClCompile Include="Source\Camera\CameraUpdateBehaviorDerived.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
     <ClCompile Include="Source\Component\ModelComponent.cpp" />
