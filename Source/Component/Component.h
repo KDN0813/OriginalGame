@@ -3,6 +3,19 @@
 
 class Object;
 
+enum COMPONENT_PRIORITY : unsigned int
+{
+    LOWEST = 0,         // 最低の優先度
+    VERY_LOW,           // 非常に低い優先度
+    LOW,                // 低い優先度
+    BELOW_MEDIUM,       // 中程度より下の優先度
+    MEDIUM,             // 中程度の優先度
+    HIGH,               // 高い優先度
+    VERY_HIGH,          // 非常に高い優先度
+    CRITICAL,           // 最高の優先度（重要）
+    DEFAULT = MEDIUM    // デフォルト優先度を中程度に設定
+};
+
 class Component
 {
 protected:
@@ -21,7 +34,7 @@ public:
     virtual const char* GetName()const = 0;
 
     // 優先度(初期値は最低値)
-    virtual const unsigned int GetPriority()const noexcept { return 0; };
+    virtual const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::DEFAULT; };
     
     // 各取得・設定関数
     void SetOwner(std::shared_ptr<Object> owner) { this->owner = owner; }

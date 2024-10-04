@@ -86,9 +86,7 @@ void Object::DrawDebugGUI()
         
         if (ImGui::CollapsingHeader(component->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
         {
-            label = "priority:" + std::to_string(priority++);
-            ImGui::Text(label.c_str());
-            label = "priority Level:" + std::to_string(component->GetPriority());
+            label = "priority:" + std::to_string(component->GetPriority());
             ImGui::Text(label.c_str());
 
             component->DrawDebugGUI();
