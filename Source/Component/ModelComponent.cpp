@@ -375,8 +375,22 @@ void ModelComponent::DrawDetail()
 
 	ImGui::Checkbox("Loop", &selct_anime_state.loop);
 	// 遷移情報表示
+	int transition_id = 0;
 	for (auto& transition_info : selct_anime_state.transition_info_pool)
 	{
+		bool is_judgement_active = transition_info->judgement->GetIsActive();
+
+		std::string label = "##" + std::to_string(transition_id);
+		if (ImGui::Checkbox(label.c_str(), &is_judgement_active))
+		{
+			transition_info->judgement->SetIsActive(is_judgement_active);
+		}
+
+		ImGui::SameLine();
+		
+		// 非アクティブなら灰色にする
+		if (!is_judgement_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+
 		auto& transition_anime_state = this->anime_state_pool[transition_info->next_anime_index];
 		if (ImGui::CollapsingHeader(transition_anime_state.name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
@@ -386,6 +400,9 @@ void ModelComponent::DrawDetail()
 			ImGui::Text(judgement_name.c_str());
 			transition_info->judgement->DrawDebugGUI();
 		}
+
+		++transition_id;
+		if (!is_judgement_active) ImGui::PopStyleColor();
 	}
 
 	ImGui::End();
