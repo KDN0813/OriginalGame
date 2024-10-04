@@ -122,6 +122,7 @@
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
+    <ClInclude Include="Source\Component\GravityComponent.h" />
     <ClInclude Include="Source\Component\InstancingModelComponent.h" />
     <ClInclude Include="Source\Component\ModelComponent.h" />
     <ClInclude Include="Source\Component\ModelShaderComponent.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Source\Camera\CameraControllerDerived.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
+    <ClCompile Include="Source\Component\GravityComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
     <ClCompile Include="Source\Component\ModelComponent.cpp" />
     <ClCompile Include="Source\Component\ModelShaderComponent.cpp" />
