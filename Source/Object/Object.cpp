@@ -1,4 +1,8 @@
 #include <imgui.h>
+#ifdef _DEBUG
+#include <magic_enum.hpp>
+#endif // _DEBUG
+
 #include "Object.h"
 #include <algorithm>
 #include <string>
@@ -86,7 +90,8 @@ void Object::DrawDebugGUI()
         
         if (ImGui::CollapsingHeader(component->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
         {
-            label = "priority:" + std::to_string(component->GetPriority());
+            label = "Priority:";
+            label += magic_enum::enum_name(component->GetPriority());
             ImGui::Text(label.c_str());
 
             component->DrawDebugGUI();
