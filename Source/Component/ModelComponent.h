@@ -54,7 +54,7 @@ public:
 	// 名前取得
 	const char* GetName()const { return "ModelComponent"; };
 	// 優先度
-	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::VERY_HIGH; }
+	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::HIGH; }
 
 	// 行列計算
 	void UpdateTransform(const DirectX::XMFLOAT4X4& transform);

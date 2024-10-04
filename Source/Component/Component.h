@@ -6,9 +6,9 @@ class Object;
 enum COMPONENT_PRIORITY : unsigned int
 {
     LOWEST = 0,         // 最低の優先度
-    VERY_LOW,           // 非常に低い優先度
+    //VERY_LOW,           // 非常に低い優先度
     LOW,                // 低い優先度
-    BELOW_MEDIUM,       // 中程度より下の優先度
+    //BELOW_MEDIUM,       // 中程度より下の優先度
     MEDIUM,             // 中程度の優先度
     HIGH,               // 高い優先度
     VERY_HIGH,          // 非常に高い優先度

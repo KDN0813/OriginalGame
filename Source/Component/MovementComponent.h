@@ -13,7 +13,7 @@ public:
     // –¼‘Oæ“¾
     const char* GetName()const override { return "MovementComponent"; };
     // —Dæ“x
-    const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::HIGH; }
+    const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::VERY_HIGH; }
 
     // XZ²•ûŒü‚ÉˆÚ“®‚µ‚Ä‚¢‚é‚©
     bool IsMoveXZAxis();

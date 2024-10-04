@@ -19,7 +19,9 @@ public:
     void Update(float elapsed_time);
     // 名前取得
     const char* GetName()const { return "CameraComponent"; };
-    
+	// 優先度
+	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
+
 	/**
 	 * \fn SetMainCamera
 	 * \brief メインカメラに設定する
