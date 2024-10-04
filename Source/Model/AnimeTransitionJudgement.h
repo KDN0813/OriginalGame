@@ -24,6 +24,7 @@ public:
 	// Šeíæ“¾Eİ’èŠÖ”
 	const bool& GetIsActive() { return this->is_active; }
 	void SetIsActive(bool is_active) { this->is_active = is_active; }
+	OwnerPtr GetOwner() { return this->owner_Wptr.lock(); }
 protected:
 	// ‹ï‘Ì“I‚È‘JˆÚğŒ‚Ì”»’è
 	virtual bool CheckTransitionCondition() = 0;
