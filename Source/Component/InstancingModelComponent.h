@@ -44,6 +44,8 @@ private:
 public:
 	void DrawDebugGUI()override;
 
+private:
+	const char* model_filename;
 #endif // _DEBUG
 };
 

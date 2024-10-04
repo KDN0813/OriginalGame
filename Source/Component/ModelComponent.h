@@ -106,7 +106,7 @@ private:
 	bool is_draw_deletail = false;
 	bool stop_anime = false;				// アニメーションの停止
 	int select_animation_index = 0;			// 詳細を表示するアニメーションのインデックス
-	const char* model_name;
+	const char* model_filename;
 #endif // _DEBUG
 };
 

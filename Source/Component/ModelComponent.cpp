@@ -9,7 +9,7 @@
 ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 {
 #ifdef _DEBUG
-	this->model_name = filename;
+	this->model_filename = filename;
 #endif // _DEBUG
 
 
@@ -339,7 +339,9 @@ void ModelComponent::DrawDebugGUI()
 {
 	DrawDebugAnimationGUI();
 
-	ImGui::Text(model_name);
+	char buffer[1024];
+	::strncpy_s(buffer, sizeof(buffer), model_filename, sizeof(buffer));
+	ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
 }
 
 void ModelComponent::DrawDebugAnimationGUI()

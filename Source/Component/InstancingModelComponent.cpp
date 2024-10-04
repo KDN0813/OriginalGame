@@ -9,6 +9,10 @@
 
 InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const char* filename)
 {
+#ifdef _DEBUG
+    this->model_filename = filename;
+#endif // _DEBUG
+
     this->instancing_model_resource =
         InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
     this->model_resource =
@@ -81,6 +85,10 @@ void InstancingModelComponent::DrawDebugGUI()
         this->anime_frame = 0;
         this->anime_play = true;
     }
+
+    char buffer[1024];
+    ::strncpy_s(buffer, sizeof(buffer), model_filename, sizeof(buffer));
+    ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
 }
 
 #endif // _DEBUG
