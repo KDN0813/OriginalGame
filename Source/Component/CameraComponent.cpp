@@ -9,6 +9,7 @@
 CameraComponent::CameraComponent(CameraManager* camera_manager)
     :camera_manager(camera_manager)
 {
+    this->camera_manager->AddCamera(this);
 }
 
 void CameraComponent::SetCameraController(std::unique_ptr<CameraControllerBase> camera_controller)
@@ -23,8 +24,6 @@ void CameraComponent::Start()
         DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
         DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
     );
-
-    this->camera_manager->AddCamera(this);
 }
 
 void CameraComponent::End()
@@ -114,6 +113,7 @@ void CameraComponent::DrawDebugGUI()
     ImGui::SliderFloat("rotateY", &rotateY, -DirectX::XM_PI, DirectX::XM_PI);
     constexpr float RotateX_Max = DirectX::XMConvertToRadians(89.0f);
     ImGui::SliderFloat("rotateX", &rotateX, -RotateX_Max, RotateX_Max);
+    ImGui::Checkbox("Is Main Camera", &this->is_main_camera);
 
     if (ImGui::Button("SetMainCamera"))
     {
