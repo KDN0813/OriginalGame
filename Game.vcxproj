@@ -147,7 +147,6 @@
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Model\ModelResourceManager.h" />
     <ClInclude Include="Source\Object\Object.h" />
-    <ClInclude Include="Source\Object\OnwerWptr.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\Scene\SceneGame.h" />
     <ClInclude Include="Source\Scene\SceneLoading.h" />
