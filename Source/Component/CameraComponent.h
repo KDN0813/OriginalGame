@@ -1,6 +1,8 @@
 #pragma once
-#include "Component.h"
 #include <DirectXMath.h>
+#include <memory>
+#include "Component.h"
+#include "Camera/CameraController.h"
 
 class CameraManager;
 class Transform3DComponent;
@@ -10,7 +12,6 @@ class CameraComponent : public Component
 public:
     CameraComponent(CameraManager* camera_manager);
 
-public:
 	// 開始関数
 	void Start()override;
 	// 修了関数
@@ -21,6 +22,9 @@ public:
     const char* GetName()const { return "CameraComponent"; };
 	// 優先度
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
+
+	// カメラコントローラーの設定
+	void SetCameraController(std::unique_ptr<CameraControllerBase> camera_controller);
 
 	/**
 	 * \fn SetMainCamera
@@ -39,6 +43,10 @@ public:
 	void SetRotateY(float rotateY) { this->rotateY = rotateY; }
 	// X軸回転度設定
 	void SetRotateX(float rotateX) { this->rotateX = rotateX; }
+	// プロジェクション行列設定
+	void SetProjectionTransform(DirectX::XMFLOAT4X4	projection_transform) { this->projection_transform = projection_transform; }
+	// メインカメラフラグの設定
+	void SetIsMainCamera(bool is_main_camera) { this->is_main_camera = is_main_camera; }
 
 	// カメラの距離取得
 	float GetRange() const { return this->range; }
@@ -68,6 +76,9 @@ public:
 	const DirectX::XMFLOAT3& GetFront() const { return this->front; }
 	// 右方向取得
 	const DirectX::XMFLOAT3& GetRight() const { return this->right; }
+	// メインカメラであるか
+	const bool& GetIsMainCamera() { return this->is_main_camera; }
+
 private:
 	float					fovY = DirectX::XMConvertToRadians(45);
 	float					aspect = 16.0f / 9.0f;
@@ -87,7 +98,9 @@ private:
 	float rotateY = 0.0f;
 	float rotateX = 0.0f;
 
+	bool is_main_camera = false;
 	CameraManager*const	camera_manager;
+	std::unique_ptr<CameraControllerBase> camera_controller;
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;
 

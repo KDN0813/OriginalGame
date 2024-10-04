@@ -2,12 +2,18 @@
 #include "CameraComponent.h"
 #include "Object/Object.h"
 #include "Camera/CameraManager.h"
+#include "Camera/CameraController.h"
 
 #include "Component/TransformComponent.h"
 
 CameraComponent::CameraComponent(CameraManager* camera_manager)
     :camera_manager(camera_manager)
 {
+}
+
+void CameraComponent::SetCameraController(std::unique_ptr<CameraControllerBase> camera_controller)
+{
+    this->camera_controller = std::move(camera_controller);
 }
 
 void CameraComponent::Start()
@@ -28,6 +34,10 @@ void CameraComponent::End()
 
 void CameraComponent::Update(float elapsed_time)
 {
+    if (this->camera_controller)
+    {
+        this->camera_controller->Update(elapsed_time);
+    }
     auto owner = GetOwner();
     DirectX::XMFLOAT3 target;
     auto transform = owner->EnsureComponentValid<Transform3DComponent>(transform_Wptr);

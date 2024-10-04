@@ -42,12 +42,12 @@ private:
 #ifdef _DEBUG
 public:
     void DrawDebugGUI();
-    void CreateDebugCamera();
     void SetDebugCamera();
+    void SetDebugCamera(CameraComponent* debug_camera) { this->debug_camera = debug_camera; }
 
     CameraComponent* debug_camera = nullptr;    // デバッグ用カメラ
     CameraComponent* temp_camera = nullptr;     // メインカメラを一時保存する
-    bool debug_flag = false;;
+    bool debug_flag = false;
 #endif // _DEBUG
 };
 

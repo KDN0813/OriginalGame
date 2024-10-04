@@ -18,6 +18,7 @@
 #include "Component/PlayerComponent.h"
 
 #include "Model/AnimeTransitionJudgementDerived.h"
+#include "Camera/CameraControllerDerived.h"
 
 
 void SceneGame::Initialize()
@@ -123,6 +124,24 @@ void SceneGame::Initialize()
 				}
 			}
 		}
+
+#ifdef _DEBUG	// デバッグ用object
+		auto debug_camera = object_manager.Create();
+		debug_camera->AddComponent<Transform3DComponent>();
+		debug_camera->SetName("Debug Camera");
+		auto debug_camera_component = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance());
+		debug_camera_component->SetCameraController(std::make_unique<DebugCameraController>(debug_camera));
+		debug_camera_component->SetPerspectiveFov(
+			DirectX::XMConvertToRadians(45.0f),
+			graphics->GetScreenWidth() / graphics->GetScreenHeight(),
+			0.1f,
+			1000.0f
+		);
+		debug_camera_component->SetRange(10.0f);
+		debug_camera_component->SetRotateX(0.4f);
+
+		CameraManager::Instance()->SetDebugCamera(debug_camera_component.get());
+#endif // _DEBUG
 	}
 }
 

@@ -3,19 +3,19 @@
 
 // TODO 完成時削除する
 // デフォルトのコントローラー(新規作成時のコピー用)
-class DefaultUpdateBehavior : public CameraControllerBase
+class DefaultUpdateController : public CameraControllerBase
 {
 public:
-    DefaultUpdateBehavior(OwnerPtr owner) :CameraControllerBase(owner) {}
+    DefaultUpdateController(OwnerPtr owner) :CameraControllerBase(owner) {}
 
     // 更新関数
-    virtual void Update(float elapsed_time) {};
+    void Update(float elapsed_time) {};
     // 名前取得
-    virtual const char* GetName() const { return ""; };
+    const char* GetName() const { return ""; };
 
 #ifdef _DEBUG
 public:
-    virtual void DrawDebugGUI() {};
+    void DrawDebugGUI() {};
 #endif // _DEBUG
 };
 
@@ -26,13 +26,34 @@ public:
     GamepadCameraController(OwnerPtr owner) :CameraControllerBase(owner) {}
 
     // 更新関数
-    virtual void Update(float elapsed_time) {};
+    void Update(float elapsed_time) {};
     // 名前取得
-    virtual const char* GetName() const { return "GamepadCameraController"; };
+    const char* GetName() const { return "GamepadCameraController"; };
 
 #ifdef _DEBUG
 public:
-    virtual void DrawDebugGUI() {};
+    void DrawDebugGUI() {};
 #endif // _DEBUG
 };
 
+#ifdef _DEBUG
+class Transform3DComponent;
+
+// デバッグ用カメラコントローラー
+class DebugCameraController : public CameraControllerBase
+{
+public:
+    DebugCameraController(OwnerPtr owner) :CameraControllerBase(owner) {}
+
+    // 更新関数
+    void Update(float elapsed_time);
+    // 名前取得
+    const char* GetName() const { return "DebugUpdateController"; };
+
+public:
+    void DrawDebugGUI() {};
+private:
+    std::weak_ptr<Transform3DComponent> transform_Wptr;
+};
+
+#endif // _DEBUG

@@ -16,8 +16,6 @@ public:
     // –¼‘OŽæ“¾
     virtual const char* GetName() const = 0;
 
-    std::shared_ptr<CameraComponent> GetCamera();
-
     const bool& GetIsActive() { return this->is_active; }
     void SetIsActive(bool is_active) { this->is_active = is_active; }
 protected:
