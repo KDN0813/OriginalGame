@@ -49,19 +49,19 @@ public:
 	void SetIsMainCamera(bool is_main_camera) { this->is_main_camera = is_main_camera; }
 
 	// カメラの距離取得
-	float GetRange() const { return this->range; }
+	const float& GetRange() const { return this->range; }
 	// Y軸回転度取得
-	float GetRotateY() const { return this->rotateY; }
+	const float& GetRotateY() const { return this->rotateY; }
 	// X軸回転度取得
-	float GetRotateX() const { return this->rotateX; }
+	const float& GetRotateX() const { return this->rotateX; }
 	// 画角取得
-	float GetFovY() const { return this->fovY; }
+	const float& GetFovY() const { return this->fovY; }
 	// アスペクト比取得
-	float GetAspect() const { return this->aspect; }
+	const float& GetAspect() const { return this->aspect; }
 	// ニアクリップ値取得
-	float GetNearZ() const { return this->nearZ; }
+	const float& GetNearZ() const { return this->nearZ; }
 	// ファークリップ値取得
-	float GetFarZ() const { return this->farZ; }
+	const float& GetFarZ() const { return this->farZ; }
 	// ビュー行列取得
 	const DirectX::XMFLOAT4X4& GetViewTransform() const { return this->view_transform; }
 	// プロジェクション行列取得
@@ -76,6 +76,8 @@ public:
 	const DirectX::XMFLOAT3& GetFront() const { return this->front; }
 	// 右方向取得
 	const DirectX::XMFLOAT3& GetRight() const { return this->right; }
+	// ターゲット取得
+	const DirectX::XMFLOAT3& GetTarget() const { return this->target; }
 	// メインカメラであるか
 	const bool& GetIsMainCamera() { return this->is_main_camera; }
 
@@ -90,6 +92,7 @@ private:
 	DirectX::XMFLOAT3		up = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
 	DirectX::XMFLOAT3		front = DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f);
 	DirectX::XMFLOAT3		right = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3		target = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	DirectX::XMFLOAT4X4		view_transform = {};
 	DirectX::XMFLOAT4X4		projection_transform = {};

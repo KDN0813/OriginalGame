@@ -26,10 +26,14 @@ public:
     GamepadCameraController(OwnerPtr owner) :CameraControllerBase(owner) {}
 
     // XVŠÖ”
-    void Update(float elapsed_time) {};
+    void Update(float elapsed_time);
     // –¼‘Oæ“¾
     const char* GetName() const { return "GamepadCameraController"; };
 
+private:
+    float rollSpeed = DirectX::XMConvertToRadians(90);
+    float maxAngleX = DirectX::XMConvertToRadians(45);
+    float minAngleX = DirectX::XMConvertToRadians(-45);
 #ifdef _DEBUG
 public:
     void DrawDebugGUI() {};

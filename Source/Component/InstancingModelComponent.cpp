@@ -19,7 +19,7 @@ InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const c
         ModelResourceManager::Instance()->LoadModelResource(device,filename);
 }
 
-void InstancingModelComponent::Update(float elapsedTime)
+void InstancingModelComponent::Update(float elapsed_time)
 {
     if (!this->anime_play)return;
 

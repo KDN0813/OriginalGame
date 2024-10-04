@@ -78,6 +78,7 @@ void SceneGame::Initialize()
 				player->AddComponent<ModelShaderComponent>(model_shader.get());
 			// ƒJƒƒ‰Ý’è
 			auto camera = player->AddComponent<CameraComponent>(CameraManager::Instance());
+			camera->SetCameraController(std::make_unique<GamepadCameraController>(player));
 			camera->SetPerspectiveFov(
 				DirectX::XMConvertToRadians(45.0f),
 				graphics->GetScreenWidth() / graphics->GetScreenHeight(),
