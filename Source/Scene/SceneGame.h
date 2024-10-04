@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "Object/Object.h"
+#include "Object/GameObject.h"
 
 // シェーダー
 #include "Shader/InstanceModelShader.h"
@@ -25,6 +26,7 @@ private:
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
     std::unique_ptr<ModelShader> model_shader;
 
+    GameObject game_object;
     ObjectManager object_manager;
 #ifdef _DEBUG
     enum class ImGuiMode
