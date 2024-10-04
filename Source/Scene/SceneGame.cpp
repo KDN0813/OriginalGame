@@ -127,8 +127,8 @@ void SceneGame::Initialize()
 
 #ifdef _DEBUG	// デバッグ用object
 		auto debug_camera = object_manager.Create();
-		debug_camera->AddComponent<Transform3DComponent>();
 		debug_camera->SetName("Debug Camera");
+		debug_camera->AddComponent<Transform3DComponent>();
 		auto debug_camera_component = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance());
 		debug_camera_component->SetCameraController(std::make_unique<DebugCameraController>(debug_camera));
 		debug_camera_component->SetPerspectiveFov(
