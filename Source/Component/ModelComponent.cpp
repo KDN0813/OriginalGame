@@ -285,8 +285,15 @@ bool ModelComponent::IsPlayAnimation() const
 
 bool ModelComponent::IsTransitionReady()
 {
-	// 再生が終了したら準備完了
-	return !IsPlayAnimation();
+	// 再生中でなければ準備完了
+	if (!IsPlayAnimation()) return true;
+
+	auto& anime_state = this->anime_state_pool[this->current_animation_index];
+
+	if (anime_state.transition_ready_time >= 0.0f && 
+		anime_state.transition_ready_time <= this->current_animation_seconds) return true;
+
+	return false;
 }
 
 ModelComponent::Node* ModelComponent::FindNode(const char* name)
@@ -322,10 +329,11 @@ void ModelComponent::UpdateAnimationState()
 	}
 }
 
-void ModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop)
+void ModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time)
 {
 	auto& anime_state = this->anime_state_pool[anime_index];
 	anime_state.loop = loop;
+	anime_state.transition_ready_time = transition_ready_time;
 }
 
 void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time)
@@ -399,7 +407,12 @@ void ModelComponent::DrawDetail()
 		PlayAnimation(selct_anime_state, 0.0f);
 	}
 
-	ImGui::Checkbox("Loop", &selct_anime_state.loop);
+	// アニメーション情報
+	if (ImGui::CollapsingHeader("Animation Info", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::Checkbox("Loop", &selct_anime_state.loop);
+		ImGui::InputFloat("Transition Ready Time", &selct_anime_state.transition_ready_time);
+	}
 	// 遷移情報表示
 	if (ImGui::CollapsingHeader("Transition Info", ImGuiTreeNodeFlags_DefaultOpen))
 	{
