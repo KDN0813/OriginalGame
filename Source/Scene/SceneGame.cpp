@@ -18,6 +18,7 @@
 #include "Component/MovementComponent.h"
 #include "Component/CameraComponent.h"
 #include "Component/PlayerComponent.h"
+#include "Component/GravityComponent.h"
 
 #include "Model/AnimeTransitionJudgementDerived.h"
 #include "Camera/CameraControllerDerived.h"
@@ -93,6 +94,8 @@ void SceneGame::Initialize()
 			camera->SetRange(10.0f);
 			camera->SetRotateX(0.4f);
 			camera->SetMainCamera();
+			// d—Í
+			player->AddComponent<GravityComponent>();
 
 			// GameObject‚ÉÝ’è
 			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::PLAYER, player);

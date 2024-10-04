@@ -14,12 +14,14 @@ void GravityComponent::Update(float elapsed_time)
 
     DirectX::XMFLOAT3 pos = transform->GetPosition();
     pos.y += this->gravity * elapsed_time;
+    transform->SetPosition(pos);
 }
 
 #ifdef _DEBUG
 
 void GravityComponent::DrawDebugGUI()
 {
+    ImGui::InputFloat("Gravity", &this->gravity);
     ImGui::Checkbox("Is Grounded", &this->is_grounded);
 }
 
