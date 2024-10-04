@@ -367,7 +367,6 @@ void ModelComponent::DrawDebugAnimationGUI()
 	
 	if (ImGui::CollapsingHeader("AnimationParam", ImGuiTreeNodeFlags_None))
 	{
-
 		int& anime_index = this->current_animation_index;
 		if (anime_index < 0) return;
 
