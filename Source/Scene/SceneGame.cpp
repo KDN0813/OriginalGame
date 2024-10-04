@@ -175,6 +175,8 @@ void SceneGame::Update(float elapsed_time)
 
 		auto p_transform = player->GetComponent<Transform3DComponent>();
 
+		auto gravity = player->GetComponent<GravityComponent>();
+
 		// キャラクターのY軸方向となる法線ベクトル
 		DirectX::XMFLOAT3 normal = { 0.0f,1.0f,0.0f };
 
@@ -198,12 +200,16 @@ void SceneGame::Update(float elapsed_time)
 			// 傾斜率の計算
 			float normalLengthXZ = sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z);
 			slope_rate = 1.0f - (hit.normal.y / (normalLengthXZ + hit.normal.y));
+
+			gravity->SetIsGrounded(true);
 		}
 		else
 		{
 			DirectX::XMFLOAT3 pos = p_transform->GetPosition();
 			pos.y += g;
 			p_transform->SetPosition(pos);
+
+			gravity->SetIsGrounded(false);
 		}
 	}
 

@@ -19,7 +19,7 @@ public:
     void SetIsGrounded(bool is_grounded) { this->is_grounded = is_grounded; }
 private:
     float gravity = -9.8f;   // d—Í‰Á‘¬“x
-    bool is_grounded = false;
+    bool is_grounded = true;
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
 
