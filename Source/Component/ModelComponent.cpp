@@ -412,6 +412,11 @@ void ModelComponent::DrawDetail()
 	{
 		ImGui::Checkbox("Loop", &selct_anime_state.loop);
 		ImGui::InputFloat("Transition Ready Time", &selct_anime_state.transition_ready_time);
+		
+		// Ä¶I—¹ŠÔ
+		const auto& anime = this->resource->GetAnimations()[this->select_animation_index];
+		float seconds_length = anime.seconds_length;
+		ImGui::InputFloat("Seconds Length", &seconds_length);
 	}
 	// ‘JˆÚî•ñ•\¦
 	if (ImGui::CollapsingHeader("Transition Info", ImGuiTreeNodeFlags_DefaultOpen))
