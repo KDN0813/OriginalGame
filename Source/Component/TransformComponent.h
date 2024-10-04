@@ -10,12 +10,12 @@ public:
 
     void Update(float elapsed_time)override;
     const char* GetName()const override { return "TransformComponent"; }
+    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::HIGH; };
 
     const DirectX::XMFLOAT4X4& GetTransform() { return this->transform; }
     const DirectX::XMMATRIX& GetTransformVec() { return DirectX::XMLoadFloat4x4(&this->transform); }
     void SetTransform(const DirectX::XMFLOAT4X4& transform) { this->transform = transform; }
 
-    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::HIGH; };
 #pragma region setÅEget parame
     const DirectX::XMVECTOR GetPositionVec()const noexcept { return DirectX::XMLoadFloat3(&position); }
     const DirectX::XMFLOAT3& GetPosition()const noexcept { return position; }
