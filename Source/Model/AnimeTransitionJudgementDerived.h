@@ -13,7 +13,7 @@ public:
 
 	const char* GetName()const override { return "TestJudgement_Q"; }
 
-	bool Check() override;
+	bool CheckTransitionCondition() override;
 };
 
 class TestJudgement_E : public AnimeTransitionJudgementBase
@@ -24,7 +24,7 @@ public:
 
 	const char* GetName()const override { return "TestJudgement_E"; }
 
-	bool Check() override;
+	bool CheckTransitionCondition() override;
 };
 
 class Judgement_Move : public AnimeTransitionJudgementBase
@@ -35,7 +35,7 @@ public:
 
 	const char* GetName()const override { return "Move"; }
 
-	bool Check() override;
+	bool CheckTransitionCondition() override;
 private:
 	std::weak_ptr<MovementComponent> movement_Wpt;
 };
@@ -49,7 +49,7 @@ public:
 
 	const char* GetName()const override { return "ButtonDown"; }
 
-	bool Check() override;
+	bool CheckTransitionCondition() override;
 private:
 	GamePadButton pad_button;
 
@@ -68,7 +68,7 @@ public:
 
 	const char* GetName()const override { return "AnimeEnd"; }
 
-	bool Check() override;
+	bool CheckTransitionCondition() override;
 private:
 	std::weak_ptr<ModelComponent> model_Wptr;
 };

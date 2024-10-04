@@ -308,7 +308,7 @@ void ModelComponent::UpdateAnimationState()
 
 	for (auto& transition_info : this->anime_state_pool[this->current_animation_index].transition_info_pool)
 	{
-		if (transition_info->judgement->Judgement())
+		if (transition_info->judgement->PerformTransitionJudgement())
 		{
 			PlayAnimation(this->anime_state_pool[transition_info->next_anime_index], transition_info->blend_time);
 			break;

@@ -8,7 +8,7 @@
 #include "Component/MovementComponent.h"
 #include "Component/ModelComponent.h"
 
-bool TestJudgement_Q::Check()
+bool TestJudgement_Q::CheckTransitionCondition()
 {
 	if (GetAsyncKeyState('Q') & 0x8000)
 	{
@@ -18,7 +18,7 @@ bool TestJudgement_Q::Check()
 	return false;
 }
 
-bool TestJudgement_E::Check()
+bool TestJudgement_E::CheckTransitionCondition()
 {
 	if (GetAsyncKeyState('E') & 0x8000)
 	{
@@ -29,7 +29,7 @@ bool TestJudgement_E::Check()
 	return false;
 }
 
-bool Judgement_Move::Check()
+bool Judgement_Move::CheckTransitionCondition()
 {
 	auto owner = this->owner_Wptr.lock();
 	if (!owner) return false;
@@ -40,7 +40,7 @@ bool Judgement_Move::Check()
 	return true;
 }
 
-bool Judgement_ButtonDown::Check()
+bool Judgement_ButtonDown::CheckTransitionCondition()
 {
 	GamePad& pad = Input::Instance()->GetGamePad();
 	return (pad.GetButtonDown() & GamePad::BTN_X);
@@ -55,7 +55,7 @@ void Judgement_ButtonDown::DrawDebugGUI()
 
 #endif // _DEBUG
 
-bool Judgement_AnimeEnd::Check()
+bool Judgement_AnimeEnd::CheckTransitionCondition()
 {
 	auto owner = this->owner_Wptr.lock();
 	if (!owner) return false;
