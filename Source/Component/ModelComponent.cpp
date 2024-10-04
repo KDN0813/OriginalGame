@@ -118,6 +118,11 @@ void ModelComponent::UpdateTransform(const DirectX::XMFLOAT4X4& transform)
 
 void ModelComponent::UpdateAnimation(float elapsed_time)
 {
+#ifdef _DEBUG
+	if (this->stop_anime) return;
+#endif // DEBUG
+
+
 	// 再生中でないなら更新しない
 	if (!IsPlayAnimation()) return;
 
@@ -293,6 +298,7 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 void ModelComponent::UpdateAnimationState()
 {
 #ifdef _DEBUG
+	if (this->stop_anime) return;
 	if (this->stop_anime_state_update) return;
 #endif // DEBUG
 
@@ -331,6 +337,18 @@ void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex t
 
 void ModelComponent::DrawDebugGUI()
 {
+	DrawDebugAnimationGUI();
+
+	ImGui::Text(model_name);
+}
+
+void ModelComponent::DrawDebugAnimationGUI()
+{
+	ImGui::Checkbox("Stop Anime", &this->stop_anime);
+
+	// アニメーションの停止中なら灰色にする
+	if (this->stop_anime) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+
 	int& anime_index = this->current_animation_index;
 	if (anime_index < 0) return;
 
@@ -349,11 +367,11 @@ void ModelComponent::DrawDebugGUI()
 	ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
 	ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
 	ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
-	
+
 	if (this->is_draw_deletail) DrawDetail();
 	else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
 
-	ImGui::Text(model_name);
+	if (this->stop_anime) ImGui::PopStyleColor();
 }
 
 void ModelComponent::DrawDetail()
