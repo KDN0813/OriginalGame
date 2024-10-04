@@ -8,6 +8,7 @@ public:
     enum class OBJECT_TYPE : size_t
     {
         STAGE = 0,
+        PLAYER,
 
         MAX,
     };

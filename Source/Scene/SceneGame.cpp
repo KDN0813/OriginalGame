@@ -8,6 +8,8 @@
 #include "ConstantManager.h"
 #include "Input/GamePad.h"
 
+#include "Collision/Collision.h"
+
 #include "Component/ModelComponent.h"
 #include "Component/ModelShaderComponent.h"
 #include "Component/InstancingModelComponent.h"
@@ -91,6 +93,9 @@ void SceneGame::Initialize()
 			camera->SetRange(10.0f);
 			camera->SetRotateX(0.4f);
 			camera->SetMainCamera();
+
+			// GameObjectに設定
+			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::PLAYER, player);
 		}
 
 		// 敵
@@ -156,6 +161,48 @@ void SceneGame::Finalize()
 void SceneGame::Update(float elapsed_time)
 {
 	object_manager.Update(elapsed_time);
+
+	// レイキャスト(テスト)
+	{
+		float g = -9.8f * elapsed_time;
+		float slope_rate = 1.0f;   // 傾斜率
+
+		auto stage = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
+		auto player = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
+
+		auto p_transform = player->GetComponent<Transform3DComponent>();
+
+		// キャラクターのY軸方向となる法線ベクトル
+		DirectX::XMFLOAT3 normal = { 0.0f,1.0f,0.0f };
+
+		float step0ffset = 1.0f;
+		// レイの開始位置は足元より少し上
+		DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
+		// レイの終点位置は移動語の位置
+		DirectX::XMFLOAT3 end = { p_transform->GetPosition().x,p_transform->GetPosition().y + g,p_transform->GetPosition().z };
+
+		// レイキャストによる地面判定
+		auto s_model = stage->GetComponent<ModelComponent>();
+		HitResult hit;
+		if (Collision::IntersectRayVsModel(start, end, s_model.get(), hit))
+		{
+			// 法線ベクトル取得
+			normal = hit.normal;
+
+			// 地面に接地している
+			p_transform->SetPosition(hit.position);
+
+			// 傾斜率の計算
+			float normalLengthXZ = sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z);
+			slope_rate = 1.0f - (hit.normal.y / (normalLengthXZ + hit.normal.y));
+		}
+		else
+		{
+			DirectX::XMFLOAT3 pos = p_transform->GetPosition();
+			pos.y += g;
+			p_transform->SetPosition(pos);
+		}
+	}
 
 	CameraManager::Instance()->Update(elapsed_time);
 }
