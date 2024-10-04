@@ -1,10 +1,7 @@
 #pragma once
 #include <memory>
-class Object;
+#include "System/Alias/OwnerAlias.h"
 class ModelComponent;
-
-using Owner = Object;
-using OwnerPtr = std::shared_ptr<Owner>;
 
 // アニメーションの遷移判定を行う基底クラス
 class AnimeTransitionJudgementBase
@@ -30,7 +27,7 @@ protected:
 	virtual bool CheckTransitionCondition() = 0;
 
 protected:
-	std::weak_ptr<Owner> owner_Wptr;
+	OwnerWPtr owner_Wptr;
 	std::weak_ptr<ModelComponent> model_Wptr;
 private:
 	bool should_reverse;			// 判定結果を反転させるかどうかのフラグ

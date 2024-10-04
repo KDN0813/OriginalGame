@@ -1,10 +1,8 @@
 #pragma once
 #include <memory>
-class Object;
-class CameraComponent;
+#include "System/Alias/OwnerAlias.h"
 
-using Owner = Object;
-using OwnerPtr = std::shared_ptr<Owner>;
+class CameraComponent;
 
 // カメラコントローラーの基底クラス
 class CameraControllerBase
@@ -23,7 +21,7 @@ public:
     const bool& GetIsActive() { return this->is_active; }
     void SetIsActive(bool is_active) { this->is_active = is_active; }
 protected:
-    std::weak_ptr<Owner> owner_Wptr;
+    OwnerWPtr owner_Wptr;
     std::weak_ptr<CameraComponent> camera_Wptr;
 private:
     bool is_active = true;

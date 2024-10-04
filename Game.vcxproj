@@ -156,6 +156,7 @@
     <ClInclude Include="Source\Shader\ModelShader.h" />
     <ClInclude Include="Source\Shader\Shader.h" />
     <ClInclude Include="Source\Shader\InstanceModelShader.h" />
+    <ClInclude Include="Source\System\Alias\OwnerAlias.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
     <ClInclude Include="Source\System\HighResolutionTimer.h" />
