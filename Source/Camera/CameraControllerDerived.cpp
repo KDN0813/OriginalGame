@@ -1,4 +1,5 @@
 #include <DirectXMath.h>
+#include <imgui.h>
 #include "Input/Input.h"
 #include "CameraControllerDerived.h"
 #include "Object/Object.h"
@@ -138,6 +139,12 @@ void DebugCameraController::Update(float elapsed_time)
 
 #endif // _DEBUG
 
+GamepadCameraController::GamepadCameraController(OwnerPtr owner, float rollSpeed)
+	:CameraControllerBase(owner),
+	roll_speed(DirectX::XMConvertToRadians(rollSpeed))
+{
+}
+
 void GamepadCameraController::Update(float elapsed_time)
 {
 	auto owner = this->owner_Wptr.lock();
@@ -155,17 +162,11 @@ void GamepadCameraController::Update(float elapsed_time)
 	float ax = gamePad.GetAxisRX();
 	float ay = gamePad.GetAxisRY();
 	// カメラの回転速度
-	float speed = this->rollSpeed * elapsed_time;
+	float speed = this->roll_speed * elapsed_time;
 
 	// スティック入力値に合わせてX軸とY軸を回転
-	rotateX += ay * speed;
 	rotateY += ax * speed;
 
-	// X軸のカメラの回転を制限
-	if (rotateX > maxAngleX) rotateX = maxAngleX;
-	if (rotateX < minAngleX) rotateX = minAngleX;
-
-	// Y軸の回転地を-3.14～3.14に終わ丸用にする
 	if (rotateY < -DirectX::XM_PI) rotateY += DirectX::XM_2PI;
 	if (rotateY > DirectX::XM_PI) rotateY -= DirectX::XM_2PI;
 
@@ -186,6 +187,17 @@ void GamepadCameraController::Update(float elapsed_time)
 
 	// カメラの視点と注視点を設定
 	camera->SetLookAt(eye, target, DirectX::XMFLOAT3(0, 1, 0));
-	camera->SetRotateX(rotateX);
 	camera->SetRotateY(rotateY);
 }
+
+#ifdef _DEBUG
+void GamepadCameraController::DrawDebugGUI()
+{
+	float roll_speed_deg = DirectX::XMConvertToDegrees(this->roll_speed);
+	if (ImGui::SliderFloat("RollSpeed", &roll_speed_deg, 0.0f, 180.0f))
+	{
+		this->roll_speed = DirectX::XMConvertToRadians(roll_speed_deg);
+	}
+}
+
+#endif // _DEBUG
