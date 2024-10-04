@@ -43,6 +43,9 @@ void SceneGame::Initialize()
 			// シェーダー設定
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
+
+			// GameObjectに設定
+			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::STAGE, stage);
 		}
 
 		// プレイヤー
