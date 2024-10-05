@@ -170,45 +170,49 @@ void SceneGame::Update(float elapsed_time)
 		auto p_gravity = player->GetComponent<GravityComponent>();
 		auto p_movement = player->GetComponent<MovementComponent>();
 
-	// レイキャストY軸(テスト)
-	{
-		float g = p_gravity->GetGravity() * elapsed_time;
-		float slope_rate = 1.0f;   // 傾斜率
-
-
 		// キャラクターのY軸方向となる法線ベクトル
 		DirectX::XMFLOAT3 normal = { 0.0f,1.0f,0.0f };
 
-		float step0ffset = 1.0f;
-		// レイの開始位置は足元より少し上
-		DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
-		// レイの終点位置は移動語の位置
-		DirectX::XMFLOAT3 end = { p_transform->GetPosition().x,p_transform->GetPosition().y + g,p_transform->GetPosition().z };
+	// レイキャストY軸(テスト)
+	{
+		float my = p_gravity->GetGravity() * elapsed_time;
+		float slope_rate = 1.0f;   // 傾斜率
 
-		// レイキャストによる地面判定
-		auto s_model = stage->GetComponent<ModelComponent>();
-		HitResult hit;
-		if (Collision::IntersectRayVsModel(start, end, s_model.get(), hit))
+		//p_gravity->SetIsGrounded(true);
+		//if (0.0f)
 		{
-			// 法線ベクトル取得
-			normal = hit.normal;
 
-			// 地面に接地している
-			p_transform->SetPosition(hit.position);
+			float step0ffset = 1.0f;
+			// レイの開始位置は足元より少し上
+			DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
+			// レイの終点位置は移動語の位置
+			DirectX::XMFLOAT3 end = { p_transform->GetPosition().x,p_transform->GetPosition().y + my,p_transform->GetPosition().z };
 
-			// 傾斜率の計算
-			float normalLengthXZ = sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z);
-			slope_rate = 1.0f - (hit.normal.y / (normalLengthXZ + hit.normal.y));
+			// レイキャストによる地面判定
+			auto s_model = stage->GetComponent<ModelComponent>();
+			HitResult hit;
+			if (Collision::IntersectRayVsModel(start, end, s_model.get(), hit))
+			{
+				// 法線ベクトル取得
+				normal = hit.normal;
 
-			p_gravity->SetIsGrounded(true);
-		}
-		else
-		{
-			DirectX::XMFLOAT3 pos = p_transform->GetPosition();
-			pos.y += g;
-			p_transform->SetPosition(pos);
+				// 地面に接地している
+				p_transform->SetPosition(hit.position);
 
-			p_gravity->SetIsGrounded(false);
+				// 傾斜率の計算
+				float normalLengthXZ = sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z);
+				slope_rate = 1.0f - (hit.normal.y / (normalLengthXZ + hit.normal.y));
+
+				p_gravity->SetIsGrounded(true);
+			}
+			else
+			{
+				DirectX::XMFLOAT3 pos = p_transform->GetPosition();
+				pos.y += my;
+				p_transform->SetPosition(pos);
+
+				p_gravity->SetIsGrounded(false);
+			}
 		}
 	}
 
@@ -277,6 +281,16 @@ void SceneGame::Update(float elapsed_time)
 			}
 		}
 	}
+
+	// 地面の向きに沿うようにXZ軸回転
+	//{
+	//	// Y軸が法線ベクトル方向を吹くオイラー角回転を算出する
+	//	float ax = atan2f(normal.z, normal.y);
+	//	float az = -atan2f(normal.x, normal.y);
+
+	//	angle.x = Mathf::Lerp(angle.x, ax, 0.2f);
+	//	angle.z = Mathf::Lerp(angle.z, az, 0.2f);
+	//}
 
 	CameraManager::Instance()->Update(elapsed_time);
 }
