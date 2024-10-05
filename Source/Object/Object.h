@@ -179,6 +179,8 @@ private:
 public:
 	void DrawDebugGUI();
 
+	void DrawDebugPrimitive();
+
 private:
 	// Ú×•\¦‚·‚éobject‚Ì‘I‘ğ
 	void DrawLister();

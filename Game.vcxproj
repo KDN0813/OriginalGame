@@ -132,6 +132,7 @@
     <ClInclude Include="Source\Component\TransformComponent.h" />
     <ClInclude Include="Source\ConstantManager.h" />
     <ClInclude Include="Source\Debug\DebugManager.h" />
+    <ClInclude Include="Source\Debug\DebugRenderer.h" />
     <ClInclude Include="Source\Debug\ImGuiHelper.h" />
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
     <ClInclude Include="Source\Debug\DebugCereal.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Source\Component\TransformComponent.cpp" />
     <ClCompile Include="Source\ConstantManager.cpp" />
     <ClCompile Include="Source\Debug\DebugManager.cpp" />
+    <ClCompile Include="Source\Debug\DebugRenderer.cpp" />
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
     <ClCompile Include="Source\Debug\DebugCereal.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
@@ -213,11 +215,18 @@
     <ClCompile Include="Source\System\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Hlsl\Debug.hlsli" />
     <None Include="Hlsl\ImGui.hlsli" />
     <None Include="Hlsl\Instance.hlsli" />
     <None Include="Hlsl\Temporary.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Hlsl\DebugPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\DebugVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Hlsl\ImGuiPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>

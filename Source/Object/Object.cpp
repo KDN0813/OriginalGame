@@ -180,6 +180,14 @@ void ObjectManager::DrawDebugGUI()
     DrawDetail();
 }
 
+void ObjectManager::DrawDebugPrimitive()
+{
+    for (std::shared_ptr<Object>& object : this->update_object_vec)
+    {
+        object->DrawDebugPrimitive();
+    }
+}
+
 void ObjectManager::DrawLister()
 {
     for (std::shared_ptr<Object>& object : update_object_vec)

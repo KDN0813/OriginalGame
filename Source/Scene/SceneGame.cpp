@@ -5,6 +5,11 @@
 #include "Camera/CameraManager.h"
 #include "Scene/SceneManager.h"
 
+#ifdef _DEBUG
+#include "Debug/DebugManager.h"
+
+#endif // _DEBUG
+
 #include "ConstantManager.h"
 #include "Input/GamePad.h"
 
@@ -163,6 +168,9 @@ void SceneGame::Finalize()
 void SceneGame::Update(float elapsed_time)
 {
 	object_manager.Update(elapsed_time);
+
+
+
 		auto stage = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
 		auto player = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
 
@@ -187,6 +195,13 @@ void SceneGame::Update(float elapsed_time)
 			DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
 			// レイの終点位置は移動語の位置
 			DirectX::XMFLOAT3 end = { p_transform->GetPosition().x,p_transform->GetPosition().y + my,p_transform->GetPosition().z };
+
+			// デバッグプリミティブ表示
+			{
+				DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+				debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+				debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+			}
 
 			// レイキャストによる地面判定
 			auto s_model = stage->GetComponent<ModelComponent>();
@@ -302,6 +317,12 @@ void SceneGame::Render()
 	ID3D11RenderTargetView* rtv = graphics->GetRenderTargetView();
 	ID3D11DepthStencilView* dsv = graphics->GetDepthStencilView();
 
+	CameraManager* camera_manager = CameraManager::Instance();
+	auto camera = camera_manager->GetMainCamera();
+	RenderContext rc;
+	rc.view = camera->GetViewTransform();
+	rc.projection = camera->GetProjectionTransform();
+
 	FLOAT color[] = { 0.5f, 1.0f, 0.5f, 1.0f };
 	dc->ClearRenderTargetView(rtv, color);
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -309,16 +330,6 @@ void SceneGame::Render()
 
 	// 3Dモデルの描画
 	{
-		Graphics* graphics = Graphics::Instance();
-		ID3D11DeviceContext* dc = graphics->GetDeviceContext();
-		//Camera& camera = Camera::Intance();
-
-		CameraManager* camera_manager = CameraManager::Instance();
-		auto camera = camera_manager->GetMainCamera();
-		RenderContext rc;
-		rc.view = camera->GetViewTransform();
-		rc.projection = camera->GetProjectionTransform();
-
 		// モデル描画
 		this->model_shader->Render(dc, rc);
 
@@ -327,6 +338,13 @@ void SceneGame::Render()
 	}
 
 #ifdef _DEBUG
+	// 3Dデバッグ描画
+	{
+		object_manager.DrawDebugPrimitive();
+
+		DebugManager::Instance()->GetDebugRenderer()->Render(dc, rc.view, rc.projection);;
+	}
+
 	DrawImGui();
 #endif // _DEBUG
 }
