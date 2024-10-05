@@ -3,6 +3,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
+#include "Model/ModelHelpers.h"
 
 class InstancingModelResource;
 class ModelResource;
@@ -22,6 +23,14 @@ public:
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 	
 	void PlayAnimetion(int animeIndex, bool loop = true);
+	void PlayAnimetion(const AnimeState& animation_info);
+
+	// アニメーション状態の更新
+	void UpdateAnimationState();
+	// アニメーション状態の設定
+	void SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time = -1.0f);
+	// 遷移するアニメーションの追加
+	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time);
 
 	// 各取得・設定関数
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
@@ -32,6 +41,8 @@ public:
 private:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
 	std::shared_ptr<ModelResource> model_resource;
+
+	std::vector<AnimeState>	anime_state_pool;	// アニメーション情報
 
 	UINT anime_frame = 0;
 	UINT anime_index = 0;
@@ -47,6 +58,8 @@ public:
 	void DrawDebugGUI()override;
 
 private:
+	bool stop_anime = false;
+	bool stop_anime_state_update = false;
 	const char* model_filename;
 #endif // _DEBUG
 };

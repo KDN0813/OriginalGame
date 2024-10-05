@@ -49,6 +49,53 @@ void InstancingModelComponent::PlayAnimetion(int animeIndex, bool loop)
     this->anime_play = true;
 }
 
+void InstancingModelComponent::PlayAnimetion(const AnimeState& animation_info)
+{
+    this->anime_frame = 0;;
+    this->anime_index = animation_info.anime_index;
+    this->anime_loop = animation_info.loop;
+    this->anime_play = true;
+}
+
+void InstancingModelComponent::UpdateAnimationState()
+{
+#ifdef _DEBUG
+    if (this->stop_anime) return;
+    if (this->stop_anime_state_update) return;
+#endif // DEBUG
+
+
+    if (this->anime_index < 0) return;
+    if (this->anime_state_pool.size() <= 0) return;
+
+    for (auto& transition_info : this->anime_state_pool[this->anime_index].transition_info_pool)
+    {
+        if (transition_info->judgement->PerformTransitionJudgement())
+        {
+            PlayAnimetion(this->anime_state_pool[transition_info->next_anime_index]);
+            break;
+        }
+    }
+}
+
+void InstancingModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time)
+{
+    auto& anime_state = this->anime_state_pool[anime_index];
+    anime_state.loop = loop;
+    anime_state.transition_ready_time = transition_ready_time;
+}
+
+void InstancingModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time)
+{
+    auto& transition_info_pool = this->anime_state_pool[anime_index].transition_info_pool;
+    // 遷移するアニメーションステート
+    auto& transition_info = transition_info_pool.emplace_back();
+    transition_info = std::make_unique<AnimeTransitionInfo>();
+    transition_info->next_anime_index = transition_anime_index;
+    transition_info->judgement = std::move(judgement);
+    transition_info->blend_time = blend_time;
+}
+
 const UINT InstancingModelComponent::GetAnimationStartOffset()
 {
     return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
