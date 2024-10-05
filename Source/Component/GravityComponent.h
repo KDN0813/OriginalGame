@@ -15,6 +15,7 @@ public:
     const char* GetName()const { return "GravityComponent"; };
 
     // Šeíæ“¾Eİ’èŠÖ”
+    const float& GetGravity() { return this->gravity; }
     const bool& GetIsGrounded() { return this->is_grounded; }
     void SetIsGrounded(bool is_grounded) { this->is_grounded = is_grounded; }
 private:

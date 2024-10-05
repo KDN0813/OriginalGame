@@ -17,7 +17,7 @@ void MovementComponent::Update(float elapsed_time)
             this->move_vec.y * this->speed * elapsed_time,
             this->move_vec.z * this->speed * elapsed_time,
         };
-        transform3D->AddPosition(movement);
+        //transform3D->AddPosition(movement);
     }
 }
 
@@ -30,7 +30,8 @@ bool MovementComponent::IsMoveXZAxis()
 
 void MovementComponent::DrawDebugGUI()
 {
-    ImGui::InputFloat3("velocity", &move_vec.x);
+    ImGui::InputFloat3("Move Vec", &this->move_vec.x);
+    ImGui::InputFloat("Speed", &this->speed);
 }
 
 #endif _DEBUG

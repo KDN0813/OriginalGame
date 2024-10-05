@@ -75,8 +75,7 @@ void SceneGame::Initialize()
 			}
 			
 			auto transform = player->AddComponent<Transform3DComponent>();
-			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
-			transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+			transform->SetScale(DirectX::XMFLOAT3(0.005f, 0.005f, 0.005f));
 			player->AddComponent<MovementComponent>();
 			player->AddComponent<PlayerComponent>();
 			// シェーダー設定
@@ -164,18 +163,18 @@ void SceneGame::Finalize()
 void SceneGame::Update(float elapsed_time)
 {
 	object_manager.Update(elapsed_time);
-
-	// レイキャスト(テスト)
-	{
-		float g = -9.8f * elapsed_time;
-		float slope_rate = 1.0f;   // 傾斜率
-
 		auto stage = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
 		auto player = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
 
 		auto p_transform = player->GetComponent<Transform3DComponent>();
+		auto p_gravity = player->GetComponent<GravityComponent>();
+		auto p_movement = player->GetComponent<MovementComponent>();
 
-		auto gravity = player->GetComponent<GravityComponent>();
+	// レイキャストY軸(テスト)
+	{
+		float g = p_gravity->GetGravity() * elapsed_time;
+		float slope_rate = 1.0f;   // 傾斜率
+
 
 		// キャラクターのY軸方向となる法線ベクトル
 		DirectX::XMFLOAT3 normal = { 0.0f,1.0f,0.0f };
@@ -201,7 +200,7 @@ void SceneGame::Update(float elapsed_time)
 			float normalLengthXZ = sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z);
 			slope_rate = 1.0f - (hit.normal.y / (normalLengthXZ + hit.normal.y));
 
-			gravity->SetIsGrounded(true);
+			p_gravity->SetIsGrounded(true);
 		}
 		else
 		{
@@ -209,7 +208,73 @@ void SceneGame::Update(float elapsed_time)
 			pos.y += g;
 			p_transform->SetPosition(pos);
 
-			gravity->SetIsGrounded(false);
+			p_gravity->SetIsGrounded(false);
+		}
+	}
+
+	// レイキャストXZ軸(テスト)
+	{
+		float step0ffset = 1.0f;
+		DirectX::XMFLOAT3 velocity = p_movement->GetVelocity();
+		float speed = p_movement->GetSpeed();
+
+		float velocityLengthXZ = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
+		if (velocityLengthXZ > 0.0f)
+		{
+			// 水平移動[13]
+			float mx = velocity.x * elapsed_time * speed;
+			float mz = velocity.z * elapsed_time * speed;
+
+			// レイの開始位置と終点位置[13]
+			DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
+			DirectX::XMFLOAT3 end = { p_transform->GetPosition().x + mx,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z + mz };
+
+			// レイキャスト壁判定[13]
+			auto s_model = stage->GetComponent<ModelComponent>();
+			HitResult hit;
+			if (Collision::IntersectRayVsModel(start, end, s_model.get(), hit))
+			{
+				// 壁からレイの終点までのベクトル[13]
+				DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&hit.position);
+				DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
+				DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+
+				// 壁の法線[13]
+				DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hit.normal);
+
+				// 入射ベクトルを法線に射影[13]
+				DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
+				Dot = DirectX::XMVectorScale(Dot, 1.1f);
+
+				// 補正位置の計算[13]
+				DirectX::XMVECTOR CorrectionPositon = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
+				DirectX::XMFLOAT3 correctionPositon;
+				DirectX::XMStoreFloat3(&correctionPositon, CorrectionPositon);
+
+				// 壁ずり方向へのレイキャスト
+				HitResult hit2;
+				if (!Collision::IntersectRayVsModel(start, correctionPositon, s_model.get(), hit2))
+				{
+					DirectX::XMFLOAT3 pos{};
+					pos.x = correctionPositon.x;
+					pos.z = correctionPositon.z;
+					p_transform->SetPosition(pos);
+				}
+				else
+				{
+					DirectX::XMFLOAT3 pos{};
+					pos.x = hit2.position.x;
+					pos.z = hit2.position.z;
+					p_transform->SetPosition(pos);
+				}
+			}
+			else
+			{
+				DirectX::XMFLOAT3 pos = p_transform->GetPosition();
+				pos.x += mx;
+				pos.z += mz;
+				p_transform->SetPosition(pos);
+			}
 		}
 	}
 

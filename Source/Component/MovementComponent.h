@@ -19,14 +19,16 @@ public:
     bool IsMoveXZAxis();
 
     // 各種設定取得・関数
-    void SetVelocity(DirectX::XMFLOAT3 move_vec) { this->move_vec = move_vec; }
-    void SetVelocityX(float move_vecX) { this->move_vec.x = move_vecX; }
-    void SetVelocityY(float move_vecY) { this->move_vec.y = move_vecY; }
-    void SetVelocityZ(float move_vecZ) { this->move_vec.z = move_vecZ; }
+    void SetMoveVec(DirectX::XMFLOAT3 move_vec) { this->move_vec = move_vec; }
+    void SetMoveVecX(float move_vecX) { this->move_vec.x = move_vecX; }
+    void SetMoveVecY(float move_vecY) { this->move_vec.y = move_vecY; }
+    void SetMoveVecZ(float move_vecZ) { this->move_vec.z = move_vecZ; }
     void SetMoveSpeed(float speed) { this->speed = speed; }
-    const float& GetVelocityX() { return this->move_vec.x; }
-    const float& GetVelocityY() { return this->move_vec.y; }
-    const float& GetVelocityZ() { return this->move_vec.z; }
+    const DirectX::XMFLOAT3& GetVelocity() { return this->move_vec; }
+    const float& GetMoveVecX() { return this->move_vec.x; }
+    const float& GetMoveVecY() { return this->move_vec.y; }
+    const float& GetMoveVecZ() { return this->move_vec.z; }
+    const float& GetSpeed() { return this->speed; }
 
 private:
     DirectX::XMFLOAT3 move_vec{};   // 移動方向のベクトル
