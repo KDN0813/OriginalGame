@@ -18,14 +18,24 @@ void MovementComponent::Update(float elapsed_time)
 	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 	if (!transform) return;
 
+	float lengthXZ_sq = this->additional_velocity.x * this->additional_velocity.x + this->additional_velocity.z * this->additional_velocity.z;
+	float max_accelerationXZ_sq = this->max_accelerationXZ * max_accelerationXZ;
+	
     // 速度計算
-    this->velocity =
-    {
-        this->additional_velocity.x * elapsed_time,
-        this->additional_velocity.y * elapsed_time,
-        this->additional_velocity.z * elapsed_time,
-    };
+	this->velocity.y = this->additional_velocity.y * elapsed_time;
+	if (max_accelerationXZ_sq < lengthXZ_sq)
+	{
+		float lengthXZ = sqrt(lengthXZ_sq);
+		this->velocity.x = (this->additional_velocity.x / lengthXZ) * this->max_accelerationXZ * elapsed_time;
+		this->velocity.z = (this->additional_velocity.z / lengthXZ) * this->max_accelerationXZ * elapsed_time;
+	}
+	else
+	{
+		this->velocity.x = this->additional_velocity.x * elapsed_time;
+		this->velocity.z = this->additional_velocity.z * elapsed_time;
+	}
 
+	// ステージとのレイキャスト
     if(is_stage_raycas)
     {
 		auto gravity = owner->EnsureComponentValid<GravityComponent>(this->gravity_Wptr);
@@ -159,14 +169,15 @@ void MovementComponent::Update(float elapsed_time)
 
 bool MovementComponent::IsMoveXZAxis()
 {
-    return (this->additional_velocity.x != 0.0f || this->additional_velocity.z != 0.0f);
+    return (this->velocity.x != 0.0f || this->velocity.z != 0.0f);
 }
 
 #ifdef _DEBUG
 
 void MovementComponent::DrawDebugGUI()
 {
-    ImGui::InputFloat3("Move Vec", &this->additional_velocity.x);
+    ImGui::InputFloat3("Additional Velocity", &this->additional_velocity.x);
+    ImGui::InputFloat("Max AccelerationXZ", &this->max_accelerationXZ);
     ImGui::InputFloat3("Velocity", &this->velocity.x);
 	ImGui::Checkbox("Is Stage Raycas", &this->is_stage_raycas);
 	if (this->is_stage_raycas)
