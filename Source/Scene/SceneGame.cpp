@@ -82,7 +82,8 @@ void SceneGame::Initialize()
 			
 			auto transform = player->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(0.005f, 0.005f, 0.005f));
-			player->AddComponent<MovementComponent>();
+			auto movement = player->AddComponent<MovementComponent>();
+			movement->SetIsStageRaycas(true);
 			player->AddComponent<PlayerComponent>();
 			// シェーダー設定
 			auto shader_component =
@@ -102,7 +103,7 @@ void SceneGame::Initialize()
 			// 重力
 			player->AddComponent<GravityComponent>();
 			// ステージとのレイキャスト
-			player->AddComponent<StageRaycastComponent>();
+			//player->AddComponent<StageRaycastComponent>();
 
 			// GameObjectに設定
 			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::PLAYER, player);

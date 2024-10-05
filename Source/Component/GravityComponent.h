@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-class Transform3DComponent;
+class MovementComponent;
 
 class GravityComponent : public Component
 {
@@ -14,7 +14,7 @@ public:
     // 名前取得
     const char* GetName()const { return "GravityComponent"; };
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::VERY_HIGH; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::CRITICAL; };
 
 
     // 各種取得・設定関数
@@ -25,7 +25,7 @@ private:
     float gravity = -0.5f;   // 重力加速度
     bool is_grounded = true;
 private:
-    std::weak_ptr<Transform3DComponent> transform_Wptr;
+    std::weak_ptr<MovementComponent> movement_Wptr;
 
 #ifdef _DEBUG
 public:

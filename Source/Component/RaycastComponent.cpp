@@ -73,7 +73,7 @@ void StageRaycastComponent::Update(float elapsed_time)
 		// Œ»Ý‚ÌˆÊ’u
 		const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
 
-		const DirectX::XMFLOAT3 velocity = movement->GetVelocity();
+		const DirectX::XMFLOAT3 velocity = movement->GetMoveVec();
 		const float speed = movement->GetSpeed();
 
 		float velocity_lengthXZ = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
