@@ -32,9 +32,8 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 
     if (auto movement = owner->EnsureComponentValid<MovementComponent>(movement_Wptr))
     {
-        movement->SetMoveVecX(vx);
-        movement->SetMoveVecZ(vz);
-        movement->SetMoveSpeed(speed);
+        movement->AddMoveVecX(vx * speed);
+        movement->AddMoveVecZ(vz * speed);
     }
 }
 

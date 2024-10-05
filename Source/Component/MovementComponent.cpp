@@ -21,9 +21,9 @@ void MovementComponent::Update(float elapsed_time)
     // ‘¬“xŒvZ
     this->velocity =
     {
-        this->move_vec.x * this->speed * elapsed_time,
-        this->move_vec.y * this->speed * elapsed_time,
-        this->move_vec.z * this->speed * elapsed_time,
+        this->additional_velocity.x * elapsed_time,
+        this->additional_velocity.y * elapsed_time,
+        this->additional_velocity.z * elapsed_time,
     };
 
     if(is_stage_raycas)
@@ -152,19 +152,21 @@ void MovementComponent::Update(float elapsed_time)
     {
         transform->AddPosition(this->velocity);
     }
+
+	// ‰Á‘¬“x‚ğ‰Šú‰»
+	this->additional_velocity = {};
 }
 
 bool MovementComponent::IsMoveXZAxis()
 {
-    return (this->move_vec.x != 0.0f || this->move_vec.z != 0.0f);
+    return (this->additional_velocity.x != 0.0f || this->additional_velocity.z != 0.0f);
 }
 
 #ifdef _DEBUG
 
 void MovementComponent::DrawDebugGUI()
 {
-    ImGui::InputFloat3("Move Vec", &this->move_vec.x);
-    ImGui::InputFloat("Speed", &this->speed);
+    ImGui::InputFloat3("Move Vec", &this->additional_velocity.x);
     ImGui::InputFloat3("Velocity", &this->velocity.x);
 	ImGui::Checkbox("Is Stage Raycas", &this->is_stage_raycas);
 	if (this->is_stage_raycas)

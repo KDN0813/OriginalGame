@@ -21,25 +21,25 @@ public:
     bool IsMoveXZAxis();
 
     // 各種設定取得・関数
-    void SetMoveVec(DirectX::XMFLOAT3 move_vec) { this->move_vec = move_vec; }
-    void SetMoveVecX(float move_vecX) { this->move_vec.x = move_vecX; }
-    void SetMoveVecY(float move_vecY) { this->move_vec.y = move_vecY; }
-    void SetMoveVecZ(float move_vecZ) { this->move_vec.z = move_vecZ; }
-    void SetMoveSpeed(float speed) { this->speed = speed; }
+    void SetMoveVec(DirectX::XMFLOAT3 move_vec) { this->additional_velocity = move_vec; }
+    void SetMoveVecX(float move_vecX) { this->additional_velocity.x = move_vecX; }
+    void SetMoveVecY(float move_vecY) { this->additional_velocity.y = move_vecY; }
+    void SetMoveVecZ(float move_vecZ) { this->additional_velocity.z = move_vecZ; }
+    void AddMoveVecX(float move_vecX) { this->additional_velocity.x += move_vecX; }
+    void AddMoveVecY(float move_vecY) { this->additional_velocity.y += move_vecY; }
+    void AddMoveVecZ(float move_vecZ) { this->additional_velocity.z += move_vecZ; }
     void SetIsStageRaycas(bool is_stage_raycas) { this->is_stage_raycas = is_stage_raycas; }
-    const DirectX::XMFLOAT3& GetMoveVec() { return this->move_vec; }
+    const DirectX::XMFLOAT3& GetMoveVec() { return this->additional_velocity; }
     const DirectX::XMFLOAT3& GetVelocity() { return this->velocity; }
-    const float& GetMoveVecX() { return this->move_vec.x; }
-    const float& GetMoveVecY() { return this->move_vec.y; }
-    const float& GetMoveVecZ() { return this->move_vec.z; }
-    const float& GetSpeed() { return this->speed; }
+    const float& GetMoveVecX() { return this->additional_velocity.x; }
+    const float& GetMoveVecY() { return this->additional_velocity.y; }
+    const float& GetMoveVecZ() { return this->additional_velocity.z; }
 
 private:
-    DirectX::XMFLOAT3 velocity{};   // 速度
-    DirectX::XMFLOAT3 move_vec{};   // 移動方向のベクトル
-    float speed = 1.0f;             // 移動速度
-    float step_offset = 0.2f;       // レイの開始位置を足元より少し上に設定するためのオフセット
-    bool is_stage_raycas = false;   // ステージとのレイキャストの有無
+    DirectX::XMFLOAT3 velocity{};               // 速度
+    DirectX::XMFLOAT3 additional_velocity{};    //加速度
+    float step_offset = 0.2f;                   // レイの開始位置を足元より少し上に設定するためのオフセット
+    bool is_stage_raycas = false;               // ステージとのレイキャストの有無
 
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;

@@ -5,16 +5,11 @@
 
 void GravityComponent::Update(float elapsed_time)
 {
-    //if (this->is_grounded) return;
-
-    //auto owner = GetOwner();
-    //if (!owner) return;
-    //auto movement = owner->EnsureComponentValid<MovementComponent>(this->movement_Wptr);
-    //if (!movement) return;
-
-    //DirectX::XMFLOAT3 pos = transform->GetPosition();
-    //pos.y += this->gravity * elapsed_time;
-    //transform->SetPosition(pos);
+    auto owner = GetOwner();
+    if (!owner) return;
+    auto movement = owner->EnsureComponentValid<MovementComponent>(this->movement_Wptr);
+    if (!movement) return;
+    movement->AddMoveVecY(this->gravity);
 }
 
 #ifdef _DEBUG
