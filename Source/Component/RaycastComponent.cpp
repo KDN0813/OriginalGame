@@ -28,11 +28,11 @@ void StageRaycastComponent::Update(float elapsed_time)
 	if (!stage_object) return;
 	auto stage_model = stage_object->EnsureComponentValid<ModelComponent>(this->stage_model_Wptr);
 
-	// 現在の位置
-	const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
-
 	// Y軸の下方向に向けてレイキャストを行う
 	{
+		// 現在の位置
+		const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
+
 		// 垂直方向の移動量
 		float my = gravity->GetGravity() * elapsed_time;
 
@@ -70,6 +70,9 @@ void StageRaycastComponent::Update(float elapsed_time)
 
 	// 前方方向にレイキャストを行う
 	{
+		// 現在の位置
+		const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
+
 		const DirectX::XMFLOAT3 velocity = movement->GetVelocity();
 		const float speed = movement->GetSpeed();
 
