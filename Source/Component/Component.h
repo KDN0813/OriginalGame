@@ -33,7 +33,7 @@ public:
     // 名前取得
     virtual const char* GetName()const = 0;
 
-    // 優先度(初期値は最低値)
+    // 優先度
     virtual const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::DEFAULT; };
     
     // 各取得・設定関数

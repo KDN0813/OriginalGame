@@ -21,7 +21,7 @@ public:
     // 名前取得
     const char* GetName()const { return "CameraComponent"; };
 	// 優先度
-	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
+	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOWEST; }
 
 	// カメラコントローラーの設定
 	void SetCameraController(std::unique_ptr<CameraControllerBase> camera_controller);

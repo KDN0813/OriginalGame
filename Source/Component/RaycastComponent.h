@@ -17,6 +17,8 @@ public:
 
     // 名前取得
    const char* GetName()const override { return "StageRaycastComponent"; };
+   // 優先度(初期値は最低値)
+   const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::HIGH; };
 
    // 各種設定・取得関数
    const float& GetStep0ffset() { return step_offset; }

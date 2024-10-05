@@ -24,6 +24,7 @@
 #include "Component/CameraComponent.h"
 #include "Component/PlayerComponent.h"
 #include "Component/GravityComponent.h"
+#include "Component/RaycastComponent.h"
 
 #include "Model/AnimeTransitionJudgementDerived.h"
 #include "Camera/CameraControllerDerived.h"
@@ -100,6 +101,8 @@ void SceneGame::Initialize()
 			camera->SetMainCamera();
 			// 重力
 			player->AddComponent<GravityComponent>();
+			// ステージとのレイキャスト
+			player->AddComponent<StageRaycastComponent>();
 
 			// GameObjectに設定
 			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::PLAYER, player);
@@ -168,150 +171,6 @@ void SceneGame::Finalize()
 void SceneGame::Update(float elapsed_time)
 {
 	object_manager.Update(elapsed_time);
-
-
-
-	auto stage = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
-	auto player = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
-
-	auto p_transform = player->GetComponent<Transform3DComponent>();
-	auto p_gravity = player->GetComponent<GravityComponent>();
-	auto p_movement = player->GetComponent<MovementComponent>();
-
-	// キャラクターのY軸方向となる法線ベクトル
-	DirectX::XMFLOAT3 normal = { 0.0f,1.0f,0.0f };
-
-	float step0ffset = 0.2f;
-	// レイキャストY軸(テスト)
-	{
-		float my = p_gravity->GetGravity() * elapsed_time;
-		float slope_rate = 1.0f;   // 傾斜率
-
-		//p_gravity->SetIsGrounded(true);
-		//if (0.0f)
-		{
-
-			// レイの開始位置は足元より少し上
-			DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
-			// レイの終点位置は移動語の位置
-			DirectX::XMFLOAT3 end = { p_transform->GetPosition().x,p_transform->GetPosition().y + my,p_transform->GetPosition().z };
-
-			// デバッグプリミティブ表示
-			{
-				DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-				debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-				debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
-			}
-
-			// レイキャストによる地面判定
-			auto s_model = stage->GetComponent<ModelComponent>();
-			HitResult hit;
-			if (Collision::IntersectRayVsModel(start, end, s_model.get(), hit))
-			{
-				// 法線ベクトル取得
-				normal = hit.normal;
-
-				// 地面に接地している
-				p_transform->SetPosition(hit.position);
-
-				// 傾斜率の計算
-				float normalLengthXZ = sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z);
-				slope_rate = 1.0f - (hit.normal.y / (normalLengthXZ + hit.normal.y));
-
-				p_gravity->SetIsGrounded(true);
-			}
-			else
-			{
-				DirectX::XMFLOAT3 pos = p_transform->GetPosition();
-				pos.y += my;
-				p_transform->SetPosition(pos);
-
-				p_gravity->SetIsGrounded(false);
-			}
-		}
-	}
-
-	// レイキャストXZ軸(テスト)
-	{
-		DirectX::XMFLOAT3 velocity = p_movement->GetVelocity();
-		float speed = p_movement->GetSpeed();
-
-		float velocityLengthXZ = sqrtf(velocity.x * velocity.x + velocity.z * velocity.z);
-		if (velocityLengthXZ > 0.0f)
-		{
-			// 水平移動[13]
-			float mx = velocity.x * elapsed_time * speed;
-			float mz = velocity.z * elapsed_time * speed;
-
-			// レイの開始位置と終点位置[13]
-			DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
-			DirectX::XMFLOAT3 end = { p_transform->GetPosition().x + mx,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z + mz };
-
-			// デバッグプリミティブ表示
-			{
-				DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-				debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
-				debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
-			}
-
-			// レイキャスト壁判定[13]
-			auto s_model = stage->GetComponent<ModelComponent>();
-			HitResult hit;
-			if (Collision::IntersectRayVsModel(start, end, s_model.get(), hit))
-			{
-				// 壁からレイの終点までのベクトル[13]
-				DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&hit.position);
-				DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
-				DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
-
-				// 壁の法線[13]
-				DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hit.normal);
-
-				// 入射ベクトルを法線に射影[13]
-				DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
-				Dot = DirectX::XMVectorScale(Dot, 1.1f);
-
-				// 補正位置の計算[13]
-				DirectX::XMVECTOR CorrectionPositon = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
-				DirectX::XMFLOAT3 correctionPositon;
-				DirectX::XMStoreFloat3(&correctionPositon, CorrectionPositon);
-
-				// 壁ずり方向へのレイキャスト
-				HitResult hit2;
-				if (!Collision::IntersectRayVsModel(start, correctionPositon, s_model.get(), hit2))
-				{
-					DirectX::XMFLOAT3 pos = p_transform->GetPosition();
-					pos.x = correctionPositon.x;
-					pos.z = correctionPositon.z;
-					p_transform->SetPosition(pos);
-				}
-				else
-				{
-					DirectX::XMFLOAT3 pos = p_transform->GetPosition();
-					pos.x = hit2.position.x;
-					pos.z = hit2.position.z;
-					p_transform->SetPosition(pos);
-				}
-			}
-			else
-			{
-				DirectX::XMFLOAT3 pos = p_transform->GetPosition();
-				pos.x += mx;
-				pos.z += mz;
-				p_transform->SetPosition(pos);
-			}
-		}
-	}
-
-	// 地面の向きに沿うようにXZ軸回転
-	//{
-	//	// Y軸が法線ベクトル方向を吹くオイラー角回転を算出する
-	//	float ax = atan2f(normal.z, normal.y);
-	//	float az = -atan2f(normal.x, normal.y);
-
-	//	angle.x = Mathf::Lerp(angle.x, ax, 0.2f);
-	//	angle.z = Mathf::Lerp(angle.z, az, 0.2f);
-	//}
 
 	CameraManager::Instance()->Update(elapsed_time);
 }

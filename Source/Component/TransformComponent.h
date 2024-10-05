@@ -10,7 +10,7 @@ public:
 
     void Update(float elapsed_time)override;
     const char* GetName()const override { return "TransformComponent"; }
-    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::HIGH; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
 
     const DirectX::XMFLOAT4X4& GetTransform() { return this->transform; }
     const DirectX::XMMATRIX& GetTransformVec() { return DirectX::XMLoadFloat4x4(&this->transform); }

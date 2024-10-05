@@ -3,6 +3,7 @@
 #include "Object/Object.h"
 #include "Object/GameObject.h"
 #ifdef _DEBUG
+#include <imgui.h>
 #include "Debug/DebugManager.h"
 
 #endif // _DEBUG
@@ -145,6 +146,7 @@ void StageRaycastComponent::Update(float elapsed_time)
 
 void StageRaycastComponent::DrawDebugGUI()
 {
+	ImGui::InputFloat("Step Offset", &this->step_offset);
 }
 
 void StageRaycastComponent::DrawDebugPrimitive()

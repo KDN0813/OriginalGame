@@ -18,6 +18,8 @@ public:
     void Update(float elapsed_time) override;
 
 	const char* GetName()const override { return "InstancingModelComponent"; }
+	// óDêÊìx
+	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 	
 	void PlayAnimetion(int animeIndex, bool loop = true);
 

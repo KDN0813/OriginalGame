@@ -54,6 +54,8 @@ public:
 	void Update(float elapsed_time);
 	// 名前取得
 	const char* GetName()const { return "ModelComponent"; };
+	// 優先度
+	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 
 	// 行列計算
 	void UpdateTransform(const DirectX::XMFLOAT4X4& transform);
