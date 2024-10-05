@@ -165,6 +165,8 @@ void MovementComponent::DrawDebugGUI()
 {
     ImGui::InputFloat3("Move Vec", &this->move_vec.x);
     ImGui::InputFloat("Speed", &this->speed);
+    ImGui::InputFloat3("Velocity", &this->velocity.x);
+	ImGui::Checkbox("Is Stage Raycas", &this->is_stage_raycas);
 	if (this->is_stage_raycas)
 	{
 		ImGui::InputFloat("Step Offset", &this->step_offset);
