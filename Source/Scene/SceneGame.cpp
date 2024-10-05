@@ -171,16 +171,17 @@ void SceneGame::Update(float elapsed_time)
 
 
 
-		auto stage = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
-		auto player = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
+	auto stage = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
+	auto player = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
 
-		auto p_transform = player->GetComponent<Transform3DComponent>();
-		auto p_gravity = player->GetComponent<GravityComponent>();
-		auto p_movement = player->GetComponent<MovementComponent>();
+	auto p_transform = player->GetComponent<Transform3DComponent>();
+	auto p_gravity = player->GetComponent<GravityComponent>();
+	auto p_movement = player->GetComponent<MovementComponent>();
 
-		// キャラクターのY軸方向となる法線ベクトル
-		DirectX::XMFLOAT3 normal = { 0.0f,1.0f,0.0f };
+	// キャラクターのY軸方向となる法線ベクトル
+	DirectX::XMFLOAT3 normal = { 0.0f,1.0f,0.0f };
 
+	float step0ffset = 0.2f;
 	// レイキャストY軸(テスト)
 	{
 		float my = p_gravity->GetGravity() * elapsed_time;
@@ -190,7 +191,6 @@ void SceneGame::Update(float elapsed_time)
 		//if (0.0f)
 		{
 
-			float step0ffset = 1.0f;
 			// レイの開始位置は足元より少し上
 			DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
 			// レイの終点位置は移動語の位置
@@ -200,7 +200,7 @@ void SceneGame::Update(float elapsed_time)
 			{
 				DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
 				debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-				debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+				debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
 			}
 
 			// レイキャストによる地面判定
@@ -233,7 +233,6 @@ void SceneGame::Update(float elapsed_time)
 
 	// レイキャストXZ軸(テスト)
 	{
-		float step0ffset = 1.0f;
 		DirectX::XMFLOAT3 velocity = p_movement->GetVelocity();
 		float speed = p_movement->GetSpeed();
 
@@ -247,6 +246,13 @@ void SceneGame::Update(float elapsed_time)
 			// レイの開始位置と終点位置[13]
 			DirectX::XMFLOAT3 start = { p_transform->GetPosition().x,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z };
 			DirectX::XMFLOAT3 end = { p_transform->GetPosition().x + mx,p_transform->GetPosition().y + step0ffset,p_transform->GetPosition().z + mz };
+
+			// デバッグプリミティブ表示
+			{
+				DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+				debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+				debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
+			}
 
 			// レイキャスト壁判定[13]
 			auto s_model = stage->GetComponent<ModelComponent>();
@@ -274,14 +280,14 @@ void SceneGame::Update(float elapsed_time)
 				HitResult hit2;
 				if (!Collision::IntersectRayVsModel(start, correctionPositon, s_model.get(), hit2))
 				{
-					DirectX::XMFLOAT3 pos{};
+					DirectX::XMFLOAT3 pos = p_transform->GetPosition();
 					pos.x = correctionPositon.x;
 					pos.z = correctionPositon.z;
 					p_transform->SetPosition(pos);
 				}
 				else
 				{
-					DirectX::XMFLOAT3 pos{};
+					DirectX::XMFLOAT3 pos = p_transform->GetPosition();
 					pos.x = hit2.position.x;
 					pos.z = hit2.position.z;
 					p_transform->SetPosition(pos);

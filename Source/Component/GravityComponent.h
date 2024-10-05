@@ -19,7 +19,7 @@ public:
     const bool& GetIsGrounded() { return this->is_grounded; }
     void SetIsGrounded(bool is_grounded) { this->is_grounded = is_grounded; }
 private:
-    float gravity = -1.0f;   // 重力加速度
+    float gravity = -0.5f;   // 重力加速度
     bool is_grounded = true;
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
