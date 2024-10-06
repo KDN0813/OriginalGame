@@ -18,13 +18,15 @@ public:
 	// `should_reverse` フラグがtrueなら、遷移判定結果を反転する
 	bool PerformTransitionJudgement();
 
+	// 遷移条件の判定
+	virtual bool CheckTransitionCondition() = 0;
+
 	// 各種取得・設定関数
 	const bool& GetIsActive() { return this->is_active; }
+	const bool& GetShouldReversey() { return this->should_reverse; }
+	const bool& GetRequireTransitionReady() { return this->require_transition_ready; }
 	void SetIsActive(bool is_active) { this->is_active = is_active; }
 	OwnerPtr GetOwner() { return this->owner_Wptr.lock(); }
-protected:
-	// 具体的な遷移条件の判定
-	virtual bool CheckTransitionCondition() = 0;
 
 protected:
 	OwnerWPtr owner_Wptr;

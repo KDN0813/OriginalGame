@@ -33,6 +33,12 @@ public:
 	// 遷移するアニメーションの追加
 	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time);
 
+	// アニメーションの遷移準備が完了しているか
+	// 遷移判定クラスで遷移準備を待つ設定の時に使用する
+	bool IsTransitionReady();
+	// 遷移判定のロジックを実行
+	bool PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen);
+
 	// 各取得・設定関数
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
 	ModelResource* GetModelResource() { return this->model_resource.get(); }
@@ -49,7 +55,7 @@ private:
 	UINT anime_index = 0;
 	int anime_speed = 1;
 	bool anime_loop = false;
-	bool anime_play = false;
+	bool anime_play = false;					// アニメーションが再生中であるか
 
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;

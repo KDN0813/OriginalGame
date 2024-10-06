@@ -36,9 +36,8 @@ InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const c
 
 void InstancingModelComponent::Update(float elapsed_time)
 {
-    if (!this->anime_play)return;
-    
     UpdateAnimationState();
+    if (!this->anime_play)return;
     UpdateAnimation();
 }
 
@@ -90,7 +89,7 @@ void InstancingModelComponent::UpdateAnimationState()
 
     for (auto& transition_info : this->anime_state_pool[this->anime_index].transition_info_pool)
     {
-        if (transition_info->judgement->PerformTransitionJudgement())
+        if (PerformTransitionJudgement(transition_info->judgement.get()))
         {
             PlayAnimation(this->anime_state_pool[transition_info->next_anime_index]);
             break;
@@ -114,6 +113,35 @@ void InstancingModelComponent::AddAnimationTransition(AnimeIndex anime_index, An
     transition_info->next_anime_index = transition_anime_index;
     transition_info->judgement = std::move(judgement);
     transition_info->blend_time = blend_time;
+}
+
+bool InstancingModelComponent::IsTransitionReady()
+{
+    // 再生中でなければ準備完了
+    if (!this->anime_play) return true;
+
+    // TODO インスタンシング用に改造する
+    //auto& anime_state = this->anime_state_pool[this->anime_index];
+    //
+    //if (anime_state.transition_ready_time >= 0.0f &&
+    //    anime_state.transition_ready_time <= this->anime_frame) return true;
+
+    return false;
+}
+
+bool InstancingModelComponent::PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen)
+{
+    if (!judgemen) return false;
+#ifdef _DEBUG
+    if (!judgemen->GetIsActive()) return false;
+#endif // _DEBUG
+    auto owner = GetOwner();
+    if (!owner) return true;
+
+    // 遷移準備を待つフラグがオンの場合、遷移の準備が整うまで待機する
+    if (judgemen->GetRequireTransitionReady() && ! IsTransitionReady()) return false;
+
+    return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }
 
 const UINT InstancingModelComponent::GetAnimationStartOffset()

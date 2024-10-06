@@ -6,7 +6,6 @@
 #include "Object/Object.h"
 
 #include "Component/MovementComponent.h"
-#include "Component/ModelComponent.h"
 
 bool TestJudgement_Q::CheckTransitionCondition()
 {
