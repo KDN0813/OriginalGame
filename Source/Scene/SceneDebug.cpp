@@ -92,7 +92,7 @@ void SceneDebug::Initialize()
 					};
 					auto object = object_manager.Create();
 					auto transform = object->AddComponent<Transform3DComponent>();
-					auto model = object->AddComponent<InstancingModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
+					auto model = object->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
 					// シェーダー設定
 					auto shader_component =
 						object->AddComponent<InstancingModelShaderComponent>(shader);

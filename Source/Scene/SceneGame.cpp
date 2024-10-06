@@ -63,7 +63,7 @@ void SceneGame::Initialize()
 			player->SetName("Player");
 			//auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
 			//auto model_animation = player->AddComponent<ModelAnimationComponent>(device, "Data/Model/Player/Player.mdl");
-			auto model = player->AddComponent<InstancingModelComponent>(device, "Data/Model/Player/Player.mdl");
+			auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
 				// 待機
@@ -127,7 +127,7 @@ void SceneGame::Initialize()
 					};
 
 					auto enemy = object_manager.Create();
-					auto model = enemy->AddComponent<InstancingModelComponent>(device, faile_name_arry[x % 2]);
+					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, faile_name_arry[x % 2]);
 					model->PlayAnimation(x % 10, true);
 					auto transform = enemy->AddComponent<Transform3DComponent>();
 

@@ -282,7 +282,7 @@ void InstancingModelShader::InstancingStart()
 }
 
 void InstancingModelShader::InstancingAdd(
-	InstancingModelComponent* model,
+	AnimatedInstancedModelComponent* model,
 	Transform3DComponent* transform
 )
 {
@@ -295,7 +295,7 @@ void InstancingModelShader::InstancingAdd(
 	++this->instance_count;
 }
 
-void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, InstancingModelComponent* model)
+void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, AnimatedInstancedModelComponent* model)
 {
 	InstancingRender(dc, model);
 }
@@ -329,7 +329,7 @@ InstancingModelShaderComponent* InstancingModelShader::IsShaderValid(InstancingM
 	return (shader_component->IsShaderValid())? shader_component : nullptr;
 }
 
-void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, InstancingModelComponent* model)
+void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, AnimatedInstancedModelComponent* model)
 {
 	// インスタンシングバッファの更新
 	D3D11_MAPPED_SUBRESOURCE mappedResource{};

@@ -10,7 +10,8 @@ class ModelResource;
 
 class Transform3DComponent;
 
-class InstancingModelComponent : public Component
+// アニメーション付インスタンスモデル
+class AnimatedInstancedModelComponent : public Component
 {
 public:
 	// アニメーションの遷移情報
@@ -29,11 +30,11 @@ public:
 		std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
 	};
 public:
-	InstancingModelComponent(ID3D11Device* device, const char* filename);
+	AnimatedInstancedModelComponent(ID3D11Device* device, const char* filename);
 
     void Update(float elapsed_time) override;
 
-	const char* GetName()const override { return "InstancingModelComponent"; }
+	const char* GetName()const override { return "AnimatedInstancedModelComponent"; }
 	// 優先度
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 	
@@ -86,7 +87,6 @@ private:
 	std::vector<std::string> animation_name_pool;
 	bool stop_anime_state_update = false;
 	bool is_draw_deletail = false;
-	bool stop_anime = false;				// アニメーションの停止
 	int select_animation_index = 0;			// 詳細を表示するアニメーションのインデックス
 	const char* model_filename;
 #endif // _DEBUG

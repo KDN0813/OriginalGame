@@ -7,7 +7,7 @@
 
 #include "Component/TransformComponent.h"
 
-InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const char* filename)
+AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(ID3D11Device* device, const char* filename)
 {
 #ifdef _DEBUG
     this->model_filename = filename;
@@ -34,14 +34,14 @@ InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const c
     }
 }
 
-void InstancingModelComponent::Update(float elapsed_time)
+void AnimatedInstancedModelComponent::Update(float elapsed_time)
 {
     UpdateAnimationState();
     if (!this->anime_play)return;
     UpdateAnimation();
 }
 
-void InstancingModelComponent::PlayAnimation(int animeIndex, bool loop)
+void AnimatedInstancedModelComponent::PlayAnimation(int animeIndex, bool loop)
 {
     if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
 
@@ -51,7 +51,7 @@ void InstancingModelComponent::PlayAnimation(int animeIndex, bool loop)
     this->anime_play = true;
 }
 
-void InstancingModelComponent::PlayAnimation(const AnimeState& animation_info)
+void AnimatedInstancedModelComponent::PlayAnimation(const AnimeState& animation_info)
 {
     this->anime_frame = 0;;
     this->anime_index = animation_info.anime_index;
@@ -59,7 +59,7 @@ void InstancingModelComponent::PlayAnimation(const AnimeState& animation_info)
     this->anime_play = true;
 }
 
-void InstancingModelComponent::UpdateAnimation()
+void AnimatedInstancedModelComponent::UpdateAnimation()
 {
     this->anime_frame = (std::max)(static_cast<int>(this->anime_frame) + this->anime_speed, 0);
 
@@ -77,7 +77,7 @@ void InstancingModelComponent::UpdateAnimation()
     }
 }
 
-void InstancingModelComponent::UpdateAnimationState()
+void AnimatedInstancedModelComponent::UpdateAnimationState()
 {
 #ifdef _DEBUG
     if (this->stop_anime_state_update) return;
@@ -97,14 +97,14 @@ void InstancingModelComponent::UpdateAnimationState()
     }
 }
 
-void InstancingModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, int transition_ready_frame)
+void AnimatedInstancedModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, int transition_ready_frame)
 {
     auto& anime_state = this->anime_state_pool[anime_index];
     anime_state.loop = loop;
     anime_state.transition_ready_frame = transition_ready_frame;
 }
 
-void InstancingModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement)
+void AnimatedInstancedModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement)
 {
     auto& transition_info_pool = this->anime_state_pool[anime_index].transition_info_pool;
     // 遷移するアニメーションステート
@@ -114,7 +114,7 @@ void InstancingModelComponent::AddAnimationTransition(AnimeIndex anime_index, An
     transition_info->judgement = std::move(judgement);
 }
 
-bool InstancingModelComponent::IsTransitionReady()
+bool AnimatedInstancedModelComponent::IsTransitionReady()
 {
     // 再生中でなければ準備完了
     if (!this->anime_play) return true;
@@ -127,7 +127,7 @@ bool InstancingModelComponent::IsTransitionReady()
     return false;
 }
 
-bool InstancingModelComponent::PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen)
+bool AnimatedInstancedModelComponent::PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen)
 {
     if (!judgemen) return false;
 #ifdef _DEBUG
@@ -142,19 +142,19 @@ bool InstancingModelComponent::PerformTransitionJudgement(AnimeTransitionJudgeme
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }
 
-const UINT InstancingModelComponent::GetAnimationStartOffset()
+const UINT AnimatedInstancedModelComponent::GetAnimationStartOffset()
 {
     return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
 }
 
-const int InstancingModelComponent::GetModelId()
+const int AnimatedInstancedModelComponent::GetModelId()
 {
     return this->instancing_model_resource->GetModelId();
 }
 
 #ifdef _DEBUG
 
-void InstancingModelComponent::DrawDebugGUI()
+void AnimatedInstancedModelComponent::DrawDebugGUI()
 {
     ImGui::Checkbox("Animation Play", &this->anime_play);
 
@@ -165,46 +165,34 @@ void InstancingModelComponent::DrawDebugGUI()
     ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
 }
 
-void InstancingModelComponent::DrawDebugAnimationGUI()
+void AnimatedInstancedModelComponent::DrawDebugAnimationGUI()
 {
-    ImGui::Checkbox("Stop Animation", &this->stop_anime);
-    ImGui::SameLine();
+    int anime_index_int = static_cast<int>(this->anime_index);
+    if (anime_index_int < 0) return;
 
-    // アニメーションの停止中なら灰色にする
-    if (this->stop_anime) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+    const auto& animation = this->model_resource->GetAnimations()[anime_index_int];
 
-    if (ImGui::CollapsingHeader("AnimationParam", ImGuiTreeNodeFlags_None))
+    std::string play_anime_name = this->animation_name_pool[anime_index_int];
+
+    // 現在のフレーム数表示
+    const int anime_frame_max = static_cast<int>(this->instancing_model_resource->GetAnimationLengths()[anime_index_int]);
+    int anime_frame_int = static_cast<int>(this->anime_frame);
+    if (ImGui::SliderInt("Anime Frame", &anime_frame_int, 0, anime_frame_max))
     {
-        int anime_index_int = static_cast<int>(this->anime_index);
-        if (anime_index_int < 0) return;
-
-        const auto& animation = this->model_resource->GetAnimations()[anime_index_int];
-
-        std::string play_anime_name = this->animation_name_pool[anime_index_int];
-        ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
-        
-        // 現在のフレーム数表示
-        const int anime_frame_max = static_cast<int>(this->instancing_model_resource->GetAnimationLengths()[anime_index_int]);
-        int anime_frame_int = static_cast<int>(this->anime_frame);
-        if (ImGui::SliderInt("Anime Frame", &anime_frame_int, 0, anime_frame_max))
-        {
-            this->anime_frame = static_cast<UINT>(anime_frame_int);
-        }
-        if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index_int))
-        {
-            auto& anime_state = this->anime_state_pool[anime_index_int];
-            PlayAnimation(anime_state);
-        }
-        ImGui::Checkbox("Animation Loop Flag", &this->anime_loop);
-
-        if (this->is_draw_deletail) DrawDetail();
-        else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
-
+        this->anime_frame = static_cast<UINT>(anime_frame_int);
     }
-    if (this->stop_anime) ImGui::PopStyleColor();
+    if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index_int))
+    {
+        auto& anime_state = this->anime_state_pool[anime_index_int];
+        PlayAnimation(anime_state);
+    }
+    ImGui::Checkbox("Animation Loop Flag", &this->anime_loop);
+
+    if (this->is_draw_deletail) DrawDetail();
+    else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
 }
 
-void InstancingModelComponent::DrawDetail()
+void AnimatedInstancedModelComponent::DrawDetail()
 {
     ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
 
