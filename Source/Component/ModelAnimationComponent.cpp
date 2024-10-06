@@ -5,13 +5,11 @@
 
 #include "Component/ModelComponent.h"
 
-ModelAnimationComponent::ModelAnimationComponent()
+ModelAnimationComponent::ModelAnimationComponent(ID3D11Device* device, const char* filename)
 {
-	auto owner = GetOwner();
-	if (!owner) return;
-	auto model = owner->EnsureComponentValid<ModelComponent>(this->model_Wptr);
-	if (!model) return;
-	auto model_resource = model->GetResource();
+	// リソース読み込み
+	auto model_resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
+	this->model_resource_Wptr = model_resource;
 
 	this->animation_size = model_resource->GetAnimations().size();
 
@@ -41,11 +39,6 @@ void ModelAnimationComponent::Update(float elapsed_time)
 
 void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 {
-#ifdef _DEBUG
-	if (this->stop_anime) return;
-#endif // DEBUG
-
-
 	// 再生中でないなら更新しない
 	if (!IsPlayAnimation()) return;
 
@@ -53,6 +46,7 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 	if (!owner) return;
 	auto model = owner->EnsureComponentValid<ModelComponent>(this->model_Wptr);
 	auto model_resource = model->GetResource();
+	if (!model_resource) return;
 
 	// アニメーションブレンド率
 	float blend_rate = 1.0f;
@@ -244,7 +238,6 @@ bool ModelAnimationComponent::PerformTransitionJudgement(AnimeTransitionJudgemen
 void ModelAnimationComponent::UpdateAnimationState()
 {
 #ifdef _DEBUG
-	if (this->stop_anime) return;
 	if (this->stop_anime_state_update) return;
 #endif // DEBUG
 
@@ -284,41 +277,37 @@ void ModelAnimationComponent::AddAnimationTransition(AnimeIndex anime_index, Ani
 
 void ModelAnimationComponent::DrawDebugGUI()
 {
-	ImGui::Checkbox("Stop", &this->stop_anime);
+	auto model_resource = model_resource_Wptr.lock();
+	if (!model_resource) return;
 
-	// アニメーションの停止中なら灰色にする
-	if (this->stop_anime) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+	int& anime_index = this->current_animation_index;
+	if (anime_index < 0) return;
 
-	if (ImGui::CollapsingHeader("AnimationParam", ImGuiTreeNodeFlags_None))
+	const auto& animation = model_resource->GetAnimations()[anime_index];
+
+	std::string play_anime_name = this->animation_name_pool[anime_index];
+	ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
+	ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
+	if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
 	{
-		int& anime_index = this->current_animation_index;
-		if (anime_index < 0) return;
-
-		const auto& animation = this->resource->GetAnimations()[anime_index];
-
-		std::string play_anime_name = this->animation_name_pool[anime_index];
-		ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
-		ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
-		if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
-		{
-			auto& anime_state = this->anime_state_pool[anime_index];
-			PlayAnimation(anime_state, 0.0f);
-		}
-		ImGui::Checkbox("Animation Loop Flag", &this->animation_loop_flag);
-
-		ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
-		ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
-		ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
-
-		if (this->is_draw_deletail) DrawDetail();
-		else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
-
+		auto& anime_state = this->anime_state_pool[anime_index];
+		PlayAnimation(anime_state, 0.0f);
 	}
-	if (this->stop_anime) ImGui::PopStyleColor();
+	ImGui::Checkbox("Animation Loop Flag", &this->animation_loop_flag);
+
+	ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
+	ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
+	ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
+
+	if (this->is_draw_deletail) DrawDetail();
+	else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
 }
 
 void ModelAnimationComponent::DrawDetail()
 {
+	auto model_resource = model_resource_Wptr.lock();
+	if (!model_resource) return;
+
 	ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
 
 	ImGui::Begin("Animation Detail", &is_draw_deletail, ImGuiWindowFlags_None);
@@ -341,7 +330,7 @@ void ModelAnimationComponent::DrawDetail()
 		ImGui::InputFloat("Transition Ready Time", &selct_anime_state.transition_ready_time);
 
 		// 再生終了時間
-		const auto& anime = this->resource->GetAnimations()[this->select_animation_index];
+		const auto& anime = model_resource->GetAnimations()[this->select_animation_index];
 		float seconds_length = anime.seconds_length;
 		ImGui::InputFloat("Seconds Length", &seconds_length);
 	}

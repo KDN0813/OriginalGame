@@ -1,9 +1,11 @@
 #include <memory>
+#include <d3d11.h>
 #include "Component/Component.h"
 #include "Model/ModelCommonData.h"
 #include "Model/AnimeTransitionJudgement.h"
 
 class ModelComponent;
+class ModelResource;
 
 // モデルクラスのアニメーションクラス
 class ModelAnimationComponent : public Component
@@ -26,7 +28,7 @@ public:
 		std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
 	};
 public:
-	ModelAnimationComponent();
+	ModelAnimationComponent(ID3D11Device* device, const char* filename);
 
 	// 開始関数
 	void Start() override {};
@@ -72,6 +74,7 @@ private:
 	bool dummy[2]{};
 private:
 	std::weak_ptr<ModelComponent> model_Wptr;
+	std::weak_ptr<ModelResource> model_resource_Wptr;
 
 #ifdef _DEBUG
 public:
@@ -81,7 +84,6 @@ private:
 	std::vector<std::string> animation_name_pool;
 	bool stop_anime_state_update = false;	// アニメーションステートの更新停止フラグ
 	bool is_draw_deletail = false;
-	bool stop_anime = false;				// アニメーションの停止
 	int select_animation_index = 0;			// 詳細を表示するアニメーションのインデックス
 #endif // _DEBUG
 };

@@ -48,7 +48,8 @@ public:
 	const std::vector<Node>& GetNodes() const { return node_vec; }
 	std::vector<Node>& GetNodes() { return node_vec; }
 	const ModelResource* GetResource() const { return resource.get(); }
-	
+	std::shared_ptr<ModelResource> GetResourceSptr() { return resource; }
+
 private:
 	std::shared_ptr<ModelResource>	resource;	// モデルリソース
 	std::vector<Node>				node_vec;	// ノード
