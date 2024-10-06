@@ -130,6 +130,8 @@ const int InstancingModelComponent::GetModelId()
 
 void InstancingModelComponent::DrawDebugGUI()
 {
+    ImGui::Checkbox("Animation Play", &this->anime_play);
+
     DrawDebugAnimationGUI();
 
     char buffer[1024];
@@ -139,12 +141,11 @@ void InstancingModelComponent::DrawDebugGUI()
 
 void InstancingModelComponent::DrawDebugAnimationGUI()
 {
-    ImGui::Checkbox("Animation Play", &this->anime_play);
-
+    ImGui::Checkbox("Stop Animation", &this->stop_anime);
     ImGui::SameLine();
 
     // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì’âŽ~’†‚È‚çŠDF‚É‚·‚é
-    if (!this->anime_play) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// ŠDF
+    if (this->stop_anime) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// ŠDF
 
     if (ImGui::CollapsingHeader("AnimationParam", ImGuiTreeNodeFlags_None))
     {
@@ -174,7 +175,7 @@ void InstancingModelComponent::DrawDebugAnimationGUI()
         else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
 
     }
-    if (!this->anime_play) ImGui::PopStyleColor();
+    if (this->stop_anime) ImGui::PopStyleColor();
 }
 
 void InstancingModelComponent::DrawDetail()
