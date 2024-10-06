@@ -9,7 +9,7 @@
 
 // ‚’¼“¯ŠúŠÔŠuİ’è
 #ifdef _DEBUG
-static const int syncInterval = 1;
+static const int syncInterval = 0;
 #else
 static const int syncInterval = 1;
 #endif // _DEBUG

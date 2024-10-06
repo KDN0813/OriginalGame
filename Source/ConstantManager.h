@@ -9,7 +9,6 @@ enum PLAYER_ANIMATION : AnimeIndex
     MOVE_BWD,
     MOVE_LFT,
     MOVE_RGT,
-    JUMP,
     DAMAGE,
     DEAD,
     DEAD_STAY,

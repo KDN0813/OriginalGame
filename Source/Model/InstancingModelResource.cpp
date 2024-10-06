@@ -19,14 +19,14 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 	{
 		const std::vector<ModelResource::Node>& resource_nodes = resource->GetNodes();
 
-		nodes.resize(resource_nodes.size());
-		for (size_t nodeIndex = 0; nodeIndex < nodes.size(); ++nodeIndex)
+		node_vec.resize(resource_nodes.size());
+		for (size_t nodeIndex = 0; nodeIndex < node_vec.size(); ++nodeIndex)
 		{
 			auto&& src = resource_nodes.at(nodeIndex);
-			auto&& dst = nodes.at(nodeIndex);
+			auto&& dst = node_vec.at(nodeIndex);
 
 			dst.name = src.name.c_str();
-			dst.parent = src.parent_index >= 0 ? &nodes.at(src.parent_index) : nullptr;
+			dst.parent = src.parent_index >= 0 ? &node_vec.at(src.parent_index) : nullptr;
 			dst.scale = src.scale;
 			dst.rotate = src.rotate;
 			dst.translate = src.translate;
@@ -46,7 +46,8 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 		{
 			const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
 			this->mesh_offsets[mesh_index] = this->bone_transform_count;
-			this->bone_transform_count += static_cast<UINT>(mesh.node_indices.size());
+			const UINT node_indices = static_cast<UINT>(mesh.node_indices.size());
+			this->bone_transform_count += static_cast<UINT>((node_indices <= 0) ? 1 : node_indices);
 		}
 	}
 
@@ -80,7 +81,7 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 						for (size_t i = 0; i < mesh.node_indices.size(); ++i)
 						{
 							auto& add_data = BTTdata.emplace_back();
-							DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&nodes.at(mesh.node_indices.at(i)).worldTransform);
+							DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&node_vec.at(mesh.node_indices.at(i)).worldTransform);
 							DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
 							DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
 							DirectX::XMStoreFloat4x4(&add_data, boneTransform);
@@ -89,7 +90,7 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 					else
 					{
 						auto& add_data = BTTdata.emplace_back();
-						add_data = nodes.at(mesh.node_index).worldTransform;
+						add_data = node_vec.at(mesh.node_index).worldTransform;
 					}
 				}
 
@@ -163,7 +164,7 @@ void InstancingModelResource::UpdateAnimation(float elapsed_time, ModelResource*
 			float rate = (current_animation_seconds - keyframe0.seconds)
 				/ (keyframe1.seconds - keyframe0.seconds);
 
-			int nodeCount = static_cast<int>(nodes.size());
+			int nodeCount = static_cast<int>(node_vec.size());
 
 			// 再生時間とキーフレームの時間から補間率を計算する
 			for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
@@ -172,7 +173,7 @@ void InstancingModelResource::UpdateAnimation(float elapsed_time, ModelResource*
 				const ModelResource::NodeKeyData& key0 = keyframe0.node_keys.at(nodeIndex);
 				const ModelResource::NodeKeyData& key1 = keyframe1.node_keys.at(nodeIndex);
 
-				Node& node = nodes[nodeIndex];
+				Node& node = node_vec[nodeIndex];
 
 				// 前のキーフレームと次のキーフレームの姿勢を補間
 
@@ -222,7 +223,7 @@ void InstancingModelResource::UpdateTransform()
 {
 	DirectX::XMMATRIX Transform = DirectX::XMMatrixIdentity();
 
-	for (Node& node : nodes)
+	for (Node& node : node_vec)
 	{
 		// ローカル行列算出
 		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(node.scale.x, node.scale.y, node.scale.z);

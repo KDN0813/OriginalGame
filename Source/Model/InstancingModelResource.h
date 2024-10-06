@@ -74,7 +74,7 @@ private:
     bool IsPlayAnimation(ModelResource* resource)const;
     void UpdateTransform();
 
-    std::vector<Node> nodes;
+    std::vector<Node> node_vec;
     int current_animation_index = -1;	// 値が(-1)なら停止している
     float current_animation_seconds = 0.0f;	// 経過時間
 #pragma endregion   ボーントランスフォームテクスチャ作成用

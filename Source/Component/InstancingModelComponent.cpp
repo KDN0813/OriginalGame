@@ -13,10 +13,10 @@ AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(ID3D11Device* d
     this->model_filename = filename;
 #endif // _DEBUG
 
-    this->instancing_model_resource =
-        InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
     this->model_resource =
         ModelResourceManager::Instance()->LoadModelResource(device,filename);
+    this->instancing_model_resource =
+        InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
 
     // アニメステートの初期設定
     {
