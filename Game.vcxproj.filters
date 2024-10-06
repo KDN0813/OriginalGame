@@ -55,6 +55,9 @@
     <Filter Include="Source\Object">
       <UniqueIdentifier>{f0d7a6ae-ad7a-4d18-a0b6-46175f859f43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Collision">
+      <UniqueIdentifier>{f3360c53-a631-4842-bf90-85d994706bcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -195,9 +198,6 @@
     <ClInclude Include="Source\Debug\ImGuiHelper.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Model\ModelHelpers.h">
-      <Filter>Source\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Model\AnimeTransitionJudgementDerived.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
@@ -206,6 +206,33 @@
     </ClInclude>
     <ClInclude Include="Source\ConstantManager.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Alias\OwnerAlias.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model\ModelCommonData.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\GameObject.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\Collision.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ModelAnimationComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\GravityComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\CameraController.h">
+      <Filter>Source\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Debug\DebugRenderer.h">
+      <Filter>Source\Debug\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\CameraControllerDerived.h">
+      <Filter>Source\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -326,6 +353,27 @@
     <ClCompile Include="Source\Model\AnimeTransitionJudgement.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Camera\CameraController.cpp">
+      <Filter>Source\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\CameraControllerDerived.cpp">
+      <Filter>Source\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ModelAnimationComponent.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\GravityComponent.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\GameObject.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Debug\DebugRenderer.cpp">
+      <Filter>Source\Debug\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\Collision.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli">
@@ -335,6 +383,9 @@
       <Filter>HLSL</Filter>
     </None>
     <None Include="Hlsl\Instance.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="Hlsl\Debug.hlsli">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
@@ -355,6 +406,12 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\InstancePS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\DebugPS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\DebugVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>
