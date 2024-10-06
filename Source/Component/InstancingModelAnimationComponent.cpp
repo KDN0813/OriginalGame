@@ -84,11 +84,10 @@ bool InstancingModelAnimationComponent::IsTransitionReady()
 	// 再生中でなければ準備完了
 	if (!this->anime_play) return true;
 
-	// TODO インスタンシング用に改造する
-	//auto& anime_state = this->anime_state_pool[this->anime_index];
-	//
-	//if (anime_state.transition_ready_time >= 0.0f &&
-	//    anime_state.transition_ready_time <= this->anime_frame) return true;
+	auto& anime_state = this->anime_state_pool[this->anime_index];
+	
+	if (anime_state.transition_ready_frame >= 0 &&
+	    anime_state.transition_ready_frame <= static_cast<int>(this->anime_frame)) return true;
 
 	return false;
 }
@@ -209,9 +208,8 @@ void InstancingModelAnimationComponent::DrawDetail()
 		ImGui::InputInt("Transition Ready Time", &selct_anime_state.transition_ready_frame);
 
 		// 再生終了時間
-		const auto& anime = model_resource->GetAnimations()[this->select_animation_index];
-		float seconds_length = anime.seconds_length;
-		ImGui::InputFloat("Seconds Length", &seconds_length);
+		int seconds_max_frame = static_cast<int>(instancing_model_resource->GetAnimationLengths()[this->select_animation_index]);
+		ImGui::InputInt("Seconds Max Frame", &seconds_max_frame);
 	}
 	// 遷移情報表示
 	if (ImGui::CollapsingHeader("Transition Info", ImGuiTreeNodeFlags_DefaultOpen))

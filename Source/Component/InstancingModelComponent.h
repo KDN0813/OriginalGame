@@ -13,6 +13,21 @@ class Transform3DComponent;
 class InstancingModelComponent : public Component
 {
 public:
+	// アニメーションの遷移情報
+	struct AnimeTransitionInfo
+	{
+		AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
+		std::unique_ptr<AnimeTransitionJudgementBase> judgement;	// 遷移判定
+	};
+	// アニメーション状態
+	struct AnimeState
+	{
+		std::string name = {};													// アニメーション名
+		AnimeIndex anime_index = -1;											// アニメのインデックス
+		bool loop = false;														// ループフラグ
+		int transition_ready_frame = -1;										// 遷移準備が完了するまでの時間(0以下なら再生終了で準備完了)
+		std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
+	};
 public:
 	InstancingModelComponent(ID3D11Device* device, const char* filename);
 
@@ -29,9 +44,9 @@ public:
 	// アニメーション状態の更新
 	void UpdateAnimationState();
 	// アニメーション状態の設定
-	void SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time = -1.0f);
+	void SetAnimationState(AnimeIndex anime_index, bool loop, int transition_ready_frame = -1);
 	// 遷移するアニメーションの追加
-	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time);
+	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement);
 
 	// アニメーションの遷移準備が完了しているか
 	// 遷移判定クラスで遷移準備を待つ設定の時に使用する

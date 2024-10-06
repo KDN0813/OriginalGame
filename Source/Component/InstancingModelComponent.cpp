@@ -97,14 +97,14 @@ void InstancingModelComponent::UpdateAnimationState()
     }
 }
 
-void InstancingModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time)
+void InstancingModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, int transition_ready_frame)
 {
     auto& anime_state = this->anime_state_pool[anime_index];
     anime_state.loop = loop;
-    anime_state.transition_ready_time = transition_ready_time;
+    anime_state.transition_ready_frame = transition_ready_frame;
 }
 
-void InstancingModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time)
+void InstancingModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement)
 {
     auto& transition_info_pool = this->anime_state_pool[anime_index].transition_info_pool;
     // 遷移するアニメーションステート
@@ -112,7 +112,6 @@ void InstancingModelComponent::AddAnimationTransition(AnimeIndex anime_index, An
     transition_info = std::make_unique<AnimeTransitionInfo>();
     transition_info->next_anime_index = transition_anime_index;
     transition_info->judgement = std::move(judgement);
-    transition_info->blend_time = blend_time;
 }
 
 bool InstancingModelComponent::IsTransitionReady()
@@ -120,11 +119,10 @@ bool InstancingModelComponent::IsTransitionReady()
     // 再生中でなければ準備完了
     if (!this->anime_play) return true;
 
-    // TODO インスタンシング用に改造する
-    //auto& anime_state = this->anime_state_pool[this->anime_index];
-    //
-    //if (anime_state.transition_ready_time >= 0.0f &&
-    //    anime_state.transition_ready_time <= this->anime_frame) return true;
+    auto& anime_state = this->anime_state_pool[this->anime_index];
+
+    if (anime_state.transition_ready_frame >= 0 &&
+        anime_state.transition_ready_frame <= static_cast<int>(this->anime_frame)) return true;
 
     return false;
 }
@@ -227,12 +225,11 @@ void InstancingModelComponent::DrawDetail()
     if (ImGui::CollapsingHeader("Animation Info", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::Checkbox("Loop", &selct_anime_state.loop);
-        ImGui::InputFloat("Transition Ready Time", &selct_anime_state.transition_ready_time);
+        ImGui::InputInt("Transition Ready Time", &selct_anime_state.transition_ready_frame);
 
         // 再生終了時間
-        const auto& anime = this->model_resource->GetAnimations()[this->select_animation_index];
-        float seconds_length = anime.seconds_length;
-        ImGui::InputFloat("Seconds Length", &seconds_length);
+        int seconds_max_frame = static_cast<int>(instancing_model_resource->GetAnimationLengths()[this->select_animation_index]);
+        ImGui::InputInt("Seconds Max Frame", &seconds_max_frame);
     }
     // 遷移情報表示
     if (ImGui::CollapsingHeader("Transition Info", ImGuiTreeNodeFlags_DefaultOpen))
@@ -257,7 +254,6 @@ void InstancingModelComponent::DrawDetail()
             auto& transition_anime_state = this->anime_state_pool[transition_info->next_anime_index];
             if (ImGui::CollapsingHeader(transition_anime_state.name.c_str(), ImGuiTreeNodeFlags_None))
             {
-                ImGui::InputFloat("Blend Time", &transition_info->blend_time);
                 std::string judgement_name = "Judgement:";
                 judgement_name += transition_info->judgement->GetName();
                 ImGui::Text(judgement_name.c_str());
