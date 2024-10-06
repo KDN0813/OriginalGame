@@ -1,4 +1,4 @@
-#include "Debug/ImGuiHelper.h"
+#include <imgui.h>
 #include "ModelComponent.h"
 #include "Object/Object.h"
 #include "Model/ModelResourceManager.h"
@@ -14,21 +14,6 @@ ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
 
 	// リソース読み込み
 	this->resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
-
-	// アニメステートの初期設定
-	{
-		this->anime_state_pool.clear();
-		for (AnimeIndex index = 0; index < this->resource->GetAnimations().size(); ++index)
-		{
-			const auto& animation = this->resource->GetAnimations()[index];
-			auto& anime_state = this->anime_state_pool.emplace_back();
-			anime_state.anime_index = index;
-			anime_state.name = animation.name;
-#ifdef _DEBUG
-			this->animation_name_pool.emplace_back(animation.name);
-#endif // _DEBUG
-		}
-	}
 }
 
 void ModelComponent::Start()
@@ -67,10 +52,6 @@ void ModelComponent::Start()
 
 void ModelComponent::Update(float elapsed_time)
 {
-	UpdateAnimationState();
-
-	UpdateAnimation(elapsed_time);
-
 	auto owner = GetOwner();
 	DirectX::XMFLOAT4X4 world_transform;
 	if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
@@ -365,8 +346,6 @@ void ModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex t
 
 void ModelComponent::DrawDebugGUI()
 {
-	DrawDebugAnimationGUI();
-
 	char buffer[1024];
 	::strncpy_s(buffer, sizeof(buffer), model_filename, sizeof(buffer));
 	ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
