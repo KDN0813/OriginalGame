@@ -295,6 +295,21 @@ bool ModelComponent::IsTransitionReady()
 	return false;
 }
 
+bool ModelComponent::PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen)
+{
+	if (!judgemen) return false;
+#ifdef _DEBUG
+	if (!judgemen->GetIsActive()) return false;
+#endif // _DEBUG
+	auto owner = GetOwner();
+	if (!owner) return false;
+
+	// 遷移準備を待つフラグがオンの場合、遷移の準備が整うまで待機する
+	if (judgemen->GetRequireTransitionReady() && !IsTransitionReady()) return false;
+
+	return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
+}
+
 ModelComponent::Node* ModelComponent::FindNode(const char* name)
 {
 	for (Node& node : this->node_vec)
@@ -320,7 +335,7 @@ void ModelComponent::UpdateAnimationState()
 
 	for (auto& transition_info : this->anime_state_pool[this->current_animation_index].transition_info_pool)
 	{
-		if (transition_info->judgement->PerformTransitionJudgement())
+		if (PerformTransitionJudgement(transition_info->judgement.get()))
 		{
 			PlayAnimation(this->anime_state_pool[transition_info->next_anime_index], transition_info->blend_time);
 			break;

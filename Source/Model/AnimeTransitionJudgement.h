@@ -14,10 +14,6 @@ public:
 	// 名前取得
 	virtual const char* GetName()const = 0;;
 
-	// 遷移判定のロジックを実行
-	// `should_reverse` フラグがtrueなら、遷移判定結果を反転する
-	bool PerformTransitionJudgement();
-
 	// 遷移条件の判定
 	virtual bool CheckTransitionCondition() = 0;
 

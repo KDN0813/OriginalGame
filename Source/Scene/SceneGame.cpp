@@ -60,7 +60,8 @@ void SceneGame::Initialize()
 		{
 			auto player = object_manager.Create();
 			player->SetName("Player");
-			auto model = player->AddComponent<InstancingModelComponent>(device, "Data/Model/Player/Player.mdl");
+			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
+			//auto model = player->AddComponent<InstancingModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
 				// 待機
@@ -85,10 +86,10 @@ void SceneGame::Initialize()
 			movement->SetIsStageRaycas(true);
 			player->AddComponent<PlayerComponent>();
 			// シェーダー設定
-			//auto shader_component =
-			//	player->AddComponent<ModelShaderComponent>(model_shader.get());
 			auto shader_component =
-			player->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
+				player->AddComponent<ModelShaderComponent>(model_shader.get());
+			//auto shader_component =
+			//player->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
 			// カメラ設定
 			auto camera = player->AddComponent<CameraComponent>(CameraManager::Instance());
 			camera->SetCameraController(std::make_unique<GamepadCameraController>(player));

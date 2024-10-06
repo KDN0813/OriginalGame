@@ -136,10 +136,10 @@ bool InstancingModelComponent::PerformTransitionJudgement(AnimeTransitionJudgeme
     if (!judgemen->GetIsActive()) return false;
 #endif // _DEBUG
     auto owner = GetOwner();
-    if (!owner) return true;
+    if (!owner) return false;
 
     // 遷移準備を待つフラグがオンの場合、遷移の準備が整うまで待機する
-    if (judgemen->GetRequireTransitionReady() && ! IsTransitionReady()) return false;
+    if (judgemen->GetRequireTransitionReady() && !IsTransitionReady()) return false;
 
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }

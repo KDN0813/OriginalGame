@@ -50,6 +50,10 @@ public:
 	// アニメーションの遷移準備が完了しているか
 	// 遷移判定クラスで遷移準備を待つ設定の時に使用する
 	bool IsTransitionReady();
+	// 遷移判定のロジックを実行
+	// `judgemenのshould_reverse` フラグがtrueなら、遷移判定結果を反転する
+	bool PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen);
+
 	// ノード検索
 	ModelComponent::Node* FindNode(const char* name);
 
