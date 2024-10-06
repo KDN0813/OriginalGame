@@ -124,6 +124,7 @@
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\GravityComponent.h" />
     <ClInclude Include="Source\Component\InstancingModelComponent.h" />
+    <ClInclude Include="Source\Component\ModelAnimationComponent.h" />
     <ClInclude Include="Source\Component\ModelComponent.h" />
     <ClInclude Include="Source\Component\ModelShaderComponent.h" />
     <ClInclude Include="Source\Component\MovementComponent.h" />
@@ -146,7 +147,7 @@
     <ClInclude Include="Source\Model\AnimeTransitionJudgementDerived.h" />
     <ClInclude Include="Source\Model\InstancingModelResource.h" />
     <ClInclude Include="Source\Model\InstancingModelResourceManager.h" />
-    <ClInclude Include="Source\Model\ModelHelpers.h" />
+    <ClInclude Include="Source\Model\ModelCommonData.h" />
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Model\ModelResourceManager.h" />
     <ClInclude Include="Source\Object\GameObject.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
     <ClCompile Include="Source\Component\GravityComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
+    <ClCompile Include="Source\Component\ModelAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\ModelComponent.cpp" />
     <ClCompile Include="Source\Component\ModelShaderComponent.cpp" />
     <ClCompile Include="Source\Component\MovementComponent.cpp" />

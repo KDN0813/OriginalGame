@@ -3,7 +3,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
-#include "Model/ModelHelpers.h"
+#include "Model/ModelCommonData.h"
 
 class InstancingModelResource;
 class ModelResource;

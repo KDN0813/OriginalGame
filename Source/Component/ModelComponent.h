@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 #include "Component.h"
-#include "Model/ModelHelpers.h"
+#include "Model/ModelCommonData.h"
 
 class ModelResource;
 
@@ -71,11 +71,10 @@ public:
 	float GetCurrentAnimationSeconds()const { return current_animation_seconds; }
 
 private:
-	std::vector<AnimeState>				anime_state_pool;	// アニメーション情報	
-
 	std::shared_ptr<ModelResource>	resource;	// モデルリソース
 	std::vector<Node>				node_vec;	// ノード
 
+	std::vector<AnimeState>				anime_state_pool;	// アニメーション情報	
 	int current_animation_index  = -1;		// 再生中のアニメーションのインデックス
 	float current_animation_seconds = 0;	// 現在の再生時間
 	float animation_blend_time = 0;			// アニメーションブレンドの経過時間

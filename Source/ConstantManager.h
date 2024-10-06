@@ -1,6 +1,6 @@
 #pragma once
 #include "System/ClassBase/Singleton.h"
-#include "Model/ModelHelpers.h"
+#include "Model/ModelCommonData.h"
 
 enum PLAYER_ANIMATION : AnimeIndex
 {
