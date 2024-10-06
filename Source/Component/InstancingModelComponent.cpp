@@ -17,12 +17,51 @@ InstancingModelComponent::InstancingModelComponent(ID3D11Device* device, const c
         InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
     this->model_resource =
         ModelResourceManager::Instance()->LoadModelResource(device,filename);
+
+    // アニメステートの初期設定
+    {
+        this->anime_state_pool.clear();
+        for (AnimeIndex index = 0; index < this->model_resource->GetAnimations().size(); ++index)
+        {
+            const auto& animation = this->model_resource->GetAnimations()[index];
+            auto& anime_state = this->anime_state_pool.emplace_back();
+            anime_state.anime_index = index;
+            anime_state.name = animation.name;
+#ifdef _DEBUG
+            this->animation_name_pool.emplace_back(animation.name);
+#endif // _DEBUG
+        }
+    }
 }
 
 void InstancingModelComponent::Update(float elapsed_time)
 {
     if (!this->anime_play)return;
+    
+    UpdateAnimationState();
+    UpdateAnimation();
+}
 
+void InstancingModelComponent::PlayAnimation(int animeIndex, bool loop)
+{
+    if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
+
+    this->anime_frame = 0;;
+    this->anime_index = animeIndex;
+    this->anime_loop = loop;
+    this->anime_play = true;
+}
+
+void InstancingModelComponent::PlayAnimation(const AnimeState& animation_info)
+{
+    this->anime_frame = 0;;
+    this->anime_index = animation_info.anime_index;
+    this->anime_loop = animation_info.loop;
+    this->anime_play = true;
+}
+
+void InstancingModelComponent::UpdateAnimation()
+{
     this->anime_frame = (std::max)(static_cast<int>(this->anime_frame) + this->anime_speed, 0);
 
     if (this->anime_frame >= this->instancing_model_resource->GetAnimationLengths()[this->anime_index])
@@ -37,24 +76,6 @@ void InstancingModelComponent::Update(float elapsed_time)
             this->anime_play = false;
         }
     }
-}
-
-void InstancingModelComponent::PlayAnimetion(int animeIndex, bool loop)
-{
-    if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
-
-    this->anime_frame = 0;;
-    this->anime_index = animeIndex;
-    this->anime_loop = loop;
-    this->anime_play = true;
-}
-
-void InstancingModelComponent::PlayAnimetion(const AnimeState& animation_info)
-{
-    this->anime_frame = 0;;
-    this->anime_index = animation_info.anime_index;
-    this->anime_loop = animation_info.loop;
-    this->anime_play = true;
 }
 
 void InstancingModelComponent::UpdateAnimationState()
@@ -72,7 +93,7 @@ void InstancingModelComponent::UpdateAnimationState()
     {
         if (transition_info->judgement->PerformTransitionJudgement())
         {
-            PlayAnimetion(this->anime_state_pool[transition_info->next_anime_index]);
+            PlayAnimation(this->anime_state_pool[transition_info->next_anime_index]);
             break;
         }
     }

@@ -98,7 +98,7 @@ void SceneDebug::Initialize()
 						object->AddComponent<InstancingModelShaderComponent>(shader);
 					shader->AddShaderComponent(shader_component.get());
 
-					model->PlayAnimetion(z);
+					model->PlayAnimation(z);
 					transform->SetPosition(pos);
 					transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
 				}

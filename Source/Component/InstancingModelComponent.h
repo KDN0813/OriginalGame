@@ -22,9 +22,10 @@ public:
 	// 優先度
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 	
-	void PlayAnimetion(int animeIndex, bool loop = true);
-	void PlayAnimetion(const AnimeState& animation_info);
+	void PlayAnimation(int animeIndex, bool loop = true);
+	void PlayAnimation(const AnimeState& animation_info);
 
+	void UpdateAnimation();
 	// アニメーション状態の更新
 	void UpdateAnimationState();
 	// アニメーション状態の設定
@@ -58,6 +59,7 @@ public:
 	void DrawDebugGUI()override;
 
 private:
+	std::vector<std::string> animation_name_pool;
 	bool stop_anime = false;
 	bool stop_anime_state_update = false;
 	const char* model_filename;
