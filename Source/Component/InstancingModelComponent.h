@@ -57,11 +57,14 @@ private:
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI()override;
+	void DrawDebugAnimationGUI();
+	void DrawDetail();
 
 private:
 	std::vector<std::string> animation_name_pool;
-	bool stop_anime = false;
 	bool stop_anime_state_update = false;
+	bool is_draw_deletail = false;
+	int select_animation_index = 0;			// 詳細を表示するアニメーションのインデックス
 	const char* model_filename;
 #endif // _DEBUG
 };

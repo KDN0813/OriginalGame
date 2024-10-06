@@ -1,4 +1,4 @@
-#include <imgui.h>
+#include "Debug/ImGuiHelper.h"
 #include "InstancingModelComponent.h"
 #include "Object/Object.h"
 
@@ -81,7 +81,6 @@ void InstancingModelComponent::UpdateAnimation()
 void InstancingModelComponent::UpdateAnimationState()
 {
 #ifdef _DEBUG
-    if (this->stop_anime) return;
     if (this->stop_anime_state_update) return;
 #endif // DEBUG
 
@@ -131,32 +130,118 @@ const int InstancingModelComponent::GetModelId()
 
 void InstancingModelComponent::DrawDebugGUI()
 {
-    const int anime_index_max = static_cast<int>(this->model_resource->GetAnimations().size() - 1);
-    int anime_index_int = static_cast<int>(this->anime_index);
-    if (ImGui::SliderInt("anime_index", &anime_index_int, 0, anime_index_max))
-    {
-        this->anime_frame = 0;
-        this->anime_index = static_cast<UINT>(anime_index_int);
-    }
-    const int anime_frame_max = static_cast<int>(this->instancing_model_resource->GetAnimationLengths()[anime_index_int]);
-    int anime_frame_int = static_cast<int>(this->anime_frame);
-    if (ImGui::SliderInt("anime_frame", &anime_frame_int, 0, anime_frame_max))
-    {
-        this->anime_frame = static_cast<UINT>(anime_frame_int);
-    }
-    ImGui::SliderInt("anime_speed", &this->anime_speed, 0, 10);
-
-    ImGui::Checkbox("anime_loop", &this->anime_loop);
-    ImGui::Checkbox("anime_play", &this->anime_play);
-    if (ImGui::Button("anime_restart"))
-    {
-        this->anime_frame = 0;
-        this->anime_play = true;
-    }
+    DrawDebugAnimationGUI();
 
     char buffer[1024];
     ::strncpy_s(buffer, sizeof(buffer), model_filename, sizeof(buffer));
     ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
+}
+
+void InstancingModelComponent::DrawDebugAnimationGUI()
+{
+    ImGui::Checkbox("Animation Play", &this->anime_play);
+
+    ImGui::SameLine();
+
+    // アニメーションの停止中なら灰色にする
+    if (!this->anime_play) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+
+    if (ImGui::CollapsingHeader("AnimationParam", ImGuiTreeNodeFlags_None))
+    {
+        int anime_index_int = static_cast<int>(this->anime_index);
+        if (anime_index_int < 0) return;
+
+        const auto& animation = this->model_resource->GetAnimations()[anime_index_int];
+
+        std::string play_anime_name = this->animation_name_pool[anime_index_int];
+        ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
+        
+        // 現在のフレーム数表示
+        const int anime_frame_max = static_cast<int>(this->instancing_model_resource->GetAnimationLengths()[anime_index_int]);
+        int anime_frame_int = static_cast<int>(this->anime_frame);
+        if (ImGui::SliderInt("Anime Frame", &anime_frame_int, 0, anime_frame_max))
+        {
+            this->anime_frame = static_cast<UINT>(anime_frame_int);
+        }
+        if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index_int))
+        {
+            auto& anime_state = this->anime_state_pool[anime_index_int];
+            PlayAnimation(anime_state);
+        }
+        ImGui::Checkbox("Animation Loop Flag", &this->anime_loop);
+
+        if (this->is_draw_deletail) DrawDetail();
+        else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
+
+    }
+    if (!this->anime_play) ImGui::PopStyleColor();
+}
+
+void InstancingModelComponent::DrawDetail()
+{
+    ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
+
+    ImGui::Begin("Animation Detail", &is_draw_deletail, ImGuiWindowFlags_None);
+
+    std::string select_anime_name = this->animation_name_pool[this->select_animation_index];
+    ImGuiComboUI("Select Animation", select_anime_name, this->animation_name_pool, this->select_animation_index);
+
+    auto& selct_anime_state = this->anime_state_pool[this->select_animation_index];
+
+    // 再生
+    if (ImGui::Button("Play Animation"))
+    {
+        PlayAnimation(selct_anime_state);
+    }
+
+    // アニメーション情報
+    if (ImGui::CollapsingHeader("Animation Info", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::Checkbox("Loop", &selct_anime_state.loop);
+        ImGui::InputFloat("Transition Ready Time", &selct_anime_state.transition_ready_time);
+
+        // 再生終了時間
+        const auto& anime = this->model_resource->GetAnimations()[this->select_animation_index];
+        float seconds_length = anime.seconds_length;
+        ImGui::InputFloat("Seconds Length", &seconds_length);
+    }
+    // 遷移情報表示
+    if (ImGui::CollapsingHeader("Transition Info", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+
+        int transition_id = 0;
+        for (auto& transition_info : selct_anime_state.transition_info_pool)
+        {
+            bool is_judgement_active = transition_info->judgement->GetIsActive();
+
+            std::string label = "##" + std::to_string(transition_id);
+            if (ImGui::Checkbox(label.c_str(), &is_judgement_active))
+            {
+                transition_info->judgement->SetIsActive(is_judgement_active);
+            }
+
+            ImGui::SameLine();
+
+            // 非アクティブなら灰色にする
+            if (!is_judgement_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+
+            auto& transition_anime_state = this->anime_state_pool[transition_info->next_anime_index];
+            if (ImGui::CollapsingHeader(transition_anime_state.name.c_str(), ImGuiTreeNodeFlags_None))
+            {
+                ImGui::InputFloat("Blend Time", &transition_info->blend_time);
+                std::string judgement_name = "Judgement:";
+                judgement_name += transition_info->judgement->GetName();
+                ImGui::Text(judgement_name.c_str());
+                transition_info->judgement->DrawCommonDebugGUI(transition_id);
+                transition_info->judgement->DrawDebugGUI(transition_id);
+            }
+
+            ++transition_id;
+            if (!is_judgement_active) ImGui::PopStyleColor();
+        }
+    }
+
+    ImGui::End();
 }
 
 #endif // _DEBUG
