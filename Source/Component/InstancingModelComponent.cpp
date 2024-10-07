@@ -38,14 +38,14 @@ void AnimatedInstancedModelComponent::Update(float elapsed_time)
 {
     UpdateAnimationState();
     if (!this->anime_play)return;
-    UpdateAnimation();
+    UpdateAnimation(elapsed_time);
 }
 
 void AnimatedInstancedModelComponent::PlayAnimation(int animeIndex, bool loop)
 {
     if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
 
-    this->anime_frame = 0;;
+    this->current_animation_seconds = 0;;
     this->anime_index = animeIndex;
     this->anime_loop = loop;
     this->anime_play = true;
@@ -53,25 +53,29 @@ void AnimatedInstancedModelComponent::PlayAnimation(int animeIndex, bool loop)
 
 void AnimatedInstancedModelComponent::PlayAnimation(const AnimeState& animation_info)
 {
-    this->anime_frame = 0;;
+    this->current_animation_seconds = 0;;
     this->anime_index = animation_info.anime_index;
     this->anime_loop = animation_info.loop;
     this->anime_play = true;
 }
 
-void AnimatedInstancedModelComponent::UpdateAnimation()
-{
-    this->anime_frame = (std::max)(static_cast<int>(this->anime_frame) + this->anime_speed, 0);
+void AnimatedInstancedModelComponent::UpdateAnimation(float elapsed_time)
+{    
+    const auto& animation = this->model_resource->GetAnimations()[this->anime_index];
+    const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->anime_index];
+    const float& animation_length = animation.seconds_length;
+    
+    this->current_animation_seconds += elapsed_time;
 
-    if (this->anime_frame >= this->instancing_model_resource->GetAnimationLengths()[this->anime_index])
+    if (this->current_animation_seconds >= animation_length)
     {
         if (this->anime_loop)
         {
-            this->anime_frame = 0;
+            this->current_animation_seconds = 0.0f;
         }
         else
         {
-            this->anime_frame = this->instancing_model_resource->GetAnimationLengths()[this->anime_index];
+            this->current_animation_seconds = animation_length;
             this->anime_play = false;
         }
     }
@@ -122,7 +126,7 @@ bool AnimatedInstancedModelComponent::IsTransitionReady()
     auto& anime_state = this->anime_state_pool[this->anime_index];
 
     if (anime_state.transition_ready_frame >= 0 &&
-        anime_state.transition_ready_frame <= static_cast<int>(this->anime_frame)) return true;
+        anime_state.transition_ready_frame <= static_cast<int>(this->current_animation_seconds)) return true;
 
     return false;
 }
@@ -142,12 +146,22 @@ bool AnimatedInstancedModelComponent::PerformTransitionJudgement(AnimeTransition
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }
 
-const UINT AnimatedInstancedModelComponent::GetAnimationStartOffset()
+const UINT AnimatedInstancedModelComponent::GetAnimeFrame()
+{
+    const auto& animation = this->model_resource->GetAnimations()[this->anime_index];
+    const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->anime_index];
+    const float animation_frame_max_f = static_cast<float>(animation_frame_max);
+    const float& animation_length = animation.seconds_length;
+
+    return static_cast<UINT>(animation_frame_max_f * (this->current_animation_seconds / animation_length));
+}
+
+const UINT& AnimatedInstancedModelComponent::GetAnimationStartOffset()
 {
     return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
 }
 
-const int AnimatedInstancedModelComponent::GetModelId()
+const int& AnimatedInstancedModelComponent::GetModelId()
 {
     return this->instancing_model_resource->GetModelId();
 }
@@ -175,12 +189,9 @@ void AnimatedInstancedModelComponent::DrawDebugAnimationGUI()
     std::string play_anime_name = this->animation_name_pool[anime_index_int];
 
     // 現在のフレーム数表示
-    const int anime_frame_max = static_cast<int>(this->instancing_model_resource->GetAnimationLengths()[anime_index_int]);
-    int anime_frame_int = static_cast<int>(this->anime_frame);
-    if (ImGui::SliderInt("Anime Frame", &anime_frame_int, 0, anime_frame_max))
-    {
-        this->anime_frame = static_cast<UINT>(anime_frame_int);
-    }
+    ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
+    int anime_frame_i = GetAnimeFrame();
+    ImGui::InputInt("Anime Frame",&anime_frame_i);
     if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index_int))
     {
         auto& anime_state = this->anime_state_pool[anime_index_int];
@@ -216,6 +227,8 @@ void AnimatedInstancedModelComponent::DrawDetail()
         ImGui::InputInt("Transition Ready Time", &selct_anime_state.transition_ready_frame);
 
         // 再生終了時間
+        float seconds_length = model_resource->GetAnimations()[this->select_animation_index].seconds_length;
+        ImGui::InputFloat("Seconds Length", &seconds_length);
         int seconds_max_frame = static_cast<int>(instancing_model_resource->GetAnimationLengths()[this->select_animation_index]);
         ImGui::InputInt("Seconds Max Frame", &seconds_max_frame);
     }

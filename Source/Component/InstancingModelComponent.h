@@ -41,7 +41,7 @@ public:
 	void PlayAnimation(int animeIndex, bool loop = true);
 	void PlayAnimation(const AnimeState& animation_info);
 
-	void UpdateAnimation();
+	void UpdateAnimation(float elapsed_time);
 	// アニメーション状態の更新
 	void UpdateAnimationState();
 	// アニメーション状態の設定
@@ -59,16 +59,17 @@ public:
 	// 各取得・設定関数
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
 	ModelResource* GetModelResource() { return this->model_resource.get(); }
-	const UINT GetAnimeFrame() { return this->anime_frame; }
-	const UINT GetAnimationStartOffset();
-	const int GetModelId();
+	const UINT GetAnimeFrame();
+	const float& GetCurrentAnimationSeconds() { return this->current_animation_seconds; }
+	const UINT& GetAnimationStartOffset();
+	const int& GetModelId();
 private:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
 	std::shared_ptr<ModelResource> model_resource;
 
 	std::vector<AnimeState>	anime_state_pool;	// アニメーション情報
 
-	UINT anime_frame = 0;
+	float current_animation_seconds = 0.0f;		// 現在の再生時間
 	UINT anime_index = 0;
 	int anime_speed = 1;
 	bool anime_loop = false;
