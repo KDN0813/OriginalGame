@@ -73,8 +73,10 @@ int InstancingModelShaderComponent::GetModelId()
 {
     // Hack idを変数で持ち、返すようにしたら処理軽くなるかテストする
     auto ownr = GetOwner();
+    if (!ownr) return -1;
     auto instancing_model
         = ownr->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr);
+    if (!instancing_model) return-1;
     return instancing_model->GetModelId();
 }
 

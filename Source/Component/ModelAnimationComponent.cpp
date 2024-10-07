@@ -45,6 +45,7 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 	auto owner = GetOwner();
 	if (!owner) return;
 	auto model = owner->EnsureComponentValid<ModelComponent>(this->model_Wptr);
+	if (!model) return;
 	auto model_resource = model->GetResource();
 	if (!model_resource) return;
 
