@@ -46,9 +46,10 @@ void SceneGame::Initialize()
 		{
 			auto stage = object_manager.Create();
 			stage->SetName("Stage");
-			stage->AddComponent<ModelComponent>(device, "Data/Model/ExampleStage/ExampleStage.mdl");
+			stage->AddComponent<ModelComponent>(device, "Data/Model/Cube/Cube.mdl");
 			auto transform = stage->AddComponent<Transform3DComponent>();
-			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
+			transform->SetScale(DirectX::XMFLOAT3(50.0f, 1.0f, 50.0f));
+			transform->SetPosition(DirectX::XMFLOAT3(0.0f, -1.0f, 0.0f));
 			// シェーダー設定
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
@@ -61,7 +62,7 @@ void SceneGame::Initialize()
 		{
 			auto player = object_manager.Create();
 			player->SetName("Player");
-			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
+			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
 			auto model_animation = player->AddComponent<ModelAnimationComponent>(device, "Data/Model/Player/Player.mdl");
 			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
@@ -83,7 +84,7 @@ void SceneGame::Initialize()
 			}
 			
 			auto transform = player->AddComponent<Transform3DComponent>();
-			transform->SetScale(DirectX::XMFLOAT3(0.005f, 0.005f, 0.005f));
+			transform->SetScale(DirectX::XMFLOAT3(0.008f, 0.008f, 0.008f));
 			auto movement = player->AddComponent<MovementComponent>();
 			movement->SetIsStageRaycas(true);
 			player->AddComponent<PlayerComponent>();
