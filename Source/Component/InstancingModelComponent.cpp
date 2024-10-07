@@ -101,11 +101,11 @@ void AnimatedInstancedModelComponent::UpdateAnimationState()
     }
 }
 
-void AnimatedInstancedModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, int transition_ready_frame)
+void AnimatedInstancedModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time)
 {
     auto& anime_state = this->anime_state_pool[anime_index];
     anime_state.loop = loop;
-    anime_state.transition_ready_frame = transition_ready_frame;
+    anime_state.transition_ready_time = transition_ready_time;
 }
 
 void AnimatedInstancedModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement)
@@ -125,8 +125,8 @@ bool AnimatedInstancedModelComponent::IsTransitionReady()
 
     auto& anime_state = this->anime_state_pool[this->anime_index];
 
-    if (anime_state.transition_ready_frame >= 0 &&
-        anime_state.transition_ready_frame <= static_cast<int>(this->current_animation_seconds)) return true;
+    if (anime_state.transition_ready_time >= 0 &&
+        anime_state.transition_ready_time <= this->current_animation_seconds) return true;
 
     return false;
 }
@@ -224,7 +224,7 @@ void AnimatedInstancedModelComponent::DrawDetail()
     if (ImGui::CollapsingHeader("Animation Info", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::Checkbox("Loop", &selct_anime_state.loop);
-        ImGui::InputInt("Transition Ready Time", &selct_anime_state.transition_ready_frame);
+        ImGui::InputFloat("Transition Ready Time", &selct_anime_state.transition_ready_time);
 
         // Ä¶I—¹ŽžŠÔ
         float seconds_length = model_resource->GetAnimations()[this->select_animation_index].seconds_length;

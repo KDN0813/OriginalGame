@@ -26,7 +26,7 @@ public:
 		std::string name = {};													// アニメーション名
 		AnimeIndex anime_index = -1;											// アニメのインデックス
 		bool loop = false;														// ループフラグ
-		int transition_ready_frame = -1;										// 遷移準備が完了するまでの時間(0以下なら再生終了で準備完了)
+		float transition_ready_time = -1;										// 遷移準備が完了するまでの時間(0以下なら再生終了で準備完了)
 		std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
 	};
 public:
@@ -45,7 +45,7 @@ public:
 	// アニメーション状態の更新
 	void UpdateAnimationState();
 	// アニメーション状態の設定
-	void SetAnimationState(AnimeIndex anime_index, bool loop, int transition_ready_frame = -1);
+	void SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time = -1.0f);
 	// 遷移するアニメーションの追加
 	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement);
 
