@@ -61,25 +61,25 @@ void SceneGame::Initialize()
 		{
 			auto player = object_manager.Create();
 			player->SetName("Player");
-			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
+			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
 			auto model_animation = player->AddComponent<ModelAnimationComponent>(device, "Data/Model/Player/Player.mdl");
 			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
 				// 待機
-				model_animation->PlayAnimation(PLAYER_ANIMATION::IDLE, true);
-				model_animation->SetAnimationState(PLAYER_ANIMATION::IDLE, true);
-				model_animation->AddAnimationTransition(PLAYER_ANIMATION::IDLE, PLAYER_ANIMATION::MOVE_FWD, std::make_unique<Judgement_Move>(player),0.2f);
-				model_animation->AddAnimationTransition(PLAYER_ANIMATION::IDLE, PLAYER_ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.2f);
+				model_animation->PlayAnimation(PlayerCT::ANIMATION::IDLE, true);
+				model_animation->SetAnimationState(PlayerCT::ANIMATION::IDLE, true);
+				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::IDLE, PlayerCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_Move>(player),0.2f);
+				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::IDLE, PlayerCT::ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.2f);
 
 				// 前方移動
-				model_animation->SetAnimationState(PLAYER_ANIMATION::MOVE_FWD, true);
-				model_animation->AddAnimationTransition(PLAYER_ANIMATION::MOVE_FWD, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_Move>(player, true), 0.2f);
-				model_animation->AddAnimationTransition(PLAYER_ANIMATION::MOVE_FWD, PLAYER_ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.2f);
+				model_animation->SetAnimationState(PlayerCT::ANIMATION::MOVE_FWD, true);
+				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::MOVE_FWD, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_Move>(player, true), 0.2f);
+				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::MOVE_FWD, PlayerCT::ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.2f);
 
 				// 攻撃01
-				model_animation->SetAnimationState(PLAYER_ANIMATION::ATTACK01, false);
-				model_animation->AddAnimationTransition(PLAYER_ANIMATION::ATTACK01, PLAYER_ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.2f);
+				model_animation->SetAnimationState(PlayerCT::ANIMATION::ATTACK01, false);
+				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::ATTACK01, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.2f);
 			}
 			
 			auto transform = player->AddComponent<Transform3DComponent>();
@@ -123,7 +123,7 @@ void SceneGame::Initialize()
 					const char* faile_name_arry[]
 					{
 						{"Data/Model/Player/Player.mdl"},
-						{"Data/Model/Player/Player.mdl"},
+						{"Data/Model/ChestMonster/ChestMonster.mdl"},
 					};
 
 					auto enemy = object_manager.Create();
