@@ -49,7 +49,7 @@ void SceneGame::Initialize()
 			stage->AddComponent<ModelComponent>(device, "Data/Model/Cube/Cube.mdl");
 			auto transform = stage->AddComponent<Transform3DComponent>();
 			transform->SetScale(DirectX::XMFLOAT3(50.0f, 1.0f, 50.0f));
-			transform->SetPosition(DirectX::XMFLOAT3(0.0f, -1.0f, 0.0f));
+			transform->SetPosition(DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f));
 			// シェーダー設定
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
