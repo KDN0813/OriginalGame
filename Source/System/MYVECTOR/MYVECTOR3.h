@@ -1,20 +1,20 @@
 #pragma once
 #include <DirectXMath.h>
 
-class MYVECTOR2 
+class MYVECTOR3 
 {
 public:
-    MYVECTOR2() : vector(DirectX::XMVectorZero()) {}
-    MYVECTOR2(float x, float y = 0.0f, float z = 0.0f)
+    MYVECTOR3() : vector(DirectX::XMVectorZero()) {}
+    MYVECTOR3(float x, float y = 0.0f, float z = 0.0f)
     {
         this->vector = DirectX::XMVectorSet(x, y, z, 0.0f);
     }
-    MYVECTOR2(DirectX::XMFLOAT3 f3)
+    MYVECTOR3(DirectX::XMFLOAT3 f3)
     {
         this->vector = DirectX::XMVectorSet(f3.x, f3.y, f3.z, 0.0f);
     }
-    MYVECTOR2(DirectX::XMVECTOR vec) : vector(vec) {}
-    MYVECTOR2(const MYVECTOR2& my_vector) :vector(my_vector.vector) {}; // コピーコンストラクタ
+    MYVECTOR3(DirectX::XMVECTOR vec) : vector(vec) {}
+    MYVECTOR3(const MYVECTOR3& my_vector) :vector(my_vector.vector) {}; // コピーコンストラクタ
 
     DirectX::XMVECTOR GetVector()
     {
@@ -84,44 +84,44 @@ public:
         return DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(this->vector));
     }
     // 正規化
-    MYVECTOR2 Normalize() const
+    MYVECTOR3 Normalize() const
     {
-        return MYVECTOR2(DirectX::XMVector3Normalize(this->vector));
+        return MYVECTOR3(DirectX::XMVector3Normalize(this->vector));
     }
     // 各値の絶対値を計算
-    MYVECTOR2 Abs() const
+    MYVECTOR3 Abs() const
     {
-        return MYVECTOR2(DirectX::XMVectorAbs(this->vector));
+        return MYVECTOR3(DirectX::XMVectorAbs(this->vector));
     }
     // 数値を切り上げて整数にする
-    MYVECTOR2 Ceiling() const
+    MYVECTOR3 Ceiling() const
     {
-        return MYVECTOR2(DirectX::XMVectorCeiling(this->vector));
+        return MYVECTOR3(DirectX::XMVectorCeiling(this->vector));
     }
     // 数値を切り捨てて整数にする
-    MYVECTOR2 Floor() const
+    MYVECTOR3 Floor() const
     {
-        return MYVECTOR2(DirectX::XMVectorFloor(this->vector));
+        return MYVECTOR3(DirectX::XMVectorFloor(this->vector));
     }
     // 符号を反転させる
-    MYVECTOR2 Negate() const
+    MYVECTOR3 Negate() const
     {
-        return MYVECTOR2(DirectX::XMVectorNegate(this->vector));
+        return MYVECTOR3(DirectX::XMVectorNegate(this->vector));
     }
     // 最も近い整数に丸める
-    MYVECTOR2 Round() const
+    MYVECTOR3 Round() const
     {
-        return MYVECTOR2(DirectX::XMVectorRound(this->vector));
+        return MYVECTOR3(DirectX::XMVectorRound(this->vector));
     }
     // 0.0f ～ 1.0fに納める
-    MYVECTOR2 Saturate() const
+    MYVECTOR3 Saturate() const
     {
-        return MYVECTOR2(DirectX::XMVectorSaturate(this->vector));
+        return MYVECTOR3(DirectX::XMVectorSaturate(this->vector));
     }
     // 平方根を計算
-    MYVECTOR2 Sqrt() const
+    MYVECTOR3 Sqrt() const
     {
-        return MYVECTOR2(DirectX::XMVectorSqrt(this->vector));
+        return MYVECTOR3(DirectX::XMVectorSqrt(this->vector));
     }
     float Sum() const
     {
@@ -129,76 +129,76 @@ public:
     }
 
     // クランプ
-    MYVECTOR2 Clamp(MYVECTOR2 min, MYVECTOR2 max) const
+    MYVECTOR3 Clamp(MYVECTOR3 min, MYVECTOR3 max) const
     {
         return DirectX::XMVectorClamp(this->vector, min.GetVector(), max.GetVector());
     }
-    MYVECTOR2 Min(MYVECTOR2 min) const
+    MYVECTOR3 Min(MYVECTOR3 min) const
     {
         return DirectX::XMVectorMin(this->vector, min.GetVector());
     }
-    MYVECTOR2 Max(MYVECTOR2 max) const
+    MYVECTOR3 Max(MYVECTOR3 max) const
     {
         return DirectX::XMVectorMax(this->vector, max.GetVector());
     }
     // 剰余演算
-    MYVECTOR2 Mod(MYVECTOR2 mVec) const
+    MYVECTOR3 Mod(MYVECTOR3 mVec) const
     {
         // TODO エラー発生するように変更
-        if (mVec.LengthSp() == 0.0f) return MYVECTOR2();
+        if (mVec.LengthSp() == 0.0f) return MYVECTOR3();
 
         return DirectX::XMVectorMod(this->vector, mVec.GetVector());
     }
     // 累乗
-    MYVECTOR2 Pow(MYVECTOR2 mVec) const
+    MYVECTOR3 Pow(MYVECTOR3 mVec) const
     {
-        return MYVECTOR2(DirectX::XMVectorPow(this->vector, mVec.GetVector()));
+        return MYVECTOR3(DirectX::XMVectorPow(this->vector, mVec.GetVector()));
     }
     // 累乗
-    MYVECTOR2 Pow(float f) const
+    MYVECTOR3 Pow(float f) const
     {
-        return MYVECTOR2(DirectX::XMVectorPow(this->vector, DirectX::XMVectorSet(f, f, f, 0.0f)));
+        return MYVECTOR3(DirectX::XMVectorPow(this->vector, DirectX::XMVectorSet(f, f, f, 0.0f)));
     }
     // 内積計算
-    MYVECTOR2 Dot(MYVECTOR2 mVec) const
+    MYVECTOR3 Dot(MYVECTOR3 mVec) const
     {
-        return MYVECTOR2(DirectX::XMVector3Dot(this->vector, mVec.GetVector()));
+        return MYVECTOR3(DirectX::XMVector3Dot(this->vector, mVec.GetVector()));
     }
     // 外積計算
-    MYVECTOR2 Cross(MYVECTOR2 mVec) const
+    MYVECTOR3 Cross(MYVECTOR3 mVec) const
     {
-        return MYVECTOR2(DirectX::XMVector3Cross(this->vector, mVec.GetVector()));
+        return MYVECTOR3(DirectX::XMVector3Cross(this->vector, mVec.GetVector()));
     }
     // 線形補間
-    MYVECTOR2 Lerp(MYVECTOR2 mVec,float t) const
+    MYVECTOR3 Lerp(MYVECTOR3 mVec,float t) const
     {
-        return MYVECTOR2(DirectX::XMVectorLerp(this->vector, mVec.GetVector(), t));
+        return MYVECTOR3(DirectX::XMVectorLerp(this->vector, mVec.GetVector(), t));
     }
 
     // 加算演算子のオーバーロード
-    MYVECTOR2 const operator+(MYVECTOR2 other)
+    MYVECTOR3 const operator+(MYVECTOR3 other)
     {
-        return MYVECTOR2(DirectX::XMVectorAdd(this->vector, other.GetVector()));
+        return MYVECTOR3(DirectX::XMVectorAdd(this->vector, other.GetVector()));
     }
     // 減算演算子のオーバーロード
-    MYVECTOR2 const operator-(MYVECTOR2 other)
+    MYVECTOR3 const operator-(MYVECTOR3 other)
     {
-        return MYVECTOR2(DirectX::XMVectorSubtract(this->vector, other.GetVector()));
+        return MYVECTOR3(DirectX::XMVectorSubtract(this->vector, other.GetVector()));
     }
     // 乗算演算子のオーバーロード
-    MYVECTOR2 const operator*(MYVECTOR2 other)
+    MYVECTOR3 const operator*(MYVECTOR3 other)
     {
-        return MYVECTOR2(DirectX::XMVectorMultiply(this->vector, other.GetVector()));
+        return MYVECTOR3(DirectX::XMVectorMultiply(this->vector, other.GetVector()));
     }
     // スカラー倍
-    MYVECTOR2 const operator*(float scalar)
+    MYVECTOR3 const operator*(float scalar)
     {
-        return MYVECTOR2(DirectX::XMVectorScale(this->vector, scalar));
+        return MYVECTOR3(DirectX::XMVectorScale(this->vector, scalar));
     }
     // 除算演算子のオーバーロード
-    MYVECTOR2 const operator/(MYVECTOR2 other)
+    MYVECTOR3 const operator/(MYVECTOR3 other)
     {
-        return MYVECTOR2(DirectX::XMVectorDivide(this->vector, other.GetVector()));
+        return MYVECTOR3(DirectX::XMVectorDivide(this->vector, other.GetVector()));
     }
 
 #pragma region VectorXZ
@@ -212,10 +212,10 @@ class T
 {
     T()
     {
-        MYVECTOR2 c = vector;
+        MYVECTOR3 c = vector;
     }
 
-     MYVECTOR2 vector;
+     MYVECTOR3 vector;
 };
 
 // XZ2軸作成
