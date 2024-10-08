@@ -65,7 +65,7 @@ public:
     }
     void ClearToValu(float valu)
     {
-        vector = DirectX::XMVectorSet(valu, valu, valu, 0.0f);
+        vector = DirectX::XMVectorSet(valu, valu, 0.0f, 0.0f);
     }
 
     // 長さを計算
@@ -138,9 +138,7 @@ public:
     // 剰余演算
     MYVECTOR2 Mod(MYVECTOR2 mVec) const
     {
-        // TODO エラー発生するように変更
-        if (mVec.LengthSp() == 0.0f) return MYVECTOR2();
-
+        assert(mVec.LengthSp());
         return DirectX::XMVectorMod(this->vector, mVec.GetVector());
     }
     // 累乗
@@ -192,6 +190,7 @@ public:
     // 除算演算子のオーバーロード
     MYVECTOR2 const operator/(MYVECTOR2 other)
     {
+        assert(other.LengthSp());
         return MYVECTOR2(DirectX::XMVectorDivide(this->vector, other.GetVector()));
     }
 

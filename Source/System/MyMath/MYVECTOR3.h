@@ -145,9 +145,7 @@ public:
     // 剰余演算
     MYVECTOR3 Mod(MYVECTOR3 mVec) const
     {
-        // TODO エラー発生するように変更
-        if (mVec.LengthSp() == 0.0f) return MYVECTOR3();
-
+        assert(mVec.LengthSp());
         return DirectX::XMVectorMod(this->vector, mVec.GetVector());
     }
     // 累乗
@@ -199,6 +197,7 @@ public:
     // 除算演算子のオーバーロード
     MYVECTOR3 const operator/(MYVECTOR3 other)
     {
+        assert(other.LengthSp());
         return MYVECTOR3(DirectX::XMVectorDivide(this->vector, other.GetVector()));
     }
 

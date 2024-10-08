@@ -58,7 +58,7 @@
     <Filter Include="Source\Collision">
       <UniqueIdentifier>{f3360c53-a631-4842-bf90-85d994706bcd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\System\MYVECTOR">
+    <Filter Include="Source\System\MyMath">
       <UniqueIdentifier>{0a394b2c-72c7-4757-bb89-7e97c3a25548}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -237,11 +237,11 @@
     <ClInclude Include="Source\Camera\CameraControllerDerived.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\MYVECTOR\MYVECTOR3.h">
-      <Filter>Source\System\MYVECTOR</Filter>
+    <ClInclude Include="Source\System\MyMath\MYVECTOR2.h">
+      <Filter>Source\System\MyMath</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\MYVECTOR\MYVECTOR2.h">
-      <Filter>Source\System\MYVECTOR</Filter>
+    <ClInclude Include="Source\System\MyMath\MYVECTOR3.h">
+      <Filter>Source\System\MyMath</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
