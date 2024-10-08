@@ -141,9 +141,12 @@ public:
     {
         return DirectX::XMVectorMax(this->vector, max.GetVector());
     }
-    // 整数の除算の余りを求める
+    // 剰余演算
     MYVECTOR3 Mod(MYVECTOR3 mVec) const
     {
+        // TODO エラー発生するように変更
+        if (mVec.LengthSp() == 0.0f) return MYVECTOR3();
+
         return DirectX::XMVectorMod(this->vector, mVec.GetVector());
     }
     // 累乗
