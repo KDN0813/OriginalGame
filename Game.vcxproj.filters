@@ -58,6 +58,9 @@
     <Filter Include="Source\Collision">
       <UniqueIdentifier>{f3360c53-a631-4842-bf90-85d994706bcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\System\MYVECTOR">
+      <UniqueIdentifier>{0a394b2c-72c7-4757-bb89-7e97c3a25548}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -234,7 +237,9 @@
     <ClInclude Include="Source\Camera\CameraControllerDerived.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\InstancingModelAnimationComponent.h" />
+    <ClInclude Include="Source\System\MYVECTOR\MYVECTOR3.h">
+      <Filter>Source\System\MYVECTOR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -374,9 +379,6 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\Collision.cpp">
       <Filter>Source\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\InstancingModelAnimationComponent.cpp">
-      <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

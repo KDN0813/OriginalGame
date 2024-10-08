@@ -167,6 +167,7 @@
     <ClInclude Include="Source\System\HighResolutionTimer.h" />
     <ClInclude Include="Source\System\Logger.h" />
     <ClInclude Include="Source\System\Misc.h" />
+    <ClInclude Include="Source\System\MYVECTOR\MYVECTOR3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp" />
