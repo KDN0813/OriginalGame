@@ -119,7 +119,7 @@ public:
     }
     float Sum() const
     {
-        return DirectX::XMVectorGetX(DirectX::XMVectorSum(DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(1.0f, 1.0f, 1.0f, 0.0))));
+        return DirectX::XMVectorGetX(DirectX::XMVectorSum(DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(1.0f, 1.0f, 0.0f, 0.0))));
     }
 
     // ƒNƒ‰ƒ“ƒv
