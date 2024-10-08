@@ -108,10 +108,7 @@ int Framework::Run()
 #endif // _DEBUG
 
 
-			float elapsed_time = syncInterval == 0
-				? timer.TimeInterval()
-				: syncInterval / 60.0f
-				;
+			float elapsed_time = timer.TimeInterval();
 			Update(elapsed_time);
 			Render(elapsed_time);
 		}
