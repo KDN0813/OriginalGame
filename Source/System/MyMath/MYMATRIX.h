@@ -38,33 +38,20 @@ public:
         MYVECTOR3 forwrd = MYVECTOR3(f4x4._31, f4x4._32, f4x4._33);
         return forwrd;
     }
+    MYVECTOR3 GetTranslation()
+    {
+        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
+        MYVECTOR3 translation = MYVECTOR3(f4x4._41, f4x4._42, f4x4._43);
+        return translation;
+    }
+    void SetMatrix(DirectX::XMMATRIX matrix) { this->matrix = matrix; }
+    void SetFlaot4x4(DirectX::XMFLOAT4X4 f4x4)
+    {
+        this->matrix = DirectX::XMLoadFloat4x4(&f4x4);
+    }
+    // 単位ベクトルに設定
+    void SetIdentity() { this->matrix = DirectX::XMMatrixIdentity(); }
 
-    //// 加算演算子のオーバーロード
-    //MYMATRIX const operator+(MYMATRIX other)
-    //{
-    //    return MYMATRIX(DirectX::XMVectorAdd(matrix, other.GetVector()));
-    //}
-    //// 減算演算子のオーバーロード
-    //MYMATRIX const operator-(MYMATRIX other)
-    //{
-    //    return MYMATRIX(DirectX::XMVectorSubtract(matrix, other.GetVector()));
-    //}
-    //// 乗算演算子のオーバーロード
-    //MYMATRIX const operator*(MYMATRIX other)
-    //{
-    //    return MYMATRIX(DirectX::XMVectorMultiply(matrix, other.GetVector()));
-    //}
-    //// スカラー倍
-    //MYMATRIX const operator*(float scalar)
-    //{
-    //    return MYMATRIX(DirectX::XMVectorScale(matrix, scalar));
-    //}
-    //// 除算演算子のオーバーロード
-    //MYMATRIX const operator/(MYMATRIX other)
-    //{
-    //    assert(other.LengthSp());
-    //    return MYMATRIX(DirectX::XMVectorDivide(matrix, other.GetVector()));
-    //}
 private:
     alignas(16) DirectX::XMMATRIX matrix;
 };
