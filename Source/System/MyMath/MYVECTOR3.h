@@ -1,6 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#include "MYVECTOR2.h"
 
 class MYVECTOR3
 {
@@ -15,7 +14,7 @@ public:
         this->vector = DirectX::XMVectorSet(f3.x, f3.y, f3.z, 0.0f);
     }
     MYVECTOR3(DirectX::XMVECTOR vec) : vector(vec) {}
-    MYVECTOR3(const MYVECTOR3& my_vector) :vector(my_vector.vector) {}; // コピーコンストラクタ
+    MYVECTOR3(const MYVECTOR3& mVec) :vector(mVec.vector) {}; // コピーコンストラクタ
 
     DirectX::XMVECTOR GetVector()
     {
@@ -201,114 +200,18 @@ public:
         return MYVECTOR3(DirectX::XMVectorDivide(this->vector, other.GetVector()));
     }
 
-#pragma region VectorXZ
-    // TODO 作成する
-    
-    MYVECTOR2 GetVecXZ()
+#pragma region VectorXZ    
+    MYVECTOR3 GetMyVectorXZ()
     {
-        return MYVECTOR2(GetX(), GetZ());
+        return MYVECTOR3(GetX(), 0.0f, GetZ());
     }
-    DirectX::XMFLOAT2 GetFlaot2XZ()
+    DirectX::XMVECTOR GetVectorXZ()
     {
-        return GetVecXZ().GetFlaot2();
+        return GetMyVectorXZ().GetVector();
     }
-
-    // 長さを計算
-    float LengthXZ() const
+    DirectX::XMFLOAT3 GetFlaot3XZ()
     {
-        return MYVECTOR2(GetX(), GetZ()).Length();
-    };
-    float LengthSpXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).LengthSp();
-    }
-    // 正規化
-    MYVECTOR2 NormalizeXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Normalize();
-    }
-    // 各値の絶対値を計算
-    MYVECTOR2 AbsXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Abs();
-    }
-    // 数値を切り上げて整数にする
-    MYVECTOR2 CeilingXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Ceiling();
-    }
-    // 数値を切り捨てて整数にする
-    MYVECTOR2 FloorXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Floor();
-    }
-    // 符号を反転させる
-    MYVECTOR2 NegateXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Negate();
-    }
-    // 最も近い整数に丸める
-    MYVECTOR2 RoundXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Round();
-    }
-    // 0.0f ～ 1.0fに納める
-    MYVECTOR2 SaturateXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Saturate();
-    }
-    // 平方根を計算
-    MYVECTOR2 SqrtXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Sqrt();
-    }
-    float SumXZ() const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Sum();
-    }
-
-    // クランプ
-    MYVECTOR2 ClampXZ(MYVECTOR2 min, MYVECTOR2 max) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Clamp(min, max);
-    }
-    MYVECTOR2 MinXZ(MYVECTOR2 min) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Min(min);
-    }
-    MYVECTOR2 MaxXZ(MYVECTOR2 max) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Max(max);
-    }
-    // 剰余演算
-    MYVECTOR2 ModXZ(MYVECTOR2 mVec) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Max(mVec);
-    }
-    // 累乗
-    MYVECTOR2 PowXZ(MYVECTOR2 mVec) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Pow(mVec);
-    }
-    // 累乗
-    MYVECTOR2 PowXZ(float f) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Pow(f);
-    }
-    // 内積計算
-    MYVECTOR2 DotXZ(MYVECTOR2 mVec) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Dot(mVec);
-    }
-    // 外積計算
-    MYVECTOR2 CrossXZ(MYVECTOR2 mVec) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Cross(mVec);
-    }
-    // 線形補間
-    MYVECTOR2 LerpXZ(MYVECTOR2 mVec, float t) const
-    {
-        return MYVECTOR2(GetX(), GetZ()).Lerp(mVec, t);
+        return GetMyVectorXZ().GetFlaot3();
     }
 #pragma endregion VectorXZ
 private:

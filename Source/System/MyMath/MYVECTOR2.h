@@ -14,7 +14,7 @@ public:
         this->vector = DirectX::XMVectorSet(f2.x, f2.y, 0.0f, 0.0f);
     }
     MYVECTOR2(DirectX::XMVECTOR vec) : vector(vec) {}
-    MYVECTOR2(const MYVECTOR2& my_vector) :vector(my_vector.vector) {}; // コピーコンストラクタ
+    MYVECTOR2(const MYVECTOR2& mVec) :vector(mVec.vector) {}; // コピーコンストラクタ
 
     DirectX::XMVECTOR GetVector()
     {
