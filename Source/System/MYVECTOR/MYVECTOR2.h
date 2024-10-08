@@ -1,17 +1,17 @@
 #pragma once
 #include <DirectXMath.h>
 
-class MYVECTOR2 
+class MYVECTOR2
 {
 public:
     MYVECTOR2() : vector(DirectX::XMVectorZero()) {}
-    MYVECTOR2(float x, float y = 0.0f, float z = 0.0f)
+    MYVECTOR2(float x, float y = 0.0f)
     {
-        this->vector = DirectX::XMVectorSet(x, y, z, 0.0f);
+        this->vector = DirectX::XMVectorSet(x, y, 0.0f, 0.0f);
     }
-    MYVECTOR2(DirectX::XMFLOAT3 f3)
+    MYVECTOR2(DirectX::XMFLOAT2 f2)
     {
-        this->vector = DirectX::XMVectorSet(f3.x, f3.y, f3.z, 0.0f);
+        this->vector = DirectX::XMVectorSet(f2.x, f2.y, 0.0f, 0.0f);
     }
     MYVECTOR2(DirectX::XMVECTOR vec) : vector(vec) {}
     MYVECTOR2(const MYVECTOR2& my_vector) :vector(my_vector.vector) {}; // コピーコンストラクタ
@@ -20,21 +20,21 @@ public:
     {
         return this->vector;
     }
-    DirectX::XMFLOAT3 GetFlaot2()
+    DirectX::XMFLOAT2 GetFlaot2()
     {
-        DirectX::XMFLOAT3 f3;
-        DirectX::XMStoreFloat3(&f3, this->vector);
-        return f3;
+        DirectX::XMFLOAT2 f2;
+        DirectX::XMStoreFloat2(&f2, this->vector);
+        return f2;
     }
-    float GetX() const 
+    float GetX() const
     {
         return DirectX::XMVectorGetX(this->vector);
     }
-    float GetY() const 
+    float GetY() const
     {
         return DirectX::XMVectorGetY(this->vector);
     }
-    float GetZ() const 
+    float GetZ() const
     {
         return DirectX::XMVectorGetZ(this->vector);
     }
@@ -42,51 +42,45 @@ public:
     {
         this->vector = vec;
     }
-    void SetVector(DirectX::XMFLOAT3 f3)
+    void SetVector(DirectX::XMFLOAT2 f2)
     {
-        this->vector = DirectX::XMLoadFloat3(&f3);
+        this->vector = DirectX::XMLoadFloat2(&f2);
     }
     void SetX(float x)
     {
-        DirectX::XMFLOAT3 f3 = GetFlaot2();
-        f3.x = x;
-        this->vector = DirectX::XMLoadFloat3(&f3);
+        DirectX::XMFLOAT2 f2 = GetFlaot2();
+        f2.x = x;
+        this->vector = DirectX::XMLoadFloat2(&f2);
     }
     void SetY(float y)
     {
-        DirectX::XMFLOAT3 f3 = GetFlaot2();
-        f3.y = y;
-        this->vector = DirectX::XMLoadFloat3(&f3);
-    }
-    void SetZ(float z)
-    {
-        DirectX::XMFLOAT3 f3 = GetFlaot2();
-        f3.z = z;
-        this->vector = DirectX::XMLoadFloat3(&f3);
+        DirectX::XMFLOAT2 f2 = GetFlaot2();
+        f2.y = y;
+        this->vector = DirectX::XMLoadFloat2(&f2);
     }
 
     void ZeroClear()
     {
         vector = DirectX::XMVectorZero();
-    }    
+    }
     void ClearToValu(float valu)
     {
         vector = DirectX::XMVectorSet(valu, valu, valu, 0.0f);
     }
 
     // 長さを計算
-    float Length() const 
+    float Length() const
     {
-        return DirectX::XMVectorGetX(DirectX::XMVector3Length(this->vector));
+        return DirectX::XMVectorGetX(DirectX::XMVector2Length(this->vector));
     }
     float LengthSp() const
     {
-        return DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(this->vector));
+        return DirectX::XMVectorGetX(DirectX::XMVector2LengthSq(this->vector));
     }
     // 正規化
     MYVECTOR2 Normalize() const
     {
-        return MYVECTOR2(DirectX::XMVector3Normalize(this->vector));
+        return MYVECTOR2(DirectX::XMVector2Normalize(this->vector));
     }
     // 各値の絶対値を計算
     MYVECTOR2 Abs() const
@@ -157,20 +151,20 @@ public:
     // 累乗
     MYVECTOR2 Pow(float f) const
     {
-        return MYVECTOR2(DirectX::XMVectorPow(this->vector, DirectX::XMVectorSet(f, f, f, 0.0f)));
+        return MYVECTOR2(DirectX::XMVectorPow(this->vector, DirectX::XMVectorSet(f, f, 0.0f, 0.0f)));
     }
     // 内積計算
     MYVECTOR2 Dot(MYVECTOR2 mVec) const
     {
-        return MYVECTOR2(DirectX::XMVector3Dot(this->vector, mVec.GetVector()));
+        return MYVECTOR2(DirectX::XMVector2Dot(this->vector, mVec.GetVector()));
     }
     // 外積計算
     MYVECTOR2 Cross(MYVECTOR2 mVec) const
     {
-        return MYVECTOR2(DirectX::XMVector3Cross(this->vector, mVec.GetVector()));
+        return MYVECTOR2(DirectX::XMVector2Cross(this->vector, mVec.GetVector()));
     }
     // 線形補間
-    MYVECTOR2 Lerp(MYVECTOR2 mVec,float t) const
+    MYVECTOR2 Lerp(MYVECTOR2 mVec, float t) const
     {
         return MYVECTOR2(DirectX::XMVectorLerp(this->vector, mVec.GetVector(), t));
     }
@@ -201,21 +195,6 @@ public:
         return MYVECTOR2(DirectX::XMVectorDivide(this->vector, other.GetVector()));
     }
 
-#pragma region VectorXZ
-    // TODO 作成する
-#pragma endregion VectorXZ
 private:
     alignas(16) DirectX::XMVECTOR vector;  // 内部でXMVECTORを保持
 };
-
-class T
-{
-    T()
-    {
-        MYVECTOR2 c = vector;
-    }
-
-     MYVECTOR2 vector;
-};
-
-// XZ2軸作成
