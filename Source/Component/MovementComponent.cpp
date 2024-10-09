@@ -38,115 +38,118 @@ void MovementComponent::Update(float elapsed_time)
 	// ステージとのレイキャスト
     if(is_stage_raycas)
     {
-		auto gravity = owner->EnsureComponentValid<GravityComponent>(this->gravity_Wptr);
-		if (!gravity) return;
-
 		auto stage_object = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
-		if (!stage_object) return;
 		auto stage_model = stage_object->EnsureComponentValid<ModelComponent>(this->stage_model_Wptr);
-
-		// Y軸の下方向に向けてレイキャストを行う
+		if (stage_model && stage_object)
 		{
-			// 現在の位置
-			const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
-
-			// 垂直方向の移動量
-			float my = this->velocity.y;
-
-			if (my < 0.0f)
+			auto gravity = owner->EnsureComponentValid<GravityComponent>(this->gravity_Wptr);
+			// 地面方向にレイキャストを行う
+			if (gravity)
 			{
-				// レイの開始位置と終点位置
-				DirectX::XMFLOAT3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
-				DirectX::XMFLOAT3 end = { current_pos.x,current_pos.y + my,current_pos.z };
+				// Y軸の下方向に向けてレイキャストを行う
+				{
+					// 現在の位置
+					const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
+
+					// 垂直方向の移動量
+					float my = this->velocity.y;
+
+					if (my < 0.0f)
+					{
+						// レイの開始位置と終点位置
+						DirectX::XMFLOAT3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
+						DirectX::XMFLOAT3 end = { current_pos.x,current_pos.y + my,current_pos.z };
 
 #ifdef _DEBUG	// デバッグプリミティブ表示
-				{
-					DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-					debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-					debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
-				}
+						{
+							DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+							debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+							debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
+						}
 #endif // _DEBUG	デバッグプリミティブ表示
 
-				// レイキャストによる地面判定
-				HitResult hit;
-				if (Collision::IntersectRayVsModel(start, end, stage_model.get(), hit))
-				{
-					transform->SetPosition(hit.position);
-					gravity->SetIsGrounded(true);
-				}
-				else
-				{
-					DirectX::XMFLOAT3 position = current_pos;
-					position.y += my;
-					transform->SetPosition(position);
+						// レイキャストによる地面判定
+						HitResult hit;
+						if (Collision::IntersectRayVsModel(start, end, stage_model.get(), hit))
+						{
+							transform->SetPosition(hit.position);
+							gravity->SetIsGrounded(true);
+						}
+						else
+						{
+							DirectX::XMFLOAT3 position = current_pos;
+							position.y += my;
+							transform->SetPosition(position);
 
-					gravity->SetIsGrounded(false);
+							gravity->SetIsGrounded(false);
+						}
+					}
 				}
 			}
-		}
 
-		// 前方方向にレイキャストを行う
-		{
-			// 現在の位置
-			const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
-
-			float velocity_lengthXZ = sqrtf(this->velocity.x * this->velocity.x + this->velocity.z * this->velocity.z);
-			if (velocity_lengthXZ > 0.0f)
+			// 前方方向にレイキャストを行う
 			{
-				// 水平方向の移動量
-				float mx = this->velocity.x;
-				float mz = this->velocity.z;
+				// 現在の位置
+				const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
 
-				// レイの開始位置と終点位置
-				MYVECTOR3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
-				MYVECTOR3 end = { current_pos.x + mx,current_pos.y + step_offset,current_pos.z + mz };
+				float velocity_lengthXZ = sqrtf(this->velocity.x * this->velocity.x + this->velocity.z * this->velocity.z);
+				if (velocity_lengthXZ > 0.0f)
+				{
+					// 水平方向の移動量
+					float mx = this->velocity.x;
+					float mz = this->velocity.z;
+
+					// レイの開始位置と終点位置
+					MYVECTOR3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
+					MYVECTOR3 end = { current_pos.x + mx,current_pos.y + step_offset,current_pos.z + mz };
 
 #ifdef _DEBUG
-				// デバッグプリミティブ表示
-				{
-					DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-					debug_render->DrawSphere(start.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
-					debug_render->DrawSphere(end.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
-				}
+					// デバッグプリミティブ表示
+					{
+						DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+						debug_render->DrawSphere(start.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+						debug_render->DrawSphere(end.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
+					}
 #endif // _DEBUG
 
-				// レイキャスト壁判定
-				HitResult hit;
-				if (Collision::IntersectRayVsModel(start, end, stage_model.get(), hit))
-				{
-					// 壁からレイの終点までのベクトル
-					MYVECTOR3 vecSE = end - hit.position;
-
-					// 壁の法線
-					MYVECTOR3& normal = hit.normal;
-
-					// 入射ベクトルを法線に射影
-					MYVECTOR3 dot = (vecSE.Negate()).Dot(normal) * 1.1f;
-
-					// 補正位置の計算
-					MYVECTOR3 correction_positon = normal * dot + end;
-
-					// 壁ずり方向へのレイキャスト
-					HitResult hit2;
-					if (!Collision::IntersectRayVsModel(start, correction_positon, stage_model.get(), hit2))
+					// レイキャスト壁判定
+					HitResult hit;
+					if (Collision::IntersectRayVsModel(start, end, stage_model.get(), hit))
 					{
-						MYVECTOR3 positon = correction_positon;
-						positon.SetY(current_pos.y);
-						transform->SetPosition(positon);
+						// 壁からレイの終点までのベクトル
+						MYVECTOR3 vecSE = end - hit.position;
+
+						// 壁の法線
+						MYVECTOR3& normal = hit.normal;
+
+						// 入射ベクトルを法線に射影
+						MYVECTOR3 dot = (vecSE.Negate()).Dot(normal) * 1.1f;
+
+						// 補正位置の計算
+						MYVECTOR3 correction_positon = normal * dot + end;
+
+						// 壁ずり方向へのレイキャスト
+						HitResult hit2;
+						if (!Collision::IntersectRayVsModel(start, correction_positon, stage_model.get(), hit2))
+						{
+							MYVECTOR3 positon = correction_positon;
+							positon.SetY(current_pos.y);
+							transform->SetPosition(positon);
+						}
+						else
+						{
+							MYVECTOR3 positon = hit2.position;
+							positon.SetY(current_pos.y);
+							transform->SetPosition(positon);
+						}
 					}
 					else
 					{
-						MYVECTOR3 positon = hit2.position;
-						positon.SetY(current_pos.y);
+						DirectX::XMFLOAT3 positon = current_pos;
+						positon.x += mx;
+						positon.z += mz;
 						transform->SetPosition(positon);
 					}
-				}
-				else
-				{
-					DirectX::XMFLOAT3 positon = current_pos;
-					positon.x += mx;
-					positon.z += mz;
-					transform->SetPosition(positon);
 				}
 			}
 		}
