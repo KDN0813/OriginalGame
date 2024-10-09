@@ -113,7 +113,7 @@ public:
         S.SetScalingMatrix(scale);
         R.SetRotationQuaternion(rotation);
         T.SetTranslationMatrix(translation);
-        this->matrix = (S * T * R).GetMatrix();
+        this->matrix = (S * R * T).GetMatrix();
     }
     // ƒ[ƒJƒ‹s—ñ‚Ìİ’è
     void SetLocalMatrix(MYVECTOR3 scale, MYVECTOR3 rooll_pitch_yaw, MYVECTOR3 translation)
