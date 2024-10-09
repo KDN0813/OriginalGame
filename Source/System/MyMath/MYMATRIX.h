@@ -61,6 +61,10 @@ public:
     {
         SetScalingMatrix(mVec3.GetFlaot3());
     }
+    void SetScalingMatrix(float f)
+    {
+        SetScalingMatrix(f, f, f);
+    }
     // 回転行列(オイラー各)の設定
     void SetRotationRollPitchYaw(float roll, float pitch, float yaw)
     {
@@ -144,11 +148,10 @@ public:
     //}
 
     // 乗算演算子のオーバーロード
-    MYMATRIX operator*(MYMATRIX other)
+    MYMATRIX operator*(MYMATRIX other) const
     {
         return MYMATRIX(DirectX::XMMatrixMultiply(this->matrix, other.GetMatrix()));
     }
-
 private:
     alignas(16) DirectX::XMMATRIX matrix;
 };

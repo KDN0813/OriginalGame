@@ -203,10 +203,7 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	// シーン用定数バッファ更新
 	SceneConstantBuffer scene_CB;
 
-	DirectX::XMMATRIX V = DirectX::XMLoadFloat4x4(&rc.view);
-	DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&rc.projection);
-	DirectX::XMStoreFloat4x4(&scene_CB.view_projection, V * P);
-
+	scene_CB.view_projection = rc.view * rc.projection;
 	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
 }
 

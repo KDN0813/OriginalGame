@@ -178,27 +178,27 @@ public:
     }
 
     // 加算演算子のオーバーロード
-    MYVECTOR3 const operator+(MYVECTOR3 other)
+    MYVECTOR3 const operator+(MYVECTOR3 other) const
     {
         return MYVECTOR3(DirectX::XMVectorAdd(this->vector, other.GetVector()));
     }
     // 減算演算子のオーバーロード
-    MYVECTOR3 const operator-(MYVECTOR3 other)
+    MYVECTOR3 const operator-(MYVECTOR3 other) const
     {
         return MYVECTOR3(DirectX::XMVectorSubtract(this->vector, other.GetVector()));
     }
     // 乗算演算子のオーバーロード
-    MYVECTOR3 operator*(MYVECTOR3 other)
+    MYVECTOR3 operator*(MYVECTOR3 other) const
     {
         return MYVECTOR3(DirectX::XMVectorMultiply(this->vector, other.GetVector()));
     }
     // スカラー倍
-    MYVECTOR3 const operator*(float scalar)
+    MYVECTOR3 const operator*(float scalar) const
     {
         return MYVECTOR3(DirectX::XMVectorScale(this->vector, scalar));
     }
     // 除算演算子のオーバーロード
-    MYVECTOR3 const operator/(MYVECTOR3 other)
+    MYVECTOR3 const operator/(MYVECTOR3 other) const
     {
         assert(other.LengthSp());
         return MYVECTOR3(DirectX::XMVectorDivide(this->vector, other.GetVector()));

@@ -233,9 +233,7 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 		// シーン用定数バッファ更新
 		SceneConstantBuffer cbScene;
 
-		DirectX::XMMATRIX V = DirectX::XMLoadFloat4x4(&rc.view);
-		DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&rc.projection);
-		DirectX::XMStoreFloat4x4(&cbScene.viewProjection, V * P);
+		cbScene.viewProjection = rc.view * rc.projection;
 
 		dc->UpdateSubresource(this->sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
 

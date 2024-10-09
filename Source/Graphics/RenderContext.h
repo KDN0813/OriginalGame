@@ -1,10 +1,10 @@
 #pragma once
 
-#include <DirectXMath.h>
+#include "System/MyMath/MYMATRIX.h"
 
 // レンダーコンテキスト
 struct RenderContext
 {
-	DirectX::XMFLOAT4X4		view;		// ビュー行列
-	DirectX::XMFLOAT4X4		projection; // プロジェクション行列
+	MYMATRIX view;			// ビュー行列
+	MYMATRIX projection;	// プロジェクション行列
 };

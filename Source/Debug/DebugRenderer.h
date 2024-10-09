@@ -3,7 +3,7 @@
 #include <vector>
 #include <wrl.h>
 #include <d3d11.h>
-#include <DirectXMath.h>
+#include "System/MyMath/MYMATRIX.h"
 
 // TODO ñΩñºãKë•ìùàÍ
 class DebugRenderer
@@ -14,7 +14,7 @@ public:
 
 public:
 	// ï`âÊé¿çs
-	void Render(ID3D11DeviceContext* context, const DirectX::XMFLOAT4X4& view, const DirectX::XMFLOAT4X4& projection);
+	void Render(ID3D11DeviceContext* context, MYMATRIX view, MYMATRIX projection);
 
 	// ãÖï`âÊ
 	void DrawSphere(const DirectX::XMFLOAT3& center, float radius, const DirectX::XMFLOAT4& color);
@@ -32,7 +32,7 @@ private:
 private:
 	struct CbMesh
 	{
-		DirectX::XMFLOAT4X4	wvp;
+		MYMATRIX	wvp;
 		DirectX::XMFLOAT4	color;
 	};
 

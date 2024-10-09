@@ -131,7 +131,7 @@ DebugRenderer::DebugRenderer(ID3D11Device* device)
 }
 
 // 描画開始
-void DebugRenderer::Render(ID3D11DeviceContext* context, const DirectX::XMFLOAT4X4& view, const DirectX::XMFLOAT4X4& projection)
+void DebugRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view, MYMATRIX projection)
 {
 	// シェーダー設定
 	context->VSSetShader(vertex_shader.Get(), nullptr, 0);
@@ -149,9 +149,7 @@ void DebugRenderer::Render(ID3D11DeviceContext* context, const DirectX::XMFLOAT4
 	context->RSSetState(rasterizerState.Get());
 
 	// ビュープロジェクション行列作成
-	DirectX::XMMATRIX V = DirectX::XMLoadFloat4x4(&view);
-	DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&projection);
-	DirectX::XMMATRIX VP = V * P;
+	MYMATRIX view_projection = view * projection;
 
 	// プリミティブ設定
 	UINT stride = sizeof(DirectX::XMFLOAT3);
@@ -163,15 +161,15 @@ void DebugRenderer::Render(ID3D11DeviceContext* context, const DirectX::XMFLOAT4
 	for (const Sphere& sphere : spheres)
 	{
 		// ワールドビュープロジェクション行列作成
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(sphere.radius, sphere.radius, sphere.radius);
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(sphere.center.x, sphere.center.y, sphere.center.z);
-		DirectX::XMMATRIX W = S * T;
-		DirectX::XMMATRIX WVP = W * VP;
+		MYMATRIX S, T;
+		S.SetScalingMatrix(sphere.radius);
+		T.SetTranslationMatrix(sphere.center);
+		MYMATRIX W = S * T;
 
 		// 定数バッファ更新
-		CbMesh cbMesh;
+		CbMesh cbMesh{};
 		cbMesh.color = sphere.color;
-		DirectX::XMStoreFloat4x4(&cbMesh.wvp, WVP);
+		cbMesh.wvp = W * view_projection;
 
 		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
 		context->Draw(sphereVertexCount, 0);
@@ -183,15 +181,15 @@ void DebugRenderer::Render(ID3D11DeviceContext* context, const DirectX::XMFLOAT4
 	for (const Cylinder& cylinder : cylinders)
 	{
 		// ワールドビュープロジェクション行列作成
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(cylinder.radius, cylinder.height, cylinder.radius);
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(cylinder.position.x, cylinder.position.y, cylinder.position.z);
-		DirectX::XMMATRIX W = S * T;
-		DirectX::XMMATRIX WVP = W * VP;
+		MYMATRIX S, T;
+		S.SetScalingMatrix(cylinder.radius);
+		T.SetTranslationMatrix(cylinder.position);
+		MYMATRIX W = S * T;
 
 		// 定数バッファ更新
-		CbMesh cbMesh;
+		CbMesh cbMesh{};
 		cbMesh.color = cylinder.color;
-		DirectX::XMStoreFloat4x4(&cbMesh.wvp, WVP);
+		cbMesh.wvp = W * view_projection;
 
 		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
 		context->Draw(cylinderVertexCount, 0);

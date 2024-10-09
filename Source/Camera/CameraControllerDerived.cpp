@@ -25,11 +25,11 @@ void DebugCameraController::Update(float elapsed_time)
 	float rotateX = camera->GetRotateX();
 	float rotateY = camera->GetRotateY();
 	float range = camera->GetRange();
-	DirectX::XMFLOAT3 focus = transform->GetPosition();
-	DirectX::XMFLOAT3 eye = camera->GetEye();
+	MYVECTOR3 focus = transform->GetPosition();
+	MYVECTOR3 eye = camera->GetEye();
 
 	// 視線行列を生成
-	DirectX::XMMATRIX V;
+	MYMATRIX V;
 	{
 		DirectX::XMVECTOR up{ DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) };
 		// マウス操作
@@ -50,32 +50,31 @@ void DebugCameraController::Update(float elapsed_time)
 					rotateX = -DirectX::XMConvertToRadians(89.9f);
 
 				// キー移動
-				DirectX::XMFLOAT4X4 vm = camera->GetViewTransform();
-				DirectX::XMFLOAT3 forward(vm._13, vm._23, vm._33);
-				DirectX::XMFLOAT3 right(vm._11, vm._21, vm._31);
+				MYVECTOR3 forward = camera->GetViewTransform().GetForward();
+				MYVECTOR3 right = camera->GetViewTransform().GetRight();
 				if (GetKeyState('W') < 0) 
 				{
-					focus.x += forward.x * 10 * elapsed_time;
-					focus.y += forward.y * 10 * elapsed_time;
-					focus.z += forward.z * 10 * elapsed_time;
+					focus.x += forward.GetX() * 10 * elapsed_time;
+					focus.y += forward.GetY() * 10 * elapsed_time;
+					focus.z += forward.GetZ() * 10 * elapsed_time;
 				}
 				if (GetKeyState('S') < 0) 
 				{
-					focus.x -= forward.x * 10 * elapsed_time;
-					focus.y -= forward.y * 10 * elapsed_time;
-					focus.z -= forward.z * 10 * elapsed_time;
+					focus.x -= forward.GetX() * 10 * elapsed_time;
+					focus.y -= forward.GetY() * 10 * elapsed_time;
+					focus.z -= forward.GetZ() * 10 * elapsed_time;
 				}
 				if (GetKeyState('A') < 0) 
 				{
-					focus.x -= right.x * 10 * elapsed_time;
-					focus.y -= right.y * 10 * elapsed_time;
-					focus.z -= right.z * 10 * elapsed_time;
+					focus.x -= right.GetX() * 10 * elapsed_time;
+					focus.y -= right.GetY() * 10 * elapsed_time;
+					focus.z -= right.GetZ() * 10 * elapsed_time;
 				}
 				if (GetKeyState('D') < 0) 
 				{
-					focus.x += right.x * 10 * elapsed_time;
-					focus.y += right.y * 10 * elapsed_time;
-					focus.z += right.z * 10 * elapsed_time;
+					focus.x += right.GetX() * 10 * elapsed_time;
+					focus.y += right.GetY() * 10 * elapsed_time;
+					focus.z += right.GetZ() * 10 * elapsed_time;
 				}
 				if (GetKeyState('E') < 0) 
 				{
@@ -88,11 +87,9 @@ void DebugCameraController::Update(float elapsed_time)
 			}
 			else if (::GetAsyncKeyState(VK_MBUTTON) & 0x8000)
 			{
-				V = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&eye),
-					DirectX::XMLoadFloat3(&focus),
-					up);
-				DirectX::XMFLOAT4X4 W;
-				DirectX::XMStoreFloat4x4(&W, DirectX::XMMatrixInverse(nullptr, V));
+				V.SetLookAtLH(eye, focus, up);
+
+				MYMATRIX W = V.GetInverse(nullptr);
 				// 平行移動
 				float s = range * 0.035f;
 				float x = moveX * s;

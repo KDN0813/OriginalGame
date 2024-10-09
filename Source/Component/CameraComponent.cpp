@@ -71,8 +71,7 @@ void CameraComponent::SetLookAt(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up)
 void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ)
 {
     // が書く、画面比率、クリップ距離からプロジェクション行列を作成
-    DirectX::XMMATRIX Projection = DirectX::XMMatrixPerspectiveFovLH(fovY, aspect, nearX, farZ);
-    DirectX::XMStoreFloat4x4(&projection_transform, Projection);
+    projection_transform.SetPerspectiveFovLH(fovY, aspect, nearX, farZ);
 }
 
 #ifdef _DEBUG
