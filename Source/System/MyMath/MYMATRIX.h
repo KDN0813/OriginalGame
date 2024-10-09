@@ -120,12 +120,24 @@ public:
         SetWorldMatrix(T, R, S);
     }
     // 逆行列を設定
-    MYMATRIX GetInverse(MYVECTOR3 mVec3)
+    void SetInverse(MYVECTOR3 mVec3)
     {
         this->matrix = DirectX::XMMatrixInverse(mVec3.GetVectorAddress(), this->matrix);
-        return MYMATRIX(this->matrix);
     }
-
+    // 透視投影行列を設定
+    void SetPerspectiveFovLH(float fovY, float aspect, float nearX, float farZ)
+    {
+        this->matrix = DirectX::XMMatrixPerspectiveFovLH(fovY, aspect, nearX, farZ);
+    }
+    // カメラのビュー行列を設定
+    void SetLookAtLH(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up)
+    {
+        this->matrix = DirectX::XMMatrixLookAtLH(eye.GetVector(), focus.GetVector(), up.GetVector());
+    }
+    void SetLookAtLH(DirectX::XMFLOAT3 eye, DirectX::XMFLOAT3 focus, DirectX::XMFLOAT3 up)
+    {
+        this->matrix = DirectX::XMMatrixLookAtLH(MYVECTOR3(eye).GetVector(), MYVECTOR3(focus).GetVector(), MYVECTOR3(up).GetVector());
+    }
 
     // 乗算演算子のオーバーロード
     MYMATRIX operator*(MYMATRIX other)
