@@ -19,31 +19,9 @@ public:
         DirectX::XMFLOAT4X4 f4x4;
         DirectX::XMStoreFloat4x4(&f4x4, this->matrix);
         return f4x4;
-    }
-    MYVECTOR3 GetRight()
-    {
-        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        return MYVECTOR3(f4x4._11, f4x4._12, f4x4._13);
-    }
-    MYVECTOR3 GetUp()
-    {
-        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        return MYVECTOR3(f4x4._21, f4x4._22, f4x4._23);
-    }
-    MYVECTOR3 GetForward()
-    {
-        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        return MYVECTOR3(f4x4._31, f4x4._32, f4x4._33);
-    }
-    //MYVECTOR3 GetTranslation()
-    //{
-    //    DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-    //    MYVECTOR3 translation = MYVECTOR3(f4x4._41, f4x4._42, f4x4._43);
-    //    return translation;
-    //}
-    
+    }    
     void SetMatrix(DirectX::XMMATRIX matrix) { this->matrix = matrix; }
-    void SetFlaot4x4(DirectX::XMFLOAT4X4 f4x4)
+    void SetMatrix(DirectX::XMFLOAT4X4 f4x4)
     {
         this->matrix = DirectX::XMLoadFloat4x4(&f4x4);
     }
@@ -138,6 +116,28 @@ public:
     {
         this->matrix = DirectX::XMMatrixLookAtLH(MYVECTOR3(eye).GetVector(), MYVECTOR3(focus).GetVector(), MYVECTOR3(up).GetVector());
     }
+
+    MYVECTOR3 GetRight()
+    {
+        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
+        return MYVECTOR3(f4x4._11, f4x4._12, f4x4._13);
+    }
+    MYVECTOR3 GetUp()
+    {
+        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
+        return MYVECTOR3(f4x4._21, f4x4._22, f4x4._23);
+    }
+    MYVECTOR3 GetForward()
+    {
+        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
+        return MYVECTOR3(f4x4._31, f4x4._32, f4x4._33);
+    }
+    //MYVECTOR3 GetTranslation()
+    //{
+    //    DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
+    //    MYVECTOR3 translation = MYVECTOR3(f4x4._41, f4x4._42, f4x4._43);
+    //    return translation;
+    //}
 
     // 乗算演算子のオーバーロード
     MYMATRIX operator*(MYMATRIX other)
