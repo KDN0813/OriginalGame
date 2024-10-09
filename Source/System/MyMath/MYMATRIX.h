@@ -23,20 +23,17 @@ public:
     MYVECTOR3 GetRight()
     {
         DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        MYVECTOR3 right = MYVECTOR3(f4x4._11, f4x4._12, f4x4._13);
-        return right;
+        return MYVECTOR3(f4x4._11, f4x4._12, f4x4._13);
     }
     MYVECTOR3 GetUp()
     {
         DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        MYVECTOR3 up = MYVECTOR3(f4x4._21, f4x4._22, f4x4._23);
-        return up;
+        return MYVECTOR3(f4x4._21, f4x4._22, f4x4._23);
     }
     MYVECTOR3 GetForward()
     {
         DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        MYVECTOR3 forwrd = MYVECTOR3(f4x4._31, f4x4._32, f4x4._33);
-        return forwrd;
+        return MYVECTOR3(f4x4._31, f4x4._32, f4x4._33);
     }
     //MYVECTOR3 GetTranslation()
     //{
@@ -44,6 +41,7 @@ public:
     //    MYVECTOR3 translation = MYVECTOR3(f4x4._41, f4x4._42, f4x4._43);
     //    return translation;
     //}
+    
     void SetMatrix(DirectX::XMMATRIX matrix) { this->matrix = matrix; }
     void SetFlaot4x4(DirectX::XMFLOAT4X4 f4x4)
     {
@@ -103,6 +101,11 @@ public:
         SetRotationRollPitchYaw(mVec3.GetFlaot3());
     }
 
+    // ‹ts—ñ‚ðŽæ“¾
+    MYMATRIX GetInverse(MYVECTOR3 mVec3)
+    {
+        return MYMATRIX(DirectX::XMMatrixInverse(mVec3.GetVectorAddress(), this->matrix));
+    }
     // Worlds—ñ‚ÌÝ’è
     void SetWorldMatrix(MYMATRIX translation, MYMATRIX rotation, MYMATRIX scale)
     {
@@ -115,6 +118,12 @@ public:
         R.SetRotationRollPitchYaw(angle);
         S.SetScalingMatrix(scale);
         SetWorldMatrix(T, R, S);
+    }
+    // ‹ts—ñ‚ðÝ’è
+    MYMATRIX GetInverse(MYVECTOR3 mVec3)
+    {
+        this->matrix = DirectX::XMMatrixInverse(mVec3.GetVectorAddress(), this->matrix);
+        return MYMATRIX(this->matrix);
     }
 
 
