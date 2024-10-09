@@ -84,6 +84,10 @@ public:
     {
         return MYMATRIX(DirectX::XMMatrixInverse(mVec3.GetVectorAddress(), this->matrix));
     }
+    MYMATRIX GetInverse(DirectX::XMVECTOR* vec)
+    {
+        return MYMATRIX(DirectX::XMMatrixInverse(vec, this->matrix));
+    }
     // WorldçsóÒÇÃê›íË
     void SetWorldMatrix(MYMATRIX translation, MYMATRIX rotation, MYMATRIX scale)
     {

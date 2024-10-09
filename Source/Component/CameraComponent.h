@@ -1,6 +1,6 @@
 #pragma once
-#include <DirectXMath.h>
 #include <memory>
+#include "System/MyMath/MYMATRIX.h"
 #include "Component.h"
 #include "Camera/CameraController.h"
 
@@ -34,7 +34,7 @@ public:
 	void SetMainCamera();
 
 	// 指定方向を向く
-	void SetLookAt(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up);
+	void SetLookAt(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up);
 	// パースペクティブ設定
 	void SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ);
 	// カメラの距離設定
@@ -44,42 +44,42 @@ public:
 	// X軸回転度設定
 	void SetRotateX(float rotateX) { this->rotateX = rotateX; }
 	// プロジェクション行列設定
-	void SetProjectionTransform(DirectX::XMFLOAT4X4	projection_transform) { this->projection_transform = projection_transform; }
+	void SetProjectionTransform(MYMATRIX projection_transform) { this->projection_transform = projection_transform; }
 	// メインカメラフラグの設定
 	void SetIsMainCamera(bool is_main_camera) { this->is_main_camera = is_main_camera; }
 
 	// カメラの距離取得
-	const float& GetRange() const { return this->range; }
+	float GetRange() { return this->range; }
 	// Y軸回転度取得
-	const float& GetRotateY() const { return this->rotateY; }
+	float GetRotateY() { return this->rotateY; }
 	// X軸回転度取得
-	const float& GetRotateX() const { return this->rotateX; }
+	float GetRotateX() { return this->rotateX; }
 	// 画角取得
-	const float& GetFovY() const { return this->fovY; }
+	float GetFovY() { return this->fovY; }
 	// アスペクト比取得
-	const float& GetAspect() const { return this->aspect; }
+	float GetAspect() { return this->aspect; }
 	// ニアクリップ値取得
-	const float& GetNearZ() const { return this->nearZ; }
+	float GetNearZ() { return this->nearZ; }
 	// ファークリップ値取得
-	const float& GetFarZ() const { return this->farZ; }
+	float GetFarZ() { return this->farZ; }
 	// ビュー行列取得
-	const DirectX::XMFLOAT4X4& GetViewTransform() const { return this->view_transform; }
+	MYMATRIX GetViewTransform() { return this->view_transform; }
 	// プロジェクション行列取得
-	const DirectX::XMFLOAT4X4& GetProjectionTransform() const { return this->projection_transform; }
+	MYMATRIX GetProjectionTransform() { return this->projection_transform; }
 	// 視点取得
-	const DirectX::XMFLOAT3& GetEye() const { return this->eye; }
+	MYVECTOR3 GetEye() { return this->eye; }
 	// 注視店取得
-	const DirectX::XMFLOAT3& GetFocus() const { return this->focus; }
+	MYVECTOR3 GetFocus() { return this->focus; }
 	// 上方向取得
-	const DirectX::XMFLOAT3& GetUp() const { return this->up; }
+	MYVECTOR3 GetUp() { return this->world_transform.GetUp() ; }
 	// 前方向取得
-	const DirectX::XMFLOAT3& GetFront() const { return this->front; }
+	MYVECTOR3 GetFront() { return this->world_transform.GetForward(); }
 	// 右方向取得
-	const DirectX::XMFLOAT3& GetRight() const { return this->right; }
+	MYVECTOR3 GetRight() { return this->world_transform.GetRight(); }
 	// ターゲット取得
-	const DirectX::XMFLOAT3& GetTarget() const { return this->target; }
+	MYVECTOR3 GetTarget() { return this->target; }
 	// メインカメラであるか
-	const bool& GetIsMainCamera() { return this->is_main_camera; }
+	bool GetIsMainCamera() { return this->is_main_camera; }
 
 private:
 	float					fovY = DirectX::XMConvertToRadians(45);
@@ -87,15 +87,13 @@ private:
 	float					nearZ = 0.1f;
 	float					farZ = 1000.0f;
 
-	DirectX::XMFLOAT3		eye = DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f);
-	DirectX::XMFLOAT3		focus = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	DirectX::XMFLOAT3		up = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
-	DirectX::XMFLOAT3		front = DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f);
-	DirectX::XMFLOAT3		right = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
-	DirectX::XMFLOAT3		target = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	MYVECTOR3		eye = MYVECTOR3(0.0f, 0.0f, -1.0f);
+	MYVECTOR3		focus = MYVECTOR3(0.0f, 0.0f, 0.0f);
+	MYVECTOR3		target = MYVECTOR3(0.0f, 0.0f, 0.0f);
 
-	DirectX::XMFLOAT4X4		view_transform = {};
-	DirectX::XMFLOAT4X4		projection_transform = {};
+	MYMATRIX		world_transform = {};
+	MYMATRIX		view_transform = {};
+	MYMATRIX		projection_transform = {};
 
 	float range = 1.0f;
 	float rotateY = 0.0f;

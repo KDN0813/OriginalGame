@@ -20,9 +20,9 @@ void CameraComponent::SetCameraController(std::unique_ptr<CameraControllerBase> 
 void CameraComponent::Start()
 {
     SetLookAt(
-        DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f),
-        DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-        DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
+        MYVECTOR3(0.0f, 0.0f, -1.0f),
+        MYVECTOR3(0.0f, 0.0f, 0.0f),
+        MYVECTOR3(0.0f, 1.0f, 0.0f)
     );
 }
 
@@ -38,27 +38,16 @@ void CameraComponent::Update(float elapsed_time)
         this->camera_controller->Update(elapsed_time);
     }
     auto owner = GetOwner();
+    if (!owner) return;
     auto transform = owner->EnsureComponentValid<Transform3DComponent>(transform_Wptr);
-
     target = transform ? transform->GetPosition() : DirectX::XMFLOAT3();
 
     float sx = ::sinf(rotateX), cx = ::cosf(rotateX);
     float sy = ::sinf(rotateY), cy = ::cosf(rotateY);
-    DirectX::XMFLOAT3 front =
-    {
-        -cx * sy,
-        -sx,
-        -cx * cy
-    };
-
-    DirectX::XMFLOAT3 set_eye =
-    {
-        target.x - front.x * range,
-        target.y - front.y * range,
-        target.z - front.z * range
-    };
-
-    SetLookAt(set_eye, target, DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
+    MYVECTOR3 front = MYVECTOR3(-cx * sy, -sx, -cx * cy);
+    MYVECTOR3 set_eye = target - front * range;
+    MYVECTOR3 up = MYVECTOR3(0.0f, 1.0f, 0.0f);
+    SetLookAt(set_eye, target, up);
 }
 
 void CameraComponent::SetMainCamera()
@@ -66,32 +55,13 @@ void CameraComponent::SetMainCamera()
     this->camera_manager->SetMainCamera(this);
 }
 
-void CameraComponent::SetLookAt(const DirectX::XMFLOAT3& eye, const DirectX::XMFLOAT3& focus, const DirectX::XMFLOAT3& up)
+void CameraComponent::SetLookAt(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up)
 {
     // 視点、中視点、上方向からビューを行列を作成
-    DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&eye);
-    DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&focus);
-    DirectX::XMVECTOR Up = DirectX::XMLoadFloat3(&up);
-    DirectX::XMMATRIX View = DirectX::XMMatrixLookAtLH(Eye, Focus, Up);
-    DirectX::XMStoreFloat4x4(&view_transform, View);
+    view_transform.SetLookAtLH(eye, focus, up);
 
     // ビューを逆行列化し、ワールド行列に戻す
-    DirectX::XMMATRIX World = DirectX::XMMatrixInverse(nullptr, View);
-    DirectX::XMFLOAT4X4 world;
-    DirectX::XMStoreFloat4x4(&world, World);
-
-    // カメラ方向を取り出す
-    this->right.x = world._11;
-    this->right.y = world._12;
-    this->right.z = world._13;
-
-    this->up.x = world._21;
-    this->up.y = world._22;
-    this->up.z = world._23;
-
-    this->front.x = world._31;
-    this->front.y = world._32;
-    this->front.z = world._33;
+    world_transform = view_transform.GetInverse(nullptr);
 
     // 視点、注視点を保存
     this->eye = eye;
