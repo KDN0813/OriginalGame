@@ -248,6 +248,8 @@ void ModelAnimationComponent::UpdateAnimationState()
 
 void ModelAnimationComponent::SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time)
 {
+	if (!this->anime_state_pool.size()) return;
+
 	auto& anime_state = this->anime_state_pool[anime_index];
 	anime_state.loop = loop;
 	anime_state.transition_ready_time = transition_ready_time;
@@ -255,6 +257,7 @@ void ModelAnimationComponent::SetAnimationState(AnimeIndex anime_index, bool loo
 
 void ModelAnimationComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time)
 {
+	if (!this->anime_state_pool.size()) return;
 	auto& transition_info_pool = this->anime_state_pool[anime_index].transition_info_pool;
 	// 遷移するアニメーションステート
 	auto& transition_info = transition_info_pool.emplace_back();
@@ -274,24 +277,27 @@ void ModelAnimationComponent::DrawDebugGUI()
 	int& anime_index = this->current_animation_index;
 	if (anime_index < 0) return;
 
-	const auto& animation = model_resource->GetAnimations()[anime_index];
-
-	std::string play_anime_name = this->animation_name_pool[anime_index];
-	ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
-	ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
-	if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
+	if (model_resource->GetAnimations().size())
 	{
-		auto& anime_state = this->anime_state_pool[anime_index];
-		PlayAnimation(anime_state, 0.0f);
+		const auto& animation = model_resource->GetAnimations()[anime_index];
+
+		std::string play_anime_name = this->animation_name_pool[anime_index];
+		ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
+		ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
+		if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
+		{
+			auto& anime_state = this->anime_state_pool[anime_index];
+			PlayAnimation(anime_state, 0.0f);
+		}
+		ImGui::Checkbox("Animation Loop Flag", &this->animation_loop_flag);
+
+		ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
+		ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
+		ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
+
+		if (this->is_draw_deletail) DrawDetail();
+		else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
 	}
-	ImGui::Checkbox("Animation Loop Flag", &this->animation_loop_flag);
-
-	ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
-	ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
-	ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
-
-	if (this->is_draw_deletail) DrawDetail();
-	else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
 }
 
 void ModelAnimationComponent::DrawDetail()
