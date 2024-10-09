@@ -152,6 +152,11 @@ public:
     {
         return MYMATRIX(DirectX::XMMatrixMultiply(this->matrix, other.GetMatrix()));
     }
+    MYMATRIX operator*=(MYMATRIX other)
+    {
+        this->matrix = DirectX::XMMatrixMultiply(this->matrix, other.GetMatrix());
+        return *this;
+    }
 private:
     alignas(16) DirectX::XMMATRIX matrix;
 };
