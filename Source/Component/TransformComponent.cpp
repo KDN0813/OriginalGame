@@ -1,6 +1,8 @@
 #include "TransformComponent.h"
 #include <imgui.h>
 
+#include "Debug/DebugManager.h"
+
 void Transform3DComponent::Update(float elapsed_time)
 {
 	// ’l‚ª•ÏX‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Îˆ—‚µ‚È‚¢
@@ -14,6 +16,11 @@ void Transform3DComponent::Update(float elapsed_time)
 	DirectX::XMMATRIX W = S * R * T;
 	DirectX::XMStoreFloat4x4(&this->transform, W);
 	this->change_value = false;
+
+	{
+		DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+		debug_render->DrawSphere(position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+	}
 }
 
 const DirectX::XMVECTOR Transform3DComponent::AddPositionVec(const DirectX::XMVECTOR& vec)
