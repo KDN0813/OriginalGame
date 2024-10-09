@@ -113,7 +113,9 @@ bool Collision::IntersectRayVsModel(
 )
 {
     // ワールド空間のレイの長さ
-    MYVECTOR3 world_ray_vec = end - start;
+    MYVECTOR3& world_start = start;
+    MYVECTOR3& world_end = start;
+    MYVECTOR3 world_ray_vec = world_end - world_start;
     result.distance = world_ray_vec.Length();
 
     bool hit = false;
@@ -129,12 +131,12 @@ bool Collision::IntersectRayVsModel(
         MYMATRIX inverse_world_transform = node.world_transform.GetInverse(nullptr);
 
         // 始点から終点へのベクトル
-        MYVECTOR3 S = inverse_world_transform.Vector3TransformCoord(start);
-        MYVECTOR3 E = inverse_world_transform.Vector3TransformCoord(start);
-        MYVECTOR3 vecSE(E - S);
+        MYVECTOR3 S = inverse_world_transform.Vector3TransformCoord(world_start);
+        MYVECTOR3 E = inverse_world_transform.Vector3TransformCoord(world_end);
+        MYVECTOR3 V(E - S);
 
         // レイの長さ
-        float lay_length = vecSE.Length();
+        float lay_length = V.Length();
 
         // 三角形(面)との交差判定
         const std::vector<ModelResource::Vertex>& vertices = mesh.vertices; // 頂点バッファ
@@ -167,16 +169,16 @@ bool Collision::IntersectRayVsModel(
                 MYVECTOR3 N = AB.Cross(BC);
 
                 // 内積の結果がプラスなら裏向き
-                float dot = N.Dot(vecSE);
+                float dot = N.Dot(V);
                 if (0.0f <= dot) continue;
 
                 // レイと平面の交差判定
-                MYVECTOR3 SA = A - start;
+                MYVECTOR3 SA = A - S;
                 float x = (N.Dot(SA)) / dot;
                 if (x < 0.f || x > lay_length) continue;     // 交点までの距離が今までに計算した最近距離より大きいときはスキップ
 
                 // 三角形とレイの交点
-                MYVECTOR3 P = start + vecSE * x;
+                MYVECTOR3 P = S + V * x;
 
                 // 交点が三角形の内側にあるか判定
                 // 1つめ
@@ -211,7 +213,7 @@ bool Collision::IntersectRayVsModel(
             // ローカル座標からワールド空間へ変換
             MYVECTOR3 world_positon = node.world_transform.Vector3TransformCoord(hit_position);
 
-            float distance = (world_positon - start).Length();
+            float distance = (world_positon - world_start).Length();
 
             // ヒット情報保存
             if (result.distance > distance)
