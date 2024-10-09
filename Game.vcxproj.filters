@@ -234,9 +234,6 @@
     <ClInclude Include="Source\Debug\DebugRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera\CameraControllerDerived.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\MyMath\MYVECTOR2.h">
       <Filter>Source\System\MyMath</Filter>
     </ClInclude>
@@ -245,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="Source\System\MyMath\MYMATRIX.h">
       <Filter>Source\System\MyMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\CameraControllerDerived.h">
+      <Filter>Source\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -94,14 +94,14 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
     // カメラ方向とスティックの入力値によって進行方向を計算する
     CameraManager* camera_manager = CameraManager::Instance();
     CameraComponent* camera = camera_manager->GetMainCamera();
-    const DirectX::XMFLOAT3& camera_right = camera->GetRight();
-    const DirectX::XMFLOAT3& camera_front = camera->GetFront();
+    MYVECTOR3 camera_right = camera->GetRight();
+    MYVECTOR3 camera_front = camera->GetFront();
 
     // 移動ベクトルはXZ平面に水平なベクトルになるようにする
 
     // カメラ右方向ベクトルをXZ単位ベクトルに変換
-    float camera_rightX = camera_right.x;
-    float camera_rightZ = camera_right.z;
+    float camera_rightX = camera_right.GetX();
+    float camera_rightZ = camera_right.GetZ();
     float camera_right_length = sqrtf(camera_rightX * camera_rightX + camera_rightZ * camera_rightZ);
     if (camera_right_length > 0.0f)
     {
@@ -111,8 +111,8 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
     }
 
     // カメラ前方向ベクトルをXZ単位ベクトルに変換
-    float camera_frontX = camera_front.x;
-    float camera_frontZ = camera_front.z;
+    float camera_frontX = camera_front.GetX();
+    float camera_frontZ = camera_front.GetZ();
     float camera_front_Length = sqrtf(camera_frontX * camera_frontX + camera_frontZ * camera_frontZ);
     if (camera_front_Length > 0.0f)
     {

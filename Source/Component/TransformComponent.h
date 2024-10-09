@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include <DirectXMath.h>
+#include "System/MyMath/MYMATRIX.h"
 
 class Transform3DComponent : public Component
 {
@@ -19,7 +19,7 @@ public:
 #pragma region setEget parame
     const DirectX::XMVECTOR GetPositionVec()const noexcept { return DirectX::XMLoadFloat3(&position); }
     const DirectX::XMFLOAT3& GetPosition()const noexcept { return position; }
-    void SetPosition(const DirectX::XMFLOAT3& pos)noexcept { this->change_value = true; this->position = pos; }
+    void SetPosition(MYVECTOR3 pos)noexcept { this->change_value = true; this->position = pos.GetFlaot3(); }
     void SetPosition(const DirectX::XMVECTOR& pos)noexcept { this->change_value = true; DirectX::XMStoreFloat3(&this->position, pos); }
     const DirectX::XMVECTOR AddPositionVec(const DirectX::XMVECTOR& vec);
     const DirectX::XMFLOAT3& AddPosition(const DirectX::XMFLOAT3 vec);
