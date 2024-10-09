@@ -65,33 +65,24 @@ void ModelComponent::Update(float elapsed_time)
 	UpdateTransform(world_transform);
 }
 
-void ModelComponent::UpdateTransform(const DirectX::XMFLOAT4X4& transform)
+void ModelComponent::UpdateTransform(MYMATRIX transform)
 {
-	DirectX::XMMATRIX Transform = DirectX::XMLoadFloat4x4(&transform);
-
 	for (Node& node : node_vec)
 	{
 		// ƒ[ƒJƒ‹s—ñŽZo
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(node.scale.x, node.scale.y, node.scale.z);
-		DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&node.rotate));
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(node.translate.x, node.translate.y, node.translate.z);
-		DirectX::XMMATRIX LocalTransform = S * R * T;
+		node.local_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
 
 		// ƒ[ƒ‹ƒhs—ñŽZo
-		DirectX::XMMATRIX ParentTransform;
+		MYMATRIX parent_transform;
 		if (node.parent != nullptr)
 		{
-			ParentTransform = DirectX::XMLoadFloat4x4(&node.parent->world_transform);
+			parent_transform = node.parent->world_transform;
 		}
 		else
 		{
-			ParentTransform = Transform;
+			parent_transform = transform;
 		}
-		DirectX::XMMATRIX WorldTransform = LocalTransform * ParentTransform;
-
-		// ŒvŽZŒ‹‰Ê‚ðŠi”[
-		DirectX::XMStoreFloat4x4(&node.local_transform, LocalTransform);
-		DirectX::XMStoreFloat4x4(&node.world_transform, WorldTransform);
+		node.world_transform = node.local_transform * parent_transform;
 	}
 }
 

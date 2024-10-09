@@ -221,15 +221,15 @@ void ModelShader::Draw(ID3D11DeviceContext* dc, const ModelComponent* model)
 		{
 			for (size_t i = 0; i < mesh.node_indices.size(); ++i)
 			{
-				DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&node_vec.at(mesh.node_indices.at(i)).world_transform);
-				DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
-				DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
-				DirectX::XMStoreFloat4x4(&mesh_CB.bone_transforms[i], boneTransform);
+				MYMATRIX worldTransform = node_vec.at(mesh.node_indices.at(i)).world_transform;
+				MYMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
+				MYMATRIX boneTransform = offsetTransform * worldTransform;
+				mesh_CB.bone_transforms[i] = boneTransform.GetFlaot4x4();
 			}
 		}
 		else
 		{
-			mesh_CB.bone_transforms[0] = node_vec.at(mesh.node_index).world_transform;
+			mesh_CB.bone_transforms[0] = node_vec.at(mesh.node_index).world_transform.GetFlaot4x4();
 		}
 		dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &mesh_CB, 0, 0);
 

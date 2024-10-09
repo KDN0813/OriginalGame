@@ -1,9 +1,9 @@
 #pragma once
-#include <DirectXMath.h>
 #include <d3d11.h>
 #include <vector>
 #include <string>
 #include <memory>
+#include "System/MyMath/MYMATRIX.h"
 #include "Component.h"
 #include "Model/ModelCommonData.h"
 
@@ -18,11 +18,11 @@ public:
 	{
 		const char* name = {};
 		Node* parent = {};
-		DirectX::XMFLOAT3	scale = {};
-		DirectX::XMFLOAT4	rotate = {};
-		DirectX::XMFLOAT3	translate = {};
-		DirectX::XMFLOAT4X4	local_transform = {};
-		DirectX::XMFLOAT4X4	world_transform = {};
+		MYVECTOR3	scale = {};
+		MYVECTOR3	rotate = {};
+		MYVECTOR3	translate = {};
+		MYMATRIX	local_transform = {};
+		MYMATRIX	world_transform = {};
 		std::vector<Node*>	children;
 	};
 
@@ -39,7 +39,7 @@ public:
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 
 	// 行列計算
-	void UpdateTransform(const DirectX::XMFLOAT4X4& transform);
+	void UpdateTransform(MYMATRIX transform);
 
 	// ノード検索
 	ModelComponent::Node* FindNode(const char* name);
@@ -48,7 +48,7 @@ public:
 	const std::vector<Node>& GetNodes() const { return node_vec; }
 	std::vector<Node>& GetNodes() { return node_vec; }
 	const ModelResource* GetResource() const { return resource.get(); }
-	std::shared_ptr<ModelResource> GetResourceSptr() { return resource; }
+	std::shared_ptr<ModelResource>& GetResourceSptr() { return resource; }
 
 private:
 	std::shared_ptr<ModelResource>	resource;	// モデルリソース

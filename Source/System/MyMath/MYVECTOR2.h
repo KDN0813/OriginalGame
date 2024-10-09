@@ -223,12 +223,3 @@ public:
 private:
     alignas(16) DirectX::XMVECTOR vector;  // ì‡ïîÇ≈XMVECTORÇï€éù
 };
-
-int A()
-{
-    MYVECTOR2 a{};
-    MYVECTOR2 b{};
-    MYVECTOR2 c{};
-    MYVECTOR2 c = a;
-    c= a + b + c;
-}

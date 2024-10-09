@@ -13,8 +13,8 @@ public:
     MYMATRIX(DirectX::XMMATRIX mMatrix) : matrix(mMatrix) {}
     MYMATRIX(const MYMATRIX& mMatrix) :matrix(mMatrix.matrix) {}; // コピーコンストラクタ
 
-    DirectX::XMMATRIX GetMatrix() { return this->matrix; }
-    DirectX::XMFLOAT4X4 GetFlaot4x4() 
+    DirectX::XMMATRIX GetMatrix() const { return this->matrix; }
+    DirectX::XMFLOAT4X4 GetFlaot4x4() const 
     { 
         DirectX::XMFLOAT4X4 f4x4;
         DirectX::XMStoreFloat4x4(&f4x4, this->matrix);
@@ -92,18 +92,14 @@ public:
     {
         return MYMATRIX(DirectX::XMMatrixInverse(vec, this->matrix));
     }
-    // World行列の設定
-    void SetWorldMatrix(MYMATRIX translation, MYMATRIX rotation, MYMATRIX scale)
+    // ローカル行列の設定
+    void SetLocalMatrix(MYVECTOR3 scale, MYVECTOR3 rotation, MYVECTOR3 translation)
     {
-        this->matrix = MYMATRIX(scale * rotation * translation).GetMatrix();
-    }
-    void SetWorldMatrix(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 angle, DirectX::XMFLOAT3 scale)
-    {
-        MYMATRIX T, R, S;
-        T.SetTranslationMatrix(position);
-        R.SetRotationRollPitchYaw(angle);
-        S.SetScalingMatrix(scale);
-        SetWorldMatrix(T, R, S);
+        MYMATRIX S, R, T;
+        S.SetScalingMatrix(scale.GetVector());
+        T.SetTranslationMatrix(rotation.GetVector());
+        R.SetRotationRollPitchYaw(translation.GetVector());
+        this->matrix = (S * T * R).GetMatrix();
     }
     // 逆行列を設定
     void SetInverse(MYVECTOR3 mVec3)
@@ -146,6 +142,17 @@ public:
     //    MYVECTOR3 translation = MYVECTOR3(f4x4._41, f4x4._42, f4x4._43);
     //    return translation;
     //}
+
+    // 行列とベクトルの乗算
+    MYVECTOR3 Vector3TransformCoord(MYVECTOR3 mVec3)
+    {
+        return DirectX::XMVector3TransformCoord(mVec3.GetVector(), this->matrix);
+    }
+    // 行列とベクトルの乗算(行列の座標情報を加味しない)
+    MYVECTOR3 Vector3TransformNormal(MYVECTOR3 mVec3)
+    {
+        return DirectX::XMVector3TransformNormal(mVec3.GetVector(), this->matrix);
+    }
 
     // 乗算演算子のオーバーロード
     MYMATRIX operator*(MYMATRIX other) const

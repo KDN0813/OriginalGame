@@ -1,5 +1,5 @@
 #pragma once
-#include <DirectXMath.h>
+#include "System/MyMath/MYVECTOR3.h"
 #include "Component/ModelComponent.h"
 
  /**
@@ -13,9 +13,9 @@
  */
 struct HitResult
 {
-    DirectX::XMFLOAT3   position        = {};
-    DirectX::XMFLOAT3   normal          = {};
-    DirectX::XMFLOAT3   rotation          = {};
+    MYVECTOR3   position        = {};
+    MYVECTOR3   normal          = {};
+    MYVECTOR3   rotation          = {};
     float               distance        = 0.0f;
     int                 material_index   = -1;
 };
@@ -25,32 +25,32 @@ class Collision
 public:
     // ãÖÇ∆ãÖÇÃåç∑îªíË
     static bool IntersectSphareVsSphere(
-        const DirectX::XMFLOAT3& positionA
+        MYVECTOR3 positionA
         , float radiusA
-        , const DirectX::XMFLOAT3& positionB
+        , MYVECTOR3 positionB
         , float radiusB
-        , DirectX::XMFLOAT3& out_positionB
+        , MYVECTOR3 out_positionB
     );
 
     // â~íåÇ∆â~íåÇÃåç∑îªíË
     static bool IntersectCylinderVsCylinder(
-        const DirectX::XMFLOAT3& positionA
+        MYVECTOR3 positionA
         , float radiusA
         , float heightA
-        , const DirectX::XMFLOAT3& positionB
+        , MYVECTOR3 positionB
         , float radiusB
         , float heightB
-        , DirectX::XMFLOAT3& out_positionB
+        , MYVECTOR3 out_positionB
     );
 
     // ãÖÇ∆â~íåÇÃåç∑îªíË
     static bool IntersectSphereVsCylinder(
-        const DirectX::XMFLOAT3& sphere_position
+        MYVECTOR3 sphere_position
         , float sphere_radius
-        , const DirectX::XMFLOAT3& cylinder_position
+        , MYVECTOR3 cylinder_position
         , float cylinder_radius
         , float cylinder_height
-        , DirectX::XMFLOAT3& out_cylinder_position
+        , MYVECTOR3 out_cylinder_position
     );
 
     /**
@@ -63,8 +63,8 @@ public:
      * \return åç∑îªíË(åç∑ÇµÇΩÇÁtrue)
      */
     static bool IntersectRayVsModel(
-    const DirectX::XMFLOAT3& start,
-    const DirectX::XMFLOAT3& end,
+        MYVECTOR3 start,
+        MYVECTOR3 end,
         const ModelComponent* model,
         HitResult& result
     );

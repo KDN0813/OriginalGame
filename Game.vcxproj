@@ -170,6 +170,7 @@
     <ClInclude Include="Source\System\MyMath\MYMATRIX.h" />
     <ClInclude Include="Source\System\MyMath\MYVECTOR2.h" />
     <ClInclude Include="Source\System\MyMath\MYVECTOR3.h" />
+    <ClInclude Include="Source\System\MyMath\MYVECTOR4.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp" />

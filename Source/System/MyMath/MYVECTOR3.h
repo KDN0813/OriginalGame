@@ -1,5 +1,5 @@
 #pragma once
-#include <DirectXMath.h>
+#include "System/MyMath/MYVECTOR2.h"
 
 class MYVECTOR3
 {
@@ -162,9 +162,9 @@ public:
         return MYVECTOR3(DirectX::XMVectorPow(this->vector, DirectX::XMVectorSet(f, f, f, 0.0f)));
     }
     // 内積計算
-    MYVECTOR3 Dot(MYVECTOR3 mVec) const
+   float Dot(MYVECTOR3 mVec) const
     {
-        return MYVECTOR3(DirectX::XMVector3Dot(this->vector, mVec.GetVector()));
+       return DirectX::XMVectorGetX(DirectX::XMVector3Dot(this->vector, mVec.GetVector()));
     }
     // 外積計算
     MYVECTOR3 Cross(MYVECTOR3 mVec) const
@@ -175,6 +175,11 @@ public:
     MYVECTOR3 Lerp(MYVECTOR3 mVec, float t) const
     {
         return MYVECTOR3(DirectX::XMVectorLerp(this->vector, mVec.GetVector(), t));
+    }
+    // 球面線形補間
+    MYVECTOR3 SLerp(MYVECTOR3 mVec, float t) const
+    {
+        return MYVECTOR3(DirectX::XMQuaternionSlerp(this->vector, mVec.GetVector(), t));
     }
 
     // 加算演算子のオーバーロード
@@ -234,6 +239,10 @@ public:
     MYVECTOR3 GetMyVectorXZ()
     {
         return MYVECTOR3(GetX(), 0.0f, GetZ());
+    }
+    MYVECTOR2 GetMyVector2XZ()
+    {
+        return MYVECTOR2(GetX(), GetZ());
     }
     DirectX::XMVECTOR GetVectorXZ()
     {

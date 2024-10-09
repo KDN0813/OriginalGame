@@ -101,11 +101,14 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					// 現在の姿勢と次のキーフレームとの姿勢の補間
 
 					// スケールの線形補間
-					DirectX::XMVECTOR S0 = DirectX::XMLoadFloat3(&node.scale);
-					DirectX::XMVECTOR S1 = DirectX::XMLoadFloat3(&key1.scale);
-					DirectX::XMVECTOR S = DirectX::XMVectorLerp(S0, S1, blend_rate);
+					MYVECTOR3 S0 = node.scale;
+					MYVECTOR3 S1 = key1.scale;
+					MYVECTOR3 S = S0.Lerp(S1, blend_rate);
 
 					// 角度の球面線形補間
+					MYVECTOR3 R0 = node.rotate;
+					MYVECTOR3 R1 = key1.rotate;
+					MYVECTOR3 R = S0.SLerp(R1, blend_rate);
 					DirectX::XMVECTOR R0 = DirectX::XMLoadFloat4(&node.rotate);
 					DirectX::XMVECTOR R1 = DirectX::XMLoadFloat4(&key1.rotate);
 					DirectX::XMVECTOR R = DirectX::XMQuaternionSlerp(R0, R1, blend_rate);

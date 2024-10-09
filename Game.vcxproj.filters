@@ -246,6 +246,9 @@
     <ClInclude Include="Source\Camera\CameraControllerDerived.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\MyMath\MYVECTOR4.h">
+      <Filter>Source\System\MyMath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
