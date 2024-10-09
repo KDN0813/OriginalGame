@@ -54,35 +54,27 @@ void DebugCameraController::Update(float elapsed_time)
 				MYVECTOR3 right = camera->GetViewTransform().GetRight();
 				if (GetKeyState('W') < 0) 
 				{
-					focus.x += forward.GetX() * 10 * elapsed_time;
-					focus.y += forward.GetY() * 10 * elapsed_time;
-					focus.z += forward.GetZ() * 10 * elapsed_time;
+					focus += forward * 10.f * elapsed_time;
 				}
 				if (GetKeyState('S') < 0) 
 				{
-					focus.x -= forward.GetX() * 10 * elapsed_time;
-					focus.y -= forward.GetY() * 10 * elapsed_time;
-					focus.z -= forward.GetZ() * 10 * elapsed_time;
+					focus -= forward * 10.f * elapsed_time;
 				}
 				if (GetKeyState('A') < 0) 
 				{
-					focus.x -= right.GetX() * 10 * elapsed_time;
-					focus.y -= right.GetY() * 10 * elapsed_time;
-					focus.z -= right.GetZ() * 10 * elapsed_time;
+					focus -= right * 10.f * elapsed_time;
 				}
 				if (GetKeyState('D') < 0) 
 				{
-					focus.x += right.GetX() * 10 * elapsed_time;
-					focus.y += right.GetY() * 10 * elapsed_time;
-					focus.z += right.GetZ() * 10 * elapsed_time;
+					focus += right * 10.f * elapsed_time;
 				}
 				if (GetKeyState('E') < 0) 
 				{
-					focus.y += 10 * elapsed_time;
+					focus += MYVECTOR3(0.0f, 10.0f * elapsed_time, 0.0f);
 				}
 				if (GetKeyState('Q') < 0) 
 				{
-					focus.y -= 10 * elapsed_time;
+					focus += MYVECTOR3(0.0f, 10.0f * elapsed_time, 0.0f);
 				}
 			}
 			else if (::GetAsyncKeyState(VK_MBUTTON) & 0x8000)
@@ -94,13 +86,8 @@ void DebugCameraController::Update(float elapsed_time)
 				float s = range * 0.035f;
 				float x = moveX * s;
 				float y = moveY * s;
-				focus.x -= W._11 * x;
-				focus.y -= W._12 * x;
-				focus.z -= W._13 * x;
-
-				focus.x += W._21 * y;
-				focus.y += W._22 * y;
-				focus.z += W._23 * y;
+				focus -= W.GetRight() * x;
+				focus += W.GetUp() * y;
 			}
 			if (mouse.GetWheel() != 0)	// ƒY[ƒ€
 			{
@@ -109,9 +96,8 @@ void DebugCameraController::Update(float elapsed_time)
 		}
 		float sx = ::sinf(rotateX), cx = ::cosf(rotateX);
 		float sy = ::sinf(rotateY), cy = ::cosf(rotateY);
-		DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&focus);
-		DirectX::XMVECTOR Front = DirectX::XMVectorSet(-cx * sy, -sx, -cx * cy, 0.0f);
-		DirectX::XMVECTOR Range = DirectX::XMVectorSet(range, range, range, 0.0f);
+		MYVECTOR3 front(-cx * sy, -sx, -cx * cy);
+		front *= range;
 		Front = DirectX::XMVectorMultiply(Front, Range);
 		DirectX::XMVECTOR Eye = DirectX::XMVectorSubtract(Focus, Front);
 		DirectX::XMStoreFloat3(&eye, Eye);

@@ -182,26 +182,52 @@ public:
     {
         return MYVECTOR3(DirectX::XMVectorAdd(this->vector, other.GetVector()));
     }
+    MYVECTOR3 const operator+=(MYVECTOR3 other)
+    {
+        this->vector = DirectX::XMVectorAdd(this->vector, other.GetVector());
+        return *this;
+    }
     // 減算演算子のオーバーロード
     MYVECTOR3 const operator-(MYVECTOR3 other) const
     {
         return MYVECTOR3(DirectX::XMVectorSubtract(this->vector, other.GetVector()));
+    }
+    MYVECTOR3 const operator-=(MYVECTOR3 other)
+    {
+        this->vector = DirectX::XMVectorSubtract(this->vector, other.GetVector());
+        return *this;
     }
     // 乗算演算子のオーバーロード
     MYVECTOR3 operator*(MYVECTOR3 other) const
     {
         return MYVECTOR3(DirectX::XMVectorMultiply(this->vector, other.GetVector()));
     }
+    MYVECTOR3 operator*=(MYVECTOR3 other)
+    {
+        this->vector = DirectX::XMVectorMultiply(this->vector, other.GetVector());
+        return *this;
+    }
     // スカラー倍
     MYVECTOR3 const operator*(float scalar) const
     {
         return MYVECTOR3(DirectX::XMVectorScale(this->vector, scalar));
+    }
+    MYVECTOR3 const operator*=(float scalar)
+    {
+        this->vector = DirectX::XMVectorScale(this->vector, scalar);
+        return *this;
     }
     // 除算演算子のオーバーロード
     MYVECTOR3 const operator/(MYVECTOR3 other) const
     {
         assert(other.LengthSp());
         return MYVECTOR3(DirectX::XMVectorDivide(this->vector, other.GetVector()));
+    }
+    MYVECTOR3 const operator/=(MYVECTOR3 other)
+    {
+        assert(other.LengthSp());
+        this->vector = DirectX::XMVectorDivide(this->vector, other.GetVector());
+        return *this;
     }
 
 #pragma region VectorXZ    
