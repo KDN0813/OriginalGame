@@ -1,6 +1,7 @@
 #pragma once
 #include <DirectXMath.h>
 #include "MYVECTOR3.h"
+#include "MYVECTOR4.h"
 
 class MYMATRIX
 {
@@ -93,7 +94,7 @@ public:
         return MYMATRIX(DirectX::XMMatrixInverse(vec, this->matrix));
     }
     // ÉçÅ[ÉJÉãçsóÒÇÃê›íË
-    void SetLocalMatrix(MYVECTOR3 scale, MYVECTOR3 rotation, MYVECTOR3 translation)
+    void SetLocalMatrix(MYVECTOR3 scale, MYVECTOR4 rotation, MYVECTOR3 translation)
     {
         MYMATRIX S, R, T;
         S.SetScalingMatrix(scale.GetVector());

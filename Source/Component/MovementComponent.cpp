@@ -98,15 +98,15 @@ void MovementComponent::Update(float elapsed_time)
 				float mz = this->velocity.z;
 
 				// レイの開始位置と終点位置
-				DirectX::XMFLOAT3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
-				DirectX::XMFLOAT3 end = { current_pos.x + mx,current_pos.y + step_offset,current_pos.z + mz };
+				MYVECTOR3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
+				MYVECTOR3 end = { current_pos.x + mx,current_pos.y + step_offset,current_pos.z + mz };
 
 #ifdef _DEBUG
 				// デバッグプリミティブ表示
 				{
 					DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-					debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
-					debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
+					debug_render->DrawSphere(start.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+					debug_render->DrawSphere(end.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
 				}
 #endif // _DEBUG
 
@@ -115,36 +115,29 @@ void MovementComponent::Update(float elapsed_time)
 				if (Collision::IntersectRayVsModel(start, end, stage_model.get(), hit))
 				{
 					// 壁からレイの終点までのベクトル
-					DirectX::XMVECTOR Start = DirectX::XMLoadFloat3(&hit.position);
-					DirectX::XMVECTOR End = DirectX::XMLoadFloat3(&end);
-					DirectX::XMVECTOR Vec = DirectX::XMVectorSubtract(End, Start);
+					MYVECTOR3 vecSE = end - hit.position;
 
 					// 壁の法線
-					DirectX::XMVECTOR Normal = DirectX::XMLoadFloat3(&hit.normal);
+					MYVECTOR3& normal = hit.normal;
 
 					// 入射ベクトルを法線に射影
-					DirectX::XMVECTOR Dot = DirectX::XMVector3Dot(DirectX::XMVectorNegate(Vec), Normal);
-					Dot = DirectX::XMVectorScale(Dot, 1.1f);
+					MYVECTOR3 dot = (vecSE.Negate()).Dot(normal) * 1.1f;
 
 					// 補正位置の計算
-					DirectX::XMVECTOR CorrectionPositon = DirectX::XMVectorMultiplyAdd(Normal, Dot, End);
-					DirectX::XMFLOAT3 correction_positon;
-					DirectX::XMStoreFloat3(&correction_positon, CorrectionPositon);
+					MYVECTOR3 correction_positon = normal * dot + end;
 
 					// 壁ずり方向へのレイキャスト
 					HitResult hit2;
 					if (!Collision::IntersectRayVsModel(start, correction_positon, stage_model.get(), hit2))
 					{
-						DirectX::XMFLOAT3 positon = current_pos;
-						positon.x = correction_positon.x;
-						positon.z = correction_positon.z;
+						MYVECTOR3 positon = correction_positon;
+						positon.SetY(current_pos.y);
 						transform->SetPosition(positon);
 					}
 					else
 					{
-						DirectX::XMFLOAT3 positon = current_pos;
-						positon.x = hit2.position.x;
-						positon.z = hit2.position.z;
+						MYVECTOR3 positon = hit2.position;
+						positon.SetY(current_pos.y);
 						transform->SetPosition(positon);
 					}
 				}

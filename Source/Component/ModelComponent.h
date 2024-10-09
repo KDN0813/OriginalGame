@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include "System/MyMath/MYMATRIX.h"
+#include "System/MyMath/MYVECTOR4.h"
 #include "Component.h"
 #include "Model/ModelCommonData.h"
 
@@ -19,7 +20,7 @@ public:
 		const char* name = {};
 		Node* parent = {};
 		MYVECTOR3	scale = {};
-		MYVECTOR3	rotate = {};
+		MYVECTOR4	rotate = {};
 		MYVECTOR3	translate = {};
 		MYMATRIX	local_transform = {};
 		MYMATRIX	world_transform = {};

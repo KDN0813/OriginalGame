@@ -103,49 +103,36 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					// スケールの線形補間
 					MYVECTOR3 S0 = node.scale;
 					MYVECTOR3 S1 = key1.scale;
-					MYVECTOR3 S = S0.Lerp(S1, blend_rate);
+					node.scale = S0.Lerp(S1, blend_rate);
 
 					// 角度の球面線形補間
-					MYVECTOR3 R0 = node.rotate;
-					MYVECTOR3 R1 = key1.rotate;
-					MYVECTOR3 R = S0.SLerp(R1, blend_rate);
-					DirectX::XMVECTOR R0 = DirectX::XMLoadFloat4(&node.rotate);
-					DirectX::XMVECTOR R1 = DirectX::XMLoadFloat4(&key1.rotate);
-					DirectX::XMVECTOR R = DirectX::XMQuaternionSlerp(R0, R1, blend_rate);
+					MYVECTOR4 R0 = node.rotate;
+					MYVECTOR4 R1 = key1.rotate;
+					node.rotate = R0.SLerp(R1, blend_rate);
 
 					// 座標の線形補間
-					DirectX::XMVECTOR T0 = DirectX::XMLoadFloat3(&node.translate);
-					DirectX::XMVECTOR T1 = DirectX::XMLoadFloat3(&key1.translate);
-					DirectX::XMVECTOR T = DirectX::XMVectorLerp(T0, T1, blend_rate);
-
-					// 補間結果を設定
-					DirectX::XMStoreFloat3(&node.scale, S);
-					DirectX::XMStoreFloat4(&node.rotate, R);
-					DirectX::XMStoreFloat3(&node.translate, T);
+					MYVECTOR3 T0 = node.translate;
+					MYVECTOR3 T1 = key1.translate;
+					node.translate = T0.Lerp(T1, blend_rate);
 				}
 				else
 				{
 					// 前のキーフレームと次のキーフレームの姿勢を補間
 
 					// スケールの線形補間
-					DirectX::XMVECTOR S0 = DirectX::XMLoadFloat3(&key0.scale);
-					DirectX::XMVECTOR S1 = DirectX::XMLoadFloat3(&key1.scale);
-					DirectX::XMVECTOR S = DirectX::XMVectorLerp(S0, S1, rate);
+					MYVECTOR3 S0 = key0.scale;
+					MYVECTOR3 S1 = key1.scale;
+					node.scale = S0.Lerp(S1, blend_rate);
 
 					// 角度の線形補間
-					DirectX::XMVECTOR R0 = DirectX::XMLoadFloat4(&key0.rotate);
-					DirectX::XMVECTOR R1 = DirectX::XMLoadFloat4(&key1.rotate);
-					DirectX::XMVECTOR R = DirectX::XMQuaternionSlerp(R0, R1, rate);
+					MYVECTOR4 R0 = key0.rotate;
+					MYVECTOR4 R1 = key1.rotate;
+					node.rotate = R0.SLerp(R1, blend_rate);
 
 					// 座標の線形補間
-					DirectX::XMVECTOR T0 = DirectX::XMLoadFloat3(&key0.translate);
-					DirectX::XMVECTOR T1 = DirectX::XMLoadFloat3(&key1.translate);
-					DirectX::XMVECTOR T = DirectX::XMVectorLerp(T0, T1, rate);
-
-					// 補間結果を設定
-					DirectX::XMStoreFloat3(&node.scale, S);
-					DirectX::XMStoreFloat4(&node.rotate, R);
-					DirectX::XMStoreFloat3(&node.translate, T);
+					MYVECTOR3 T0 = key0.translate;
+					MYVECTOR3 T1 = key1.translate;
+					node.translate = T0.Lerp(T1, blend_rate);
 				}
 			}
 			break;
