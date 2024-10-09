@@ -106,7 +106,7 @@ void SceneGame::Initialize()
 			camera->SetRotateX(0.4f);
 			camera->SetMainCamera();
 			// d—Í
-			//player->AddComponent<GravityComponent>();
+			player->AddComponent<GravityComponent>();
 			
 			// GameObject‚ÉÝ’è
 			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::PLAYER, player);

@@ -98,11 +98,11 @@ public:
     }
 
     // 逆行列を取得
-    MYMATRIX GetInverse(MYVECTOR3 mVec3)
+    MYMATRIX GetInverse(MYVECTOR3 mVec3) const
     {
         return MYMATRIX(DirectX::XMMatrixInverse(mVec3.GetVectorAddress(), this->matrix));
     }
-    MYMATRIX GetInverse(DirectX::XMVECTOR* vec)
+    MYMATRIX GetInverse(DirectX::XMVECTOR* vec) const
     {
         return MYMATRIX(DirectX::XMMatrixInverse(vec, this->matrix));
     }
@@ -122,7 +122,7 @@ public:
         S.SetScalingMatrix(scale);
         R.SetRotationRollPitchYaw(rooll_pitch_yaw);
         T.SetTranslationMatrix(translation);
-        this->matrix = (S * T * R).GetMatrix();
+        this->matrix = (S * R * T).GetMatrix();
     }
     // 逆行列を設定
     void SetInverse(MYVECTOR3 mVec3)
@@ -144,17 +144,17 @@ public:
         this->matrix = DirectX::XMMatrixLookAtLH(MYVECTOR3(eye).GetVector(), MYVECTOR3(focus).GetVector(), MYVECTOR3(up).GetVector());
     }
 
-    MYVECTOR3 GetRight()
+    MYVECTOR3 GetRight() const
     {
         DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
         return MYVECTOR3(f4x4._11, f4x4._12, f4x4._13);
     }
-    MYVECTOR3 GetUp()
+    MYVECTOR3 GetUp() const
     {
         DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
         return MYVECTOR3(f4x4._21, f4x4._22, f4x4._23);
     }
-    MYVECTOR3 GetForward()
+    MYVECTOR3 GetForward() const
     {
         DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
         return MYVECTOR3(f4x4._31, f4x4._32, f4x4._33);
@@ -167,12 +167,12 @@ public:
     //}
 
     // 行列とベクトルの乗算
-    MYVECTOR3 Vector3TransformCoord(MYVECTOR3 mVec3)
+    MYVECTOR3 Vector3TransformCoord(MYVECTOR3 mVec3) const
     {
         return DirectX::XMVector3TransformCoord(mVec3.GetVector(), this->matrix);
     }
     // 行列とベクトルの乗算(行列の座標情報を加味しない)
-    MYVECTOR3 Vector3TransformNormal(MYVECTOR3 mVec3)
+    MYVECTOR3 Vector3TransformNormal(MYVECTOR3 mVec3) const
     {
         return DirectX::XMVector3TransformNormal(mVec3.GetVector(), this->matrix);
     }
