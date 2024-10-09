@@ -184,7 +184,7 @@ public:
         return MYVECTOR3(DirectX::XMVectorSubtract(this->vector, other.GetVector()));
     }
     // 乗算演算子のオーバーロード
-    MYVECTOR3 const operator*(MYVECTOR3 other)
+    MYVECTOR3 operator*(MYVECTOR3 other)
     {
         return MYVECTOR3(DirectX::XMVectorMultiply(this->vector, other.GetVector()));
     }

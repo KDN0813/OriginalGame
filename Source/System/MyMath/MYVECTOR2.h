@@ -178,7 +178,7 @@ public:
         return MYVECTOR2(DirectX::XMVectorSubtract(this->vector, other.GetVector()));
     }
     // 乗算演算子のオーバーロード
-    MYVECTOR2 const operator*(MYVECTOR2 other)
+    MYVECTOR2 operator*(MYVECTOR2 other)
     {
         return MYVECTOR2(DirectX::XMVectorMultiply(this->vector, other.GetVector()));
     }
@@ -197,3 +197,12 @@ public:
 private:
     alignas(16) DirectX::XMVECTOR vector;  // 内部でXMVECTORを保持
 };
+
+int A()
+{
+    MYVECTOR2 a{};
+    MYVECTOR2 b{};
+    MYVECTOR2 c{};
+    MYVECTOR2 c = a;
+    c= a + b + c;
+}
