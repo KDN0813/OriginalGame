@@ -61,7 +61,7 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
 
         // 内積値は-1.0~1.0で表現されており、2つの単位ベクトルの角度が
         // 小さいほど、1.0に近づくという性質を利用して回転速度を調整する
-        float rot = 1.0 - dot;
+        float rot = 1.0f - dot;
         if (rot > speed) rot = speed;
 
         // 左右判定を行うために2つの単位ベクトルの外積を計算する

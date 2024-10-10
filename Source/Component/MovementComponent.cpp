@@ -24,7 +24,7 @@ void MovementComponent::Update(float elapsed_time)
 	// ë¨ìxåvéZ
 	if (max_accelerationXZ_sq < lengthXZ_sq)
 	{
-		float lengthXZ = sqrt(lengthXZ_sq);
+		float lengthXZ = static_cast<float>(sqrt(lengthXZ_sq));
 		this->velocity = this->acceleration / lengthXZ * this->max_accelerationXZ * elapsed_time;
 	}
 	else
@@ -177,9 +177,9 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 void MovementComponent::DrawDebugGUI()
 {
-    //ImGui::InputFloat3("Additional Velocity", &this->acceleration.x);
+	this->acceleration.InputFloat("Additional Velocity");
     ImGui::InputFloat("Max AccelerationXZ", &this->max_accelerationXZ);
-    //ImGui::InputFloat3("Velocity", &this->velocity.x);
+	this->velocity.InputFloat("Velocity");
 	ImGui::Checkbox("Is Stage Raycas", &this->is_stage_raycas);
 	if (this->is_stage_raycas)
 	{

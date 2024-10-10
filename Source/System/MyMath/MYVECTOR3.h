@@ -365,7 +365,7 @@ public:
     void DragFloat(const char* label, float min, float max)
     {
         DirectX::XMFLOAT3 f3 = GetFlaot3();
-        if (ImGui::SliderFloat3(label, &f3.x, min, max));
+        if (ImGui::SliderFloat3(label, &f3.x, min, max))
         {
             SetVector(f3);
         }
