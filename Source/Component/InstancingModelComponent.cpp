@@ -161,7 +161,7 @@ const UINT& AnimatedInstancedModelComponent::GetAnimationStartOffset()
     return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
 }
 
-const int& AnimatedInstancedModelComponent::GetModelId()
+const int AnimatedInstancedModelComponent::GetModelId()
 {
     return this->instancing_model_resource->GetModelId();
 }

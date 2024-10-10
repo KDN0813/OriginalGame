@@ -62,7 +62,7 @@ public:
 	const UINT GetAnimeFrame();
 	const float& GetCurrentAnimationSeconds() { return this->current_animation_seconds; }
 	const UINT& GetAnimationStartOffset();
-	const int& GetModelId();
+	const int GetModelId();
 private:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
 	std::shared_ptr<ModelResource> model_resource;
