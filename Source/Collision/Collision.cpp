@@ -114,7 +114,7 @@ bool Collision::IntersectRayVsModel(
 {
     // ワールド空間のレイの長さ
     MYVECTOR3& world_start = start;
-    MYVECTOR3& world_end = start;
+    MYVECTOR3& world_end = end;
     MYVECTOR3 world_ray_vec = world_end - world_start;
     result.distance = world_ray_vec.Length();
 
@@ -133,7 +133,7 @@ bool Collision::IntersectRayVsModel(
         // 始点から終点へのベクトル
         MYVECTOR3 S = inverse_world_transform.Vector3TransformCoord(world_start);
         MYVECTOR3 E = inverse_world_transform.Vector3TransformCoord(world_end);
-        MYVECTOR3 V(E - S);
+        MYVECTOR3 V = (E - S).Normalize();
 
         // レイの長さ
         float lay_length = V.Length();
