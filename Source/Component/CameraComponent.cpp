@@ -58,10 +58,10 @@ void CameraComponent::SetMainCamera()
 void CameraComponent::SetLookAt(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up)
 {
     // 視点、中視点、上方向からビューを行列を作成
-    view_transform.SetLookAtLH(eye, focus, up);
+    this->view_transform.SetLookAtLH(eye, focus, up);
 
     // ビューを逆行列化し、ワールド行列に戻す
-    world_transform = view_transform.GetInverse(nullptr);
+    this->world_transform = this->view_transform.GetInverse(nullptr);
 
     // 視点、注視点を保存
     this->eye = eye;
@@ -70,8 +70,8 @@ void CameraComponent::SetLookAt(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up)
 
 void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ)
 {
-    // が書く、画面比率、クリップ距離からプロジェクション行列を作成
-    projection_transform.SetPerspectiveFovLH(fovY, aspect, nearX, farZ);
+    // 画面比率、クリップ距離からプロジェクション行列を作成
+    this->projection_transform.SetPerspectiveFovLH(fovY, aspect, nearX, farZ);
 }
 
 #ifdef _DEBUG
