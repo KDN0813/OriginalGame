@@ -234,7 +234,7 @@ bool Collision::IntersectRayVsModel(
                 result.distance = distance;
                 result.material_index = material_index;
                 result.position = World_positon.GetFlaot3();
-                result.normal = World_normal.GetFlaot3();
+                result.normal = (World_normal.Normalize()).GetFlaot3();
                 hit = true;
             }
         }

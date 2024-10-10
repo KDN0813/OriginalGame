@@ -18,20 +18,25 @@ void MovementComponent::Update(float elapsed_time)
 	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 	if (!transform) return;
 
-	float lengthXZ_sq = this->acceleration.LengthXZSq();
+	MYVECTOR3 Acceleration = this->acceleration;
+	float lengthXZ_sq = Acceleration.LengthXZSq();
 	float max_accelerationXZ_sq = this->max_accelerationXZ * max_accelerationXZ;
 	
 	// 速度計算
 	if (max_accelerationXZ_sq < lengthXZ_sq)
 	{
 		float lengthXZ = static_cast<float>(sqrt(lengthXZ_sq));
-		this->velocity = this->acceleration / lengthXZ * this->max_accelerationXZ * elapsed_time;
+		MYVECTOR3 Velocity = this->acceleration;
+		Velocity = Velocity / lengthXZ * this->max_accelerationXZ * elapsed_time;
+		this->velocity = Velocity.GetFlaot3();
 	}
 	else
 	{
-		this->velocity = this->acceleration * elapsed_time;
+		MYVECTOR3 Velocity = this->acceleration;
+		Velocity *= elapsed_time;
+		this->velocity = Velocity.GetFlaot3();
 	}
-	this->velocity.SetY(this->acceleration.GetY() * elapsed_time);
+	this->velocity.y = this->acceleration.y * elapsed_time;
 
 	RaycasVsStage(owner, transform);
 
@@ -41,26 +46,61 @@ void MovementComponent::Update(float elapsed_time)
 
 bool MovementComponent::IsMoveXZAxis()
 {
-    return (this->velocity.GetX() != 0.0f || this->velocity.GetZ() != 0.0f);
+    return (this->velocity.x != 0.0f || this->velocity.z != 0.0f);
+}
+
+void MovementComponent::AddAcceleration(MYVECTOR3 Add_acc)
+{
+	MYVECTOR3 Acceleration = this->acceleration;
+	Acceleration += Add_acc;
+	this->acceleration = Acceleration.GetFlaot3();
+}
+
+void MovementComponent::AddAccelerationXZ(float x, float z)
+{
+	MYVECTOR3 Acceleration = this->acceleration;
+	Acceleration.AddXZ(x,z);
+	this->acceleration = Acceleration.GetFlaot3();
+}
+
+void MovementComponent::AddAccelerationX(float x)
+{
+	MYVECTOR3 Acceleration = this->acceleration;
+	Acceleration.AddX(x);
+	this->acceleration = Acceleration.GetFlaot3();
+}
+
+void MovementComponent::AddAccelerationY(float y)
+{
+	MYVECTOR3 Acceleration = this->acceleration;
+	Acceleration.AddY(y);
+	this->acceleration = Acceleration.GetFlaot3();
+}
+
+void MovementComponent::AddAccelerationZ(float z)
+{
+	MYVECTOR3 Acceleration = this->acceleration;
+	Acceleration.AddZ(z);
+	this->acceleration = Acceleration.GetFlaot3();
 }
 
 void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform)
 {
 	if (!this->is_stage_raycas)
 	{
-		transform->AddPosition(this->velocity.GetFlaot3());
+		transform->AddPosition(this->velocity);
 		return;
 	}
 	auto stage_object = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
 	if (!stage_object)
 	{
-		transform->AddPosition(this->velocity.GetFlaot3());
+		transform->AddPosition(this->velocity);
 		return;
 	}
 	auto stage_model = stage_object->EnsureComponentValid<ModelComponent>(this->stage_model_Wptr);
 	if (!stage_model)
 	{
-		transform->AddPosition(this->velocity.GetFlaot3());
+		transform->AddPosition(this->velocity);
 		return;
 	}
 
@@ -71,37 +111,37 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 		// Y軸の下方向に向けてレイキャストを行う
 		{
 			// 現在の位置
-			const MYVECTOR3 current_pos = transform->GetPosition();
+			const MYVECTOR3 Current_pos = transform->GetPosition();
 
 			// 垂直方向の移動量
-			float my = this->velocity.GetY();
+			float my = this->velocity.y;
 
 			if (my < 0.0f)
 			{
 				// レイの開始位置と終点位置
-				MYVECTOR3 start = current_pos + MYVECTOR3(0.0f, step_offset, 0.0f);
-				MYVECTOR3 end = current_pos + MYVECTOR3(0.0f, my, 0.0f);
+				MYVECTOR3 Start = Current_pos + MYVECTOR3(0.0f, step_offset, 0.0f);
+				MYVECTOR3 End = Current_pos + MYVECTOR3(0.0f, my, 0.0f);
 
 #ifdef _DEBUG	// デバッグプリミティブ表示
 				{
 					DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-					debug_render->DrawSphere(start.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-					debug_render->DrawSphere(end.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
+					debug_render->DrawSphere(Start.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+					debug_render->DrawSphere(End.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
 				}
 #endif // _DEBUG	デバッグプリミティブ表示
 
 				// レイキャストによる地面判定
 				HitResult hit;
-				if (Collision::IntersectRayVsModel(start.GetFlaot3(), end.GetFlaot3(), stage_model.get(), hit))
+				if (Collision::IntersectRayVsModel(Start.GetFlaot3(), End.GetFlaot3(), stage_model.get(), hit))
 				{
 					transform->SetPosition(hit.position);
 					gravity->SetIsGrounded(true);
 				}
 				else
 				{
-					MYVECTOR3 position = current_pos;
-					position.AddY(my);
-					transform->SetPosition(position.GetFlaot3());
+					MYVECTOR3 Position = Current_pos;
+					Position.AddY(my);
+					transform->SetPosition(Position.GetFlaot3());
 
 					gravity->SetIsGrounded(false);
 				}
@@ -112,60 +152,63 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 	// 前方方向にレイキャストを行う
 	{
 		// 現在の位置
-		const MYVECTOR3 current_pos = transform->GetPosition();
+		const DirectX::XMFLOAT3& current_pos = transform->GetPosition();
+		const MYVECTOR3 Current_pos = current_pos;
 
-		float velocity_lengthXZ = this->velocity.LengthXZ();
+		float velocity_lengthXZ = MYVECTOR3(this->velocity).LengthXZ();
 		if (velocity_lengthXZ > 0.0f)
 		{
 			// 水平方向の移動量
-			float mx = this->velocity.GetX();
-			float mz = this->velocity.GetZ();
+			float mx = this->velocity.x;
+			float mz = this->velocity.z;
 
 			// レイの開始位置と終点位置
-			MYVECTOR3 start = current_pos + MYVECTOR3(0.0f, step_offset, 0.0f);
-			MYVECTOR3 end = current_pos + MYVECTOR3(0.0f, step_offset, mz);
+			MYVECTOR3 Start = Current_pos + MYVECTOR3(0.0f, step_offset, 0.0f);
+			MYVECTOR3 End = Current_pos + MYVECTOR3(mx, step_offset, mz);
 
 #ifdef _DEBUG
 			// デバッグプリミティブ表示
 			{
 				DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-				debug_render->DrawSphere(start.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
-				debug_render->DrawSphere(end.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
+				debug_render->DrawSphere(Start.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+				debug_render->DrawSphere(End.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
 			}
 #endif // _DEBUG
 
 			// レイキャスト壁判定
 			HitResult hit;
-			if (Collision::IntersectRayVsModel(start.GetFlaot3(), end.GetFlaot3(), stage_model.get(), hit))
+			if (Collision::IntersectRayVsModel(Start.GetFlaot3(), End.GetFlaot3(), stage_model.get(), hit))
 			{
 				// 壁からレイの終点までのベクトル
-				MYVECTOR3 vecSE = end - hit.position;
+				MYVECTOR3 S = hit.position;
+				MYVECTOR3 VecSE = End - S;
 
 				// 壁の法線
-				MYVECTOR3 normal = hit.normal;
+				MYVECTOR3 Normal = hit.normal;
 
 				// 入射ベクトルを法線に射影
-				MYVECTOR3 dot = (vecSE.Negate()).DotVec3(normal) * 1.1f;
+				MYVECTOR3 Dot = (VecSE.Negate()).DotVec3(Normal) * 1.1f;
 
 				// 補正位置の計算
-				MYVECTOR3 correction_positon = normal * dot + end;
-
+				MYVECTOR3 Correction_positon = Normal * Dot + End;
+				
 				// 壁ずり方向へのレイキャスト
 				HitResult hit2;
-				if (!Collision::IntersectRayVsModel(start.GetFlaot3(), correction_positon.GetFlaot3(), stage_model.get(), hit2))
+				if (!Collision::IntersectRayVsModel(Start.GetFlaot3(), Correction_positon.GetFlaot3(), stage_model.get(), hit2))
 				{
-					MYVECTOR3 positon = MYVECTOR3(correction_positon.GetX(), current_pos.GetY(), correction_positon.GetZ());
-					transform->SetPosition(positon.GetFlaot3());
+					DirectX::XMFLOAT3 pos = Correction_positon.GetFlaot3();
+					pos.y = current_pos.y;
+					transform->SetPosition(pos);
 				}
 				else
 				{
-					MYVECTOR3 positon = MYVECTOR3(hit2.position.x, current_pos.GetY(), hit2.position.z);
-					transform->SetPosition(positon.GetFlaot3());
+					DirectX::XMFLOAT3 pos = { hit2.position.x, current_pos.y, hit2.position.z };
+					transform->SetPosition(pos);
 				}
 			}
 			else
 			{
-				MYVECTOR3 positon = current_pos;
+				MYVECTOR3 positon = Current_pos;
 				positon.AddXZ(mx, mz);
 				transform->SetPosition(positon.GetFlaot3());
 			}
@@ -177,9 +220,9 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 void MovementComponent::DrawDebugGUI()
 {
-	this->acceleration.InputFloat("Additional Velocity");
+	ImGui::InputFloat3("Additional Velocity", &this->acceleration.x);
     ImGui::InputFloat("Max AccelerationXZ", &this->max_accelerationXZ);
-	this->velocity.InputFloat("Velocity");
+	ImGui::InputFloat3("Velocity", &this->velocity.x);
 	ImGui::Checkbox("Is Stage Raycas", &this->is_stage_raycas);
 	if (this->is_stage_raycas)
 	{

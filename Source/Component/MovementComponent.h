@@ -22,22 +22,21 @@ public:
 
     // 各種設定取得・関数
     void SetIsStageRaycas(bool is_stage_raycas) { this->is_stage_raycas = is_stage_raycas; }
-    void SetAdditionalVelocity(MYVECTOR3 move_vec) { this->acceleration = move_vec; }
-    void AddAcceleration(MYVECTOR3 add_acc) { this->acceleration += add_acc; }
-    void AddAcceleration(float x, float y, float z) { this->acceleration += MYVECTOR3(x, y, z); }
-    void AddAccelerationXZ(float x, float z) { this->acceleration += MYVECTOR3(x, 0.0f, z); }
-    void AddAccelerationX(float x) { this->acceleration += MYVECTOR3(x, 0.0f, 0.0f); }
-    void AddAccelerationY(float y) { this->acceleration += MYVECTOR3(0.0f, y, 0.0f); }
-    void AddAccelerationZ(float z) { this->acceleration += MYVECTOR3(0.0f, 0.0f, z); }
-    MYVECTOR3 GetAcceleration() { return this->acceleration; }
-    MYVECTOR3 GetVelocity() { return this->velocity; }
+    void SetAdditionalVelocity(DirectX::XMFLOAT3 move_vec) { this->acceleration = move_vec; }
+    void AddAcceleration(MYVECTOR3 Add_acc);
+    void AddAccelerationXZ(float x, float z);
+    void AddAccelerationX(float x);
+    void AddAccelerationY(float y);
+    void AddAccelerationZ(float z);
+    DirectX::XMFLOAT3 GetAcceleration() { return this->acceleration; }
+    DirectX::XMFLOAT3 GetVelocity() { return this->velocity; }
 
     // ステージとのレイキャスト
     void RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform);
 
 private:
-    MYVECTOR3 velocity{};               // 速度
-    MYVECTOR3 acceleration{};    // 加速度
+    DirectX::XMFLOAT3 velocity{};               // 速度
+    DirectX::XMFLOAT3 acceleration{};    // 加速度
     float step_offset = 0.2f;                   // レイの開始位置を足元より少し上に設定するためのオフセット
     float max_accelerationXZ = 5.0f;            // XZ軸の最大加速度
     bool is_stage_raycas = false;               // ステージとのレイキャストの有無
