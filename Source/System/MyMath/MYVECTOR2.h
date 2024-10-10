@@ -73,7 +73,7 @@ public:
     {
         return DirectX::XMVectorGetX(DirectX::XMVector2Length(this->vector));
     }
-    float LengthSp() const
+    float LengthSq() const
     {
         return DirectX::XMVectorGetX(DirectX::XMVector2LengthSq(this->vector));
     }
@@ -138,7 +138,7 @@ public:
     // 剰余演算
     MYVECTOR2 Mod(MYVECTOR2 mVec) const
     {
-        assert(mVec.LengthSp());
+        assert(mVec.LengthSq());
         return DirectX::XMVectorMod(this->vector, mVec.GetVector());
     }
     // 累乗
@@ -210,12 +210,12 @@ public:
     // 除算演算子のオーバーロード
     MYVECTOR2 const operator/(MYVECTOR2 other) const
     {
-        assert(other.LengthSp());
+        assert(other.LengthSq());
         return MYVECTOR2(DirectX::XMVectorDivide(this->vector, other.GetVector()));
     }
     MYVECTOR2 const operator/=(MYVECTOR2 other)
     {
-        assert(other.LengthSp());
+        assert(other.LengthSq());
         this->vector = DirectX::XMVectorDivide(this->vector, other.GetVector());
         return *this;
     }
