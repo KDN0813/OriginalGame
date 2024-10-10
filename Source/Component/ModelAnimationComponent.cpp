@@ -103,17 +103,20 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					// スケールの線形補間
 					MYVECTOR3 S0 = node.scale;
 					MYVECTOR3 S1 = key1.scale;
-					node.scale = S0.Lerp(S1, blend_rate);
+					MYVECTOR3 S = S0.Lerp(S1, blend_rate);
+					node.scale = S.GetFlaot3();
 
 					// 角度の球面線形補間
 					MYVECTOR4 R0 = node.rotate;
 					MYVECTOR4 R1 = key1.rotate;
-					node.rotate = R0.SLerp(R1, blend_rate);
+					MYVECTOR4 R = R0.SLerp(R1, blend_rate);
+					node.rotate = R.GetFlaot4();
 
 					// 座標の線形補間
 					MYVECTOR3 T0 = node.translate;
 					MYVECTOR3 T1 = key1.translate;
-					node.translate = T0.Lerp(T1, blend_rate);
+					MYVECTOR3 T = T0.Lerp(T1, blend_rate);
+					node.translate = T.GetFlaot3();
 				}
 				else
 				{
@@ -122,17 +125,20 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					// スケールの線形補間
 					MYVECTOR3 S0 = key0.scale;
 					MYVECTOR3 S1 = key1.scale;
-					node.scale = S0.Lerp(S1, blend_rate);
+					MYVECTOR3 S = S0.Lerp(S1, blend_rate);
+					node.scale = S.GetFlaot3();
 
 					// 角度の線形補間
 					MYVECTOR4 R0 = key0.rotate;
 					MYVECTOR4 R1 = key1.rotate;
-					node.rotate = R0.SLerp(R1, blend_rate);
+					MYVECTOR4 R = R0.SLerp(R1, blend_rate);
+					node.rotate = R.GetFlaot4();
 
 					// 座標の線形補間
 					MYVECTOR3 T0 = key0.translate;
 					MYVECTOR3 T1 = key1.translate;
-					node.translate = T0.Lerp(T1, blend_rate);
+					MYVECTOR3 T = T0.Lerp(T1, blend_rate);
+					node.translate = T.GetFlaot3();
 				}
 			}
 			break;

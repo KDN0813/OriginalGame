@@ -1,4 +1,6 @@
 #include <imgui.h>
+#include "System/MyMath/MYMATRIX.h"
+#include "System/MyMath/MYVECTOR4.h"
 #include "ModelComponent.h"
 #include "Object/Object.h"
 #include "Model/ModelResourceManager.h"
@@ -45,37 +47,40 @@ void ModelComponent::Start()
 void ModelComponent::Update(float elapsed_time)
 {
 	auto owner = GetOwner();
-	MYMATRIX world_transform;
+	MYMATRIX World_transform;
 	if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
 	{
-		world_transform = transform->GetTransform();
+		World_transform = transform->GetTransform();
 	}
 	else
 	{
-		world_transform.SetIdentity();
+		World_transform.SetIdentity();
 	}
 
-	UpdateTransform(world_transform);
+	UpdateTransform(World_transform);
 }
 
-void ModelComponent::UpdateTransform(MYMATRIX transform)
+void ModelComponent::UpdateTransform(MYMATRIX Transform)
 {
 	for (Node& node : node_vec)
 	{
 		// ローカル行列算出
-		node.local_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
+		MYMATRIX Local_transform = node.local_transform;
+		Local_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
 
 		// ワールド行列算出
-		MYMATRIX parent_transform;
+		MYMATRIX Parent_transform;
 		if (node.parent != nullptr)
 		{
-			parent_transform = node.parent->world_transform;
+			Parent_transform = node.parent->world_transform;
 		}
 		else
 		{
-			parent_transform = transform;
+			Parent_transform = Transform;
 		}
-		node.world_transform = node.local_transform * parent_transform;
+
+		node.local_transform = Local_transform.GetFlaot4x4();
+		node.world_transform = (Local_transform * Parent_transform).GetFlaot4x4();
 	}
 }
 

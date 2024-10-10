@@ -138,7 +138,8 @@ bool Collision::IntersectRayVsModel(
 
         // レイをワールド空間からローカル空間へ変更
         // ワールド行列の逆行列
-        MYMATRIX inverse_world_transform = node.world_transform.GetInverse(nullptr);
+        MYMATRIX World_transform = node.world_transform;
+        MYMATRIX inverse_world_transform = World_transform.GetInverse(nullptr);
 
         // 始点から終点へのベクトル
         MYVECTOR3 S = inverse_world_transform.Vector3TransformCoord(world_start);
@@ -221,19 +222,19 @@ bool Collision::IntersectRayVsModel(
         if (material_index >= 0)
         {
             // ローカル座標からワールド空間へ変換
-            MYVECTOR3 world_positon = node.world_transform.Vector3TransformCoord(hit_position);
+            MYVECTOR3 World_positon = World_transform.Vector3TransformCoord(hit_position);
 
-            float distance = (world_positon - world_start).Length();
+            float distance = (World_positon - world_start).Length();
 
             // ヒット情報保存
             if (result.distance > distance)
             {
-                MYVECTOR3 world_normal = node.world_transform.Vector3TransformNormal(hit_normal);
+                MYVECTOR3 World_normal = World_transform.Vector3TransformNormal(hit_normal);
 
                 result.distance = distance;
                 result.material_index = material_index;
-                result.position = world_positon.GetFlaot3();
-                result.normal = world_normal.GetFlaot3();
+                result.position = World_positon.GetFlaot3();
+                result.normal = World_normal.GetFlaot3();
                 hit = true;
             }
         }

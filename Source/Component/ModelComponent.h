@@ -4,7 +4,6 @@
 #include <string>
 #include <memory>
 #include "System/MyMath/MYMATRIX.h"
-#include "System/MyMath/MYVECTOR4.h"
 #include "Component.h"
 #include "Model/ModelCommonData.h"
 
@@ -19,11 +18,11 @@ public:
 	{
 		const char* name = {};
 		Node* parent = {};
-		MYVECTOR3	scale = {};
-		MYVECTOR4	rotate = {};
-		MYVECTOR3	translate = {};
-		MYMATRIX	local_transform = {};
-		MYMATRIX	world_transform = {};
+		DirectX::XMFLOAT3 scale = {};
+		DirectX::XMFLOAT4 rotate = {};
+		DirectX::XMFLOAT3 translate = {};
+		DirectX::XMFLOAT4X4	local_transform = {};
+		DirectX::XMFLOAT4X4	world_transform = {};
 		std::vector<Node*>	children;
 	};
 
@@ -40,7 +39,7 @@ public:
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 
 	// 行列計算
-	void UpdateTransform(MYMATRIX transform);
+	void UpdateTransform(MYMATRIX Transform);
 
 	// ノード検索
 	ModelComponent::Node* FindNode(const char* name);
