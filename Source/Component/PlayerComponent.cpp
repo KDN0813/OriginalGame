@@ -78,7 +78,7 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
             angle.AddY(rot);
         }
 
-        transform->SetAngle(angle.GetVector());
+        transform->SetAngle(angle.GetFlaot3());
     }
 }
 
@@ -94,7 +94,7 @@ MYVECTOR3 PlayerComponent::GetMoveVec() const
     CameraManager* camera_manager = CameraManager::Instance();
     CameraComponent* camera = camera_manager->GetMainCamera();
     MYVECTOR3 camera_right = camera->GetRight();
-    MYVECTOR3 camera_front = camera->GetFront();
+    MYVECTOR3 camera_front = camera->GetForward();
 
     // 移動ベクトルはXZ平面に水平なベクトルになるようにする
 

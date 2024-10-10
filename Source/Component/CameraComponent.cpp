@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include "System/MyMath/MYMATRIX.h"
 #include "CameraComponent.h"
 #include "Object/Object.h"
 #include "Camera/CameraManager.h"
@@ -20,9 +21,9 @@ void CameraComponent::SetCameraController(std::unique_ptr<CameraControllerBase> 
 void CameraComponent::Start()
 {
     SetLookAt(
-        MYVECTOR3(0.0f, 0.0f, -1.0f),
-        MYVECTOR3(0.0f, 0.0f, 0.0f),
-        MYVECTOR3(0.0f, 1.0f, 0.0f)
+        DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f),
+        DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+        DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
     );
 }
 
@@ -40,14 +41,16 @@ void CameraComponent::Update(float elapsed_time)
     auto owner = GetOwner();
     if (!owner) return;
     auto transform = owner->EnsureComponentValid<Transform3DComponent>(transform_Wptr);
-    target = transform ? transform->GetPosition() : MYVECTOR3();
+    target = transform ? transform->GetPosition() : DirectX::XMFLOAT3();
 
     float sx = ::sinf(rotateX), cx = ::cosf(rotateX);
     float sy = ::sinf(rotateY), cy = ::cosf(rotateY);
-    MYVECTOR3 front = MYVECTOR3(-cx * sy, -sx, -cx * cy);
-    MYVECTOR3 set_eye = target - front * range;
-    MYVECTOR3 up = MYVECTOR3(0.0f, 1.0f, 0.0f);
-    SetLookAt(set_eye, target, up);
+    MYVECTOR3 Front = MYVECTOR3(-cx * sy, -sx, -cx * cy);
+    MYVECTOR3 Target = target;
+    MYVECTOR3 Eye = Target - Front * range;
+    MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
+
+    SetLookAt(this->forward, target, this->eye);
 }
 
 void CameraComponent::SetMainCamera()
@@ -55,13 +58,29 @@ void CameraComponent::SetMainCamera()
     this->camera_manager->SetMainCamera(this);
 }
 
-void CameraComponent::SetLookAt(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up)
+void CameraComponent::SetLookAt(DirectX::XMFLOAT3 eye, DirectX::XMFLOAT3 focus, DirectX::XMFLOAT3 up)
 {
     // 視点、中視点、上方向からビューを行列を作成
-    this->view_transform.SetLookAtLH(eye, focus, up);
+    MYMATRIX View_transform = this->view_transform;
+    View_transform.SetLookAtLH(eye, focus, up);
+    this->view_transform = View_transform.GetFlaot4x4();
 
     // ビューを逆行列化し、ワールド行列に戻す
-    this->world_transform = this->view_transform.GetInverse(nullptr);
+    MYMATRIX World_transform = View_transform.GetInverse(nullptr);
+    this->world_transform = World_transform.GetFlaot4x4();
+
+    // カメラ方向を取り出す
+    this->right.x = this->world_transform._11;
+    this->right.y = this->world_transform._12;
+    this->right.z = this->world_transform._13;
+
+    this->up.x = this->world_transform._21;
+    this->up.y = this->world_transform._22;
+    this->up.z = this->world_transform._23;
+
+    this->forward.x = this->world_transform._31;
+    this->forward.y = this->world_transform._32;
+    this->forward.z = this->world_transform._33;
 
     // 視点、注視点を保存
     this->eye = eye;
@@ -71,7 +90,9 @@ void CameraComponent::SetLookAt(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up)
 void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ)
 {
     // 画面比率、クリップ距離からプロジェクション行列を作成
-    this->projection_transform.SetPerspectiveFovLH(fovY, aspect, nearX, farZ);
+    MYMATRIX Projection_transform = this->projection_transform;
+    Projection_transform.SetPerspectiveFovLH(fovY, aspect, nearX, farZ);
+    this->projection_transform = Projection_transform.GetFlaot4x4();
 }
 
 #ifdef _DEBUG

@@ -101,7 +101,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				{
 					MYVECTOR3 position = current_pos;
 					position.AddY(my);
-					transform->SetPosition(position);
+					transform->SetPosition(position.GetFlaot3());
 
 					gravity->SetIsGrounded(false);
 				}
@@ -155,19 +155,19 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				if (!Collision::IntersectRayVsModel(start.GetFlaot3(), correction_positon.GetFlaot3(), stage_model.get(), hit2))
 				{
 					MYVECTOR3 positon = MYVECTOR3(correction_positon.GetX(), current_pos.GetY(), correction_positon.GetZ());
-					transform->SetPosition(positon);
+					transform->SetPosition(positon.GetFlaot3());
 				}
 				else
 				{
 					MYVECTOR3 positon = MYVECTOR3(hit2.position.x, current_pos.GetY(), hit2.position.z);
-					transform->SetPosition(positon);
+					transform->SetPosition(positon.GetFlaot3());
 				}
 			}
 			else
 			{
 				MYVECTOR3 positon = current_pos;
 				positon.AddXZ(mx, mz);
-				transform->SetPosition(positon);
+				transform->SetPosition(positon.GetFlaot3());
 			}
 		}
 	}

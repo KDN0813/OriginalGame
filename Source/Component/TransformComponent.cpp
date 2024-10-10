@@ -14,19 +14,22 @@ void Transform3DComponent::Update(float elapsed_time)
 	R.SetRotationRollPitchYaw(this->angle);
 	T.SetTranslationMatrix(this->position);
 
-	this->transform = S * R * T;
+	MYMATRIX W = S * R * T;
+	this->transform = W.GetFlaot4x4();
 	this->change_value = false;
 
 	{
 		DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-		debug_render->DrawSphere(position.GetFlaot3(), 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+		debug_render->DrawSphere(position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 	}
 }
 
-MYVECTOR3 Transform3DComponent::AddPosition(MYVECTOR3 vec)
+DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
 {
 	this->change_value = true;
-	this->position += vec;
+	MYVECTOR3 Pos = this->position;
+	Pos += vec;
+	this->position = Pos.GetFlaot3();
 	return this->position;
 }
 
@@ -34,28 +37,28 @@ MYVECTOR3 Transform3DComponent::AddPosition(MYVECTOR3 vec)
 
 void Transform3DComponent::DrawDebugGUI()
 {
-	if (this->position.InputFloat("position"))
+	if (ImGui::InputFloat3("position", &this->position.x))
 	{
 		this->change_value = true;
 	}
-	if (this->scale.InputFloat("scale"))
+	if (ImGui::InputFloat3("scale", &this->scale.x))
 	{
 		this->change_value = true;
 	}
 
-	MYVECTOR3 angle_degrees = 
+	DirectX::XMFLOAT3 angle_degrees
 	{
-		DirectX::XMConvertToDegrees(this->angle.GetX()),
-		DirectX::XMConvertToDegrees(this->angle.GetY()),
-		DirectX::XMConvertToDegrees(this->angle.GetZ()),
+		DirectX::XMConvertToDegrees(this->angle.x),
+		DirectX::XMConvertToDegrees(this->angle.y),
+		DirectX::XMConvertToDegrees(this->angle.z),
 	};
-	if (angle_degrees.SliderFloat("angle", 0, 360.0f))
+	if (ImGui::SliderFloat3("angle", &angle_degrees.x, 0, 360.0f));
 	{
 		this->angle =
 		{
-			DirectX::XMConvertToRadians(angle_degrees.GetX()),
-			DirectX::XMConvertToRadians(angle_degrees.GetY()),
-			DirectX::XMConvertToRadians(angle_degrees.GetZ()),
+			DirectX::XMConvertToRadians(angle_degrees.x),
+			DirectX::XMConvertToRadians(angle_degrees.y),
+			DirectX::XMConvertToRadians(angle_degrees.z),
 		};
 		this->change_value = true;
 	}

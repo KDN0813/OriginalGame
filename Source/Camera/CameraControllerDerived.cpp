@@ -25,8 +25,8 @@ void DebugCameraController::Update(float elapsed_time)
 	float rotateX = camera->GetRotateX();
 	float rotateY = camera->GetRotateY();
 	float range = camera->GetRange();
-	MYVECTOR3 focus = transform->GetPosition();
-	MYVECTOR3 eye = camera->GetEye();
+	MYVECTOR3 Focus = transform->GetPosition();
+	MYVECTOR3 Eye = camera->GetEye();
 
 	// 視線行列を生成
 	MYMATRIX V;
@@ -50,44 +50,49 @@ void DebugCameraController::Update(float elapsed_time)
 					rotateX = -DirectX::XMConvertToRadians(89.9f);
 
 				// キー移動
-				MYVECTOR3 forward = camera->GetViewTransform().GetForward();
-				MYVECTOR3 right = camera->GetViewTransform().GetRight();
+				MYVECTOR3 Forward = camera->GetForward();
+				MYVECTOR3 Right = camera->GetRight();
 				if (GetKeyState('W') < 0) 
 				{
-					focus += forward * 10.f * elapsed_time;
+					Focus += Forward * 10.f * elapsed_time;
 				}
 				if (GetKeyState('S') < 0) 
 				{
-					focus -= forward * 10.f * elapsed_time;
+					Focus -= Forward * 10.f * elapsed_time;
 				}
 				if (GetKeyState('A') < 0) 
 				{
-					focus -= right * 10.f * elapsed_time;
+					Focus -= Right * 10.f * elapsed_time;
 				}
 				if (GetKeyState('D') < 0) 
 				{
-					focus += right * 10.f * elapsed_time;
+					Focus += Right * 10.f * elapsed_time;
 				}
 				if (GetKeyState('E') < 0) 
 				{
-					focus += MYVECTOR3(0.0f, 10.0f * elapsed_time, 0.0f);
+					Focus.AddY(10.0f * elapsed_time);
 				}
 				if (GetKeyState('Q') < 0) 
 				{
-					focus += MYVECTOR3(0.0f, 10.0f * elapsed_time, 0.0f);
+					Focus.SubtractY(10.0f * elapsed_time);
 				}
 			}
 			else if (::GetAsyncKeyState(VK_MBUTTON) & 0x8000)
 			{
-				V.SetLookAtLH(eye, focus, up);
+				V.SetLookAtLH(Eye, Focus, up);
 
 				MYMATRIX W = V.GetInverse(nullptr);
+				DirectX::XMFLOAT4X4 w = W.GetFlaot4x4();
 				// 平行移動
 				float s = range * 0.035f;
 				float x = moveX * s;
 				float y = moveY * s;
-				focus -= W.GetRight() * x;
-				focus += W.GetUp() * y;
+
+				MYVECTOR3 W_right(w._11, w._12, w._13);
+				MYVECTOR3 W_up(w._21, w._22, w._23);
+
+				Focus -= W_right * x;
+				Focus += W_up * y;
 			}
 			if (mouse.GetWheel() != 0)	// ズーム
 			{
@@ -96,12 +101,12 @@ void DebugCameraController::Update(float elapsed_time)
 		}
 		float sx = ::sinf(rotateX), cx = ::cosf(rotateX);
 		float sy = ::sinf(rotateY), cy = ::cosf(rotateY);
-		MYVECTOR3 front(-cx * sy, -sx, -cx * cy);
-		front *= range;
-		eye = focus - front;
+		MYVECTOR3 Front(-cx * sy, -sx, -cx * cy);
+		Front *= range;
+		Eye = Focus - Front;
 
 		// カメラに視点を注視点を設定
-		camera->SetLookAt(eye, focus, { 0, 1, 0 });
+		camera->SetLookAt(Eye.GetFlaot3(), Focus.GetFlaot3(), { 0.0f, 1.0f, 0.0f });
 	}
 
 	if (mouse.GetWheel() != 0)
@@ -114,7 +119,7 @@ void DebugCameraController::Update(float elapsed_time)
 	camera->SetRotateY(rotateY);
 	camera->SetRange(range);
 
-	transform->SetPosition(focus);	// Positionの再設定
+	transform->SetPosition(Focus.GetFlaot3());	// Positionの再設定
 }
 
 #endif // _DEBUG
@@ -136,7 +141,7 @@ void GamepadCameraController::Update(float elapsed_time)
 	float rotateX = camera->GetRotateX();
 	float rotateY = camera->GetRotateY();
 	float range = camera->GetRange();
-	MYVECTOR3 target = camera->GetTarget();
+	MYVECTOR3 Target = camera->GetTarget();
 
 	GamePad& gamePad = Input::Instance()->GetGamePad();
 	float ax = gamePad.GetAxisRX();
@@ -151,17 +156,18 @@ void GamepadCameraController::Update(float elapsed_time)
 	if (rotateY > DirectX::XM_PI) rotateY -= DirectX::XM_2PI;
 
 	// カメラ回転値を回転行列に変換
-	MYMATRIX transform;
-	transform.SetRotationRollPitchYaw(rotateX, rotateY, 0.0f);
+	MYMATRIX Transform;
+	Transform.SetRotationRollPitchYaw(rotateX, rotateY, 0.0f);
+	DirectX::XMMATRIX transform = Transform.GetMatrix();
 
 	// 回転行列から前方ベクトルを取り出す
-	MYVECTOR3 front(transform.GetForward());
+	MYVECTOR3 Front = transform.r[2];
 
 	// 注視点から後ろのベクトル方向に一定離れたカメラ視点を求める
-	MYVECTOR3 eye = target - front * range;
+	MYVECTOR3 Eye = Target - Front * range;
 
 	// カメラの視点と注視点を設定
-	camera->SetLookAt(eye, target, MYVECTOR3(0.0f, 1.0f, 0.0f));
+	camera->SetLookAt(Eye.GetFlaot3(), Target.GetFlaot3(), DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
 	camera->SetRotateY(rotateY);
 }
 

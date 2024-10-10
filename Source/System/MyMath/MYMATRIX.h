@@ -144,28 +144,6 @@ public:
         this->matrix = DirectX::XMMatrixLookAtLH(MYVECTOR3(eye).GetVector(), MYVECTOR3(focus).GetVector(), MYVECTOR3(up).GetVector());
     }
 
-    MYVECTOR3 GetRight() const
-    {
-        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        return MYVECTOR3(f4x4._11, f4x4._12, f4x4._13);
-    }
-    MYVECTOR3 GetUp() const
-    {
-        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        return MYVECTOR3(f4x4._21, f4x4._22, f4x4._23);
-    }
-    MYVECTOR3 GetForward() const
-    {
-        DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-        return MYVECTOR3(f4x4._31, f4x4._32, f4x4._33);
-    }
-    //MYVECTOR3 GetTranslation()
-    //{
-    //    DirectX::XMFLOAT4X4 f4x4 = GetFlaot4x4();
-    //    MYVECTOR3 translation = MYVECTOR3(f4x4._41, f4x4._42, f4x4._43);
-    //    return translation;
-    //}
-
     // 行列とベクトルの乗算
     MYVECTOR3 Vector3TransformCoord(MYVECTOR3 mVec3) const
     {

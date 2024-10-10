@@ -288,7 +288,7 @@ void InstancingModelShader::InstancingAdd(
 	{
 		model->GetAnimationStartOffset(),
 		model->GetAnimeFrame(),
-		transform->GetTransformF()
+		transform->GetTransform()
 	};
 	++this->instance_count;
 }

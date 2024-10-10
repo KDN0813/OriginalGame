@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "System/MyMath/MYMATRIX.h"
+#include <DirectXMath.h>
 
 class Transform3DComponent : public Component
 {
@@ -12,27 +12,26 @@ public:
     const char* GetName()const override { return "TransformComponent"; }
     const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
 
-    MYMATRIX GetTransform() { return this->transform; }
-    DirectX::XMFLOAT4X4 GetTransformF() { return this->transform.GetFlaot4x4(); }
-    void SetTransform(MYMATRIX transform) { this->transform = transform; }
+    DirectX::XMFLOAT4X4 GetTransform() { return this->transform; }
+    void SetTransform(DirectX::XMFLOAT4X4 transform) { this->transform = transform; }
 
 #pragma region setEget parame
-    MYVECTOR3 GetPosition()const noexcept { return this->position; }
-    void SetPosition(MYVECTOR3 pos)noexcept { this->change_value = true; this->position = pos; }
-    MYVECTOR3 AddPosition(MYVECTOR3 vec);
+    DirectX::XMFLOAT3 GetPosition()const noexcept { return this->position; }
+    void SetPosition(DirectX::XMFLOAT3 pos)noexcept { this->change_value = true; this->position = pos; }
+    DirectX::XMFLOAT3 AddPosition(DirectX::XMFLOAT3 vec);
 
-    MYVECTOR3 GetAngle()const noexcept { return this->angle; }
-    void SetAngle(MYVECTOR3 angle)noexcept { this->change_value = true; this->angle = angle; }
+    DirectX::XMFLOAT3 GetAngle()const noexcept { return this->angle; }
+    void SetAngle(DirectX::XMFLOAT3 angle)noexcept { this->change_value = true; this->angle = angle; }
     
-    MYVECTOR3 GetScale()const noexcept { return this->scale; }
-    void SetScale(MYVECTOR3 scale)noexcept { this->change_value = true; this->scale = scale; }
+    DirectX::XMFLOAT3 GetScale()const noexcept { return this->scale; }
+    void SetScale(DirectX::XMFLOAT3 scale)noexcept { this->change_value = true; this->scale = scale; }
     
 #pragma endregion set parame
 private:
-    MYMATRIX transform{};
-    MYVECTOR3 position{};
-    MYVECTOR3 angle{};
-    MYVECTOR3 scale{};
+    DirectX::XMFLOAT4X4 transform{};
+    DirectX::XMFLOAT3 position{};
+    DirectX::XMFLOAT3 angle{};
+    DirectX::XMFLOAT3 scale{};
     bool change_value = false;
 #ifdef _DEBUG
     /**

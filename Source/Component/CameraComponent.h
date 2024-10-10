@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "System/MyMath/MYMATRIX.h"
+#include <DirectXMath.h>
 #include "Component.h"
 #include "Camera/CameraController.h"
 
@@ -34,7 +34,7 @@ public:
 	void SetMainCamera();
 
 	// 指定方向を向く
-	void SetLookAt(MYVECTOR3 eye, MYVECTOR3 focus, MYVECTOR3 up);
+	void SetLookAt(DirectX::XMFLOAT3 eye, DirectX::XMFLOAT3 focus, DirectX::XMFLOAT3 up);
 	// パースペクティブ設定
 	void SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ);
 	// カメラの距離設定
@@ -44,7 +44,7 @@ public:
 	// X軸回転度設定
 	void SetRotateX(float rotateX) { this->rotateX = rotateX; }
 	// プロジェクション行列設定
-	void SetProjectionTransform(MYMATRIX projection_transform) { this->projection_transform = projection_transform; }
+	void SetProjectionTransform(DirectX::XMFLOAT4X4 projection_transform) { this->projection_transform = projection_transform; }
 	// メインカメラフラグの設定
 	void SetIsMainCamera(bool is_main_camera) { this->is_main_camera = is_main_camera; }
 
@@ -63,21 +63,21 @@ public:
 	// ファークリップ値取得
 	float GetFarZ() { return this->farZ; }
 	// ビュー行列取得
-	MYMATRIX GetViewTransform() { return this->view_transform; }
+	DirectX::XMFLOAT4X4 GetViewTransform() const { return this->view_transform; }
 	// プロジェクション行列取得
-	MYMATRIX GetProjectionTransform() { return this->projection_transform; }
+	DirectX::XMFLOAT4X4 GetProjectionTransform() const { return this->projection_transform; }
 	// 視点取得
-	MYVECTOR3 GetEye() { return this->eye; }
+	DirectX::XMFLOAT3 GetEye() const { return this->eye; }
 	// 注視店取得
-	MYVECTOR3 GetFocus() { return this->focus; }
+	DirectX::XMFLOAT3 GetFocus() const { return this->focus; }
 	// 上方向取得
-	MYVECTOR3 GetUp() { return this->world_transform.GetUp() ; }
+	DirectX::XMFLOAT3 GetUp() const { return this->up; }
 	// 前方向取得
-	MYVECTOR3 GetFront() { return this->world_transform.GetForward(); }
+	DirectX::XMFLOAT3 GetForward() const { return this->forward; }
 	// 右方向取得
-	MYVECTOR3 GetRight() { return this->world_transform.GetRight(); }
+	DirectX::XMFLOAT3 GetRight() const { return this->right; }
 	// ターゲット取得
-	MYVECTOR3 GetTarget() { return this->target; }
+	DirectX::XMFLOAT3 GetTarget() const { return this->target; }
 	// メインカメラであるか
 	bool GetIsMainCamera() { return this->is_main_camera; }
 
@@ -87,13 +87,17 @@ private:
 	float					nearZ = 0.1f;
 	float					farZ = 1000.0f;
 
-	MYVECTOR3		eye = MYVECTOR3(0.0f, 0.0f, -1.0f);
-	MYVECTOR3		focus = MYVECTOR3(0.0f, 0.0f, 0.0f);
-	MYVECTOR3		target = MYVECTOR3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3		eye = DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f);
+	DirectX::XMFLOAT3		focus = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3		target = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 
-	MYMATRIX		world_transform = {};
-	MYMATRIX		view_transform = {};
-	MYMATRIX		projection_transform = {};
+	DirectX::XMFLOAT3		right = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
+	DirectX::XMFLOAT3		up = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
+	DirectX::XMFLOAT3		forward = DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f);
+
+	DirectX::XMFLOAT4X4		world_transform = {};
+	DirectX::XMFLOAT4X4		view_transform = {};
+	DirectX::XMFLOAT4X4		projection_transform = {};
 
 	float range = 1.0f;
 	float rotateY = 0.0f;
