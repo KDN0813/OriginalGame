@@ -50,7 +50,7 @@ void CameraComponent::Update(float elapsed_time)
     MYVECTOR3 Eye = Target - Front * range;
     MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
 
-    SetLookAt(this->forward, target, this->eye);
+    SetLookAt(Front.GetFlaot3(), Target.GetFlaot3(), Up.GetFlaot3());
 }
 
 void CameraComponent::SetMainCamera()
@@ -61,7 +61,7 @@ void CameraComponent::SetMainCamera()
 void CameraComponent::SetLookAt(DirectX::XMFLOAT3 eye, DirectX::XMFLOAT3 focus, DirectX::XMFLOAT3 up)
 {
     // 視点、中視点、上方向からビューを行列を作成
-    MYMATRIX View_transform = this->view_transform;
+    MYMATRIX View_transform;
     View_transform.SetLookAtLH(eye, focus, up);
     this->view_transform = View_transform.GetFlaot4x4();
 
@@ -90,7 +90,7 @@ void CameraComponent::SetLookAt(DirectX::XMFLOAT3 eye, DirectX::XMFLOAT3 focus, 
 void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ)
 {
     // 画面比率、クリップ距離からプロジェクション行列を作成
-    MYMATRIX Projection_transform = this->projection_transform;
+    MYMATRIX Projection_transform;
     Projection_transform.SetPerspectiveFovLH(fovY, aspect, nearX, farZ);
     this->projection_transform = Projection_transform.GetFlaot4x4();
 }

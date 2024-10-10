@@ -139,11 +139,6 @@ public:
     {
         this->matrix = DirectX::XMMatrixLookAtLH(eye.GetVector(), focus.GetVector(), up.GetVector());
     }
-    void SetLookAtLH(DirectX::XMFLOAT3 eye, DirectX::XMFLOAT3 focus, DirectX::XMFLOAT3 up)
-    {
-        this->matrix = DirectX::XMMatrixLookAtLH(MYVECTOR3(eye).GetVector(), MYVECTOR3(focus).GetVector(), MYVECTOR3(up).GetVector());
-    }
-
     // 行列とベクトルの乗算
     MYVECTOR3 Vector3TransformCoord(MYVECTOR3 mVec3) const
     {

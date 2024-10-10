@@ -9,7 +9,7 @@ class MYVECTOR2
 {
 public:
     MYVECTOR2() : vector(DirectX::XMVectorZero()) {}
-    MYVECTOR2(float x, float y = 0.0f)
+    MYVECTOR2(float x, float y)
     {
         this->vector = DirectX::XMVectorSet(x, y, 0.0f, 0.0f);
     }

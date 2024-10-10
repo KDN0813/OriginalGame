@@ -145,7 +145,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				MYVECTOR3 normal = hit.normal;
 
 				// 入射ベクトルを法線に射影
-				MYVECTOR3 dot = (vecSE.Negate()).Dot(normal) * 1.1f;
+				MYVECTOR3 dot = (vecSE.Negate()).DotVec3(normal) * 1.1f;
 
 				// 補正位置の計算
 				MYVECTOR3 correction_positon = normal * dot + end;

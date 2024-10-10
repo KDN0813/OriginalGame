@@ -9,7 +9,7 @@ class MYVECTOR3
 {
 public:
     MYVECTOR3() : vector(DirectX::XMVectorZero()) {}
-    MYVECTOR3(float x, float y = 0.0f, float z = 0.0f)
+    MYVECTOR3(float x, float y, float z)
     {
         this->vector = DirectX::XMVectorSet(x, y, z, 0.0f);
     }
@@ -231,9 +231,13 @@ public:
         return MYVECTOR3(DirectX::XMVectorPow(this->vector, DirectX::XMVectorSet(f, f, f, 0.0f)));
     }
     // “àÏŒvZ
-   float Dot(MYVECTOR3 mVec) const
+    float Dot(MYVECTOR3 mVec) const
     {
        return DirectX::XMVectorGetX(DirectX::XMVector3Dot(this->vector, mVec.GetVector()));
+    }
+    MYVECTOR3 DotVec3(MYVECTOR3 mVec) const
+    {
+        return DirectX::XMVector3Dot(this->vector, mVec.GetVector());
     }
     // ŠOÏŒvZ
     MYVECTOR3 Cross(MYVECTOR3 mVec) const
