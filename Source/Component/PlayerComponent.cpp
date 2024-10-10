@@ -16,14 +16,14 @@ void PlayerComponent::Update(float elapsed_time)
 bool PlayerComponent::InputMove(float elapsed_time)
 {
     // 移動ベクトルを取得
-    DirectX::XMFLOAT3 moveVec = GetMoveVec();
+    MYVECTOR3 moveVec = GetMoveVec();
 
     // 移動処理
-    Move(moveVec.x, moveVec.z, this->move_speed);
+    Move(moveVec.GetX(), moveVec.GetZ(), this->move_speed);
     // 回転処理
-    Turn(elapsed_time,moveVec.x, moveVec.z, this->turn_speed);
+    Turn(elapsed_time,moveVec.GetX(), moveVec.GetZ(), this->turn_speed);
 
-    return (moveVec.x != 0 || moveVec.y != 0 || moveVec.z != 0);
+    return (moveVec.LengthXZSq());
 }
 
 void PlayerComponent::Move(float vx, float vz, float speed)
@@ -52,9 +52,9 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
         vz /= length;
 
         // 自身の回転値から前方向を求める
-        DirectX::XMFLOAT3 angle = transform->GetAngle();
-        float frontX = sinf(angle.y);
-        float frontZ = cosf(angle.y);
+        MYVECTOR3 angle = transform->GetAngle();
+        float frontX = sinf(angle.GetX());
+        float frontZ = cosf(angle.GetY());
 
         // 回転角を求めるため、2つの単位ベクトルの内積を計算する
         float dot = (frontX * vx + frontZ * vz);
@@ -82,7 +82,7 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
     }
 }
 
-DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
+MYVECTOR3 PlayerComponent::GetMoveVec() const
 {
     // 入力情報を取得
     Input* input = Input::Instance();
@@ -123,7 +123,7 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
     // スティックの水平入力値をカメラ右方向に反映し、
     // スティックの垂直入力値をカメラ前方向に反映し、
     // 進行ベクトルを計算する
-    DirectX::XMFLOAT3 vec{};
+    MYVECTOR3 vec{};
     vec.x = (camera_rightX * ax) + (camera_frontX * ay);
     vec.z = (camera_rightZ * ax) + (camera_frontZ * ay);
     //正規化

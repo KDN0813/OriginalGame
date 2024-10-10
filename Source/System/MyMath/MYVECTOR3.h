@@ -85,6 +85,54 @@ public:
     {
         this->vector = DirectX::XMVectorAdd(this->vector, DirectX::XMVectorSet(x, 0.0f, z, 0.0f));
     }
+    void SubtractX(float x)
+    {
+        this->vector = DirectX::XMVectorSubtract(this->vector, DirectX::XMVectorSet(x, 0.0f, 0.0f, 0.0f));
+    }
+    void SubtractY(float y)
+    {
+        this->vector = DirectX::XMVectorSubtract(this->vector, DirectX::XMVectorSet(0.0f, y, 0.0f, 0.0f));
+    }
+    void SubtractZ(float z)
+    {
+        this->vector = DirectX::XMVectorSubtract(this->vector, DirectX::XMVectorSet(0.0f, 0.0f, z, 0.0f));
+    }
+    void SubtractXZ(float x, float z)
+    {
+        this->vector = DirectX::XMVectorSubtract(this->vector, DirectX::XMVectorSet(x, 0.0f, z, 0.0f));
+    }
+    void MultiplyX(float x)
+    {
+        this->vector = DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(x, 1.0f, 1.0f, 1.0f));
+    }
+    void MultiplyY(float y)
+    {
+        this->vector = DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(1.0f, y, 1.0f, 1.0f));
+    }
+    void MultiplyZ(float z)
+    {
+        this->vector = DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(1.0f, 1.0f, z, 1.0f));
+    }
+    void MultiplyXZ(float x, float z)
+    {
+        this->vector = DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(x, 1.0f, z, 1.0f));
+    }
+    void DivideX(float x)
+    {
+        this->vector = DirectX::XMVectorDivide(this->vector, DirectX::XMVectorSet(x, 1.0f, 1.0f, 1.0f));
+    }
+    void DivideY(float y)
+    {
+        this->vector = DirectX::XMVectorDivide(this->vector, DirectX::XMVectorSet(1.0f, y, 1.0f, 1.0f));
+    }
+    void DivideZ(float z)
+    {
+        this->vector = DirectX::XMVectorDivide(this->vector, DirectX::XMVectorSet(1.0f, 1.0f, z, 1.0f));
+    }
+    void DivideXZ(float x, float z)
+    {
+        this->vector = DirectX::XMVectorDivide(this->vector, DirectX::XMVectorSet(x, 1.0f, z, 1.0f));
+    }
 
     void ZeroClear()
     {

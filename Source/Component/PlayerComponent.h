@@ -18,7 +18,7 @@ private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
     void Turn(float elapsed_time, float vx, float vz, float speed);
-    DirectX::XMFLOAT3 GetMoveVec() const;
+    MYVECTOR3 GetMoveVec() const;
 
 private:
     float move_speed = 10.0f;
