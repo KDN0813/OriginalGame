@@ -71,7 +71,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 		// Y軸の下方向に向けてレイキャストを行う
 		{
 			// 現在の位置
-			const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
+			const MYVECTOR3 current_pos = transform->GetPosition();
 
 			// 垂直方向の移動量
 			float my = this->velocity.GetY();
@@ -79,14 +79,14 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 			if (my < 0.0f)
 			{
 				// レイの開始位置と終点位置
-				DirectX::XMFLOAT3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
-				DirectX::XMFLOAT3 end = { current_pos.x,current_pos.y + my,current_pos.z };
+				MYVECTOR3 start = current_pos + MYVECTOR3(0.0f, step_offset, 0.0f);
+				MYVECTOR3 end = current_pos + MYVECTOR3(0.0f, my, 0.0f);
 
 #ifdef _DEBUG	// デバッグプリミティブ表示
 				{
 					DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-					debug_render->DrawSphere(start, 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-					debug_render->DrawSphere(end, 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
+					debug_render->DrawSphere(start.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+					debug_render->DrawSphere(end.GetFlaot3(), 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
 				}
 #endif // _DEBUG	デバッグプリミティブ表示
 
@@ -99,8 +99,8 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				}
 				else
 				{
-					DirectX::XMFLOAT3 position = current_pos;
-					position.y += my;
+					MYVECTOR3 position = current_pos;
+					position.AddY(my);
 					transform->SetPosition(position);
 
 					gravity->SetIsGrounded(false);
@@ -112,7 +112,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 	// 前方方向にレイキャストを行う
 	{
 		// 現在の位置
-		const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
+		const MYVECTOR3 current_pos = transform->GetPosition();
 
 		float velocity_lengthXZ = this->velocity.LengthXZ();
 		if (velocity_lengthXZ > 0.0f)
@@ -122,8 +122,8 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 			float mz = this->velocity.GetZ();
 
 			// レイの開始位置と終点位置
-			MYVECTOR3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
-			MYVECTOR3 end = { current_pos.x + mx,current_pos.y + step_offset,current_pos.z + mz };
+			MYVECTOR3 start = current_pos + MYVECTOR3(0.0f, step_offset, 0.0f);
+			MYVECTOR3 end = current_pos + MYVECTOR3(0.0f, step_offset, mz);
 
 #ifdef _DEBUG
 			// デバッグプリミティブ表示
@@ -154,22 +154,19 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				HitResult hit2;
 				if (!Collision::IntersectRayVsModel(start, correction_positon, stage_model.get(), hit2))
 				{
-					MYVECTOR3 positon = correction_positon;
-					positon.SetY(current_pos.y);
+					MYVECTOR3 positon = MYVECTOR3(correction_positon.GetX(), current_pos.GetY(), correction_positon.GetZ());
 					transform->SetPosition(positon);
 				}
 				else
 				{
-					MYVECTOR3 positon = hit2.position;
-					positon.SetY(current_pos.y);
+					MYVECTOR3 positon = MYVECTOR3(hit2.position.GetX(), current_pos.GetY(), hit2.position.GetZ());
 					transform->SetPosition(positon);
 				}
 			}
 			else
 			{
-				DirectX::XMFLOAT3 positon = current_pos;
-				positon.x += mx;
-				positon.z += mz;
+				MYVECTOR3 positon = current_pos;
+				positon.AddXZ(mx, mz);
 				transform->SetPosition(positon);
 			}
 		}
