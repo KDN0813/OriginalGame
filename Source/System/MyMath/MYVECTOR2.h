@@ -59,6 +59,15 @@ public:
         this->vector = DirectX::XMLoadFloat2(&f2);
     }
 
+    void AddX(float x)
+    {
+        this->vector = DirectX::XMVectorAdd(this->vector, DirectX::XMVectorSet(x, 0.0f, 0.0f, 0.0f));
+    }
+    void AddY(float y)
+    {
+        this->vector = DirectX::XMVectorAdd(this->vector, DirectX::XMVectorSet(0.0f, y, 0.0f, 0.0f));
+    }
+
     void ZeroClear()
     {
         vector = DirectX::XMVectorZero();
