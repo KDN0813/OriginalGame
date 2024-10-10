@@ -32,6 +32,9 @@ public:
     MYVECTOR3 GetAcceleration() { return this->acceleration; }
     MYVECTOR3 GetVelocity() { return this->velocity; }
 
+    // ステージとのレイキャスト
+    void RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform);
+
 private:
     MYVECTOR3 velocity{};               // 速度
     MYVECTOR3 acceleration{};    // 加速度
