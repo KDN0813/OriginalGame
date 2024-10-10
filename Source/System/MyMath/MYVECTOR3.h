@@ -349,7 +349,7 @@ public:
     void InputFloat(const char* label)
     {
         DirectX::XMFLOAT3 f3 = GetFlaot3();
-        if (ImGui::InputFloat(label, &f3.x))
+        if (ImGui::InputFloat3(label, &f3.x))
         {
             SetVector(f3);
         }

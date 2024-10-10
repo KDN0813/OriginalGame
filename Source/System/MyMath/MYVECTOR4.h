@@ -1,5 +1,9 @@
 #pragma once
 #include <DirectXMath.h>
+#ifdef _DEBUG
+#include <imgui.h>
+#endif // _DEBUG
+
 
 class MYVECTOR4
 {
@@ -309,4 +313,32 @@ public:
 #pragma endregion VectorXZ
 private:
     alignas(16) DirectX::XMVECTOR vector;  // ì‡ïîÇ≈XMVECTORÇï€éù
+
+public:
+#ifdef _DEBUG
+        void InputFloat(const char* label)
+        {
+            DirectX::XMFLOAT4 f4 = GetFlaot4();
+            if (ImGui::InputFloat4(label, &f4.x))
+            {
+                SetVector(f4);
+            }
+        }
+        void DragFloat(const char* label, float rate = 1.0f)
+        {
+            DirectX::XMFLOAT4 f4 = GetFlaot4();
+            if (ImGui::DragFloat4(label, &f4.x), rate)
+            {
+                SetVector(f4);
+            }
+        }
+        void DragFloat(const char* label, float min, float max)
+        {
+            DirectX::XMFLOAT4 f4 = GetFlaot4();
+            if (ImGui::SliderFloat4(label, &f4.x, min, max))
+            {
+                SetVector(f4);
+            }
+        }
+#endif // _DEBUG
 };
