@@ -50,7 +50,7 @@ void CameraComponent::Update(float elapsed_time)
     MYVECTOR3 Eye = Target - Front * range;
     MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
 
-    SetLookAt(Front.GetFlaot3(), Target.GetFlaot3(), Up.GetFlaot3());
+    SetLookAt(Eye.GetFlaot3(), Target.GetFlaot3(), Up.GetFlaot3());
 }
 
 void CameraComponent::SetMainCamera()
