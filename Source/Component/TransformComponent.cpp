@@ -23,7 +23,7 @@ void Transform3DComponent::Update(float elapsed_time)
 	}
 }
 
-MYVECTOR3 Transform3DComponent::AddPositionVec(MYVECTOR3 vec)
+MYVECTOR3 Transform3DComponent::AddPosition(MYVECTOR3 vec)
 {
 	this->change_value = true;
 	this->position += vec;

@@ -13,12 +13,13 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
 
     MYMATRIX GetTransform() { return this->transform; }
+    DirectX::XMFLOAT4X4 GetTransformF() { return this->transform.GetFlaot4x4(); }
     void SetTransform(MYMATRIX transform) { this->transform = transform; }
 
 #pragma region setEget parame
     MYVECTOR3 GetPosition()const noexcept { return this->position; }
     void SetPosition(MYVECTOR3 pos)noexcept { this->change_value = true; this->position = pos; }
-    MYVECTOR3 AddPositionVec(MYVECTOR3 vec);
+    MYVECTOR3 AddPosition(MYVECTOR3 vec);
 
     MYVECTOR3 GetAngle()const noexcept { return this->angle; }
     void SetAngle(MYVECTOR3 angle)noexcept { this->change_value = true; this->angle = angle; }
