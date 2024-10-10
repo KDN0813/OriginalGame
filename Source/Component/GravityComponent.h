@@ -23,7 +23,7 @@ public:
     void SetIsGrounded(bool is_grounded) { this->is_grounded = is_grounded; }
 private:
     float gravity = -0.5f;   // d—Í‰Á‘¬“x
-    bool is_grounded = false;
+    bool is_grounded = false;// ’n–Ê‚É‚¢‚é‚©
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
 
