@@ -92,7 +92,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 				// レイキャストによる地面判定
 				HitResult hit;
-				if (Collision::IntersectRayVsModel(start, end, stage_model.get(), hit))
+				if (Collision::IntersectRayVsModel(start.GetFlaot3(), end.GetFlaot3(), stage_model.get(), hit))
 				{
 					transform->SetPosition(hit.position);
 					gravity->SetIsGrounded(true);
@@ -136,13 +136,13 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 			// レイキャスト壁判定
 			HitResult hit;
-			if (Collision::IntersectRayVsModel(start, end, stage_model.get(), hit))
+			if (Collision::IntersectRayVsModel(start.GetFlaot3(), end.GetFlaot3(), stage_model.get(), hit))
 			{
 				// 壁からレイの終点までのベクトル
 				MYVECTOR3 vecSE = end - hit.position;
 
 				// 壁の法線
-				MYVECTOR3& normal = hit.normal;
+				MYVECTOR3 normal = hit.normal;
 
 				// 入射ベクトルを法線に射影
 				MYVECTOR3 dot = (vecSE.Negate()).Dot(normal) * 1.1f;
@@ -152,14 +152,14 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 				// 壁ずり方向へのレイキャスト
 				HitResult hit2;
-				if (!Collision::IntersectRayVsModel(start, correction_positon, stage_model.get(), hit2))
+				if (!Collision::IntersectRayVsModel(start.GetFlaot3(), correction_positon.GetFlaot3(), stage_model.get(), hit2))
 				{
 					MYVECTOR3 positon = MYVECTOR3(correction_positon.GetX(), current_pos.GetY(), correction_positon.GetZ());
 					transform->SetPosition(positon);
 				}
 				else
 				{
-					MYVECTOR3 positon = MYVECTOR3(hit2.position.GetX(), current_pos.GetY(), hit2.position.GetZ());
+					MYVECTOR3 positon = MYVECTOR3(hit2.position.x, current_pos.GetY(), hit2.position.z);
 					transform->SetPosition(positon);
 				}
 			}

@@ -1,5 +1,5 @@
 #pragma once
-#include "System/MyMath/MYVECTOR3.h"
+#include <DirectXMath.h>
 #include "Component/ModelComponent.h"
 
  /**
@@ -13,9 +13,9 @@
  */
 struct HitResult
 {
-    MYVECTOR3   position        = {};
-    MYVECTOR3   normal          = {};
-    MYVECTOR3   rotation          = {};
+    DirectX::XMFLOAT3   position        = {};
+    DirectX::XMFLOAT3   normal          = {};
+    DirectX::XMFLOAT3   rotation          = {};
     float               distance        = 0.0f;
     int                 material_index   = -1;
 };
@@ -25,32 +25,32 @@ class Collision
 public:
     // ãÖÇ∆ãÖÇÃåç∑îªíË
     static bool IntersectSphareVsSphere(
-        MYVECTOR3 positionA
+        DirectX::XMFLOAT3 positionA
         , float radiusA
-        , MYVECTOR3 positionB
+        , DirectX::XMFLOAT3 positionB
         , float radiusB
-        , MYVECTOR3 out_positionB
+        , DirectX::XMFLOAT3 out_positionB
     );
 
     // â~íåÇ∆â~íåÇÃåç∑îªíË
     static bool IntersectCylinderVsCylinder(
-        MYVECTOR3 positionA
+        DirectX::XMFLOAT3 positionA
         , float radiusA
         , float heightA
-        , MYVECTOR3 positionB
+        , DirectX::XMFLOAT3 positionB
         , float radiusB
         , float heightB
-        , MYVECTOR3 out_positionB
+        , DirectX::XMFLOAT3 out_positionB
     );
 
     // ãÖÇ∆â~íåÇÃåç∑îªíË
     static bool IntersectSphereVsCylinder(
-        MYVECTOR3 sphere_position
+        DirectX::XMFLOAT3 sphere_position
         , float sphere_radius
-        , MYVECTOR3 cylinder_position
+        , DirectX::XMFLOAT3 cylinder_position
         , float cylinder_radius
         , float cylinder_height
-        , MYVECTOR3 out_cylinder_position
+        , DirectX::XMFLOAT3 out_cylinder_position
     );
 
     /**
@@ -63,8 +63,8 @@ public:
      * \return åç∑îªíË(åç∑ÇµÇΩÇÁtrue)
      */
     static bool IntersectRayVsModel(
-        MYVECTOR3 start,
-        MYVECTOR3 end,
+        DirectX::XMFLOAT3 start,
+        DirectX::XMFLOAT3 end,
         const ModelComponent* model,
         HitResult& result
     );

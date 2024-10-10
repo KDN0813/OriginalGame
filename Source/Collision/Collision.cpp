@@ -3,14 +3,16 @@
 
 // 球と球の交差判定
 bool Collision::IntersectSphareVsSphere(
-    MYVECTOR3 positionA
+    DirectX::XMFLOAT3 positionA
     , float radiusA
-    , MYVECTOR3 positionB
+    , DirectX::XMFLOAT3 positionB
     , float radiusB
-    , MYVECTOR3 out_positionB)
+    , DirectX::XMFLOAT3 out_positionB)
 {
     // AからBの単位ベクトルを算出
-    MYVECTOR3 vec = positionB - positionA;
+    MYVECTOR3 PositionB = positionB;
+    MYVECTOR3 PositionA = positionA;
+    MYVECTOR3 vec = PositionB - PositionA;
 
     // 距離判定[05]
     float range = radiusA + radiusB;
@@ -21,36 +23,40 @@ bool Collision::IntersectSphareVsSphere(
     }
 
     // AがBを押し出す
-    out_positionB = positionA + (vec * range);
+    MYVECTOR3 Out_positionB = PositionA + (vec * range);
+    out_positionB = Out_positionB.GetFlaot3();
 
     return true;
 }
 
 // 円柱と円柱の交差判定
 bool Collision::IntersectCylinderVsCylinder(
-    MYVECTOR3 positionA,
+    DirectX::XMFLOAT3 positionA,
     float radiusA,
     float heightA,
-    MYVECTOR3 positionB,
+    DirectX::XMFLOAT3 positionB,
     float radiusB,
     float heightB,
-    MYVECTOR3 out_positionB
+    DirectX::XMFLOAT3 out_positionB
 )
 {
+    MYVECTOR3 PositionA = positionA;
+    MYVECTOR3 PositionB = positionB;
+
     // Aの足もとがBの頭の上に当たっていない
-    if ((positionA.GetY()) > (positionB.GetY() + heightB))
+    if ((PositionA.GetY()) > (PositionB.GetY() + heightB))
     {
         return false;
     }
 
     // Aの頭がBの足もとより下なら当たっていない
-    if ((positionA.GetY() + heightB) < (positionB.GetY()))
+    if ((PositionA.GetY() + heightB) < (PositionB.GetY()))
     {
         return false;
     }
 
     // XZ平面での範囲チェック[06]
-    MYVECTOR2 vec = positionB.GetMyVector2XZ() - positionA.GetMyVector2XZ();
+    MYVECTOR2 vec = PositionB.GetMyVector2XZ() - PositionA.GetMyVector2XZ();
     float lengthXZ = vec.Length();
     float range = radiusA + radiusB;
     if (lengthXZ > range)
@@ -61,34 +67,37 @@ bool Collision::IntersectCylinderVsCylinder(
     // AがBを押し出す
     vec.Normalize();
     vec *= range;
-    out_positionB = MYVECTOR3(positionA.GetX() + vec.GetX(), positionB.GetY(), positionA.GetZ() + vec.GetY());
+    MYVECTOR3 Out_positionB = MYVECTOR3(PositionA.GetX() + vec.GetX(), PositionB.GetY(), PositionA.GetZ() + vec.GetY());
+    out_positionB = Out_positionB.GetFlaot3();
     return true;
 }
 
 // 球と円柱の交差判定
 bool Collision::IntersectSphereVsCylinder(
-    MYVECTOR3 sphere_position
+    DirectX::XMFLOAT3 sphere_position
     , float sphere_radius
-    , MYVECTOR3 cylinder_position
+    , DirectX::XMFLOAT3 cylinder_position
     , float cylinder_radius
     , float cylinder_height
-    , MYVECTOR3 out_cylinder_position
+    , DirectX::XMFLOAT3 out_cylinder_position
 )
 {
+    MYVECTOR3 Sphere_position = sphere_position;
+    MYVECTOR3 Cylinder_position = cylinder_position;
     // 球の足もとが円柱の頭の上に当たっていない
-    if ((sphere_position.GetY() - sphere_radius) > (cylinder_position.GetY() + cylinder_height))
+    if ((Sphere_position.GetY() - sphere_radius) > (Cylinder_position.GetY() + cylinder_height))
     {
         return false;
     }
 
     // 球の頭が円柱の足もとより下なら当たっていない
-    if ((sphere_position.GetY() + sphere_radius) < (cylinder_position.GetY()))
+    if ((Sphere_position.GetY() + sphere_radius) < (Cylinder_position.GetY()))
     {
         return false;
     }
 
     // XZ平面での範囲チェック
-    MYVECTOR2 vec = cylinder_position.GetMyVector2XZ() - sphere_position.GetMyVector2XZ();
+    MYVECTOR2 vec = Cylinder_position.GetMyVector2XZ() - Sphere_position.GetMyVector2XZ();
     float lengthXZ = vec.Length();
     float range = sphere_radius + cylinder_radius;
     if (lengthXZ > range)
@@ -99,22 +108,23 @@ bool Collision::IntersectSphereVsCylinder(
     // AがBを押し出す
     vec.Normalize();
     vec *= range;
-    out_cylinder_position = MYVECTOR3(sphere_position.GetX() + vec.GetX(), cylinder_position.GetY(), sphere_position.GetZ() + vec.GetY());
+    MYVECTOR3 Out_Cylinder_position = MYVECTOR3(Sphere_position.GetX() + vec.GetX(), Cylinder_position.GetY(), Sphere_position.GetZ() + vec.GetY());
+    out_cylinder_position = Out_Cylinder_position.GetFlaot3();
     return true;
 
     return true;
 }
 
 bool Collision::IntersectRayVsModel(
-    MYVECTOR3 start,
-    MYVECTOR3 end,
+    DirectX::XMFLOAT3 start,
+    DirectX::XMFLOAT3 end,
     const ModelComponent* model,
     HitResult& result
 )
 {
     // ワールド空間のレイの長さ
-    MYVECTOR3& world_start = start;
-    MYVECTOR3& world_end = end;
+    MYVECTOR3 world_start = start;
+    MYVECTOR3 world_end = end;
     MYVECTOR3 world_ray_vec = world_end - world_start;
     result.distance = world_ray_vec.Length();
 
@@ -222,8 +232,8 @@ bool Collision::IntersectRayVsModel(
 
                 result.distance = distance;
                 result.material_index = material_index;
-                result.position = world_positon;
-                result.normal = world_normal;
+                result.position = world_positon.GetFlaot3();
+                result.normal = world_normal.GetFlaot3();
                 hit = true;
             }
         }
