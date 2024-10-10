@@ -12,34 +12,26 @@ public:
     const char* GetName()const override { return "TransformComponent"; }
     const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
 
-    const DirectX::XMFLOAT4X4& GetTransform() { return this->transform; }
-    const DirectX::XMMATRIX& GetTransformVec() { return DirectX::XMLoadFloat4x4(&this->transform); }
-    void SetTransform(const DirectX::XMFLOAT4X4& transform) { this->transform = transform; }
+    MYMATRIX GetTransform() { return this->transform; }
+    void SetTransform(MYMATRIX transform) { this->transform = transform; }
 
 #pragma region setEget parame
-    const DirectX::XMVECTOR GetPositionVec()const noexcept { return DirectX::XMLoadFloat3(&position); }
-    const DirectX::XMFLOAT3& GetPosition()const noexcept { return position; }
-    void SetPosition(MYVECTOR3 pos)noexcept { this->change_value = true; this->position = pos.GetFlaot3(); }
-    void SetPosition(const DirectX::XMVECTOR& pos)noexcept { this->change_value = true; DirectX::XMStoreFloat3(&this->position, pos); }
-    const DirectX::XMVECTOR AddPositionVec(const DirectX::XMVECTOR& vec);
-    const DirectX::XMFLOAT3& AddPosition(const DirectX::XMFLOAT3 vec);
+    MYVECTOR3 GetPosition()const noexcept { return this->position; }
+    void SetPosition(MYVECTOR3 pos)noexcept { this->change_value = true; this->position = pos; }
+    MYVECTOR3 AddPositionVec(MYVECTOR3 vec);
 
-    const DirectX::XMVECTOR GetAngleVec()const noexcept { return DirectX::XMLoadFloat3(&angle); }
-    const DirectX::XMFLOAT3& GetAngle()const noexcept { return angle; }
-    void SetAngle(const DirectX::XMVECTOR& angle)noexcept { this->change_value = true; DirectX::XMStoreFloat3(&this->angle, angle); }
-    void SetAngle(const DirectX::XMFLOAT3& angle)noexcept { this->change_value = true; this->angle = angle; }
-
-    const DirectX::XMVECTOR GetScaleVec()const noexcept { return DirectX::XMLoadFloat3(&this->scale); }
-    const DirectX::XMFLOAT3& GetScale()const noexcept { return scale; }
-    void SetScale(const DirectX::XMVECTOR scale)noexcept { this->change_value = true; DirectX::XMStoreFloat3(&this->scale, scale); }
-    void SetScale(const DirectX::XMFLOAT3 scale)noexcept { this->change_value = true; this->scale = scale; }
-
+    MYVECTOR3 GetAngle()const noexcept { return this->angle; }
+    void SetAngle(MYVECTOR3 angle)noexcept { this->change_value = true; this->angle = angle; }
+    
+    MYVECTOR3 GetScale()const noexcept { return this->scale; }
+    void SetScale(MYVECTOR3 scale)noexcept { this->change_value = true; this->scale = scale; }
+    
 #pragma endregion set parame
 private:
-    DirectX::XMFLOAT4X4 transform{};
-    DirectX::XMFLOAT3 position{};
-    DirectX::XMFLOAT3 angle{};
-    DirectX::XMFLOAT3 scale{};
+    MYMATRIX transform{};
+    MYVECTOR3 position{};
+    MYVECTOR3 angle{};
+    MYVECTOR3 scale{};
     bool change_value = false;
 #ifdef _DEBUG
     /**

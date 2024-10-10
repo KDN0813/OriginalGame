@@ -316,29 +316,38 @@ private:
 
 public:
 #ifdef _DEBUG
-        void InputFloat(const char* label)
+        bool InputFloat(const char* label)
         {
+            bool r = false;
             DirectX::XMFLOAT4 f4 = GetFlaot4();
-            if (ImGui::InputFloat4(label, &f4.x))
+            r = ImGui::InputFloat4(label, &f4.x);
+            if (r)
             {
                 SetVector(f4);
             }
+            return r;
         }
-        void DragFloat(const char* label, float rate = 1.0f)
+        bool DragFloat(const char* label, float rate = 1.0f)
         {
+            bool r = false;
             DirectX::XMFLOAT4 f4 = GetFlaot4();
-            if (ImGui::DragFloat4(label, &f4.x), rate)
+            r = ImGui::DragFloat4(label, &f4.x, rate);
+            if (r)
             {
                 SetVector(f4);
             }
+            return r;
         }
-        void DragFloat(const char* label, float min, float max)
+        bool SliderFloat(const char* label, float min, float max)
         {
+            bool r = false;
             DirectX::XMFLOAT4 f4 = GetFlaot4();
-            if (ImGui::SliderFloat4(label, &f4.x, min, max))
+            r = ImGui::SliderFloat4(label, &f4.x, min, max);
+            if (r)
             {
                 SetVector(f4);
             }
+            return r;
         }
 #endif // _DEBUG
 };

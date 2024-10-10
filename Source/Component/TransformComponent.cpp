@@ -9,34 +9,24 @@ void Transform3DComponent::Update(float elapsed_time)
 	if (!this->change_value) return;
 
 	// ワールド行列の更新
-	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
-	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+	MYMATRIX S, R, T;
+	S.SetScalingMatrix(this->scale);
+	R.SetRotationRollPitchYaw(this->angle);
+	T.SetTranslationMatrix(this->position);
 
-	DirectX::XMMATRIX W = S * R * T;
-	DirectX::XMStoreFloat4x4(&this->transform, W);
+	this->transform = S * R * T;
 	this->change_value = false;
 
 	{
 		DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-		debug_render->DrawSphere(position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+		debug_render->DrawSphere(position.GetFlaot3(), 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 	}
 }
 
-const DirectX::XMVECTOR Transform3DComponent::AddPositionVec(const DirectX::XMVECTOR& vec)
+MYVECTOR3 Transform3DComponent::AddPositionVec(MYVECTOR3 vec)
 {
 	this->change_value = true;
-	DirectX::XMVECTOR ans = DirectX::XMVectorAdd(vec, DirectX::XMLoadFloat3(&this->position));
-	DirectX::XMStoreFloat3(&this->position, ans);
-	return ans;
-}
-
-const DirectX::XMFLOAT3& Transform3DComponent::AddPosition(const DirectX::XMFLOAT3 vec)
-{
-	this->change_value = true;
-	this->position.x += vec.x;
-	this->position.y += vec.y;
-	this->position.z += vec.z;
+	this->position += vec;
 	return this->position;
 }
 
@@ -44,28 +34,28 @@ const DirectX::XMFLOAT3& Transform3DComponent::AddPosition(const DirectX::XMFLOA
 
 void Transform3DComponent::DrawDebugGUI()
 {
-	if (ImGui::InputFloat3("position", &this->position.x))
+	if (this->position.InputFloat("position"))
 	{
 		this->change_value = true;
 	}
-	if (ImGui::InputFloat3("scale", &this->scale.x))
+	if (this->scale.InputFloat("scale"))
 	{
 		this->change_value = true;
 	}
 
-	DirectX::XMFLOAT3 angle_degrees
+	MYVECTOR3 angle_degrees = 
 	{
-		DirectX::XMConvertToDegrees(this->angle.x),
-		DirectX::XMConvertToDegrees(this->angle.y),
-		DirectX::XMConvertToDegrees(this->angle.z),
+		DirectX::XMConvertToDegrees(this->angle.GetX()),
+		DirectX::XMConvertToDegrees(this->angle.GetY()),
+		DirectX::XMConvertToDegrees(this->angle.GetZ()),
 	};
-	if (ImGui::SliderFloat3("angle", &angle_degrees.x, 0, 360.0f))
+	if (angle_degrees.SliderFloat("angle", 0, 360.0f))
 	{
 		this->angle =
 		{
-			DirectX::XMConvertToRadians(angle_degrees.x),
-			DirectX::XMConvertToRadians(angle_degrees.y),
-			DirectX::XMConvertToRadians(angle_degrees.z),
+			DirectX::XMConvertToRadians(angle_degrees.GetX()),
+			DirectX::XMConvertToRadians(angle_degrees.GetY()),
+			DirectX::XMConvertToRadians(angle_degrees.GetZ()),
 		};
 		this->change_value = true;
 	}
