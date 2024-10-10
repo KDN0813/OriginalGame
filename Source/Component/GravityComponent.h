@@ -18,8 +18,8 @@ public:
 
 
     // 各種取得・設定関数
-    const float& GetGravity() { return this->gravity; }
-    const bool& GetIsGrounded() { return this->is_grounded; }
+    float GetGravity() { return this->gravity; }
+    bool GetIsGrounded() { return this->is_grounded; }
     void SetIsGrounded(bool is_grounded) { this->is_grounded = is_grounded; }
 private:
     float gravity = -0.5f;   // 重力加速度

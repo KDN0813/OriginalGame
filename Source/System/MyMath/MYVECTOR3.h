@@ -83,7 +83,7 @@ public:
     {
         return DirectX::XMVectorGetX(DirectX::XMVector3Length(this->vector));
     }
-    float LengthSp() const
+    float LengthSq() const
     {
         return DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(this->vector));
     }
@@ -148,7 +148,7 @@ public:
     // 剰余演算
     MYVECTOR3 Mod(MYVECTOR3 mVec) const
     {
-        assert(mVec.LengthSp());
+        assert(mVec.LengthSq());
         return DirectX::XMVectorMod(this->vector, mVec.GetVector());
     }
     // 累乗
@@ -225,13 +225,24 @@ public:
     // 除算演算子のオーバーロード
     MYVECTOR3 const operator/(MYVECTOR3 other) const
     {
-        assert(other.LengthSp());
+        assert(other.LengthSq());
         return MYVECTOR3(DirectX::XMVectorDivide(this->vector, other.GetVector()));
+    }
+    MYVECTOR3 const operator/(float f) const
+    {
+        assert(f != 0.0f);
+        return MYVECTOR3(DirectX::XMVectorDivide(this->vector, DirectX::XMVectorSet(f, f, f, 0.0f)));
     }
     MYVECTOR3 const operator/=(MYVECTOR3 other)
     {
-        assert(other.LengthSp());
+        assert(other.LengthSq());
         this->vector = DirectX::XMVectorDivide(this->vector, other.GetVector());
+        return *this;
+    }
+    MYVECTOR3 const operator/=(float f)
+    {
+        assert(f != 0.0f);
+        this->vector = DirectX::XMVectorDivide(this->vector, DirectX::XMVectorSet(f, f, f, 0.0f));
         return *this;
     }
 
@@ -251,6 +262,14 @@ public:
     DirectX::XMFLOAT3 GetFlaot3XZ()
     {
         return GetMyVectorXZ().GetFlaot3();
+    }
+    float LengthXZ()
+    {
+        return GetMyVectorXZ().Length();
+    }    
+    float LengthXZSq()
+    {
+        return GetMyVectorXZ().LengthSq();
     }
 #pragma endregion VectorXZ
 private:

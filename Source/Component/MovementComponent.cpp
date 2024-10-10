@@ -18,22 +18,22 @@ void MovementComponent::Update(float elapsed_time)
 	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 	if (!transform) return;
 
-	float lengthXZ_sq = this->additional_velocity.x * this->additional_velocity.x + this->additional_velocity.z * this->additional_velocity.z;
+	float lengthXZ_sq = this->acceleration.LengthXZSq();
 	float max_accelerationXZ_sq = this->max_accelerationXZ * max_accelerationXZ;
 	
     // 速度計算
-	this->velocity.y = this->additional_velocity.y * elapsed_time;
+
+	// 加算量
 	if (max_accelerationXZ_sq < lengthXZ_sq)
 	{
 		float lengthXZ = sqrt(lengthXZ_sq);
-		this->velocity.x = (this->additional_velocity.x / lengthXZ) * this->max_accelerationXZ * elapsed_time;
-		this->velocity.z = (this->additional_velocity.z / lengthXZ) * this->max_accelerationXZ * elapsed_time;
+		this->velocity = this->acceleration / lengthXZ * this->max_accelerationXZ * elapsed_time;
 	}
 	else
 	{
-		this->velocity.x = this->additional_velocity.x * elapsed_time;
-		this->velocity.z = this->additional_velocity.z * elapsed_time;
+		this->velocity = this->acceleration * elapsed_time;
 	}
+	this->velocity.SetY(this->acceleration.GetY() * elapsed_time);
 
 	// ステージとのレイキャスト
     if(is_stage_raycas)
@@ -52,7 +52,7 @@ void MovementComponent::Update(float elapsed_time)
 					const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
 
 					// 垂直方向の移動量
-					float my = this->velocity.y;
+					float my = this->velocity.GetY();
 
 					if (my < 0.0f)
 					{
@@ -92,12 +92,12 @@ void MovementComponent::Update(float elapsed_time)
 				// 現在の位置
 				const DirectX::XMFLOAT3 current_pos = transform->GetPosition();
 
-				float velocity_lengthXZ = sqrtf(this->velocity.x * this->velocity.x + this->velocity.z * this->velocity.z);
+				float velocity_lengthXZ = this->velocity.LengthXZ();
 				if (velocity_lengthXZ > 0.0f)
 				{
 					// 水平方向の移動量
-					float mx = this->velocity.x;
-					float mz = this->velocity.z;
+					float mx = this->velocity.GetX();
+					float mz = this->velocity.GetZ();
 
 					// レイの開始位置と終点位置
 					MYVECTOR3 start = { current_pos.x,current_pos.y + step_offset,current_pos.z };
@@ -156,25 +156,25 @@ void MovementComponent::Update(float elapsed_time)
     }
 	else
     {
-        transform->AddPosition(this->velocity);
+        transform->AddPosition(this->velocity.GetFlaot3());
     }
 
 	// 加速度を初期化
-	this->additional_velocity = {};
+	this->acceleration = {};
 }
 
 bool MovementComponent::IsMoveXZAxis()
 {
-    return (this->velocity.x != 0.0f || this->velocity.z != 0.0f);
+    return (this->velocity.GetX() != 0.0f || this->velocity.GetZ() != 0.0f);
 }
 
 #ifdef _DEBUG
 
 void MovementComponent::DrawDebugGUI()
 {
-    ImGui::InputFloat3("Additional Velocity", &this->additional_velocity.x);
+    //ImGui::InputFloat3("Additional Velocity", &this->acceleration.x);
     ImGui::InputFloat("Max AccelerationXZ", &this->max_accelerationXZ);
-    ImGui::InputFloat3("Velocity", &this->velocity.x);
+    //ImGui::InputFloat3("Velocity", &this->velocity.x);
 	ImGui::Checkbox("Is Stage Raycas", &this->is_stage_raycas);
 	if (this->is_stage_raycas)
 	{

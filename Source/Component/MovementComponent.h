@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <DirectXMath.h>
+#include "System/MyMath/MYVECTOR3.h"
 #include "Component.h"
 
 class Transform3DComponent;
@@ -21,23 +21,20 @@ public:
     bool IsMoveXZAxis();
 
     // 各種設定取得・関数
-    void SetAdditionalVelocity(DirectX::XMFLOAT3 move_vec) { this->additional_velocity = move_vec; }
-    void SetAdditionalVelocityX(float move_vecX) { this->additional_velocity.x = move_vecX; }
-    void SetAdditionalVelocityY(float move_vecY) { this->additional_velocity.y = move_vecY; }
-    void SetAdditionalVelocityZ(float move_vecZ) { this->additional_velocity.z = move_vecZ; }
-    void AddAdditionalVelocityX(float move_vecX) { this->additional_velocity.x += move_vecX; }
-    void AddAdditionalVelocityY(float move_vecY) { this->additional_velocity.y += move_vecY; }
-    void AddAdditionalVelocityZ(float move_vecZ) { this->additional_velocity.z += move_vecZ; }
     void SetIsStageRaycas(bool is_stage_raycas) { this->is_stage_raycas = is_stage_raycas; }
-    const DirectX::XMFLOAT3& GetAdditionalVelocity() { return this->additional_velocity; }
-    const DirectX::XMFLOAT3& GetVelocity() { return this->velocity; }
-    const float& GetMoveVecX() { return this->additional_velocity.x; }
-    const float& GetMoveVecY() { return this->additional_velocity.y; }
-    const float& GetMoveVecZ() { return this->additional_velocity.z; }
+    void SetAdditionalVelocity(MYVECTOR3 move_vec) { this->acceleration = move_vec; }
+    void AddAcceleration(MYVECTOR3 add_acc) { this->acceleration += add_acc; }
+    void AddAcceleration(float x, float y, float z) { this->acceleration += MYVECTOR3(x, y, z); }
+    void AddAccelerationXZ(float x, float z) { this->acceleration += MYVECTOR3(x, 0.0f, z); }
+    void AddAccelerationX(float x) { this->acceleration += MYVECTOR3(x, 0.0f, 0.0f); }
+    void AddAccelerationY(float y) { this->acceleration += MYVECTOR3(0.0f, y, 0.0f); }
+    void AddAccelerationZ(float z) { this->acceleration += MYVECTOR3(0.0f, 0.0f, z); }
+    MYVECTOR3 GetAcceleration() { return this->acceleration; }
+    MYVECTOR3 GetVelocity() { return this->velocity; }
 
 private:
-    DirectX::XMFLOAT3 velocity{};               // 速度
-    DirectX::XMFLOAT3 additional_velocity{};    // 加速度
+    MYVECTOR3 velocity{};               // 速度
+    MYVECTOR3 acceleration{};    // 加速度
     float step_offset = 0.2f;                   // レイの開始位置を足元より少し上に設定するためのオフセット
     float max_accelerationXZ = 5.0f;            // XZ軸の最大加速度
     bool is_stage_raycas = false;               // ステージとのレイキャストの有無

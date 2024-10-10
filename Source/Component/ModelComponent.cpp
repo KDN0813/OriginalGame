@@ -39,27 +39,20 @@ void ModelComponent::Start()
 	}
 
 	// s—ñŒvŽZ
-	const DirectX::XMFLOAT4X4 transform =
-	{
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f
-	};
-	UpdateTransform(transform);
+	UpdateTransform(MYMATRIX());
 }
 
 void ModelComponent::Update(float elapsed_time)
 {
 	auto owner = GetOwner();
-	DirectX::XMFLOAT4X4 world_transform;
+	MYMATRIX world_transform;
 	if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
 	{
 		world_transform = transform->GetTransform();
 	}
 	else
 	{
-		DirectX::XMStoreFloat4x4(&world_transform, DirectX::XMMatrixIdentity());
+		world_transform.SetIdentity();
 	}
 
 	UpdateTransform(world_transform);

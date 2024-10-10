@@ -15,7 +15,7 @@ bool Collision::IntersectSphareVsSphere(
     // ‹——£”»’è[05]
     float range = radiusA + radiusB;
     // LengthSp‚ª“ñæ‚µ‚½’l‚È‚Ì‚Årange‚à“ñæ‚·‚é
-    if (vec.LengthSp() > range * range)
+    if (vec.LengthSq() > range * range)
     {
         return false;
     }
