@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include <DirectXMath.h>
+#include "System/MyMath/MYVECTOR3.h"
 
 class MovementComponent;
 class Transform3DComponent;

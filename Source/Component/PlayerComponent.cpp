@@ -53,7 +53,7 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
 
         // 自身の回転値から前方向を求める
         MYVECTOR3 angle = transform->GetAngle();
-        float frontX = sinf(angle.GetX());
+        float frontX = sinf(angle.GetY());
         float frontZ = cosf(angle.GetY());
 
         // 回転角を求めるため、2つの単位ベクトルの内積を計算する
@@ -71,14 +71,14 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
         //  左右判定を行うことによって左右回転を選択する
         if (cross < 0.0f)
         {
-            angle.y -= rot;
+            angle.SubtractY(rot);
         }
         else
         {
-            angle.y += rot;
+            angle.AddY(rot);
         }
 
-        transform->SetAngle(angle);
+        transform->SetAngle(angle.GetVector());
     }
 }
 
@@ -123,20 +123,16 @@ MYVECTOR3 PlayerComponent::GetMoveVec() const
     // スティックの水平入力値をカメラ右方向に反映し、
     // スティックの垂直入力値をカメラ前方向に反映し、
     // 進行ベクトルを計算する
-    MYVECTOR3 vec{};
-    vec.x = (camera_rightX * ax) + (camera_frontX * ay);
-    vec.z = (camera_rightZ * ax) + (camera_frontZ * ay);
+    float vec_x = (camera_rightX * ax) + (camera_frontX * ay);
+    float vec_y = 0.0f;  // Y軸には移動しない
+    float vec_z = (camera_rightZ * ax) + (camera_frontZ * ay);
+    MYVECTOR3 vec{ vec_x ,vec_y,vec_z };
     //正規化
-    float length = sqrtf(vec.x * vec.x + vec.z * vec.z);
+    float length = vec.LengthXZ();
     if (length > 0.0f)
     {
-        vec.x /= length;
-        vec.z /= length;
+        vec.DivideXZ(length, length);
     }
-
-    // Y軸には移動しない
-    vec.y = 0.0f;
-
     return vec;
 }
 
