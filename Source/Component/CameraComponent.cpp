@@ -83,8 +83,8 @@ void CameraComponent::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
     this->forward.z = this->world_transform._33;
 
     // Ž‹“_A’Ž‹“_‚ð•Û‘¶
-    this->eye = eye;
-    this->focus = focus;
+    Eye.GetFlaot3(this->eye);
+    Focus.GetFlaot3(this->focus);
 }
 
 void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ)
@@ -104,6 +104,9 @@ void CameraComponent::DrawDebugGUI()
     constexpr float RotateX_Max = DirectX::XMConvertToRadians(89.0f);
     ImGui::SliderFloat("rotateX", &rotateX, -RotateX_Max, RotateX_Max);
     ImGui::Checkbox("Is Main Camera", &this->is_main_camera);
+
+    ImGui::InputFloat3("focus", &focus.x);
+    ImGui::InputFloat3("target", &target.x);
 
     if (ImGui::Button("SetMainCamera"))
     {

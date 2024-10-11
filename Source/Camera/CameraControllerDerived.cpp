@@ -31,7 +31,7 @@ void DebugCameraController::Update(float elapsed_time)
 	// 視線行列を生成
 	MYMATRIX V;
 	{
-		MYVECTOR3 up(0.0f, 1.0f, 0.0f);
+		MYVECTOR3 Up(0.0f, 1.0f, 0.0f);
 		// マウス操作
 		{
 			if (::GetAsyncKeyState(VK_RBUTTON) & 0x8000)
@@ -79,18 +79,16 @@ void DebugCameraController::Update(float elapsed_time)
 			}
 			else if (::GetAsyncKeyState(VK_MBUTTON) & 0x8000)
 			{
-				V.SetLookAtLH(Eye, Focus, up);
+				V.SetLookAtLH(Eye, Focus, Up);
 
 				MYMATRIX W = V.GetInverse(nullptr);
-				DirectX::XMFLOAT4X4 w{};
-				W.GetFlaot4x4(w);
 				// 平行移動
 				float s = range * 0.035f;
 				float x = moveX * s;
 				float y = moveY * s;
 
-				MYVECTOR3 W_right(w._11, w._12, w._13);
-				MYVECTOR3 W_up(w._21, w._22, w._23);
+				MYVECTOR3 W_right = W.GetRight();
+				MYVECTOR3 W_up = W.GetUp();
 
 				Focus -= W_right * x;
 				Focus += W_up * y;
@@ -105,7 +103,6 @@ void DebugCameraController::Update(float elapsed_time)
 		MYVECTOR3 Front(-cx * sy, -sx, -cx * cy);
 		Front *= range;
 		Eye = Focus - Front;
-		MYVECTOR3 Up(0.0f, 1.0f, 0.0f);
 
 		// カメラに視点を注視点を設定
 		camera->SetLookAt(Eye, Focus, Up);
@@ -121,9 +118,9 @@ void DebugCameraController::Update(float elapsed_time)
 	camera->SetRotateY(rotateY);
 	camera->SetRange(range);
 
-	DirectX::XMFLOAT3 pos{};
-	Focus.GetFlaot3(pos);
-	transform->SetPosition(pos);	// Positionの再設定
+	DirectX::XMFLOAT3 focus{};
+	Focus.GetFlaot3(focus);
+	transform->SetPosition(focus);	// Positionの再設定
 }
 
 #endif // _DEBUG
