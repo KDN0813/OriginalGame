@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include "System/MyMath/MYMATRIX.h"
 #include "InstanceModelShader.h"
 #include "System/Misc.h"
 #include "Component/InstancingModelShaderComponent.h"
@@ -233,7 +234,11 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 		// シーン用定数バッファ更新
 		SceneConstantBuffer cbScene;
 
-		cbScene.viewProjection = rc.view * rc.projection;
+		MYMATRIX View = rc.view;
+		MYMATRIX Projection = rc.projection;
+		MYMATRIX View_projection = View * Projection;
+
+		cbScene.viewProjection = View_projection.GetFlaot4x4();
 
 		dc->UpdateSubresource(this->sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
 

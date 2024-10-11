@@ -17,7 +17,7 @@ public:
 private:
 	struct SceneConstantBuffer
 	{
-		MYMATRIX viewProjection;
+		DirectX::XMFLOAT4X4 viewProjection;
 	};
 	struct SubsetConstantBuffer
 	{

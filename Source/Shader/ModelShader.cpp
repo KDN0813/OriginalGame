@@ -203,7 +203,11 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	// シーン用定数バッファ更新
 	SceneConstantBuffer scene_CB;
 
-	scene_CB.view_projection = rc.view * rc.projection;
+	MYMATRIX View = rc.view;
+	MYMATRIX Projection = rc.projection;
+	MYMATRIX View_projection = View * Projection;
+
+	scene_CB.view_projection = View_projection.GetFlaot4x4();
 	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
 }
 
