@@ -11,6 +11,14 @@
 #include "Component/TransformComponent.h"
 #include "Component/GravityComponent.h"
 
+MovementComponent::MovementComponent()
+{
+#ifdef _DEBUG
+	SetIsDebugPrimitive(false);
+
+#endif // _DEBUG
+}
+
 void MovementComponent::Update(float elapsed_time)
 {
     auto owner = GetOwner();
@@ -42,11 +50,6 @@ void MovementComponent::Update(float elapsed_time)
 
 	// ‰Á‘¬“x‚ð‰Šú‰»
 	this->acceleration = {};
-
-#ifdef _DEBUG
-	SetIsDebugPrimitive(false);
-
-#endif // _DEBUG
 }
 
 bool MovementComponent::IsMoveXZAxis() const

@@ -10,6 +10,8 @@ class ModelComponent;
 class MovementComponent : public Component
 {
 public:
+    MovementComponent();
+
     // 更新関数
     void Update(float elapsed_time)override;
     // 名前取得
@@ -56,7 +58,8 @@ public:
      * デバックの情報を3D画面上に出力する関数
      */
     void DrawDebugPrimitive()override;
-
+    // デバッグプリミティブを表示する
+    bool IsDebugPrimitive()override { return true; }
 private:
     DirectX::XMFLOAT3 rayY_start_pos;   // 下方向のレイキャストの始点
     DirectX::XMFLOAT3 rayY_end_pos;     // 下方向のレイキャストの終点
