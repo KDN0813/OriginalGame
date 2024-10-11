@@ -56,10 +56,6 @@ public:
     {
         this->vector = vec;
     }
-    void SetVector(DirectX::XMFLOAT3 f3)
-    {
-        this->vector = DirectX::XMLoadFloat3(&f3);
-    }
 
     void AddX(float x)
     {

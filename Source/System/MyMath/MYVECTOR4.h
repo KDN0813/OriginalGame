@@ -48,10 +48,6 @@ public:
     {
         this->vector = vec;
     }
-    void SetVector(DirectX::XMFLOAT4 f4)
-    {
-        this->vector = DirectX::XMLoadFloat4(&f4);
-    }
 
     void AddX(float x)
     {
@@ -140,6 +136,10 @@ public:
     MYVECTOR4 Normalize() const
     {
         return MYVECTOR4(DirectX::XMVector4Normalize(this->vector));
+    }
+    void NormalizeSelf()
+    {
+        this->vector = DirectX::XMVector4Normalize(this->vector);
     }
     // 各値の絶対値を計算
     MYVECTOR4 Abs() const
@@ -279,8 +279,6 @@ public:
         return *this;
     }
 
-#pragma region VectorXZ    
-#pragma endregion VectorXZ
 private:
     alignas(16) DirectX::XMVECTOR vector;  // 内部でXMVECTORを保持
 };
