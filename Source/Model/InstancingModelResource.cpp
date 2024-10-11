@@ -1,3 +1,4 @@
+#include "System/MyMath/MYMATRIX.h"
 #include "InstancingModelResource.h"
 #include "System/Misc.h"
 #include "Model/ModelResourceManager.h"
@@ -81,16 +82,16 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 						for (size_t i = 0; i < mesh.node_indices.size(); ++i)
 						{
 							auto& add_data = BTTdata.emplace_back();
-							DirectX::XMMATRIX worldTransform = DirectX::XMLoadFloat4x4(&node_vec.at(mesh.node_indices.at(i)).worldTransform);
-							DirectX::XMMATRIX offsetTransform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
-							DirectX::XMMATRIX boneTransform = offsetTransform * worldTransform;
-							DirectX::XMStoreFloat4x4(&add_data, boneTransform);
+							MYMATRIX World_transform = node_vec.at(mesh.node_indices.at(i)).world_transform;
+							MYMATRIX Offset_Transform = mesh.offset_transforms.at(i);
+							MYMATRIX bone_transform = Offset_Transform * World_transform;
+							add_data = bone_transform.GetFlaot4x4();
 						}
 					}
 					else
 					{
 						auto& add_data = BTTdata.emplace_back();
-						add_data = node_vec.at(mesh.node_index).worldTransform;
+						add_data = node_vec.at(mesh.node_index).world_transform;
 					}
 				}
 
@@ -177,25 +178,23 @@ void InstancingModelResource::UpdateAnimation(float elapsed_time, ModelResource*
 
 				// 前のキーフレームと次のキーフレームの姿勢を補間
 
-				// スケールの線形補間
-				DirectX::XMVECTOR S0 = DirectX::XMLoadFloat3(&key0.scale);
-				DirectX::XMVECTOR S1 = DirectX::XMLoadFloat3(&key1.scale);
-				DirectX::XMVECTOR S = DirectX::XMVectorLerp(S0, S1, rate);
+					// スケールの線形補間
+				MYVECTOR3 S0 = key0.scale;
+				MYVECTOR3 S1 = key1.scale;
+				MYVECTOR3 S = S0.Lerp(S1, rate);
+				node.scale = S.GetFlaot3();
 
 				// 角度の線形補間
-				DirectX::XMVECTOR R0 = DirectX::XMLoadFloat4(&key0.rotate);
-				DirectX::XMVECTOR R1 = DirectX::XMLoadFloat4(&key1.rotate);
-				DirectX::XMVECTOR R = DirectX::XMQuaternionSlerp(R0, R1, rate);
+				MYVECTOR4 R0 = key0.rotate;
+				MYVECTOR4 R1 = key1.rotate;
+				MYVECTOR4 R = R0.SLerp(R1, rate);
+				node.rotate = R.GetFlaot4();
 
 				// 座標の線形補間
-				DirectX::XMVECTOR T0 = DirectX::XMLoadFloat3(&key0.translate);
-				DirectX::XMVECTOR T1 = DirectX::XMLoadFloat3(&key1.translate);
-				DirectX::XMVECTOR T = DirectX::XMVectorLerp(T0, T1, rate);
-
-				// 補間結果を設定
-				DirectX::XMStoreFloat3(&node.scale, S);
-				DirectX::XMStoreFloat4(&node.rotate, R);
-				DirectX::XMStoreFloat3(&node.translate, T);
+				MYVECTOR3 T0 = key0.translate;
+				MYVECTOR3 T1 = key1.translate;
+				MYVECTOR3 T = T0.Lerp(T1, rate);
+				node.translate = T.GetFlaot3();
 
 			}
 			break;
@@ -226,26 +225,32 @@ void InstancingModelResource::UpdateTransform()
 	for (Node& node : node_vec)
 	{
 		// ローカル行列算出
-		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(node.scale.x, node.scale.y, node.scale.z);
-		DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&node.rotate));
-		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(node.translate.x, node.translate.y, node.translate.z);
-		DirectX::XMMATRIX LocalTransform = S * R * T;
+		//DirectX::XMMATRIX S = DirectX::XMMatrixScaling(node.scale.x, node.scale.y, node.scale.z);
+		//DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&node.rotate));
+		//DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(node.translate.x, node.translate.y, node.translate.z);
+		//DirectX::XMMATRIX LocalTransform = S * R * T;
+
+		MYMATRIX S, R, T;
+		S.SetScalingMatrix(node.scale);
+		R.SetRotationQuaternion(node.rotate);
+		T.SetTranslationMatrix(node.translate);
+		MYMATRIX Local_transform = S * R * T;
 
 		// ワールド行列算出
-		DirectX::XMMATRIX ParentTransform;
+		MYMATRIX Parent_transform;
 		if (node.parent != nullptr)
 		{
-			ParentTransform = DirectX::XMLoadFloat4x4(&node.parent->worldTransform);
+			Parent_transform = node.parent->world_transform;
 		}
 		else
 		{
-			ParentTransform = Transform;
+			Parent_transform = Transform;
 		}
-		DirectX::XMMATRIX WorldTransform = LocalTransform * ParentTransform;
+		MYMATRIX World_transform = Local_transform * Parent_transform;
 
 		// 計算結果を格納
-		DirectX::XMStoreFloat4x4(&node.localTransform, LocalTransform);
-		DirectX::XMStoreFloat4x4(&node.worldTransform, WorldTransform);
+		node.local_transform = Local_transform.GetFlaot4x4();
+		node.world_transform = World_transform.GetFlaot4x4();
 	}
 }
 

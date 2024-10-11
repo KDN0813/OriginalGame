@@ -56,8 +56,8 @@ private:
         DirectX::XMFLOAT3	scale = {};
         DirectX::XMFLOAT4	rotate = {};
         DirectX::XMFLOAT3	translate = {};
-        DirectX::XMFLOAT4X4	localTransform = {};
-        DirectX::XMFLOAT4X4	worldTransform = {};
+        DirectX::XMFLOAT4X4	local_transform = {};
+        DirectX::XMFLOAT4X4	world_transform = {};
 
         std::vector<Node*>	children;
     };
