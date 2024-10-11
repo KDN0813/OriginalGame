@@ -9,12 +9,8 @@ void Transform3DComponent::Update(float elapsed_time)
 	if (!this->change_value) return;
 
 	// ワールド行列の更新
-	MYMATRIX S, R, T;
-	S.SetScalingMatrix(this->scale);
-	R.SetRotationRollPitchYaw(this->angle);
-	T.SetTranslationMatrix(this->position);
-
-	MYMATRIX W = S * R * T;
+	MYMATRIX W;
+	W.SetLocalMatrix(this->scale, this->angle, this->position);
 	this->transform = W.GetFlaot4x4();
 	this->change_value = false;
 

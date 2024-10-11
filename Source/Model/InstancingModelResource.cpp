@@ -225,16 +225,8 @@ void InstancingModelResource::UpdateTransform()
 	for (Node& node : node_vec)
 	{
 		// ローカル行列算出
-		//DirectX::XMMATRIX S = DirectX::XMMatrixScaling(node.scale.x, node.scale.y, node.scale.z);
-		//DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&node.rotate));
-		//DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(node.translate.x, node.translate.y, node.translate.z);
-		//DirectX::XMMATRIX LocalTransform = S * R * T;
-
-		MYMATRIX S, R, T;
-		S.SetScalingMatrix(node.scale);
-		R.SetRotationQuaternion(node.rotate);
-		T.SetTranslationMatrix(node.translate);
-		MYMATRIX Local_transform = S * R * T;
+		MYMATRIX Local_transform;
+		Local_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
 
 		// ワールド行列算出
 		MYMATRIX Parent_transform;
