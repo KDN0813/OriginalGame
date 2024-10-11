@@ -1,9 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#ifdef _DEBUG
-#include <imgui.h>
-#endif // _DEBUG
-
 
 class MYVECTOR4
 {

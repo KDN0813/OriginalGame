@@ -1,9 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#ifdef _DEBUG
-#include <imgui.h>
-#endif // _DEBUG
-
 
 class MYVECTOR2
 {
@@ -28,11 +24,9 @@ public:
     {
         return &this->vector;
     }
-    DirectX::XMFLOAT2 GetFlaot2()
+    void GetFlaot2(DirectX::XMFLOAT2& f2)
     {
-        DirectX::XMFLOAT2 f2;
         DirectX::XMStoreFloat2(&f2, this->vector);
-        return f2;
     }
     float GetX() const
     {
@@ -52,18 +46,6 @@ public:
     }
     void SetVector(DirectX::XMFLOAT2 f2)
     {
-        this->vector = DirectX::XMLoadFloat2(&f2);
-    }
-    void SetX(float x)
-    {
-        DirectX::XMFLOAT2 f2 = GetFlaot2();
-        f2.x = x;
-        this->vector = DirectX::XMLoadFloat2(&f2);
-    }
-    void SetY(float y)
-    {
-        DirectX::XMFLOAT2 f2 = GetFlaot2();
-        f2.y = y;
         this->vector = DirectX::XMLoadFloat2(&f2);
     }
 
@@ -263,41 +245,4 @@ public:
 
 private:
     alignas(16) DirectX::XMVECTOR vector;  // ì‡ïîÇ≈XMVECTORÇï€éù
-
-public:
-#ifdef _DEBUG
-        bool InputFloat(const char* label)
-        {
-            bool r = false;
-            DirectX::XMFLOAT2 f2 = GetFlaot2();
-            r = ImGui::InputFloat4(label, &f2.x);
-            if (r)
-            {
-                SetVector(f2);
-            }
-            return r;
-        }
-        bool DragFloat(const char* label, float rate = 1.0f)
-        {
-            bool r = false;
-            DirectX::XMFLOAT2 f2 = GetFlaot2();
-            r = ImGui::DragFloat4(label, &f2.x, rate);
-            if (r)
-            {
-                SetVector(f2);
-            }
-            return r;
-        }
-        bool SliderFloat(const char* label, float min, float max)
-        {
-            bool r = false;
-            DirectX::XMFLOAT2 f2 = GetFlaot2();
-            r = ImGui::SliderFloat4(label, &f2.x, min, max);
-            if (r)
-            {
-                SetVector(f2);
-            }
-            return r;
-        }
-#endif // _DEBUG
 };
