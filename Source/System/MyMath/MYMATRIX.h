@@ -24,6 +24,7 @@ public:
     {
         this->matrix = DirectX::XMLoadFloat4x4(&f4x4);
     }
+
     // 単位ベクトルに設定
     void SetIdentity() { this->matrix = DirectX::XMMatrixIdentity(); }
     // 平行移動行列の設定
@@ -62,6 +63,7 @@ public:
     {
         this->matrix = DirectX::XMMatrixRotationQuaternion(MYVECTOR4(f4).GetVector());
     }
+    // ローカル座標を計算
     void SetLocalMatrix(DirectX::XMFLOAT3 scale, DirectX::XMFLOAT4 rotation, DirectX::XMFLOAT3 translation)
     {
         MYMATRIX S, R, T, W;
