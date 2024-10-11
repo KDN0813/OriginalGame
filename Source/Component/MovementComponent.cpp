@@ -44,7 +44,7 @@ void MovementComponent::Update(float elapsed_time)
 	this->acceleration = {};
 }
 
-bool MovementComponent::IsMoveXZAxis()
+bool MovementComponent::IsMoveXZAxis() const
 {
     return (this->velocity.x != 0.0f || this->velocity.z != 0.0f);
 }

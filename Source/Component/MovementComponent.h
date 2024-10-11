@@ -18,7 +18,7 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::VERY_HIGH; }
 
     // XZ²•ûŒü‚ÉˆÚ“®‚µ‚Ä‚¢‚é‚©
-    bool IsMoveXZAxis();
+    bool IsMoveXZAxis()  const;
 
     // Šeíİ’èæ“¾EŠÖ”
     void SetIsStageRaycas(bool is_stage_raycas) { this->is_stage_raycas = is_stage_raycas; }
