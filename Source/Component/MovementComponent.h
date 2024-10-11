@@ -61,10 +61,10 @@ public:
     // デバッグプリミティブを表示する
     bool IsDebugPrimitive()override { return true; }
 private:
-    DirectX::XMFLOAT3 rayY_start_pos;   // 下方向のレイキャストの始点
-    DirectX::XMFLOAT3 rayY_end_pos;     // 下方向のレイキャストの終点
-    DirectX::XMFLOAT3 rayXZ_start_pos;  // 壁方向のレイキャストの始点
-    DirectX::XMFLOAT3 rayXZ_end_pos;    // 壁方向のレイキャストの終点
+    DirectX::XMFLOAT3 rayY_start_pos{};   // 下方向のレイキャストの始点
+    DirectX::XMFLOAT3 rayY_end_pos{};     // 下方向のレイキャストの終点
+    DirectX::XMFLOAT3 rayXZ_start_pos{};  // 壁方向のレイキャストの始点
+    DirectX::XMFLOAT3 rayXZ_end_pos{};    // 壁方向のレイキャストの終点
 #endif _DEBUG
 };
 
