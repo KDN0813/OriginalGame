@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include "System/Alias/OwnerAlias.h"
-class ModelComponent;
 
 // アニメーションの遷移判定を行う基底クラス
 class AnimeTransitionJudgementBase
@@ -26,7 +25,6 @@ public:
 
 protected:
 	OwnerWPtr owner_Wptr;
-	std::weak_ptr<ModelComponent> model_Wptr;
 private:
 	bool should_reverse;			// 判定結果を反転させるかどうかのフラグ
 	bool require_transition_ready;	// 遷移の準備が整っていることが必要かどうかを示すフラグ
