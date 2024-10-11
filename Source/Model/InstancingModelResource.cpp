@@ -85,7 +85,7 @@ void InstancingModelResource::CreateBoneTransformTexture(ID3D11Device* device, M
 							MYMATRIX World_transform = node_vec.at(mesh.node_indices.at(i)).world_transform;
 							MYMATRIX Offset_Transform = mesh.offset_transforms.at(i);
 							MYMATRIX bone_transform = Offset_Transform * World_transform;
-							add_data = bone_transform.GetFlaot4x4();
+							bone_transform.GetFlaot4x4(add_data);
 						}
 					}
 					else
@@ -241,8 +241,8 @@ void InstancingModelResource::UpdateTransform()
 		MYMATRIX World_transform = Local_transform * Parent_transform;
 
 		// ŒvŽZŒ‹‰Ê‚ðŠi”[
-		node.local_transform = Local_transform.GetFlaot4x4();
-		node.world_transform = World_transform.GetFlaot4x4();
+		Local_transform.GetFlaot4x4(node.local_transform);
+		World_transform.GetFlaot4x4(node.world_transform);
 	}
 }
 

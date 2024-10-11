@@ -82,7 +82,8 @@ void DebugCameraController::Update(float elapsed_time)
 				V.SetLookAtLH(Eye, Focus, up);
 
 				MYMATRIX W = V.GetInverse(nullptr);
-				DirectX::XMFLOAT4X4 w = W.GetFlaot4x4();
+				DirectX::XMFLOAT4X4 w{};
+				W.GetFlaot4x4(w);
 				// ïΩçsà⁄ìÆ
 				float s = range * 0.035f;
 				float x = moveX * s;

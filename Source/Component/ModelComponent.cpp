@@ -79,8 +79,10 @@ void ModelComponent::UpdateTransform(MYMATRIX Transform)
 			Parent_transform = Transform;
 		}
 
-		node.local_transform = Local_transform.GetFlaot4x4();
-		node.world_transform = (Local_transform * Parent_transform).GetFlaot4x4();
+		MYMATRIX World_transform = Local_transform * Parent_transform;
+		
+		Local_transform.GetFlaot4x4(node.local_transform);
+		World_transform.GetFlaot4x4(node.world_transform);
 	}
 }
 

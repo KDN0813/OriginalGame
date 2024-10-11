@@ -207,7 +207,7 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	MYMATRIX Projection = rc.projection;
 	MYMATRIX View_projection = View * Projection;
 
-	scene_CB.view_projection = View_projection.GetFlaot4x4();
+	View_projection.GetFlaot4x4(scene_CB.view_projection);
 	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
 }
 
@@ -228,13 +228,13 @@ void ModelShader::Draw(ID3D11DeviceContext* dc, const ModelComponent* model)
 				MYMATRIX World_transform = node_vec.at(mesh.node_indices.at(i)).world_transform;
 				MYMATRIX Offset_transform = DirectX::XMLoadFloat4x4(&mesh.offset_transforms.at(i));
 				MYMATRIX Bone_transform = Offset_transform * World_transform;
-				mesh_CB.bone_transforms[i] = Bone_transform.GetFlaot4x4();
+				Bone_transform.GetFlaot4x4(mesh_CB.bone_transforms[i]);
 			}
 		}
 		else
 		{
 			MYMATRIX World_transform = node_vec.at(mesh.node_index).world_transform;
-			mesh_CB.bone_transforms[0] = World_transform.GetFlaot4x4();
+			World_transform.GetFlaot4x4(mesh_CB.bone_transforms[0]);
 		}
 		dc->UpdateSubresource(mesh_constant_buffer.Get(), 0, 0, &mesh_CB, 0, 0);
 

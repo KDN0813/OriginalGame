@@ -63,11 +63,11 @@ void CameraComponent::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
     // 視点、中視点、上方向からビューを行列を作成
     MYMATRIX View_transform;
     View_transform.SetLookAtLH(Eye, Focus, Up);
-    this->view_transform = View_transform.GetFlaot4x4();
+    View_transform.GetFlaot4x4(this->view_transform);
 
     // ビューを逆行列化し、ワールド行列に戻す
     MYMATRIX World_transform = View_transform.GetInverse(nullptr);
-    this->world_transform = World_transform.GetFlaot4x4();
+    World_transform.GetFlaot4x4(this->world_transform);
 
     // カメラ方向を取り出す
     this->right.x = this->world_transform._11;
@@ -92,7 +92,7 @@ void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, f
     // 画面比率、クリップ距離からプロジェクション行列を作成
     MYMATRIX Projection_transform;
     Projection_transform.SetPerspectiveFovLH(fovY, aspect, nearX, farZ);
-    this->projection_transform = Projection_transform.GetFlaot4x4();
+    Projection_transform.GetFlaot4x4(this->projection_transform);
 }
 
 #ifdef _DEBUG

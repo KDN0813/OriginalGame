@@ -11,7 +11,7 @@ void Transform3DComponent::Update(float elapsed_time)
 	// ワールド行列の更新
 	MYMATRIX W;
 	W.SetLocalMatrix(this->scale, this->angle, this->position);
-	this->transform = W.GetFlaot4x4();
+	W.GetFlaot4x4(this->transform);
 	this->change_value = false;
 
 	{

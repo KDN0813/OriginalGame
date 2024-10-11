@@ -238,7 +238,7 @@ void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext&
 		MYMATRIX Projection = rc.projection;
 		MYMATRIX View_projection = View * Projection;
 
-		cbScene.viewProjection = View_projection.GetFlaot4x4();
+		View_projection.GetFlaot4x4(cbScene.viewProjection);
 
 		dc->UpdateSubresource(this->sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
 

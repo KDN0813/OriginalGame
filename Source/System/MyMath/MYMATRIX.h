@@ -15,11 +15,9 @@ public:
     MYMATRIX(const MYMATRIX& mMatrix) :matrix(mMatrix.matrix) {}; // コピーコンストラクタ
 
     DirectX::XMMATRIX GetMatrix() const { return this->matrix; }
-    DirectX::XMFLOAT4X4 GetFlaot4x4() const 
+    void GetFlaot4x4(DirectX::XMFLOAT4X4& f4x4) const
     { 
-        DirectX::XMFLOAT4X4 f4x4;
         DirectX::XMStoreFloat4x4(&f4x4, this->matrix);
-        return f4x4;
     }    
     void SetMatrix(DirectX::XMMATRIX matrix) { this->matrix = matrix; }
     void SetMatrix(DirectX::XMFLOAT4X4 f4x4)
