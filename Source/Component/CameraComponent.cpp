@@ -67,20 +67,11 @@ void CameraComponent::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
 
     // ビューを逆行列化し、ワールド行列に戻す
     MYMATRIX World_transform = View_transform.GetInverse(nullptr);
-    World_transform.GetFlaot4x4(this->world_transform);
 
     // カメラ方向を取り出す
-    this->right.x = this->world_transform._11;
-    this->right.y = this->world_transform._12;
-    this->right.z = this->world_transform._13;
-
-    this->up.x = this->world_transform._21;
-    this->up.y = this->world_transform._22;
-    this->up.z = this->world_transform._23;
-
-    this->forward.x = this->world_transform._31;
-    this->forward.y = this->world_transform._32;
-    this->forward.z = this->world_transform._33;
+    World_transform.GetRight().GetFlaot3(this->right);
+    World_transform.GetUp().GetFlaot3(this->up);
+    World_transform.GetForward().GetFlaot3(this->forward);
 
     // 視点、注視点を保存
     Eye.GetFlaot3(this->eye);
