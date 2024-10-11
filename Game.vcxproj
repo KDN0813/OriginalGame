@@ -184,7 +184,6 @@
     <ClCompile Include="Source\Camera\CameraControllerDerived.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
-    <ClCompile Include="Source\Component\Component.cpp" />
     <ClCompile Include="Source\Component\EnemyComponent.cpp" />
     <ClCompile Include="Source\Component\GravityComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
