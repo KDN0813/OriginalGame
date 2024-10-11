@@ -15,7 +15,7 @@ void Transform3DComponent::Update(float elapsed_time)
 	this->change_value = false;
 
 	{
-		DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+		DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
 		debug_render->DrawSphere(position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 	}
 }

@@ -231,7 +231,7 @@
     <ClInclude Include="Source\Camera\CameraController.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Debug\DebugRenderer.h">
+    <ClInclude Include="Source\Debug\DebugPrimitiveRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\MyMath\MYVECTOR2.h">
@@ -383,7 +383,7 @@
     <ClCompile Include="Source\Object\GameObject.cpp">
       <Filter>Source\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Debug\DebugRenderer.cpp">
+    <ClCompile Include="Source\Debug\DebugPrimitiveRenderer.cpp">
       <Filter>Source\Debug\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision\Collision.cpp">

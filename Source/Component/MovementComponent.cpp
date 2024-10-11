@@ -128,7 +128,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 					Start.GetFlaot3(rayY_start_pos);
 					DirectX::XMFLOAT3 rayY_end_pos;
 					End.GetFlaot3(rayY_end_pos);
-					DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+					DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
 					debug_render->DrawSphere(rayY_start_pos, 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
 					debug_render->DrawSphere(rayY_end_pos, 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
 				}
@@ -178,7 +178,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				Start.GetFlaot3(rayY_start_pos);
 				DirectX::XMFLOAT3 rayY_end_pos;
 				End.GetFlaot3(rayY_end_pos);
-				DebugRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+				DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
 				debug_render->DrawSphere(rayY_start_pos, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 				debug_render->DrawSphere(rayY_end_pos, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
 			}

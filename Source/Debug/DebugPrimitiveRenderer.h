@@ -6,11 +6,11 @@
 #include "System/MyMath/MYMATRIX.h"
 
 // TODO –½–¼‹K‘¥“ˆê
-class DebugRenderer
+class DebugPrimitiveRenderer
 {
 public:
-	DebugRenderer(ID3D11Device* device);
-	~DebugRenderer() {}
+	DebugPrimitiveRenderer(ID3D11Device* device);
+	~DebugPrimitiveRenderer() {}
 
 public:
 	// •`‰æÀs

@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <memory>
 #include "System/Misc.h"
-#include "Debug/DebugRenderer.h"
+#include "Debug/DebugPrimitiveRenderer.h"
 
-DebugRenderer::DebugRenderer(ID3D11Device* device)
+DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 {
 	// 頂点シェーダー
 	{
@@ -131,7 +131,7 @@ DebugRenderer::DebugRenderer(ID3D11Device* device)
 }
 
 // 描画開始
-void DebugRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view, MYMATRIX projection)
+void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view, MYMATRIX projection)
 {
 	// シェーダー設定
 	context->VSSetShader(vertex_shader.Get(), nullptr, 0);
@@ -198,7 +198,7 @@ void DebugRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view, MYMATRIX
 }
 
 // 球描画
-void DebugRenderer::DrawSphere(const DirectX::XMFLOAT3& center, float radius, const DirectX::XMFLOAT4& color)
+void DebugPrimitiveRenderer::DrawSphere(const DirectX::XMFLOAT3& center, float radius, const DirectX::XMFLOAT4& color)
 {
 	Sphere sphere;
 	sphere.center = center;
@@ -208,7 +208,7 @@ void DebugRenderer::DrawSphere(const DirectX::XMFLOAT3& center, float radius, co
 }
 
 // 円柱描画
-void DebugRenderer::DrawCylinder(const DirectX::XMFLOAT3& position, float radius, float height, const DirectX::XMFLOAT4& color)
+void DebugPrimitiveRenderer::DrawCylinder(const DirectX::XMFLOAT3& position, float radius, float height, const DirectX::XMFLOAT4& color)
 {
 	Cylinder cylinder;
 	cylinder.position = position;
@@ -219,7 +219,7 @@ void DebugRenderer::DrawCylinder(const DirectX::XMFLOAT3& position, float radius
 }
 
 // 球メッシュ作成
-void DebugRenderer::CreateSphereMesh(ID3D11Device* device, float radius, int slices, int stacks)
+void DebugPrimitiveRenderer::CreateSphereMesh(ID3D11Device* device, float radius, int slices, int stacks)
 {
 	sphereVertexCount = stacks * slices * 2 + slices * stacks * 2;
 	std::unique_ptr<DirectX::XMFLOAT3[]> vertices = std::make_unique<DirectX::XMFLOAT3[]>(sphereVertexCount);
@@ -293,7 +293,7 @@ void DebugRenderer::CreateSphereMesh(ID3D11Device* device, float radius, int sli
 }
 
 // 円柱メッシュ作成
-void DebugRenderer::CreateCylinderMesh(ID3D11Device* device, float radius1, float radius2, float start, float height, int slices, int stacks)
+void DebugPrimitiveRenderer::CreateCylinderMesh(ID3D11Device* device, float radius1, float radius2, float start, float height, int slices, int stacks)
 {
 	cylinderVertexCount = 2 * slices * (stacks + 1) + 2 * slices;
 	std::unique_ptr<DirectX::XMFLOAT3[]> vertices = std::make_unique<DirectX::XMFLOAT3[]>(cylinderVertexCount);

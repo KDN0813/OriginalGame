@@ -3,7 +3,7 @@
 #include<memory>
 #include "System/ClassBase/Singleton.h"
 #include "Debug/ImGuiRenderer.h"
-#include "Debug/DebugRenderer.h"
+#include "Debug/DebugPrimitiveRenderer.h"
 
 class DebugManager : public Singleton<DebugManager>
 {
@@ -12,9 +12,9 @@ public:
     ~DebugManager() {}
 
     ImGuiRenderer* GetImGuiRenderer() const { return this->imGui_renderer.get(); }
-    DebugRenderer* GetDebugRenderer() const { return this->debug_renderer.get(); }
+    DebugPrimitiveRenderer* GetDebugRenderer() const { return this->debug_renderer.get(); }
 private:
     std::unique_ptr<ImGuiRenderer> imGui_renderer;
-    std::unique_ptr<DebugRenderer> debug_renderer;
+    std::unique_ptr<DebugPrimitiveRenderer> debug_renderer;
 };
 
