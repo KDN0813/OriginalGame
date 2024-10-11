@@ -1,6 +1,6 @@
 #pragma once
+#include <DirectXMath.h>
 #include "Component.h"
-#include "System/MyMath/MYVECTOR3.h"
 
 class MovementComponent;
 class Transform3DComponent;
@@ -18,7 +18,7 @@ private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
     void Turn(float elapsed_time, float vx, float vz, float speed);
-    MYVECTOR3 GetMoveVec() const;
+    DirectX::XMFLOAT3 GetMoveVec() const;
 
 private:
     float move_speed = 10.0f;

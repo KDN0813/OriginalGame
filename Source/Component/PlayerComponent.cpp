@@ -16,14 +16,14 @@ void PlayerComponent::Update(float elapsed_time)
 bool PlayerComponent::InputMove(float elapsed_time)
 {
     // ˆÚ“®ƒxƒNƒgƒ‹‚ðŽæ“¾
-    MYVECTOR3 moveVec = GetMoveVec();
+    DirectX::XMFLOAT3 moveVec = GetMoveVec();
 
     // ˆÚ“®ˆ—
-    Move(moveVec.GetX(), moveVec.GetZ(), this->move_speed);
+    Move(moveVec.x, moveVec.z, this->move_speed);
     // ‰ñ“]ˆ—
-    Turn(elapsed_time,moveVec.GetX(), moveVec.GetZ(), this->turn_speed);
+    Turn(elapsed_time,moveVec.x, moveVec.z, this->turn_speed);
 
-    return (moveVec.LengthXZSq());
+    return (moveVec.x + moveVec.z);
 }
 
 void PlayerComponent::Move(float vx, float vz, float speed)
@@ -82,7 +82,7 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
     }
 }
 
-MYVECTOR3 PlayerComponent::GetMoveVec() const
+DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
 {
     // “ü—Íî•ñ‚ðŽæ“¾
     Input* input = Input::Instance();
@@ -127,13 +127,8 @@ MYVECTOR3 PlayerComponent::GetMoveVec() const
     float vec_y = 0.0f;  // YŽ²‚É‚ÍˆÚ“®‚µ‚È‚¢
     float vec_z = (camera_rightZ * ax) + (camera_frontZ * ay);
     MYVECTOR3 vec{ vec_x ,vec_y,vec_z };
-    //³‹K‰»
-    float length = vec.LengthXZ();
-    if (length > 0.0f)
-    {
-        vec.DivideXZ(length, length);
-    }
-    return vec;
+
+    return vec.Normalize().GetFlaot3();
 }
 
 #ifdef _DEBUG
