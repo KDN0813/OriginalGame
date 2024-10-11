@@ -54,7 +54,7 @@ void AnimatedInstancedModelComponent::PlayAnimation(int animeIndex, bool loop)
 void AnimatedInstancedModelComponent::PlayAnimation(const AnimeState& animation_info)
 {
     this->current_animation_seconds = 0;;
-    this->anime_index = animation_info.anime_index;
+    this->anime_index = static_cast<UINT>(animation_info.anime_index);
     this->anime_loop = animation_info.loop;
     this->anime_play = true;
 }
@@ -146,7 +146,7 @@ bool AnimatedInstancedModelComponent::PerformTransitionJudgement(AnimeTransition
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }
 
-const UINT AnimatedInstancedModelComponent::GetAnimeFrame()
+UINT AnimatedInstancedModelComponent::GetAnimeFrame()
 {
     const auto& animation = this->model_resource->GetAnimations()[this->anime_index];
     const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->anime_index];
@@ -156,12 +156,12 @@ const UINT AnimatedInstancedModelComponent::GetAnimeFrame()
     return static_cast<UINT>(animation_frame_max_f * (this->current_animation_seconds / animation_length));
 }
 
-const UINT& AnimatedInstancedModelComponent::GetAnimationStartOffset()
+UINT AnimatedInstancedModelComponent::GetAnimationStartOffset()
 {
     return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
 }
 
-const int AnimatedInstancedModelComponent::GetModelId()
+int AnimatedInstancedModelComponent::GetModelId()
 {
     return this->instancing_model_resource->GetModelId();
 }

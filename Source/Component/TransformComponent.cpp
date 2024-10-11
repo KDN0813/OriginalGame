@@ -52,7 +52,7 @@ void Transform3DComponent::DrawDebugGUI()
 		DirectX::XMConvertToDegrees(this->angle.y),
 		DirectX::XMConvertToDegrees(this->angle.z),
 	};
-	if (ImGui::SliderFloat3("angle", &angle_degrees.x, 0, 360.0f));
+	if (ImGui::SliderFloat3("angle", &angle_degrees.x, 0, 360.0f))
 	{
 		this->angle =
 		{

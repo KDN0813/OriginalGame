@@ -11,7 +11,7 @@ ModelAnimationComponent::ModelAnimationComponent(ID3D11Device* device, const cha
 	auto model_resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
 	this->model_resource_Wptr = model_resource;
 
-	this->animation_size = model_resource->GetAnimations().size();
+	this->animation_size = static_cast<int>(model_resource->GetAnimations().size());
 
 	// アニメステートの初期設定
 	{
@@ -75,8 +75,8 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 	for (int keyIndex = 0; keyIndex < keyCount - 1; ++keyIndex)
 	{
 		// キーフレームの間にいるのか判定
-		const ModelResource::Keyframe& keyframe0 = keyframes.at(keyIndex);
-		const ModelResource::Keyframe& keyframe1 = keyframes.at(keyIndex + 1);
+		const ModelResource::Keyframe& keyframe0 = keyframes.at(static_cast<size_t>(keyIndex));
+		const ModelResource::Keyframe& keyframe1 = keyframes.at(static_cast<size_t>(keyIndex + 1));
 
 		// 経過時間が再生時間内なら
 		if (this->current_animation_seconds >= keyframe0.seconds &&
@@ -186,7 +186,7 @@ void ModelAnimationComponent::PlayAnimation(int index, bool loop, float blend_se
 
 void ModelAnimationComponent::PlayAnimation(const AnimeState& animation_info, float blend_seconds)
 {
-	this->current_animation_index = animation_info.anime_index;
+	this->current_animation_index = static_cast<int>(animation_info.anime_index);
 	this->current_animation_seconds = 0.0f;
 
 	this->animation_loop_flag = animation_info.loop;

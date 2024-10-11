@@ -59,10 +59,10 @@ public:
 	// ŠeŽæ“¾EÝ’èŠÖ”
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
 	ModelResource* GetModelResource() { return this->model_resource.get(); }
-	const UINT GetAnimeFrame();
-	const float& GetCurrentAnimationSeconds() { return this->current_animation_seconds; }
-	const UINT& GetAnimationStartOffset();
-	const int GetModelId();
+	UINT GetAnimeFrame();
+	float GetCurrentAnimationSeconds() const { return this->current_animation_seconds; }
+	UINT GetAnimationStartOffset();
+	int GetModelId();
 private:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
 	std::shared_ptr<ModelResource> model_resource;
