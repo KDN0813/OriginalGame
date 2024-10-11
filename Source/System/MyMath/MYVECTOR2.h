@@ -44,10 +44,6 @@ public:
     {
         this->vector = vec;
     }
-    void SetVector(DirectX::XMFLOAT2 f2)
-    {
-        this->vector = DirectX::XMLoadFloat2(&f2);
-    }
 
     void AddX(float x)
     {
@@ -104,6 +100,10 @@ public:
     MYVECTOR2 Normalize() const
     {
         return MYVECTOR2(DirectX::XMVector2Normalize(this->vector));
+    }
+    void NormalizeSelf()
+    {
+        this->vector = DirectX::XMVector2Normalize(this->vector);
     }
     // 各値の絶対値を計算
     MYVECTOR2 Abs() const
