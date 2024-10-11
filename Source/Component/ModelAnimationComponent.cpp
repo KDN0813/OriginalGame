@@ -110,7 +110,7 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					MYVECTOR4 R0 = node.rotate;
 					MYVECTOR4 R1 = key1.rotate;
 					MYVECTOR4 R = R0.SLerp(R1, blend_rate);
-					node.rotate = R.GetFlaot4();
+					R.GetFlaot4(node.rotate);
 
 					// 座標の線形補間
 					MYVECTOR3 T0 = node.translate;
@@ -132,7 +132,7 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					MYVECTOR4 R0 = key0.rotate;
 					MYVECTOR4 R1 = key1.rotate;
 					MYVECTOR4 R = R0.SLerp(R1, blend_rate);
-					node.rotate = R.GetFlaot4();
+					R.GetFlaot4(node.rotate);
 
 					// 座標の線形補間
 					MYVECTOR3 T0 = key0.translate;

@@ -20,19 +20,13 @@ public:
     MYVECTOR4(DirectX::XMVECTOR vec) : vector(vec) {}
     MYVECTOR4(const MYVECTOR4& mVec) :vector(mVec.vector) {}; // コピーコンストラクタ
 
-    DirectX::XMVECTOR GetVector()
+    DirectX::XMVECTOR GetVector() const
     {
         return this->vector;
     }
-    DirectX::XMVECTOR* GetVectorAddress()
+    void GetFlaot4(DirectX::XMFLOAT4& f4)  const
     {
-        return &this->vector;
-    }
-    DirectX::XMFLOAT4 GetFlaot4()
-    {
-        DirectX::XMFLOAT4 f4;
         DirectX::XMStoreFloat4(&f4, this->vector);
-        return f4;
     }
     float GetX() const
     {
@@ -56,30 +50,6 @@ public:
     }
     void SetVector(DirectX::XMFLOAT4 f4)
     {
-        this->vector = DirectX::XMLoadFloat4(&f4);
-    }
-    void SetX(float x)
-    {
-        DirectX::XMFLOAT4 f4 = GetFlaot4();
-        f4.x = x;
-        this->vector = DirectX::XMLoadFloat4(&f4);
-    }
-    void SetY(float y)
-    {
-        DirectX::XMFLOAT4 f4 = GetFlaot4();
-        f4.y = y;
-        this->vector = DirectX::XMLoadFloat4(&f4);
-    }
-    void SetZ(float z)
-    {
-        DirectX::XMFLOAT4 f4 = GetFlaot4();
-        f4.z = z;
-        this->vector = DirectX::XMLoadFloat4(&f4);
-    }
-    void SetW(float w)
-    {
-        DirectX::XMFLOAT4 f4 = GetFlaot4();
-        f4.w = w;
         this->vector = DirectX::XMLoadFloat4(&f4);
     }
 
@@ -313,41 +283,4 @@ public:
 #pragma endregion VectorXZ
 private:
     alignas(16) DirectX::XMVECTOR vector;  // 内部でXMVECTORを保持
-
-public:
-#ifdef _DEBUG
-        bool InputFloat(const char* label)
-        {
-            bool r = false;
-            DirectX::XMFLOAT4 f4 = GetFlaot4();
-            r = ImGui::InputFloat4(label, &f4.x);
-            if (r)
-            {
-                SetVector(f4);
-            }
-            return r;
-        }
-        bool DragFloat(const char* label, float rate = 1.0f)
-        {
-            bool r = false;
-            DirectX::XMFLOAT4 f4 = GetFlaot4();
-            r = ImGui::DragFloat4(label, &f4.x, rate);
-            if (r)
-            {
-                SetVector(f4);
-            }
-            return r;
-        }
-        bool SliderFloat(const char* label, float min, float max)
-        {
-            bool r = false;
-            DirectX::XMFLOAT4 f4 = GetFlaot4();
-            r = ImGui::SliderFloat4(label, &f4.x, min, max);
-            if (r)
-            {
-                SetVector(f4);
-            }
-            return r;
-        }
-#endif // _DEBUG
 };

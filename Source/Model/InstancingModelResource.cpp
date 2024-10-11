@@ -154,8 +154,8 @@ void InstancingModelResource::UpdateAnimation(float elapsed_time, ModelResource*
 	for (int keyIndex = 0; keyIndex < keyCount - 1; ++keyIndex)
 	{
 		// 現在の時間がどのキーフレームの間にいるのか判定する
-		const ModelResource::Keyframe& keyframe0 = keyframes.at(keyIndex);
-		const ModelResource::Keyframe& keyframe1 = keyframes.at(keyIndex + 1);
+		const ModelResource::Keyframe& keyframe0 = keyframes.at(static_cast<size_t>(keyIndex));
+		const ModelResource::Keyframe& keyframe1 = keyframes.at(static_cast<size_t>((keyIndex + 1)));
 
 		// 経過時間が再生時間内なら
 		if (current_animation_seconds >= keyframe0.seconds &&
@@ -188,7 +188,7 @@ void InstancingModelResource::UpdateAnimation(float elapsed_time, ModelResource*
 				MYVECTOR4 R0 = key0.rotate;
 				MYVECTOR4 R1 = key1.rotate;
 				MYVECTOR4 R = R0.SLerp(R1, rate);
-				node.rotate = R.GetFlaot4();
+				R.GetFlaot4(node.rotate);
 
 				// 座標の線形補間
 				MYVECTOR3 T0 = key0.translate;
