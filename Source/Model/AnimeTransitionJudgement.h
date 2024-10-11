@@ -18,9 +18,9 @@ public:
 	virtual bool CheckTransitionCondition() = 0;
 
 	// ŠeŽíŽæ“¾EÝ’èŠÖ”
-	const bool& GetIsActive() { return this->is_active; }
-	const bool& GetShouldReversey() { return this->should_reverse; }
-	const bool& GetRequireTransitionReady() { return this->require_transition_ready; }
+	bool GetIsActive() { return this->is_active; }
+	bool GetShouldReversey() { return this->should_reverse; }
+	bool GetRequireTransitionReady() { return this->require_transition_ready; }
 	void SetIsActive(bool is_active) { this->is_active = is_active; }
 	OwnerPtr GetOwner() { return this->owner_Wptr.lock(); }
 
