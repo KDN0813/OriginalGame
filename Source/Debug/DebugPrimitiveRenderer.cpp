@@ -14,24 +14,24 @@ DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 
 		// ファイルのサイズを求める
 		fseek(fp, 0, SEEK_END);
-		long csoSize = ftell(fp);
+		long cso_size = ftell(fp);
 		fseek(fp, 0, SEEK_SET);
 
 		// メモリ上に頂点シェーダーデータを格納する領域を用意する
-		std::unique_ptr<u_char[]> csoData = std::make_unique<u_char[]>(csoSize);
-		fread(csoData.get(), csoSize, 1, fp);
+		std::unique_ptr<u_char[]> cso_data = std::make_unique<u_char[]>(cso_size);
+		fread(cso_data.get(), cso_size, 1, fp);
 		fclose(fp);
 
 		// 頂点シェーダー生成
-		HRESULT hr = device->CreateVertexShader(csoData.get(), csoSize, nullptr, vertex_shader.GetAddressOf());
+		HRESULT hr = device->CreateVertexShader(cso_data.get(), cso_size, nullptr, vertex_shader.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// 入力レイアウト
-		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] =
+		D3D11_INPUT_ELEMENT_DESC input_element_desc[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
-		hr = device->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), csoData.get(), csoSize, input_layout.GetAddressOf());
+		hr = device->CreateInputLayout(input_element_desc, ARRAYSIZE(input_element_desc), cso_data.get(), cso_size, input_layout.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -44,16 +44,16 @@ DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 
 		// ファイルのサイズを求める
 		fseek(fp, 0, SEEK_END);
-		long csoSize = ftell(fp);
+		long cso_size = ftell(fp);
 		fseek(fp, 0, SEEK_SET);
 
 		// メモリ上に頂点シェーダーデータを格納する領域を用意する
-		std::unique_ptr<u_char[]> csoData = std::make_unique<u_char[]>(csoSize);
-		fread(csoData.get(), csoSize, 1, fp);
+		std::unique_ptr<u_char[]> cso_data = std::make_unique<u_char[]>(cso_size);
+		fread(cso_data.get(), cso_size, 1, fp);
 		fclose(fp);
 
 		// ピクセルシェーダー生成
-		HRESULT hr = device->CreatePixelShader(csoData.get(), csoSize, nullptr, pixel_shader.GetAddressOf());
+		HRESULT hr = device->CreatePixelShader(cso_data.get(), cso_size, nullptr, pixel_shader.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -100,7 +100,7 @@ DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
-		HRESULT hr = device->CreateDepthStencilState(&desc, depthStencilState.GetAddressOf());
+		HRESULT hr = device->CreateDepthStencilState(&desc, depth_stencil_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -119,7 +119,7 @@ DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 		desc.CullMode = D3D11_CULL_NONE;
 		desc.AntialiasedLineEnable = false;
 
-		HRESULT hr = device->CreateRasterizerState(&desc, rasterizerState.GetAddressOf());
+		HRESULT hr = device->CreateRasterizerState(&desc, rasterizer_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -145,8 +145,8 @@ void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view,
 	// レンダーステート設定
 	const float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	context->OMSetBlendState(blend_state.Get(), blendFactor, 0xFFFFFFFF);
-	context->OMSetDepthStencilState(depthStencilState.Get(), 0);
-	context->RSSetState(rasterizerState.Get());
+	context->OMSetDepthStencilState(depth_stencil_state.Get(), 0);
+	context->RSSetState(rasterizer_state.Get());
 
 	// ビュープロジェクション行列作成
 	MYMATRIX view_projection = view * projection;
@@ -172,7 +172,7 @@ void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view,
 		cbMesh.wvp = W * view_projection;
 
 		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
-		context->Draw(sphereVertexCount, 0);
+		context->Draw(sphere_vertex_count, 0);
 	}
 	spheres.clear();
 
@@ -192,7 +192,7 @@ void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view,
 		cbMesh.wvp = W * view_projection;
 
 		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
-		context->Draw(cylinderVertexCount, 0);
+		context->Draw(cylinder_vertex_count, 0);
 	}
 	cylinders.clear();
 }
@@ -221,8 +221,8 @@ void DebugPrimitiveRenderer::DrawCylinder(const DirectX::XMFLOAT3& position, flo
 // 球メッシュ作成
 void DebugPrimitiveRenderer::CreateSphereMesh(ID3D11Device* device, float radius, int slices, int stacks)
 {
-	sphereVertexCount = stacks * slices * 2 + slices * stacks * 2;
-	std::unique_ptr<DirectX::XMFLOAT3[]> vertices = std::make_unique<DirectX::XMFLOAT3[]>(sphereVertexCount);
+	sphere_vertex_count = stacks * slices * 2 + slices * stacks * 2;
+	std::unique_ptr<DirectX::XMFLOAT3[]> vertices = std::make_unique<DirectX::XMFLOAT3[]>(sphere_vertex_count);
 
 	float phiStep = DirectX::XM_PI / stacks;
 	float thetaStep = DirectX::XM_2PI / slices;
@@ -277,7 +277,7 @@ void DebugPrimitiveRenderer::CreateSphereMesh(ID3D11Device* device, float radius
 		D3D11_BUFFER_DESC desc = {};
 		D3D11_SUBRESOURCE_DATA subresourceData = {};
 
-		desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT3) * sphereVertexCount);
+		desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT3) * sphere_vertex_count);
 		desc.Usage = D3D11_USAGE_IMMUTABLE;	// D3D11_USAGE_DEFAULT;
 		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		desc.CPUAccessFlags = 0;
@@ -295,8 +295,8 @@ void DebugPrimitiveRenderer::CreateSphereMesh(ID3D11Device* device, float radius
 // 円柱メッシュ作成
 void DebugPrimitiveRenderer::CreateCylinderMesh(ID3D11Device* device, float radius1, float radius2, float start, float height, int slices, int stacks)
 {
-	cylinderVertexCount = 2 * slices * (stacks + 1) + 2 * slices;
-	std::unique_ptr<DirectX::XMFLOAT3[]> vertices = std::make_unique<DirectX::XMFLOAT3[]>(cylinderVertexCount);
+	cylinder_vertex_count = 2 * slices * (stacks + 1) + 2 * slices;
+	std::unique_ptr<DirectX::XMFLOAT3[]> vertices = std::make_unique<DirectX::XMFLOAT3[]>(cylinder_vertex_count);
 
 	DirectX::XMFLOAT3* p = vertices.get();
 
@@ -348,7 +348,7 @@ void DebugPrimitiveRenderer::CreateCylinderMesh(ID3D11Device* device, float radi
 		D3D11_BUFFER_DESC desc = {};
 		D3D11_SUBRESOURCE_DATA subresourceData = {};
 
-		desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT3) * cylinderVertexCount);
+		desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT3) * cylinder_vertex_count);
 		desc.Usage = D3D11_USAGE_IMMUTABLE;	// D3D11_USAGE_DEFAULT;
 		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		desc.CPUAccessFlags = 0;

@@ -60,12 +60,12 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout>		input_layout;
 
 	Microsoft::WRL::ComPtr<ID3D11BlendState>		blend_state;
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState>	rasterizerState;
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depthStencilState;
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState>	rasterizer_state;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depth_stencil_state;
 
 	std::vector<Sphere>		spheres;
 	std::vector<Cylinder>	cylinders;
 
-	UINT	sphereVertexCount = 0;
-	UINT	cylinderVertexCount = 0;
+	UINT	sphere_vertex_count = 0;
+	UINT	cylinder_vertex_count = 0;
 };
