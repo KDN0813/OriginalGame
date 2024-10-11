@@ -24,7 +24,7 @@ bool Collision::IntersectSphareVsSphere(
 
     // AがBを押し出す
     MYVECTOR3 Out_positionB = PositionA + (vec * range);
-    out_positionB = Out_positionB.GetFlaot3();
+    Out_positionB.GetFlaot3(out_positionB);
 
     return true;
 }
@@ -68,7 +68,7 @@ bool Collision::IntersectCylinderVsCylinder(
     vec.Normalize();
     vec *= range;
     MYVECTOR3 Out_positionB = MYVECTOR3(PositionA.GetX() + vec.GetX(), PositionB.GetY(), PositionA.GetZ() + vec.GetY());
-    out_positionB = Out_positionB.GetFlaot3();
+    Out_positionB.GetFlaot3(out_positionB);
     return true;
 }
 
@@ -109,24 +109,22 @@ bool Collision::IntersectSphereVsCylinder(
     vec.Normalize();
     vec *= range;
     MYVECTOR3 Out_Cylinder_position = MYVECTOR3(Sphere_position.GetX() + vec.GetX(), Cylinder_position.GetY(), Sphere_position.GetZ() + vec.GetY());
-    out_cylinder_position = Out_Cylinder_position.GetFlaot3();
+    Out_Cylinder_position.GetFlaot3(out_cylinder_position);
     return true;
 
     return true;
 }
 
 bool Collision::IntersectRayVsModel(
-    DirectX::XMFLOAT3 start,
-    DirectX::XMFLOAT3 end,
+    MYVECTOR3 World_start,
+    MYVECTOR3 World_end,
     const ModelComponent* model,
     HitResult& result
 )
 {
     // ワールド空間のレイの長さ
-    MYVECTOR3 world_start = start;
-    MYVECTOR3 world_end = end;
-    MYVECTOR3 world_ray_vec = world_end - world_start;
-    result.distance = world_ray_vec.Length();
+    MYVECTOR3 World_ray_vec = World_end - World_start;
+    result.distance = World_ray_vec.Length();
 
     bool hit = false;
     const ModelResource* resource = model->GetResource();
@@ -142,8 +140,8 @@ bool Collision::IntersectRayVsModel(
         MYMATRIX inverse_world_transform = World_transform.GetInverse(nullptr);
 
         // 始点から終点へのベクトル
-        MYVECTOR3 S = inverse_world_transform.Vector3TransformCoord(world_start);
-        MYVECTOR3 E = inverse_world_transform.Vector3TransformCoord(world_end);
+        MYVECTOR3 S = inverse_world_transform.Vector3TransformCoord(World_start);
+        MYVECTOR3 E = inverse_world_transform.Vector3TransformCoord(World_end);
         MYVECTOR3 V = (E - S).Normalize();
 
         // レイの長さ
@@ -224,7 +222,7 @@ bool Collision::IntersectRayVsModel(
             // ローカル座標からワールド空間へ変換
             MYVECTOR3 World_positon = World_transform.Vector3TransformCoord(hit_position);
 
-            float distance = (World_positon - world_start).Length();
+            float distance = (World_positon - World_start).Length();
 
             // ヒット情報保存
             if (result.distance > distance)
@@ -233,8 +231,8 @@ bool Collision::IntersectRayVsModel(
 
                 result.distance = distance;
                 result.material_index = material_index;
-                result.position = World_positon.GetFlaot3();
-                result.normal = (World_normal.Normalize()).GetFlaot3();
+                World_positon.GetFlaot3(result.position);
+                World_normal.Normalize().GetFlaot3(result.normal);
                 hit = true;
             }
         }

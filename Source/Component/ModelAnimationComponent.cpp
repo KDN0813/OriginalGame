@@ -104,7 +104,7 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					MYVECTOR3 S0 = node.scale;
 					MYVECTOR3 S1 = key1.scale;
 					MYVECTOR3 S = S0.Lerp(S1, blend_rate);
-					node.scale = S.GetFlaot3();
+					S.GetFlaot3(node.scale);
 
 					// 角度の球面線形補間
 					MYVECTOR4 R0 = node.rotate;
@@ -116,7 +116,7 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					MYVECTOR3 T0 = node.translate;
 					MYVECTOR3 T1 = key1.translate;
 					MYVECTOR3 T = T0.Lerp(T1, blend_rate);
-					node.translate = T.GetFlaot3();
+					T.GetFlaot3(node.translate);
 				}
 				else
 				{
@@ -126,7 +126,7 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					MYVECTOR3 S0 = key0.scale;
 					MYVECTOR3 S1 = key1.scale;
 					MYVECTOR3 S = S0.Lerp(S1, blend_rate);
-					node.scale = S.GetFlaot3();
+					S.GetFlaot3(node.scale);
 
 					// 角度の線形補間
 					MYVECTOR4 R0 = key0.rotate;
@@ -138,7 +138,7 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 					MYVECTOR3 T0 = key0.translate;
 					MYVECTOR3 T1 = key1.translate;
 					MYVECTOR3 T = T0.Lerp(T1, blend_rate);
-					node.translate = T.GetFlaot3();
+					T.GetFlaot3(node.translate);
 				}
 			}
 			break;

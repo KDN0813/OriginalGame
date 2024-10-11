@@ -24,6 +24,10 @@ public:
     {
         return this->vector;
     }
+    DirectX::XMVECTOR* GetVectorAddress()
+    {
+        return &this->vector;
+    }
     void GetFlaot4(DirectX::XMFLOAT4& f4)  const
     {
         DirectX::XMStoreFloat4(&f4, this->vector);

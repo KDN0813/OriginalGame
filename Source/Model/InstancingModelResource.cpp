@@ -182,7 +182,7 @@ void InstancingModelResource::UpdateAnimation(float elapsed_time, ModelResource*
 				MYVECTOR3 S0 = key0.scale;
 				MYVECTOR3 S1 = key1.scale;
 				MYVECTOR3 S = S0.Lerp(S1, rate);
-				node.scale = S.GetFlaot3();
+				S.GetFlaot3(node.scale);
 
 				// äpìxÇÃê¸å`ï‚ä‘
 				MYVECTOR4 R0 = key0.rotate;
@@ -194,7 +194,7 @@ void InstancingModelResource::UpdateAnimation(float elapsed_time, ModelResource*
 				MYVECTOR3 T0 = key0.translate;
 				MYVECTOR3 T1 = key1.translate;
 				MYVECTOR3 T = T0.Lerp(T1, rate);
-				node.translate = T.GetFlaot3();
+				T.GetFlaot3(node.translate);
 
 			}
 			break;

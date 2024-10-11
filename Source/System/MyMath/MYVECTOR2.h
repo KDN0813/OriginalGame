@@ -24,6 +24,10 @@ public:
     {
         return this->vector;
     }
+    DirectX::XMVECTOR* GetVectorAddress()
+    {
+        return &this->vector;
+    }
     DirectX::XMFLOAT2 GetFlaot2()
     {
         DirectX::XMFLOAT2 f2;

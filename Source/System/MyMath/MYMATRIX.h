@@ -37,14 +37,6 @@ public:
     {
         SetTranslationMatrix(f3.x, f3.y, f3.z);
     }
-    void SetTranslationMatrix(DirectX::XMVECTOR vec)
-    {
-        SetTranslationMatrix(MYVECTOR3(vec).GetFlaot3());
-    }
-    void SetTranslationMatrix(MYVECTOR3 mVec3)
-    {
-        SetTranslationMatrix(mVec3.GetFlaot3());
-    }
     // スケール行列の設定
     void SetScalingMatrix(float x, float y, float z)
     {
@@ -53,14 +45,6 @@ public:
     void SetScalingMatrix(DirectX::XMFLOAT3 f3)
     {
         SetScalingMatrix(f3.x, f3.y, f3.z);
-    }
-    void SetScalingMatrix(DirectX::XMVECTOR vec)
-    {
-        SetScalingMatrix(MYVECTOR3(vec).GetFlaot3());
-    }
-    void SetScalingMatrix(MYVECTOR3 mVec3)
-    {
-        SetScalingMatrix(mVec3.GetFlaot3());
     }
     void SetScalingMatrix(float f)
     {
@@ -75,26 +59,26 @@ public:
     {
         SetRotationRollPitchYaw(f3.x, f3.y, f3.z);
     }
-    void SetRotationRollPitchYaw(DirectX::XMVECTOR vec)
-    {
-        SetRotationRollPitchYaw(MYVECTOR3(vec).GetFlaot3());
-    }
-    void SetRotationRollPitchYaw(MYVECTOR3 mVec3)
-    {
-        SetRotationRollPitchYaw(mVec3.GetFlaot3());
-    }
     // 回転行列(クォータニオン)の設定
-    void SetRotationRollPitchYaw(DirectX::XMFLOAT4 f4)
+    void SetRotationQuaternion(DirectX::XMFLOAT4 f4)
     {
         this->matrix = DirectX::XMMatrixRotationQuaternion(MYVECTOR4(f4).GetVector());
     }
-    void SetRotationQuaternion(DirectX::XMVECTOR vec)
+    void SetLocalMatrix(DirectX::XMFLOAT3 scale, DirectX::XMFLOAT4 rotation, DirectX::XMFLOAT3 translation)
     {
-        this->matrix = DirectX::XMMatrixRotationQuaternion(vec);
+        MYMATRIX S, R, T, W;
+        S.SetScalingMatrix(scale);
+        R.SetRotationQuaternion(rotation);
+        T.SetTranslationMatrix(translation);
+        this->matrix = (S * R * T).GetMatrix();
     }
-    void SetRotationQuaternion(MYVECTOR4 mVec4)
+    void SetLocalMatrix(DirectX::XMFLOAT3 scale, DirectX::XMFLOAT3 rooll_pitch_yaw, DirectX::XMFLOAT3 translation)
     {
-        this->matrix = DirectX::XMMatrixRotationQuaternion(mVec4.GetVector());
+        MYMATRIX S, R, T, W;
+        S.SetScalingMatrix(scale);
+        R.SetRotationRollPitchYaw(rooll_pitch_yaw);
+        T.SetTranslationMatrix(translation);
+        this->matrix = (S * R * T).GetMatrix();
     }
 
     // 逆行列を取得
@@ -105,24 +89,6 @@ public:
     MYMATRIX GetInverse(DirectX::XMVECTOR* vec) const
     {
         return MYMATRIX(DirectX::XMMatrixInverse(vec, this->matrix));
-    }
-    // ローカル行列の設定
-    void SetLocalMatrix(MYVECTOR3 scale, MYVECTOR4 rotation, MYVECTOR3 translation)
-    {
-        MYMATRIX S, R, T;
-        S.SetScalingMatrix(scale);
-        R.SetRotationQuaternion(rotation);
-        T.SetTranslationMatrix(translation);
-        this->matrix = (S * R * T).GetMatrix();
-    }
-    // ローカル行列の設定
-    void SetLocalMatrix(MYVECTOR3 scale, MYVECTOR3 rooll_pitch_yaw, MYVECTOR3 translation)
-    {
-        MYMATRIX S, R, T;
-        S.SetScalingMatrix(scale);
-        R.SetRotationRollPitchYaw(rooll_pitch_yaw);
-        T.SetTranslationMatrix(translation);
-        this->matrix = (S * R * T).GetMatrix();
     }
     // 逆行列を設定
     void SetInverse(MYVECTOR3 mVec3)

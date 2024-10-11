@@ -52,9 +52,9 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
         vz /= length;
 
         // 自身の回転値から前方向を求める
-        MYVECTOR3 angle = transform->GetAngle();
-        float frontX = sinf(angle.GetY());
-        float frontZ = cosf(angle.GetY());
+        DirectX::XMFLOAT3 angle = transform->GetAngle();
+        float frontX = sinf(angle.y);
+        float frontZ = cosf(angle.y);
 
         // 回転角を求めるため、2つの単位ベクトルの内積を計算する
         float dot = (frontX * vx + frontZ * vz);
@@ -71,14 +71,14 @@ void PlayerComponent::Turn(float elapsed_time, float vx, float vz, float speed)
         //  左右判定を行うことによって左右回転を選択する
         if (cross < 0.0f)
         {
-            angle.SubtractY(rot);
+            angle.y -= rot;
         }
         else
         {
-            angle.AddY(rot);
+            angle.y += rot;
         }
 
-        transform->SetAngle(angle.GetFlaot3());
+        transform->SetAngle(angle);
     }
 }
 
@@ -93,14 +93,14 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
     // カメラ方向とスティックの入力値によって進行方向を計算する
     CameraManager* camera_manager = CameraManager::Instance();
     CameraComponent* camera = camera_manager->GetMainCamera();
-    MYVECTOR3 camera_right = camera->GetRight();
-    MYVECTOR3 camera_front = camera->GetForward();
+    MYVECTOR3 Camera_right = camera->GetRight();
+    MYVECTOR3 Camera_front = camera->GetForward();
 
     // 移動ベクトルはXZ平面に水平なベクトルになるようにする
 
     // カメラ右方向ベクトルをXZ単位ベクトルに変換
-    float camera_rightX = camera_right.GetX();
-    float camera_rightZ = camera_right.GetZ();
+    float camera_rightX = Camera_right.GetX();
+    float camera_rightZ = Camera_right.GetZ();
     float camera_right_length = sqrtf(camera_rightX * camera_rightX + camera_rightZ * camera_rightZ);
     if (camera_right_length > 0.0f)
     {
@@ -110,8 +110,8 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
     }
 
     // カメラ前方向ベクトルをXZ単位ベクトルに変換
-    float camera_frontX = camera_front.GetX();
-    float camera_frontZ = camera_front.GetZ();
+    float camera_frontX = Camera_front.GetX();
+    float camera_frontZ = Camera_front.GetZ();
     float camera_front_Length = sqrtf(camera_frontX * camera_frontX + camera_frontZ * camera_frontZ);
     if (camera_front_Length > 0.0f)
     {
@@ -126,9 +126,10 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
     float vec_x = (camera_rightX * ax) + (camera_frontX * ay);
     float vec_y = 0.0f;  // Y軸には移動しない
     float vec_z = (camera_rightZ * ax) + (camera_frontZ * ay);
-    MYVECTOR3 vec{ vec_x ,vec_y,vec_z };
-
-    return vec.Normalize().GetFlaot3();
+    MYVECTOR3 Vec{ vec_x ,vec_y,vec_z };
+    DirectX::XMFLOAT3 vec;
+    Vec.Normalize().GetFlaot3(vec);
+    return vec;
 }
 
 #ifdef _DEBUG

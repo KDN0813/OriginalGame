@@ -104,9 +104,10 @@ void DebugCameraController::Update(float elapsed_time)
 		MYVECTOR3 Front(-cx * sy, -sx, -cx * cy);
 		Front *= range;
 		Eye = Focus - Front;
+		MYVECTOR3 Up(0.0f, 1.0f, 0.0f);
 
 		// カメラに視点を注視点を設定
-		camera->SetLookAt(Eye.GetFlaot3(), Focus.GetFlaot3(), { 0.0f, 1.0f, 0.0f });
+		camera->SetLookAt(Eye, Focus, Up);
 	}
 
 	if (mouse.GetWheel() != 0)
@@ -119,7 +120,9 @@ void DebugCameraController::Update(float elapsed_time)
 	camera->SetRotateY(rotateY);
 	camera->SetRange(range);
 
-	transform->SetPosition(Focus.GetFlaot3());	// Positionの再設定
+	DirectX::XMFLOAT3 pos{};
+	Focus.GetFlaot3(pos);
+	transform->SetPosition(pos);	// Positionの再設定
 }
 
 #endif // _DEBUG
@@ -166,8 +169,10 @@ void GamepadCameraController::Update(float elapsed_time)
 	// 注視点から後ろのベクトル方向に一定離れたカメラ視点を求める
 	MYVECTOR3 Eye = Target - Front * range;
 
+	MYVECTOR3 Up(0.0f, 1.0f, 0.0f);
+
 	// カメラの視点と注視点を設定
-	camera->SetLookAt(Eye.GetFlaot3(), Target.GetFlaot3(), DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f));
+	camera->SetLookAt(Eye, Target, Up);
 	camera->SetRotateY(rotateY);
 }
 

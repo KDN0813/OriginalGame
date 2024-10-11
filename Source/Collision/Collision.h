@@ -1,5 +1,5 @@
 #pragma once
-#include <DirectXMath.h>
+#include "System/MyMath/MYVECTOR3.h"
 #include "Component/ModelComponent.h"
 
  /**
@@ -56,15 +56,15 @@ public:
     /**
      * レイとモデルの交差判定
      * 
-     * \param start レイの始点
-     * \param end レイの終点
+     * \param World_start レイの始点
+     * \param World_end レイの終点
      * \param model モデルのポインタ
      * \param result ヒットリザルト(結果を格納する)
      * \return 交差判定(交差したらtrue)
      */
     static bool IntersectRayVsModel(
-        DirectX::XMFLOAT3 start,
-        DirectX::XMFLOAT3 end,
+        MYVECTOR3 World_start,
+        MYVECTOR3 World_end,
         const ModelComponent* model,
         HitResult& result
     );

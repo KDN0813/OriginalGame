@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <DirectXMath.h>
+#include "System/MyMath/MYVECTOR3.h"
 #include "Component.h"
 #include "Camera/CameraController.h"
 
@@ -34,7 +34,7 @@ public:
 	void SetMainCamera();
 
 	// 指定方向を向く
-	void SetLookAt(DirectX::XMFLOAT3 eye, DirectX::XMFLOAT3 focus, DirectX::XMFLOAT3 up);
+	void SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up);
 	// パースペクティブ設定
 	void SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ);
 	// カメラの距離設定

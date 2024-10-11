@@ -20,7 +20,7 @@ public:
     MYVECTOR3(DirectX::XMVECTOR vec) : vector(vec) {}
     MYVECTOR3(const MYVECTOR3& mVec) :vector(mVec.vector) {}; // コピーコンストラクタ
 
-    DirectX::XMVECTOR GetVector()
+    DirectX::XMVECTOR GetVector() const
     {
         return this->vector;
     }
@@ -28,11 +28,9 @@ public:
     {
         return &this->vector;
     }
-    DirectX::XMFLOAT3 GetFlaot3()
+    void GetFlaot3(DirectX::XMFLOAT3& f3) const
     {
-        DirectX::XMFLOAT3 f3;
         DirectX::XMStoreFloat3(&f3, this->vector);
-        return f3;
     }
     float GetX() const
     {
@@ -52,24 +50,6 @@ public:
     }
     void SetVector(DirectX::XMFLOAT3 f3)
     {
-        this->vector = DirectX::XMLoadFloat3(&f3);
-    }
-    void SetX(float x)
-    {
-        DirectX::XMFLOAT3 f3 = GetFlaot3();
-        f3.x = x;
-        this->vector = DirectX::XMLoadFloat3(&f3);
-    }
-    void SetY(float y)
-    {
-        DirectX::XMFLOAT3 f3 = GetFlaot3();
-        f3.y = y;
-        this->vector = DirectX::XMLoadFloat3(&f3);
-    }
-    void SetZ(float z)
-    {
-        DirectX::XMFLOAT3 f3 = GetFlaot3();
-        f3.z = z;
         this->vector = DirectX::XMLoadFloat3(&f3);
     }
 
@@ -160,6 +140,10 @@ public:
     MYVECTOR3 Normalize() const
     {
         return MYVECTOR3(DirectX::XMVector3Normalize(this->vector));
+    }
+    void NormalizeSelf()
+    {
+        this->vector = DirectX::XMVector3Normalize(this->vector);
     }
     // 各値の絶対値を計算
     MYVECTOR3 Abs() const
@@ -332,9 +316,9 @@ public:
     {
         return GetMyVectorXZ().GetVector();
     }
-    DirectX::XMFLOAT3 GetFlaot3XZ()
+    void GetFlaot3XZ(DirectX::XMFLOAT3 f3)
     {
-        return GetMyVectorXZ().GetFlaot3();
+        return GetMyVectorXZ().GetFlaot3(f3);
     }
     float LengthXZ()
     {
@@ -347,41 +331,4 @@ public:
 #pragma endregion VectorXZ
 private:
     alignas(16) DirectX::XMVECTOR vector;  // 内部でXMVECTORを保持
-
-public:
-#ifdef _DEBUG
-    bool InputFloat(const char* label)
-    {
-        bool r = false;
-        DirectX::XMFLOAT3 f3 = GetFlaot3();
-        r = ImGui::InputFloat3(label, &f3.x);
-        if (r)
-        {
-            SetVector(f3);
-        }
-        return r;
-    }
-    bool DragFloat(const char* label, float rate = 1.0f)
-    {
-        bool r = false;
-        DirectX::XMFLOAT3 f3 = GetFlaot3();
-        r = ImGui::DragFloat3(label, &f3.x, rate);
-        if (r)
-        {
-            SetVector(f3);
-        }
-        return r;
-    }
-    bool SliderFloat(const char* label, float min, float max)
-    {
-        bool r = false;
-        DirectX::XMFLOAT3 f3 = GetFlaot3();
-        r = ImGui::SliderFloat3(label, &f3.x, min, max);
-        if (r)
-        {
-            SetVector(f3);
-        }
-        return r;
-    }
-#endif // _DEBUG
 };

@@ -29,7 +29,7 @@ DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
 	this->change_value = true;
 	MYVECTOR3 Pos = this->position;
 	Pos += vec;
-	this->position = Pos.GetFlaot3();
+	Pos.GetFlaot3(this->position);
 	return this->position;
 }
 
