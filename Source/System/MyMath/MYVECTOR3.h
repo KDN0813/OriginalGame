@@ -20,6 +20,14 @@ public:
     {
         return this->vector;
     }
+    MYVECTOR3 GetMyVectorXZ()
+    {
+        return MYVECTOR3(DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(1.0f, 0.0f, 1.0f, 0.0f)));
+    }
+    DirectX::XMVECTOR GetVectorXZ()
+    {
+        return DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(1.0f, 0.0f, 1.0f, 0.0f));
+    }
     DirectX::XMVECTOR* GetVectorAddress()
     {
         return &this->vector;
@@ -27,6 +35,10 @@ public:
     void GetFlaot3(DirectX::XMFLOAT3& f3) const
     {
         DirectX::XMStoreFloat3(&f3, this->vector);
+    }
+    void GetFlaot3XZ(DirectX::XMFLOAT3 f3)
+    {
+        return GetMyVectorXZ().GetFlaot3(f3);
     }
     float GetX() const
     {
@@ -132,6 +144,14 @@ public:
     {
         return DirectX::XMVectorGetX(DirectX::XMVector3LengthSq(this->vector));
     }
+    float LengthXZ()
+    {
+        return GetMyVectorXZ().Length();
+    }
+    float LengthXZSq()
+    {
+        return GetMyVectorXZ().LengthSq();
+    }
     // ê≥ãKâª
     MYVECTOR3 Normalize() const
     {
@@ -176,6 +196,7 @@ public:
     {
         return MYVECTOR3(DirectX::XMVectorSqrt(this->vector));
     }
+    // äeóvëfÇÃçáåvílåvéZ
     float Sum() const
     {
         return DirectX::XMVectorGetX(DirectX::XMVectorSum(DirectX::XMVectorMultiply(this->vector, DirectX::XMVectorSet(1.0f, 1.0f, 1.0f, 0.0))));
@@ -299,32 +320,6 @@ public:
         return *this;
     }
 
-#pragma region VectorXZ    
-    MYVECTOR3 GetMyVectorXZ()
-    {
-        return MYVECTOR3(GetX(), 0.0f, GetZ());
-    }
-    MYVECTOR2 GetMyVector2XZ()
-    {
-        return MYVECTOR2(GetX(), GetZ());
-    }
-    DirectX::XMVECTOR GetVectorXZ()
-    {
-        return GetMyVectorXZ().GetVector();
-    }
-    void GetFlaot3XZ(DirectX::XMFLOAT3 f3)
-    {
-        return GetMyVectorXZ().GetFlaot3(f3);
-    }
-    float LengthXZ()
-    {
-        return GetMyVectorXZ().Length();
-    }    
-    float LengthXZSq()
-    {
-        return GetMyVectorXZ().LengthSq();
-    }
-#pragma endregion VectorXZ
 private:
     alignas(16) DirectX::XMVECTOR vector;  // ì‡ïîÇ≈XMVECTORÇï€éù
 };

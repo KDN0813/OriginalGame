@@ -55,9 +55,9 @@ bool Collision::IntersectCylinderVsCylinder(
         return false;
     }
 
-    // XZ平面での範囲チェック[06]
-    MYVECTOR2 vec = PositionB.GetMyVector2XZ() - PositionA.GetMyVector2XZ();
-    float lengthXZ = vec.Length();
+    // XZ平面での範囲チェック
+    MYVECTOR3 Vec = PositionB.GetMyVectorXZ() - PositionA.GetMyVectorXZ();
+    float lengthXZ = Vec.Length();
     float range = radiusA + radiusB;
     if (lengthXZ > range)
     {
@@ -65,9 +65,9 @@ bool Collision::IntersectCylinderVsCylinder(
     }
 
     // AがBを押し出す
-    vec.Normalize();
-    vec *= range;
-    MYVECTOR3 Out_positionB = MYVECTOR3(PositionA.GetX() + vec.GetX(), PositionB.GetY(), PositionA.GetZ() + vec.GetY());
+    Vec.Normalize();
+    Vec *= range;
+    MYVECTOR3 Out_positionB = MYVECTOR3(PositionA.GetX() + Vec.GetX(), PositionB.GetY(), PositionA.GetZ() + Vec.GetY());
     Out_positionB.GetFlaot3(out_positionB);
     return true;
 }
@@ -97,8 +97,8 @@ bool Collision::IntersectSphereVsCylinder(
     }
 
     // XZ平面での範囲チェック
-    MYVECTOR2 vec = Cylinder_position.GetMyVector2XZ() - Sphere_position.GetMyVector2XZ();
-    float lengthXZ = vec.Length();
+    MYVECTOR3 Vec = Cylinder_position.GetMyVectorXZ() - Sphere_position.GetMyVectorXZ();
+    float lengthXZ = Vec.Length();
     float range = sphere_radius + cylinder_radius;
     if (lengthXZ > range)
     {
@@ -106,9 +106,9 @@ bool Collision::IntersectSphereVsCylinder(
     }
 
     // AがBを押し出す
-    vec.Normalize();
-    vec *= range;
-    MYVECTOR3 Out_Cylinder_position = MYVECTOR3(Sphere_position.GetX() + vec.GetX(), Cylinder_position.GetY(), Sphere_position.GetZ() + vec.GetY());
+    Vec.Normalize();
+    Vec *= range;
+    MYVECTOR3 Out_Cylinder_position = MYVECTOR3(Sphere_position.GetX() + Vec.GetX(), Cylinder_position.GetY(), Sphere_position.GetZ() + Vec.GetY());
     Out_Cylinder_position.GetFlaot3(out_cylinder_position);
     return true;
 
