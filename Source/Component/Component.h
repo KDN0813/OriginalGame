@@ -56,11 +56,19 @@ public:
      * デバックの情報を3D画面上に出力する関数
      */
     virtual void DrawDebugPrimitive() {};
+    /**
+     * デバッグプリミティブ表示用ImGui
+     */
+    virtual void DrawDebugPrimitiveGUI() {};
 
-    const bool GetIsActive() { return this->is_active; }
+    bool GetIsActive() { return this->is_active; }
     void SetIsActive(const bool is_active) { this->is_active = is_active; }
+    bool GetIsDebugPrimitive() { return this->is_draw_debug_primitive; }
+    void SetIsDebugPrimitive(const bool is_draw_debug_primitive) { this->is_draw_debug_primitive = is_draw_debug_primitive; }
+    virtual bool IsDebugPrimitive() { return false; }   // DebugPrimitiveが存在するか
 
 protected:
     bool is_active = true;
+    bool is_draw_debug_primitive = true;
 #endif // _DEBUG
 };

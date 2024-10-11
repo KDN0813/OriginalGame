@@ -13,11 +13,6 @@ void Transform3DComponent::Update(float elapsed_time)
 	W.SetLocalMatrix(this->scale, this->angle, this->position);
 	W.GetFlaot4x4(this->transform);
 	this->change_value = false;
-
-	{
-		DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-		debug_render->DrawSphere(position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
-	}
 }
 
 DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
@@ -58,6 +53,12 @@ void Transform3DComponent::DrawDebugGUI()
 		};
 		this->change_value = true;
 	}
+}
+
+void Transform3DComponent::DrawDebugPrimitive()
+{
+	DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
+	debug_render->DrawSphere(position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 }
 
 #endif // _DEBUG

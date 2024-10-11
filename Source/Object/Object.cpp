@@ -95,6 +95,25 @@ void Object::DrawDebugGUI()
             ImGui::Text(label.c_str());
 
             component->DrawDebugGUI();
+
+            if (component->IsDebugPrimitive())
+            {
+                ImGui::Indent(30.0f);
+
+                bool is_debug_primitive = component->GetIsDebugPrimitive();
+                label = "##" + std::to_string(component->GetComponentID()) + "debug_primitive";
+                if (ImGui::Checkbox(label.c_str(), &is_debug_primitive))
+                {
+                    component->SetIsDebugPrimitive(is_debug_primitive);
+                }
+                ImGui::SameLine();
+                label = "PrimitiveGUI##" + std::to_string(component->GetComponentID());
+                if (ImGui::CollapsingHeader(label.c_str()))
+                {
+                    component->DrawDebugPrimitiveGUI();
+                }
+                ImGui::Unindent(30.0f);
+            }
         }
 
         if (!component_is_active) ImGui::PopStyleColor();
@@ -107,6 +126,18 @@ void Object::DrawDebugGUI()
     }
 
     if (!this->is_active) ImGui::PopStyleColor();
+}
+
+void Object::DrawDebugPrimitive()
+{
+    if (!this->is_active) return;
+
+    for (auto& component : this->component_vec)
+    {
+        if (!component->GetIsActive())continue;
+        if (!component->GetIsDebugPrimitive())continue;
+        component->DrawDebugPrimitive();
+    }
 }
 
 #endif _DEBUG

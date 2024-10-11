@@ -51,8 +51,17 @@ public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI();
+    void DrawDebugGUI() override;
+    /**
+     * デバックの情報を3D画面上に出力する関数
+     */
+    void DrawDebugPrimitive()override;
 
+private:
+    DirectX::XMFLOAT3 rayY_start_pos;   // 下方向のレイキャストの始点
+    DirectX::XMFLOAT3 rayY_end_pos;     // 下方向のレイキャストの終点
+    DirectX::XMFLOAT3 rayXZ_start_pos;  // 壁方向のレイキャストの始点
+    DirectX::XMFLOAT3 rayXZ_end_pos;    // 壁方向のレイキャストの終点
 #endif _DEBUG
 };
 
