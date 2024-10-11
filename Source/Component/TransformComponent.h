@@ -5,7 +5,7 @@
 class Transform3DComponent : public Component
 {
 public:
-    Transform3DComponent() {};
+    Transform3DComponent();
     ~Transform3DComponent() {};
 
     void Update(float elapsed_time)override;
@@ -42,5 +42,6 @@ private:
     * デバックの情報を3D画面上に出力する関数
     */
     void DrawDebugPrimitive();
+    bool IsDebugPrimitive() { return true; }
 #endif // _DEBUG
 };

@@ -3,6 +3,13 @@
 
 #include "Debug/DebugManager.h"
 
+Transform3DComponent::Transform3DComponent()
+{
+#ifdef _DEBUG
+	SetIsDebugPrimitive(false);
+#endif // _DEBUG
+}
+
 void Transform3DComponent::Update(float elapsed_time)
 {
 	// ’l‚ª•ÏX‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Îˆ—‚µ‚È‚¢

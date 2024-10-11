@@ -42,6 +42,11 @@ void MovementComponent::Update(float elapsed_time)
 
 	// ‰Á‘¬“x‚ð‰Šú‰»
 	this->acceleration = {};
+
+#ifdef _DEBUG
+	SetIsDebugPrimitive(false);
+
+#endif // _DEBUG
 }
 
 bool MovementComponent::IsMoveXZAxis() const
