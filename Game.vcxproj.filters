@@ -61,6 +61,9 @@
     <Filter Include="Source\System\MyMath">
       <UniqueIdentifier>{0a394b2c-72c7-4757-bb89-7e97c3a25548}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\StateMachine">
+      <UniqueIdentifier>{46b098cf-a99d-4969-8f5a-9a45d66b7f9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -252,6 +255,10 @@
     <ClInclude Include="Source\Component\EnemyComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\StateMachineComponent.h" />
+    <ClInclude Include="State.h">
+      <Filter>Source\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -393,6 +400,9 @@
       <Filter>Source\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\EnemyComponent.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\StateMachineComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
