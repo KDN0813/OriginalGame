@@ -255,8 +255,10 @@
     <ClInclude Include="Source\Component\EnemyComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\StateMachineComponent.h" />
-    <ClInclude Include="State.h">
+    <ClInclude Include="Source\Component\StateMachineComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\State.h">
       <Filter>Source\StateMachine</Filter>
     </ClInclude>
   </ItemGroup>
@@ -405,8 +407,8 @@
     <ClCompile Include="Source\Component\StateMachineComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\StateMachine\State.cpp">
+      <Filter>Source\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

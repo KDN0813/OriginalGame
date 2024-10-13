@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "StateMachine/State.h"
 
 class StateMachineComponent : public Component
 {
@@ -19,6 +20,9 @@ public:
 
     // óDêÊìx
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
+
+private:
+    std::vector<StateBase> state_pool;
 
 #ifdef _DEBUG
 public:

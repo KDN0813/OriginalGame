@@ -2,9 +2,6 @@
 #include <vector>
 #include <memory>
 
-template <class T>
-concept is_Judgement = requires{ std::is_base_of_v<AnimeTransitionJudgementBase, T>; };
-
 class AnimeTransitionJudgementBase;
 using StateIndex = size_t;
 
