@@ -224,6 +224,7 @@
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
     <ClCompile Include="Source\Shader\ModelShader.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
+    <ClCompile Include="State.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\Debug.hlsli" />

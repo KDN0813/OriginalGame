@@ -405,6 +405,9 @@
     <ClCompile Include="Source\Component\StateMachineComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli">
