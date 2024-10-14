@@ -25,6 +25,7 @@
 #include "Component/PlayerComponent.h"
 #include "Component/GravityComponent.h"
 #include "Component/ModelAnimationComponent.h"
+#include "Component/EnemyComponent.h"
 
 #include "Model/AnimeTransitionJudgementDerived.h"
 #include "Camera/CameraControllerDerived.h"
@@ -129,6 +130,8 @@ void SceneGame::Initialize()
 					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, faile_name_arry[x % 2]);
 					model->PlayAnimation(x % 10, true);
 					auto transform = enemy->AddComponent<Transform3DComponent>();
+					auto enemy_component = enemy->AddComponent<EnemyComponent>();
+					auto movement = enemy->AddComponent<MovementComponent>();
 
 					float offset = 2.0f;
 
