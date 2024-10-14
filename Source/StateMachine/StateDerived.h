@@ -43,6 +43,9 @@ public:
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
     bool IsTransitionReady() override { return true; };
+private:
+    float state_timer = 0.0f;
+
 #ifdef _DEBUG
 public:
     void DrawDebugGUI() override {};

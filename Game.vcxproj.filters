@@ -264,6 +264,9 @@
     <ClInclude Include="Source\StateMachine\StateDerived.h">
       <Filter>Source\StateMachine</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\MyMath\MyMathf.h">
+      <Filter>Source\System\MyMath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -415,6 +418,9 @@
     </ClCompile>
     <ClCompile Include="Source\StateMachine\StateDerived.cpp">
       <Filter>Source\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\MyMath\MyMathf.cpp">
+      <Filter>Source\System\MyMath</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

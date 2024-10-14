@@ -171,6 +171,7 @@
     <ClInclude Include="Source\System\HighResolutionTimer.h" />
     <ClInclude Include="Source\System\Logger.h" />
     <ClInclude Include="Source\System\Misc.h" />
+    <ClInclude Include="Source\System\MyMath\MyMathf.h" />
     <ClInclude Include="Source\System\MyMath\MYMATRIX.h" />
     <ClInclude Include="Source\System\MyMath\MYVECTOR2.h" />
     <ClInclude Include="Source\System\MyMath\MYVECTOR3.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="Source\StateMachine\State.cpp" />
     <ClCompile Include="Source\StateMachine\StateDerived.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
+    <ClCompile Include="Source\System\MyMath\MyMathf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\Debug.hlsli" />
