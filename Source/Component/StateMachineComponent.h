@@ -5,7 +5,7 @@
 class StateMachineComponent : public Component
 {
 public:
-    StateMachineComponent() {};
+    StateMachineComponent(StateIndex state_max);
     virtual ~StateMachineComponent() {};
 
     // äJénä÷êî
@@ -21,8 +21,14 @@ public:
     // óDêÊìx
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
+    template<is_State State, typename ... Arguments>
+    State* AddState(Arguments ... args)
+    {
+        return state_pool.emplace_back(std::make_unique<State>(args));
+    }
 private:
-    std::vector<StateBase> state_pool;
+    std::vector<std::unique_ptr<StateBase>> state_pool;
+    StateIndex state = -1;
 
 #ifdef _DEBUG
 public:
