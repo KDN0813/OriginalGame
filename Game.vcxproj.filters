@@ -261,6 +261,9 @@
     <ClInclude Include="Source\StateMachine\State.h">
       <Filter>Source\StateMachine</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StateMachine\StateDerived.h">
+      <Filter>Source\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -408,6 +411,9 @@
       <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\StateMachine\State.cpp">
+      <Filter>Source\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\StateDerived.cpp">
       <Filter>Source\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>

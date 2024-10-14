@@ -24,7 +24,9 @@ public:
     template<is_State State, typename ... Arguments>
     State* AddState(Arguments ... args)
     {
-        return state_pool.emplace_back(std::make_unique<State>(args));
+        State* state = state_pool.emplace_back(std::make_unique<State>(args));
+        state->SetOwner(owner.lock());
+        return state;
     }
 private:
     std::vector<std::unique_ptr<StateBase>> state_pool;

@@ -1,5 +1,6 @@
 #include "State.h"
 #include "Model/AnimeTransitionJudgement.h"
+#include "Object/Object.h"
 
 StateTransitionInfo::StateTransitionInfo(
     std::string next_state_name,
@@ -25,6 +26,11 @@ void StateBase::PostTransitionJudgemen()
     {
         PerformTransitionJudgement(state->GetJudgement());
     }
+}
+
+void StateBase::SetOwner(OwnerPtr owner)
+{
+    this->owner_Wptr = owner;
 }
 
 bool StateBase::PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen)

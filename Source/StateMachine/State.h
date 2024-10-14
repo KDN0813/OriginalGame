@@ -2,8 +2,9 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include "System/Alias/OwnerAlias.h"
+#include "Model/AnimeTransitionJudgement.h"
 
-class AnimeTransitionJudgementBase;
 using StateIndex = size_t;
 
 // ステートの遷移情報
@@ -39,13 +40,15 @@ public:
 
     // 個々の更新と状態遷移の更新をする
     // 更新関数
-    void Update(float elapsed_time) {};
+    virtual void Update(float elapsed_time) {};
 
     virtual const char* Name() = 0;
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
     virtual bool IsTransitionReady() { return true; };
+
+    void SetOwner(OwnerPtr owner);
 
     // 更新関数の前の遷移判定
     void PreTransitionJudgemen();
@@ -58,6 +61,8 @@ public:
     
     // 遷移ステートの追加
     void AddStateTransition(std::unique_ptr<StateTransitionInfo> state_transition, JudgementUpdatePhase phase);
+protected:
+    OwnerWPtr owner_Wptr;
 private:
     std::vector<std::unique_ptr<StateTransitionInfo>> pre_update_judgement_pool;     // Update前に遷移判定を行う
     std::vector<std::unique_ptr<StateTransitionInfo>> post_update_judgement_pool;    // Update後に遷移判定を行う
