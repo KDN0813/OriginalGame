@@ -26,6 +26,9 @@ public:
 
     // 次の目的地設定
     void SetRandomTargetPosition();
+    // 目的地に到達しているか
+    bool IsAtTarget();
+    bool IsAtTarget(float distSq);
 private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);

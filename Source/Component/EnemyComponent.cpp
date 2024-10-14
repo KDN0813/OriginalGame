@@ -36,7 +36,7 @@ void EnemyComponent::Update(float elapsed_time)
 	MoveToTarget(elapsed_time, transform, speed_rate);
 	
 	// 目的地へ着いた
-	if (distSq < radius * radius)
+	if (IsAtTarget(distSq))
 	{
 		SetRandomTargetPosition();
 	}
@@ -72,6 +72,26 @@ void EnemyComponent::SetRandomTargetPosition()
 	this->target_position.x =  + sinf(theta) * range;
 	this->target_position.y = 0.0f;
 	this->target_position.z =  + cosf(theta) * range;
+}
+
+bool EnemyComponent::IsAtTarget()
+{
+	auto owner = GetOwner();
+	if (!owner) return false;
+	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+	if (!transform) return false;
+
+	// 目的地点までのXZ平面での距離判定
+	MYVECTOR3 Position = transform->GetPosition();
+	MYVECTOR3 Target_position = this->target_position;
+	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
+
+	return IsAtTarget(distSq);
+}
+
+bool EnemyComponent::IsAtTarget(float distSq)
+{
+	return (distSq < this->radius * this->radius);
 }
 
 #ifdef _DEBUG
