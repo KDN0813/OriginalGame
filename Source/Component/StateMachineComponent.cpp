@@ -16,11 +16,76 @@ void StateMachineComponent::End()
 
 void StateMachineComponent::Update(float elapsed_time)
 {
-    if (this->state < 0 || this->state >= this->state_pool.size()) return;
+    if (this->state_index < 0 || this->state_index >= this->state_pool.size()) return;
 
-    auto& state = this->state_pool[this->state];
+    StateBase* state = this->state_pool[this->state_index].get();
 
-    state ->PreTransitionJudgemen();
+    PreTransitionJudgemen(state);
     state->Update(elapsed_time);
-    state->PostTransitionJudgemen();
+    PostTransitionJudgemen(state);
+
+    this->state_index = this->next_state;
+}
+
+void StateMachineComponent::ChangeState(StateIndex state_index)
+{
+    if (this->state_index < 0 || this->state_index >= this->state_pool.size()) return;
+    this->next_state = state_index;
+}
+
+void StateMachineComponent::PreTransitionJudgemen(StateBase* state)
+{
+    if (!state) return;
+    for (auto& state_jugement : state->GetPreUpdateJudgementPool())
+    {
+        if (state->PerformTransitionJudgement(state_jugement->GetJudgement()))
+        {
+            StateIndex next_index = state_jugement->GetNextStateIndex();
+            if (next_index <= this->state_pool.size()) continue;
+            else if (next_index < 0)
+            {
+                // –¼‘OŒŸõ
+                StateBase* state = FindState(state_jugement->GetNextStateName());
+                if (!state) continue;
+                state_jugement->SetNextStateIndex(state->GetStateIndex());
+                this->next_state = state->GetStateIndex();
+            }
+            this->next_state = next_index;
+        }
+    }
+}
+
+void StateMachineComponent::PostTransitionJudgemen(StateBase* state)
+{
+    if (!state) return;
+    for (auto& state_jugement : state->GetPostUpdateJudgementPool())
+    {
+        if (state->PerformTransitionJudgement(state_jugement->GetJudgement()))
+        {
+            StateIndex next_index = state_jugement->GetNextStateIndex();
+            if (next_index <= this->state_pool.size()) continue;
+            else if (next_index < 0)
+            {
+                // –¼‘OŒŸõ
+                StateBase* state = FindState(state_jugement->GetNextStateName());
+                if (!state) continue;
+                state_jugement->SetNextStateIndex(state->GetStateIndex());
+                this->next_state = state->GetStateIndex();
+            }
+            this->next_state = next_index;
+        }
+    }
+}
+
+StateBase* StateMachineComponent::FindState(std::string name)
+{
+    for (size_t i = 0; i < this->state_pool.size(); ++i)
+    {
+        StateBase* state = this->state_pool[i].get();
+        if (state->Name() == name.c_str())
+        {
+            return state;
+        }
+    }
+    return nullptr;
 }

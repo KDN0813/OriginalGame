@@ -18,6 +18,7 @@ public:
     std::string GetNextStateName() { return this->next_state_name; }
     const char* GetNextStateNameC() { return this->next_state_name.c_str(); }
     AnimeTransitionJudgementBase* GetJudgement() { return judgement.get(); }
+    void SetNextStateIndex(StateIndex index) { this->next_state_index = index; }
 private:
     StateIndex next_state_index;                                // 遷移先のステートのインデックス
     std::string next_state_name;                                // 遷移先のステートの名前
@@ -50,20 +51,22 @@ public:
 
     void SetOwner(OwnerPtr owner);
 
-    // 更新関数の前の遷移判定
-    void PreTransitionJudgemen();
-    // 更新関数の後の遷移判定
-    void PostTransitionJudgemen();
-
     // 遷移判定のロジックを実行
     // `judgemenのshould_reverse` フラグがtrueなら、遷移判定結果を反転する
     bool PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen);
     
     // 遷移ステートの追加
     void AddStateTransition(std::unique_ptr<StateTransitionInfo> state_transition, JudgementUpdatePhase phase);
+    
+    // 各種設定・取得関数
+    const std::vector<std::unique_ptr<StateTransitionInfo>>& GetPreUpdateJudgementPool() { return this->pre_update_judgement_pool; }
+    const std::vector<std::unique_ptr<StateTransitionInfo>>& GetPostUpdateJudgementPool() { return this->post_update_judgement_pool; }
+    StateIndex GetStateIndex() { return this->state_index; }
+    void SetStateIndex(StateIndex index) { this->state_index = index; }
 protected:
     OwnerWPtr owner_Wptr;
 private:
+    StateIndex state_index;
     std::vector<std::unique_ptr<StateTransitionInfo>> pre_update_judgement_pool;     // Update前に遷移判定を行う
     std::vector<std::unique_ptr<StateTransitionInfo>> post_update_judgement_pool;    // Update後に遷移判定を行う
 #ifdef _DEBUG

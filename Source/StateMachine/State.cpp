@@ -12,22 +12,6 @@ StateTransitionInfo::StateTransitionInfo(
 {
 }
 
-void StateBase::PreTransitionJudgemen()
-{
-    for (auto& state : this->pre_update_judgement_pool)
-    {
-        PerformTransitionJudgement(state->GetJudgement());
-    }
-}
-
-void StateBase::PostTransitionJudgemen()
-{
-    for (auto& state : this->post_update_judgement_pool)
-    {
-        PerformTransitionJudgement(state->GetJudgement());
-    }
-}
-
 void StateBase::SetOwner(OwnerPtr owner)
 {
     this->owner_Wptr = owner;

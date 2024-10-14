@@ -14,23 +14,33 @@ public:
     void End()  override;
     // 更新関数
     void Update(float elapsed_time) override;
-
     // 名前取得
     const char* GetName()const  override { return "StateMachineComponent"; };
-
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
+    void ChangeState(StateIndex state_index);
+
+    // 更新関数の前の遷移判定
+    void PreTransitionJudgemen(StateBase* state);
+    // 更新関数の後の遷移判定
+    void PostTransitionJudgemen(StateBase* state);
+
+    // ステートを名前検索する
+    StateBase* FindState(std::string name);
+
     template<is_State State, typename ... Arguments>
-    State* AddState(Arguments ... args)
+    State* RegisterState(Arguments ... args)
     {
         State* state = state_pool.emplace_back(std::make_unique<State>(args));
         state->SetOwner(owner.lock());
+        state->SetStateIndex(state_pool.size() - 1);
         return state;
     }
 private:
     std::vector<std::unique_ptr<StateBase>> state_pool;
-    StateIndex state = -1;
+    StateIndex state_index = -1;
+    StateIndex next_state = -1;
 
 #ifdef _DEBUG
 public:
