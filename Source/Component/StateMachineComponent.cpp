@@ -26,6 +26,7 @@ void StateMachineComponent::Update(float elapsed_time)
 
     if (this->state_index != this->next_state) 
     {
+        this->state_pool[this->state_index]->End();
         this->state_index = this->next_state;
         this->state_pool[this->state_index]->Start();
     }

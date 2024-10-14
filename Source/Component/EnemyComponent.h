@@ -24,13 +24,16 @@ public:
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
-    void Move(float vx, float vz, float speed);
-    void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform,float speed_rate);
+    // 次の目的地設定
     void SetRandomTargetPosition();
+private:
+    void Move(float vx, float vz, float speed);
+    void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);
+
 private:
     DirectX::XMFLOAT3 target_position{};
     float territory_range = 25.0f;
-    float radius = 5.0f;
+    float radius = 1.0f;
     float move_speed = 3.0f;
     float speed_rate = 0.5f;
 private:
@@ -42,6 +45,10 @@ public:
      * デバックの情報を2D画面に出力する関数
      */
     void DrawDebugGUI() override;
+    /**
+     * デバックの情報を3D画面上に出力する関数
+     */
+    void DrawDebugPrimitive() override;
 #endif // DEBUG
 };
 

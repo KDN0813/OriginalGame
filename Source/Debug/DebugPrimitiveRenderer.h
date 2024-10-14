@@ -5,7 +5,6 @@
 #include <d3d11.h>
 #include "System/MyMath/MYMATRIX.h"
 
-// TODO –½–¼‹K‘¥“ˆê
 class DebugPrimitiveRenderer
 {
 public:

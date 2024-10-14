@@ -46,6 +46,7 @@ public:
 private:
     std::weak_ptr<Object>	owner = {};
     unsigned int component_id = {};
+protected:
     bool is_active = true;
 
 #ifdef _DEBUG

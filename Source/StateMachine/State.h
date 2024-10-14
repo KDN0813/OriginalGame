@@ -37,11 +37,13 @@ public:
     StateBase(){}
     virtual ~StateBase() {};
 
+    // 開始関数
     virtual void Start() {};
-
     // 個々の更新と状態遷移の更新をする
     // 更新関数
     virtual void Update(float elapsed_time) {};
+    // 終了関数
+    virtual void End() {};
 
     virtual const char* Name() = 0;
 

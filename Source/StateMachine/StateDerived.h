@@ -1,6 +1,9 @@
 #pragma once
+#include <memory>
 #include "State.h"
 
+class MovementComponent;
+class EnemyComponent;
 
 class DefaultState : public StateBase
 {
@@ -8,10 +11,12 @@ public:
     DefaultState() {}
     ~DefaultState() override {};
 
+    // 開始関数
     void Start() override {};
-
     // 更新関数
     void Update(float elapsed_time) override {};
+    // 終了関数
+    void End() override {};
 
     const char* Name() override { return "DefaultState"; };
 
@@ -57,17 +62,22 @@ public:
     WanderState() {}
     ~WanderState() override {};
 
-    void Start() override {};
-
+    // 開始関数
+    void Start() override;
     // 個々の更新と状態遷移の更新をする
     // 更新関数
     void Update(float elapsed_time) override {};
+    // 終了関数
+    void End() override;
 
     const char* Name() override { return "WanderState"; };
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
     bool IsTransitionReady() override { return true; };
+private:
+    std::weak_ptr<EnemyComponent> enemy_Wptr;
+
 #ifdef _DEBUG
 public:
     void DrawDebugGUI() override {};

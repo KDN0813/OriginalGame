@@ -2,6 +2,11 @@
 #include "System/MyMath/MyMathf.h"
 #include "System/MyMath/MYVECTOR3.h"
 #include "Object/Object.h"
+#ifdef _DEBUG
+#include <imgui.h>
+#include "Debug/DebugManager.h"
+#endif // DEBUG
+
 
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
@@ -63,7 +68,7 @@ void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3
 void EnemyComponent::SetRandomTargetPosition()
 {
 	float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-	float range = MyMathf::RandomRange(0.0f, territory_range);
+	float range = MyMathf::RandomRange(0.0f, this->territory_range);
 	this->target_position.x =  + sinf(theta) * range;
 	this->target_position.y = 0.0f;
 	this->target_position.z =  + cosf(theta) * range;
@@ -73,6 +78,17 @@ void EnemyComponent::SetRandomTargetPosition()
 
 void EnemyComponent::DrawDebugGUI()
 {
+	ImGui::InputFloat3("Target Position", &this->target_position.x);
+	ImGui::DragFloat("Territory Range", &this->territory_range, 0.01f);
+	ImGui::DragFloat("Radius", &this->radius, 0.01f);
+	ImGui::DragFloat("Move Speed", &this->move_speed);
+	ImGui::DragFloat("Speed Rate", &this->speed_rate);
+}
+
+void EnemyComponent::DrawDebugPrimitive()
+{
+	auto debug_render = DebugManager::Instance()->GetDebugRenderer();
+	debug_render->DrawSphere(this->target_position, this->radius, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
 }
 
 #endif // _DEBUG
