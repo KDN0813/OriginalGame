@@ -11,6 +11,19 @@
 void PlayerComponent::Update(float elapsed_time)
 {
     InputMove(elapsed_time);
+
+#ifdef _DEBUG
+    if (GetAsyncKeyState(VK_F2) & 0x8000)
+    {
+        auto owner = GetOwner();
+        if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
+        {
+            // Œ´“_‚É–ß‚·
+            transform->SetPosition(DirectX::XMFLOAT3());
+        }
+    }
+
+#endif // DEBUG
 }
 
 bool PlayerComponent::InputMove(float elapsed_time)
