@@ -24,7 +24,11 @@ void StateMachineComponent::Update(float elapsed_time)
     state->Update(elapsed_time);
     PostTransitionJudgemen(state);
 
-    this->state_index = this->next_state;
+    if (this->state_index != this->next_state) 
+    {
+        this->state_index = this->next_state;
+        this->state_pool[this->state_index]->Start();
+    }
 }
 
 void StateMachineComponent::ChangeState(StateIndex state_index)

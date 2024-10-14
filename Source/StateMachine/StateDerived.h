@@ -10,7 +10,6 @@ public:
 
     void Start() override {};
 
-    // 個々の更新と状態遷移の更新をする
     // 更新関数
     void Update(float elapsed_time) override {};
 
@@ -34,7 +33,6 @@ public:
 
     void Start() override {};
 
-    // 個々の更新と状態遷移の更新をする
     // 更新関数
     void Update(float elapsed_time) override {};
 
