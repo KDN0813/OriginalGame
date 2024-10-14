@@ -119,16 +119,9 @@ void SceneGame::Initialize()
 			{
 				for (int y = 0; y < 10; ++y)
 				{
-
-					const char* faile_name_arry[]
-					{
-						{"Data/Model/Player/Player.mdl"},
-						{"Data/Model/ChestMonster/ChestMonster.mdl"},
-					};
-
 					auto enemy = object_manager.Create();
-					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, faile_name_arry[x % 2]);
-					model->PlayAnimation(x % 10, true);
+					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
+					model->PlayAnimation(EnemyCT::ANIMATION::MOVE_FWD, true);
 					auto transform = enemy->AddComponent<Transform3DComponent>();
 					auto enemy_component = enemy->AddComponent<EnemyComponent>();
 					auto movement = enemy->AddComponent<MovementComponent>();
