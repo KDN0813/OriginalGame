@@ -11,18 +11,18 @@ using StateIndex = size_t;
 class StateTransitionInfo
 {
 public:
-    StateTransitionInfo(std::string next_state_name, std::unique_ptr<AnimeTransitionJudgementBase> judgement);
+    StateTransitionInfo(std::string next_state_name, std::unique_ptr<TransitionJudgementBase> judgement);
     ~StateTransitionInfo() {};
 
     StateIndex GetNextStateIndex() { return this->next_state_index; }
     std::string GetNextStateName() { return this->next_state_name; }
     const char* GetNextStateNameC() { return this->next_state_name.c_str(); }
-    AnimeTransitionJudgementBase* GetJudgement() { return judgement.get(); }
+    TransitionJudgementBase* GetJudgement() { return judgement.get(); }
     void SetNextStateIndex(StateIndex index) { this->next_state_index = index; }
 private:
     StateIndex next_state_index;                                // 遷移先のステートのインデックス
     std::string next_state_name;                                // 遷移先のステートの名前
-    std::unique_ptr<AnimeTransitionJudgementBase> judgement;	// 遷移判定
+    std::unique_ptr<TransitionJudgementBase> judgement;	// 遷移判定
 };
 
 class StateBase
@@ -55,7 +55,7 @@ public:
 
     // 遷移判定のロジックを実行
     // `judgemenのshould_reverse` フラグがtrueなら、遷移判定結果を反転する
-    bool PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen);
+    bool PerformTransitionJudgement(TransitionJudgementBase* judgemen);
     
     // 遷移ステートの追加
     void AddStateTransition(std::unique_ptr<StateTransitionInfo> state_transition, JudgementUpdatePhase phase);

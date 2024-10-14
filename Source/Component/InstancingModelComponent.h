@@ -18,7 +18,7 @@ public:
 	struct AnimeTransitionInfo
 	{
 		AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
-		std::unique_ptr<AnimeTransitionJudgementBase> judgement;	// 遷移判定
+		std::unique_ptr<TransitionJudgementBase> judgement;	// 遷移判定
 	};
 	// アニメーション状態
 	struct AnimeState
@@ -47,14 +47,14 @@ public:
 	// アニメーション状態の設定
 	void SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time = -1.0f);
 	// 遷移するアニメーションの追加
-	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement);
+	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<TransitionJudgementBase> judgement);
 
 	// アニメーションの遷移準備が完了しているか
 	// 遷移判定クラスで遷移準備を待つ設定の時に使用する
 	bool IsTransitionReady();
 	// 遷移判定のロジックを実行
 	// `judgemenのshould_reverse` フラグがtrueなら、遷移判定結果を反転する
-	bool PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen);
+	bool PerformTransitionJudgement(TransitionJudgementBase* judgemen);
 
 	// 各取得・設定関数
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }

@@ -3,12 +3,12 @@
 #include "System/Alias/OwnerAlias.h"
 
 // アニメーションの遷移判定を行う基底クラス
-class AnimeTransitionJudgementBase
+class TransitionJudgementBase
 {
 public:
-	AnimeTransitionJudgementBase() = delete;
-	AnimeTransitionJudgementBase(OwnerPtr object, bool reversal ,bool require_transition_ready):owner_Wptr(object), should_reverse(reversal), require_transition_ready(require_transition_ready){}
-	virtual ~AnimeTransitionJudgementBase() {}
+	TransitionJudgementBase() = delete;
+	TransitionJudgementBase(OwnerPtr object, bool reversal ,bool require_transition_ready):owner_Wptr(object), should_reverse(reversal), require_transition_ready(require_transition_ready){}
+	virtual ~TransitionJudgementBase() {}
 
 	// 名前取得
 	virtual const char* GetName()const = 0;;

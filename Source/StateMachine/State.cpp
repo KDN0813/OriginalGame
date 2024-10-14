@@ -4,7 +4,7 @@
 
 StateTransitionInfo::StateTransitionInfo(
     std::string next_state_name,
-    std::unique_ptr<AnimeTransitionJudgementBase> judgement
+    std::unique_ptr<TransitionJudgementBase> judgement
 )
     :next_state_index(-1),
     next_state_name(next_state_name),
@@ -17,7 +17,7 @@ void StateBase::SetOwner(OwnerPtr owner)
     this->owner_Wptr = owner;
 }
 
-bool StateBase::PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen)
+bool StateBase::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
 {
     if (!judgemen) return false;
 #ifdef _DEBUG

@@ -108,7 +108,7 @@ void AnimatedInstancedModelComponent::SetAnimationState(AnimeIndex anime_index, 
     anime_state.transition_ready_time = transition_ready_time;
 }
 
-void AnimatedInstancedModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement)
+void AnimatedInstancedModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<TransitionJudgementBase> judgement)
 {
     auto& transition_info_pool = this->anime_state_pool[anime_index].transition_info_pool;
     // 遷移するアニメーションステート
@@ -131,7 +131,7 @@ bool AnimatedInstancedModelComponent::IsTransitionReady()
     return false;
 }
 
-bool AnimatedInstancedModelComponent::PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen)
+bool AnimatedInstancedModelComponent::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
 {
     if (!judgemen) return false;
 #ifdef _DEBUG

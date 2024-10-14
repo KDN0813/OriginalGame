@@ -15,7 +15,7 @@ public:
 	struct AnimeTransitionInfo
 	{
 		AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
-		std::unique_ptr<AnimeTransitionJudgementBase> judgement;	// 遷移判定
+		std::unique_ptr<TransitionJudgementBase> judgement;	// 遷移判定
 		float blend_time = 1.0f;									// ブレンド時間
 	};
 	// アニメーション状態
@@ -51,14 +51,14 @@ public:
 	bool IsTransitionReady();
 	// 遷移判定のロジックを実行
 	// `judgemenのshould_reverse` フラグがtrueなら、遷移判定結果を反転する
-	bool PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen);
+	bool PerformTransitionJudgement(TransitionJudgementBase* judgemen);
 
 	// アニメーション状態の更新
 	void UpdateAnimationState();
 	// アニメーション状態の設定
 	void SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time = -1.0f);
 	// 遷移するアニメーションの追加
-	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time);
+	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<TransitionJudgementBase> judgement, float blend_time);
 
 	// 各種データ取得
 	float GetCurrentAnimationSeconds()const { return current_animation_seconds; }

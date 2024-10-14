@@ -6,7 +6,7 @@
 
 #ifdef _DEBUG
 
-void AnimeTransitionJudgementBase::DrawCommonDebugGUI(int unique_id)
+void TransitionJudgementBase::DrawCommonDebugGUI(int unique_id)
 {
     std::string label = "Should Reverse ##" + std::to_string(unique_id);
     ImGui::Checkbox(label.c_str(), &this->should_reverse);

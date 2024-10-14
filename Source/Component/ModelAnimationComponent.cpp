@@ -217,7 +217,7 @@ bool ModelAnimationComponent::IsTransitionReady()
 	return false;
 }
 
-bool ModelAnimationComponent::PerformTransitionJudgement(AnimeTransitionJudgementBase* judgemen)
+bool ModelAnimationComponent::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
 {
 	if (!judgemen) return false;
 #ifdef _DEBUG
@@ -261,7 +261,7 @@ void ModelAnimationComponent::SetAnimationState(AnimeIndex anime_index, bool loo
 	anime_state.transition_ready_time = transition_ready_time;
 }
 
-void ModelAnimationComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<AnimeTransitionJudgementBase> judgement, float blend_time)
+void ModelAnimationComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<TransitionJudgementBase> judgement, float blend_time)
 {
 	if (!this->anime_state_pool.size()) return;
 	auto& transition_info_pool = this->anime_state_pool[anime_index].transition_info_pool;
