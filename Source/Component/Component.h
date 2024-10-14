@@ -41,10 +41,12 @@ public:
     std::shared_ptr<Object> GetOwner() { return this->owner.lock(); }
     const unsigned int GetComponentID() { return this->component_id; }
     void SetComponentID(const int unique_id) { this->component_id = unique_id; }
-
+    bool GetIsActive() { return this->is_active; }
+    void SetIsActive(const bool is_active) { this->is_active = is_active; }
 private:
     std::weak_ptr<Object>	owner = {};
     unsigned int component_id = {};
+    bool is_active = true;
 
 #ifdef _DEBUG
 public:
@@ -61,14 +63,11 @@ public:
      */
     virtual void DrawDebugPrimitiveGUI() {};
 
-    bool GetIsActive() { return this->is_active; }
-    void SetIsActive(const bool is_active) { this->is_active = is_active; }
     bool GetIsDebugPrimitive() { return this->is_draw_debug_primitive; }
     void SetIsDebugPrimitive(const bool is_draw_debug_primitive) { this->is_draw_debug_primitive = is_draw_debug_primitive; }
     virtual bool IsDebugPrimitive() { return false; }   // DebugPrimitive‚ª‘¶İ‚·‚é‚©
 
 protected:
-    bool is_active = true;
     bool is_draw_debug_primitive = true;
 #endif // _DEBUG
 };

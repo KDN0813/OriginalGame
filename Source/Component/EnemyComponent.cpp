@@ -8,7 +8,7 @@
 
 void EnemyComponent::Start()
 {
-	SetRandomTargetPosition();
+	SetIsActive(false);
 }
 
 void EnemyComponent::End()
@@ -64,9 +64,9 @@ void EnemyComponent::SetRandomTargetPosition()
 {
 	float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
 	float range = MyMathf::RandomRange(0.0f, territory_range);
-	this->target_position.x = territory_origin.x + sinf(theta) * range;
-	this->target_position.y = territory_origin.y;
-	this->target_position.z = territory_origin.z + cosf(theta) * range;
+	this->target_position.x =  + sinf(theta) * range;
+	this->target_position.y = 0.0f;
+	this->target_position.z =  + cosf(theta) * range;
 }
 
 #ifdef _DEBUG

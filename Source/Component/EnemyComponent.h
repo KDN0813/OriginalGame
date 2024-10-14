@@ -29,13 +29,10 @@ public:
     void SetRandomTargetPosition();
 private:
     DirectX::XMFLOAT3 target_position{};
-    DirectX::XMFLOAT3 territory_origin{};
     float territory_range = 25.0f;
     float radius = 5.0f;
     float move_speed = 3.0f;
     float speed_rate = 0.5f;
-    float turn_speed = DirectX::XMConvertToRadians(360);
-
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
