@@ -15,7 +15,7 @@ void StateBase::PreTransitionJudgemen()
 {
     for (auto& state : this->pre_update_judgement_pool)
     {
-        PerformTransitionJudgement(state.judgement.get());
+        PerformTransitionJudgement(state->GetJudgement());
     }
 }
 
@@ -23,7 +23,7 @@ void StateBase::PostTransitionJudgemen()
 {
     for (auto& state : this->post_update_judgement_pool)
     {
-        PerformTransitionJudgement(state.judgement.get());
+        PerformTransitionJudgement(state->GetJudgement());
     }
 }
 

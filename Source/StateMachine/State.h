@@ -18,8 +18,8 @@ public:
     const char* GetNextStateNameC() { return this->next_state_name.c_str(); }
     AnimeTransitionJudgementBase* GetJudgement() { return judgement.get(); }
 private:
-    StateIndex next_state_index;       // 遷移先のステートのインデックス
-    std::string next_state_name;          // 遷移先のステートの名前
+    StateIndex next_state_index;                                // 遷移先のステートのインデックス
+    std::string next_state_name;                                // 遷移先のステートの名前
     std::unique_ptr<AnimeTransitionJudgementBase> judgement;	// 遷移判定
 };
 
