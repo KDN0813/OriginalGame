@@ -19,6 +19,11 @@ public:
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::VERY_HIGH; }
 
+    // XZ方向の移動
+    void MoveXZ(float vx, float vz, float speed);
+    // 移動方向に向く
+    void FaceMovementDirection(float elapsed_timed);
+
     // XZ軸方向に移動しているか
     bool IsMoveXZAxis()  const;
 
@@ -65,6 +70,7 @@ private:
     DirectX::XMFLOAT3 rayY_end_pos{};     // 下方向のレイキャストの終点
     DirectX::XMFLOAT3 rayXZ_start_pos{};  // 壁方向のレイキャストの始点
     DirectX::XMFLOAT3 rayXZ_end_pos{};    // 壁方向のレイキャストの終点
+    float turn_speed = 15.0f;             // 回転速度
 #endif _DEBUG
 };
 

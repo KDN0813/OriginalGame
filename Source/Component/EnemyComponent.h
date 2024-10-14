@@ -25,7 +25,6 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
     void Move(float vx, float vz, float speed);
-    void Turn(float elapsed_time, float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform,float speed_rate);
     void SetRandomTargetPosition();
 private:

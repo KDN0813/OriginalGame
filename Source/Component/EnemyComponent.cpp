@@ -47,52 +47,6 @@ void EnemyComponent::Move(float vx, float vz, float speed)
 	}
 }
 
-void EnemyComponent::Turn(float elapsed_time, float vx, float vz, float speed)
-{
-	// 進行ベクトルが0以下なら処理しない
-	float length = sqrtf(vx * vx + vz * vz);
-	if (length < 0.001) return;
-
-	auto owner = GetOwner();
-	if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
-	{
-		speed *= elapsed_time;
-
-		// 単位ベクトル化
-		vx /= length;
-		vz /= length;
-
-		// 自身の回転値から前方向を求める
-		DirectX::XMFLOAT3 angle = transform->GetAngle();
-		float frontX = sinf(angle.y);
-		float frontZ = cosf(angle.y);
-
-		// 回転角を求めるため、2つの単位ベクトルの内積を計算する
-		float dot = (frontX * vx + frontZ * vz);
-
-		// 内積値は-1.0~1.0で表現されており、2つの単位ベクトルの角度が
-		// 小さいほど、1.0に近づくという性質を利用して回転速度を調整する
-		float rot = 1.0f - dot;
-		if (rot > speed) rot = speed;
-
-		// 左右判定を行うために2つの単位ベクトルの外積を計算する
-		float cross = (frontZ * vx) - (frontX * vz);
-
-		// 2Dの外積値が正の場合か負の場合によって左右判定が行える
-		//  左右判定を行うことによって左右回転を選択する
-		if (cross < 0.0f)
-		{
-			angle.y -= rot;
-		}
-		else
-		{
-			angle.y += rot;
-		}
-
-		transform->SetAngle(angle);
-	}
-}
-
 void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate)
 {
 	// ターゲット方向への進行ベクトルを算出
@@ -104,7 +58,6 @@ void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3
 
 	// 移動処理
 	Move(vx, vz, move_speed * speed_rate);
-	Turn(elapsed_time, vx, vz, turn_speed * speed_rate);
 }
 
 void EnemyComponent::SetRandomTargetPosition()
