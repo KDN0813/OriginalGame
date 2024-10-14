@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <imgui.h>
-#include "AnimeTransitionJudgementDerived.h"
+#include "TransitionJudgementDerived.h"
 
 #include "Input/Input.h"
 #include "Object/Object.h"

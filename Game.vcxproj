@@ -145,8 +145,6 @@
     <ClInclude Include="Source\Input\GamePad.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Input\Mouse.h" />
-    <ClInclude Include="Source\Model\AnimeTransitionJudgement.h" />
-    <ClInclude Include="Source\Model\AnimeTransitionJudgementDerived.h" />
     <ClInclude Include="Source\Model\InstancingModelResource.h" />
     <ClInclude Include="Source\Model\InstancingModelResourceManager.h" />
     <ClInclude Include="Source\Model\ModelCommonData.h" />
@@ -165,6 +163,8 @@
     <ClInclude Include="Source\Shader\InstanceModelShader.h" />
     <ClInclude Include="Source\StateMachine\State.h" />
     <ClInclude Include="Source\StateMachine\StateDerived.h" />
+    <ClInclude Include="Source\StateMachine\TransitionJudgement.h" />
+    <ClInclude Include="Source\StateMachine\TransitionJudgementDerived.h" />
     <ClInclude Include="Source\System\Alias\OwnerAlias.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
@@ -210,8 +210,6 @@
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Input\Mouse.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Model\AnimeTransitionJudgement.cpp" />
-    <ClCompile Include="Source\Model\AnimeTransitionJudgementDerived.cpp" />
     <ClCompile Include="Source\Model\InstancingModelResource.cpp" />
     <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp" />
     <ClCompile Include="Source\Model\ModelResource.cpp" />
@@ -227,6 +225,8 @@
     <ClCompile Include="Source\Shader\ModelShader.cpp" />
     <ClCompile Include="Source\StateMachine\State.cpp" />
     <ClCompile Include="Source\StateMachine\StateDerived.cpp" />
+    <ClCompile Include="Source\StateMachine\TransitionJudgement.cpp" />
+    <ClCompile Include="Source\StateMachine\TransitionJudgementDerived.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp" />
   </ItemGroup>

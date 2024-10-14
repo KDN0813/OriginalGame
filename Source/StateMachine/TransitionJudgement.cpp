@@ -1,6 +1,6 @@
 #include <imgui.h>
 #include <string>
-#include "AnimeTransitionJudgement.h"
+#include "TransitionJudgement.h"
 #include "Object/Object.h"
 #include "Component/ModelComponent.h"
 

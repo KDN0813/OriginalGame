@@ -27,7 +27,7 @@
 #include "Component/ModelAnimationComponent.h"
 #include "Component/EnemyComponent.h"
 
-#include "Model/AnimeTransitionJudgementDerived.h"
+#include "StateMachine/TransitionJudgementDerived.h"
 #include "Camera/CameraControllerDerived.h"
 
 

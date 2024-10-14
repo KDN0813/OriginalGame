@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "Model/AnimeTransitionJudgement.h"
+#include "StateMachine/TransitionJudgement.h"
 
 class MovementComponent;
 class ModelComponent;

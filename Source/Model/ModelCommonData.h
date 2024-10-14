@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Model/AnimeTransitionJudgement.h"
+#include "StateMachine/TransitionJudgement.h"
 
 using AnimeIndex = size_t;

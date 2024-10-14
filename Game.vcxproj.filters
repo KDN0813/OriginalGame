@@ -204,12 +204,6 @@
     <ClInclude Include="Source\Debug\ImGuiHelper.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Model\AnimeTransitionJudgementDerived.h">
-      <Filter>Source\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Model\AnimeTransitionJudgement.h">
-      <Filter>Source\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ConstantManager.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -266,6 +260,12 @@
     </ClInclude>
     <ClInclude Include="Source\System\MyMath\MyMathf.h">
       <Filter>Source\System\MyMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\TransitionJudgement.h">
+      <Filter>Source\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\TransitionJudgementDerived.h">
+      <Filter>Source\StateMachine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -380,12 +380,6 @@
     <ClCompile Include="Source\ConstantManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Model\AnimeTransitionJudgementDerived.cpp">
-      <Filter>Source\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Model\AnimeTransitionJudgement.cpp">
-      <Filter>Source\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera\CameraController.cpp">
       <Filter>Source\Camera</Filter>
     </ClCompile>
@@ -421,6 +415,12 @@
     </ClCompile>
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp">
       <Filter>Source\System\MyMath</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\TransitionJudgement.cpp">
+      <Filter>Source\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\TransitionJudgementDerived.cpp">
+      <Filter>Source\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

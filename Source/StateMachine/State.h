@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include "System/Alias/OwnerAlias.h"
-#include "Model/AnimeTransitionJudgement.h"
+#include "StateMachine/TransitionJudgement.h"
 
 using StateIndex = size_t;
 

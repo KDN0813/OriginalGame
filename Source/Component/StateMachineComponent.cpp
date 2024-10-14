@@ -1,5 +1,5 @@
 #include "StateMachineComponent.h"
-#include "Model/AnimeTransitionJudgement.h"
+#include "StateMachine/TransitionJudgement.h"
 
 StateMachineComponent::StateMachineComponent(StateIndex state_max)
 {

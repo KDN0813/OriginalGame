@@ -1,5 +1,5 @@
 #include "State.h"
-#include "Model/AnimeTransitionJudgement.h"
+#include "StateMachine/TransitionJudgement.h"
 #include "Object/Object.h"
 
 StateTransitionInfo::StateTransitionInfo(
