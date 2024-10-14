@@ -66,7 +66,7 @@ public:
 protected:
     OwnerWPtr owner_Wptr;
 private:
-    StateIndex state_index;
+    StateIndex state_index = -1;
     std::vector<std::unique_ptr<StateTransitionInfo>> pre_update_judgement_pool;     // Update‘O‚É‘JˆÚ”»’è‚ğs‚¤
     std::vector<std::unique_ptr<StateTransitionInfo>> post_update_judgement_pool;    // UpdateŒã‚É‘JˆÚ”»’è‚ğs‚¤
 #ifdef _DEBUG
