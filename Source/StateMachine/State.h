@@ -45,7 +45,7 @@ public:
     // 終了関数
     virtual void End() {};
 
-    virtual const char* Name() = 0;
+    virtual const char* GetName() = 0;
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する

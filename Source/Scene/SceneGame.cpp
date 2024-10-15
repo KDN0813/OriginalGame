@@ -26,8 +26,10 @@
 #include "Component/GravityComponent.h"
 #include "Component/ModelAnimationComponent.h"
 #include "Component/EnemyComponent.h"
+#include "Component/StateMachineComponent.h"
 
 #include "StateMachine/TransitionJudgementDerived.h"
+#include "StateMachine/StateDerived.h"
 #include "Camera/CameraControllerDerived.h"
 
 
@@ -125,6 +127,15 @@ void SceneGame::Initialize()
 					auto transform = enemy->AddComponent<Transform3DComponent>();
 					auto enemy_component = enemy->AddComponent<EnemyComponent>();
 					auto movement = enemy->AddComponent<MovementComponent>();
+					auto state_machine = enemy->AddComponent<StateMachineComponent>();
+					// ステート設定
+					{
+						auto idle_state = state_machine->RegisterState<IdelState>();
+						auto wander_state = state_machine->RegisterState<WanderState>();
+						wander_state->AddStateTransition(std::make_unique<StateTransitionInfo>("IdelState",std::make_unique<Judgement_IsAtTarget>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
+					
+						state_machine->SetDefaultState("WanderState");
+					}
 
 					float offset = 2.0f;
 

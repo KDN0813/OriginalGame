@@ -5,7 +5,7 @@
 class StateMachineComponent : public Component
 {
 public:
-    StateMachineComponent(StateIndex state_max);
+    StateMachineComponent();
     virtual ~StateMachineComponent() {};
 
     // 開始関数
@@ -21,6 +21,9 @@ public:
 
     void ChangeState(StateIndex state_index);
 
+    void SetDefaultState(StateIndex state_index);
+    void SetDefaultState(const char* state_name);
+
     // 更新関数の前の遷移判定
     void PreTransitionJudgemen(StateBase* state);
     // 更新関数の後の遷移判定
@@ -28,26 +31,30 @@ public:
 
     // ステートを名前検索する
     StateBase* FindState(std::string name);
+    StateIndex FindStateIndex(std::string name);
 
     template<is_State State, typename ... Arguments>
     State* RegisterState(Arguments ... args)
     {
-        State* state = state_pool.emplace_back(std::make_unique<State>(args));
-        state->SetOwner(owner.lock());
+        std::unique_ptr<State> state_Uptr = std::make_unique<State>(args...);
+        State* state = state_Uptr.get();
+        state_pool.emplace_back(std::move(state_Uptr));
+        state->SetOwner(GetOwner());
         state->SetStateIndex(state_pool.size() - 1);
         return state;
     }
 private:
     std::vector<std::unique_ptr<StateBase>> state_pool;
-    StateIndex state_index = -1;
-    StateIndex next_state = -1;
+    StateIndex state_index = 0;
+    StateIndex next_state = 0;
+    StateIndex default_state = 0;
 
 #ifdef _DEBUG
 public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI()  override {};
+    void DrawDebugGUI()  override ;
 #endif // DEBUG
 };
 

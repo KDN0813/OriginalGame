@@ -290,7 +290,7 @@ void ModelAnimationComponent::DrawDebugGUI()
 		std::string play_anime_name = this->animation_name_pool[anime_index];
 		ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
 		ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
-		if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
+		if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
 		{
 			auto& anime_state = this->anime_state_pool[anime_index];
 			PlayAnimation(anime_state, 0.0f);
@@ -316,7 +316,7 @@ void ModelAnimationComponent::DrawDetail()
 	ImGui::Begin("Animation Detail", &is_draw_deletail, ImGuiWindowFlags_None);
 
 	std::string select_anime_name = this->animation_name_pool[this->select_animation_index];
-	ImGuiComboUI("Select Animation", select_anime_name, this->animation_name_pool, this->select_animation_index);
+	ImGui::ComboUI("Select Animation", select_anime_name, this->animation_name_pool, this->select_animation_index);
 
 	auto& selct_anime_state = this->anime_state_pool[this->select_animation_index];
 

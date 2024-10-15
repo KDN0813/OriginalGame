@@ -192,7 +192,7 @@ void AnimatedInstancedModelComponent::DrawDebugAnimationGUI()
     ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
     int anime_frame_i = GetAnimeFrame();
     ImGui::InputInt("Anime Frame",&anime_frame_i);
-    if (ImGuiComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index_int))
+    if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index_int))
     {
         auto& anime_state = this->anime_state_pool[anime_index_int];
         PlayAnimation(anime_state);
@@ -210,7 +210,7 @@ void AnimatedInstancedModelComponent::DrawDetail()
     ImGui::Begin("Animation Detail", &is_draw_deletail, ImGuiWindowFlags_None);
 
     std::string select_anime_name = this->animation_name_pool[this->select_animation_index];
-    ImGuiComboUI("Select Animation", select_anime_name, this->animation_name_pool, this->select_animation_index);
+    ImGui::ComboUI("Select Animation", select_anime_name, this->animation_name_pool, this->select_animation_index);
 
     auto& selct_anime_state = this->anime_state_pool[this->select_animation_index];
 

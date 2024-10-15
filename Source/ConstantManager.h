@@ -43,6 +43,8 @@ public:
         GETHIT,
         DIZZY,
         DIE,
+
+        MAX,
     };
 };
 

@@ -4,6 +4,7 @@
 
 class MovementComponent;
 class ModelComponent;
+class EnemyComponent;
 
 class TestJudgement_Q : public TransitionJudgementBase
 {
@@ -71,4 +72,17 @@ public:
 	const char* GetName()const override { return "TransitionReady"; }
 
 	bool CheckTransitionCondition() override { return true; };
+};
+
+class Judgement_IsAtTarget : public TransitionJudgementBase
+{
+public:
+	Judgement_IsAtTarget(OwnerPtr object, bool reversal = false, bool require_transition_ready = false)
+		:TransitionJudgementBase(object, reversal, require_transition_ready) {}
+
+	const char* GetName()const override { return "Judgement_IsAtTarget"; }
+
+	bool CheckTransitionCondition() override;
+private:
+	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };

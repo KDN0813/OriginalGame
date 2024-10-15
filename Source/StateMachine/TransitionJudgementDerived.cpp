@@ -6,6 +6,7 @@
 #include "Object/Object.h"
 
 #include "Component/MovementComponent.h"
+#include "Component/EnemyComponent.h"
 
 bool TestJudgement_Q::CheckTransitionCondition()
 {
@@ -53,3 +54,12 @@ void Judgement_ButtonDown::DrawDebugGUI(int unique_id)
 }
 
 #endif // _DEBUG
+
+bool Judgement_IsAtTarget::CheckTransitionCondition()
+{
+	auto owner = this->owner_Wptr.lock();
+	if (!owner) return false;
+	auto enemy = owner->EnsureComponentValid(this->enemy_Wptr);
+	if (!enemy) return false;
+	return enemy->IsAtTarget();
+}

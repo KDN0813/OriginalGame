@@ -18,7 +18,7 @@ public:
     // 終了関数
     void End() override {};
 
-    const char* Name() override { return "DefaultState"; };
+    const char* GetName() override { return "DefaultState"; };
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
@@ -41,7 +41,7 @@ public:
     // 更新関数
     void Update(float elapsed_time) override {};
 
-    const char* Name() override { return "IdelState"; };
+    const char* GetName() override { return "IdelState"; };
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
@@ -70,7 +70,7 @@ public:
     // 終了関数
     void End() override;
 
-    const char* Name() override { return "WanderState"; };
+    const char* GetName() override { return "WanderState"; };
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
