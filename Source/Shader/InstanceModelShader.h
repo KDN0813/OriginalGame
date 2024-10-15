@@ -13,7 +13,7 @@ class InstancingModelShader : public Shader
 {
 public:
 	static const int MaxBones = 128;
-	static const int MAX_INSTANCES = 1000;
+	static const int MAX_INSTANCES = 1100;
 private:
 	struct SceneConstantBuffer
 	{
