@@ -112,6 +112,19 @@ void SceneGame::Initialize()
 			// 重力
 			player->AddComponent<GravityComponent>();
 			
+			// 子オブジェクト設定
+			{
+				std::shared_ptr<Object> object = player->AddChildren();
+				object->SetName("player child");
+				object->AddComponent<ModelComponent>(device, "Data/Model/Cube/Cube.mdl");
+				auto transform = object->AddComponent<Transform3DComponent>();
+				transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
+				transform->SetPosition(DirectX::XMFLOAT3(0.0f, 2.0f, 0.0f));
+				// シェーダー設定
+				auto shader_component =
+					object->AddComponent<ModelShaderComponent>(model_shader.get());
+			}
+
 			// GameObjectに設定
 			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::PLAYER, player);
 		}
@@ -119,7 +132,7 @@ void SceneGame::Initialize()
 		// 敵
 		{
 			float territory_range = 45.0f;
-			for (int i = 0; i <= 1000; ++i)
+			for (int i = 0; i <= 1; ++i)
 			{
 				auto enemy = object_manager.Create();
 				auto transform = enemy->AddComponent<Transform3DComponent>();
