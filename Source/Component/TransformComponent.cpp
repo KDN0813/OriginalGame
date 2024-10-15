@@ -22,27 +22,21 @@ void Transform3DComponent::Update(float elapsed_time)
 void Transform3DComponent::UpdateTransform()
 {
 	// 親の行列取得
-	MYMATRIX Parent_transform;
-	bool is_parent = true;
+	MYMATRIX Parent_transform = DirectX::XMMatrixIdentity();
+	std::shared_ptr<Transform3DComponent> parent_transform = nullptr;
 
 	auto owner = GetOwner();
-	if (!owner) return;
-	auto parent = owner->GetParent();
-	if (parent)
+	if (owner)
 	{
-		auto parent_transform = parent->EnsureComponentValid(this->parent_ransform_Wptr);
-		if (parent_transform)
+		auto parent = owner->GetParent();
+		if (parent)
 		{
-			Parent_transform = parent_transform->GetWolrdTransform();
+			parent_transform = parent->EnsureComponentValid(this->parent_ransform_Wptr);
+			if (parent_transform)
+			{
+				Parent_transform = parent_transform->GetWolrdTransform();
+			}
 		}
-		else
-		{
-			Parent_transform = DirectX::XMMatrixIdentity();
-		}
-	}
-	else
-	{
-		Parent_transform = DirectX::XMMatrixIdentity();
 	}
 
 	// ローカル行列作成
@@ -55,6 +49,10 @@ void Transform3DComponent::UpdateTransform()
 
 	Local_transform.GetFlaot4x4(this->local_transform);
 	World_transform.GetFlaot4x4(this->world_transform);
+
+	// ワールドポジションの設定
+	SetWorldPosition(parent_transform);
+
 	this->change_value = false;
 }
 
@@ -65,6 +63,45 @@ DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
 	Pos += vec;
 	Pos.GetFlaot3(this->position);
 	return this->position;
+}
+
+DirectX::XMFLOAT3 Transform3DComponent::GetWorldPosition()
+{
+	if (GetChangeValue()) return this->world_position;
+	SetWorldPosition();
+	return this->world_position;
+}
+
+void Transform3DComponent::SetWorldPosition()
+{
+	auto owner = GetOwner();
+	if (!owner)
+	{
+		this->world_position = this->position;;
+		return;
+	};
+	auto parent = owner->GetParent();
+	if (!parent)
+	{
+		this->world_position = this->position;;
+		return;
+	};
+	SetWorldPosition(parent->EnsureComponentValid(this->parent_ransform_Wptr));
+}
+
+void Transform3DComponent::SetWorldPosition(std::shared_ptr<Transform3DComponent> parent_transform)
+{
+	if (!parent_transform)
+	{
+		this->world_position = this->position;;
+		return;
+	};
+	MYVECTOR3 Local_position = this->position;
+	MYVECTOR3 Worldl_position = this->position;
+	MYMATRIX World_transform = parent_transform->GetWolrdTransform();
+
+	Worldl_position = World_transform.Vector3TransformCoord(Local_position);
+	Worldl_position.GetFlaot3(this->world_position);
 }
 
 bool Transform3DComponent::GetChangeValue()
@@ -112,7 +149,7 @@ void Transform3DComponent::DrawDebugGUI()
 void Transform3DComponent::DrawDebugPrimitive()
 {
 	DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-	debug_render->DrawSphere(position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+	debug_render->DrawSphere(this->world_position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 }
 
 #endif // _DEBUG

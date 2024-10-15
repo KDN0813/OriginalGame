@@ -28,6 +28,10 @@ public:
     DirectX::XMFLOAT3 GetScale()const noexcept { return this->scale; }
     void SetScale(DirectX::XMFLOAT3 scale)noexcept { this->change_value = true; this->scale = scale; }
     
+    DirectX::XMFLOAT3 GetWorldPosition();
+    void SetWorldPosition();
+    void SetWorldPosition(std::shared_ptr<Transform3DComponent> parent_transform);
+
     bool GetChangeValue();
 #pragma endregion set parame
 private:
@@ -36,6 +40,7 @@ private:
     DirectX::XMFLOAT3 position{};
     DirectX::XMFLOAT3 angle{};
     DirectX::XMFLOAT3 scale{};
+    DirectX::XMFLOAT3 world_position{};
     bool change_value = false;
 private:
     std::weak_ptr<Transform3DComponent> parent_ransform_Wptr;
