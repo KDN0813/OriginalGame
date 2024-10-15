@@ -43,7 +43,7 @@ private:
 
 private:
     DirectX::XMFLOAT3 target_position{};
-    float territory_range = 25.0f;
+    float territory_range = 45.0f;
     float radius = 1.0f;
     float move_speed = 3.0f;
     float speed_rate = 0.5f;

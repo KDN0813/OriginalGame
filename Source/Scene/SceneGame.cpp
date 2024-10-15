@@ -51,7 +51,7 @@ void SceneGame::Initialize()
 			stage->SetName("Stage");
 			stage->AddComponent<ModelComponent>(device, "Data/Model/Cube/Cube.mdl");
 			auto transform = stage->AddComponent<Transform3DComponent>();
-			transform->SetScale(DirectX::XMFLOAT3(50.0f, 1.0f, 50.0f));
+			transform->SetScale(DirectX::XMFLOAT3(100.0f, 1.0f, 100.0f));
 			transform->SetPosition(DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f));
 			// シェーダー設定
 			auto shader_component =
@@ -117,22 +117,23 @@ void SceneGame::Initialize()
 
 		// 敵
 		{
-			for (int x = 0; x < 10; ++x)
+			for (int x = 0; x < 20; ++x)
 			{
-				for (int y = 0; y < 10; ++y)
+				for (int y = 0; y < 20; ++y)
 				{
 					auto enemy = object_manager.Create();
 					auto transform = enemy->AddComponent<Transform3DComponent>();
 					auto enemy_component = enemy->AddComponent<EnemyComponent>();
 					auto movement = enemy->AddComponent<MovementComponent>();
 					// アニメーション設定
-					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
-					model->PlayAnimation(EnemyCT::ANIMATION::MOVE_FWD, true);
+					auto model = enemy->AddComponent<ModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
+					auto model_animation = enemy->AddComponent<ModelAnimationComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
+					model_animation->PlayAnimation(EnemyCT::ANIMATION::MOVE_FWD, true);
 					{
-						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
-						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
-						model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
-						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
+						model_animation->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
+						model_animation->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy),0.0f);
+						model_animation->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
+						model_animation->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy), 0.0f);
 					}
 					// ステート設定
 					auto state_machine = enemy->AddComponent<StateMachineComponent>();
@@ -158,7 +159,7 @@ void SceneGame::Initialize()
 
 					// シェーダー設定
 					auto shader_component =
-						enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
+						enemy->AddComponent<ModelShaderComponent>(this->model_shader.get());
 				}
 			}
 		}
