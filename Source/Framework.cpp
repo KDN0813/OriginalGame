@@ -105,7 +105,7 @@ int Framework::Run()
 			//if (!IsWindowActive(hWnd)) continue;
 
 			timer.Tick();
-#ifdef _DEBUG || RELEASE_DEBUG
+#ifdef _DEBUG
 			CalculateFrameStats();
 #elif 
 			CalculateFrameStats();
