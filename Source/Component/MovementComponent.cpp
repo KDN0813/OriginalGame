@@ -74,7 +74,7 @@ void MovementComponent::FaceMovementDirection(float elapsed_time)
 		vz /= length;
 
 		// Ž©g‚Ì‰ñ“]’l‚©‚ç‘O•ûŒü‚ð‹‚ß‚é
-		DirectX::XMFLOAT3 angle = transform->GetAngle();
+		DirectX::XMFLOAT3 angle = transform->GetLocalAngle();
 		float frontX = sinf(angle.y);
 		float frontZ = cosf(angle.y);
 
@@ -100,7 +100,7 @@ void MovementComponent::FaceMovementDirection(float elapsed_time)
 			angle.y += rot;
 		}
 
-		transform->SetAngle(angle);
+		transform->SetLocalAngle(angle);
 	}
 }
 
@@ -148,19 +148,19 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 {
 	if (!this->is_stage_raycas)
 	{
-		transform->AddPosition(this->velocity);
+		transform->AddLocalPosition(this->velocity);
 		return;
 	}
 	auto stage_object = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
 	if (!stage_object)
 	{
-		transform->AddPosition(this->velocity);
+		transform->AddLocalPosition(this->velocity);
 		return;
 	}
 	auto stage_model = stage_object->EnsureComponentValid<ModelComponent>(this->stage_model_Wptr);
 	if (!stage_model)
 	{
-		transform->AddPosition(this->velocity);
+		transform->AddLocalPosition(this->velocity);
 		return;
 	}
 
@@ -193,7 +193,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				HitResult hit;
 				if (Collision::IntersectRayVsModel(Start, End, stage_model.get(), hit))
 				{
-					transform->SetPosition(hit.position);
+					transform->SetLocalPosition(hit.position);
 					gravity->SetIsGrounded(true);
 				}
 				else
@@ -201,7 +201,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 					DirectX::XMFLOAT3 position{};
 					Current_pos.GetFlaot3(position);
 					position.y += my;
-					transform->SetPosition(position);
+					transform->SetLocalPosition(position);
 
 					gravity->SetIsGrounded(false);
 				}
@@ -258,12 +258,12 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 					DirectX::XMFLOAT3 pos = {};
 					Correction_positon.GetFlaot3(pos);
 					pos.y = current_pos.y;
-					transform->SetPosition(pos);
+					transform->SetLocalPosition(pos);
 				}
 				else
 				{
 					DirectX::XMFLOAT3 pos = { hit2.position.x, current_pos.y, hit2.position.z };
-					transform->SetPosition(pos);
+					transform->SetLocalPosition(pos);
 				}
 			}
 			else
@@ -272,7 +272,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				Positon.AddXZ(mx, mz);
 				DirectX::XMFLOAT3 position{};
 				Positon.GetFlaot3(position);
-				transform->SetPosition(position);
+				transform->SetLocalPosition(position);
 			}
 		}
 	}

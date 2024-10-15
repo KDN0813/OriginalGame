@@ -120,7 +120,7 @@ void DebugCameraController::Update(float elapsed_time)
 
 	DirectX::XMFLOAT3 focus{};
 	Focus.GetFlaot3(focus);
-	transform->SetPosition(focus);	// Position‚ÌÄİ’è
+	transform->SetLocalPosition(focus);	// Position‚ÌÄİ’è
 }
 
 #endif // _DEBUG

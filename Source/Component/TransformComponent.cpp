@@ -41,7 +41,7 @@ void Transform3DComponent::UpdateTransform()
 
 	// ローカル行列作成
 	MYMATRIX Local_transform;
-	Local_transform.SetLocalMatrix(this->scale, this->angle, this->local_position);
+	Local_transform.SetLocalMatrix(this->local_scale, this->local_angle, this->local_position);
 
 	// ワールド行列作成
 	MYMATRIX World_transform;
@@ -63,7 +63,7 @@ const DirectX::XMFLOAT4X4& Transform3DComponent::GetWolrdTransform()
 	return this->world_transform;
 }
 
-DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
+DirectX::XMFLOAT3 Transform3DComponent::AddLocalPosition(DirectX::XMFLOAT3 vec)
 {
 	this->change_value = true;
 	MYVECTOR3 Pos = this->local_position;
@@ -132,20 +132,20 @@ void Transform3DComponent::DrawDebugGUI()
 	{
 		this->change_value = true;
 	}
-	if (ImGui::InputFloat3("scale", &this->scale.x))
+	if (ImGui::InputFloat3("Local Scale", &this->local_scale.x))
 	{
 		this->change_value = true;
 	}
 
 	DirectX::XMFLOAT3 angle_degrees
 	{
-		DirectX::XMConvertToDegrees(this->angle.x),
-		DirectX::XMConvertToDegrees(this->angle.y),
-		DirectX::XMConvertToDegrees(this->angle.z),
+		DirectX::XMConvertToDegrees(this->local_angle.x),
+		DirectX::XMConvertToDegrees(this->local_angle.y),
+		DirectX::XMConvertToDegrees(this->local_angle.z),
 	};
-	if (ImGui::SliderFloat3("angle", &angle_degrees.x, 0, 360.0f))
+	if (ImGui::SliderFloat3("Local Angle", &angle_degrees.x, 0, 360.0f))
 	{
-		this->angle =
+		this->local_angle =
 		{
 			DirectX::XMConvertToRadians(angle_degrees.x),
 			DirectX::XMConvertToRadians(angle_degrees.y),

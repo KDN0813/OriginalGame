@@ -54,7 +54,7 @@ void SceneDebug::Initialize()
 			stage->SetName("Stage");
 			stage->AddComponent<ModelComponent>(device,"Data/Model/ExampleStage/ExampleStage.mdl");
 			auto transform = stage->AddComponent<Transform3DComponent>();
-			transform->SetScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
+			transform->SetLocalScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
 			// シェーダー設定
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
@@ -67,9 +67,9 @@ void SceneDebug::Initialize()
 			cube->SetName("Cube");
 			cube->AddComponent<ModelComponent>(device,"Data/Model/Cube/Cube.mdl");
 			auto transform = cube->AddComponent<Transform3DComponent>();
-			transform->SetScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
-			transform->SetPosition(DirectX::XMFLOAT3(5.0f, 2.0f, 0.0f));
-			transform->SetAngle(DirectX::XMFLOAT3(DirectX::XMConvertToRadians(90.0f), 0.0f, 0.0f));
+			transform->SetLocalScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
+			transform->SetLocalPosition(DirectX::XMFLOAT3(5.0f, 2.0f, 0.0f));
+			transform->SetLocalAngle(DirectX::XMFLOAT3(DirectX::XMConvertToRadians(90.0f), 0.0f, 0.0f));
 			// シェーダー設定
 			auto shader_component =
 				cube->AddComponent<ModelShaderComponent>(model_shader.get());
@@ -99,8 +99,8 @@ void SceneDebug::Initialize()
 					shader->AddShaderComponent(shader_component.get());
 
 					model->PlayAnimation(z);
-					transform->SetPosition(pos);
-					transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+					transform->SetLocalPosition(pos);
+					transform->SetLocalScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
 				}
 			}
 		}

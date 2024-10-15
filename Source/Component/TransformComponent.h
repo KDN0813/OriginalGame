@@ -19,14 +19,14 @@ public:
 
 #pragma region setEget parame
     DirectX::XMFLOAT3 GetLocalPosition()const noexcept { return this->local_position; }
-    void SetPosition(DirectX::XMFLOAT3 pos)noexcept { this->change_value = true; this->local_position = pos; }
-    DirectX::XMFLOAT3 AddPosition(DirectX::XMFLOAT3 vec);
+    void SetLocalPosition(DirectX::XMFLOAT3 pos)noexcept { this->change_value = true; this->local_position = pos; }
+    DirectX::XMFLOAT3 AddLocalPosition(DirectX::XMFLOAT3 vec);
 
-    DirectX::XMFLOAT3 GetAngle()const noexcept { return this->angle; }
-    void SetAngle(DirectX::XMFLOAT3 angle)noexcept { this->change_value = true; this->angle = angle; }
+    DirectX::XMFLOAT3 GetLocalAngle()const noexcept { return this->local_angle; }
+    void SetLocalAngle(DirectX::XMFLOAT3 angle)noexcept { this->change_value = true; this->local_angle = angle; }
     
-    DirectX::XMFLOAT3 GetScale()const noexcept { return this->scale; }
-    void SetScale(DirectX::XMFLOAT3 scale)noexcept { this->change_value = true; this->scale = scale; }
+    DirectX::XMFLOAT3 GetLocalScale()const noexcept { return this->local_scale; }
+    void SetLocalScale(DirectX::XMFLOAT3 scale)noexcept { this->change_value = true; this->local_scale = scale; }
     
     DirectX::XMFLOAT3 GetWorldPosition();
     void SetWorldPosition();
@@ -38,8 +38,8 @@ private:
     DirectX::XMFLOAT4X4 local_transform{};
     DirectX::XMFLOAT4X4 world_transform{};
     DirectX::XMFLOAT3 local_position{};
-    DirectX::XMFLOAT3 angle{};
-    DirectX::XMFLOAT3 scale{};
+    DirectX::XMFLOAT3 local_angle{};
+    DirectX::XMFLOAT3 local_scale{};
     DirectX::XMFLOAT3 world_position{};
     bool change_value = false;
 private:

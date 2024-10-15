@@ -17,7 +17,7 @@ void DebugComponent::Update(float elapsed_time)
 
     float spped = 1.0f * elapsed_time;
 
-    transform->AddPosition(DirectX::XMFLOAT3(spped, 0.0f, 0.0f));
+    transform->AddLocalPosition(DirectX::XMFLOAT3(spped, 0.0f, 0.0f));
 }
 
 #ifdef _DEBUG

@@ -105,7 +105,7 @@ void PlayerComponent::DebugCheat()
         if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
         {
             // Œ´“_‚É–ß‚·
-            transform->SetPosition(DirectX::XMFLOAT3());
+            transform->SetLocalPosition(DirectX::XMFLOAT3());
         }
     }
 }

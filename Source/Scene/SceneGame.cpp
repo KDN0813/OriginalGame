@@ -53,8 +53,8 @@ void SceneGame::Initialize()
 			stage->SetName("Stage");
 			stage->AddComponent<ModelComponent>(device, "Data/Model/Cube/Cube.mdl");
 			auto transform = stage->AddComponent<Transform3DComponent>();
-			transform->SetScale(DirectX::XMFLOAT3(100.0f, 1.0f, 100.0f));
-			transform->SetPosition(DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f));
+			transform->SetLocalScale(DirectX::XMFLOAT3(100.0f, 1.0f, 100.0f));
+			transform->SetLocalPosition(DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f));
 			// シェーダー設定
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
@@ -89,7 +89,7 @@ void SceneGame::Initialize()
 			}
 			
 			auto transform = player->AddComponent<Transform3DComponent>();
-			transform->SetScale(DirectX::XMFLOAT3(0.008f, 0.008f, 0.008f));
+			transform->SetLocalScale(DirectX::XMFLOAT3(0.008f, 0.008f, 0.008f));
 			auto movement = player->AddComponent<MovementComponent>();
 			movement->SetIsStageRaycas(true);
 			player->AddComponent<PlayerComponent>();
@@ -119,8 +119,8 @@ void SceneGame::Initialize()
 				object->SetName("player child");
 				object->AddComponent<ModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
 				auto transform = object->AddComponent<Transform3DComponent>();
-				transform->SetScale(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
-				transform->SetPosition(DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f));
+				transform->SetLocalScale(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+				transform->SetLocalPosition(DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f));
 				auto movement = object->AddComponent<MovementComponent>();
 				// シェーダー設定
 				auto shader_component =
@@ -170,8 +170,8 @@ void SceneGame::Initialize()
 					0.0f,
 					cosf(theta)* range ,
 				};
-				transform->SetPosition(pos);
-				transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+				transform->SetLocalPosition(pos);
+				transform->SetLocalScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
 
 				// シェーダー設定
 				auto shader_component =
