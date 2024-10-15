@@ -19,8 +19,6 @@ public:
     // —Dæ“x
     const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::VERY_HIGH; }
 
-    // XZ•ûŒü‚ÌˆÚ“®
-    void MoveXZ(float vx, float vz, float speed);
     // ˆÚ“®•ûŒü‚ÉŒü‚­
     void FaceMovementDirection(float elapsed_timed);
 
