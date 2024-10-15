@@ -12,9 +12,9 @@ public:
     ~DebugManager() {}
 
     ImGuiRenderer* GetImGuiRenderer() const { return this->imGui_renderer.get(); }
-    DebugPrimitiveRenderer* GetDebugRenderer() const { return this->debug_renderer.get(); }
+    DebugPrimitiveRenderer* GetDebugPrimitiveRenderer() const { return this->debug_primitive_renderer.get(); }
 private:
     std::unique_ptr<ImGuiRenderer> imGui_renderer;
-    std::unique_ptr<DebugPrimitiveRenderer> debug_renderer;
+    std::unique_ptr<DebugPrimitiveRenderer> debug_primitive_renderer;
 };
 

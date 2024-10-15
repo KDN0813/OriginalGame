@@ -41,6 +41,16 @@ void Framework::Update(float elapsed_time)
 {
 	input.Update();
 
+#ifdef _DEBUG
+	if (GetAsyncKeyState('P') & 0x8000)
+	{
+		this->stop_delta = !this->stop_delta;
+	}
+
+	elapsed_time = this->stop_delta ? 0.0f : elapsed_time;
+#endif // _DEBUG
+
+
 	scene_manager.Update(elapsed_time);
 }
 

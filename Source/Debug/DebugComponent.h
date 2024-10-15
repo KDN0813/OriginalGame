@@ -16,10 +16,10 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override {};
+    const char* GetName()const  override { return "DebugComponent"; };
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::LOW; };
 
 #ifdef _DEBUG
 public:
@@ -30,12 +30,12 @@ public:
     /**
      * デバックの情報を3D画面上に出力する関数
      */
-    void DrawDebugPrimitive()  override {};
+    void DrawDebugPrimitive()  override ;
     /**
      * デバッグプリミティブ表示用ImGui
      */
-    void DrawDebugPrimitiveGUI()  override {};
-    bool IsDebugPrimitive() { return false; }   // DebugPrimitiveが存在するか
+    void DrawDebugPrimitiveGUI()  override;
+    bool IsDebugPrimitive() { return true; }   // DebugPrimitiveが存在するか
 #endif
 };
 

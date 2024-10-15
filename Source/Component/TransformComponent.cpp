@@ -58,7 +58,7 @@ void Transform3DComponent::UpdateTransform()
 
 const DirectX::XMFLOAT4X4& Transform3DComponent::GetWolrdTransform()
 {
-	if(GetChangeValue()) return this->world_transform;
+	if(!GetChangeValue()) return this->world_transform;
 	UpdateTransform();
 	return this->world_transform;
 }
@@ -74,7 +74,8 @@ DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
 
 DirectX::XMFLOAT3 Transform3DComponent::GetWorldPosition()
 {
-	if (GetChangeValue()) return this->world_position;
+	if (!GetChangeValue()) 
+		return this->world_position;
 	UpdateTransform();
 	return this->world_position;
 }
@@ -113,8 +114,9 @@ void Transform3DComponent::SetWorldPosition(std::shared_ptr<Transform3DComponent
 
 bool Transform3DComponent::GetChangeValue()
 {
+	if (this->change_value) return this->change_value;
 	auto owner = GetOwner();
-	if (!owner) return false;
+	if (!owner) return this->change_value;
 	auto parent = owner->GetParent();
 	if (!parent) return this->change_value;
 	auto parent_transform = parent->EnsureComponentValid(this->parent_ransform_Wptr);
@@ -160,8 +162,8 @@ void Transform3DComponent::DrawDebugGUI()
 
 void Transform3DComponent::DrawDebugPrimitive()
 {
-	DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugRenderer();
-	debug_render->DrawSphere(this->world_position, 0.06f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+	DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugPrimitiveRenderer();
+	debug_render->DrawSphere(this->world_position, 1.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
 }
 
 #endif // _DEBUG

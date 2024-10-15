@@ -7,6 +7,7 @@
 
 #ifdef _DEBUG
 #include "Debug/DebugManager.h"
+#include "Debug/DebugComponent.h"
 
 #endif // _DEBUG
 
@@ -121,6 +122,7 @@ void SceneGame::Initialize()
 				transform->SetScale(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
 				transform->SetPosition(DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f));
 				auto movement = object->AddComponent<MovementComponent>();
+				object->AddComponent<DebugComponent>();
 				// シェーダー設定
 				auto shader_component =
 					object->AddComponent<ModelShaderComponent>(model_shader.get());
@@ -241,7 +243,7 @@ void SceneGame::Render()
 	{
 		object_manager.DrawDebugPrimitive();
 
-		DebugManager::Instance()->GetDebugRenderer()->Render(dc, rc.view, rc.projection);;
+		DebugManager::Instance()->GetDebugPrimitiveRenderer()->Render(dc, rc.view, rc.projection);;
 	}
 
 	DrawImGui();

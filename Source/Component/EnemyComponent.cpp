@@ -114,7 +114,7 @@ void EnemyComponent::DrawDebugGUI()
 
 void EnemyComponent::DrawDebugPrimitive()
 {
-	auto debug_render = DebugManager::Instance()->GetDebugRenderer();
+	auto debug_render = DebugManager::Instance()->GetDebugPrimitiveRenderer();
 	if (!this->IsAtTarget())
 		debug_render->DrawSphere(this->target_position, this->radius, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
 }

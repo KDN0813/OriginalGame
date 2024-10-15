@@ -36,5 +36,6 @@ private:
 	CameraManager					camera_manager;
 #ifdef _DEBUG
 	DebugManager					debug_manager;
+	bool stop_delta = false;
 #endif // _DEBUG
 };
