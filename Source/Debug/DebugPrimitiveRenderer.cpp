@@ -8,7 +8,7 @@
 
 void SphereParam::DrawDebugGUI(std::string header_name)
 {
-	header_name += std::to_string(id);
+	header_name += "##" + std::to_string(id);
 
 	ImGui::Indent(30.0f);
 	std::string label;

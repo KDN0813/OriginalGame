@@ -15,7 +15,11 @@ MovementComponent::MovementComponent()
 {
 #ifdef _DEBUG
 	SetIsDebugPrimitive(false);
-
+	this->rayY_start_pos = SphereParam(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f), 0.05f);
+	this->rayY_end_pos = SphereParam(DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f), 0.05f);
+	
+	this->rayXZ_start_pos = SphereParam(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f), 0.05f);
+	this->rayXZ_end_pos = SphereParam(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 0.5f), 0.05f);
 #endif // _DEBUG
 }
 
@@ -184,8 +188,12 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 #ifdef _DEBUG	// デバッグプリミティブ表示用変数の更新
 				{
-					Start.GetFlaot3(this->rayY_start_pos);
-					End.GetFlaot3(this->rayY_end_pos);
+					DirectX::XMFLOAT3 start_pos{};
+					Start.GetFlaot3(start_pos);
+					this->rayY_start_pos.SetCenter(start_pos);
+					DirectX::XMFLOAT3 end_pos{};
+					End.GetFlaot3(end_pos);
+					this->rayY_end_pos.SetCenter(end_pos);
 				}
 #endif // _DEBUG	デバッグプリミティブ表示
 
@@ -229,8 +237,12 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 #ifdef _DEBUG
 			// デバッグプリミティブ表示用変数の更新
 			{
-				Start.GetFlaot3(this->rayXZ_start_pos);
-				End.GetFlaot3(this->rayXZ_end_pos);
+				DirectX::XMFLOAT3 start_pos{};
+				Start.GetFlaot3(start_pos);
+				this->rayXZ_start_pos.SetCenter(start_pos);
+				DirectX::XMFLOAT3 end_pos{};
+				End.GetFlaot3(end_pos);
+				this->rayXZ_end_pos.SetCenter(end_pos);
 			}
 #endif // _DEBUG
 
@@ -296,11 +308,19 @@ void MovementComponent::DrawDebugGUI()
 void MovementComponent::DrawDebugPrimitive()
 {
 	DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugPrimitiveRenderer();
-	debug_render->DrawSphere(this->rayY_start_pos, 0.05f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	debug_render->DrawSphere(this->rayY_end_pos, 0.05f, DirectX::XMFLOAT4(0.5f, 0.0f, 0.0f, 1.0f));
+	debug_render->DrawSphere(this->rayY_start_pos);
+	debug_render->DrawSphere(this->rayY_end_pos);
 
-	debug_render->DrawSphere(this->rayXZ_start_pos, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
-	debug_render->DrawSphere(this->rayXZ_end_pos, 0.05f, DirectX::XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
+	debug_render->DrawSphere(this->rayXZ_start_pos);
+	debug_render->DrawSphere(this->rayXZ_end_pos);
+}
+
+void MovementComponent::DrawDebugPrimitiveGUI()
+{
+	this->rayY_start_pos.DrawDebugGUI("RayY Start");
+	this->rayY_end_pos.DrawDebugGUI("RayY End");
+	this->rayXZ_start_pos.DrawDebugGUI("RayXZ Start");
+	this->rayXZ_end_pos.DrawDebugGUI("RayXZ End");
 }
 
 #endif _DEBUG

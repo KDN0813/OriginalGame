@@ -2,6 +2,10 @@
 #include <memory>
 #include "System/MyMath/MYVECTOR3.h"
 #include "Component.h"
+#ifdef _DEBUG
+#include "Debug/DebugPrimitiveRenderer.h"
+#endif // _DEBUG
+
 
 class Transform3DComponent;
 class GravityComponent;
@@ -62,13 +66,17 @@ public:
      * デバックの情報を3D画面上に出力する関数
      */
     void DrawDebugPrimitive()override;
+    /**
+     * デバッグプリミティブ表示用ImGui
+     */
+     void DrawDebugPrimitiveGUI() override;
     // デバッグプリミティブを表示する
     bool IsDebugPrimitive()override { return true; }
 private:
-    DirectX::XMFLOAT3 rayY_start_pos{};   // 下方向のレイキャストの始点
-    DirectX::XMFLOAT3 rayY_end_pos{};     // 下方向のレイキャストの終点
-    DirectX::XMFLOAT3 rayXZ_start_pos{};  // 壁方向のレイキャストの始点
-    DirectX::XMFLOAT3 rayXZ_end_pos{};    // 壁方向のレイキャストの終点
+    SphereParam rayY_start_pos;   // 下方向のレイキャストの始点
+    SphereParam rayY_end_pos;     // 下方向のレイキャストの終点
+    SphereParam rayXZ_start_pos;  // 壁方向のレイキャストの始点
+    SphereParam rayXZ_end_pos;    // 壁方向のレイキャストの終点
 #endif _DEBUG
 };
 
