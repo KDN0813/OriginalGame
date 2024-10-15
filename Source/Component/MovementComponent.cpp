@@ -291,9 +291,6 @@ void MovementComponent::DrawDebugGUI()
 	{
 		ImGui::InputFloat("Step Offset", &this->step_offset);
 	}
-
-	ImGui::InputFloat3("rayXZ_start_pos", &rayXZ_start_pos.x);
-	ImGui::InputFloat3("rayXZ_endt_pos", &rayXZ_end_pos.x);
 }
 
 void MovementComponent::DrawDebugPrimitive()
