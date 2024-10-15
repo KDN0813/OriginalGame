@@ -1,7 +1,7 @@
 #pragma once
 #include "Component/Component.h"
 
-
+// トランスフォーム更新後にトランスフォームを変更する
 class DebugComponent : public Component
 {
 public:
@@ -13,7 +13,7 @@ public:
     // 終了関数
     void End()  override {};
     // 更新関数
-    void Update(float elapsed_time) override {};
+    void Update(float elapsed_time) override;
 
     // 名前取得
     const char* GetName()const  override {};
