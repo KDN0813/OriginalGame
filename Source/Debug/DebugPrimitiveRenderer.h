@@ -39,6 +39,33 @@ private:
 	bool is_draw = true;
 };
 
+class CylinderParam
+{
+public:
+	CylinderParam() : color(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f)), position(), radius(0.1f), height(0.1f), id(DebugPrimitiveAllocate()) {};
+	CylinderParam(DirectX::XMFLOAT4 color, float radius, float height) :color(color), position(), radius(radius), height(height), id(DebugPrimitiveAllocate()) {};
+
+	DirectX::XMFLOAT4 GetColor() { return this->color; }
+	DirectX::XMFLOAT3 GetPosition() { return this->position; }
+	float GetRadius() { return this->radius; }
+	float GetHeight() { return this->height; }
+	float GetColor(float radius) { this->radius = radius; }
+	bool GetIsDraw() { return this->is_draw; }
+	void SetColor(DirectX::XMFLOAT4 color) { this->color = color; }
+	void SetPosition(DirectX::XMFLOAT3 position) { this->position = position; }
+	void SetRadius(float radius) { this->radius = radius; }
+	void SetHeight(float height) { this->height = height; }
+	void SetIsDraw(bool is_draw) { this->is_draw = is_draw; }
+	void DrawDebugGUI(std::string header_name);
+private:
+	DirectX::XMFLOAT4	color;
+	DirectX::XMFLOAT3	position;
+	float				radius;
+	float				height;
+	DebugPrimitiveId	id;
+	bool is_draw = true;
+};
+
 class DebugPrimitiveRenderer
 {
 public:
@@ -56,6 +83,8 @@ public:
 
 	// ‰~’Œ•`‰æ
 	void DrawCylinder(const DirectX::XMFLOAT3& position, float radius, float height, const DirectX::XMFLOAT4& color);
+	// ‰~’Œ•`‰æ
+	void DrawCylinder(CylinderParam cylinder_param);
 
 private:
 	// ‹…ƒƒbƒVƒ…ì¬

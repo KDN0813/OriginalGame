@@ -29,6 +29,31 @@ void SphereParam::DrawDebugGUI(std::string header_name)
 	ImGui::Unindent(30.0f);
 }
 
+void CylinderParam::DrawDebugGUI(std::string header_name)
+{
+	header_name += std::to_string(id);
+
+	ImGui::Indent(30.0f);
+	std::string label;
+	label = "##Sphere" + std::to_string(id);
+	ImGui::Checkbox(label.c_str(), &is_draw);
+	ImGui::SameLine();
+	if (!this->is_draw) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+	if (ImGui::CollapsingHeader(header_name.c_str()))
+	{
+		label = "Color##Sphere" + std::to_string(id);
+		ImGui::ColorEdit4(label.c_str(), &this->color.x);
+		label = "Position##Sphere" + std::to_string(id);
+		ImGui::DragFloat3(label.c_str(), &this->position.x, 0.1f);
+		label = "Radius##Sphere" + std::to_string(id);
+		ImGui::DragFloat(label.c_str(), &this->radius, 0.01f);
+		label = "Height##Sphere" + std::to_string(id);
+		ImGui::DragFloat(label.c_str(), &this->height, 0.01f);
+	}
+	if (!this->is_draw) ImGui::PopStyleColor();
+	ImGui::Unindent(30.0f);
+}
+
 DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 {
 	// 頂点シェーダー
@@ -251,6 +276,18 @@ void DebugPrimitiveRenderer::DrawCylinder(const DirectX::XMFLOAT3& position, flo
 	cylinder.radius = radius;
 	cylinder.height = height;
 	cylinder.color = color;
+	cylinders.emplace_back(cylinder);
+}
+
+void DebugPrimitiveRenderer::DrawCylinder(CylinderParam cylinder_param)
+{
+	if (!cylinder_param.GetIsDraw()) return;
+
+	Cylinder cylinder;
+	cylinder.position = cylinder_param.GetPosition();
+	cylinder.radius = cylinder_param.GetRadius();
+	cylinder.height = cylinder_param.GetHeight();
+	cylinder.color = cylinder_param.GetColor();
 	cylinders.emplace_back(cylinder);
 }
 
