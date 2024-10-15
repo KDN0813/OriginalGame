@@ -69,14 +69,11 @@ DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
 
 void Transform3DComponent::DrawDebugGUI()
 {
-	std::string label;
-	label = "position" + std::to_string(this->GetComponentID());
-	if (ImGui::InputFloat3(label.c_str(), &this->position.x))
+	if (ImGui::InputFloat3("position", &this->position.x))
 	{
 		this->change_value = true;
 	}
-	label = "scale" + std::to_string(this->GetComponentID());
-	if (ImGui::InputFloat3(label.c_str(), &this->scale.x))
+	if (ImGui::InputFloat3("scale", &this->scale.x))
 	{
 		this->change_value = true;
 	}
@@ -87,8 +84,7 @@ void Transform3DComponent::DrawDebugGUI()
 		DirectX::XMConvertToDegrees(this->angle.y),
 		DirectX::XMConvertToDegrees(this->angle.z),
 	};
-	label = "angle" + std::to_string(this->GetComponentID());
-	if (ImGui::SliderFloat3(label.c_str(), &angle_degrees.x, 0, 360.0f))
+	if (ImGui::SliderFloat3("angle", &angle_degrees.x, 0, 360.0f))
 	{
 		this->angle =
 		{
