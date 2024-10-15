@@ -14,7 +14,7 @@ Transform3DComponent::Transform3DComponent()
 void Transform3DComponent::Update(float elapsed_time)
 {
 	// 値が変更されていなければ処理しない
-	if (!this->change_value) return;
+	//if (!this->change_value) return;
 
 	UpdateTransform();
 }
@@ -33,7 +33,7 @@ void Transform3DComponent::UpdateTransform()
 		auto parent_transform = parent->GetComponent<Transform3DComponent>();
 		if (parent_transform)
 		{
-			Parent_transform = parent_transform->GetLocalTransform();
+			Parent_transform = parent_transform->GetWolrdTransform();
 		}
 		else
 		{
@@ -51,8 +51,10 @@ void Transform3DComponent::UpdateTransform()
 
 	// ワールド行列作成
 	MYMATRIX World_transform;
-	World_transform = Parent_transform * Local_transform;
-	World_transform.GetFlaot4x4(this->local_transform);
+	World_transform = Local_transform * Parent_transform;
+
+	Local_transform.GetFlaot4x4(this->local_transform);
+	World_transform.GetFlaot4x4(this->world_transform);
 	this->change_value = false;
 }
 

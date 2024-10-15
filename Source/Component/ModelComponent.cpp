@@ -50,7 +50,7 @@ void ModelComponent::Update(float elapsed_time)
 	MYMATRIX World_transform;
 	if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
 	{
-		World_transform = transform->GetTransform();
+		World_transform = transform->GetWolrdTransform();
 	}
 	else
 	{
