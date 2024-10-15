@@ -123,6 +123,7 @@
     <ClInclude Include="Source\Collision\CircleCollider.h" />
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
+    <ClInclude Include="Source\Component\CircleComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\EnemyComponent.h" />
     <ClInclude Include="Source\Component\GravityComponent.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Source\Collision\CircleCollider.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
+    <ClCompile Include="Source\Component\CircleComponent.cpp" />
     <ClCompile Include="Source\Component\EnemyComponent.cpp" />
     <ClCompile Include="Source\Component\GravityComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
