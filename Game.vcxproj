@@ -171,6 +171,7 @@
     <ClInclude Include="Source\System\HighResolutionTimer.h" />
     <ClInclude Include="Source\System\Logger.h" />
     <ClInclude Include="Source\System\Misc.h" />
+    <ClInclude Include="Source\System\MyHash.h" />
     <ClInclude Include="Source\System\MyMath\MyMathf.h" />
     <ClInclude Include="Source\System\MyMath\MYMATRIX.h" />
     <ClInclude Include="Source\System\MyMath\MYVECTOR2.h" />
