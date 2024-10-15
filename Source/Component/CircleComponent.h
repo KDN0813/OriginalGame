@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 
+// 円の当たり判定用コンポーネント
 class CircleComponent : public Component
 {
 public:
