@@ -26,9 +26,17 @@ public:
 
     // 次の目的地設定
     void SetRandomTargetPosition();
+    // 待機時間設定
+    void SetRandomIdleTime();
     // 目的地に到達しているか
     bool IsAtTarget();
     bool IsAtTarget(float distSq);
+    // 現在待機行動中であるか
+    bool IsIdle() { return (this->idle_timer > 0.0f); }
+
+    // 各種・設定取得関数
+    float GetIdleTime() { return this->idle_timer; }
+    void SetIdleTime(float time) { this->idle_timer = time; }
 private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);
@@ -39,6 +47,10 @@ private:
     float radius = 1.0f;
     float move_speed = 3.0f;
     float speed_rate = 0.5f;
+
+    float idle_timer = 0.0f;    // 待機時間
+    float max_idle_time = 5.0f;
+    float min_idle_time = 0.5f;
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;

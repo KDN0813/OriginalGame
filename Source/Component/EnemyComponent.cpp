@@ -13,7 +13,6 @@
 
 void EnemyComponent::Start()
 {
-	SetIsActive(false);
 }
 
 void EnemyComponent::End()
@@ -22,6 +21,11 @@ void EnemyComponent::End()
 
 void EnemyComponent::Update(float elapsed_time)
 {
+	if (idle_timer > 0.0f)
+	{
+		idle_timer -= elapsed_time;
+	}
+
 	auto owner = GetOwner();
 	if (!owner) return;
 	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
@@ -32,8 +36,11 @@ void EnemyComponent::Update(float elapsed_time)
 	MYVECTOR3 Target_position = this->target_position;
 	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
 	
-	// 目的地点へ移動
-	MoveToTarget(elapsed_time, transform, speed_rate);
+	if (!this->IsAtTarget(distSq))
+	{
+		// 目的地点へ移動
+		MoveToTarget(elapsed_time, transform, speed_rate);
+	}
 }
 
 void EnemyComponent::Move(float vx, float vz, float speed)
@@ -68,6 +75,11 @@ void EnemyComponent::SetRandomTargetPosition()
 	this->target_position.z =  + cosf(theta) * range;
 }
 
+void EnemyComponent::SetRandomIdleTime()
+{
+	this->idle_timer = MyMathf::RandomRange(this->min_idle_time, this->max_idle_time);
+}
+
 bool EnemyComponent::IsAtTarget()
 {
 	auto owner = GetOwner();
@@ -92,6 +104,7 @@ bool EnemyComponent::IsAtTarget(float distSq)
 
 void EnemyComponent::DrawDebugGUI()
 {
+	ImGui::InputFloat("Idle State", &this->idle_timer);
 	ImGui::InputFloat3("Target Position", &this->target_position.x);
 	ImGui::DragFloat("Territory Range", &this->territory_range, 0.01f);
 	ImGui::DragFloat("Radius", &this->radius, 0.01f);
@@ -102,7 +115,8 @@ void EnemyComponent::DrawDebugGUI()
 void EnemyComponent::DrawDebugPrimitive()
 {
 	auto debug_render = DebugManager::Instance()->GetDebugRenderer();
-	debug_render->DrawSphere(this->target_position, this->radius, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+	if (!this->IsAtTarget())
+		debug_render->DrawSphere(this->target_position, this->radius, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
 }
 
 #endif // _DEBUG

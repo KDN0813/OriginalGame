@@ -132,11 +132,13 @@ void SceneGame::Initialize()
 						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
 						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
 						model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
+						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
 					}
 					// ステート設定
 					auto state_machine = enemy->AddComponent<StateMachineComponent>();
 					{
 						auto idle_state = state_machine->RegisterState<IdelState>();
+						idle_state->AddStateTransition(std::make_unique<StateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
 						auto wander_state = state_machine->RegisterState<WanderState>();
 						wander_state->AddStateTransition(std::make_unique<StateTransitionInfo>("IdelState",std::make_unique<Judgement_IsAtTarget>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
 					

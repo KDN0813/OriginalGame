@@ -8,8 +8,6 @@ void WanderState::Start()
     if (!owner) return;
     auto enemy = owner->EnsureComponentValid<EnemyComponent>(this->enemy_Wptr);
     if (!enemy) return;
-
-    enemy->SetIsActive(true);
     enemy->SetRandomTargetPosition();
 }
 
@@ -19,6 +17,24 @@ void WanderState::End()
     if (!owner) return;
     auto enemy = owner->EnsureComponentValid<EnemyComponent>(this->enemy_Wptr);
     if (!enemy) return;
+}
 
-    enemy->SetIsActive(false);
+void IdelState::Start()
+{
+    auto owner = this->owner_Wptr.lock();
+    if (!owner) return;
+    auto enemy = owner->EnsureComponentValid<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+
+    enemy->SetRandomIdleTime();
+}
+
+void IdelState::End()
+{
+    auto owner = this->owner_Wptr.lock();
+    if (!owner) return;
+    auto enemy = owner->EnsureComponentValid<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+
+    enemy->SetIdleTime(0.0f);
 }

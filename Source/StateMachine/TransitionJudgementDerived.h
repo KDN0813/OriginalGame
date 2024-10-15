@@ -74,10 +74,25 @@ public:
 	bool CheckTransitionCondition() override { return true; };
 };
 
+// エネミーが目的地に辿り着いた時
 class Judgement_IsAtTarget : public TransitionJudgementBase
 {
 public:
 	Judgement_IsAtTarget(OwnerPtr object, bool reversal = false, bool require_transition_ready = false)
+		:TransitionJudgementBase(object, reversal, require_transition_ready) {}
+
+	const char* GetName()const override { return "Judgement_IsAtTarget"; }
+
+	bool CheckTransitionCondition() override;
+private:
+	std::weak_ptr<EnemyComponent> enemy_Wptr;
+};
+
+// エネミーの待機行動が終了した時
+class Judgement_IdleFinished : public TransitionJudgementBase
+{
+public:
+	Judgement_IdleFinished(OwnerPtr object, bool reversal = false, bool require_transition_ready = false)
 		:TransitionJudgementBase(object, reversal, require_transition_ready) {}
 
 	const char* GetName()const override { return "Judgement_IsAtTarget"; }

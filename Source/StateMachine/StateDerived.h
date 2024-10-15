@@ -34,16 +34,18 @@ public:
     IdelState() :StateBase("IdelState") {}
     ~IdelState() override {};
 
-    void Start() override {};
+    void Start() override;
 
     // 更新関数
     void Update(float elapsed_time) override {};
+
+    void End()override;
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
     bool IsTransitionReady() override { return true; };
 private:
-    float state_timer = 0.0f;
+    std::weak_ptr<EnemyComponent> enemy_Wptr;
 
 #ifdef _DEBUG
 public:
