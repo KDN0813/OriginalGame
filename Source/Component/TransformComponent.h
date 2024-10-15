@@ -13,7 +13,7 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
 
     void UpdateTransform();
-    const DirectX::XMFLOAT4X4& GetWolrdTransform() { return this->world_transform; }
+    const DirectX::XMFLOAT4X4& GetWolrdTransform();
     const DirectX::XMFLOAT4X4& GetLocalTransform() { return this->local_transform; }
     void SetTransform(DirectX::XMFLOAT4X4 transform) { this->local_transform = transform; }
 

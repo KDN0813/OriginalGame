@@ -56,6 +56,13 @@ void Transform3DComponent::UpdateTransform()
 	this->change_value = false;
 }
 
+const DirectX::XMFLOAT4X4& Transform3DComponent::GetWolrdTransform()
+{
+	if(GetChangeValue()) return this->world_transform;
+	UpdateTransform();
+	return this->world_transform;
+}
+
 DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
 {
 	this->change_value = true;

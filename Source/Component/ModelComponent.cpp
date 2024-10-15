@@ -46,15 +46,16 @@ void ModelComponent::Start()
 
 void ModelComponent::Update(float elapsed_time)
 {
-	auto owner = GetOwner();
 	MYMATRIX World_transform;
-	if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
+	World_transform.SetIdentity();
+
+	auto owner = GetOwner();
+	if (owner)
 	{
-		World_transform = transform->GetWolrdTransform();
-	}
-	else
-	{
-		World_transform.SetIdentity();
+		if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
+		{
+			World_transform = transform->GetWolrdTransform();
+		}
 	}
 
 	UpdateTransform(World_transform);
