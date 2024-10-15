@@ -264,14 +264,17 @@
     <ClInclude Include="Source\System\MyHash.h">
       <Filter>Source\System</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ConstantManager.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\Debug\DebugComponent.h">
       <Filter>Source\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConstantManager.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Source\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -430,6 +433,9 @@
     </ClCompile>
     <ClCompile Include="Source\Debug\DebugComponent.cpp">
       <Filter>Source\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
