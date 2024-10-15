@@ -171,7 +171,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 		// Y軸の下方向に向けてレイキャストを行う
 		{
 			// 現在の位置
-			const MYVECTOR3 Current_pos = transform->GetPosition();
+			const MYVECTOR3 Current_pos = transform->GetWorldPosition();
 
 			// 垂直方向の移動量
 			float my = this->velocity.y;
@@ -212,7 +212,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 	// 前方方向にレイキャストを行う
 	{
 		// 現在の位置
-		const DirectX::XMFLOAT3& current_pos = transform->GetPosition();
+		const DirectX::XMFLOAT3& current_pos = transform->GetWorldPosition();
 		const MYVECTOR3 Current_pos = current_pos;
 
 		float velocity_lengthXZ = MYVECTOR3(this->velocity).LengthXZ();
@@ -291,6 +291,9 @@ void MovementComponent::DrawDebugGUI()
 	{
 		ImGui::InputFloat("Step Offset", &this->step_offset);
 	}
+
+	ImGui::InputFloat3("rayXZ_start_pos", &rayXZ_start_pos.x);
+	ImGui::InputFloat3("rayXZ_endt_pos", &rayXZ_end_pos.x);
 }
 
 void MovementComponent::DrawDebugPrimitive()

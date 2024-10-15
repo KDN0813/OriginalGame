@@ -41,7 +41,7 @@ void CameraComponent::Update(float elapsed_time)
     auto owner = GetOwner();
     if (!owner) return;
     auto transform = owner->EnsureComponentValid<Transform3DComponent>(transform_Wptr);
-    target = transform ? transform->GetPosition() : DirectX::XMFLOAT3();
+    target = transform ? transform->GetWorldPosition() : DirectX::XMFLOAT3();
 
     float sx = ::sinf(rotateX), cx = ::cosf(rotateX);
     float sy = ::sinf(rotateY), cy = ::cosf(rotateY);

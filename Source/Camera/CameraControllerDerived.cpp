@@ -25,7 +25,7 @@ void DebugCameraController::Update(float elapsed_time)
 	float rotateX = camera->GetRotateX();
 	float rotateY = camera->GetRotateY();
 	float range = camera->GetRange();
-	MYVECTOR3 Focus = transform->GetPosition();
+	MYVECTOR3 Focus = transform->GetWorldPosition();
 	MYVECTOR3 Eye = camera->GetEye();
 
 	// ‹üs—ñ‚ğ¶¬

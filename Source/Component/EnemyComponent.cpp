@@ -32,7 +32,7 @@ void EnemyComponent::Update(float elapsed_time)
 	if (!transform) return;
 
 	// 目的地点までのXZ平面での距離判定
-	MYVECTOR3 Position = transform->GetPosition();
+	MYVECTOR3 Position = transform->GetWorldPosition();
 	MYVECTOR3 Target_position = this->target_position;
 	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
 	
@@ -56,7 +56,7 @@ void EnemyComponent::Move(float vx, float vz, float speed)
 void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate)
 {
 	// ターゲット方向への進行ベクトルを算出
-	MYVECTOR3 Position = transform->GetPosition();
+	MYVECTOR3 Position = transform->GetWorldPosition();
 	MYVECTOR3 Target_position = this->target_position;
 	MYVECTOR3 Vec = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).Normalize();
 	float vx = Vec.GetX();
@@ -88,7 +88,7 @@ bool EnemyComponent::IsAtTarget()
 	if (!transform) return false;
 
 	// 目的地点までのXZ平面での距離判定
-	MYVECTOR3 Position = transform->GetPosition();
+	MYVECTOR3 Position = transform->GetWorldPosition();
 	MYVECTOR3 Target_position = this->target_position;
 	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
 

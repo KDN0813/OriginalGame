@@ -119,8 +119,8 @@ void SceneGame::Initialize()
 				object->AddComponent<ModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
 				auto transform = object->AddComponent<Transform3DComponent>();
 				transform->SetScale(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
-				//transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
 				transform->SetPosition(DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f));
+				auto movement = object->AddComponent<MovementComponent>();
 				// シェーダー設定
 				auto shader_component =
 					object->AddComponent<ModelShaderComponent>(model_shader.get());
