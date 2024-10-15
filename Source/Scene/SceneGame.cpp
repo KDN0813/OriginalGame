@@ -132,7 +132,7 @@ void SceneGame::Initialize()
 		// “G
 		{
 			float territory_range = 45.0f;
-			for (int i = 0; i <= 1; ++i)
+			for (int i = 0; i < 1; ++i)
 			{
 				auto enemy = object_manager.Create();
 				auto transform = enemy->AddComponent<Transform3DComponent>();

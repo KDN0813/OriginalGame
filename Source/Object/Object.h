@@ -132,6 +132,7 @@ public:
 	const std::string GetName() const { return this->name; }
 	const char* GetNameCStr() const { return this->name.c_str(); }
 	std::shared_ptr<Object> GetParent() { return this->parent_Wptr.lock(); }
+	const std::vector<std::shared_ptr<Object>>& GetChildren() { return this->children; }
 	const bool& GetIsActive() { return this->is_active; }
 	const bool& GetIsRemove() { return this->is_remove; }
 	void SetIsActive(const bool is_active) { this->is_active = is_active; }
