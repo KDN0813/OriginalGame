@@ -119,13 +119,13 @@ public:
 	 * \brief ŠJŽnŠÖ”
 	 * 
 	 */
-	void Initialize();
+	void Start();
 	/**
 	* \fn Finalize
 	* \brief C—¹ŠÖ”
 	*
 	*/
-	void Finalize();
+	void End();
 
 	// ŠeŽæ“¾ŠÖ”
 	void SetName(const char* name) { this->name = name; }
@@ -149,7 +149,7 @@ private:
 	bool is_remove = false;
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
 	ComponentVector component_vec;
-	std::vector<Object> children;
+	std::vector<std::shared_ptr<Object>> children;
 	std::weak_ptr<Object> parent_Wptr;
 
 #ifdef _DEBUG

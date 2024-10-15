@@ -35,22 +35,38 @@ void Object::Update(float elapsedTime)
 #endif // _DEBUG
 
         component->Update(elapsedTime);
+
+        // 子オブジェクト更新
+        for (auto chilled : this->children)
+        {
+            chilled->Update(elapsedTime);
+        }
     }
 }
 
-void Object::Initialize()
+void Object::Start()
 {
     for (std::shared_ptr<Component>& component : this->component_vec)
     {
         component->Start();
+        // 子オブジェクト更新
+        for (auto chilled : this->children)
+        {
+            chilled->Start();
+        }
     }
 }
 
-void Object::Finalize()
+void Object::End()
 {
     for (std::shared_ptr<Component>& component : this->component_vec)
     {
         component->End();
+        // 子オブジェクト更新
+        for (auto chilled : this->children)
+        {
+            chilled->End();
+        }
     }
 }
 
@@ -127,6 +143,15 @@ void Object::DrawDebugGUI()
             }
         }
 
+
+        // 子オブジェクト更新
+        ImGui::Indent(30.0f);
+        for (auto chilled : this->children)
+        {
+            chilled->DrawDebugGUI();
+        }
+        ImGui::Unindent(30.0f);
+
         if (!component_is_active) ImGui::PopStyleColor();
     }
 
@@ -148,6 +173,12 @@ void Object::DrawDebugPrimitive()
         if (!component->GetIsActive())continue;
         if (!component->GetIsDebugPrimitive())continue;
         component->DrawDebugPrimitive();
+
+        // 子オブジェクト更新
+        for (auto chilled : this->children)
+        {
+            chilled->DrawDebugPrimitive();
+        }
     }
 }
 
@@ -171,7 +202,7 @@ void ObjectManager::Update(float elapsedTime)
 {
     for (std::shared_ptr<Object>& object : this->start_object_vec)
     {
-        object->Initialize();
+        object->Start();
         this->update_object_vec.emplace_back(object);
     }
     this->start_object_vec.clear();
@@ -204,7 +235,7 @@ void ObjectManager::Update(float elapsedTime)
         }
 #endif // _DEBUG
 
-        object->Finalize();
+        object->End();
     }
     this->remove_object_vec.clear();
 }
