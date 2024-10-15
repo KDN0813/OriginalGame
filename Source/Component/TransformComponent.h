@@ -28,7 +28,7 @@ public:
     DirectX::XMFLOAT3 GetScale()const noexcept { return this->scale; }
     void SetScale(DirectX::XMFLOAT3 scale)noexcept { this->change_value = true; this->scale = scale; }
     
-    bool GetChangeValue() { return this->change_value; }
+    bool GetChangeValue();
 #pragma endregion set parame
 private:
     DirectX::XMFLOAT4X4 local_transform{};
@@ -37,6 +37,9 @@ private:
     DirectX::XMFLOAT3 angle{};
     DirectX::XMFLOAT3 scale{};
     bool change_value = false;
+private:
+    std::weak_ptr<Transform3DComponent> parent_ransform_Wptr;
+
 #ifdef _DEBUG
     /**
      * デバックの情報を2D画面に出力する関数

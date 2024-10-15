@@ -14,7 +14,7 @@ Transform3DComponent::Transform3DComponent()
 void Transform3DComponent::Update(float elapsed_time)
 {
 	// ’l‚ª•ÏX‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Îˆ—‚µ‚È‚¢
-	//if (!this->change_value) return;
+	if (!GetChangeValue()) return;
 
 	UpdateTransform();
 }
@@ -30,7 +30,7 @@ void Transform3DComponent::UpdateTransform()
 	auto parent = owner->GetParent();
 	if (parent)
 	{
-		auto parent_transform = parent->GetComponent<Transform3DComponent>();
+		auto parent_transform = parent->EnsureComponentValid(this->parent_ransform_Wptr);
 		if (parent_transform)
 		{
 			Parent_transform = parent_transform->GetWolrdTransform();
@@ -65,6 +65,17 @@ DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
 	Pos += vec;
 	Pos.GetFlaot3(this->position);
 	return this->position;
+}
+
+bool Transform3DComponent::GetChangeValue()
+{
+	auto owner = GetOwner();
+	if (!owner) return false;
+	auto parent = owner->GetParent();
+	if (!parent) return this->change_value;
+	auto parent_transform = parent->EnsureComponentValid(this->parent_ransform_Wptr);
+	if(!parent_transform) return this->change_value;
+	return parent_transform->GetChangeValue();
 }
 
 #ifdef _DEBUG
