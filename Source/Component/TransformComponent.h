@@ -12,6 +12,7 @@ public:
     const char* GetName()const override { return "TransformComponent"; }
     const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
 
+    void UpdateTransform();
     DirectX::XMFLOAT4X4 GetTransform() { return this->transform; }
     void SetTransform(DirectX::XMFLOAT4X4 transform) { this->transform = transform; }
 
@@ -26,6 +27,7 @@ public:
     DirectX::XMFLOAT3 GetScale()const noexcept { return this->scale; }
     void SetScale(DirectX::XMFLOAT3 scale)noexcept { this->change_value = true; this->scale = scale; }
     
+    bool GetChangeValue() { return this->change_value; }
 #pragma endregion set parame
 private:
     DirectX::XMFLOAT4X4 transform{};

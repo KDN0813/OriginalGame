@@ -15,6 +15,11 @@ void Transform3DComponent::Update(float elapsed_time)
 	// 値が変更されていなければ処理しない
 	if (!this->change_value) return;
 
+	UpdateTransform();
+}
+
+void Transform3DComponent::UpdateTransform()
+{
 	// ワールド行列の更新
 	MYMATRIX W;
 	W.SetLocalMatrix(this->scale, this->angle, this->position);
