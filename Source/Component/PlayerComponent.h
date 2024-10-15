@@ -30,5 +30,10 @@ private:
 public:
     void DrawDebugGUI() override;
 #endif // _DEBUG
+
+#ifdef RELEASE_DEBUG
+public:
+    void DebugCheat()override;
+#endif
 };
 

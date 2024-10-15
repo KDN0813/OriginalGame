@@ -10,6 +10,8 @@
 // êÇíºìØä˙ä‘äuê›íË
 #ifdef _DEBUG
 static const int syncInterval = 0;
+#elif  RELEASE_DEBUG
+static const int syncInterval = 0;
 #else
 static const int syncInterval = 1;
 #endif // _DEBUG
@@ -104,6 +106,7 @@ int Framework::Run()
 
 			timer.Tick();
 #ifdef _DEBUG
+#elif RELEASE_DEBUG
 			CalculateFrameStats();
 #endif // _DEBUG
 

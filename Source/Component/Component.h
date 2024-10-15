@@ -71,6 +71,12 @@ public:
 protected:
     bool is_draw_debug_primitive = true;
 #endif // _DEBUG
+#ifdef RELEASE_DEBUG
+public:
+    // デバッグ用チート
+    virtual void DebugCheat() {};
+#endif // RELEASE_DEBUG
+
 };
 
 class DefaultComponent : public Component

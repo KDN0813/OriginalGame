@@ -22,6 +22,9 @@ void Object::Update(float elapsedTime)
 #ifdef _DEBUG
         if (!component->GetIsActive()) continue;
 #endif // _DEBUG
+#ifdef RELEASE_DEBUG
+        component->DebugCheat();
+#endif // _DEBUG
 
         component->Update(elapsedTime);
     }
