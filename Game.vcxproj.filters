@@ -276,6 +276,9 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CircleCollider.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -436,6 +439,9 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\CircleCollider.cpp">
+      <Filter>Source\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
