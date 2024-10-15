@@ -107,7 +107,7 @@ int Framework::Run()
 			timer.Tick();
 #ifdef _DEBUG
 			CalculateFrameStats();
-#elif 
+#elif RELEASE_DEBUG
 			CalculateFrameStats();
 #endif // _DEBUG
 
