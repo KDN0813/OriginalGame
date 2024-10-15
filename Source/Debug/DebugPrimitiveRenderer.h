@@ -1,5 +1,4 @@
 #pragma once
-#ifdef _DEBUG
 
 #include <vector>
 #include <wrl.h>
@@ -133,5 +132,3 @@ private:
 	UINT	sphere_vertex_count = 0;
 	UINT	cylinder_vertex_count = 0;
 };
-
-#endif // _DEBUG

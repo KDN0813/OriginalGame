@@ -1,5 +1,3 @@
-#ifdef _DEBUG
-
 #include <stdio.h>
 #include <memory>
 #include <imgui.h>
@@ -435,5 +433,3 @@ void DebugPrimitiveRenderer::CreateCylinderMesh(ID3D11Device* device, float radi
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
-
-#endif
