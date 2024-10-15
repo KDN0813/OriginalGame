@@ -1,5 +1,6 @@
 #include "TransformComponent.h"
 #include <imgui.h>
+#include "Object/Object.h"
 
 #include "Debug/DebugManager.h"
 
@@ -20,10 +21,38 @@ void Transform3DComponent::Update(float elapsed_time)
 
 void Transform3DComponent::UpdateTransform()
 {
-	// ワールド行列の更新
-	MYMATRIX W;
-	W.SetLocalMatrix(this->scale, this->angle, this->position);
-	W.GetFlaot4x4(this->transform);
+	// 親の行列取得
+	MYMATRIX Parent_transform;
+	bool is_parent = true;
+
+	auto owner = GetOwner();
+	if (!owner) return;
+	auto parent = owner->GetParent();
+	if (parent)
+	{
+		auto parent_transform = parent->GetComponent<Transform3DComponent>();
+		if (parent_transform)
+		{
+			Parent_transform = parent_transform->GetLocalTransform();
+		}
+		else
+		{
+			Parent_transform = DirectX::XMMatrixIdentity();
+		}
+	}
+	else
+	{
+		Parent_transform = DirectX::XMMatrixIdentity();
+	}
+
+	// ローカル行列作成
+	MYMATRIX Local_transform;
+	Local_transform.SetLocalMatrix(this->scale, this->angle, this->position);
+
+	// ワールド行列作成
+	MYMATRIX World_transform;
+	World_transform = Parent_transform * Local_transform;
+	World_transform.GetFlaot4x4(this->local_transform);
 	this->change_value = false;
 }
 
@@ -40,11 +69,14 @@ DirectX::XMFLOAT3 Transform3DComponent::AddPosition(DirectX::XMFLOAT3 vec)
 
 void Transform3DComponent::DrawDebugGUI()
 {
-	if (ImGui::InputFloat3("position", &this->position.x))
+	std::string label;
+	label = "position" + std::to_string(this->GetComponentID());
+	if (ImGui::InputFloat3(label.c_str(), &this->position.x))
 	{
 		this->change_value = true;
 	}
-	if (ImGui::InputFloat3("scale", &this->scale.x))
+	label = "scale" + std::to_string(this->GetComponentID());
+	if (ImGui::InputFloat3(label.c_str(), &this->scale.x))
 	{
 		this->change_value = true;
 	}
@@ -55,7 +87,8 @@ void Transform3DComponent::DrawDebugGUI()
 		DirectX::XMConvertToDegrees(this->angle.y),
 		DirectX::XMConvertToDegrees(this->angle.z),
 	};
-	if (ImGui::SliderFloat3("angle", &angle_degrees.x, 0, 360.0f))
+	label = "angle" + std::to_string(this->GetComponentID());
+	if (ImGui::SliderFloat3(label.c_str(), &angle_degrees.x, 0, 360.0f))
 	{
 		this->angle =
 		{

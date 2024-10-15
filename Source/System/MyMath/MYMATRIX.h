@@ -7,12 +7,12 @@ class MYMATRIX
 {
 public:
     MYMATRIX() : matrix(DirectX::XMMatrixIdentity()) {}
-    MYMATRIX(DirectX::XMFLOAT4X4 f4x4)
+    MYMATRIX(const DirectX::XMFLOAT4X4 f4x4)
     {
         this->matrix = DirectX::XMLoadFloat4x4(&f4x4);
     }
-    MYMATRIX(DirectX::XMMATRIX mMatrix) : matrix(mMatrix) {}
-    MYMATRIX(const MYMATRIX& mMatrix)=default; // コピーコンストラクタ
+    MYMATRIX(const DirectX::XMMATRIX mMatrix) : matrix(mMatrix) {}
+    MYMATRIX(const MYMATRIX& mMatrix) = default; // コピーコンストラクタ
 
     DirectX::XMMATRIX GetMatrix() const { return this->matrix; }
     void GetFlaot4x4(DirectX::XMFLOAT4X4& f4x4) const
