@@ -133,7 +133,16 @@ void StateMachineComponent::DrawDebugGUI()
     StateBase* state = this->state_pool[this->state_index].get();
     char buffer[1024];
     ::strncpy_s(buffer, sizeof(buffer), state->GetNameCStr(), sizeof(buffer));
-    ImGui::InputText("State Name", buffer, sizeof(buffer));
+
+    int state_i = static_cast<int>(this->state_index);
+    std::string play_state_name = this->state_name_pool[state_i];
+    if (ImGui::ComboUI("State", play_state_name, this->state_name_pool, state_i))
+    {
+        this->next_state = state_i;
+        this->state_pool[this->state_index]->End();
+        this->state_index = this->next_state;
+        this->state_pool[this->state_index]->Start();
+    }
 }
 
 #endif // DEBUG

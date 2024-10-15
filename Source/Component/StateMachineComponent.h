@@ -43,6 +43,9 @@ public:
         state_pool.emplace_back(std::move(state_Uptr));
         state->SetOwner(GetOwner());
         state->SetStateIndex(state_pool.size() - 1);
+#ifdef _DEBUG
+        state_name_pool.emplace_back(state->GetNameStr());
+#endif // _DEBUG
         return state;
     }
 private:
@@ -57,6 +60,8 @@ public:
      * デバックの情報を2D画面に出力する関数
      */
     void DrawDebugGUI()  override ;
+private:
+    std::vector<std::string> state_name_pool;
 #endif // DEBUG
 };
 
