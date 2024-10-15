@@ -122,7 +122,6 @@ void SceneGame::Initialize()
 				transform->SetScale(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
 				transform->SetPosition(DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f));
 				auto movement = object->AddComponent<MovementComponent>();
-				object->AddComponent<DebugComponent>();
 				// シェーダー設定
 				auto shader_component =
 					object->AddComponent<ModelShaderComponent>(model_shader.get());
