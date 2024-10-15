@@ -7,6 +7,7 @@
 Transform3DComponent::Transform3DComponent()
 {
 #ifdef _DEBUG
+	sphere_world_position = SphereParam(DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f), 0.1f);
 	SetIsDebugPrimitive(false);
 #endif // _DEBUG
 }
@@ -163,7 +164,13 @@ void Transform3DComponent::DrawDebugGUI()
 void Transform3DComponent::DrawDebugPrimitive()
 {
 	DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugPrimitiveRenderer();
-	debug_render->DrawSphere(this->world_position, 1.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+	this->sphere_world_position.SetCenter(GetWorldPosition());
+	debug_render->DrawSphere(this->sphere_world_position);
+}
+
+void Transform3DComponent::DrawDebugPrimitiveGUI()
+{
+	this->sphere_world_position.DrawDebugGUI("Sphere World Position");
 }
 
 #endif // _DEBUG

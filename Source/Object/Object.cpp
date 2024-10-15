@@ -134,12 +134,17 @@ void Object::DrawDebugGUI()
                     component->SetIsDebugPrimitive(is_debug_primitive);
                 }
                 ImGui::SameLine();
+                
+                if (!is_debug_primitive) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// ŠDF
+
                 label = "PrimitiveGUI##" + std::to_string(component->GetComponentID());
                 if (ImGui::CollapsingHeader(label.c_str()))
                 {
                     component->DrawDebugPrimitiveGUI();
                 }
                 ImGui::Unindent(30.0f);
+                
+                if (!is_debug_primitive) ImGui::PopStyleColor();
             }
         }
         if (!component_is_active) ImGui::PopStyleColor();

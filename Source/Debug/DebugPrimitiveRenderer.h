@@ -1,9 +1,43 @@
 #pragma once
+#ifdef _DEBUG
 
 #include <vector>
 #include <wrl.h>
+#include <string>
 #include <d3d11.h>
 #include "System/MyMath/MYMATRIX.h"
+
+using DebugPrimitiveId = size_t;
+
+static DebugPrimitiveId DebugPrimitiveAllocate()
+{
+	static DebugPrimitiveId id = 0;
+	return id++;
+}
+
+class SphereParam
+{
+public:
+	SphereParam() : color(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f)), center(), radius(0.1f), id(DebugPrimitiveAllocate()) {};
+	SphereParam(DirectX::XMFLOAT4 color, float radius) :color(color), center(), radius(radius), id(DebugPrimitiveAllocate()) {};
+
+	DirectX::XMFLOAT4 GetColor() { return this->color; }
+	DirectX::XMFLOAT3 GetCenter() { return this->center; }
+	float GetRadius() { return this->radius; }
+	float GetColor(float radius) { this->radius = radius; }
+	bool GetIsDraw() { return this->is_draw; }
+	void SetColor(DirectX::XMFLOAT4 color) { this->color = color; }
+	void SetCenter(DirectX::XMFLOAT3 center) { this->center = center; }
+	void SetRadius(float radius) { this->radius = radius; }
+	void SetIsDraw(bool is_draw) { this->is_draw = is_draw; }
+	void DrawDebugGUI(std::string header_name);
+private:
+	DirectX::XMFLOAT4	color;
+	DirectX::XMFLOAT3	center;
+	float				radius;
+	DebugPrimitiveId	id;
+	bool is_draw = true;
+};
 
 class DebugPrimitiveRenderer
 {
@@ -17,6 +51,8 @@ public:
 
 	// ‹…•`‰æ
 	void DrawSphere(const DirectX::XMFLOAT3& center, float radius, const DirectX::XMFLOAT4& color);
+	// ‹…•`‰æ
+	void DrawSphere(SphereParam sphere_param);
 
 	// ‰~’Œ•`‰æ
 	void DrawCylinder(const DirectX::XMFLOAT3& position, float radius, float height, const DirectX::XMFLOAT4& color);
@@ -68,3 +104,5 @@ private:
 	UINT	sphere_vertex_count = 0;
 	UINT	cylinder_vertex_count = 0;
 };
+
+#endif // _DEBUG

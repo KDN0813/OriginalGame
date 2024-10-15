@@ -1,6 +1,10 @@
 #pragma once
 #include "Component.h"
 #include <DirectXMath.h>
+#ifdef _DEBUG
+#include "Debug/DebugPrimitiveRenderer.h"
+#endif // _DEBUG
+
 
 class Transform3DComponent : public Component
 {
@@ -53,8 +57,14 @@ private:
     /**
     * デバックの情報を3D画面上に出力する関数
     */
-    void DrawDebugPrimitive();
+    void DrawDebugPrimitive() override;
+    /**
+    * デバッグプリミティブ表示用ImGui
+    */
+    void DrawDebugPrimitiveGUI() override;
     // デバッグプリミティブを表示する
     bool IsDebugPrimitive()override { return true; }
+private:
+    SphereParam sphere_world_position;
 #endif // _DEBUG
 };

@@ -1,7 +1,33 @@
+#ifdef _DEBUG
+
 #include <stdio.h>
 #include <memory>
+#include <imgui.h>
 #include "System/Misc.h"
 #include "Debug/DebugPrimitiveRenderer.h"
+
+void SphereParam::DrawDebugGUI(std::string header_name)
+{
+	header_name += std::to_string(id);
+
+	ImGui::Indent(30.0f);
+	std::string label;
+	label = "##Sphere" + std::to_string(id);
+	ImGui::Checkbox(label.c_str(), &is_draw);
+	ImGui::SameLine();
+	if (!this->is_draw) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// ŠDF
+	if (ImGui::CollapsingHeader(header_name.c_str()))
+	{
+		label = "Color##Sphere" + std::to_string(id);
+		ImGui::ColorEdit4(label.c_str(), &this->color.x);
+		label = "Center##Sphere" + std::to_string(id);
+		ImGui::DragFloat3(label.c_str(), &this->center.x, 0.1f);
+		label = "Radius##Sphere" + std::to_string(id);
+		ImGui::DragFloat(label.c_str(), &this->radius, 0.01f);
+	}
+	if (!this->is_draw) ImGui::PopStyleColor();
+	ImGui::Unindent(30.0f);
+}
 
 DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 {
@@ -207,6 +233,16 @@ void DebugPrimitiveRenderer::DrawSphere(const DirectX::XMFLOAT3& center, float r
 	spheres.emplace_back(sphere);
 }
 
+void DebugPrimitiveRenderer::DrawSphere(SphereParam sphere_param)
+{
+	if (!sphere_param.GetIsDraw()) return;
+	Sphere sphere;
+	sphere.center = sphere_param.GetCenter();
+	sphere.radius = sphere_param.GetRadius();
+	sphere.color = sphere_param.GetColor();
+	spheres.emplace_back(sphere);
+}
+
 // ‰~’Œ•`‰æ
 void DebugPrimitiveRenderer::DrawCylinder(const DirectX::XMFLOAT3& position, float radius, float height, const DirectX::XMFLOAT4& color)
 {
@@ -362,3 +398,5 @@ void DebugPrimitiveRenderer::CreateCylinderMesh(ID3D11Device* device, float radi
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
+
+#endif
