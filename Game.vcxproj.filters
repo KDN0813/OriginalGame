@@ -135,9 +135,6 @@
     <ClInclude Include="Source\Debug\DebugManager.h">
       <Filter>Source\Debug\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\GamePad.h">
       <Filter>Source\input</Filter>
     </ClInclude>
@@ -204,9 +201,6 @@
     <ClInclude Include="Source\Debug\ImGuiHelper.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ConstantManager.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\Alias\OwnerAlias.h">
       <Filter>Source\System</Filter>
     </ClInclude>
@@ -270,6 +264,15 @@
     <ClInclude Include="Source\System\MyHash.h">
       <Filter>Source\System</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ConstantManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Debug\DebugComponent.h">
+      <Filter>Source\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -286,12 +289,6 @@
     </ClCompile>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
       <Filter>External\DirectXTex</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Main.cpp">
-      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\Logger.cpp">
       <Filter>Source\System</Filter>
@@ -424,6 +421,15 @@
     </ClCompile>
     <ClCompile Include="Source\StateMachine\TransitionJudgementDerived.cpp">
       <Filter>Source\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Debug\DebugComponent.cpp">
+      <Filter>Source\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
