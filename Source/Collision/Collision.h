@@ -23,6 +23,15 @@ struct HitResult
 class Collision
 {
 public:
+    // ‰~‚Æ‰~‚Ì“–‚½‚è”»’è
+    static bool IntersectCircleVsCircle(
+        DirectX::XMFLOAT2 positionA
+        , float radiusA
+        , DirectX::XMFLOAT2 positionB
+        , float radiusB
+        , DirectX::XMFLOAT2 out_positionB
+    );
+
     // ‹…‚Æ‹…‚ÌŒğ·”»’è
     static bool IntersectSphareVsSphere(
         DirectX::XMFLOAT3 positionA
