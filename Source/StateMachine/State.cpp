@@ -6,7 +6,7 @@ StateTransitionInfo::StateTransitionInfo(
     std::string next_state_name,
     std::unique_ptr<TransitionJudgementBase> judgement
 )
-    :next_state_index(-1),
+    :next_state_index(INVALID_STATE_INDEX),
     next_state_name(next_state_name),
     judgement(std::move(judgement))
 {

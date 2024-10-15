@@ -122,13 +122,19 @@ void SceneGame::Initialize()
 				for (int y = 0; y < 10; ++y)
 				{
 					auto enemy = object_manager.Create();
-					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
-					model->PlayAnimation(EnemyCT::ANIMATION::MOVE_FWD, true);
 					auto transform = enemy->AddComponent<Transform3DComponent>();
 					auto enemy_component = enemy->AddComponent<EnemyComponent>();
 					auto movement = enemy->AddComponent<MovementComponent>();
-					auto state_machine = enemy->AddComponent<StateMachineComponent>();
+					// アニメーション設定
+					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
+					model->PlayAnimation(EnemyCT::ANIMATION::MOVE_FWD, true);
+					{
+						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
+						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
+						model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
+					}
 					// ステート設定
+					auto state_machine = enemy->AddComponent<StateMachineComponent>();
 					{
 						auto idle_state = state_machine->RegisterState<IdelState>();
 						auto wander_state = state_machine->RegisterState<WanderState>();

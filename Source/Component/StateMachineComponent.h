@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "StateMachine/State.h"
+#include "System/MyHash.h"
 
 class StateMachineComponent : public Component
 {
@@ -22,7 +23,8 @@ public:
     void ChangeState(StateIndex state_index);
 
     void SetDefaultState(StateIndex state_index);
-    void SetDefaultState(const char* state_name);
+    void SetDefaultState(std::string state_name);
+    void SetDefaultState(MyHash state_name);
 
     // 更新関数の前の遷移判定
     void PreTransitionJudgemen(StateBase* state);
@@ -30,8 +32,8 @@ public:
     void PostTransitionJudgemen(StateBase* state);
 
     // ステートを名前検索する
-    StateBase* FindState(std::string name);
-    StateIndex FindStateIndex(std::string name);
+    StateBase* FindState(MyHash name);
+    StateIndex FindStateIndex(MyHash name);
 
     template<is_State State, typename ... Arguments>
     State* RegisterState(Arguments ... args)
@@ -45,9 +47,9 @@ public:
     }
 private:
     std::vector<std::unique_ptr<StateBase>> state_pool;
-    StateIndex state_index = 0;
-    StateIndex next_state = 0;
-    StateIndex default_state = 0;
+    StateIndex state_index = INVALID_STATE_INDEX;
+    StateIndex next_state = INVALID_STATE_INDEX;
+    StateIndex default_state = INVALID_STATE_INDEX;
 
 #ifdef _DEBUG
 public:

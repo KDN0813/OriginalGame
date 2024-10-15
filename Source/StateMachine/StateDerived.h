@@ -8,7 +8,7 @@ class EnemyComponent;
 class DefaultState : public StateBase
 {
 public:
-    DefaultState() {}
+    DefaultState() :StateBase("DefaultState") {}
     ~DefaultState() override {};
 
     // 開始関数
@@ -17,8 +17,6 @@ public:
     void Update(float elapsed_time) override {};
     // 終了関数
     void End() override {};
-
-    const char* GetName() override { return "DefaultState"; };
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
@@ -33,15 +31,13 @@ public:
 class IdelState : public StateBase
 {
 public:
-    IdelState() {}
+    IdelState() :StateBase("IdelState") {}
     ~IdelState() override {};
 
     void Start() override {};
 
     // 更新関数
     void Update(float elapsed_time) override {};
-
-    const char* GetName() override { return "IdelState"; };
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
@@ -59,7 +55,7 @@ public:
 class WanderState : public StateBase
 {
 public:
-    WanderState() {}
+    WanderState() :StateBase("WanderState") {}
     ~WanderState() override {};
 
     // 開始関数
@@ -69,8 +65,6 @@ public:
     void Update(float elapsed_time) override {};
     // 終了関数
     void End() override;
-
-    const char* GetName() override { return "WanderState"; };
 
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する

@@ -3,25 +3,29 @@
 #include <memory>
 #include <string>
 #include "System/Alias/OwnerAlias.h"
+#include "System/MyHash.h"
 #include "StateMachine/TransitionJudgement.h"
 
+static constexpr size_t INVALID_STATE_INDEX = SIZE_MAX;   // 無効なステートのインデックス(ステートのインデックスの初期値・エラーコードに使用する)
 using StateIndex = size_t;
 
 // ステートの遷移情報
 class StateTransitionInfo
 {
 public:
+public:
     StateTransitionInfo(std::string next_state_name, std::unique_ptr<TransitionJudgementBase> judgement);
     ~StateTransitionInfo() {};
 
     StateIndex GetNextStateIndex() { return this->next_state_index; }
-    std::string GetNextStateName() { return this->next_state_name; }
-    const char* GetNextStateNameC() { return this->next_state_name.c_str(); }
+    MyHash GetNextStateNameHash() { return this->next_state_name; }
+    std::string GetNextStateNameStr() { return this->next_state_name.GetString(); }
+    const char* GetNextStateNameCstr() { return this->next_state_name.GetString().c_str(); }
     TransitionJudgementBase* GetJudgement() { return judgement.get(); }
     void SetNextStateIndex(StateIndex index) { this->next_state_index = index; }
 private:
     StateIndex next_state_index;                                // 遷移先のステートのインデックス
-    std::string next_state_name;                                // 遷移先のステートの名前
+    MyHash next_state_name;                                // 遷移先のステートの名前
     std::unique_ptr<TransitionJudgementBase> judgement;	// 遷移判定
 };
 
@@ -34,7 +38,8 @@ public:
         PostUpdate,     // 更新後の状態
     };
 public:
-    StateBase(){}
+    StateBase() = delete;
+    StateBase(std::string name) :name(name) {};
     virtual ~StateBase() {};
 
     // 開始関数
@@ -45,13 +50,15 @@ public:
     // 終了関数
     virtual void End() {};
 
-    virtual const char* GetName() = 0;
-
     // 遷移準備が完了しているか
     // 遷移判定クラスで遷移準備を待つ設定の時に使用する
     virtual bool IsTransitionReady() { return true; };
 
     void SetOwner(OwnerPtr owner);
+
+    const char* GetNameCStr() { return name.GetString().c_str(); };
+    std::string GetNameStr() { return name.GetString(); };
+    MyHash GetHash() { return name; };
 
     // 遷移判定のロジックを実行
     // `judgemenのshould_reverse` フラグがtrueなら、遷移判定結果を反転する
@@ -69,6 +76,7 @@ protected:
     OwnerWPtr owner_Wptr;
 private:
     StateIndex state_index = -1;
+    MyHash name;
     std::vector<std::unique_ptr<StateTransitionInfo>> pre_update_judgement_pool;     // Update前に遷移判定を行う
     std::vector<std::unique_ptr<StateTransitionInfo>> post_update_judgement_pool;    // Update後に遷移判定を行う
 #ifdef _DEBUG

@@ -34,12 +34,6 @@ void EnemyComponent::Update(float elapsed_time)
 	
 	// 目的地点へ移動
 	MoveToTarget(elapsed_time, transform, speed_rate);
-	
-	// 目的地へ着いた
-	if (IsAtTarget(distSq))
-	{
-		SetRandomTargetPosition();
-	}
 }
 
 void EnemyComponent::Move(float vx, float vz, float speed)
