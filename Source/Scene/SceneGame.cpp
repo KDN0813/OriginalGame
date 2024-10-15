@@ -13,6 +13,7 @@
 #include "ConstantManager.h"
 #include "Input/GamePad.h"
 
+#include "System/MyMath/MyMathf.h"
 #include "Collision/Collision.h"
 
 #include "Component/ModelComponent.h"
@@ -117,49 +118,49 @@ void SceneGame::Initialize()
 
 		// 敵
 		{
-			for (int x = 0; x < 20; ++x)
+			float territory_range = 45.0f;
+			for (int i = 0; i < 1000; ++i)
 			{
-				for (int y = 0; y < 20; ++y)
+				auto enemy = object_manager.Create();
+				auto transform = enemy->AddComponent<Transform3DComponent>();
+				auto enemy_component = enemy->AddComponent<EnemyComponent>();
+				auto movement = enemy->AddComponent<MovementComponent>();
+				// アニメーション設定
+				auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
+				model->PlayAnimation(EnemyCT::ANIMATION::MOVE_FWD, true);
 				{
-					auto enemy = object_manager.Create();
-					auto transform = enemy->AddComponent<Transform3DComponent>();
-					auto enemy_component = enemy->AddComponent<EnemyComponent>();
-					auto movement = enemy->AddComponent<MovementComponent>();
-					// アニメーション設定
-					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
-					model->PlayAnimation(EnemyCT::ANIMATION::MOVE_FWD, true);
-					{
-						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
-						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
-						model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
-						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
-					}
-					// ステート設定
-					auto state_machine = enemy->AddComponent<StateMachineComponent>();
-					{
-						auto idle_state = state_machine->RegisterState<IdelState>();
-						idle_state->AddStateTransition(std::make_unique<StateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
-						auto wander_state = state_machine->RegisterState<WanderState>();
-						wander_state->AddStateTransition(std::make_unique<StateTransitionInfo>("IdelState",std::make_unique<Judgement_IsAtTarget>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
-					
-						state_machine->SetDefaultState("WanderState");
-					}
-
-					float offset = 2.0f;
-
-					DirectX::XMFLOAT3 pos =
-					{
-						offset * x,
-						0.0f,
-						offset * y ,
-					};
-					transform->SetPosition(pos);
-					transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
-
-					// シェーダー設定
-					auto shader_component =
-						enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
+					model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
+					model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
+					model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
+					model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
 				}
+				// ステート設定
+				auto state_machine = enemy->AddComponent<StateMachineComponent>();
+				{
+					auto idle_state = state_machine->RegisterState<IdelState>();
+					idle_state->AddStateTransition(std::make_unique<StateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
+					auto wander_state = state_machine->RegisterState<WanderState>();
+					wander_state->AddStateTransition(std::make_unique<StateTransitionInfo>("IdelState", std::make_unique<Judgement_IsAtTarget>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
+
+					state_machine->SetDefaultState("WanderState");
+				}
+
+				float offset = 2.0f;
+
+				float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
+				float range = MyMathf::RandomRange(0.0f, territory_range);
+				DirectX::XMFLOAT3 pos =
+				{
+					sinf(theta)* range,
+					0.0f,
+					cosf(theta)* range ,
+				};
+				transform->SetPosition(pos);
+				transform->SetScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+
+				// シェーダー設定
+				auto shader_component =
+					enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
 			}
 		}
 
