@@ -105,6 +105,8 @@ public:
 		return component;
 	}
 
+	std::shared_ptr<Object> AddChildren();
+
 	/**
 	 * @fn Update
 	 * @brief XVˆ—
@@ -129,9 +131,11 @@ public:
 	void SetName(const char* name) { this->name = name; }
 	const std::string GetName() const { return this->name; }
 	const char* GetNameCStr() const { return this->name.c_str(); }
+	std::shared_ptr<Object> GetParent() { return this->parent_Wptr.lock(); }
 	const bool& GetIsActive() { return this->is_active; }
 	const bool& GetIsRemove() { return this->is_remove; }
 	void SetIsActive(const bool is_active) { this->is_active = is_active; }
+	void SetParent(std::shared_ptr<Object> parent) { this->parent_Wptr = parent; }
 
 private:
 	/**
@@ -145,6 +149,8 @@ private:
 	bool is_remove = false;
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
 	ComponentVector component_vec;
+	std::vector<Object> children;
+	std::weak_ptr<Object> parent_Wptr;
 
 #ifdef _DEBUG
 public:

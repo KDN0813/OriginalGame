@@ -8,6 +8,14 @@
 #include <string>
 #include "Component/Component.h"
 
+std::shared_ptr<Object> Object::AddChildren()
+{
+    std::shared_ptr<Object> object = std::make_unique<Object>();
+    object->SetParent(shared_from_this());
+    this->children.emplace_back(object);
+    return object;
+}
+
 void Object::Update(float elapsedTime)
 {
     // Hack コンポーネント追加・削除があったときだけ実行するようにしたら軽くなるかも
