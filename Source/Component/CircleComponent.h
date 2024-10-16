@@ -26,19 +26,22 @@ public:
 
     // ŠeŽíŽæ“¾EÝ’èŠÖ”
     COLLISION_TYPE GetCollisionType() const { return this->collision_type; }
-    TARGET_TYPE GetTargetType() const { return this->target_type; }
+    OBJECT_TYPE GetTargetType() const { return this->target_type; }
+    OBJECT_TYPE GetSelfType() const { return this->self_type; }
     float GetRadius() const { return this->radius; }
     CircleParam GetCircleParam();
     bool GetHitFlag() const { return this->hit_flag; }
     void SetCollisionType(COLLISION_TYPE type) { this->collision_type = type; }
-    void SetTargetType(TARGET_TYPE type) { this->target_type = type; }
+    void SetTargetType(OBJECT_TYPE type) { this->target_type = type; }
+    void SetSelfType(OBJECT_TYPE type) { this->self_type = type; }
     void SetRadius(float radius) { this->radius = radius; }
     void SetHitFlag(bool hit) { this->hit_flag = hit; }
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }
 
 private:
     COLLISION_TYPE collision_type = COLLISION_TYPE::NONE;
-    TARGET_TYPE target_type = TARGET_TYPE::NONE;
+    OBJECT_TYPE target_type = OBJECT_TYPE::NONE;
+    OBJECT_TYPE self_type = OBJECT_TYPE::NONE;
     float radius = 1.0f;    // ‰~‚Ì”¼Œa
     bool hit_flag = false;
     CircleHitResult hit_result;

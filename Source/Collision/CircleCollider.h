@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <set>
+#include "Collision/CollisionParam.h"
 
 class CircleComponent;
 
@@ -9,7 +10,7 @@ class CircleComponent;
 class CircleCollider
 {
 public:
-    CircleCollider() {};
+    CircleCollider();
     ~CircleCollider() {};
 
     // 外部で呼ぶ更新関数
@@ -24,8 +25,14 @@ private:
     // 既に削除されたcircleのコンテナから取り除く関数
     void RemoveDeletedCircle();
 private:
-    std::vector<std::weak_ptr<CircleComponent>> circle_attacker_pool;   // ぶつける側
-    std::vector<std::weak_ptr<CircleComponent>> circle_deffender_pool;  // ぶつけられる側
-    std::vector<std::weak_ptr<CircleComponent>> circle_remove_pool;  // ぶつけられる側
+    // 同じOBJECT_TYPE (例: PLAYERやENEMY) に属する
+    // ぶつける側 (ATTACKER) とぶつけられる側 (DEFENDER) のデータを保持する構造体
+    struct CircleCollision
+    {
+        std::vector<std::weak_ptr<CircleComponent>> circle_attacker_pool;   // ぶつける側 (ATTACKER)
+        std::vector<std::weak_ptr<CircleComponent>> circle_defender_pool;   // ぶつけられる側 (DEFENDER)
+    };
+private:
+    std::vector<CircleCollision> circle_collision_pool;
 };
 

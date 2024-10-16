@@ -17,10 +17,9 @@ enum class COLLISION_TYPE : CollisionType
     NONE,
 };
 
-// 対象となるターゲットの種類を定義する列挙型
-// ATTACKER（攻撃者）および DEFENDER（防御者）で使用し、
-// それぞれどのタイプの相手をターゲットとするかを指定する
-enum class TARGET_TYPE : TargetType
+// オブジェクトの種類を定義する列挙型
+// 相手のターゲットを指定する時にも使用する
+enum class OBJECT_TYPE : TargetType
 {
     PLAYER = 0,         // プレイヤーをターゲットとする
     ENEMY,              // 敵をターゲットとする

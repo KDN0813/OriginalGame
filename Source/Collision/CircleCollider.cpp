@@ -4,6 +4,11 @@
 #include "Object/Object.h"
 #include "Component/CircleComponent.h"
 
+CircleCollider::CircleCollider()
+{
+    this->circle_collision_pool.resize(static_cast<size_t>(OBJECT_TYPE::MAX));
+}
+
 void CircleCollider::Update()
 {
     CheckCollision();
@@ -12,14 +17,17 @@ void CircleCollider::Update()
 void CircleCollider::AddCircle(std::shared_ptr<CircleComponent>& circle)
 {
     if (!circle) return;
-    
+    if (circle->GetCollisionType() <= COLLISION_TYPE::MAX) return;
+
+    CircleCollision& circle_collision = this->circle_collision_pool[static_cast<size_t>(circle->GetSelfType())];
+
     if (circle->GetCollisionType() == COLLISION_TYPE::ATTACKER)
     {
-        this->circle_attacker_pool.emplace_back(circle);
+        circle_collision.circle_attacker_pool.emplace_back(circle);
     }
     else if (circle->GetCollisionType() == COLLISION_TYPE::DEFENDER)
     {
-        this->circle_deffender_pool.emplace_back(circle);
+        circle_collision.circle_defender_pool.emplace_back(circle);
     }
 }
 
