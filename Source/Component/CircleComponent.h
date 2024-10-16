@@ -1,31 +1,6 @@
 #pragma once
 #include "Component.h"
-
-using CollisionType = unsigned int;
-using TargetType = unsigned int;
-
-// コライダーの種類を定義する列挙型
-// オブジェクトが衝突の際にどの役割を果たすかを指定する
-enum COLLISION_TYPE : CollisionType
-{
-    COLLISION_TYPE_NONE = 0,                                                        // 当たり判定なし
-    COLLISION_TYPE_ATTACKER = 1 << 0,                                               // ぶつける側（アクティブに衝突を引き起こすオブジェクト）
-    COLLISION_TYPE_DEFENDER = 1 << 1,                                               // ぶつけられる側（衝突されるオブジェクト）
-    COLLISION_TYPE_BOTH = COLLISION_TYPE_ATTACKER | COLLISION_TYPE_DEFENDER,        // 両方に当たり判定がある場合（ぶつける側とぶつけられる側の両方）
-    COLLISION_TYPE_DEFAULT = COLLISION_TYPE_BOTH,                                   // デフォルトでは両方に判定を行う
-};
-
-// 対象となるターゲットの種類を定義する列挙型
-// ATTACKER（攻撃者）および DEFENDER（防御者）で使用し、
-// それぞれどのタイプの相手をターゲットとするかを指定する
-enum TARGET_TYPE : TargetType
-{
-    TARGET_NONE = 0,                                // ターゲットなし
-    TARGET_PLAYER = 1 << 0,                         // プレイヤーをターゲットとする
-    TARGET_ENEMY = 1 << 1,                          // 敵をターゲットとする
-    TARGET_ALL = TARGET_PLAYER | TARGET_ENEMY,      // すべてのターゲット
-    TARGET_DEFAULT = TARGET_ALL                     // デフォルトではすべてのターゲットを指定
-};
+#include "Collision/CollisionParam.h"
 
 // 円の当たり判定用コンポーネント
 class CircleComponent : public Component
@@ -50,12 +25,15 @@ public:
     // 各種取得・設定関数
     CollisionType GetCollisionType() { return this->collision_type; }
     TargetType GetTargetType() { return this->target_type; }
+    float GetRadius() { return this->radius; }
     void SetCollisionType(COLLISION_TYPE type) { this->collision_type = type; }
     void SetTargetType(TARGET_TYPE type) { this->target_type = type; }
+    void SetRadius(float radius) { this->radius = radius; }
 
 private:
     CollisionType collision_type = COLLISION_TYPE::COLLISION_TYPE_DEFAULT;
     TargetType target_type = TARGET_TYPE::TARGET_DEFAULT;
+    float radius = 1.0f;    // 円の半径
 
 #ifdef _DEBUG
 public:

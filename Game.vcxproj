@@ -122,6 +122,7 @@
     <ClInclude Include="Source\Camera\CameraControllerDerived.h" />
     <ClInclude Include="Source\Collision\CircleCollider.h" />
     <ClInclude Include="Source\Collision\Collision.h" />
+    <ClInclude Include="Source\Collision\CollisionParam.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\CircleComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />

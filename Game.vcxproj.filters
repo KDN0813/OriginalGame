@@ -282,6 +282,9 @@
     <ClInclude Include="Source\ConstantManager.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParam.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
