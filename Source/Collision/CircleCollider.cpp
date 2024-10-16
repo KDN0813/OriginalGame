@@ -13,11 +13,11 @@ void CircleCollider::AddCircle(std::shared_ptr<CircleComponent>& circle)
 {
     if (!circle) return;
     
-    if (circle->GetCollisionType() & COLLISION_TYPE::COLLISION_TYPE_ATTACKER)
+    if (circle->GetCollisionType() == COLLISION_TYPE::ATTACKER)
     {
         this->circle_attacker_pool.emplace_back(circle);
     }
-    else if (circle->GetCollisionType() & COLLISION_TYPE::COLLISION_TYPE_DEFENDER)
+    else if (circle->GetCollisionType() == COLLISION_TYPE::DEFENDER)
     {
         this->circle_deffender_pool.emplace_back(circle);
     }

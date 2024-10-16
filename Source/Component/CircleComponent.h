@@ -25,8 +25,8 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
     // ŠeŽíŽæ“¾EÝ’èŠÖ”
-    CollisionType GetCollisionType() const { return this->collision_type; }
-    TargetType GetTargetType() const { return this->target_type; }
+    COLLISION_TYPE GetCollisionType() const { return this->collision_type; }
+    TARGET_TYPE GetTargetType() const { return this->target_type; }
     float GetRadius() const { return this->radius; }
     CircleParam GetCircleParam();
     bool GetHitFlag() const { return this->hit_flag; }
@@ -37,8 +37,8 @@ public:
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }
 
 private:
-    CollisionType collision_type = COLLISION_TYPE::COLLISION_TYPE_DEFAULT;
-    TargetType target_type = TARGET_TYPE::TARGET_DEFAULT;
+    COLLISION_TYPE collision_type = COLLISION_TYPE::NONE;
+    TARGET_TYPE target_type = TARGET_TYPE::NONE;
     float radius = 1.0f;    // ‰~‚Ì”¼Œa
     bool hit_flag = false;
     CircleHitResult hit_result;
