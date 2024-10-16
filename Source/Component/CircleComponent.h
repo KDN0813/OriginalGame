@@ -2,6 +2,8 @@
 #include "Component.h"
 #include "Collision/CollisionParam.h"
 
+class Transform3DComponent;
+
 // 円の当たり判定用コンポーネント
 class CircleComponent : public Component
 {
@@ -23,9 +25,10 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
     // 各種取得・設定関数
-    CollisionType GetCollisionType() { return this->collision_type; }
-    TargetType GetTargetType() { return this->target_type; }
-    float GetRadius() { return this->radius; }
+    CollisionType GetCollisionType() const { return this->collision_type; }
+    TargetType GetTargetType() const { return this->target_type; }
+    float GetRadius() const { return this->radius; }
+    CircleParam GetCircleParam();
     void SetCollisionType(COLLISION_TYPE type) { this->collision_type = type; }
     void SetTargetType(TARGET_TYPE type) { this->target_type = type; }
     void SetRadius(float radius) { this->radius = radius; }
@@ -35,6 +38,8 @@ private:
     TargetType target_type = TARGET_TYPE::TARGET_DEFAULT;
     float radius = 1.0f;    // 円の半径
 
+private:
+    std::weak_ptr<Transform3DComponent> transform_Wptr;
 #ifdef _DEBUG
 public:
     /**

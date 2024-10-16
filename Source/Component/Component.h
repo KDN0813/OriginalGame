@@ -38,7 +38,7 @@ public:
     
     // Šeæ“¾Eİ’èŠÖ”
     void SetOwner(std::shared_ptr<Object> owner) { this->owner = owner; }
-    std::shared_ptr<Object> GetOwner() { return this->owner.lock(); }
+    std::shared_ptr<Object> GetOwner() const { return this->owner.lock(); }
     const unsigned int GetComponentID() { return this->component_id; }
     void SetComponentID(const int unique_id) { this->component_id = unique_id; }
     bool GetIsActive() { return this->is_active; }
