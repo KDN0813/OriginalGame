@@ -142,7 +142,7 @@ bool Collision::IntersectRayVsModel(
     MYVECTOR3 World_start,
     MYVECTOR3 World_end,
     const ModelComponent* model,
-    HitResult& result
+    RayHitResult& result
 )
 {
     // ƒ[ƒ‹ƒh‹óŠÔ‚ÌƒŒƒC‚Ì’·‚³

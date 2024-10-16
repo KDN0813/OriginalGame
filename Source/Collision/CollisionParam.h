@@ -28,5 +28,24 @@ enum TARGET_TYPE : TargetType
 
 class CircleParam
 {
-    DirectX::XMFLOAT3
+    DirectX::XMFLOAT3 center;
+    float radius;
+};
+
+/**
+* レイのヒット結果
+*
+* .\param position レイととポリゴンの交点
+* .\param normal 衝突したポリゴンの法線ベクトル
+* .\param rotation 回転量
+* .\param distance レイの始点から交点までの距離
+* .\param material_index 衝突したポリゴンのマテリアル番号
+*/
+struct RayHitResult
+{
+    DirectX::XMFLOAT3   position = {};
+    DirectX::XMFLOAT3   normal = {};
+    DirectX::XMFLOAT3   rotation = {};
+    float               distance = 0.0f;
+    int                 material_index = -1;
 };

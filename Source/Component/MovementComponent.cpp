@@ -198,7 +198,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 #endif // _DEBUG	デバッグプリミティブ表示
 
 				// レイキャストによる地面判定
-				HitResult hit;
+				RayHitResult hit;
 				if (Collision::IntersectRayVsModel(Start, End, stage_model.get(), hit))
 				{
 					transform->SetLocalPosition(hit.position);
@@ -247,7 +247,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 #endif // _DEBUG
 
 			// レイキャスト壁判定
-			HitResult hit;
+			RayHitResult hit;
 			if (Collision::IntersectRayVsModel(Start, End, stage_model.get(), hit))
 			{
 				// 壁からレイの終点までのベクトル
@@ -264,7 +264,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				MYVECTOR3 Correction_positon = Normal * Dot + End;
 				
 				// 壁ずり方向へのレイキャスト
-				HitResult hit2;
+				RayHitResult hit2;
 				if (!Collision::IntersectRayVsModel(Start, Correction_positon, stage_model.get(), hit2))
 				{
 					DirectX::XMFLOAT3 pos = {};

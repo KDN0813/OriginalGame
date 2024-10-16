@@ -2,23 +2,7 @@
 #include "System/MyMath/MYVECTOR3.h"
 #include "Component/ModelComponent.h"
 
- /**
- * ヒット結果
- * 
- * .\param position レイととポリゴンの交点
- * .\param normal 衝突したポリゴンの法線ベクトル
- * .\param rotation 回転量
- * .\param distance レイの始点から交点までの距離
- * .\param material_index 衝突したポリゴンのマテリアル番号
- */
-struct HitResult
-{
-    DirectX::XMFLOAT3   position        = {};
-    DirectX::XMFLOAT3   normal          = {};
-    DirectX::XMFLOAT3   rotation          = {};
-    float               distance        = 0.0f;
-    int                 material_index   = -1;
-};
+#include "Collision/CollisionParam.h"
 
 class Collision
 {
@@ -75,7 +59,7 @@ public:
         MYVECTOR3 World_start,
         MYVECTOR3 World_end,
         const ModelComponent* model,
-        HitResult& result
+        RayHitResult& result
     );
 };
 
