@@ -44,6 +44,16 @@ public:
     // —Dæ“x
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
+    // ŠeŽíŽæ“¾EÝ’èŠÖ”
+    COLLISION_TYPE GetCollisionType() { return this->collision_type; }
+    TARGET_TYPE GetTargetType() { return this->target_type; }
+    void SetCollisionType(COLLISION_TYPE type) { this->collision_type = type; }
+    void SetTargetType(TARGET_TYPE type) { this->target_type = type; }
+
+private:
+    COLLISION_TYPE collision_type = COLLISION_TYPE::DEFAULT;
+    TARGET_TYPE target_type = TARGET_TYPE::DEFAULT;
+
 #ifdef _DEBUG
 public:
     /**
