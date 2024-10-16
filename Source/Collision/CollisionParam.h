@@ -1,4 +1,6 @@
 #pragma once
+#include <DirectXMath.h>
+#include <memory>
 
 using CollisionType = unsigned int;
 using TargetType = unsigned int;
@@ -30,6 +32,13 @@ class CircleParam
 {
     DirectX::XMFLOAT3 center;
     float radius;
+};
+
+struct CircleHitResult
+{
+    class Object;
+    DirectX::XMFLOAT2 out_position;
+    std::weak_ptr<Object> hit_object_Wptr;
 };
 
 /**
