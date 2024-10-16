@@ -55,6 +55,14 @@ void CircleCollider::CheckCollision()
 
         active_deffender_pool.emplace_back(deffender);
     }
+
+    for (std::shared_ptr<CircleComponent>& attacker : active_attacker_pool)
+    {
+        for (std::shared_ptr<CircleComponent>& deffender : active_deffender_pool)
+        {
+            // ”»’è‚ğs‚¤
+        }
+    }
 }
 
 void CircleCollider::RemoveDeletedCircle()
