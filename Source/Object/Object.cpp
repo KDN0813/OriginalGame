@@ -27,9 +27,7 @@ void Object::Update(float elapsedTime)
 
     for (auto& component : component_vec)
     {
-#ifdef _DEBUG
         if (!component->GetIsActive()) continue;
-#endif // _DEBUG
 #ifdef RELEASE_DEBUG
         component->DebugCheat();
 #endif // _DEBUG

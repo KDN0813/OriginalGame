@@ -35,7 +35,7 @@ void CircleCollider::CheckCollision()
             circle_remove_pool.emplace_back(attacker_Wptr);
             continue;
         }
-        //if (attacker);
+        if (!attacker->GetIsActive()) continue;
 
         active_attacker_pool.emplace_back(attacker);
     }
@@ -51,6 +51,8 @@ void CircleCollider::CheckCollision()
             circle_remove_pool.emplace_back(deffender_Wptr);
             continue;
         }
+        if (!deffender->GetIsActive()) continue;
+
         active_deffender_pool.emplace_back(deffender);
     }
 }
