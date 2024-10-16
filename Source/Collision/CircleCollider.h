@@ -23,6 +23,7 @@ private:
     // Šù‚Éíœ‚³‚ê‚½circle‚ÌƒRƒ“ƒeƒi‚©‚çæ‚èœ‚­ŠÖ”
     void RemoveDeletedCircle();
 private:
-    std::vector<std::weak_ptr<CircleComponent>> circle_pool;
+    std::vector<std::weak_ptr<CircleComponent>> circle_attacker_pool;   // ‚Ô‚Â‚¯‚é‘¤
+    std::vector<std::weak_ptr<CircleComponent>> circle_deffender_pool;  // ‚Ô‚Â‚¯‚ç‚ê‚é‘¤
 };
 
