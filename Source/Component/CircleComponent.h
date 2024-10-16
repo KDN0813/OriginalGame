@@ -8,11 +8,11 @@ using TargetType = unsigned int;
 // オブジェクトが衝突の際にどの役割を果たすかを指定する
 enum COLLISION_TYPE : CollisionType
 {
-    NONE = 0,                       // 当たり判定なし
-    ATTACKER = 1 << 0,              // ぶつける側（アクティブに衝突を引き起こすオブジェクト）
-    DEFENDER = 1 << 1,              // ぶつけられる側（衝突されるオブジェクト）
-    BOTH = ATTACKER | DEFENDER,     // 両方に当たり判定がある場合（ぶつける側とぶつけられる側の両方）
-    DEFAULT = BOTH,                 // デフォルトでは両方に判定を行う
+    COLLISION_TYPE_NONE = 0,                                                        // 当たり判定なし
+    COLLISION_TYPE_ATTACKER = 1 << 0,                                               // ぶつける側（アクティブに衝突を引き起こすオブジェクト）
+    COLLISION_TYPE_DEFENDER = 1 << 1,                                               // ぶつけられる側（衝突されるオブジェクト）
+    COLLISION_TYPE_BOTH = COLLISION_TYPE_ATTACKER | COLLISION_TYPE_DEFENDER,        // 両方に当たり判定がある場合（ぶつける側とぶつけられる側の両方）
+    COLLISION_TYPE_DEFAULT = COLLISION_TYPE_BOTH,                                   // デフォルトでは両方に判定を行う
 };
 
 // 対象となるターゲットの種類を定義する列挙型
@@ -20,11 +20,11 @@ enum COLLISION_TYPE : CollisionType
 // それぞれどのタイプの相手をターゲットとするかを指定する
 enum TARGET_TYPE : TargetType
 {
-    NONE = 0,                   // ターゲットなし
-    PLAYER = 1 << 0,            // プレイヤーをターゲットとする
-    ENEMY = 1 << 1,             // 敵をターゲットとする
-    ALL = PLAYER | ENEMY,       // すべてのターゲット
-    DEFAULT = ALL               // デフォルトではすべてのターゲットを指定
+    TARGET_NONE = 0,                                // ターゲットなし
+    TARGET_PLAYER = 1 << 0,                         // プレイヤーをターゲットとする
+    TARGET_ENEMY = 1 << 1,                          // 敵をターゲットとする
+    TARGET_ALL = TARGET_PLAYER | TARGET_ENEMY,      // すべてのターゲット
+    TARGET_DEFAULT = TARGET_ALL                     // デフォルトではすべてのターゲットを指定
 };
 
 // 円の当たり判定用コンポーネント
@@ -54,8 +54,8 @@ public:
     void SetTargetType(TARGET_TYPE type) { this->target_type = type; }
 
 private:
-    CollisionType collision_type = COLLISION_TYPE::DEFAULT;
-    TargetType target_type = TARGET_TYPE::DEFAULT;
+    CollisionType collision_type = COLLISION_TYPE::COLLISION_TYPE_DEFAULT;
+    TargetType target_type = TARGET_TYPE::TARGET_DEFAULT;
 
 #ifdef _DEBUG
 public:

@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <set>
 
 class CircleComponent;
 
@@ -25,5 +26,6 @@ private:
 private:
     std::vector<std::weak_ptr<CircleComponent>> circle_attacker_pool;   // ‚Ô‚Â‚¯‚é‘¤
     std::vector<std::weak_ptr<CircleComponent>> circle_deffender_pool;  // ‚Ô‚Â‚¯‚ç‚ê‚é‘¤
+    std::vector<std::weak_ptr<CircleComponent>> circle_remove_pool;  // ‚Ô‚Â‚¯‚ç‚ê‚é‘¤
 };
 
