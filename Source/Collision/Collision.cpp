@@ -2,15 +2,19 @@
 #include "Model/ModelResource.h"
 
 // 円と円の当たり判定
-bool Collision::IntersectCircleVsCircle(DirectX::XMFLOAT2 centerA, float radiusA, DirectX::XMFLOAT2 centerB, float radiusB, DirectX::XMFLOAT2 out_positionB)
+bool Collision::IntersectCircleVsCircle(
+    CircleParam circleA
+    , CircleParam circleB
+    , CircleHitResult& hit_result
+)
 {
     // AからBの単位ベクトルを算出
-    MYVECTOR2 CenterA = centerA;
-    MYVECTOR2 CenterB = centerB;
+    MYVECTOR2 CenterA = circleA.center;
+    MYVECTOR2 CenterB = circleA.center;
     MYVECTOR2 vec = CenterA - CenterB;
 
     // 距離判定
-    float range = radiusA + radiusB;
+    float range = circleA.radius + circleA.radius;
     // LengthSpが二乗した値なのでrangeも二乗する
     if (vec.LengthSq() > range * range)
     {
@@ -19,7 +23,7 @@ bool Collision::IntersectCircleVsCircle(DirectX::XMFLOAT2 centerA, float radiusA
 
     // AがBを押し出す
     MYVECTOR2 Out_positionB = CenterB + (vec * range);
-    Out_positionB.GetFlaot2(out_positionB);
+    Out_positionB.GetFlaot2(hit_result.out_position);
 
     return true;
 }

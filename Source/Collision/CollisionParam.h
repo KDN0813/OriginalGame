@@ -28,9 +28,9 @@ enum TARGET_TYPE : TargetType
     TARGET_DEFAULT = TARGET_ALL                     // デフォルトではすべてのターゲットを指定
 };
 
-class CircleParam
+struct CircleParam
 {
-    DirectX::XMFLOAT3 center;
+    DirectX::XMFLOAT2 center;
     float radius;
 };
 

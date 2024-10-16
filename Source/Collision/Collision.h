@@ -9,11 +9,9 @@ class Collision
 public:
     // ‰~‚Æ‰~‚Ì“–‚½‚è”»’è
     static bool IntersectCircleVsCircle(
-        DirectX::XMFLOAT2 centerA
-        , float radiusA
-        , DirectX::XMFLOAT2 centerB
-        , float radiusB
-        , DirectX::XMFLOAT2 out_positionB
+        CircleParam circleA
+        , CircleParam circleB
+        , CircleHitResult& hit_result
     );
 
     // ‹…‚Æ‹…‚ÌŒğ·”»’è
