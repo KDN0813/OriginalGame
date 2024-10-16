@@ -29,15 +29,19 @@ public:
     TargetType GetTargetType() const { return this->target_type; }
     float GetRadius() const { return this->radius; }
     CircleParam GetCircleParam();
+    bool GetHitFlag() const { return this->hit_flag; }
     void SetCollisionType(COLLISION_TYPE type) { this->collision_type = type; }
     void SetTargetType(TARGET_TYPE type) { this->target_type = type; }
     void SetRadius(float radius) { this->radius = radius; }
+    void SetHitFlag(bool hit) { this->hit_flag = hit; }
+    void SetHitResult(CircleHitResult result) { this->hit_result = result; }
 
 private:
     CollisionType collision_type = COLLISION_TYPE::COLLISION_TYPE_DEFAULT;
     TargetType target_type = TARGET_TYPE::TARGET_DEFAULT;
     float radius = 1.0f;    // ‰~‚Ì”¼Œa
-
+    bool hit_flag = false;
+    CircleHitResult hit_result;
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
 #ifdef _DEBUG

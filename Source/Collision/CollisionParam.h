@@ -2,6 +2,8 @@
 #include <DirectXMath.h>
 #include <memory>
 
+class Object;
+
 using CollisionType = unsigned int;
 using TargetType = unsigned int;
 
@@ -36,7 +38,6 @@ struct CircleParam
 
 struct CircleHitResult
 {
-    class Object;
     DirectX::XMFLOAT2 out_position;
     std::weak_ptr<Object> hit_object_Wptr;
 };

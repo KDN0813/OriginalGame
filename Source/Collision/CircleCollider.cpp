@@ -1,6 +1,7 @@
 #include "CircleCollider.h"
 #include "Collision/Collision.h"
 
+#include "Object/Object.h"
 #include "Component/CircleComponent.h"
 
 void CircleCollider::Update()
@@ -61,6 +62,15 @@ void CircleCollider::CheckCollision()
         for (std::shared_ptr<CircleComponent>& deffender : active_deffender_pool)
         {
             // ”»’è‚ðs‚¤
+            CircleHitResult hit;
+            if (Collision::IntersectCircleVsCircle(attacker->GetCircleParam(), deffender->GetCircleParam(), hit))
+            {
+                attacker->SetHitFlag(true);
+                deffender->SetHitFlag(true);
+
+                hit.hit_object_Wptr = deffender->GetOwner();
+                attacker->SetHitResult(hit);
+            }
         }
     }
 }
