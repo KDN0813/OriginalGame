@@ -270,9 +270,6 @@
     <ClInclude Include="Source\Debug\DebugComponent.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ConstantManager.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
@@ -281,6 +278,9 @@
     </ClInclude>
     <ClInclude Include="Source\Component\CircleComponent.h">
       <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConstantManager.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
