@@ -1,9 +1,12 @@
 #pragma once
 #include "Component.h"
 
+using CollisionType = unsigned int;
+using TargetType = unsigned int;
+
 // コライダーの種類を定義する列挙型
 // オブジェクトが衝突の際にどの役割を果たすかを指定する
-enum class COLLISION_TYPE
+enum COLLISION_TYPE : CollisionType
 {
     NONE = 0,                       // 当たり判定なし
     ATTACKER = 1 << 0,              // ぶつける側（アクティブに衝突を引き起こすオブジェクト）
@@ -15,7 +18,7 @@ enum class COLLISION_TYPE
 // 対象となるターゲットの種類を定義する列挙型
 // ATTACKER（攻撃者）および DEFENDER（防御者）で使用し、
 // それぞれどのタイプの相手をターゲットとするかを指定する
-enum class TARGET_TYPE
+enum TARGET_TYPE : TargetType
 {
     NONE = 0,                   // ターゲットなし
     PLAYER = 1 << 0,            // プレイヤーをターゲットとする
@@ -45,14 +48,14 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
     // 各種取得・設定関数
-    COLLISION_TYPE GetCollisionType() { return this->collision_type; }
-    TARGET_TYPE GetTargetType() { return this->target_type; }
+    CollisionType GetCollisionType() { return this->collision_type; }
+    TargetType GetTargetType() { return this->target_type; }
     void SetCollisionType(COLLISION_TYPE type) { this->collision_type = type; }
     void SetTargetType(TARGET_TYPE type) { this->target_type = type; }
 
 private:
-    COLLISION_TYPE collision_type = COLLISION_TYPE::DEFAULT;
-    TARGET_TYPE target_type = TARGET_TYPE::DEFAULT;
+    CollisionType collision_type = COLLISION_TYPE::DEFAULT;
+    TargetType target_type = TARGET_TYPE::DEFAULT;
 
 #ifdef _DEBUG
 public:

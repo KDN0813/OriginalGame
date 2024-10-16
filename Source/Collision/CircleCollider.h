@@ -15,7 +15,7 @@ public:
     void Update();
 
     // “–‚½‚è”»’è‚ğs‚¤circle‚ğ’Ç‰Á‚·‚éŠÖ”
-    void AddCircle(std::shared_ptr<CircleComponent> circle);
+    void AddCircle(std::shared_ptr<CircleComponent>& circle);
 private:
     // “–‚½‚è”»’è‚ğs‚¤ŠÖ”
     void CheckCollision();
