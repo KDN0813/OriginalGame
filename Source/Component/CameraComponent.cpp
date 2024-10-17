@@ -100,10 +100,6 @@ void CameraComponent::DrawDebugGUI()
 
     ImGui::Checkbox("Is Main Camera", &this->is_main_camera);
 
-    if (ImGui::Button("ReStart"))
-    {
-        ReStart();
-    }
 
     if (ImGui::Button("SetMainCamera"))
     {

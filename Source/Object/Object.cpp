@@ -121,6 +121,12 @@ void Object::DrawDebugGUI()
 
             component->DrawDebugGUI();
 
+            label = "ReStart##restart" + std::to_string(component->GetComponentID());
+            if (ImGui::Button(label.c_str()))
+            {
+                component->ReStart();
+            }
+
             if (component->IsDebugPrimitive())
             {
                 ImGui::Indent(30.0f);
