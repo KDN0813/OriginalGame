@@ -7,8 +7,8 @@
 
 #include "Component/TransformComponent.h"
 
-CameraComponent::CameraComponent(CameraManager* camera_manager)
-    :camera_manager(camera_manager)
+CameraComponent::CameraComponent(CameraParam camera_param, CameraManager* camera_manager)
+    :camera_manager(camera_manager),camera_param(camera_param),default_param(camera_param)
 {
     this->camera_manager->AddCamera(this);
 }
@@ -20,11 +20,6 @@ void CameraComponent::SetCameraController(std::unique_ptr<CameraControllerBase> 
 
 void CameraComponent::Start()
 {
-    SetLookAt(
-        DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f),
-        DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-        DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f)
-    );
 }
 
 void CameraComponent::End()
@@ -32,25 +27,24 @@ void CameraComponent::End()
     this->camera_manager->RemoveCamera(this);
 }
 
+void CameraComponent::ReStart()
+{
+    this->camera_param = this->default_param;
+}
+
 void CameraComponent::Update(float elapsed_time)
 {
-    if (this->camera_controller)
-    {
-        this->camera_controller->Update(elapsed_time);
-    }
-    auto owner = GetOwner();
-    if (!owner) return;
-    auto transform = owner->EnsureComponentValid<Transform3DComponent>(transform_Wptr);
-    focus = transform ? transform->GetWorldPosition() : DirectX::XMFLOAT3();
+    if (!this->change_value) return;
 
-    float sx = ::sinf(rotateX), cx = ::cosf(rotateX);
-    float sy = ::sinf(rotateY), cy = ::cosf(rotateY);
+    float sx = ::sinf(this->camera_param.rotateX), cx = ::cosf(this->camera_param.rotateX);
+    float sy = ::sinf(this->camera_param.rotateY), cy = ::cosf(this->camera_param.rotateY);
     MYVECTOR3 Front = MYVECTOR3(-cx * sy, -sx, -cx * cy);
-    MYVECTOR3 Target = focus;
-    MYVECTOR3 Eye = Target - Front * range;
+    MYVECTOR3 Focus = this->camera_param.focus;
+    MYVECTOR3 Eye = Focus - Front * this->camera_param.range;
     MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
 
-    SetLookAt(Eye, Target, Up);
+    SetLookAt(Eye, Focus, Up);
+    SetPerspectiveFov(this->camera_param.fovY, this->camera_param.aspect, this->camera_param.nearZ, this->camera_param.farZ);
 }
 
 void CameraComponent::SetMainCamera()
@@ -69,13 +63,13 @@ void CameraComponent::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
     MYMATRIX World_transform = View_transform.GetInverse(nullptr);
 
     // カメラ方向を取り出す
-    World_transform.GetRight().GetFlaot3(this->right);
-    World_transform.GetUp().GetFlaot3(this->up);
-    World_transform.GetForward().GetFlaot3(this->forward);
+    World_transform.GetRight().GetFlaot3(this->camera_param.right);
+    World_transform.GetUp().GetFlaot3(this->camera_param.up);
+    World_transform.GetForward().GetFlaot3(this->camera_param.forward);
 
     // 視点、注視点を保存
-    Eye.GetFlaot3(this->eye);
-    Focus.GetFlaot3(this->focus);
+    Eye.GetFlaot3(this->camera_param.eye);
+    Focus.GetFlaot3(this->camera_param.focus);
 }
 
 void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ)
@@ -90,13 +84,31 @@ void CameraComponent::SetPerspectiveFov(float fovY, float aspect, float nearX, f
 
 void CameraComponent::DrawDebugGUI()
 {
-    ImGui::SliderFloat("front_range", &this->range, 1.0f, 50.0f);
-    ImGui::SliderFloat("rotateY", &rotateY, -DirectX::XM_PI, DirectX::XM_PI);
+    if (ImGui::SliderFloat("front_range", &this->camera_param.range, 1.0f, 50.0f))
+    {
+        this->change_value = true;
+    }
+    if (ImGui::SliderFloat("rotateY", &this->camera_param.rotateY, -DirectX::XM_PI, DirectX::XM_PI))
+    {
+        this->change_value = true;
+    }
     constexpr float RotateX_Max = DirectX::XMConvertToRadians(89.0f);
-    ImGui::SliderFloat("rotateX", &rotateX, -RotateX_Max, RotateX_Max);
+    if (ImGui::SliderFloat("rotateX", &this->camera_param.rotateX, -RotateX_Max, RotateX_Max))
+    {
+        this->change_value = true;
+    }
+
+    if (ImGui::InputFloat3("focus", &this->camera_param.focus.x))
+    {
+        this->change_value = true;
+    }
+
     ImGui::Checkbox("Is Main Camera", &this->is_main_camera);
 
-    ImGui::InputFloat3("focus", &focus.x);
+    if (ImGui::Button("ReStart"))
+    {
+        ReStart();
+    }
 
     if (ImGui::Button("SetMainCamera"))
     {

@@ -109,7 +109,7 @@ void SceneGame::Initialize()
 			//auto shader_component =
 			//player->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
 			// ƒJƒƒ‰Ý’è
-			auto camera = player->AddComponent<CameraComponent>(CameraManager::Instance());
+			auto camera = player->AddComponent<CameraComponent>(CameraManager::Instance(),1);
 			camera->SetCameraController(std::make_unique<GamepadCameraController>(player));
 			camera->SetPerspectiveFov(
 				DirectX::XMConvertToRadians(45.0f),
@@ -212,7 +212,7 @@ void SceneGame::Initialize()
 		auto debug_camera = object_manager.Create();
 		debug_camera->SetName("Debug Camera");
 		debug_camera->AddComponent<Transform3DComponent>();
-		auto debug_camera_component = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance());
+		auto debug_camera_component = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance(),1);
 		debug_camera_component->SetCameraController(std::make_unique<DebugCameraController>(debug_camera));
 		debug_camera_component->SetPerspectiveFov(
 			DirectX::XMConvertToRadians(45.0f),

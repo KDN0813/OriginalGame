@@ -29,6 +29,8 @@ public:
     virtual void End() {};          // 破棄されるときに呼ばれる     
     // 更新関数
     virtual void Update(float elapsed_time) {};
+    // リスタート処理
+    virtual void ReStart() {};      // パラメータの初期化
 
     // 名前取得
     virtual const char* GetName()const = 0;

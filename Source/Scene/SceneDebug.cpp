@@ -34,7 +34,7 @@ void SceneDebug::Initialize()
 		auto debug_camera = object_manager.Create();
 		debug_camera->SetName("debug_camera");
 		
-		auto camera_Cmp = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance());
+		auto camera_Cmp = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance(),1);
 		camera_Cmp->SetPerspectiveFov(
 			DirectX::XMConvertToRadians(45.0f),
 			graphics->GetScreenWidth() / graphics->GetScreenHeight(),
