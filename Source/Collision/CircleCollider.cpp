@@ -22,7 +22,7 @@ void CircleCollider::Update()
 void CircleCollider::AddCircle(std::shared_ptr<CircleCollisionComponent>& circle)
 {
     if (!circle) return;
-    if (circle->GetCollisionType() <= COLLISION_TYPE::MAX) return;
+    if (circle->GetCollisionType() >= COLLISION_TYPE::MAX) return;
 
     CircleCollision& circle_collision = this->circle_collision_pool[static_cast<size_t>(circle->GetSelfType())];
 
@@ -137,8 +137,11 @@ void CircleCollider::DrawDebugGUI()
         header_name += magic_enum::enum_name(static_cast<OBJECT_TYPE>(circle_collision_index));
         if (ImGui::CollapsingHeader(header_name.c_str()))
         {
+            ImGui::Indent(30.0f);
+
             auto circle_collision = circle_collision_pool[circle_collision_index];
-            if (ImGui::CollapsingHeader("ATTACKER"))
+            std::string label = "ATTACKER##" + std::to_string(circle_collision_index);
+            if (ImGui::CollapsingHeader(label.c_str()))
             {
                 auto circle_attacker_pool = circle_collision.circle_attacker_pool;
 
@@ -153,13 +156,19 @@ void CircleCollider::DrawDebugGUI()
                     {
                         object_name = object->GetName();
                     }
+
+                    ImGui::Indent(30.0f);
                     if (ImGui::CollapsingHeader(object_name.c_str()))
                     {
                         bool hit_frag = circle_attacker->GetHitFlag();
+                        std::string label = "Hit Frag##" + object_name;
+                        ImGui::Checkbox(label.c_str(), &hit_frag);
                     }   
+                    ImGui::Unindent(30.0f);
                 }
             }
-            if (ImGui::CollapsingHeader("DEFENDER"))
+            label = "DEFENDER##" + std::to_string(circle_collision_index);
+            if (ImGui::CollapsingHeader(label.c_str()))
             {
                 auto circle_defender_pool = circle_collision.circle_defender_pool;
 
@@ -174,13 +183,18 @@ void CircleCollider::DrawDebugGUI()
                     {
                         object_name = object->GetName();
                     }
+
+                    ImGui::Indent(30.0f);
                     if (ImGui::CollapsingHeader(object_name.c_str()))
                     {
                         bool hit_frag = circle_defender->GetHitFlag();
                     }
+                    ImGui::Unindent(30.0f);
                 }
 
             }
+
+            ImGui::Unindent(30.0f);
         }
     }
 }

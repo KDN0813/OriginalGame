@@ -287,6 +287,10 @@ void SceneGame::DrawImGui()
 				{
 					mode_index = SceneGame::ImGuiMode::Camera;
 				}
+				if (ImGui::MenuItem("Collison"))
+				{
+					mode_index = SceneGame::ImGuiMode::Collison;
+				}
 				if (ImGui::MenuItem("System"))
 				{
 					mode_index = SceneGame::ImGuiMode::System;
@@ -327,6 +331,10 @@ void SceneGame::DrawImGui()
 		case SceneGame::ImGuiMode::Camera:
 			ImGui::Text("Camera");
 			CameraManager::Instance()->DrawDebugGUI();
+			break;
+		case SceneGame::ImGuiMode::Collison:
+			ImGui::Text("Collison");
+			CollisionManager::Instance()->DrawDebugGUI();
 			break;
 		case SceneGame::ImGuiMode::System:
 			ImGui::Text("System");
