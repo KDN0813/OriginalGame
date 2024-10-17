@@ -116,7 +116,7 @@ void SceneGame::Initialize()
 			// 円のコライダー
 			auto collision = player->AddComponent<CircleCollisionComponent>();
 			{
-				collision->SetCollisionType(COLLISION_TYPE::DEFENDER);
+				collision->SetCollisionType(COLLISION_TYPE::ATTACKER);
 			}
 
 			// 子オブジェクト設定
