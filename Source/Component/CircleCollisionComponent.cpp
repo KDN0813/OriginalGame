@@ -5,8 +5,13 @@
 #endif // _DEBUG
 #include "CircleCollisionComponent.h"
 #include "Object/Object.h"
+#include "Collision/CollisionManager.h"
 
 #include "Component/TransformComponent.h"
+
+CircleCollisionComponent::CircleCollisionComponent()
+{
+}
 
 void CircleCollisionComponent::Start()
 {

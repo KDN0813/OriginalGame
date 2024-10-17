@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Collision/CollisionParam.h"
+#include "Collision/CircleCollider.h"
 #ifdef _DEBUG
 #include "Debug/DebugPrimitiveRenderer.h"
 #endif // _DEBUG
@@ -11,8 +12,8 @@ class Transform3DComponent;
 class CircleCollisionComponent : public Component
 {
 public:
-    CircleCollisionComponent() {};
-    virtual ~CircleCollisionComponent() {};
+    CircleCollisionComponent();
+    ~CircleCollisionComponent() {};
 
     // äJénä÷êî
     void Start()  override;
