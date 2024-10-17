@@ -41,12 +41,12 @@ void CameraComponent::Update(float elapsed_time)
     auto owner = GetOwner();
     if (!owner) return;
     auto transform = owner->EnsureComponentValid<Transform3DComponent>(transform_Wptr);
-    target = transform ? transform->GetWorldPosition() : DirectX::XMFLOAT3();
+    focus = transform ? transform->GetWorldPosition() : DirectX::XMFLOAT3();
 
     float sx = ::sinf(rotateX), cx = ::cosf(rotateX);
     float sy = ::sinf(rotateY), cy = ::cosf(rotateY);
     MYVECTOR3 Front = MYVECTOR3(-cx * sy, -sx, -cx * cy);
-    MYVECTOR3 Target = target;
+    MYVECTOR3 Target = focus;
     MYVECTOR3 Eye = Target - Front * range;
     MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
 
@@ -97,7 +97,6 @@ void CameraComponent::DrawDebugGUI()
     ImGui::Checkbox("Is Main Camera", &this->is_main_camera);
 
     ImGui::InputFloat3("focus", &focus.x);
-    ImGui::InputFloat3("target", &target.x);
 
     if (ImGui::Button("SetMainCamera"))
     {

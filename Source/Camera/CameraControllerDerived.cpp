@@ -142,7 +142,7 @@ void GamepadCameraController::Update(float elapsed_time)
 	float rotateX = camera->GetRotateX();
 	float rotateY = camera->GetRotateY();
 	float range = camera->GetRange();
-	MYVECTOR3 Target = camera->GetTarget();
+	MYVECTOR3 Target = camera->GetFocus();
 
 	GamePad& gamePad = Input::Instance()->GetGamePad();
 	float ax = gamePad.GetAxisRX();

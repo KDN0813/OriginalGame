@@ -76,8 +76,8 @@ public:
 	DirectX::XMFLOAT3 GetForward() const { return this->forward; }
 	// 右方向取得
 	DirectX::XMFLOAT3 GetRight() const { return this->right; }
-	// ターゲット取得
-	DirectX::XMFLOAT3 GetTarget() const { return this->target; }
+	// フォーカス取得
+	DirectX::XMFLOAT3 GetFocus() const { return this->focus; }
 	// メインカメラであるか
 	bool GetIsMainCamera() { return this->is_main_camera; }
 
@@ -89,7 +89,6 @@ private:
 
 	DirectX::XMFLOAT3		eye = DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f);
 	DirectX::XMFLOAT3		focus = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	DirectX::XMFLOAT3		target = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	DirectX::XMFLOAT3		right = DirectX::XMFLOAT3(1.0f, 0.0f, 0.0f);
 	DirectX::XMFLOAT3		up = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
