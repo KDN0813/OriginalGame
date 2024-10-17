@@ -47,7 +47,7 @@ private:
     OBJECT_TYPE self_type = OBJECT_TYPE::NONE;
     float radius = 1.0f;    // ‰~‚Ì”¼Œa
     bool hit_flag = false;
-    CircleHitResult hit_result;
+    CircleHitResult hit_result{};
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
 #ifdef _DEBUG

@@ -11,9 +11,15 @@
 void CircleCollisionComponent::Start()
 {
 #ifdef _DEBUG
-    circle_collsion_primitive = CylinderParam(DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f), this->radius, height);
+    // デバッグプリミティブの設定
+    {
+        // タイプの値が以上な場合設定しない
+        if (this->collision_type >= COLLISION_TYPE::MAX) return;
+        DirectX::XMFLOAT4 color[2] = { DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) ,DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) };
+        circle_collsion_primitive = CylinderParam(color[static_cast<size_t>(this->collision_type)],
+            this->radius, height);
+    }
 #endif // DEBUG
-
 }
 
 void CircleCollisionComponent::End()
@@ -46,6 +52,8 @@ CircleParam CircleCollisionComponent::GetCircleParam()
     DirectX::XMFLOAT3 world_pos = transform->GetWorldPosition();
     return CircleParam(DirectX::XMFLOAT2(world_pos.x, world_pos.z), this->radius);
 }
+
+#ifdef _DEBUG
 
 void CircleCollisionComponent::DrawDebugGUI()
 {
@@ -88,12 +96,15 @@ void CircleCollisionComponent::DrawDebugGUI()
 
 void CircleCollisionComponent::DrawDebugPrimitive()
 {
+    if (this->collision_type >= COLLISION_TYPE::MAX) return;    // タイプが以上なら処理しない
     DebugPrimitiveRenderer* debug_primitive_renderer = DebugManager::Instance()->GetDebugPrimitiveRenderer();
-
     debug_primitive_renderer->DrawCylinder(circle_collsion_primitive);
 }
 
 void CircleCollisionComponent::DrawDebugPrimitiveGUI()
 {
+    if (this->collision_type >= COLLISION_TYPE::MAX) return;    // タイプが以上なら処理しない
     circle_collsion_primitive.DrawDebugGUI("Circle Collsion");
 }
+
+#endif // DEBUG

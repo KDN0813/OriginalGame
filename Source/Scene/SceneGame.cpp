@@ -114,8 +114,11 @@ void SceneGame::Initialize()
 			// 重力
 			player->AddComponent<GravityComponent>();
 			// 円のコライダー
-			player->AddComponent<CircleCollisionComponent>();
-			
+			auto collision = player->AddComponent<CircleCollisionComponent>();
+			{
+				collision->SetCollisionType(COLLISION_TYPE::DEFENDER);
+			}
+
 			// 子オブジェクト設定
 			{
 				std::shared_ptr<Object> object = player->AddChildren();
