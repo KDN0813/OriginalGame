@@ -49,6 +49,7 @@ cbuffer CommonDataConstantBuffer : register(b2)
     uint bone_transform_count; // 1回の描画で使用するボーントランスフォームの数
     uint3 commondata_dummy;
 };
+// メッシュ毎で設定する値
 cbuffer MeshConstantBuffer : register(b3)
 {
     uint mesh_offset;            // バッファ内でメッシュの開始位置を示すオフセット値

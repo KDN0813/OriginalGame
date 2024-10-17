@@ -14,7 +14,7 @@ class StateTransitionInfo
 {
 public:
 public:
-    StateTransitionInfo(std::string next_state_name, std::unique_ptr<TransitionJudgementBase> judgement);
+    StateTransitionInfo(std::string next_state_name, std::unique_ptr<TransitionJudgementBase>&& judgement);
     ~StateTransitionInfo() {};
 
     StateIndex GetNextStateIndex() { return this->next_state_index; }

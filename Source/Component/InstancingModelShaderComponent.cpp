@@ -36,11 +36,12 @@ void InstancingModelShaderComponent::InstancingAdd()
 #endif // _DEBUG
 
 
-    auto ownr = GetOwner();
+    auto owner = GetOwner();
+    if (!owner) return;
     auto instancing_model
-        = ownr->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr);
+        = owner->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr);
     auto transform
-        = ownr->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+        = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 
     if (instancing_model && transform)
     {
@@ -50,9 +51,10 @@ void InstancingModelShaderComponent::InstancingAdd()
 
 void InstancingModelShaderComponent::InstancingEnd(ID3D11DeviceContext* dc)
 {
-    auto ownr = GetOwner();
+    auto owner = GetOwner();
+    if (!owner) return;
     if (auto instancing_model
-        = ownr->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr))
+        = owner->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr))
     {
         this->shader->InstancingEnd(dc, instancing_model.get());
     }
@@ -60,11 +62,12 @@ void InstancingModelShaderComponent::InstancingEnd(ID3D11DeviceContext* dc)
 
 bool InstancingModelShaderComponent::IsShaderValid()
 {
-    auto ownr = GetOwner();
+    auto owner = GetOwner();
+    if (!owner) return false;
     auto instancing_model
-        = ownr->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr);
+        = owner->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr);
     auto transform
-        = ownr->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+        = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 
     return (instancing_model && transform);
 }
@@ -72,10 +75,10 @@ bool InstancingModelShaderComponent::IsShaderValid()
 int InstancingModelShaderComponent::GetModelId()
 {
     // Hack idを変数で持ち、返すようにしたら処理軽くなるかテストする
-    auto ownr = GetOwner();
-    if (!ownr) return -1;
+    auto owner = GetOwner();
+    if (!owner) return -1;
     auto instancing_model
-        = ownr->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr);
+        = owner->EnsureComponentValid<AnimatedInstancedModelComponent>(this->instancing_model_Wptr);
     if (!instancing_model) return-1;
     return instancing_model->GetModelId();
 }
