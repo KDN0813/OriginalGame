@@ -109,17 +109,17 @@ void SceneGame::Initialize()
 			//auto shader_component =
 			//player->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
 			// カメラ設定
-			auto camera = player->AddComponent<CameraComponent>(CameraManager::Instance(),1);
-			camera->SetCameraController(std::make_unique<GamepadCameraController>(player));
-			camera->SetPerspectiveFov(
-				DirectX::XMConvertToRadians(45.0f),
-				graphics->GetScreenWidth() / graphics->GetScreenHeight(),
-				0.1f,
-				1000.0f
-			);
-			camera->SetRange(10.0f);
-			camera->SetRotateX(0.4f);
-			camera->SetMainCamera();
+			{
+				CameraComponent::CameraParam camera_param{};
+				camera_param.fovY = DirectX::XMConvertToRadians(45.0f);
+				camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
+				camera_param.nearZ = 0.1f;
+				camera_param.farZ = 1000.0f;
+				camera_param.range = 1.0f;
+				camera_param.rotateY = 0.4f;
+
+				auto camera = player->AddComponent<CameraComponent>(camera_param, CameraManager::Instance());
+			}
 			// 重力
 			player->AddComponent<GravityComponent>();
 			// 円のコライダー
@@ -212,18 +212,20 @@ void SceneGame::Initialize()
 		auto debug_camera = object_manager.Create();
 		debug_camera->SetName("Debug Camera");
 		debug_camera->AddComponent<Transform3DComponent>();
-		auto debug_camera_component = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance(),1);
-		debug_camera_component->SetCameraController(std::make_unique<DebugCameraController>(debug_camera));
-		debug_camera_component->SetPerspectiveFov(
-			DirectX::XMConvertToRadians(45.0f),
-			graphics->GetScreenWidth() / graphics->GetScreenHeight(),
-			0.1f,
-			1000.0f
-		);
-		debug_camera_component->SetRange(10.0f);
-		debug_camera_component->SetRotateX(0.4f);
+		
+		// カメラ設定
+		{
+			CameraComponent::CameraParam camera_param{};
+			camera_param.fovY = DirectX::XMConvertToRadians(45.0f);
+			camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
+			camera_param.nearZ = 0.1f;
+			camera_param.farZ = 1000.0f;
+			camera_param.range = 1.0f;
+			camera_param.rotateY = 0.4f;
 
-		CameraManager::Instance()->SetDebugCamera(debug_camera_component.get());
+			auto debug_camera_component = debug_camera->AddComponent<CameraComponent>(camera_param, CameraManager::Instance());
+			CameraManager::Instance()->SetDebugCamera(debug_camera_component.get());
+		}
 #endif // _DEBUG
 	}
 }

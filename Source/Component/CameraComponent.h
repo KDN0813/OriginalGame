@@ -2,7 +2,6 @@
 #include <memory>
 #include "System/MyMath/MYVECTOR3.h"
 #include "Component.h"
-#include "Camera/CameraController.h"
 
 class CameraManager;
 class Transform3DComponent;
@@ -40,9 +39,6 @@ public:
     const char* GetName()const { return "CameraComponent"; };
 	// 優先度
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOWEST; }
-
-	// カメラコントローラーの設定
-	void SetCameraController(std::unique_ptr<CameraControllerBase> camera_controller);
 
 	/**
 	 * \fn SetMainCamera
@@ -122,7 +118,6 @@ private:
 	bool change_value = false;
 	bool is_main_camera = false;
 	CameraManager*const	camera_manager;
-	std::unique_ptr<CameraControllerBase> camera_controller;
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;
 

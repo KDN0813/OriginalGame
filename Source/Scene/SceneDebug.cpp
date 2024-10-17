@@ -31,19 +31,6 @@ void SceneDebug::Initialize()
 
 	// カメラ作成
 	{
-		auto debug_camera = object_manager.Create();
-		debug_camera->SetName("debug_camera");
-		
-		auto camera_Cmp = debug_camera->AddComponent<CameraComponent>(CameraManager::Instance(),1);
-		camera_Cmp->SetPerspectiveFov(
-			DirectX::XMConvertToRadians(45.0f),
-			graphics->GetScreenWidth() / graphics->GetScreenHeight(),
-			0.1f,
-			1000.0f
-		);
-		camera_Cmp->SetRange(10.0f);
-		camera_Cmp->SetRotateX(0.4f);
-		camera_Cmp->SetMainCamera();
 	}
 
 	// デバッグオブジェクト作成

@@ -13,11 +13,6 @@ CameraComponent::CameraComponent(CameraParam camera_param, CameraManager* camera
     this->camera_manager->AddCamera(this);
 }
 
-void CameraComponent::SetCameraController(std::unique_ptr<CameraControllerBase> camera_controller)
-{
-    this->camera_controller = std::move(camera_controller);
-}
-
 void CameraComponent::Start()
 {
 }
@@ -113,18 +108,6 @@ void CameraComponent::DrawDebugGUI()
     if (ImGui::Button("SetMainCamera"))
     {
         SetMainCamera();
-    }
-
-    if (this->camera_controller)
-    {
-        if (ImGui::CollapsingHeader("Camera Controller", ImGuiTreeNodeFlags_DefaultOpen))
-        {
-            char buffer[1024];
-            ::strncpy_s(buffer, sizeof(buffer), this->camera_controller->GetName(), sizeof(buffer));
-            ImGui::InputText("name", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
-
-            this->camera_controller->DrawDebugGUI();
-        }
     }
 }
 
