@@ -11,7 +11,8 @@ public:
     static bool IntersectCircleVsCircle(
         CircleParam circleA
         , CircleParam circleB
-        , CircleHitResult& hit_result
+        , CircleHitResult& hit_resultA
+        , CircleHitResult& hit_resultB
     );
 
     // ‹…‚Æ‹…‚ÌŒğ·”»’è

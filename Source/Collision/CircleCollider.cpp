@@ -38,84 +38,92 @@ void CircleCollider::AddCircle(std::shared_ptr<CircleCollisionComponent>& circle
 
 void CircleCollider::CheckCollision()
 {
-    // TODO(10/17)
-    // コード整理
+    // 攻撃側と防御側のCircleCollisionComponentを有効なものだけ集めて衝突判定を行う
+    
+    // 実行可能なattackerの取得
+    std::vector<std::vector<std::shared_ptr<CircleCollisionComponent>>> active_attacker_pool_pool; // 有効な攻撃側コンポーネントを格納するコンテナ
+    std::vector<bool> is_active_defender_object;  // 防御側オブジェクトが有効かをフラグ管理する配列
 
-    //// 実行可能なattackerの取得
-    std::vector<std::vector<std::shared_ptr<CircleCollisionComponent>>> active_attacker_pool_pool;
-    std::vector<bool> is_active_defender_object; // あてられる側のオブジェクトが必用であるか
+    const size_t CircleCollisionMax = this->circle_collision_pool.size(); // CircleCollisionの種類の最大数
+    active_attacker_pool_pool.resize(CircleCollisionMax);  // 各種類のアクティブな攻撃側コンポーネント用コンテナを初期化
+    is_active_defender_object.resize(CircleCollisionMax);  // 各種類の防御側オブジェクトのアクティブフラグを初期化
 
-    const size_t CircleCollisionMax = this->circle_collision_pool.size();
-    active_attacker_pool_pool.resize(CircleCollisionMax);
-    is_active_defender_object.resize(CircleCollisionMax);
-
-    // 攻撃側の中から判定を行うものをコンテナに集める
+    // 攻撃側の中から有効なコンポーネントをコンテナに集める
     for (size_t i = 0; i < CircleCollisionMax; ++i)
     {
         for (std::weak_ptr<CircleCollisionComponent> attacker_Wptr : this->circle_collision_pool[i].circle_attacker_pool)
         {
-            // 有効であるか判定
+            // 弱ポインタをロックして有効かどうか判定
             std::shared_ptr<CircleCollisionComponent> attacker = attacker_Wptr.lock();
             if (!attacker)
             {
-                // 削除コンテナに追加
+                // 無効なポインタ（削除済みなど）はスキップ
                 continue;
             }
-            if (!attacker->GetIsActive()) continue;
+            if (!attacker->GetIsActive()) continue;  // 非アクティブなコンポーネントはスキップ
 
+            // 有効な攻撃側コンポーネントを追加
             active_attacker_pool_pool[i].emplace_back(attacker);
 
-            // ターゲットのオブジェクトタイプの受け側の使用flagを立てる
+            // ターゲットのオブジェクトタイプに対応する防御側が有効であるフラグを立てる
             is_active_defender_object[static_cast<size_t>(attacker->GetTargetType())] = true;
         }
     }
-    
-    // 有効な受け側のデータ取得
+
+    // 有効な防御側コンポーネントを集めるためのコンテナ
     std::vector<std::vector<std::shared_ptr<CircleCollisionComponent>>> active_deffender_pool_pool;
+    active_deffender_pool_pool.resize(CircleCollisionMax);  // 防御側のデータコンテナを初期化
 
-    active_deffender_pool_pool.resize(CircleCollisionMax);
-
+    // 有効な防御側データを取得
     for (size_t i = 0; i < is_active_defender_object.size(); ++i)
     {
-        // 現在のタイプの必用であるフラグが立っていない場合飛ばす
+        // 必要な防御側が有効でない場合はスキップ
         if (!is_active_defender_object[i]) continue;
 
+        // 有効な防御側コンポーネントを集める
         for (std::weak_ptr<CircleCollisionComponent> deffender_Wptr : this->circle_collision_pool[i].circle_defender_pool)
         {
             std::shared_ptr<CircleCollisionComponent> deffender = deffender_Wptr.lock();
             if (!deffender)
             {
-                // 削除コンテナに追加
+                // 無効なポインタ（削除済みなど）はスキップ
                 continue;
             }
-            if (!deffender->GetIsActive()) continue;
+            if (!deffender->GetIsActive()) continue;  // 非アクティブなコンポーネントはスキップ
 
+            // 有効な防御側コンポーネントを追加
             active_deffender_pool_pool[i].emplace_back(deffender);
         }
     }
 
-    // 各種類の当てる側のコンテナを判定
+    // 各種類の攻撃側コンポーネントに対する判定
     for (std::vector<std::shared_ptr<CircleCollisionComponent>> active_attacker_pool : active_attacker_pool_pool)
     {
-        // 当てる側のCircleCollisionComponentを取得
+        // 攻撃側のCircleCollisionComponentを取得
         for (std::shared_ptr<CircleCollisionComponent> attacker : active_attacker_pool)
         {
-
-            // 各種類の受ける側のコンテナを判定
+            // 各種類の防御側コンポーネントに対する判定
             for (std::vector<std::shared_ptr<CircleCollisionComponent>> active_deffender_pool : active_deffender_pool_pool)
             {
-                // 受ける側のCircleCollisionComponentを取得
+                // 防御側のCircleCollisionComponentを取得
                 for (std::shared_ptr<CircleCollisionComponent>& deffender : active_deffender_pool)
                 {
-                    // 判定を行う
-                    CircleHitResult hit;
-                    if (Collision::IntersectCircleVsCircle(attacker->GetCircleParam(), deffender->GetCircleParam(), hit))
+                    // 攻撃側と防御側の衝突判定を行う
+                    CircleHitResult attacker_hit;
+                    CircleHitResult deffender_hit;
+                    if (Collision::IntersectCircleVsCircle(attacker->GetCircleParam(), deffender->GetCircleParam(), attacker_hit, deffender_hit))
                     {
+                        // 衝突した場合、攻撃側と防御側にヒットフラグを設定
                         attacker->SetHitFlag(true);
                         deffender->SetHitFlag(true);
 
-                        hit.hit_object_Wptr = deffender->GetOwner();
-                        attacker->SetHitResult(hit);
+                        // 攻撃側のリザルト設定
+                        attacker_hit.hit_object_Wptr = deffender->GetOwner();
+                        attacker->SetHitResult(attacker_hit);
+
+                        // 防御側のリザルト設定
+                        deffender_hit.hit_object_Wptr = attacker->GetOwner();
+                        deffender->SetHitResult(deffender_hit);
                     }
                 }
             }

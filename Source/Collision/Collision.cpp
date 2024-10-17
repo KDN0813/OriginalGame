@@ -5,7 +5,8 @@
 bool Collision::IntersectCircleVsCircle(
     CircleParam circleA
     , CircleParam circleB
-    , CircleHitResult& hit_result
+    , CircleHitResult& hit_resultA
+    , CircleHitResult& hit_resultB
 )
 {
     // AからBの単位ベクトルを算出
@@ -23,7 +24,7 @@ bool Collision::IntersectCircleVsCircle(
 
     // AがBを押し出す
     MYVECTOR2 Out_positionB = CenterB + (vec * range);
-    Out_positionB.GetFlaot2(hit_result.out_position);
+    Out_positionB.GetFlaot2(hit_resultB.out_position);
 
     return true;
 }
