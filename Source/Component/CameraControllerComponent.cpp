@@ -6,9 +6,14 @@
 #include "Component/CameraComponent.h"
 #include "Component/TransformComponent.h"
 
-CameraControllerGamepad::CameraControllerGamepad(float roll_speed)
-	: roll_speed(DirectX::XMConvertToRadians(roll_speed))
+CameraControllerGamepad::CameraControllerGamepad(CameraControllerParam param)
+	: param(param),default_param(param)
 {
+}
+
+void CameraControllerGamepad::ReStart()
+{
+	this->param = default_param;
 }
 
 void CameraControllerGamepad::Update(float elapsed_time)
@@ -36,7 +41,7 @@ void CameraControllerGamepad::Update(float elapsed_time)
 	float ax = gamePad.GetAxisRX();
 	float ay = gamePad.GetAxisRY();
 	// カメラの回転速度
-	float speed = this->roll_speed * elapsed_time;
+	float speed = this->param.roll_speed * elapsed_time;
 
 	// スティック入力値に合わせてX軸とY軸を回転
 	rotateY += ax * speed;
@@ -184,10 +189,10 @@ void CameraControllerDebug::Update(float elapsed_time)
 
 void CameraControllerGamepad::DrawDebugGUI()
 {
-	float roll_speed_deg = DirectX::XMConvertToDegrees(this->roll_speed);
+	float roll_speed_deg = DirectX::XMConvertToDegrees(this->param.roll_speed);
 	if (ImGui::SliderFloat("RollSpeed", &roll_speed_deg, 0.0f, 180.0f))
 	{
-		this->roll_speed = DirectX::XMConvertToRadians(roll_speed_deg);
+		this->param.roll_speed = DirectX::XMConvertToRadians(roll_speed_deg);
 	}
 }
 

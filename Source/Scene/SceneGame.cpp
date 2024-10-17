@@ -121,7 +121,11 @@ void SceneGame::Initialize()
 				auto camera = player->AddComponent<CameraComponent>(camera_param, CameraManager::Instance());
 				camera->SetMainCamera();
 
-				player->AddComponent<CameraControllerGamepad>();
+			}
+			// カメラコントローラー設定
+			{
+				CameraControllerGamepad::CameraControllerParam param{};
+				player->AddComponent<CameraControllerGamepad>(param);
 			}
 			// 重力
 			player->AddComponent<GravityComponent>();

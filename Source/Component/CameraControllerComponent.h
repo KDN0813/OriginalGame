@@ -8,12 +8,20 @@ class Transform3DComponent;
 class CameraControllerGamepad : public Component
 {
 public:
-    CameraControllerGamepad(float roll_speed = 90.0f);
+    struct CameraControllerParam
+    {
+        float roll_speed = DirectX::XMConvertToRadians(90.0f);
+    };
+
+public:
+    CameraControllerGamepad(CameraControllerParam param);
 
     // 開始関数
     void Start()  override {};
     // 終了関数
     void End()  override {};
+    // リスタート処理
+    void ReStart() override;      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override;
 
@@ -22,8 +30,14 @@ public:
 
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+
+    // 各種取得・設定関数
+    float GetRollSpeed()const { return this->param.roll_speed; }
+    void SetRollSpeed(float speed) { this->param.roll_speed = speed; }
+
 private:
-    float roll_speed;
+    CameraControllerParam param;
+    CameraControllerParam default_param;
 
 private:
     std::weak_ptr<CameraComponent> camera_Wptr;

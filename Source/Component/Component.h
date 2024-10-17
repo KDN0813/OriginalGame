@@ -91,6 +91,8 @@ public:
     void Start()  override {};
     // 終了関数
     void End()  override {};
+    // リスタート処理
+    void ReStart() override{};      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override {};
 
