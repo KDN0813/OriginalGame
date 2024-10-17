@@ -54,14 +54,6 @@ public:
 	float GetRotateY() { return this->rotateY; }
 	// X軸回転度取得
 	float GetRotateX() { return this->rotateX; }
-	// 画角取得
-	float GetFovY() { return this->fovY; }
-	// アスペクト比取得
-	float GetAspect() { return this->aspect; }
-	// ニアクリップ値取得
-	float GetNearZ() { return this->nearZ; }
-	// ファークリップ値取得
-	float GetFarZ() { return this->farZ; }
 	// ビュー行列取得
 	DirectX::XMFLOAT4X4 GetViewTransform() const { return this->view_transform; }
 	// プロジェクション行列取得
@@ -76,17 +68,10 @@ public:
 	DirectX::XMFLOAT3 GetForward() const { return this->forward; }
 	// 右方向取得
 	DirectX::XMFLOAT3 GetRight() const { return this->right; }
-	// フォーカス取得
-	DirectX::XMFLOAT3 GetFocus() const { return this->focus; }
 	// メインカメラであるか
 	bool GetIsMainCamera() { return this->is_main_camera; }
 
 private:
-	float					fovY = DirectX::XMConvertToRadians(45);
-	float					aspect = 16.0f / 9.0f;
-	float					nearZ = 0.1f;
-	float					farZ = 1000.0f;
-
 	DirectX::XMFLOAT3		eye = DirectX::XMFLOAT3(0.0f, 0.0f, -1.0f);
 	DirectX::XMFLOAT3		focus = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 
