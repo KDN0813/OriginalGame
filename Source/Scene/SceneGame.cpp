@@ -169,6 +169,15 @@ void SceneGame::Initialize()
 
 					state_machine->SetDefaultState("WanderState");
 				}
+				// 円のコライダー
+				{
+					auto collision = enemy->AddComponent<CircleCollisionComponent>();
+					collision->SetCollisionType(COLLISION_TYPE::DEFENDER);
+					collision->SetSelfType(OBJECT_TYPE::ENEMY);
+					collision->SetTargetType(OBJECT_TYPE::PLAYER);
+
+					CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
+				}
 
 				float offset = 2.0f;
 

@@ -10,7 +10,7 @@ bool Collision::IntersectCircleVsCircle(
 {
     // AからBの単位ベクトルを算出
     MYVECTOR2 CenterA = circleA.center;
-    MYVECTOR2 CenterB = circleA.center;
+    MYVECTOR2 CenterB = circleB.center;
     MYVECTOR2 vec = CenterA - CenterB;
 
     // 距離判定

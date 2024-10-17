@@ -188,6 +188,8 @@ void CircleCollider::DrawDebugGUI()
                     if (ImGui::CollapsingHeader(object_name.c_str()))
                     {
                         bool hit_frag = circle_defender->GetHitFlag();
+                        std::string label = "Hit Frag##" + object_name;
+                        ImGui::Checkbox(label.c_str(), &hit_frag);
                     }
                     ImGui::Unindent(30.0f);
                 }

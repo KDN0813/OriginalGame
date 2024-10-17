@@ -49,13 +49,17 @@ void CircleCollisionComponent::Update(float elapsed_time)
 
 CircleParam CircleCollisionComponent::GetCircleParam()
 {
+    CircleParam circle_param{};
+    circle_param.radius = this->radius;
+
     auto owner = GetOwner();
-    if (!owner) return CircleParam(DirectX::XMFLOAT2(), this->radius);
+    if (!owner) return circle_param;
     auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
-    if(!transform) return CircleParam(DirectX::XMFLOAT2(), this->radius);
+    if (!transform) return circle_param;
 
     DirectX::XMFLOAT3 world_pos = transform->GetWorldPosition();
-    return CircleParam(DirectX::XMFLOAT2(world_pos.x, world_pos.z), this->radius);
+    circle_param.center = DirectX::XMFLOAT2(world_pos.x, world_pos.z);
+    return circle_param;
 }
 
 #ifdef _DEBUG
