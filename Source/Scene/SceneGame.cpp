@@ -88,7 +88,16 @@ void SceneGame::Initialize()
 				model_animation->SetAnimationState(PlayerCT::ANIMATION::ATTACK01, false);
 				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::ATTACK01, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.2f);
 			}
-			
+			auto state_machine = player->AddComponent<StateMachineComponent>();
+			{
+				auto idle_state = state_machine->RegisterState<IdelState>();
+				idle_state->AddStateTransition(std::make_unique<StateTransitionInfo>("AttackState", std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X)), StateBase::JudgementUpdatePhase::PostUpdate);
+				auto attack_state = state_machine->RegisterState<AttackState>();
+				//attack_state->AddStateTransition(std::make_unique<StateTransitionInfo>("IdelState", std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_Y)), StateBase::JudgementUpdatePhase::PostUpdate);
+
+				state_machine->SetDefaultState("IdelState");
+			}
+
 			auto transform = player->AddComponent<Transform3DComponent>();
 			transform->SetLocalScale(DirectX::XMFLOAT3(0.008f, 0.008f, 0.008f));
 			auto movement = player->AddComponent<MovementComponent>();
@@ -119,6 +128,7 @@ void SceneGame::Initialize()
 				collision->SetCollisionType(COLLISION_TYPE::ATTACKER);
 				collision->SetSelfType(OBJECT_TYPE::PLAYER);
 				collision->SetTargetType(OBJECT_TYPE::ENEMY);
+				collision->SetIsActive(false);
 
 				CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
 			}
