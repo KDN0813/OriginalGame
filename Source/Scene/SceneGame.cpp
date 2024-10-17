@@ -30,10 +30,10 @@
 #include "Component/EnemyComponent.h"
 #include "Component/StateMachineComponent.h"
 #include "Component/CircleCollisionComponent.h"
+#include "Component/CameraControllerComponent.h"
 
 #include "StateMachine/TransitionJudgementDerived.h"
 #include "StateMachine/StateDerived.h"
-#include "Camera/CameraControllerComponent.h"
 
 
 void SceneGame::Initialize()
@@ -121,7 +121,7 @@ void SceneGame::Initialize()
 				auto camera = player->AddComponent<CameraComponent>(camera_param, CameraManager::Instance());
 				camera->SetMainCamera();
 
-				player->AddComponent<GamepadCameraController>();
+				player->AddComponent<CameraControllerGamepad>();
 			}
 			// d—Í
 			player->AddComponent<GravityComponent>();
@@ -215,7 +215,7 @@ void SceneGame::Initialize()
 		auto debug_camera = object_manager.Create();
 		debug_camera->SetName("Debug Camera");
 		debug_camera->AddComponent<Transform3DComponent>();
-		debug_camera->AddComponent<DebugCameraController>();
+		debug_camera->AddComponent<CameraControllerDebug>();
 		
 		// ƒJƒƒ‰İ’è
 		{

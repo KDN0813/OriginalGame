@@ -6,12 +6,12 @@
 #include "Component/CameraComponent.h"
 #include "Component/TransformComponent.h"
 
-GamepadCameraController::GamepadCameraController(float roll_speed)
+CameraControllerGamepad::CameraControllerGamepad(float roll_speed)
 	: roll_speed(DirectX::XMConvertToRadians(roll_speed))
 {
 }
 
-void GamepadCameraController::Update(float elapsed_time)
+void CameraControllerGamepad::Update(float elapsed_time)
 {
 	auto owner = GetOwner();
 	if (!owner) return;
@@ -68,7 +68,7 @@ void GamepadCameraController::Update(float elapsed_time)
 #ifdef _DEBUG
 #include "Component/TransformComponent.h"
 
-void DebugCameraController::Update(float elapsed_time)
+void CameraControllerDebug::Update(float elapsed_time)
 {
 	auto owner = GetOwner();
 	if (!owner) return ;
@@ -182,7 +182,7 @@ void DebugCameraController::Update(float elapsed_time)
 	camera->SetEye(eye);
 }
 
-void GamepadCameraController::DrawDebugGUI()
+void CameraControllerGamepad::DrawDebugGUI()
 {
 	float roll_speed_deg = DirectX::XMConvertToDegrees(this->roll_speed);
 	if (ImGui::SliderFloat("RollSpeed", &roll_speed_deg, 0.0f, 180.0f))

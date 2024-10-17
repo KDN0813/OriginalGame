@@ -5,10 +5,10 @@ class CameraComponent;
 class Transform3DComponent;
 
 // ゲームパッドの入力を基にカメラを制御
-class GamepadCameraController : public Component
+class CameraControllerGamepad : public Component
 {
 public:
-    GamepadCameraController(float roll_speed = 90.0f);
+    CameraControllerGamepad(float roll_speed = 90.0f);
 
     // 開始関数
     void Start()  override {};
@@ -18,7 +18,7 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override { return "GamepadCameraController"; };
+    const char* GetName()const  override { return "CameraControllerGamepad"; };
 
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
@@ -51,15 +51,15 @@ public:
 class Transform3DComponent;
 
 // デバッグ用カメラコントローラー
-class DebugCameraController : public Component
+class CameraControllerDebug : public Component
 {
 public:
-    DebugCameraController() {}
+    CameraControllerDebug() {}
 
     // 更新関数
     void Update(float elapsed_time) override;
     // 名前取得
-    const char* GetName() const override { return "DebugUpdateController"; };
+    const char* GetName() const override { return "CameraControllerDebug"; };
 
     // 開始関数
     void Start()  override {};
