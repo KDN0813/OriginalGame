@@ -48,7 +48,6 @@ public:
 };
 
 #ifdef _DEBUG
-class Transform3DComponent;
 
 // デバッグ用カメラコントローラー
 class CameraControllerDebug : public Component
