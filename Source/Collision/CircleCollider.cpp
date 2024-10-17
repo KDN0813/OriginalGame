@@ -62,6 +62,8 @@ void CircleCollider::CheckCollision()
             }
             if (!attacker->GetIsActive()) continue;  // 非アクティブなコンポーネントはスキップ
 
+            attacker->SetHitFlag(false);    // ヒットフラグを解除する
+
             // 有効な攻撃側コンポーネントを追加
             active_attacker_pool_pool[i].emplace_back(attacker);
 
@@ -90,6 +92,8 @@ void CircleCollider::CheckCollision()
                 continue;
             }
             if (!deffender->GetIsActive()) continue;  // 非アクティブなコンポーネントはスキップ
+            
+            deffender->SetHitFlag(false);    // ヒットフラグを解除する
 
             // 有効な防御側コンポーネントを追加
             active_deffender_pool_pool[i].emplace_back(deffender);
