@@ -109,7 +109,6 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h" />
     <ClInclude Include="External\imgui\imconfig.h" />
     <ClInclude Include="External\imgui\imgui.h" />
@@ -122,6 +121,7 @@
     <ClInclude Include="Source\Camera\CameraControllerDerived.h" />
     <ClInclude Include="Source\Collision\CircleCollider.h" />
     <ClInclude Include="Source\Collision\Collision.h" />
+    <ClInclude Include="Source\Collision\CollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionParam.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\CircleCollisionComponent.h" />
@@ -184,7 +184,6 @@
     <ClInclude Include="Source\System\MyMath\MYVECTOR4.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp" />
     <ClCompile Include="External\imgui\imgui.cpp" />
     <ClCompile Include="External\imgui\imgui_demo.cpp" />
@@ -195,6 +194,7 @@
     <ClCompile Include="Source\Camera\CameraControllerDerived.cpp" />
     <ClCompile Include="Source\Collision\CircleCollider.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
+    <ClCompile Include="Source\Collision\CollisionManager.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
     <ClCompile Include="Source\Component\CircleCollisionComponent.cpp" />
     <ClCompile Include="Source\Component\EnemyComponent.cpp" />

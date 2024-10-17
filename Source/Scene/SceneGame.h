@@ -5,6 +5,7 @@
 #include <memory>
 #include "Object/Object.h"
 #include "Object/GameObject.h"
+#include "Collision/CollisionManager.h"
 
 // シェーダー
 #include "Shader/InstanceModelShader.h"
@@ -28,6 +29,7 @@ private:
 
     GameObject game_object;
     ObjectManager object_manager;
+    CollisionManager collision_manager;
 #ifdef _DEBUG
     enum class ImGuiMode
     {

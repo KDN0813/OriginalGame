@@ -214,6 +214,8 @@ void SceneGame::Update(float elapsed_time)
 	object_manager.Update(elapsed_time);
 
 	CameraManager::Instance()->Update(elapsed_time);
+
+	CollisionManager::Instance()->Update();
 }
 
 void SceneGame::Render()

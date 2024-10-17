@@ -33,6 +33,9 @@ void CircleCollider::AddCircle(std::shared_ptr<CircleCollisionComponent>& circle
 
 void CircleCollider::CheckCollision()
 {
+    // TODO(10/17)
+    // コード整理
+
     //// 実行可能なattackerの取得
     std::vector<std::vector<std::shared_ptr<CircleCollisionComponent>>> active_attacker_pool_pool;
     std::vector<bool> is_active_defender_object; // あてられる側のオブジェクトが必用であるか
