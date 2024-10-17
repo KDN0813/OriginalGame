@@ -16,5 +16,9 @@ public:
     CircleCollider* GetCircleCollider() const { return this->circle_collider.get(); }
 private:
     std::unique_ptr<CircleCollider> circle_collider;
+#ifdef _DEBUG
+public:
+    void DrawDebugGUI();
+#endif // _DEBUG
 };
 

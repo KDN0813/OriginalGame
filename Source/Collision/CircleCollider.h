@@ -34,5 +34,10 @@ private:
     };
 private:
     std::vector<CircleCollision> circle_collision_pool;
+
+#ifdef _DEBUG
+public:
+    void DrawDebugGUI();
+#endif // _DEBUG
 };
 

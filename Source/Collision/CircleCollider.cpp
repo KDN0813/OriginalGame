@@ -3,6 +3,11 @@
 
 #include "Object/Object.h"
 #include "Component/CircleCollisionComponent.h"
+#ifdef _DEBUG
+#include <imgui.h>
+#include <magic_enum.hpp>
+#endif // _DEBUG
+
 
 CircleCollider::CircleCollider()
 {
@@ -121,3 +126,63 @@ void CircleCollider::CheckCollision()
 void CircleCollider::RemoveDeletedCircle()
 {
 }
+
+#ifdef _DEBUG
+
+void CircleCollider::DrawDebugGUI()
+{
+    for (size_t circle_collision_index = 0;circle_collision_index< circle_collision_pool.size();++circle_collision_index)
+    {
+        std::string header_name;
+        header_name += magic_enum::enum_name(static_cast<OBJECT_TYPE>(circle_collision_index));
+        if (ImGui::CollapsingHeader(header_name.c_str()))
+        {
+            auto circle_collision = circle_collision_pool[circle_collision_index];
+            if (ImGui::CollapsingHeader("ATTACKER"))
+            {
+                auto circle_attacker_pool = circle_collision.circle_attacker_pool;
+
+                for (auto circle_attacker_Wptr : circle_attacker_pool)
+                {
+                    auto circle_attacker = circle_attacker_Wptr.lock();
+                    if (!circle_attacker) continue;
+
+                    std::string object_name = "null";
+                    auto object = circle_attacker->GetOwner();
+                    if (object)
+                    {
+                        object_name = object->GetName();
+                    }
+                    if (ImGui::CollapsingHeader(object_name.c_str()))
+                    {
+                        bool hit_frag = circle_attacker->GetHitFlag();
+                    }   
+                }
+            }
+            if (ImGui::CollapsingHeader("DEFENDER"))
+            {
+                auto circle_defender_pool = circle_collision.circle_defender_pool;
+
+                for (auto circle_defender_Wptr : circle_defender_pool)
+                {
+                    auto circle_defender = circle_defender_Wptr.lock();
+                    if (!circle_defender) continue;
+
+                    std::string object_name = "null";
+                    auto object = circle_defender->GetOwner();
+                    if (object)
+                    {
+                        object_name = object->GetName();
+                    }
+                    if (ImGui::CollapsingHeader(object_name.c_str()))
+                    {
+                        bool hit_frag = circle_defender->GetHitFlag();
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+#endif // DEBUG
