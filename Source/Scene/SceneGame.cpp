@@ -33,7 +33,7 @@
 
 #include "StateMachine/TransitionJudgementDerived.h"
 #include "StateMachine/StateDerived.h"
-#include "Camera/CameraControllerDerived.h"
+#include "Camera/CameraControllerComponent.h"
 
 
 void SceneGame::Initialize()
@@ -115,10 +115,13 @@ void SceneGame::Initialize()
 				camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
 				camera_param.nearZ = 0.1f;
 				camera_param.farZ = 1000.0f;
-				camera_param.range = 1.0f;
-				camera_param.rotateY = 0.4f;
+				camera_param.range = 10.0f;
+				camera_param.rotateX = 0.4f;
 
 				auto camera = player->AddComponent<CameraComponent>(camera_param, CameraManager::Instance());
+				camera->SetMainCamera();
+
+				player->AddComponent<GamepadCameraController>();
 			}
 			// d—Í
 			player->AddComponent<GravityComponent>();
@@ -212,6 +215,7 @@ void SceneGame::Initialize()
 		auto debug_camera = object_manager.Create();
 		debug_camera->SetName("Debug Camera");
 		debug_camera->AddComponent<Transform3DComponent>();
+		debug_camera->AddComponent<DebugCameraController>();
 		
 		// ƒJƒƒ‰Ý’è
 		{
@@ -220,8 +224,8 @@ void SceneGame::Initialize()
 			camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
 			camera_param.nearZ = 0.1f;
 			camera_param.farZ = 1000.0f;
-			camera_param.range = 1.0f;
-			camera_param.rotateY = 0.4f;
+			camera_param.range = 10.0f;
+			camera_param.rotateX = 0.4f;
 
 			auto debug_camera_component = debug_camera->AddComponent<CameraComponent>(camera_param, CameraManager::Instance());
 			CameraManager::Instance()->SetDebugCamera(debug_camera_component.get());

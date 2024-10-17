@@ -48,23 +48,23 @@ public:
 	void SetMainCamera();
 
 	// 視点設定
-	void GetEye(DirectX::XMFLOAT3 eye) { this->change_value = true; this->camera_param.eye = eye; }
+	void SetEye(DirectX::XMFLOAT3 eye) { this->change_value = true; this->camera_param.eye = eye; }
 	// 注視店設定
-	void GetFocus(DirectX::XMFLOAT3 focus) { this->change_value = true; this->camera_param.focus = focus; }
+	void SetFocus(DirectX::XMFLOAT3 focus) { this->change_value = true; this->camera_param.focus = focus; }
 	// 右方向設定
-	void  GetRight(DirectX::XMFLOAT3 right) { this->change_value = true; this->camera_param.right = right; }
+	void  SetRight(DirectX::XMFLOAT3 right) { this->change_value = true; this->camera_param.right = right; }
 	// 上方向設定
-	void GetUp(DirectX::XMFLOAT3 up) { this->change_value = true; this->camera_param.up = up; }
+	void SetUp(DirectX::XMFLOAT3 up) { this->change_value = true; this->camera_param.up = up; }
 	// 前方向設定
-	void GetForward(DirectX::XMFLOAT3 forward) { this->change_value = true; this->camera_param.forward = forward; }
+	void SetForward(DirectX::XMFLOAT3 forward) { this->change_value = true; this->camera_param.forward = forward; }
 	// 画角設定
-	void GetFovY(float fovY) { this->change_value = true; this->camera_param.fovY = fovY; }
+	void SetFovY(float fovY) { this->change_value = true; this->camera_param.fovY = fovY; }
 	// アスペクト比設定
-	void GetAspect(float aspect) { this->change_value = true; this->camera_param.aspect = aspect; }
+	void SetAspect(float aspect) { this->change_value = true; this->camera_param.aspect = aspect; }
 	// ニアクリップ値設定
-	void GetNearZ(float nearZ) { this->change_value = true; this->camera_param.nearZ = nearZ; }
+	void SetNearZ(float nearZ) { this->change_value = true; this->camera_param.nearZ = nearZ; }
 	// ファークリップ値設定
-	void GetFarZ(float farZ) { this->change_value = true; this->camera_param.farZ = farZ; }
+	void SetFarZ(float farZ) { this->change_value = true; this->camera_param.farZ = farZ; }
 	// カメラの距離設定
 	void SetRange(float range) { this->change_value = true; this->camera_param.range = range; }
 	// Y軸回転度設定
@@ -104,18 +104,19 @@ public:
 	float GetRotateX() { return this->camera_param.rotateX; }
 	// メインカメラであるか
 	bool GetIsMainCamera() { return this->is_main_camera; }
-
+private:
 	// 指定方向を向く
 	void SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up);
 	// パースペクティブ設定
 	void SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ);
+
 private:
 	CameraParam camera_param;
 	CameraParam default_param;
 	DirectX::XMFLOAT4X4	view_transform = {};
 	DirectX::XMFLOAT4X4	projection_transform = {};
 
-	bool change_value = false;
+	bool change_value = true;
 	bool is_main_camera = false;
 	CameraManager*const	camera_manager;
 private:

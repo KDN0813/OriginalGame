@@ -7,7 +7,7 @@
 
 #ifdef _DEBUG
 #include "Graphics/Graphics.h"
-#include "Camera/CameraControllerDerived.h"
+#include "Camera/CameraControllerComponent.h"
 
 #endif // _DEBUG
 

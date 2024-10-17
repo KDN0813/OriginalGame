@@ -25,6 +25,7 @@ void CameraComponent::End()
 void CameraComponent::ReStart()
 {
     this->camera_param = this->default_param;
+    change_value = true;
 }
 
 void CameraComponent::Update(float elapsed_time)

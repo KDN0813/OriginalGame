@@ -118,7 +118,7 @@
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Camera\CameraManager.h" />
     <ClInclude Include="Source\Camera\CameraController.h" />
-    <ClInclude Include="Source\Camera\CameraControllerDerived.h" />
+    <ClInclude Include="Source\Camera\CameraControllerComponent.h" />
     <ClInclude Include="Source\Collision\CircleCollider.h" />
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Collision\CollisionManager.h" />
@@ -191,7 +191,7 @@
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Camera\CameraController.cpp" />
     <ClCompile Include="Source\Camera\CameraManager.cpp" />
-    <ClCompile Include="Source\Camera\CameraControllerDerived.cpp" />
+    <ClCompile Include="Source\Camera\CameraControllerComponent.cpp" />
     <ClCompile Include="Source\Collision\CircleCollider.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager.cpp" />

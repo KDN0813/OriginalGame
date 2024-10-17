@@ -1,21 +1,80 @@
 #include "System/MyMath/MYMATRIX.h"
 #include <imgui.h>
 #include "Input/Input.h"
-#include "CameraControllerDerived.h"
+#include "CameraControllerComponent.h"
 #include "Object/Object.h"
 #include "Component/CameraComponent.h"
+#include "Component/TransformComponent.h"
+
+GamepadCameraController::GamepadCameraController(float roll_speed)
+	: roll_speed(DirectX::XMConvertToRadians(roll_speed))
+{
+}
+
+void GamepadCameraController::Update(float elapsed_time)
+{
+	auto owner = GetOwner();
+	if (!owner) return;
+	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);
+	if (!camera) return;
+	if (!camera->GetIsMainCamera()) return;
+	DirectX::XMFLOAT3 focus{};
+	{
+		auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+		if (transform)
+		{
+			focus = transform->GetWorldPosition();
+		}
+	}
+
+	float rotateX = camera->GetRotateX();
+	float rotateY = camera->GetRotateY();
+	float range = camera->GetRange();
+	MYVECTOR3 Focus = focus;
+
+	GamePad& gamePad = Input::Instance()->GetGamePad();
+	float ax = gamePad.GetAxisRX();
+	float ay = gamePad.GetAxisRY();
+	// カメラの回転速度
+	float speed = this->roll_speed * elapsed_time;
+
+	// スティック入力値に合わせてX軸とY軸を回転
+	rotateY += ax * speed;
+
+	if (rotateY < -DirectX::XM_PI) rotateY += DirectX::XM_2PI;
+	if (rotateY > DirectX::XM_PI) rotateY -= DirectX::XM_2PI;
+
+	// カメラ回転値を回転行列に変換
+	MYMATRIX Transform;
+	Transform.SetRotationRollPitchYaw(rotateX, rotateY, 0.0f);
+	DirectX::XMMATRIX transform = Transform.GetMatrix();
+
+	// 回転行列から前方ベクトルを取り出す
+	MYVECTOR3 Front = transform.r[2];
+
+	// 注視点から後ろのベクトル方向に一定離れたカメラ視点を求める
+	MYVECTOR3 Eye = Focus - Front * range;
+
+	DirectX::XMFLOAT3 eye;
+	Eye.GetFlaot3(eye);
+	Focus.GetFlaot3(focus);
+
+	// カメラの視点と注視点を設定
+	camera->SetFocus(focus);
+	camera->SetEye(eye);
+	camera->SetRotateY(rotateY);
+}
 
 #ifdef _DEBUG
 #include "Component/TransformComponent.h"
 
 void DebugCameraController::Update(float elapsed_time)
 {
-	auto owner = this->owner_Wptr.lock();
+	auto owner = GetOwner();
 	if (!owner) return ;
 	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);
 	if (!camera) return;
 	if (!camera->GetIsMainCamera()) return;
-	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 
 	Mouse& mouse = Input::Instance()->GetMouse();
 
@@ -25,13 +84,13 @@ void DebugCameraController::Update(float elapsed_time)
 	float rotateX = camera->GetRotateX();
 	float rotateY = camera->GetRotateY();
 	float range = camera->GetRange();
-	MYVECTOR3 Focus = transform->GetWorldPosition();
+	MYVECTOR3 Focus = camera->GetFocus();
 	MYVECTOR3 Eye = camera->GetEye();
 
 	// 視線行列を生成
 	MYMATRIX V;
 	{
-		MYVECTOR3 Up(0.0f, 1.0f, 0.0f);
+		const MYVECTOR3 Up(0.0f, 1.0f, 0.0f);
 		// マウス操作
 		{
 			if (::GetAsyncKeyState(VK_RBUTTON) & 0x8000)
@@ -103,9 +162,6 @@ void DebugCameraController::Update(float elapsed_time)
 		MYVECTOR3 Front(-cx * sy, -sx, -cx * cy);
 		Front *= range;
 		Eye = Focus - Front;
-
-		// カメラに視点を注視点を設定
-		camera->SetLookAt(Eye, Focus, Up);
 	}
 
 	if (mouse.GetWheel() != 0)
@@ -120,61 +176,12 @@ void DebugCameraController::Update(float elapsed_time)
 
 	DirectX::XMFLOAT3 focus{};
 	Focus.GetFlaot3(focus);
-	transform->SetLocalPosition(focus);	// Positionの再設定
+	camera->SetFocus(focus);
+	DirectX::XMFLOAT3 eye;
+	Eye.GetFlaot3(eye);
+	camera->SetEye(eye);
 }
 
-#endif // _DEBUG
-
-GamepadCameraController::GamepadCameraController(OwnerPtr owner, float rollSpeed)
-	:CameraControllerBase(owner),
-	roll_speed(DirectX::XMConvertToRadians(rollSpeed))
-{
-}
-
-void GamepadCameraController::Update(float elapsed_time)
-{
-	auto owner = this->owner_Wptr.lock();
-	if (!owner) return;
-	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);
-	if (!camera) return;
-	if (!camera->GetIsMainCamera()) return;
-
-	float rotateX = camera->GetRotateX();
-	float rotateY = camera->GetRotateY();
-	float range = camera->GetRange();
-	MYVECTOR3 Target = camera->GetFocus();
-
-	GamePad& gamePad = Input::Instance()->GetGamePad();
-	float ax = gamePad.GetAxisRX();
-	float ay = gamePad.GetAxisRY();
-	// カメラの回転速度
-	float speed = this->roll_speed * elapsed_time;
-
-	// スティック入力値に合わせてX軸とY軸を回転
-	rotateY += ax * speed;
-
-	if (rotateY < -DirectX::XM_PI) rotateY += DirectX::XM_2PI;
-	if (rotateY > DirectX::XM_PI) rotateY -= DirectX::XM_2PI;
-
-	// カメラ回転値を回転行列に変換
-	MYMATRIX Transform;
-	Transform.SetRotationRollPitchYaw(rotateX, rotateY, 0.0f);
-	DirectX::XMMATRIX transform = Transform.GetMatrix();
-
-	// 回転行列から前方ベクトルを取り出す
-	MYVECTOR3 Front = transform.r[2];
-
-	// 注視点から後ろのベクトル方向に一定離れたカメラ視点を求める
-	MYVECTOR3 Eye = Target - Front * range;
-
-	MYVECTOR3 Up(0.0f, 1.0f, 0.0f);
-
-	// カメラの視点と注視点を設定
-	camera->SetLookAt(Eye, Target, Up);
-	camera->SetRotateY(rotateY);
-}
-
-#ifdef _DEBUG
 void GamepadCameraController::DrawDebugGUI()
 {
 	float roll_speed_deg = DirectX::XMConvertToDegrees(this->roll_speed);
