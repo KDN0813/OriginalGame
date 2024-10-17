@@ -137,6 +137,7 @@ public:
 	const bool& GetIsRemove() { return this->is_remove; }
 	void SetIsActive(const bool is_active) { this->is_active = is_active; }
 	void SetParent(std::shared_ptr<Object> parent) { this->parent_Wptr = parent; }
+	void SetIsRemove(bool is_remove) { this->is_remove = is_remove; }
 
 private:
 	/**

@@ -10,6 +10,7 @@
 
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
+#include "Component/CircleCollisionComponent.h"
 
 void EnemyComponent::Start()
 {
@@ -29,17 +30,26 @@ void EnemyComponent::Update(float elapsed_time)
 	auto owner = GetOwner();
 	if (!owner) return;
 	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
-	if (!transform) return;
-
-	// 目的地点までのXZ平面での距離判定
-	MYVECTOR3 Position = transform->GetWorldPosition();
-	MYVECTOR3 Target_position = this->target_position;
-	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
-	
-	if (!this->IsAtTarget(distSq))
+	if (transform)
 	{
-		// 目的地点へ移動
-		MoveToTarget(elapsed_time, transform, speed_rate);
+		// 目的地点までのXZ平面での距離判定
+		MYVECTOR3 Position = transform->GetWorldPosition();
+		MYVECTOR3 Target_position = this->target_position;
+		float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
+
+		if (!this->IsAtTarget(distSq))
+		{
+			// 目的地点へ移動
+			MoveToTarget(elapsed_time, transform, speed_rate);
+		}
+	}
+	auto circle_collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->circle_collision_Wptr);
+	if (circle_collision)
+	{
+		if (circle_collision->GetHitFlag())
+		{
+			owner->SetIsRemove(true);
+		}
 	}
 }
 
