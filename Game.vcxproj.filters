@@ -452,6 +452,9 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Debug\ImGuiHelper.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli">
