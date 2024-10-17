@@ -1,15 +1,18 @@
 #pragma once
 #include "Component.h"
 #include "Collision/CollisionParam.h"
+#ifdef _DEBUG
+#include "Debug/DebugPrimitiveRenderer.h"
+#endif // _DEBUG
 
 class Transform3DComponent;
 
 // 円の当たり判定用コンポーネント
-class CircleComponent : public Component
+class CircleCollisionComponent : public Component
 {
 public:
-    CircleComponent() {};
-    virtual ~CircleComponent() {};
+    CircleCollisionComponent() {};
+    virtual ~CircleCollisionComponent() {};
 
     // 開始関数
     void Start()  override;
@@ -19,7 +22,7 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override { return "CircleComponent"; };
+    const char* GetName()const  override { return "CircleCollisionComponent"; };
 
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
@@ -56,12 +59,15 @@ public:
     /**
      * デバックの情報を3D画面上に出力する関数
      */
-    void DrawDebugPrimitive()  override {};
+    void DrawDebugPrimitive()  override;
     /**
      * デバッグプリミティブ表示用ImGui
      */
-    void DrawDebugPrimitiveGUI()  override {};
-    bool IsDebugPrimitive() { return false; }   // DebugPrimitiveが存在するか
+    void DrawDebugPrimitiveGUI()  override;
+    bool IsDebugPrimitive() { return true; }   // DebugPrimitiveが存在するか
 #endif // DEBUG
+private:
+    CylinderParam circle_collsion_primitive;
+    float height = 0.1f;    // circle_collsion_primitiveの円柱の高さ
 };
 

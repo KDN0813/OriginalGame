@@ -4,7 +4,7 @@
 #include <set>
 #include "Collision/CollisionParam.h"
 
-class CircleComponent;
+class CircleCollisionComponent;
 
 // 円の当たり判定
 class CircleCollider
@@ -17,7 +17,7 @@ public:
     void Update();
 
     // 当たり判定を行うcircleを追加する関数
-    void AddCircle(std::shared_ptr<CircleComponent>& circle);
+    void AddCircle(std::shared_ptr<CircleCollisionComponent>& circle);
 private:
     // 当たり判定を行う関数
     void CheckCollision();
@@ -29,8 +29,8 @@ private:
     // ぶつける側 (ATTACKER) とぶつけられる側 (DEFENDER) のデータを保持する構造体
     struct CircleCollision
     {
-        std::vector<std::weak_ptr<CircleComponent>> circle_attacker_pool;   // ぶつける側 (ATTACKER)
-        std::vector<std::weak_ptr<CircleComponent>> circle_defender_pool;   // ぶつけられる側 (DEFENDER)
+        std::vector<std::weak_ptr<CircleCollisionComponent>> circle_attacker_pool;   // ぶつける側 (ATTACKER)
+        std::vector<std::weak_ptr<CircleCollisionComponent>> circle_defender_pool;   // ぶつけられる側 (DEFENDER)
     };
 private:
     std::vector<CircleCollision> circle_collision_pool;

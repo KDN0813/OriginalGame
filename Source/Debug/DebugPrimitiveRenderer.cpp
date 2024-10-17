@@ -231,7 +231,7 @@ void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view,
 	{
 		// ワールドビュープロジェクション行列作成
 		MYMATRIX S, T;
-		S.SetScalingMatrix(cylinder.radius);
+		S.SetScalingMatrix(cylinder.radius, cylinder.height, cylinder.radius);
 		T.SetTranslationMatrix(cylinder.position);
 		MYMATRIX W = S * T;
 

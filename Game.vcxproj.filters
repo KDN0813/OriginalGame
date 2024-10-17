@@ -276,7 +276,7 @@
     <ClInclude Include="Source\Collision\CircleCollider.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\CircleComponent.h">
+    <ClInclude Include="Source\Component\CircleCollisionComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\ConstantManager.h">
@@ -446,14 +446,11 @@
     <ClCompile Include="Source\Collision\CircleCollider.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\CircleComponent.cpp">
+    <ClCompile Include="Source\Component\CircleCollisionComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Source\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Debug\ImGuiHelper.cpp">
-      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

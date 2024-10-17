@@ -124,7 +124,7 @@
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Collision\CollisionParam.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
-    <ClInclude Include="Source\Component\CircleComponent.h" />
+    <ClInclude Include="Source\Component\CircleCollisionComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\EnemyComponent.h" />
     <ClInclude Include="Source\Component\GravityComponent.h" />
@@ -196,7 +196,7 @@
     <ClCompile Include="Source\Collision\CircleCollider.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
-    <ClCompile Include="Source\Component\CircleComponent.cpp" />
+    <ClCompile Include="Source\Component\CircleCollisionComponent.cpp" />
     <ClCompile Include="Source\Component\EnemyComponent.cpp" />
     <ClCompile Include="Source\Component\GravityComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
@@ -212,7 +212,6 @@
     <ClCompile Include="Source\Debug\DebugComponent.cpp" />
     <ClCompile Include="Source\Debug\DebugManager.cpp" />
     <ClCompile Include="Source\Debug\DebugPrimitiveRenderer.cpp" />
-    <ClCompile Include="Source\Debug\ImGuiHelper.cpp" />
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
     <ClCompile Include="Source\Debug\DebugCereal.cpp" />
     <ClCompile Include="Source\Framework.cpp" />

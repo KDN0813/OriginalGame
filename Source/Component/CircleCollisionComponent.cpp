@@ -1,25 +1,42 @@
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #include <magic_enum.hpp>
+#include "Debug/DebugManager.h"
 #endif // _DEBUG
-#include "CircleComponent.h"
+#include "CircleCollisionComponent.h"
 #include "Object/Object.h"
 
 #include "Component/TransformComponent.h"
 
-void CircleComponent::Start()
+void CircleCollisionComponent::Start()
+{
+#ifdef _DEBUG
+    circle_collsion_primitive = CylinderParam(DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f), this->radius, height);
+#endif // DEBUG
+
+}
+
+void CircleCollisionComponent::End()
 {
 }
 
-void CircleComponent::End()
+void CircleCollisionComponent::Update(float elapsed_time)
 {
+#ifdef _DEBUG
+    auto owner = GetOwner();
+    if (owner)
+    {
+        auto transform = owner->GetComponent<Transform3DComponent>();
+        if (transform)
+        {
+            this->circle_collsion_primitive.SetPosition(transform->GetWorldPosition());
+        }
+    }
+
+#endif // _DEBUG
 }
 
-void CircleComponent::Update(float elapsed_time)
-{
-}
-
-CircleParam CircleComponent::GetCircleParam()
+CircleParam CircleCollisionComponent::GetCircleParam()
 {
     auto owner = GetOwner();
     if (!owner) return CircleParam(DirectX::XMFLOAT2(), this->radius);
@@ -30,7 +47,7 @@ CircleParam CircleComponent::GetCircleParam()
     return CircleParam(DirectX::XMFLOAT2(world_pos.x, world_pos.z), this->radius);
 }
 
-void CircleComponent::DrawDebugGUI()
+void CircleCollisionComponent::DrawDebugGUI()
 {
     // collision_type•\Ž¦
     {
@@ -51,7 +68,7 @@ void CircleComponent::DrawDebugGUI()
         text_str += magic_enum::enum_name(this->target_type);
         ImGui::InputTextString("TARGET TYPE", text_str);
     }
-    ImGui::DragFloat("radius##CircleComponent", &radius, 0.01f);
+    ImGui::DragFloat("radius##CircleCollisionComponent", &radius, 0.01f);
     ImGui::Checkbox("Hit Flag" ,&hit_flag);
 
     // hit_result•\Ž¦
@@ -67,4 +84,16 @@ void CircleComponent::DrawDebugGUI()
             ImGui::InputTextString("Hit Object Name", hit_object_name);
         }
     }
+}
+
+void CircleCollisionComponent::DrawDebugPrimitive()
+{
+    DebugPrimitiveRenderer* debug_primitive_renderer = DebugManager::Instance()->GetDebugPrimitiveRenderer();
+
+    debug_primitive_renderer->DrawCylinder(circle_collsion_primitive);
+}
+
+void CircleCollisionComponent::DrawDebugPrimitiveGUI()
+{
+    circle_collsion_primitive.DrawDebugGUI("Circle Collsion");
 }

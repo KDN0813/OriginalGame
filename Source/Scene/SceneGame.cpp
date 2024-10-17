@@ -29,6 +29,7 @@
 #include "Component/ModelAnimationComponent.h"
 #include "Component/EnemyComponent.h"
 #include "Component/StateMachineComponent.h"
+#include "Component/CircleCollisionComponent.h"
 
 #include "StateMachine/TransitionJudgementDerived.h"
 #include "StateMachine/StateDerived.h"
@@ -112,6 +113,8 @@ void SceneGame::Initialize()
 			camera->SetMainCamera();
 			// 重力
 			player->AddComponent<GravityComponent>();
+			// 円のコライダー
+			player->AddComponent<CircleCollisionComponent>();
 			
 			// 子オブジェクト設定
 			{
