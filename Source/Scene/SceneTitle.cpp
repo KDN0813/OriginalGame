@@ -1,4 +1,5 @@
 #include "SceneTitle.h"
+#include "Scene/SceneLoading.h"
 #include "Scene/SceneGame.h"
 #include "Scene/SceneManager.h"
 #include "Graphics/Graphics.h"
@@ -41,7 +42,7 @@ void SceneTitle::Update(float elapsed_time)
 	// スペースキーでゲーム画面に遷移(仮)
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
-		SceneManager::Instance()->ChangeScene(new SceneGame());
+		SceneManager::Instance()->ChangeScene(new SceneLoading(new SceneGame()));
 	}
 }
 
