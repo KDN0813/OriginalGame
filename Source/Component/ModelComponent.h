@@ -31,6 +31,8 @@ public:
 
 	// 開始関数
 	void Start() override;
+	// リスタート処理
+	void ReStart() override {};
 	// 更新関数
 	void Update(float elapsed_time) override;
 	// 名前取得
