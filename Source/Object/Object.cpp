@@ -96,6 +96,8 @@ void Object::DrawDebugGUI()
         SetName(buffer);
     }
 
+    ImGui::Separator();
+
     int priority = 0;
     for (std::shared_ptr<Component>& component : component_vec)
     {
@@ -114,7 +116,7 @@ void Object::DrawDebugGUI()
         if (!component_is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
 
         if (ImGui::CollapsingHeader(component->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
-        {
+        {            
             label = "Priority:";
             label += magic_enum::enum_name(component->GetPriority());
             ImGui::Text(label.c_str());
@@ -151,14 +153,19 @@ void Object::DrawDebugGUI()
                 if (!is_debug_primitive) ImGui::PopStyleColor();
             }
         }
+        ImGui::Separator();
         if (!component_is_active) ImGui::PopStyleColor();
     }
 
+    ImGui::Dummy(ImVec2(0.0f, 5.0f));
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.5f, 0.5f, 1.0f));  // 緑色のボタン
     // 削除ボタン
     if (ImGui::Button("Remove"))
     {
         this->is_remove = true;
     }
+    ImGui::PopStyleColor();     // 色を元に戻す
 
     if (!this->is_active) ImGui::PopStyleColor();
 }
