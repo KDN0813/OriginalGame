@@ -6,7 +6,7 @@
 
 #include "Component/TransformComponent.h"
 
-CameraComponent::CameraComponent(CameraParam camera_param, CameraManager* camera_manager)
+CameraComponent::CameraComponent(const CameraParam& camera_param, CameraManager* camera_manager)
     :camera_manager(camera_manager),camera_param(camera_param),default_param(camera_param)
 {
     this->camera_manager->AddCamera(this);

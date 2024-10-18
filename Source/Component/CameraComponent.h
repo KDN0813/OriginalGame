@@ -25,7 +25,7 @@ public:
 		float					rotateX = 0.0f;
 	};
 public:
-    CameraComponent(CameraParam camera_param,CameraManager* camera_manager);
+    CameraComponent(const CameraParam& camera_param,CameraManager* camera_manager);
 
 	// ŠJnŠÖ”
 	void Start()override;
