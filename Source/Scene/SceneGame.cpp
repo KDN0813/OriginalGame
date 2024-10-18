@@ -302,8 +302,6 @@ void SceneGame::Update(float elapsed_time)
 	CameraManager::Instance()->Update(elapsed_time);
 
 	CollisionManager::Instance()->Update();
-
-	sprite_shader->Update();
 }
 
 void SceneGame::Render()
@@ -450,6 +448,10 @@ void SceneGame::DrawShaderImGui()
 	if (ImGui::CollapsingHeader(instancing_model_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		instancing_model_shader->DrawDebugGUI();
+	}
+	if (ImGui::CollapsingHeader(sprite_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		sprite_shader->DrawDebugGUI();
 	}
 }
 
