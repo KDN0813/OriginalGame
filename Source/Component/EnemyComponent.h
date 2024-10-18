@@ -9,13 +9,28 @@ class CircleCollisionComponent;
 class EnemyComponent : public Component
 {
 public:
-    EnemyComponent() {};
+    struct EnemyParam
+    {
+        DirectX::XMFLOAT3 target_position{};
+        float territory_range = 45.0f;
+        float radius = 1.0f;
+        float move_speed = 3.0f;
+        float speed_rate = 0.5f;
+
+        float idle_timer = 0.0f;    // 待機時間
+        float max_idle_time = 5.0f;
+        float min_idle_time = 0.5f;
+    };
+public:
+    EnemyComponent(EnemyParam param) :param(param),default_param(param){};
     ~EnemyComponent() {};
 
     // 開始関数
     void Start() override;
     // 終了関数
     void End() override;
+    // リスタート処理
+    void ReStart() override { this->param = this->default_param; };      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override;
 
@@ -33,25 +48,18 @@ public:
     bool IsAtTarget();
     bool IsAtTarget(float distSq);
     // 現在待機行動中であるか
-    bool IsIdle() { return (this->idle_timer > 0.0f); }
+    bool IsIdle() { return (this->param.idle_timer > 0.0f); }
 
     // 各種・設定取得関数
-    float GetIdleTime() { return this->idle_timer; }
-    void SetIdleTime(float time) { this->idle_timer = time; }
+    float GetIdleTime() { return this->param.idle_timer; }
+    void SetIdleTime(float time) { this->param.idle_timer = time; }
 private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);
 
 private:
-    DirectX::XMFLOAT3 target_position{};
-    float territory_range = 45.0f;
-    float radius = 1.0f;
-    float move_speed = 3.0f;
-    float speed_rate = 0.5f;
-
-    float idle_timer = 0.0f;    // 待機時間
-    float max_idle_time = 5.0f;
-    float min_idle_time = 0.5f;
+    EnemyParam param;
+    EnemyParam default_param;
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;

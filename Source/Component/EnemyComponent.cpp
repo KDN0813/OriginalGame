@@ -22,9 +22,9 @@ void EnemyComponent::End()
 
 void EnemyComponent::Update(float elapsed_time)
 {
-	if (idle_timer > 0.0f)
+	if (this->param.idle_timer > 0.0f)
 	{
-		idle_timer -= elapsed_time;
+		this->param.idle_timer -= elapsed_time;
 	}
 
 	auto owner = GetOwner();
@@ -34,13 +34,13 @@ void EnemyComponent::Update(float elapsed_time)
 	{
 		// 目的地点までのXZ平面での距離判定
 		MYVECTOR3 Position = transform->GetWorldPosition();
-		MYVECTOR3 Target_position = this->target_position;
+		MYVECTOR3 Target_position = this->param.target_position;
 		float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
 
 		if (!this->IsAtTarget(distSq))
 		{
 			// 目的地点へ移動
-			MoveToTarget(elapsed_time, transform, speed_rate);
+			MoveToTarget(elapsed_time, transform, this->param.speed_rate);
 		}
 	}
 	auto circle_collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->circle_collision_Wptr);
@@ -67,27 +67,27 @@ void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3
 {
 	// ターゲット方向への進行ベクトルを算出
 	MYVECTOR3 Position = transform->GetWorldPosition();
-	MYVECTOR3 Target_position = this->target_position;
+	MYVECTOR3 Target_position = this->param.target_position;
 	MYVECTOR3 Vec = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).Normalize();
 	float vx = Vec.GetX();
 	float vz = Vec.GetZ();
 
 	// 移動処理
-	Move(vx, vz, move_speed * speed_rate);
+	Move(vx, vz, this->param.move_speed * speed_rate);
 }
 
 void EnemyComponent::SetRandomTargetPosition()
 {
 	float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-	float range = MyMathf::RandomRange(0.0f, this->territory_range);
-	this->target_position.x =  + sinf(theta) * range;
-	this->target_position.y = 0.0f;
-	this->target_position.z =  + cosf(theta) * range;
+	float range = MyMathf::RandomRange(0.0f, this->param.territory_range);
+	this->param.target_position.x =  + sinf(theta) * range;
+	this->param.target_position.y = 0.0f;
+	this->param.target_position.z =  + cosf(theta) * range;
 }
 
 void EnemyComponent::SetRandomIdleTime()
 {
-	this->idle_timer = MyMathf::RandomRange(this->min_idle_time, this->max_idle_time);
+	this->param.idle_timer = MyMathf::RandomRange(this->param.min_idle_time, this->param.max_idle_time);
 }
 
 bool EnemyComponent::IsAtTarget()
@@ -99,7 +99,7 @@ bool EnemyComponent::IsAtTarget()
 
 	// 目的地点までのXZ平面での距離判定
 	MYVECTOR3 Position = transform->GetWorldPosition();
-	MYVECTOR3 Target_position = this->target_position;
+	MYVECTOR3 Target_position = this->param.target_position;
 	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
 
 	return IsAtTarget(distSq);
@@ -107,26 +107,28 @@ bool EnemyComponent::IsAtTarget()
 
 bool EnemyComponent::IsAtTarget(float distSq)
 {
-	return (distSq < this->radius * this->radius);
+	return (distSq < this->param.radius * this->param.radius);
 }
 
 #ifdef _DEBUG
 
 void EnemyComponent::DrawDebugGUI()
 {
-	ImGui::InputFloat("Idle State", &this->idle_timer);
-	ImGui::InputFloat3("Target Position", &this->target_position.x);
-	ImGui::DragFloat("Territory Range", &this->territory_range, 0.01f);
-	ImGui::DragFloat("Radius", &this->radius, 0.01f);
-	ImGui::DragFloat("Move Speed", &this->move_speed);
-	ImGui::DragFloat("Speed Rate", &this->speed_rate);
+	ImGui::InputFloat3("Target Position", &this->param.target_position.x);
+	ImGui::DragFloat("Territory Range", &this->param.territory_range, 0.01f);
+	ImGui::DragFloat("Radius", &this->param.radius, 0.01f);
+	ImGui::DragFloat("Move Speed", &this->param.move_speed);
+	ImGui::DragFloat("Speed Rate", &this->param.speed_rate);
+	ImGui::InputFloat("Idle Timer", &this->param.idle_timer);
+	ImGui::InputFloat("Idle Max Timer", &this->param.max_idle_time);
+	ImGui::InputFloat("Idle Min Timer", &this->param.min_idle_time);
 }
 
 void EnemyComponent::DrawDebugPrimitive()
 {
 	auto debug_render = DebugManager::Instance()->GetDebugPrimitiveRenderer();
 	if (!this->IsAtTarget())
-		debug_render->DrawSphere(this->target_position, this->radius, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+		debug_render->DrawSphere(this->param.target_position, this->param.radius, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
 }
 
 #endif // _DEBUG

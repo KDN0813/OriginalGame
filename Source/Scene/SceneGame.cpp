@@ -169,7 +169,11 @@ void SceneGame::Initialize()
 			{
 				auto enemy = object_manager.Create();
 				auto transform = enemy->AddComponent<Transform3DComponent>();
-				auto enemy_component = enemy->AddComponent<EnemyComponent>();
+				// エネミーコンポーネント設定
+				{
+					EnemyComponent::EnemyParam param{};
+					auto enemy_component = enemy->AddComponent<EnemyComponent>(param);
+				}
 				auto movement = enemy->AddComponent<MovementComponent>();
 				// アニメーション設定
 				{
