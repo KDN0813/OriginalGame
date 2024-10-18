@@ -51,7 +51,7 @@ public:
 	InstancingModelShader(ID3D11Device* device);
 	~InstancingModelShader() override {}
 
-	void Render(ID3D11DeviceContext* dc, const RenderContext& rc)override;
+	void Render()override;
 	
 	const char* GetName()override { return "InstancingModelShader"; }
 

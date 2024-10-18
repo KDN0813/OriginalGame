@@ -30,7 +30,7 @@ private:
 public:
     ModelShader(ID3D11Device* device);
 
-    void Render(ID3D11DeviceContext* dc, const RenderContext& rc) override;
+    void Render() override;
     const char* GetName() override { return "ModelShader"; };
 
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);

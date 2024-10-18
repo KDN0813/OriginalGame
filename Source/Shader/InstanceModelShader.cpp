@@ -1,4 +1,6 @@
 #include <imgui.h>
+#include "Graphics/Graphics.h"
+#include "Camera/CameraManager.h"
 #include "System/MyMath/MYMATRIX.h"
 #include "InstanceModelShader.h"
 #include "System/Misc.h"
@@ -8,6 +10,7 @@
 
 #include "Component/InstancingModelComponent.h"
 #include "Component/TransformComponent.h"
+#include "Component/CameraComponent.h"
 
 InstancingModelShader::InstancingModelShader(ID3D11Device* device)
 {
@@ -206,8 +209,18 @@ InstancingModelShader::InstancingModelShader(ID3D11Device* device)
 	}
 }
 
-void InstancingModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
+void InstancingModelShader::Render()
 {
+	ID3D11DeviceContext* dc = Graphics::Instance()->GetDeviceContext();
+	RenderContext rc{};
+
+	CameraComponent* camera = CameraManager::Instance()->GetMainCamera();
+	if (camera)
+	{
+		rc.view = camera->GetViewTransform();
+		rc.projection = camera->GetProjectionTransform();
+	}
+
 	if (shader_component_vec_map.size() <= 0) return;
 
 	// ‰ŠúÝ’è

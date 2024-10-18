@@ -319,10 +319,10 @@ void SceneGame::Render()
 	// 3Dモデルの描画
 	{
 		// モデル描画
-		this->model_shader->Render(dc, rc);
+		this->model_shader->Render();
 
 		// インスタンシング描画
-		this->instancing_model_shader->Render(dc, rc);
+		this->instancing_model_shader->Render();
 	}
 
 #ifdef _DEBUG
@@ -335,7 +335,7 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
-		sprite_shader->Render(dc, rc);
+		sprite_shader->Render();
 	}
 
 	DrawImGui();

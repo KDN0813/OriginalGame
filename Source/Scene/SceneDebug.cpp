@@ -130,10 +130,10 @@ void SceneDebug::Render()
 		rc.projection = camera->GetProjectionTransform();
 
 		// モデル描画
-		this->model_shader->Render(dc, rc);
+		this->model_shader->Render();
 
 		// インスタンシング描画
-		this->instancing_model_shader->Render(dc, rc);
+		this->instancing_model_shader->Render();
 	}
 
 #ifdef _DEBUG

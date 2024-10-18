@@ -62,7 +62,7 @@ void SceneTitle::Render()
 
 	// 2Dスプライト描画
 	{
-		this->sprite_shader->Render(dc, rc);
+		this->sprite_shader->Render();
 	}
 
 	// 2Dデバッグ描画

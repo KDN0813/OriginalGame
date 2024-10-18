@@ -1,12 +1,16 @@
 #include <algorithm>
-#include "SpriteShader.h"
-#include "Component/SpriteComponent.h"
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #endif // _DEBUG
+#include "SpriteShader.h"
+#include "Graphics/Graphics.h"
 
-void SpriteShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
+#include "Component/SpriteComponent.h"
+
+void SpriteShader::Render()
 {
+    ID3D11DeviceContext* const dc = Graphics::Instance()->GetDeviceContext();
+
     // —LŒø‚Å‚È‚¢weak_ptr‚ðœ‹Ž‚·‚é
     this->sprite_pool.erase(
         std::remove_if(this->sprite_pool.begin(), this->sprite_pool.end(),

@@ -13,7 +13,7 @@ public:
     ~SpriteShader() {};
 
     // 描画関数
-    void Render(ID3D11DeviceContext* dc, const RenderContext& rc) override;
+    void Render() override;
     const char* GetName() { return "SpriteShader"; }
 
     // スプライトの追加

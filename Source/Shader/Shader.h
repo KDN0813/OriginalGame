@@ -16,7 +16,7 @@ public:
 	 * \param dc
 	 * \param rc
 	 */
-	virtual void Render(ID3D11DeviceContext* dc, const RenderContext& rc) = 0;
+	virtual void Render() = 0;
 
 	virtual const char* GetName() = 0;
 

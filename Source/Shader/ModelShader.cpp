@@ -1,10 +1,13 @@
 #include <imgui.h>
+#include "Graphics/Graphics.h"
+#include "Camera/CameraManager.h"
 #include "ModelShader.h"
 #include "Model/ModelResource.h"
 #include "System/Misc.h"
 
 #include "Component/ModelShaderComponent.h"
 #include "Component/ModelComponent.h"
+#include "Component/CameraComponent.h"
 
 ModelShader::ModelShader(ID3D11Device* device)
 {
@@ -167,8 +170,18 @@ ModelShader::ModelShader(ID3D11Device* device)
 	}
 }
 
-void ModelShader::Render(ID3D11DeviceContext* dc, const RenderContext& rc)
+void ModelShader::Render()
 {
+	ID3D11DeviceContext* dc = Graphics::Instance()->GetDeviceContext();
+	RenderContext rc{};
+
+	CameraComponent* camera = CameraManager::Instance()->GetMainCamera();
+	if (camera)
+	{
+		rc.view = camera->GetViewTransform();
+		rc.projection = camera->GetProjectionTransform();
+	}
+
     Begin(dc, rc);
 
 	for (auto shader_component : this->shader_component_vec)
