@@ -20,12 +20,9 @@ void StateMachineComponent::End()
 void StateMachineComponent::ReStart()
 {
     this->next_state = this->default_state;
-    if (this->state_index != this->next_state)
-    {
-        this->state_pool[this->state_index]->End();
-        this->state_index = this->next_state;
-        this->state_pool[this->state_index]->Start();
-    }
+    this->state_pool[this->state_index]->End();
+    this->state_index = this->next_state;
+    this->state_pool[this->state_index]->Start();
 }
 
 void StateMachineComponent::Update(float elapsed_time)

@@ -160,6 +160,14 @@ void Object::DrawDebugGUI()
     ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.5f, 0.5f, 1.0f));  // 緑色のボタン
+    // リスタート
+    if (ImGui::Button("All ReStart"))
+    {
+        for (std::shared_ptr<Component>& component : component_vec)
+        {
+            component->ReStart();
+        }
+    }
     // 削除ボタン
     if (ImGui::Button("Remove"))
     {
