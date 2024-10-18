@@ -45,6 +45,7 @@ void SceneGame::Initialize()
 	{
 		instancing_model_shader = std::make_unique<InstancingModelShader>(device);
 		model_shader = std::make_unique<ModelShader>(device);
+		sprite_shader = std::make_unique<SpriteShader>();
 	}
 
 	// オブジェクト作成
@@ -185,7 +186,9 @@ void SceneGame::Initialize()
 
 				SpriteComponent::SpriteParam param{};
 				param.filename = "Data/Sprite/Title.png";
-				player->AddComponent<SpriteComponent>(param);
+				auto sprite = player->AddComponent<SpriteComponent>(param);
+
+				sprite_shader->AddSprite(sprite);
 			}
 
 			// GameObjectに設定
@@ -299,6 +302,8 @@ void SceneGame::Update(float elapsed_time)
 	CameraManager::Instance()->Update(elapsed_time);
 
 	CollisionManager::Instance()->Update();
+
+	sprite_shader->Update();
 }
 
 void SceneGame::Render()
@@ -338,9 +343,7 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
-		auto player = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
-		auto sprite = player->GetComponent<SpriteComponent>();
-		sprite->Render(dc);
+		sprite_shader->Render(dc, rc);
 	}
 
 	DrawImGui();

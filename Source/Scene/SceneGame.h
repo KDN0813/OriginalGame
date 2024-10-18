@@ -10,6 +10,7 @@
 // シェーダー
 #include "Shader/InstanceModelShader.h"
 #include "Shader/ModelShader.h"
+#include "Shader/SpriteShader.h"
 
 class SceneGame : public Scene 
 {
@@ -26,6 +27,7 @@ private:
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
     std::unique_ptr<ModelShader> model_shader;
+    std::unique_ptr<SpriteShader> sprite_shader;
 
     GameObject game_object;
     ObjectManager object_manager;
