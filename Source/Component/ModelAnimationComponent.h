@@ -11,6 +11,17 @@ class ModelResource;
 class ModelAnimationComponent : public Component
 {
 public:
+	struct AnimationParam
+	{
+		int current_animation_index = -1;		// 再生中のアニメーションのインデックス
+		float current_animation_seconds = 0;	// 現在の再生時間
+		float animation_blend_time = 0;			// アニメーションブレンドの経過時間
+		float animation_blend_seconds = 0;		// アニメーションブレンドの時間
+		bool animation_loop_flag = 0;			// ループフラグ
+		bool animation_end_flag = 0;			// 終了フラグ
+		bool dummy[2]{};
+	};
+public:
 	// アニメーションの遷移情報
 	struct AnimeTransitionInfo
 	{
@@ -28,10 +39,12 @@ public:
 		std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
 	};
 public:
-	ModelAnimationComponent(ID3D11Device* device, const char* filename);
+	ModelAnimationComponent(AnimationParam param ,ID3D11Device* device, const char* filename);
 
 	// 開始関数
 	void Start() override {};
+	// リスタート処理
+	void ReStart() override;      // パラメータの初期化
 	// 更新関数
 	void Update(float elapsed_time) override;
 	// 名前取得
@@ -61,17 +74,13 @@ public:
 	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<TransitionJudgementBase> judgement, float blend_time);
 
 	// 各種データ取得
-	float GetCurrentAnimationSeconds()const { return current_animation_seconds; }
+	float GetCurrentAnimationSeconds()const { return this->param.current_animation_seconds; }
 private:
 	std::vector<AnimeState>				anime_state_pool;	// アニメーション情報	
 	int animation_size = 0;					// アニメーションの数
-	int current_animation_index = -1;		// 再生中のアニメーションのインデックス
-	float current_animation_seconds = 0;	// 現在の再生時間
-	float animation_blend_time = 0;			// アニメーションブレンドの経過時間
-	float animation_blend_seconds = 0;		// アニメーションブレンドの時間
-	bool animation_loop_flag = 0;			// ループフラグ
-	bool animation_end_flag = 0;			// 終了フラグ
-	bool dummy[2]{};
+	AnimationParam param;
+	AnimationParam default_param;
+
 private:
 	std::weak_ptr<ModelComponent> model_Wptr;
 	std::weak_ptr<ModelResource> model_resource_Wptr;

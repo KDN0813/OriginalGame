@@ -69,12 +69,15 @@ void SceneGame::Initialize()
 			auto player = object_manager.Create();
 			player->SetName("Player");
 			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
-			auto model_animation = player->AddComponent<ModelAnimationComponent>(device, "Data/Model/Player/Player.mdl");
 			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
+				ModelAnimationComponent::AnimationParam param{};
+				param.current_animation_index = PlayerCT::ANIMATION::IDLE;
+				param.animation_loop_flag = true;
+
+				auto model_animation = player->AddComponent<ModelAnimationComponent>(param ,device, "Data/Model/Player/Player.mdl");
 				// 待機
-				model_animation->PlayAnimation(PlayerCT::ANIMATION::IDLE, true);
 				model_animation->SetAnimationState(PlayerCT::ANIMATION::IDLE, true);
 				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::IDLE, PlayerCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_Move>(player),0.2f);
 				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::IDLE, PlayerCT::ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.2f);

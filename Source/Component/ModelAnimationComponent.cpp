@@ -5,7 +5,8 @@
 
 #include "Component/ModelComponent.h"
 
-ModelAnimationComponent::ModelAnimationComponent(ID3D11Device* device, const char* filename)
+ModelAnimationComponent::ModelAnimationComponent(AnimationParam param ,ID3D11Device* device, const char* filename)
+	:param(param),default_param(param)
 {
 	// リソース読み込み
 	auto model_resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
@@ -30,6 +31,14 @@ ModelAnimationComponent::ModelAnimationComponent(ID3D11Device* device, const cha
 	}
 }
 
+void ModelAnimationComponent::ReStart()
+{
+	this->param = this->default_param;
+#ifdef _DEBUG
+	this->stop_anime_state_update = false;	// アニメーションステートの更新停止フラグ
+#endif // DEBUG
+}
+
 void ModelAnimationComponent::Update(float elapsed_time)
 {
 	UpdateAnimationState();
@@ -52,20 +61,20 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 	// アニメーションブレンド率
 	float blend_rate = 1.0f;
 
-	if (this->animation_blend_time < this->animation_blend_seconds)
+	if (this->param.animation_blend_time < this->param.animation_blend_seconds)
 	{
-		this->animation_blend_time += elapsed_time;
-		if (this->animation_blend_time >= this->animation_blend_seconds)
+		this->param.animation_blend_time += elapsed_time;
+		if (this->param.animation_blend_time >= this->param.animation_blend_seconds)
 		{
-			this->animation_blend_time = this->animation_blend_seconds;
+			this->param.animation_blend_time = this->param.animation_blend_seconds;
 		}
 		//　ブレンド率計算
-		blend_rate = this->animation_blend_time / this->animation_blend_seconds;
+		blend_rate = this->param.animation_blend_time / this->param.animation_blend_seconds;
 		blend_rate *= blend_rate;
 	}
 
 	const std::vector<ModelResource::Animation>& animations = model_resource->GetAnimations();
-	const ModelResource::Animation& animation = animations.at(current_animation_index);
+	const ModelResource::Animation& animation = animations.at(this->param.current_animation_index);
 
 	std::vector<ModelComponent::Node>& node_vec = model->GetNodes();
 
@@ -79,11 +88,11 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 		const ModelResource::Keyframe& keyframe1 = keyframes.at(static_cast<size_t>(keyIndex + 1));
 
 		// 経過時間が再生時間内なら
-		if (this->current_animation_seconds >= keyframe0.seconds &&
-			this->current_animation_seconds < keyframe1.seconds)
+		if (this->param.current_animation_seconds >= keyframe0.seconds &&
+			this->param.current_animation_seconds < keyframe1.seconds)
 		{
 			// 補間率を計算
-			float rate = (this->current_animation_seconds - keyframe0.seconds)
+			float rate = (this->param.current_animation_seconds - keyframe0.seconds)
 				/ (keyframe1.seconds - keyframe0.seconds);
 
 			int nodeCount = static_cast<int>(node_vec.size());
@@ -146,61 +155,61 @@ void ModelAnimationComponent::UpdateAnimation(float elapsed_time)
 	}
 
 	// 再生終了したら
-	if (this->animation_end_flag)
+	if (this->param.animation_end_flag)
 	{
-		this->animation_end_flag = false;
+		this->param.animation_end_flag = false;
 		return;
 	}
 
-	this->current_animation_seconds += elapsed_time;
+	this->param.current_animation_seconds += elapsed_time;
 
 	// 再生時間を超えたら
-	if (this->current_animation_seconds >= animation.seconds_length)
+	if (this->param.current_animation_seconds >= animation.seconds_length)
 	{
 		// ループ再生する場合
-		if (this->animation_loop_flag)
+		if (this->param.animation_loop_flag)
 		{
 			// 再生時間を戻す
-			this->current_animation_seconds -= animation.seconds_length;
+			this->param.current_animation_seconds -= animation.seconds_length;
 			return;
 		}
 		// ループ再生しない場合
 		else
 		{
-			this->animation_end_flag = true;
+			this->param.animation_end_flag = true;
 		}
 	}
 }
 
 void ModelAnimationComponent::PlayAnimation(int index, bool loop, float blend_seconds)
 {
-	this->current_animation_index = index;
-	this->current_animation_seconds = 0.0f;
+	this->param.current_animation_index = index;
+	this->param.current_animation_seconds = 0.0f;
 
-	this->animation_loop_flag = loop;
-	this->animation_end_flag = false;
+	this->param.animation_loop_flag = loop;
+	this->param.animation_end_flag = false;
 
-	this->animation_blend_time = 0.0f;
-	this->animation_blend_seconds = blend_seconds;
+	this->param.animation_blend_time = 0.0f;
+	this->param.animation_blend_seconds = blend_seconds;
 }
 
 void ModelAnimationComponent::PlayAnimation(const AnimeState& animation_info, float blend_seconds)
 {
-	this->current_animation_index = static_cast<int>(animation_info.anime_index);
-	this->current_animation_seconds = 0.0f;
+	this->param.current_animation_index = static_cast<int>(animation_info.anime_index);
+	this->param.current_animation_seconds = 0.0f;
 
-	this->animation_loop_flag = animation_info.loop;
-	this->animation_end_flag = false;
+	this->param.animation_loop_flag = animation_info.loop;
+	this->param.animation_end_flag = false;
 
-	this->animation_blend_time = 0.0f;
-	this->animation_blend_seconds = blend_seconds;
+	this->param.animation_blend_time = 0.0f;
+	this->param.animation_blend_seconds = blend_seconds;
 }
 
 bool ModelAnimationComponent::IsPlayAnimation() const
 {
-	if (this->current_animation_index < 0)return false;
-	if (this->current_animation_index >= this->animation_size) return false;
-	if (this->animation_end_flag) return false;
+	if (this->param.current_animation_index < 0)return false;
+	if (this->param.current_animation_index >= this->animation_size) return false;
+	if (this->param.animation_end_flag) return false;
 	return true;
 }
 
@@ -209,10 +218,10 @@ bool ModelAnimationComponent::IsTransitionReady()
 	// 再生中でなければ準備完了
 	if (!IsPlayAnimation()) return true;
 
-	auto& anime_state = this->anime_state_pool[this->current_animation_index];
+	auto& anime_state = this->anime_state_pool[this->param.current_animation_index];
 
 	if (anime_state.transition_ready_time >= 0.0f &&
-		anime_state.transition_ready_time <= this->current_animation_seconds) return true;
+		anime_state.transition_ready_time <= this->param.current_animation_seconds) return true;
 
 	return false;
 }
@@ -239,10 +248,10 @@ void ModelAnimationComponent::UpdateAnimationState()
 #endif // DEBUG
 
 
-	if (this->current_animation_index < 0) return;
+	if (this->param.current_animation_index < 0) return;
 	if (this->anime_state_pool.size() <= 0) return;
 
-	for (auto& transition_info : this->anime_state_pool[this->current_animation_index].transition_info_pool)
+	for (auto& transition_info : this->anime_state_pool[this->param.current_animation_index].transition_info_pool)
 	{
 		if (PerformTransitionJudgement(transition_info->judgement.get()))
 		{
@@ -280,7 +289,7 @@ void ModelAnimationComponent::DrawDebugGUI()
 	auto model_resource = model_resource_Wptr.lock();
 	if (!model_resource) return;
 
-	int& anime_index = this->current_animation_index;
+	int& anime_index = this->param.current_animation_index;
 	if (anime_index < 0) return;
 
 	if (model_resource->GetAnimations().size())
@@ -289,17 +298,17 @@ void ModelAnimationComponent::DrawDebugGUI()
 
 		std::string play_anime_name = this->animation_name_pool[anime_index];
 		ImGui::Checkbox("Stop Anime State Update", &this->stop_anime_state_update);
-		ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
+		ImGui::SliderFloat("Current Animation Seconds", &this->param.current_animation_seconds, 0.0f, animation.seconds_length);
 		if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
 		{
 			auto& anime_state = this->anime_state_pool[anime_index];
 			PlayAnimation(anime_state, 0.0f);
 		}
-		ImGui::Checkbox("Animation Loop Flag", &this->animation_loop_flag);
+		ImGui::Checkbox("Animation Loop Flag", &this->param.animation_loop_flag);
 
-		ImGui::InputFloat("Animation Blend Seconds", &this->animation_blend_seconds);
-		ImGui::SliderFloat("Animation Blend Time", &this->animation_blend_time, 0.0f, this->animation_blend_seconds);
-		ImGui::Checkbox("Animation End Flag", &this->animation_end_flag);
+		ImGui::InputFloat("Animation Blend Seconds", &this->param.animation_blend_seconds);
+		ImGui::SliderFloat("Animation Blend Time", &this->param.animation_blend_time, 0.0f, this->param.animation_blend_seconds);
+		ImGui::Checkbox("Animation End Flag", &this->param.animation_end_flag);
 
 		if (this->is_draw_deletail) DrawDetail();
 		else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
