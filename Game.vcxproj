@@ -165,6 +165,7 @@
     <ClInclude Include="Source\Shader\ModelShader.h" />
     <ClInclude Include="Source\Shader\Shader.h" />
     <ClInclude Include="Source\Shader\InstanceModelShader.h" />
+    <ClInclude Include="Source\Sprite.h" />
     <ClInclude Include="Source\StateMachine\State.h" />
     <ClInclude Include="Source\StateMachine\StateDerived.h" />
     <ClInclude Include="Source\StateMachine\TransitionJudgement.h" />
@@ -231,6 +232,7 @@
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
     <ClCompile Include="Source\Shader\ModelShader.cpp" />
+    <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\StateMachine\State.cpp" />
     <ClCompile Include="Source\StateMachine\StateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\TransitionJudgement.cpp" />
@@ -242,6 +244,7 @@
     <None Include="Hlsl\Debug.hlsli" />
     <None Include="Hlsl\ImGui.hlsli" />
     <None Include="Hlsl\Instance.hlsli" />
+    <None Include="Hlsl\Sprite.hlsli" />
     <None Include="Hlsl\Temporary.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +269,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Hlsl\InstanceVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\SpritePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\SpriteVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>

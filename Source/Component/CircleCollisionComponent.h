@@ -75,9 +75,9 @@ public:
      */
     void DrawDebugPrimitiveGUI()  override;
     bool IsDebugPrimitive() { return true; }   // DebugPrimitive‚ª‘¶İ‚·‚é‚©
+    CylinderParam circle_collsion_primitive;
 #endif // DEBUG
 private:
-    CylinderParam circle_collsion_primitive;
     float height = 0.1f;    // circle_collsion_primitive‚Ì‰~’Œ‚Ì‚‚³
 };
 

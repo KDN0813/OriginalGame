@@ -281,6 +281,11 @@ void SceneGame::Initialize()
 		}
 #endif // _DEBUG
 	}
+
+#ifdef _DEBUG
+	this->sprite = std::make_unique<Sprite>("Data/Sprite/Title.png");
+
+#endif // _DEBUG
 }
 
 void SceneGame::Finalize()
@@ -329,6 +334,11 @@ void SceneGame::Render()
 		object_manager.DrawDebugPrimitive();
 
 		DebugManager::Instance()->GetDebugPrimitiveRenderer()->Render(dc, rc.view, rc.projection);;
+	}
+
+	// 2Dスプライト描画
+	{
+		//this->sprite->Render2(dc);
 	}
 
 	DrawImGui();
