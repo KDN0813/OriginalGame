@@ -31,6 +31,7 @@
 #include "Component/StateMachineComponent.h"
 #include "Component/CircleCollisionComponent.h"
 #include "Component/CameraControllerComponent.h"
+#include "Component/SpriteComponent.h"
 
 #include "StateMachine/TransitionJudgementDerived.h"
 #include "StateMachine/StateDerived.h"
@@ -181,6 +182,10 @@ void SceneGame::Initialize()
 				// シェーダー設定
 				auto shader_component =
 					object->AddComponent<ModelShaderComponent>(model_shader.get());
+
+				SpriteComponent::SpriteParam param{};
+				param.filename = "Data/Sprite/Title.png";
+				player->AddComponent<SpriteComponent>(param);
 			}
 
 			// GameObjectに設定
@@ -333,6 +338,9 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
+		auto player = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
+		auto sprite = player->GetComponent<SpriteComponent>();
+		sprite->Render(dc);
 	}
 
 	DrawImGui();

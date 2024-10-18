@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <DirectXMath.h>
 #include "Component.h"
 #include "Sprite/Sprite.h"
 
@@ -7,7 +9,7 @@ class SpriteComponent : public Component
 public:
     struct SpriteParam
     {
-        const char* filename = nullptr;
+        std::string filename = {};
         DirectX::XMFLOAT2 display_pos = { 0.0f,0.0f };
         DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
         DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
