@@ -17,6 +17,17 @@ void StateMachineComponent::End()
 {
 }
 
+void StateMachineComponent::ReStart()
+{
+    this->next_state = this->default_state;
+    if (this->state_index != this->next_state)
+    {
+        this->state_pool[this->state_index]->End();
+        this->state_index = this->next_state;
+        this->state_pool[this->state_index]->Start();
+    }
+}
+
 void StateMachineComponent::Update(float elapsed_time)
 {
     if (this->state_index < 0 || this->state_index == INVALID_STATE_INDEX || this->state_index >= this->state_pool.size()) return;
