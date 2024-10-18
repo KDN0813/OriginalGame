@@ -20,37 +20,25 @@ public:
 	};
 
 	// •`‰æŽÀs
-	void Render(ID3D11DeviceContext *dc,
-		float dx, float dy,
-		float dw, float dh,
-		float sx, float sy,
-		float sw, float sh,
+	void Render(ID3D11DeviceContext* dc,
+		float dx, float dy,	// 0.0f`1.0f
+		float dw, float dh,	// 0.0f`1.0f
+		float sx, float sy,	// 0.0f`1.0f
+		float sw, float sh,	// 0.0f`1.0f
 		float angle,
 		float r, float g, float b, float a) const;
 
-	void Render2(ID3D11DeviceContext* dc);
-	void Render3(ID3D11DeviceContext* dc);
-
-	// ƒeƒNƒXƒ`ƒƒ•Žæ“¾
-	int GetTextureWidth() const { return this->textureWidth; }
-
-	// ƒeƒNƒXƒ`ƒƒ‚‚³Žæ“¾
-	int GetTextureHeight() const { return this->textureHeight; }
-
 private:
-	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertexShader;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader>			pixelShader;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout>			inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertex_shader;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader>			pixel_shader;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout>			input_layout;
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer>				vertexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>				vertex_buffer;
 
-	Microsoft::WRL::ComPtr<ID3D11BlendState>			blendState;
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		rasterizerState;
+	Microsoft::WRL::ComPtr<ID3D11BlendState>			blend_state;
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		rasterizer_state;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>		depthStencilState;
 
-	Microsoft::WRL::ComPtr<ID3D11SamplerState>			samplerState;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	shaderResourceView;
-
-	int textureWidth = 0;
-	int textureHeight = 0;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState>			sampler_state;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	shader_resource_view;
 };

@@ -11,22 +11,12 @@ Sprite::Sprite(const char* filename)
 
 	HRESULT hr = S_OK;
 
-	// 頂点データの定義
-	// 0           1
-	// +-----------+
-	// |           |
-	// |           |
-	// +-----------+
-	// 2           3
 	Vertex vertices[] = {
 		{ DirectX::XMFLOAT3(-0.5, +0.5, 0), DirectX::XMFLOAT4(1, 1, 1, 1) },
 		{ DirectX::XMFLOAT3(+0.5, +0.5, 0), DirectX::XMFLOAT4(1, 0, 0, 1) },
 		{ DirectX::XMFLOAT3(-0.5, -0.5, 0), DirectX::XMFLOAT4(0, 1, 0, 1) },
 		{ DirectX::XMFLOAT3(+0.5, -0.5, 0), DirectX::XMFLOAT4(0, 0, 1, 1) },
 	};
-
-	// ポリゴンを描画するにはGPUに頂点データやシェーダーなどのデータを渡す必要がある。
-	// GPUにデータを渡すにはID3D11***のオブジェクトを介してデータを渡します。
 
 	// 頂点バッファの生成
 	{
@@ -44,7 +34,7 @@ Sprite::Sprite(const char* filename)
 		subresource_data.SysMemPitch = 0; //Not use for vertex buffers.
 		subresource_data.SysMemSlicePitch = 0; //Not use for vertex buffers.
 		// 頂点バッファオブジェクトの生成
-		hr = device->CreateBuffer(&buffer_desc, &subresource_data, &vertexBuffer);
+		hr = device->CreateBuffer(&buffer_desc, &subresource_data, &vertex_buffer);
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -57,16 +47,16 @@ Sprite::Sprite(const char* filename)
 
 		// ファイルのサイズを求める
 		fseek(fp, 0, SEEK_END);
-		long csoSize = ftell(fp);
+		long cso_size = ftell(fp);
 		fseek(fp, 0, SEEK_SET);
 
 		// メモリ上に頂点シェーダーデータを格納する領域を用意する
-		std::unique_ptr<u_char[]> csoData = std::make_unique<u_char[]>(csoSize);
-		fread(csoData.get(), csoSize, 1, fp);
+		std::unique_ptr<u_char[]> cso_data = std::make_unique<u_char[]>(cso_size);
+		fread(cso_data.get(), cso_size, 1, fp);
 		fclose(fp);
 
 		// 頂点シェーダー生成
-		HRESULT hr = device->CreateVertexShader(csoData.get(), csoSize, nullptr, vertexShader.GetAddressOf());
+		HRESULT hr = device->CreateVertexShader(cso_data.get(), cso_size, nullptr, vertex_shader.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// 入力レイアウト
@@ -76,7 +66,7 @@ Sprite::Sprite(const char* filename)
 			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
-		hr = device->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), csoData.get(), csoSize, inputLayout.GetAddressOf());
+		hr = device->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), cso_data.get(), cso_size, input_layout.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -89,16 +79,16 @@ Sprite::Sprite(const char* filename)
 
 		// ファイルのサイズを求める
 		fseek(fp, 0, SEEK_END);
-		long csoSize = ftell(fp);
+		long cso_size = ftell(fp);
 		fseek(fp, 0, SEEK_SET);
 
 		// メモリ上に頂点シェーダーデータを格納する領域を用意する
-		std::unique_ptr<u_char[]> csoData = std::make_unique<u_char[]>(csoSize);
-		fread(csoData.get(), csoSize, 1, fp);
+		std::unique_ptr<u_char[]> cso_data = std::make_unique<u_char[]>(cso_size);
+		fread(cso_data.get(), cso_size, 1, fp);
 		fclose(fp);
 
 		// ピクセルシェーダー生成
-		HRESULT hr = device->CreatePixelShader(csoData.get(), csoSize, nullptr, pixelShader.GetAddressOf());
+		HRESULT hr = device->CreatePixelShader(cso_data.get(), cso_size, nullptr, pixel_shader.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -117,7 +107,7 @@ Sprite::Sprite(const char* filename)
 		desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		HRESULT hr = device->CreateBlendState(&desc, blendState.GetAddressOf());
+		HRESULT hr = device->CreateBlendState(&desc, blend_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -148,7 +138,7 @@ Sprite::Sprite(const char* filename)
 		desc.CullMode = D3D11_CULL_NONE;
 		desc.AntialiasedLineEnable = false;
 
-		HRESULT hr = device->CreateRasterizerState(&desc, rasterizerState.GetAddressOf());
+		HRESULT hr = device->CreateRasterizerState(&desc, rasterizer_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -170,7 +160,7 @@ Sprite::Sprite(const char* filename)
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 
-		HRESULT hr = device->CreateSamplerState(&desc, samplerState.GetAddressOf());
+		HRESULT hr = device->CreateSamplerState(&desc, sampler_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -184,7 +174,7 @@ Sprite::Sprite(const char* filename)
 		// テクスチャファイル読み込み
 		// テクスチャ読み込み
 		Microsoft::WRL::ComPtr<ID3D11Resource> resource;
-		HRESULT hr = DirectX::CreateWICTextureFromFile(device, wfilename, resource.GetAddressOf(), shaderResourceView.GetAddressOf());
+		HRESULT hr = DirectX::CreateWICTextureFromFile(device, wfilename, resource.GetAddressOf(), shader_resource_view.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// テクスチャ情報の取得
@@ -193,9 +183,6 @@ Sprite::Sprite(const char* filename)
 		hr = resource->QueryInterface<ID3D11Texture2D>(texture2d.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		texture2d->GetDesc(&desc);
-
-		textureWidth = desc.Width;
-		textureHeight = desc.Height;
 	}
 	else
 	{
@@ -225,22 +212,20 @@ Sprite::Sprite(const char* filename)
 		HRESULT hr = device->CreateTexture2D(&desc, &data, texture.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
-		hr = device->CreateShaderResourceView(texture.Get(), nullptr, shaderResourceView.GetAddressOf());
+		hr = device->CreateShaderResourceView(texture.Get(), nullptr, shader_resource_view.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		textureWidth = desc.Width;
-		textureHeight = desc.Height;
 	}
 }
 
-// 描画実行
-void Sprite::Render(ID3D11DeviceContext *immediate_context,
+void Sprite::Render(
+	ID3D11DeviceContext* immediate_context,
 	float dx, float dy,
 	float dw, float dh,
 	float sx, float sy,
 	float sw, float sh,
 	float angle,
-	float r, float g, float b, float a) const
+	float r, float g, float b, float a
+) const
 {
 	{
 		// 現在設定されているビューポートからスクリーンサイズを取得する。
@@ -298,13 +283,13 @@ void Sprite::Render(ID3D11DeviceContext *immediate_context,
 		// スクリーン座標系からNDC座標系へ変換する。
 		for (auto& p : positions)
 		{
-			p.x = 2.0f*p.x / screen_width - 1.0f;
-			p.y = 1.0f - 2.0f*p.y / screen_height;
+			p.x = 2.0f * p.x - 1.0f;
+			p.y = 1.0f - 2.0f * p.y;
 		}
 
 		// 頂点バッファの内容の編集を開始する。
 		D3D11_MAPPED_SUBRESOURCE mappedBuffer;
-		HRESULT hr = immediate_context->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
+		HRESULT hr = immediate_context->Map(vertex_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// pDataを編集することで頂点データの内容を書き換えることができる。
@@ -315,223 +300,34 @@ void Sprite::Render(ID3D11DeviceContext *immediate_context,
 			v[i].position.y = positions[i].y;
 			v[i].position.z = 0.0f;
 
-			v[i].color.x = r;
+			v[i].color.x = a;
 			v[i].color.y = g;
 			v[i].color.z = b;
 			v[i].color.w = a;
 
-			v[i].texcoord.x = texcoords[i].x / textureWidth;
-			v[i].texcoord.y = texcoords[i].y / textureHeight;
-		}
-
-		// 頂点バッファの内容の編集を終了する。
-		immediate_context->Unmap(vertexBuffer.Get(), 0);
-	}
-
-	{
-		// パイプライン設定
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
-		immediate_context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
-		immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		immediate_context->IASetInputLayout(inputLayout.Get());
-
-		immediate_context->RSSetState(rasterizerState.Get());
-
-		immediate_context->VSSetShader(vertexShader.Get(), nullptr, 0);
-		immediate_context->PSSetShader(pixelShader.Get(), nullptr, 0);
-
-		immediate_context->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
-		immediate_context->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-
-		// 描画
-		immediate_context->Draw(4, 0);
-	}
-}
-
-void Sprite::Render2(ID3D11DeviceContext* immediate_context)
-{
-	{
-		// 現在設定されているビューポートからスクリーンサイズを取得する。
-		D3D11_VIEWPORT viewport;
-		UINT numViewports = 1;
-		immediate_context->RSGetViewports(&numViewports, &viewport);
-		float screen_width = viewport.Width;
-		float screen_height = viewport.Height;
-
-		// スプライトを構成する４頂点のスクリーン座標を計算する
-		DirectX::XMFLOAT2 positions[] = {
-			DirectX::XMFLOAT2(-1.0f,      -1.0f),			// 左上
-			DirectX::XMFLOAT2(1.0f, -1.0f),			// 右上
-			DirectX::XMFLOAT2(-1.0f,      1.0f),	// 左下
-			DirectX::XMFLOAT2(1.0f, 1.0f),	// 右下
-		};
-
-		// スプライトを構成する４頂点のテクスチャ座標を計算する
-		float width = static_cast<float>(this->textureWidth);
-		float height = static_cast<float>(this->textureHeight);
-
-		DirectX::XMFLOAT2 texcoords[] = {
-			DirectX::XMFLOAT2(0.0f,      0.0f),			// 左上
-			DirectX::XMFLOAT2(1.0f, 0.0f),			// 右上
-			DirectX::XMFLOAT2(0.0f,      1.0f),	// 左下
-			DirectX::XMFLOAT2(1.0f, 1.0f),	// 右下
-		};
-
-		// 頂点バッファの内容の編集を開始する。
-		D3D11_MAPPED_SUBRESOURCE mappedBuffer;
-		HRESULT hr = immediate_context->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		// pDataを編集することで頂点データの内容を書き換えることができる。
-		Vertex* v = static_cast<Vertex*>(mappedBuffer.pData);
-		for (int i = 0; i < 4; ++i)
-		{
-			v[i].position.x = positions[i].x;
-			v[i].position.y = positions[i].y;
-			v[i].position.z = 0.0f;
-
-			v[i].color.x = 1.0f;
-			v[i].color.y = 1.0f;
-			v[i].color.z = 1.0f;
-			v[i].color.w = 1.0f;
-
 			v[i].texcoord.x = texcoords[i].x;
 			v[i].texcoord.y = texcoords[i].y;
-			//v[i].texcoord.x = texcoords[i].x / textureWidth;
-			//v[i].texcoord.y = texcoords[i].y / textureHeight;
 		}
 
 		// 頂点バッファの内容の編集を終了する。
-		immediate_context->Unmap(vertexBuffer.Get(), 0);
+		immediate_context->Unmap(vertex_buffer.Get(), 0);
 	}
 
 	{
 		// パイプライン設定
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
-		immediate_context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+		immediate_context->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
 		immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		immediate_context->IASetInputLayout(inputLayout.Get());
+		immediate_context->IASetInputLayout(input_layout.Get());
 
-		immediate_context->RSSetState(rasterizerState.Get());
+		immediate_context->RSSetState(rasterizer_state.Get());
 
-		immediate_context->VSSetShader(vertexShader.Get(), nullptr, 0);
-		immediate_context->PSSetShader(pixelShader.Get(), nullptr, 0);
+		immediate_context->VSSetShader(vertex_shader.Get(), nullptr, 0);
+		immediate_context->PSSetShader(pixel_shader.Get(), nullptr, 0);
 
-		immediate_context->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
-		immediate_context->PSSetSamplers(0, 1, samplerState.GetAddressOf());
-
-		// 描画
-		immediate_context->Draw(4, 0);
-	}
-}
-
-void Sprite::Render3(ID3D11DeviceContext* immediate_context)
-{
-	float width = static_cast<float>(this->textureWidth);
-	float height = static_cast<float>(this->textureHeight);
-	{
-		// 現在設定されているビューポートからスクリーンサイズを取得する。
-		D3D11_VIEWPORT viewport;
-		UINT numViewports = 1;
-		immediate_context->RSGetViewports(&numViewports, &viewport);
-		float screen_width = viewport.Width;
-		float screen_height = viewport.Height;
-
-		// スプライトを構成する４頂点のスクリーン座標を計算する
-		DirectX::XMFLOAT2 positions[] = {
-			DirectX::XMFLOAT2(0.0f,      0.0f),			// 左上
-			DirectX::XMFLOAT2(width, 0.0f),			// 右上
-			DirectX::XMFLOAT2(0.0f,      height),	// 左下
-			DirectX::XMFLOAT2(width, height),	// 右下
-		};
-
-		// スプライトを構成する４頂点のテクスチャ座標を計算する
-		DirectX::XMFLOAT2 texcoords[] = {
-			DirectX::XMFLOAT2(0.0f,      0.0f),			// 左上
-			DirectX::XMFLOAT2(width, 0.0f),			// 右上
-			DirectX::XMFLOAT2(0.0f,      height),	// 左下
-			DirectX::XMFLOAT2(width, height),	// 右下
-		};
-
-		// スプライトの中心で回転させるために４頂点の中心位置が
-		// 原点(0, 0)になるように一旦頂点を移動させる。
-		float mx = 0.0f * 0.5f;
-		float my = 0.0f * 0.5f;
-		for (auto& p : positions)
-		{
-			p.x -= mx;
-			p.y -= my;
-		}
-
-		// 頂点を回転させる
-		const float PI = 3.141592653589793f;
-		float theta = 0.0f * (PI / 180.0f);	// 角度をラジアン(θ)に変換
-		float c = cosf(theta);
-		float s = sinf(theta);
-		for (auto& p : positions)
-		{
-			DirectX::XMFLOAT2 r = p;
-			p.x = c * r.x + -s * r.y;
-			p.y = s * r.x + c * r.y;
-		}
-
-		// 回転のために移動させた頂点を元の位置に戻す
-		for (auto& p : positions)
-		{
-			p.x += mx;
-			p.y += my;
-		}
-
-		// スクリーン座標系からNDC座標系へ変換する。
-		//for (auto& p : positions)
-		//{
-		//	p.x = 2.0f * p.x / screen_width - 1.0f;
-		//	p.y = 1.0f - 2.0f * p.y / screen_height;
-		//}
-
-		// 頂点バッファの内容の編集を開始する。
-		D3D11_MAPPED_SUBRESOURCE mappedBuffer;
-		HRESULT hr = immediate_context->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		// pDataを編集することで頂点データの内容を書き換えることができる。
-		Vertex* v = static_cast<Vertex*>(mappedBuffer.pData);
-		for (int i = 0; i < 4; ++i)
-		{
-			v[i].position.x = positions[i].x;
-			v[i].position.y = positions[i].y;
-			v[i].position.z = 0.0f;
-
-			v[i].color.x = 1.0f;
-			v[i].color.y = 1.0f;
-			v[i].color.z = 1.0f;
-			v[i].color.w = 1.0f;
-
-			v[i].texcoord.x = texcoords[i].x / textureWidth;
-			v[i].texcoord.y = texcoords[i].y / textureHeight;
-		}
-
-		// 頂点バッファの内容の編集を終了する。
-		immediate_context->Unmap(vertexBuffer.Get(), 0);
-	}
-
-	{
-		// パイプライン設定
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
-		immediate_context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
-		immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		immediate_context->IASetInputLayout(inputLayout.Get());
-
-		immediate_context->RSSetState(rasterizerState.Get());
-
-		immediate_context->VSSetShader(vertexShader.Get(), nullptr, 0);
-		immediate_context->PSSetShader(pixelShader.Get(), nullptr, 0);
-
-		immediate_context->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
-		immediate_context->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+		immediate_context->PSSetShaderResources(0, 1, shader_resource_view.GetAddressOf());
+		immediate_context->PSSetSamplers(0, 1, sampler_state.GetAddressOf());
 
 		// 描画
 		immediate_context->Draw(4, 0);

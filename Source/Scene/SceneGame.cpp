@@ -338,7 +338,14 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
-		//this->sprite->Render2(dc);
+		sprite->Render(dc,
+			0.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f,
+			1.0f, 1.0f, 1.0f, 1.0f
+		);
 	}
 
 	DrawImGui();
