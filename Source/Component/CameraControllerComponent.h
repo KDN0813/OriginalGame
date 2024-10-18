@@ -69,6 +69,8 @@ class CameraControllerDebug : public Component
 public:
     CameraControllerDebug() {}
 
+    // リスタート処理
+    void ReStart() override {};      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override;
     // 名前取得
