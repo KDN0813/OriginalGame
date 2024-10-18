@@ -281,11 +281,6 @@ void SceneGame::Initialize()
 		}
 #endif // _DEBUG
 	}
-
-#ifdef _DEBUG
-	this->sprite = std::make_unique<Sprite>("Data/Sprite/Title.png");
-
-#endif // _DEBUG
 }
 
 void SceneGame::Finalize()
@@ -338,14 +333,6 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
-		sprite->Render(dc,
-			0.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f, 0.0f,
-			1.0f, 1.0f,
-			0.0f,
-			1.0f, 1.0f, 1.0f, 1.0f
-		);
 	}
 
 	DrawImGui();

@@ -165,7 +165,7 @@
     <ClInclude Include="Source\Shader\ModelShader.h" />
     <ClInclude Include="Source\Shader\Shader.h" />
     <ClInclude Include="Source\Shader\InstanceModelShader.h" />
-    <ClInclude Include="Source\Sprite.h" />
+    <ClInclude Include="Source\Sprite\Sprite.h" />
     <ClInclude Include="Source\StateMachine\State.h" />
     <ClInclude Include="Source\StateMachine\StateDerived.h" />
     <ClInclude Include="Source\StateMachine\TransitionJudgement.h" />
@@ -232,7 +232,7 @@
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
     <ClCompile Include="Source\Shader\ModelShader.cpp" />
-    <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\Sprite\Sprite.cpp" />
     <ClCompile Include="Source\StateMachine\State.cpp" />
     <ClCompile Include="Source\StateMachine\StateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\TransitionJudgement.cpp" />

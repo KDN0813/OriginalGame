@@ -7,8 +7,6 @@
 #include "Object/GameObject.h"
 #include "Collision/CollisionManager.h"
 
-#include "Sprite.h"
-
 // シェーダー
 #include "Shader/InstanceModelShader.h"
 #include "Shader/ModelShader.h"
@@ -42,7 +40,6 @@ private:
         System,
     };
     ImGuiMode mode_index = ImGuiMode::Object;
-    std::unique_ptr<Sprite> sprite;
 
     void DrawImGui();
 
