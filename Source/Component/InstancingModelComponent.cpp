@@ -7,7 +7,8 @@
 
 #include "Component/TransformComponent.h"
 
-AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(ID3D11Device* device, const char* filename)
+AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(InstancedModelParam param, ID3D11Device* device, const char* filename)
+    :param(param), default_param(param)
 {
 #ifdef _DEBUG
     this->model_filename = filename;
@@ -34,10 +35,15 @@ AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(ID3D11Device* d
     }
 }
 
+void AnimatedInstancedModelComponent::ReStart()
+{
+    param = default_param;
+}
+
 void AnimatedInstancedModelComponent::Update(float elapsed_time)
 {
     UpdateAnimationState();
-    if (!this->anime_play)return;
+    if (!this->param.anime_play)return;
     UpdateAnimation(elapsed_time);
 }
 
@@ -45,38 +51,38 @@ void AnimatedInstancedModelComponent::PlayAnimation(int animeIndex, bool loop)
 {
     if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
 
-    this->current_animation_seconds = 0;;
-    this->anime_index = animeIndex;
-    this->anime_loop = loop;
-    this->anime_play = true;
+    this->param.current_animation_seconds = 0;;
+    this->param.anime_index = animeIndex;
+    this->param.anime_loop = loop;
+    this->param.anime_play = true;
 }
 
 void AnimatedInstancedModelComponent::PlayAnimation(const AnimeState& animation_info)
 {
-    this->current_animation_seconds = 0;;
-    this->anime_index = static_cast<UINT>(animation_info.anime_index);
-    this->anime_loop = animation_info.loop;
-    this->anime_play = true;
+    this->param.current_animation_seconds = 0;;
+    this->param.anime_index = static_cast<UINT>(animation_info.anime_index);
+    this->param.anime_loop = animation_info.loop;
+    this->param.anime_play = true;
 }
 
 void AnimatedInstancedModelComponent::UpdateAnimation(float elapsed_time)
 {    
-    const auto& animation = this->model_resource->GetAnimations()[this->anime_index];
-    const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->anime_index];
+    const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
+    const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
     const float& animation_length = animation.seconds_length;
     
-    this->current_animation_seconds += elapsed_time;
+    this->param.current_animation_seconds += elapsed_time;
 
-    if (this->current_animation_seconds >= animation_length)
+    if (this->param.current_animation_seconds >= animation_length)
     {
-        if (this->anime_loop)
+        if (this->param.anime_loop)
         {
-            this->current_animation_seconds = 0.0f;
+            this->param.current_animation_seconds = 0.0f;
         }
         else
         {
-            this->current_animation_seconds = animation_length;
-            this->anime_play = false;
+            this->param.current_animation_seconds = animation_length;
+            this->param.anime_play = false;
         }
     }
 }
@@ -88,10 +94,10 @@ void AnimatedInstancedModelComponent::UpdateAnimationState()
 #endif // DEBUG
 
 
-    if (this->anime_index < 0) return;
+    if (this->param.anime_index < 0) return;
     if (this->anime_state_pool.size() <= 0) return;
 
-    for (auto& transition_info : this->anime_state_pool[this->anime_index].transition_info_pool)
+    for (auto& transition_info : this->anime_state_pool[this->param.anime_index].transition_info_pool)
     {
         if (PerformTransitionJudgement(transition_info->judgement.get()))
         {
@@ -121,12 +127,12 @@ void AnimatedInstancedModelComponent::AddAnimationTransition(AnimeIndex anime_in
 bool AnimatedInstancedModelComponent::IsTransitionReady()
 {
     // Ä¶’†‚Å‚È‚¯‚ê‚Î€”õŠ®—¹
-    if (!this->anime_play) return true;
+    if (!this->param.anime_play) return true;
 
-    auto& anime_state = this->anime_state_pool[this->anime_index];
+    auto& anime_state = this->anime_state_pool[this->param.anime_index];
 
     if (anime_state.transition_ready_time >= 0 &&
-        anime_state.transition_ready_time <= this->current_animation_seconds) return true;
+        anime_state.transition_ready_time <= this->param.current_animation_seconds) return true;
 
     return false;
 }
@@ -148,17 +154,17 @@ bool AnimatedInstancedModelComponent::PerformTransitionJudgement(TransitionJudge
 
 UINT AnimatedInstancedModelComponent::GetAnimeFrame()
 {
-    const auto& animation = this->model_resource->GetAnimations()[this->anime_index];
-    const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->anime_index];
+    const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
+    const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
     const float animation_frame_max_f = static_cast<float>(animation_frame_max);
     const float& animation_length = animation.seconds_length;
 
-    return static_cast<UINT>(animation_frame_max_f * (this->current_animation_seconds / animation_length));
+    return static_cast<UINT>(animation_frame_max_f * (this->param.current_animation_seconds / animation_length));
 }
 
 UINT AnimatedInstancedModelComponent::GetAnimationStartOffset()
 {
-    return this->instancing_model_resource->GetAnimationOffsets()[this->anime_index];
+    return this->instancing_model_resource->GetAnimationOffsets()[this->param.anime_index];
 }
 
 int AnimatedInstancedModelComponent::GetModelId()
@@ -170,7 +176,7 @@ int AnimatedInstancedModelComponent::GetModelId()
 
 void AnimatedInstancedModelComponent::DrawDebugGUI()
 {
-    ImGui::Checkbox("Animation Play", &this->anime_play);
+    ImGui::Checkbox("Animation Play", &this->param.anime_play);
 
     DrawDebugAnimationGUI();
 
@@ -181,7 +187,7 @@ void AnimatedInstancedModelComponent::DrawDebugGUI()
 
 void AnimatedInstancedModelComponent::DrawDebugAnimationGUI()
 {
-    int anime_index_int = static_cast<int>(this->anime_index);
+    int anime_index_int = static_cast<int>(this->param.anime_index);
     if (anime_index_int < 0) return;
 
     const auto& animation = this->model_resource->GetAnimations()[anime_index_int];
@@ -189,7 +195,7 @@ void AnimatedInstancedModelComponent::DrawDebugAnimationGUI()
     std::string play_anime_name = this->animation_name_pool[anime_index_int];
 
     // Œ»Ý‚ÌƒtƒŒ[ƒ€”•\Ž¦
-    ImGui::SliderFloat("Current Animation Seconds", &this->current_animation_seconds, 0.0f, animation.seconds_length);
+    ImGui::SliderFloat("Current Animation Seconds", &this->param.current_animation_seconds, 0.0f, animation.seconds_length);
     int anime_frame_i = GetAnimeFrame();
     ImGui::InputInt("Anime Frame",&anime_frame_i);
     if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index_int))
@@ -197,7 +203,7 @@ void AnimatedInstancedModelComponent::DrawDebugAnimationGUI()
         auto& anime_state = this->anime_state_pool[anime_index_int];
         PlayAnimation(anime_state);
     }
-    ImGui::Checkbox("Animation Loop Flag", &this->anime_loop);
+    ImGui::Checkbox("Animation Loop Flag", &this->param.anime_loop);
 
     if (this->is_draw_deletail) DrawDetail();
     else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");

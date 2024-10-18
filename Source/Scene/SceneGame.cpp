@@ -169,13 +169,19 @@ void SceneGame::Initialize()
 				auto enemy_component = enemy->AddComponent<EnemyComponent>();
 				auto movement = enemy->AddComponent<MovementComponent>();
 				// アニメーション設定
-				auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/ChestMonster/ChestMonster.mdl");
-				model->PlayAnimation(EnemyCT::ANIMATION::MOVE_FWD, true);
 				{
-					model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
-					model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
-					model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
-					model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
+					AnimatedInstancedModelComponent::InstancedModelParam param;
+					param.anime_index = EnemyCT::ANIMATION::IDLE_BATTLE;
+					param.anime_loop = true;
+					param.anime_play = true;
+
+					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(param, device, "Data/Model/ChestMonster/ChestMonster.mdl");
+					{
+						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
+						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
+						model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
+						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
+					}
 				}
 				// ステート設定
 				auto state_machine = enemy->AddComponent<StateMachineComponent>();

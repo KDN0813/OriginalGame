@@ -23,75 +23,75 @@ void SceneDebug::Initialize()
 {
 	Graphics* graphics = Graphics::Instance();
 	ID3D11Device* device = graphics->GetDevice();
-	// シェーダーの作成
-	{
-		instancing_model_shader = std::make_unique<InstancingModelShader>(device);
-		model_shader = std::make_unique<ModelShader>(device);
-	}
+	//// シェーダーの作成
+	//{
+	//	instancing_model_shader = std::make_unique<InstancingModelShader>(device);
+	//	model_shader = std::make_unique<ModelShader>(device);
+	//}
 
-	// カメラ作成
-	{
-	}
+	//// カメラ作成
+	//{
+	//}
 
-	// デバッグオブジェクト作成
-	{
-		// ステージ
-		{
-			auto stage = object_manager.Create();
-			stage->SetName("Stage");
-			stage->AddComponent<ModelComponent>(device,"Data/Model/ExampleStage/ExampleStage.mdl");
-			auto transform = stage->AddComponent<Transform3DComponent>();
-			transform->SetLocalScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
-			// シェーダー設定
-			auto shader_component =
-				stage->AddComponent<ModelShaderComponent>(model_shader.get());
-			model_shader->AddShaderComponent(shader_component.get());
-		}
+	//// デバッグオブジェクト作成
+	//{
+	//	// ステージ
+	//	{
+	//		auto stage = object_manager.Create();
+	//		stage->SetName("Stage");
+	//		stage->AddComponent<ModelComponent>(device,"Data/Model/ExampleStage/ExampleStage.mdl");
+	//		auto transform = stage->AddComponent<Transform3DComponent>();
+	//		transform->SetLocalScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
+	//		// シェーダー設定
+	//		auto shader_component =
+	//			stage->AddComponent<ModelShaderComponent>(model_shader.get());
+	//		model_shader->AddShaderComponent(shader_component.get());
+	//	}
 
-		// ボックス
-		{
-			auto cube = object_manager.Create();
-			cube->SetName("Cube");
-			cube->AddComponent<ModelComponent>(device,"Data/Model/Cube/Cube.mdl");
-			auto transform = cube->AddComponent<Transform3DComponent>();
-			transform->SetLocalScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
-			transform->SetLocalPosition(DirectX::XMFLOAT3(5.0f, 2.0f, 0.0f));
-			transform->SetLocalAngle(DirectX::XMFLOAT3(DirectX::XMConvertToRadians(90.0f), 0.0f, 0.0f));
-			// シェーダー設定
-			auto shader_component =
-				cube->AddComponent<ModelShaderComponent>(model_shader.get());
-			model_shader->AddShaderComponent(shader_component.get());
-		}
+	//	// ボックス
+	//	{
+	//		auto cube = object_manager.Create();
+	//		cube->SetName("Cube");
+	//		cube->AddComponent<ModelComponent>(device,"Data/Model/Cube/Cube.mdl");
+	//		auto transform = cube->AddComponent<Transform3DComponent>();
+	//		transform->SetLocalScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
+	//		transform->SetLocalPosition(DirectX::XMFLOAT3(5.0f, 2.0f, 0.0f));
+	//		transform->SetLocalAngle(DirectX::XMFLOAT3(DirectX::XMConvertToRadians(90.0f), 0.0f, 0.0f));
+	//		// シェーダー設定
+	//		auto shader_component =
+	//			cube->AddComponent<ModelShaderComponent>(model_shader.get());
+	//		model_shader->AddShaderComponent(shader_component.get());
+	//	}
 
-		InstancingModelShader* const shader = instancing_model_shader.get();
-		// インスタンシング描画テスト
-		{
-			float offset = 3.0f;
-			for (int x = 0; x < 10; ++x)
-			{
-				for (int z = 0; z < 10; ++z)
-				{
-					DirectX::XMFLOAT3 pos =
-					{
-						static_cast<float>(x) * offset,
-						0.0f,
-						static_cast<float>(z) * offset,
-					};
-					auto object = object_manager.Create();
-					auto transform = object->AddComponent<Transform3DComponent>();
-					auto model = object->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
-					// シェーダー設定
-					auto shader_component =
-						object->AddComponent<InstancingModelShaderComponent>(shader);
-					shader->AddShaderComponent(shader_component.get());
+	//	InstancingModelShader* const shader = instancing_model_shader.get();
+	//	// インスタンシング描画テスト
+	//	{
+	//		float offset = 3.0f;
+	//		for (int x = 0; x < 10; ++x)
+	//		{
+	//			for (int z = 0; z < 10; ++z)
+	//			{
+	//				DirectX::XMFLOAT3 pos =
+	//				{
+	//					static_cast<float>(x) * offset,
+	//					0.0f,
+	//					static_cast<float>(z) * offset,
+	//				};
+	//				auto object = object_manager.Create();
+	//				auto transform = object->AddComponent<Transform3DComponent>();
+	//				auto model = object->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
+	//				// シェーダー設定
+	//				auto shader_component =
+	//					object->AddComponent<InstancingModelShaderComponent>(shader);
+	//				shader->AddShaderComponent(shader_component.get());
 
-					model->PlayAnimation(z);
-					transform->SetLocalPosition(pos);
-					transform->SetLocalScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
-				}
-			}
-		}
-	}
+	//				model->PlayAnimation(z);
+	//				transform->SetLocalPosition(pos);
+	//				transform->SetLocalScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 void SceneDebug::Finalize()
