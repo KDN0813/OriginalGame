@@ -138,8 +138,8 @@ void SceneGame::Initialize()
 				param.collision_type = COLLISION_TYPE::ATTACKER;
 				param.self_type = OBJECT_TYPE::PLAYER;
 				param.target_type = OBJECT_TYPE::ENEMY;
+				param.default_active_flag = false;
 				auto collision = player->AddComponent<CircleCollisionComponent>(param);
-				collision->SetIsActive(false);
 
 				CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
 			}

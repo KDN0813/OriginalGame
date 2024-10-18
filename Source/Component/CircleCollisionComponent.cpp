@@ -12,6 +12,7 @@
 CircleCollisionComponent::CircleCollisionComponent(CollisionParam param)
     :param(param), default_param(param)
 {
+    SetIsActive(this->param.default_active_flag);
 }
 
 void CircleCollisionComponent::Start()
@@ -37,6 +38,7 @@ void CircleCollisionComponent::ReStart()
     this->param = this->default_param;
     this->hit_flag = false;
     this->hit_result = {};
+    SetIsActive(this->param.default_active_flag);
 }
 
 void CircleCollisionComponent::Update(float elapsed_time)

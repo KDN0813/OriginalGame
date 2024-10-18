@@ -18,6 +18,7 @@ public:
         OBJECT_TYPE target_type = OBJECT_TYPE::NONE;
         OBJECT_TYPE self_type = OBJECT_TYPE::NONE;
         float radius = 1.0f;    // 円の半径
+        bool default_active_flag = true;    // アクティブフラグの初期値
     };
 public:
     CircleCollisionComponent(CollisionParam param);
