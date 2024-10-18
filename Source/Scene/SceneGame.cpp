@@ -183,12 +183,6 @@ void SceneGame::Initialize()
 				// シェーダー設定
 				auto shader_component =
 					object->AddComponent<ModelShaderComponent>(model_shader.get());
-
-				SpriteComponent::SpriteParam param{};
-				param.filename = "Data/Sprite/Title.png";
-				auto sprite = player->AddComponent<SpriteComponent>(param);
-
-				sprite_shader->AddSprite(sprite);
 			}
 
 			// GameObjectに設定
