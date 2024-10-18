@@ -335,6 +335,11 @@ void SceneGame::Render()
 #endif // _DEBUG
 }
 
+void SceneGame::ReStart()
+{
+	object_manager.ReStart();
+}
+
 #ifdef _DEBUG
 
 void SceneGame::DrawImGui()
@@ -412,6 +417,7 @@ void SceneGame::DrawImGui()
 			break;
 		case SceneGame::ImGuiMode::System:
 			ImGui::Text("System");
+			DrawSystemImGui();
 			break;
 		default:
 			break;
@@ -429,6 +435,14 @@ void SceneGame::DrawShaderImGui()
 	if (ImGui::CollapsingHeader(instancing_model_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		instancing_model_shader->DrawDebugGUI();
+	}
+}
+
+void SceneGame::DrawSystemImGui()
+{
+	if (ImGui::Button("ReStart"))
+	{
+		ReStart();
 	}
 }
 

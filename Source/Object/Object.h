@@ -127,6 +127,12 @@ public:
 	*/
 	void End();
 
+	/**
+	 * パラメータを初期値に設定する
+	 * 
+	 */
+	void ReStart();
+
 	// 各取得関数
 	void SetName(const char* name) { this->name = name; }
 	const std::string GetName() const { return this->name; }
@@ -178,6 +184,8 @@ public:
 	void Update(float elapsedTime);
 
 	void Remove(std::shared_ptr<Object> object);
+
+	void ReStart();
 private:
 	std::vector<std::shared_ptr<Object>> start_object_vec;
 	std::vector<std::shared_ptr<Object>> update_object_vec;

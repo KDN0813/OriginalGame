@@ -68,6 +68,15 @@ void Object::End()
     }
 }
 
+void Object::ReStart()
+{
+    for (std::shared_ptr<Component>& component : this->component_vec)
+    {
+        component->SetIsActive(true);
+        component->ReStart();
+    }
+}
+
 void Object::sortComponentsByPriority()
 {
     auto sort_func = [](std::shared_ptr<Component>& lhs, std::shared_ptr<Component>& rhs) -> bool
@@ -163,10 +172,7 @@ void Object::DrawDebugGUI()
     // リスタート
     if (ImGui::Button("All ReStart"))
     {
-        for (std::shared_ptr<Component>& component : component_vec)
-        {
-            component->ReStart();
-        }
+        ReStart();
     }
     // 削除ボタン
     if (ImGui::Button("Remove"))
@@ -257,6 +263,15 @@ void ObjectManager::Update(float elapsedTime)
 void ObjectManager::Remove(std::shared_ptr<Object> object)
 {
     this->remove_object_vec.insert(object);
+}
+
+void ObjectManager::ReStart()
+{
+    for (std::shared_ptr<Object>& object : this->update_object_vec)
+    {
+        object->SetIsActive(true);
+        object->ReStart();
+    }
 }
 
 #ifdef _DEBUG
