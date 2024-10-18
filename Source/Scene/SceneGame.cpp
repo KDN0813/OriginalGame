@@ -117,7 +117,9 @@ void SceneGame::Initialize()
 				param.is_stage_raycas = true;
 				auto movement = player->AddComponent<MovementComponent>(param);
 			}
-			player->AddComponent<PlayerComponent>();
+			{
+				player->AddComponent<PlayerComponent>(PlayerComponent::PlayerParam());
+			}
 			// シェーダー設定
 			auto shader_component =
 				player->AddComponent<ModelShaderComponent>(model_shader.get());

@@ -19,7 +19,7 @@ bool PlayerComponent::InputMove(float elapsed_time)
     DirectX::XMFLOAT3 moveVec = GetMoveVec();
 
     // ˆÚ“®ˆ—
-    Move(moveVec.x, moveVec.z, this->move_speed);
+    Move(moveVec.x, moveVec.z, this->param.move_speed);
     // ‰ñ“]ˆ—
     //Turn(elapsed_time,moveVec.x, moveVec.z, this->turn_speed);
 
@@ -90,7 +90,7 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
 
 void PlayerComponent::DrawDebugGUI()
 {
-    ImGui::InputFloat("move_speed", &this->move_speed);
+    ImGui::InputFloat("move_speed", &this->param.move_speed);
 }
 
 #endif // DEBUG

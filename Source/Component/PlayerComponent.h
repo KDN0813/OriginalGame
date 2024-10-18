@@ -8,6 +8,14 @@ class Transform3DComponent;
 class PlayerComponent : public Component
 {
 public:
+    struct PlayerParam
+    {
+        float move_speed = 10.0f;
+    };
+public:
+    PlayerComponent(PlayerParam param) :param(param), default_param(param) {};
+    // リスタート処理
+    void ReStart() override { this->param = this->default_param; };      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override;
     // 名前取得
@@ -20,7 +28,8 @@ private:
     DirectX::XMFLOAT3 GetMoveVec() const;
 
 private:
-    float move_speed = 10.0f;
+    PlayerParam param;
+    PlayerParam default_param;
 
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
