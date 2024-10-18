@@ -11,6 +11,7 @@ class InstancingModelShaderComponent : public Component
 {
 public:
     InstancingModelShaderComponent(InstancingModelShader* const shader);
+    void ReStart() override {};
 
     void Start();
     void End();

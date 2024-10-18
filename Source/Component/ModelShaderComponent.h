@@ -11,6 +11,7 @@ class ModelShaderComponent : public Component
 {
 public:
     ModelShaderComponent(ModelShader* const shader);
+    void ReStart() override {};
 
     void Start() override;
     void End() override;
