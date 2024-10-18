@@ -12,13 +12,23 @@ class Transform3DComponent;
 class CircleCollisionComponent : public Component
 {
 public:
-    CircleCollisionComponent();
+    struct CollisionParam
+    {
+        COLLISION_TYPE collision_type = COLLISION_TYPE::NONE;
+        OBJECT_TYPE target_type = OBJECT_TYPE::NONE;
+        OBJECT_TYPE self_type = OBJECT_TYPE::NONE;
+        float radius = 1.0f;    // 円の半径
+    };
+public:
+    CircleCollisionComponent(CollisionParam param);
     ~CircleCollisionComponent() {};
 
     // 開始関数
     void Start()  override;
     // 終了関数
     void End()  override;
+    // リスタート処理
+    void ReStart() override;      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override;
 
@@ -29,24 +39,22 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
     // 各種取得・設定関数
-    COLLISION_TYPE GetCollisionType() const { return this->collision_type; }
-    OBJECT_TYPE GetTargetType() const { return this->target_type; }
-    OBJECT_TYPE GetSelfType() const { return this->self_type; }
-    float GetRadius() const { return this->radius; }
+    COLLISION_TYPE GetCollisionType() const { return this->param.collision_type; }
+    OBJECT_TYPE GetTargetType() const { return this->param.target_type; }
+    OBJECT_TYPE GetSelfType() const { return this->param.self_type; }
+    float GetRadius() const { return this->param.radius; }
     CircleParam GetCircleParam();
     bool GetHitFlag() const { return this->hit_flag; }
-    void SetCollisionType(COLLISION_TYPE type) { this->collision_type = type; }
-    void SetTargetType(OBJECT_TYPE type) { this->target_type = type; }
-    void SetSelfType(OBJECT_TYPE type) { this->self_type = type; }
-    void SetRadius(float radius) { this->radius = radius; }
+    void SetCollisionType(COLLISION_TYPE type) { this->param.collision_type = type; }
+    void SetTargetType(OBJECT_TYPE type) { this->param.target_type = type; }
+    void SetSelfType(OBJECT_TYPE type) { this->param.self_type = type; }
+    void SetRadius(float radius) { this->param.radius = radius; }
     void SetHitFlag(bool hit) { this->hit_flag = hit; }
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }
 
 private:
-    COLLISION_TYPE collision_type = COLLISION_TYPE::NONE;
-    OBJECT_TYPE target_type = OBJECT_TYPE::NONE;
-    OBJECT_TYPE self_type = OBJECT_TYPE::NONE;
-    float radius = 1.0f;    // 円の半径
+    CollisionParam param;
+    CollisionParam default_param;
     bool hit_flag = false;
     CircleHitResult hit_result{};
 private:

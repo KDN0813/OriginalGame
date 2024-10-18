@@ -131,10 +131,11 @@ void SceneGame::Initialize()
 			player->AddComponent<GravityComponent>();
 			// 円のコライダー
 			{
-				auto collision = player->AddComponent<CircleCollisionComponent>();
-				collision->SetCollisionType(COLLISION_TYPE::ATTACKER);
-				collision->SetSelfType(OBJECT_TYPE::PLAYER);
-				collision->SetTargetType(OBJECT_TYPE::ENEMY);
+				CircleCollisionComponent::CollisionParam param{};
+				param.collision_type = COLLISION_TYPE::ATTACKER;
+				param.self_type = OBJECT_TYPE::PLAYER;
+				param.target_type = OBJECT_TYPE::ENEMY;
+				auto collision = player->AddComponent<CircleCollisionComponent>(param);
 				collision->SetIsActive(false);
 
 				CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
@@ -188,11 +189,11 @@ void SceneGame::Initialize()
 				}
 				// 円のコライダー
 				{
-					auto collision = enemy->AddComponent<CircleCollisionComponent>();
-					collision->SetCollisionType(COLLISION_TYPE::DEFENDER);
-					collision->SetSelfType(OBJECT_TYPE::ENEMY);
-					collision->SetTargetType(OBJECT_TYPE::PLAYER);
-
+					CircleCollisionComponent::CollisionParam param{};
+					param.collision_type = COLLISION_TYPE::DEFENDER;
+					param.self_type = OBJECT_TYPE::ENEMY;
+					param.target_type = OBJECT_TYPE::PLAYER;
+					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 					CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
 				}
 

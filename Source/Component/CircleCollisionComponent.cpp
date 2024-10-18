@@ -9,7 +9,8 @@
 
 #include "Component/TransformComponent.h"
 
-CircleCollisionComponent::CircleCollisionComponent()
+CircleCollisionComponent::CircleCollisionComponent(CollisionParam param)
+    :param(param), default_param(param)
 {
 }
 
@@ -19,16 +20,23 @@ void CircleCollisionComponent::Start()
     // デバッグプリミティブの設定
     {
         // タイプの値が以上な場合設定しない
-        if (this->collision_type >= COLLISION_TYPE::MAX) return;
+        if (this->param.collision_type >= COLLISION_TYPE::MAX) return;
         DirectX::XMFLOAT4 color[2] = { DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) ,DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) };
-        circle_collsion_primitive = CylinderParam(color[static_cast<size_t>(this->collision_type)],
-            this->radius, height);
+        circle_collsion_primitive = CylinderParam(color[static_cast<size_t>(this->param.collision_type)],
+            this->param.radius, height);
     }
 #endif // DEBUG
 }
 
 void CircleCollisionComponent::End()
 {
+}
+
+void CircleCollisionComponent::ReStart()
+{
+    this->param = this->default_param;
+    this->hit_flag = false;
+    this->hit_result = {};
 }
 
 void CircleCollisionComponent::Update(float elapsed_time)
@@ -41,6 +49,7 @@ void CircleCollisionComponent::Update(float elapsed_time)
         if (transform)
         {
             this->circle_collsion_primitive.SetPosition(transform->GetWorldPosition());
+            this->circle_collsion_primitive.SetRadius(this->param.radius);
         }
     }
 
@@ -50,7 +59,7 @@ void CircleCollisionComponent::Update(float elapsed_time)
 CircleParam CircleCollisionComponent::GetCircleParam()
 {
     CircleParam circle_param{};
-    circle_param.radius = this->radius;
+    circle_param.radius = this->param.radius;
 
     auto owner = GetOwner();
     if (!owner) return circle_param;
@@ -69,23 +78,23 @@ void CircleCollisionComponent::DrawDebugGUI()
     // collision_type表示
     {
         std::string text_str;
-        auto a = magic_enum::enum_name(this->collision_type);
-        text_str += magic_enum::enum_name(this->collision_type);
+        auto a = magic_enum::enum_name(this->param.collision_type);
+        text_str += magic_enum::enum_name(this->param.collision_type);
         ImGui::InputTextString("COLLISION TYPE", text_str);
     }
     // self_type表示
     {
         std::string text_str;
-        text_str += magic_enum::enum_name(this->self_type);
+        text_str += magic_enum::enum_name(this->param.self_type);
         ImGui::InputTextString("SELF TYPE", text_str);
     }
     // target_type表示
     {
         std::string text_str;
-        text_str += magic_enum::enum_name(this->target_type);
+        text_str += magic_enum::enum_name(this->param.target_type);
         ImGui::InputTextString("TARGET TYPE", text_str);
     }
-    ImGui::DragFloat("radius##CircleCollisionComponent", &radius, 0.01f);
+    ImGui::DragFloat("radius##CircleCollisionComponent", &param.radius, 0.01f);
     ImGui::Checkbox("Hit Flag" ,&hit_flag);
 
     // hit_result表示
@@ -105,14 +114,14 @@ void CircleCollisionComponent::DrawDebugGUI()
 
 void CircleCollisionComponent::DrawDebugPrimitive()
 {
-    if (this->collision_type >= COLLISION_TYPE::MAX) return;    // タイプが以上なら処理しない
+    if (this->param.collision_type >= COLLISION_TYPE::MAX) return;    // タイプが以上なら処理しない
     DebugPrimitiveRenderer* debug_primitive_renderer = DebugManager::Instance()->GetDebugPrimitiveRenderer();
     debug_primitive_renderer->DrawCylinder(circle_collsion_primitive);
 }
 
 void CircleCollisionComponent::DrawDebugPrimitiveGUI()
 {
-    if (this->collision_type >= COLLISION_TYPE::MAX) return;    // タイプが以上なら処理しない
+    if (this->param.collision_type >= COLLISION_TYPE::MAX) return;    // タイプが以上なら処理しない
     circle_collsion_primitive.DrawDebugGUI("Circle Collsion");
 }
 
