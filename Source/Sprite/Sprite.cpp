@@ -334,3 +334,22 @@ void Sprite::Render(
 	}
 }
 
+void Sprite::Render(
+	ID3D11DeviceContext* dc,
+	DirectX::XMFLOAT2 display_pos,
+	DirectX::XMFLOAT2 display_size,
+	DirectX::XMFLOAT2 clip_pos,
+	DirectX::XMFLOAT2 clip_size,
+	float angle,
+	DirectX::XMFLOAT4 color
+) const
+{
+	Render(dc,
+		display_pos.x, display_pos.y,
+		display_size.x, display_size.y,
+		clip_pos.x, clip_pos.y,
+		clip_size.x, clip_size.y,
+		angle,
+		color.x, color.y, color.z, color.w
+	);
+}

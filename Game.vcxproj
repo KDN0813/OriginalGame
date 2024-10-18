@@ -134,6 +134,7 @@
     <ClInclude Include="Source\Component\MovementComponent.h" />
     <ClInclude Include="Source\Component\InstancingModelShaderComponent.h" />
     <ClInclude Include="Source\Component\PlayerComponent.h" />
+    <ClInclude Include="Source\Component\SpriteComponent.h" />
     <ClInclude Include="Source\Component\StateMachineComponent.h" />
     <ClInclude Include="Source\Component\TransformComponent.h" />
     <ClInclude Include="Source\ConstantManager.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Source\Component\MovementComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp" />
     <ClCompile Include="Source\Component\PlayerComponent.cpp" />
+    <ClCompile Include="Source\Component\SpriteComponent.cpp" />
     <ClCompile Include="Source\Component\StateMachineComponent.cpp" />
     <ClCompile Include="Source\Component\TransformComponent.cpp" />
     <ClCompile Include="Source\ConstantManager.cpp" />
