@@ -111,8 +111,12 @@ void SceneGame::Initialize()
 				param.local_scale = DirectX::XMFLOAT3(0.008f, 0.008f, 0.008f);
 				auto transform = player->AddComponent<Transform3DComponent>(param);
 			}
-				auto movement = player->AddComponent<MovementComponent>();
-			movement->SetIsStageRaycas(true);
+			// ムーブメント設定
+			{
+				MovementComponent::MovementParam param{};
+				param.is_stage_raycas = true;
+				auto movement = player->AddComponent<MovementComponent>(param);
+			}
 			player->AddComponent<PlayerComponent>();
 			// シェーダー設定
 			auto shader_component =
@@ -168,7 +172,10 @@ void SceneGame::Initialize()
 
 					auto transform = object->AddComponent<Transform3DComponent>(param);
 				}
-				auto movement = object->AddComponent<MovementComponent>();
+				// ムーブメント設定
+				{
+					auto movement = object->AddComponent<MovementComponent>(MovementComponent::MovementParam());
+				}
 				// シェーダー設定
 				auto shader_component =
 					object->AddComponent<ModelShaderComponent>(model_shader.get());
@@ -189,7 +196,10 @@ void SceneGame::Initialize()
 					EnemyComponent::EnemyParam param{};
 					auto enemy_component = enemy->AddComponent<EnemyComponent>(param);
 				}
-				auto movement = enemy->AddComponent<MovementComponent>();
+				// ムーブメント設定
+				{
+					auto movement = enemy->AddComponent<MovementComponent>(MovementComponent::MovementParam());
+				}
 				// アニメーション設定
 				{
 					AnimatedInstancedModelComponent::InstancedModelParam param;

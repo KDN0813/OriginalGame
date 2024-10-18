@@ -11,7 +11,8 @@
 #include "Component/TransformComponent.h"
 #include "Component/GravityComponent.h"
 
-MovementComponent::MovementComponent()
+MovementComponent::MovementComponent(MovementParam param)
+	:param(param),default_param(param)
 {
 #ifdef _DEBUG
 	SetIsDebugPrimitive(false);
@@ -30,39 +31,39 @@ void MovementComponent::Update(float elapsed_time)
 	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 	if (!transform) return;
 
-	MYVECTOR3 Acceleration = this->acceleration;
+	MYVECTOR3 Acceleration = this->param.acceleration;
 	float lengthXZ_sq = Acceleration.LengthXZSq();
-	float max_accelerationXZ_sq = this->max_accelerationXZ * max_accelerationXZ;
+	float max_accelerationXZ_sq = this->param.max_accelerationXZ * this->param.max_accelerationXZ;
 	
 	// 速度計算
 	if (max_accelerationXZ_sq < lengthXZ_sq)
 	{
 		float lengthXZ = static_cast<float>(sqrt(lengthXZ_sq));
-		MYVECTOR3 Velocity = this->acceleration;
-		Velocity = Velocity / lengthXZ * this->max_accelerationXZ * elapsed_time;
-		Velocity.GetFlaot3(this->velocity);
+		MYVECTOR3 Velocity = this->param.acceleration;
+		Velocity = Velocity / lengthXZ * this->param.max_accelerationXZ * elapsed_time;
+		Velocity.GetFlaot3(this->param.velocity);
 	}
 	else
 	{
-		MYVECTOR3 Velocity = this->acceleration;
+		MYVECTOR3 Velocity = this->param.acceleration;
 		Velocity *= elapsed_time;
-		Velocity.GetFlaot3(this->velocity);
+		Velocity.GetFlaot3(this->param.velocity);
 	}
-	this->velocity.y = this->acceleration.y * elapsed_time;
+	this->param.velocity.y = this->param.acceleration.y * elapsed_time;
 
 	RaycasVsStage(owner, transform);
 
 	FaceMovementDirection(elapsed_time);
 
 	// 加速度を初期化
-	this->acceleration = {};
+	this->param.acceleration = {};
 }
 
 void MovementComponent::FaceMovementDirection(float elapsed_time)
 {
-	float vx = this->velocity.x;
-	float vz = this->velocity.z;
-	float speed = this->turn_speed;
+	float vx = this->param.velocity.x;
+	float vz = this->param.velocity.z;
+	float speed = this->param.turn_speed;
 
 	// 進行ベクトルが0以下なら処理しない
 	float length = sqrtf(vx * vx + vz * vz);
@@ -110,61 +111,61 @@ void MovementComponent::FaceMovementDirection(float elapsed_time)
 
 bool MovementComponent::IsMoveXZAxis() const
 {
-    return (this->velocity.x != 0.0f || this->velocity.z != 0.0f);
+    return (this->param.velocity.x != 0.0f || this->param.velocity.z != 0.0f);
 }
 
 void MovementComponent::AddAcceleration(MYVECTOR3 Add_acc)
 {
-	MYVECTOR3 Acceleration = this->acceleration;
+	MYVECTOR3 Acceleration = this->param.acceleration;
 	Acceleration += Add_acc;
-	Acceleration.GetFlaot3(this->acceleration);
+	Acceleration.GetFlaot3(this->param.acceleration);
 }
 
 void MovementComponent::AddAccelerationXZ(float x, float z)
 {
-	MYVECTOR3 Acceleration = this->acceleration;
+	MYVECTOR3 Acceleration = this->param.acceleration;
 	Acceleration.AddXZ(x,z);
-	Acceleration.GetFlaot3(this->acceleration);
+	Acceleration.GetFlaot3(this->param.acceleration);
 }
 
 void MovementComponent::AddAccelerationX(float x)
 {
-	MYVECTOR3 Acceleration = this->acceleration;
+	MYVECTOR3 Acceleration = this->param.acceleration;
 	Acceleration.AddX(x);
-	Acceleration.GetFlaot3(this->acceleration);
+	Acceleration.GetFlaot3(this->param.acceleration);
 }
 
 void MovementComponent::AddAccelerationY(float y)
 {
-	MYVECTOR3 Acceleration = this->acceleration;
+	MYVECTOR3 Acceleration = this->param.acceleration;
 	Acceleration.AddY(y);
-	Acceleration.GetFlaot3(this->acceleration);
+	Acceleration.GetFlaot3(this->param.acceleration);
 }
 
 void MovementComponent::AddAccelerationZ(float z)
 {
-	MYVECTOR3 Acceleration = this->acceleration;
+	MYVECTOR3 Acceleration = this->param.acceleration;
 	Acceleration.AddZ(z);
-	Acceleration.GetFlaot3(this->acceleration);
+	Acceleration.GetFlaot3(this->param.acceleration);
 }
 
 void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform)
 {
-	if (!this->is_stage_raycas)
+	if (!this->param.is_stage_raycas)
 	{
-		transform->AddLocalPosition(this->velocity);
+		transform->AddLocalPosition(this->param.velocity);
 		return;
 	}
 	auto stage_object = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
 	if (!stage_object)
 	{
-		transform->AddLocalPosition(this->velocity);
+		transform->AddLocalPosition(this->param.velocity);
 		return;
 	}
 	auto stage_model = stage_object->EnsureComponentValid<ModelComponent>(this->stage_model_Wptr);
 	if (!stage_model)
 	{
-		transform->AddLocalPosition(this->velocity);
+		transform->AddLocalPosition(this->param.velocity);
 		return;
 	}
 
@@ -178,12 +179,12 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 			const MYVECTOR3 Current_pos = transform->GetWorldPosition();
 
 			// 垂直方向の移動量
-			float my = this->velocity.y;
+			float my = this->param.velocity.y;
 
 			if (my < 0.0f)
 			{
 				// レイの開始位置と終点位置
-				MYVECTOR3 Start = Current_pos + MYVECTOR3(0.0f, step_offset, 0.0f);
+				MYVECTOR3 Start = Current_pos + MYVECTOR3(0.0f, this->param.step_offset, 0.0f);
 				MYVECTOR3 End = Current_pos + MYVECTOR3(0.0f, my, 0.0f);
 
 #ifdef _DEBUG	// デバッグプリミティブ表示用変数の更新
@@ -223,16 +224,16 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 		const DirectX::XMFLOAT3& current_pos = transform->GetWorldPosition();
 		const MYVECTOR3 Current_pos = current_pos;
 
-		float velocity_lengthXZ = MYVECTOR3(this->velocity).LengthXZ();
+		float velocity_lengthXZ = MYVECTOR3(this->param.velocity).LengthXZ();
 		if (velocity_lengthXZ > 0.0f)
 		{
 			// 水平方向の移動量
-			float mx = this->velocity.x;
-			float mz = this->velocity.z;
+			float mx = this->param.velocity.x;
+			float mz = this->param.velocity.z;
 
 			// レイの開始位置と終点位置
-			MYVECTOR3 Start = Current_pos + MYVECTOR3(0.0f, step_offset, 0.0f);
-			MYVECTOR3 End = Current_pos + MYVECTOR3(mx, step_offset, mz);
+			MYVECTOR3 Start = Current_pos + MYVECTOR3(0.0f, this->param.step_offset, 0.0f);
+			MYVECTOR3 End = Current_pos + MYVECTOR3(mx, this->param.step_offset, mz);
 
 #ifdef _DEBUG
 			// デバッグプリミティブ表示用変数の更新
@@ -294,14 +295,14 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 void MovementComponent::DrawDebugGUI()
 {
-	ImGui::InputFloat3("Additional Velocity", &this->acceleration.x);
-    ImGui::InputFloat("Max AccelerationXZ", &this->max_accelerationXZ);
-	ImGui::InputFloat3("Velocity", &this->velocity.x);
-	ImGui::InputFloat("Turn Speed", &this->turn_speed);
-	ImGui::Checkbox("Is Stage Raycas", &this->is_stage_raycas);
-	if (this->is_stage_raycas)
+	ImGui::InputFloat3("Additional Velocity", &this->param.acceleration.x);
+    ImGui::InputFloat("Max AccelerationXZ", &this->param.max_accelerationXZ);
+	ImGui::InputFloat3("Velocity", &this->param.velocity.x);
+	ImGui::InputFloat("Turn Speed", &this->param.turn_speed);
+	ImGui::Checkbox("Is Stage Raycas", &this->param.is_stage_raycas);
+	if (this->param.is_stage_raycas)
 	{
-		ImGui::InputFloat("Step Offset", &this->step_offset);
+		ImGui::InputFloat("Step Offset", &this->param.step_offset);
 	}
 }
 

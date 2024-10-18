@@ -14,8 +14,20 @@ class ModelComponent;
 class MovementComponent : public Component
 {
 public:
-    MovementComponent();
+    struct MovementParam
+    {
+        DirectX::XMFLOAT3 velocity{};               // 速度
+        DirectX::XMFLOAT3 acceleration{};           // 加速度
+        float step_offset = 0.2f;                   // レイの開始位置を足元より少し上に設定するためのオフセット
+        float max_accelerationXZ = 5.0f;            // XZ軸の最大加速度
+        float turn_speed = 15.0f;                   // 回転速度
+        bool is_stage_raycas = false;               // ステージとのレイキャストの有無
+    };
+public:
+    MovementComponent(MovementParam param);
 
+    // リスタート処理
+    void ReStart() override { this->param = default_param; };      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time)override;
     // 名前取得
@@ -30,26 +42,22 @@ public:
     bool IsMoveXZAxis()  const;
 
     // 各種設定取得・関数
-    void SetIsStageRaycas(bool is_stage_raycas) { this->is_stage_raycas = is_stage_raycas; }
-    void SetAdditionalVelocity(DirectX::XMFLOAT3 move_vec) { this->acceleration = move_vec; }
+    void SetIsStageRaycas(bool is_stage_raycas) { this->param.is_stage_raycas = is_stage_raycas; }
+    void SetAdditionalVelocity(DirectX::XMFLOAT3 move_vec) { this->param.acceleration = move_vec; }
     void AddAcceleration(MYVECTOR3 Add_acc);
     void AddAccelerationXZ(float x, float z);
     void AddAccelerationX(float x);
     void AddAccelerationY(float y);
     void AddAccelerationZ(float z);
-    DirectX::XMFLOAT3 GetAcceleration() { return this->acceleration; }
-    DirectX::XMFLOAT3 GetVelocity() { return this->velocity; }
+    DirectX::XMFLOAT3 GetAcceleration() { return this->param.acceleration; }
+    DirectX::XMFLOAT3 GetVelocity() { return this->param.velocity; }
 
     // ステージとのレイキャスト
     void RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform);
 
 private:
-    DirectX::XMFLOAT3 velocity{};               // 速度
-    DirectX::XMFLOAT3 acceleration{};           // 加速度
-    float step_offset = 0.2f;                   // レイの開始位置を足元より少し上に設定するためのオフセット
-    float max_accelerationXZ = 5.0f;            // XZ軸の最大加速度
-    float turn_speed = 15.0f;                   // 回転速度
-    bool is_stage_raycas = false;               // ステージとのレイキャストの有無
+    MovementParam param;
+    MovementParam default_param;
 
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
