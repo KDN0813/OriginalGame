@@ -139,7 +139,9 @@ void SceneGame::Initialize()
 				player->AddComponent<CameraControllerGamepad>(param);
 			}
 			// 重力
-			player->AddComponent<GravityComponent>();
+			{
+				player->AddComponent<GravityComponent>(GravityComponent::GravityParam());
+			}
 			// 円のコライダー
 			{
 				CircleCollisionComponent::CollisionParam param{};
