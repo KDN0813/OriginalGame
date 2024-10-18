@@ -4,8 +4,10 @@
 
 #include "Debug/DebugManager.h"
 
-Transform3DComponent::Transform3DComponent()
+Transform3DComponent::Transform3DComponent(Transform3DParam param)
+	:param(param),default_param(param)
 {
+	this->change_value = true;
 #ifdef _DEBUG
 	sphere_world_position = SphereParam(DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f), 0.1f);
 	SetIsDebugPrimitive(false);
@@ -42,7 +44,7 @@ void Transform3DComponent::UpdateTransform()
 
 	// ローカル行列作成
 	MYMATRIX Local_transform;
-	Local_transform.SetLocalMatrix(this->local_scale, this->local_angle, this->local_position);
+	Local_transform.SetLocalMatrix(this->param.local_scale, this->param.local_angle, this->param.local_position);
 
 	// ワールド行列作成
 	MYMATRIX World_transform;
@@ -67,10 +69,10 @@ const DirectX::XMFLOAT4X4& Transform3DComponent::GetWolrdTransform()
 DirectX::XMFLOAT3 Transform3DComponent::AddLocalPosition(DirectX::XMFLOAT3 vec)
 {
 	this->change_value = true;
-	MYVECTOR3 Pos = this->local_position;
+	MYVECTOR3 Pos = this->param.local_position;
 	Pos += vec;
-	Pos.GetFlaot3(this->local_position);
-	return this->local_position;
+	Pos.GetFlaot3(this->param.local_position);
+	return this->param.local_position;
 }
 
 DirectX::XMFLOAT3 Transform3DComponent::GetWorldPosition()
@@ -86,13 +88,13 @@ void Transform3DComponent::SetWorldPosition()
 	auto owner = GetOwner();
 	if (!owner)
 	{
-		this->world_position = this->local_position;;
+		this->world_position = this->param.local_position;;
 		return;
 	};
 	auto parent = owner->GetParent();
 	if (!parent)
 	{
-		this->world_position = this->local_position;;
+		this->world_position = this->param.local_position;;
 		return;
 	};
 	SetWorldPosition(parent->EnsureComponentValid(this->parent_ransform_Wptr));
@@ -102,11 +104,11 @@ void Transform3DComponent::SetWorldPosition(std::shared_ptr<Transform3DComponent
 {
 	if (!parent_transform)
 	{
-		this->world_position = this->local_position;;
+		this->world_position = this->param.local_position;;
 		return;
 	};
-	MYVECTOR3 Local_position = this->local_position;
-	MYVECTOR3 Worldl_position = this->local_position;
+	MYVECTOR3 Local_position = this->param.local_position;
+	MYVECTOR3 Worldl_position = this->param.local_position;
 	MYMATRIX World_transform = parent_transform->GetWolrdTransform();
 
 	Worldl_position = World_transform.Vector3TransformCoord(Local_position);
@@ -129,24 +131,24 @@ bool Transform3DComponent::GetChangeValue()
 
 void Transform3DComponent::DrawDebugGUI()
 {
-	if (ImGui::InputFloat3("Local Position", &this->local_position.x))
+	if (ImGui::InputFloat3("Local Position", &this->param.local_position.x))
 	{
 		this->change_value = true;
 	}
-	if (ImGui::InputFloat3("Local Scale", &this->local_scale.x))
+	if (ImGui::InputFloat3("Local Scale", &this->param.local_scale.x))
 	{
 		this->change_value = true;
 	}
 
 	DirectX::XMFLOAT3 angle_degrees
 	{
-		DirectX::XMConvertToDegrees(this->local_angle.x),
-		DirectX::XMConvertToDegrees(this->local_angle.y),
-		DirectX::XMConvertToDegrees(this->local_angle.z),
+		DirectX::XMConvertToDegrees(this->param.local_angle.x),
+		DirectX::XMConvertToDegrees(this->param.local_angle.y),
+		DirectX::XMConvertToDegrees(this->param.local_angle.z),
 	};
 	if (ImGui::SliderFloat3("Local Angle", &angle_degrees.x, 0, 360.0f))
 	{
-		this->local_angle =
+		this->param.local_angle =
 		{
 			DirectX::XMConvertToRadians(angle_degrees.x),
 			DirectX::XMConvertToRadians(angle_degrees.y),

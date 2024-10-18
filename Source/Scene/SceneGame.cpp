@@ -53,9 +53,13 @@ void SceneGame::Initialize()
 			auto stage = object_manager.Create();
 			stage->SetName("Stage");
 			stage->AddComponent<ModelComponent>(device, "Data/Model/Cube/Cube.mdl");
-			auto transform = stage->AddComponent<Transform3DComponent>();
-			transform->SetLocalScale(DirectX::XMFLOAT3(100.0f, 1.0f, 100.0f));
-			transform->SetLocalPosition(DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f));
+			// トランスフォーム設定
+			{
+				Transform3DComponent::Transform3DParam param{};
+				param.local_scale = DirectX::XMFLOAT3(100.0f, 1.0f, 100.0f);
+				param.local_position = DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f);
+				auto transform = stage->AddComponent<Transform3DComponent>(param);
+			}
 			// シェーダー設定
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
@@ -101,9 +105,13 @@ void SceneGame::Initialize()
 				state_machine->SetDefaultState("IdelState");
 			}
 
-			auto transform = player->AddComponent<Transform3DComponent>();
-			transform->SetLocalScale(DirectX::XMFLOAT3(0.008f, 0.008f, 0.008f));
-			auto movement = player->AddComponent<MovementComponent>();
+			// トランスフォーム設定
+			{
+				Transform3DComponent::Transform3DParam param{};
+				param.local_scale = DirectX::XMFLOAT3(0.008f, 0.008f, 0.008f);
+				auto transform = player->AddComponent<Transform3DComponent>(param);
+			}
+				auto movement = player->AddComponent<MovementComponent>();
 			movement->SetIsStageRaycas(true);
 			player->AddComponent<PlayerComponent>();
 			// シェーダー設定
@@ -149,9 +157,15 @@ void SceneGame::Initialize()
 				std::shared_ptr<Object> object = player->AddChildren();
 				object->SetName("player child");
 				object->AddComponent<ModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
-				auto transform = object->AddComponent<Transform3DComponent>();
-				transform->SetLocalScale(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
-				transform->SetLocalPosition(DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f));
+
+				// トランスフォーム設定
+				{
+					Transform3DComponent::Transform3DParam param{};
+					param.local_position = DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f);
+					param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
+
+					auto transform = object->AddComponent<Transform3DComponent>(param);
+				}
 				auto movement = object->AddComponent<MovementComponent>();
 				// シェーダー設定
 				auto shader_component =
@@ -168,7 +182,6 @@ void SceneGame::Initialize()
 			for (int i = 0; i < 1; ++i)
 			{
 				auto enemy = object_manager.Create();
-				auto transform = enemy->AddComponent<Transform3DComponent>();
 				// エネミーコンポーネント設定
 				{
 					EnemyComponent::EnemyParam param{};
@@ -209,19 +222,23 @@ void SceneGame::Initialize()
 					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 					CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
 				}
-
-				float offset = 2.0f;
-
-				float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-				float range = MyMathf::RandomRange(0.0f, territory_range);
-				DirectX::XMFLOAT3 pos =
+				// トランスフォーム設定
 				{
-					sinf(theta)* range,
-					0.0f,
-					cosf(theta)* range ,
-				};
-				transform->SetLocalPosition(pos);
-				transform->SetLocalScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
+					float offset = 2.0f;
+					float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
+					float range = MyMathf::RandomRange(0.0f, territory_range);
+
+					Transform3DComponent::Transform3DParam param{};
+					param.local_position  = 
+					{
+						sinf(theta) * range,
+						0.0f,
+						cosf(theta) * range ,
+					};
+					param.local_scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
+
+					auto transform = enemy->AddComponent<Transform3DComponent>(param);
+				}
 
 				// シェーダー設定
 				auto shader_component =
@@ -232,7 +249,7 @@ void SceneGame::Initialize()
 #ifdef _DEBUG	// デバッグ用object
 		auto debug_camera = object_manager.Create();
 		debug_camera->SetName("Debug Camera");
-		debug_camera->AddComponent<Transform3DComponent>();
+		debug_camera->AddComponent<Transform3DComponent>(Transform3DComponent::Transform3DParam());
 		debug_camera->AddComponent<CameraControllerDebug>();
 		
 		// カメラ設定
