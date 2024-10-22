@@ -9,6 +9,7 @@
 #include "Model/InstancingModelResourceManager.h"
 #include "Debug/DebugManager.h"
 #include "Camera/CameraManager.h"
+#include "System/GameData.h"
 
 class Framework
 {
@@ -34,6 +35,7 @@ private:
 	ModelResourceManager			resource_manager;
 	InstancingModelResourceManager	instancin_resource_manager;
 	CameraManager					camera_manager;
+	GameData						game_data;
 #ifdef _DEBUG
 	DebugManager					debug_manager;
 	bool stop_delta = false;
