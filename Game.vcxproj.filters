@@ -219,9 +219,6 @@
     <ClInclude Include="Source\Component\GravityComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera\CameraController.h">
-      <Filter>Source\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Debug\DebugPrimitiveRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
     </ClInclude>
@@ -233,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="Source\System\MyMath\MYMATRIX.h">
       <Filter>Source\System\MyMath</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera\CameraControllerDerived.h">
-      <Filter>Source\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\MyMath\MYVECTOR4.h">
       <Filter>Source\System\MyMath</Filter>
@@ -285,6 +279,10 @@
     <ClInclude Include="Source\Collision\CollisionManager.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\CameraControllerComponent.h" />
+    <ClInclude Include="Source\Component\SpriteComponent.h" />
+    <ClInclude Include="Source\Shader\SpriteShader.h" />
+    <ClInclude Include="Source\Sprite\Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -392,12 +390,6 @@
     <ClCompile Include="Source\ConstantManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera\CameraController.cpp">
-      <Filter>Source\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera\CameraControllerDerived.cpp">
-      <Filter>Source\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\ModelAnimationComponent.cpp">
       <Filter>Source\Component</Filter>
     </ClCompile>
@@ -452,6 +444,18 @@
     <ClCompile Include="Source\Collision\CollisionManager.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Component\CameraControllerComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpriteComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\SpriteShader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sprite\Sprite.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli">
@@ -464,6 +468,12 @@
       <Filter>HLSL</Filter>
     </None>
     <None Include="Hlsl\Debug.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="Hlsl\Sprite.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="Hlsl\MatrixDecompose.hlsli">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>
@@ -490,6 +500,12 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\DebugVS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\SpritePS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\SpriteVS.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

@@ -54,7 +54,7 @@ void SceneGame::Initialize()
 		{
 			auto stage = object_manager.Create();
 			stage->SetName("Stage");
-			stage->AddComponent<ModelComponent>(device, "Data/Model/Cube/Cube.mdl");
+			stage->AddComponent<ModelComponent>(device, "Data/Debug/Model/Cube/Cube.mdl");
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
@@ -166,7 +166,7 @@ void SceneGame::Initialize()
 			{
 				std::shared_ptr<Object> object = player->AddChildren();
 				object->SetName("player child");
-				object->AddComponent<ModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
+				object->AddComponent<ModelComponent>(device, "Data/Debug/Model/Jammo/Jammo.mdl");
 
 				// トランスフォーム設定
 				{

@@ -248,6 +248,7 @@
     <None Include="Hlsl\Debug.hlsli" />
     <None Include="Hlsl\ImGui.hlsli" />
     <None Include="Hlsl\Instance.hlsli" />
+    <None Include="Hlsl\MatrixDecompose.hlsli" />
     <None Include="Hlsl\Sprite.hlsli" />
     <None Include="Hlsl\Temporary.hlsli" />
   </ItemGroup>

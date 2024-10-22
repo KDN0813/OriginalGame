@@ -23,7 +23,7 @@ void SceneTitle::Initialize()
 			auto sprite_bg = object_manager.Create();
 			sprite_bg->SetName("Title Back Sprite");
 			SpriteComponent::SpriteParam param{};
-			param.filename = "Data/Sprite/Title.png";
+			param.filename = "Data/Debug/Sprite/Title.png";
 			auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
 
 			this->sprite_shader->AddSprite(sprite);
