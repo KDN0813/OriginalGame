@@ -64,6 +64,9 @@
     <Filter Include="Source\StateMachine">
       <UniqueIdentifier>{46b098cf-a99d-4969-8f5a-9a45d66b7f9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Sprite">
+      <UniqueIdentifier>{82cdaa05-2abd-4be1-8d30-aa759aeb0db9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -279,10 +282,21 @@
     <ClInclude Include="Source\Collision\CollisionManager.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\CameraControllerComponent.h" />
-    <ClInclude Include="Source\Component\SpriteComponent.h" />
-    <ClInclude Include="Source\Shader\SpriteShader.h" />
-    <ClInclude Include="Source\Sprite\Sprite.h" />
+    <ClInclude Include="Source\System\GameData.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\CameraControllerComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\SpriteComponent.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\SpriteShader.h">
+      <Filter>Source\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Sprite\Sprite.h">
+      <Filter>Source\Sprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -444,17 +458,17 @@
     <ClCompile Include="Source\Collision\CollisionManager.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\CameraControllerComponent.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\SpriteComponent.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Shader\SpriteShader.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Sprite\Sprite.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\CameraControllerComponent.cpp">
+      <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

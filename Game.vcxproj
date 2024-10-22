@@ -175,6 +175,7 @@
     <ClInclude Include="Source\System\Alias\OwnerAlias.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
+    <ClInclude Include="Source\System\GameData.h" />
     <ClInclude Include="Source\System\HighResolutionTimer.h" />
     <ClInclude Include="Source\System\Logger.h" />
     <ClInclude Include="Source\System\Misc.h" />
