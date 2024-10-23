@@ -69,14 +69,7 @@ void SceneTitle::Render()
 
 void SceneTitle::DebugDrawGUI()
 {
-	ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_Appearing);
-	ImGui::SetNextWindowSize(ImVec2(300.0f, 400.0f), ImGuiCond_FirstUseEver);
-
-	if (ImGui::Begin("DebugMenu", nullptr, ImGuiWindowFlags_MenuBar))
-	{
-		this->object_manager.DrawDebugGUI();
-	}
-	ImGui::End();
+	this->object_manager.DrawDebugGUI();
 }
 
 #endif // DEBUG

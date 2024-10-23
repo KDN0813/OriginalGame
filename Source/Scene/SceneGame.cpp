@@ -349,86 +349,27 @@ void SceneGame::ReStart()
 
 void SceneGame::DebugDrawGUI()
 {
-	ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_Appearing);
-	ImGui::SetNextWindowSize(ImVec2(300.0f, 400.0f), ImGuiCond_FirstUseEver);
-
-	if (ImGui::Begin("DebugMenu", nullptr, ImGuiWindowFlags_MenuBar))
+	if (ImGui::BeginMenuBar())
 	{
-		if (ImGui::BeginMenuBar())
+		// カメラ切り替え
+		if (ImGui::BeginMenu("Camera"))
 		{
-			// モード切り替え処理
-			if (ImGui::BeginMenu("Mode"))
-			{
-				if (ImGui::MenuItem("Object"))
-				{
-					mode_index = SceneGame::ImGuiMode::Object;
-				}
-				if (ImGui::MenuItem("Shader"))
-				{
-					mode_index = SceneGame::ImGuiMode::Shader;
-				}
-				if (ImGui::MenuItem("Camera"))
-				{
-					mode_index = SceneGame::ImGuiMode::Camera;
-				}
-				if (ImGui::MenuItem("Collison"))
-				{
-					mode_index = SceneGame::ImGuiMode::Collison;
-				}
-				if (ImGui::MenuItem("System"))
-				{
-					mode_index = SceneGame::ImGuiMode::System;
-				}
+			bool& debug_flag = CameraManager::Instance()->debug_flag;
 
-				ImGui::EndMenu();
+			std::string label = debug_flag ? "normal camera" : "debug camera";
+
+			if (ImGui::MenuItem(label.c_str()))
+			{
+				debug_flag = !debug_flag;
+				CameraManager::Instance()->SetDebugCamera();
 			}
 
-			// カメラ切り替え
-			if (ImGui::BeginMenu("Camera"))
-			{
-				bool& debug_flag = CameraManager::Instance()->debug_flag;
-
-				std::string label = debug_flag ? "normal camera" : "debug camera";
-
-				if (ImGui::MenuItem(label.c_str()))
-				{
-					debug_flag = !debug_flag;
-					CameraManager::Instance()->SetDebugCamera();
-				}
-
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
+			ImGui::EndMenu();
 		}
-
-		// 各モード表示
-		switch (mode_index)
-		{
-		case SceneGame::ImGuiMode::Object:
-			ImGui::Text("Object");
-			object_manager.DrawDebugGUI();
-			break;
-		case SceneGame::ImGuiMode::Shader:
-			ImGui::Text("System");
-			DrawShaderImGui();
-			break;
-		case SceneGame::ImGuiMode::Camera:
-			ImGui::Text("Camera");
-			CameraManager::Instance()->DrawDebugGUI();
-			break;
-		case SceneGame::ImGuiMode::Collison:
-			ImGui::Text("Collison");
-			CollisionManager::Instance()->DrawDebugGUI();
-			break;
-		case SceneGame::ImGuiMode::System:
-			ImGui::Text("System");
-			DrawSystemImGui();
-			break;
-		default:
-			break;
-		}
+		ImGui::EndMenuBar();
 	}
-	ImGui::End();
+
+	this->object_manager.DrawDebugGUI();
 }
 
 void SceneGame::DrawShaderImGui()

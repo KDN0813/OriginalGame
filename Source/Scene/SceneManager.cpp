@@ -1,4 +1,8 @@
 #include "SceneManager.h"
+#ifdef _DEBUG
+#include <imgui.h>
+#endif // DEBUG
+
 
 void SceneManager::Update(float elpsed_time)
 {
@@ -49,6 +53,10 @@ void SceneManager::ChangeScene(Scene* scene)
 void SceneManager::DrawDebugGUI()
 {
     this->current_scene->DebugDrawGUI();
+    if (ImGui::BeginTabItem("Scene"))
+    {
+        ImGui::EndTabItem();
+    }
 }
 
 #endif // DEBUG

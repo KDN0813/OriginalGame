@@ -183,7 +183,18 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 
 void Framework::DrawDebugGUI()
 {
-	this->scene_manager.DrawDebugGUI();
+	ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_Appearing);
+	ImGui::SetNextWindowSize(ImVec2(300.0f, 400.0f), ImGuiCond_FirstUseEver);
+
+	if (ImGui::Begin("DebugGui", nullptr, ImGuiWindowFlags_MenuBar))
+	{
+		if (ImGui::BeginTabBar("MyTabBar"))
+		{
+			this->scene_manager.DrawDebugGUI();
+			ImGui::EndTabBar();
+		}
+	}
+	ImGui::End();
 }
 
 #endif // DEBUG
