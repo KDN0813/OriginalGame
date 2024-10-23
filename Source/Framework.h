@@ -11,6 +11,7 @@
 #include "Camera/CameraManager.h"
 #include "System/GameData.h"
 #include "Audio/Audio.h"
+#include "Audio/AudioResourceManager.h"
 
 class Framework
 {
@@ -35,6 +36,7 @@ private:
 	Input							input;
 	ModelResourceManager			resource_manager;
 	InstancingModelResourceManager	instancin_resource_manager;
+	AudioResourceManager			audio_resource_manager;
 	CameraManager					camera_manager;
 	GameData						game_data;
 	Audio							audio;

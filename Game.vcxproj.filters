@@ -321,6 +321,9 @@
     <ClInclude Include="Source\Audio\AudioParam.h">
       <Filter>Source\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Audio\AudioResourceManager.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -514,6 +517,9 @@
     </ClCompile>
     <ClCompile Include="External\imgui\imgui_widgets.cpp">
       <Filter>External\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\AudioResourceManager.cpp">
+      <Filter>Source\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

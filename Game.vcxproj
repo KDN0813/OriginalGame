@@ -121,6 +121,7 @@
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioParam.h" />
     <ClInclude Include="Source\Audio\AudioResource.h" />
+    <ClInclude Include="Source\Audio\AudioResourceManager.h" />
     <ClInclude Include="Source\Audio\AudioSource.h" />
     <ClInclude Include="Source\Camera\CameraManager.h" />
     <ClInclude Include="Source\Collision\CircleCollider.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Audio\Audio.cpp" />
     <ClCompile Include="Source\Audio\AudioResource.cpp" />
+    <ClCompile Include="Source\Audio\AudioResourceManager.cpp" />
     <ClCompile Include="Source\Audio\AudioSource.cpp" />
     <ClCompile Include="Source\Camera\CameraManager.cpp" />
     <ClCompile Include="Source\Collision\CircleCollider.cpp" />

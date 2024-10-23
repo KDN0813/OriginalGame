@@ -3,7 +3,7 @@
 #endif // DEBUG
 #include "Audio.h"
 #include "System/Misc.h"
-#include "Audio/AudioResource.h"
+#include "Audio/AudioResourceManager.h"
 
 Audio::Audio()
     : Singleton(this)
@@ -63,7 +63,7 @@ Audio::~Audio()
 void Audio::Play(SEParam param)
 {
 	// リソース作成
-	std::shared_ptr<AudioResource> resource = std::make_shared<AudioResource>(param.filename.c_str());
+	std::shared_ptr<AudioResource> resource = AudioResourceManager::Instance()->LoadAudioResource(param.filename.c_str());
 	// オーディオソース作成
 	AudioSource* audio = this->audio_source_pool.emplace_back(new AudioSource(this->xaudio, resource, param));
 
