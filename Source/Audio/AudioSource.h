@@ -20,6 +20,9 @@ public:
 	// オーディオがアクティブであるか
 	bool IsAudioActive();
 
+	// バッファを空にする
+	void ClearBuffers();
+
 	void SetVolume(float v) { source_voice->SetVolume(v); }
 	void GetVolume(float* v) { source_voice->GetVolume(v); }
 	float GetVolume() { float v{}; source_voice->GetVolume(&v); return v; }

@@ -63,6 +63,12 @@ bool AudioSource::IsAudioActive()
 	return (0 < state.BuffersQueued);
 }
 
+void AudioSource::ClearBuffers()
+{
+	this->source_voice->Stop();
+	this->source_voice->FlushSourceBuffers();
+}
+
 #ifdef _DEBUG
 
 void AudioSource::DebugDrawGUI()

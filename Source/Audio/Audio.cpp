@@ -70,16 +70,49 @@ void Audio::Play(AudioParam param)
 	audio->Play();
 }
 
+void Audio::AllStop()
+{
+	for (AudioSource* audio_source : this->audio_source_pool)
+	{
+		audio_source->Stop();
+	}
+}
+
+void Audio::AllStart()
+{
+	for (AudioSource* audio_source : this->audio_source_pool)
+	{
+		audio_source->Play();
+	}
+}
+
+void Audio::AllClear()
+{
+	for (AudioSource* audio_source : this->audio_source_pool)
+	{
+		audio_source->ClearBuffers();
+	}
+}
+
 void Audio::Update()
 {
 	// 再生終了した要素を削除する
-	this->audio_source_pool.erase(
-		std::remove_if(this->audio_source_pool.begin(), this->audio_source_pool.end(),
-			[](AudioSource* audio_source)
-			{
-				return !audio_source->IsAudioActive();
-			}),
-		this->audio_source_pool.end());
+	for (size_t i = 0; i < audio_source_pool.size(); ++i)
+	{
+		AudioSource* audio_source = audio_source_pool[i];
+
+		if (!audio_source) continue;
+		// オーディオが有効ならスキップ
+		if (audio_source->IsAudioActive()) continue;
+
+		auto it = std::find(this->audio_source_pool.begin(), this->audio_source_pool.end(), audio_source);
+		if (it == this->audio_source_pool.end()) continue;
+		
+		// オーディオの削除
+		delete audio_source;
+		audio_source = nullptr;
+		this->audio_source_pool.erase(it);
+	}
 }
 
 #ifdef _DEBUG
@@ -93,6 +126,20 @@ void Audio::DebugDrawGUI()
 		if (ImGui::SliderFloat("Master Volume", &volume, 0.0f, 1.0f))
 		{
 			mastering_voice->SetVolume(volume);
+		}
+		if (ImGui::Button("AllStart##Audio"))
+		{
+			AllStart();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("AllStop##Audio"))
+		{
+			AllStop();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("AllClear##Audio"))
+		{
+			AllClear();
 		}
 
 		// オーディオソース

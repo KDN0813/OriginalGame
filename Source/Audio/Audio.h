@@ -14,6 +14,13 @@ public:
 
     void Play(AudioParam param);
 
+    // 全てのオーディオを停止する
+    void AllStop();
+    // 全てのオーディオ再生させる
+    void AllStart();
+    // 全ての曲を削除する
+    void AllClear();
+
     // 更新
     void Update();
 private:
