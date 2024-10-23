@@ -61,17 +61,47 @@ void SceneManager::DrawDebugGUI()
     
     if (ImGui::Begin("Scene Manager"))
     {
-        if (ImGui::Button("Chenge SceneTitle"))
+        // ロードシーンでないなら表示する
+        if (dynamic_cast<SceneLoading*>(this->current_scene) == nullptr)
         {
-            ChangeScene(new SceneTitle);
-        }
-        if (ImGui::Button("Chenge SceneGame"))
-        {
-            ChangeScene(new SceneGame);
-        }
-        if (ImGui::Button("Chenge SceneResult"))
-        {
-            ChangeScene(new SceneResult);
+            // 直接シーンを切り替える
+            if(ImGui::CollapsingHeader("Chenge Scene", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                if (dynamic_cast<SceneTitle*>(this->current_scene) == nullptr &&
+                    ImGui::Button("SceneTitle"))
+                {
+                    ChangeScene(new SceneTitle);
+                }
+                if (dynamic_cast<SceneGame*>(this->current_scene) == nullptr &&
+                    ImGui::Button("SceneGame"))
+                {
+                    ChangeScene(new SceneGame);
+                }
+                if (dynamic_cast<SceneResult*>(this->current_scene) == nullptr &&
+                    ImGui::Button("SceneResult"))
+                {
+                    ChangeScene(new SceneResult);
+                }
+            }
+            // ロードを挟んで切り替える
+            if (ImGui::CollapsingHeader("Chenge Load cene", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                if (dynamic_cast<SceneTitle*>(this->current_scene) == nullptr &&
+                    ImGui::Button("SceneTitle##Load"))
+                {
+                    ChangeScene(new SceneLoading(new SceneTitle));
+                }
+                if (dynamic_cast<SceneGame*>(this->current_scene) == nullptr &&
+                    ImGui::Button("SceneGame##Load"))
+                {
+                    ChangeScene(new SceneLoading(new SceneGame));
+                }
+                if (dynamic_cast<SceneResult*>(this->current_scene) == nullptr &&
+                    ImGui::Button("SceneResult##Load"))
+                {
+                    ChangeScene(new SceneLoading(new SceneResult));
+                }
+            }
         }
     }
     ImGui::End();
