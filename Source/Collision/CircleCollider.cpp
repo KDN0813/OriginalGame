@@ -170,7 +170,9 @@ void CircleCollider::DrawDebugGUI()
                     }
 
                     ImGui::Indent(30.0f);
-                    if (ImGui::CollapsingHeader(object_name.c_str()))
+                    label = object_name.c_str();
+                    label += "##CollisonObject";
+                    if (ImGui::CollapsingHeader(label.c_str()))
                     {
                         bool hit_frag = circle_attacker->GetHitFlag();
                         std::string label = "Hit Frag##" + object_name;

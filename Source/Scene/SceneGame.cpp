@@ -353,6 +353,9 @@ void SceneGame::DebugDrawGUI()
 
 	// シェーダー
 	DrawShaderImGui();
+
+	// コリジョン
+	this->collision_manager.DrawDebugGUI();
 }
 
 void SceneGame::DrawShaderImGui()

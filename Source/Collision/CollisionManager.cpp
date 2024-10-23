@@ -18,7 +18,11 @@ void CollisionManager::Update()
 
 void CollisionManager::DrawDebugGUI()
 {
-    this->circle_collider->DrawDebugGUI();
+    if (ImGui::Begin("Collision Manager"))
+    {
+        this->circle_collider->DrawDebugGUI();
+    }
+    ImGui::End();
 }
 
 #endif // DEBUG
