@@ -64,6 +64,11 @@ void SceneManager::DrawDebugGUI()
         // ロードシーンでないなら表示する
         if (dynamic_cast<SceneLoading*>(this->current_scene) == nullptr)
         {
+            // シーンのリセット
+            if (ImGui::Button("ReStart"))
+            {
+                this->current_scene->ReStart();
+            }
             // 直接シーンを切り替える
             if(ImGui::CollapsingHeader("Chenge Scene", ImGuiTreeNodeFlags_DefaultOpen))
             {

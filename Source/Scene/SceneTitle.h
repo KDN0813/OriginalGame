@@ -16,6 +16,7 @@ public:
     void Finalize() override;
     void Update(float elapsed_time) override;
     void Render() override;
+    void ReStart() override;
 
 private:
     std::unique_ptr<SpriteShader> sprite_shader;

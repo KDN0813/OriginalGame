@@ -10,6 +10,7 @@ public:
     virtual void Finalize() = 0;
     virtual void Update(float elapsed_time) = 0;
     virtual void Render() = 0;
+    virtual void ReStart() {};
 
     bool IsReady() const { return ready; }
     void SetReady() { ready = true; }

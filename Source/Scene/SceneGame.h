@@ -22,7 +22,7 @@ public:
 	void Finalize() override;
 	void Update(float elapsed_time) override;
 	void Render() override;
-    void ReStart();
+    void ReStart() override;
 private:
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
@@ -46,6 +46,5 @@ private:
     void DebugDrawGUI();
 
     void DrawShaderImGui();
-    void DrawSystemImGui();
 #endif // _DEBUG
 };

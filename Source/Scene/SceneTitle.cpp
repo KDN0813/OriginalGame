@@ -65,6 +65,11 @@ void SceneTitle::Render()
 	}
 }
 
+void SceneTitle::ReStart()
+{
+	this->object_manager.ReStart();
+}
+
 #ifdef _DEBUG
 
 void SceneTitle::DebugDrawGUI()

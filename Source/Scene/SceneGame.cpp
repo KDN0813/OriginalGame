@@ -378,12 +378,4 @@ void SceneGame::DrawShaderImGui()
 	ImGui::End();
 }
 
-void SceneGame::DrawSystemImGui()
-{
-	if (ImGui::Button("ReStart"))
-	{
-		ReStart();
-	}
-}
-
 #endif // _DEBUG
