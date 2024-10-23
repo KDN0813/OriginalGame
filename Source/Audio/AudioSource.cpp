@@ -13,6 +13,17 @@ AudioSource::AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resou
 	// ソースボイスを生成
 	hr = xaudio->CreateSourceVoice(&source_voice, &resource->GetWaveFormat());
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+	bool loop = true;
+
+	// ソースボイスにデータを送信
+	XAUDIO2_BUFFER buffer = { 0 };
+	buffer.AudioBytes = resource->GetAudioBytes();
+	buffer.pAudioData = resource->GetAudioData();
+	buffer.LoopCount = loop ? XAUDIO2_LOOP_INFINITE : 0;
+	buffer.Flags = XAUDIO2_END_OF_STREAM;
+
+	source_voice->SubmitSourceBuffer(&buffer);
 }
 
 // デストラクタ
@@ -26,18 +37,9 @@ AudioSource::~AudioSource()
 }
 
 // 再生
-void AudioSource::Play(bool loop)
+void AudioSource::Play()
 {
 	Stop();
-
-	// ソースボイスにデータを送信
-	XAUDIO2_BUFFER buffer = { 0 };
-	buffer.AudioBytes = resource->GetAudioBytes();
-	buffer.pAudioData = resource->GetAudioData();
-	buffer.LoopCount = loop ? XAUDIO2_LOOP_INFINITE : 0;
-	buffer.Flags = XAUDIO2_END_OF_STREAM;
-	
-	source_voice->SubmitSourceBuffer(&buffer);
 
 	HRESULT hr = source_voice->Start();
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
@@ -46,7 +48,6 @@ void AudioSource::Play(bool loop)
 // 停止
 void AudioSource::Stop()
 {
-	source_voice->FlushSourceBuffers();
 	source_voice->Stop();
 }
 

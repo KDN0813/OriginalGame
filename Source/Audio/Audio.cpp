@@ -67,7 +67,7 @@ void Audio::Play(SEParam param)
 	// オーディオソース作成
 	AudioSource* audio = this->audio_source_pool.emplace_back(new AudioSource(this->xaudio, resource));
 
-	audio->Play(param.loop);
+	audio->Play();
 }
 
 #ifdef _DEBUG
