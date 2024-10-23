@@ -60,7 +60,7 @@ Audio::~Audio()
 	CoUninitialize();
 }
 
-void Audio::Play(SEParam param)
+void Audio::Play(AudioParam param)
 {
 	// リソース作成
 	std::shared_ptr<AudioResource> resource = AudioResourceManager::Instance()->LoadAudioResource(param.filename.c_str());
@@ -68,6 +68,18 @@ void Audio::Play(SEParam param)
 	AudioSource* audio = this->audio_source_pool.emplace_back(new AudioSource(this->xaudio, resource, param));
 
 	audio->Play();
+}
+
+void Audio::Update()
+{
+	// 再生終了した要素を削除する
+	this->audio_source_pool.erase(
+		std::remove_if(this->audio_source_pool.begin(), this->audio_source_pool.end(),
+			[](AudioSource* audio_source)
+			{
+				return !audio_source->IsAudioActive();
+			}),
+		this->audio_source_pool.end());
 }
 
 #ifdef _DEBUG

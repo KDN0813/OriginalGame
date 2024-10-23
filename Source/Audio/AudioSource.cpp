@@ -5,7 +5,7 @@
 #include "Audio/AudioSource.h"
 
 // コンストラクタ
-AudioSource::AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resource, SEParam param)
+AudioSource::AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resource, AudioParam param)
 	: resource(resource), id(Allocate())
 {
 	HRESULT hr;
@@ -52,6 +52,15 @@ void AudioSource::Play()
 void AudioSource::Stop()
 {
 	source_voice->Stop();
+}
+
+bool AudioSource::IsAudioActive()
+{
+	XAUDIO2_VOICE_STATE state;
+	this->source_voice->GetState(&state);
+
+	// 再生待ちのバッファが存在するか
+	return (0 < state.BuffersQueued);
 }
 
 #ifdef _DEBUG

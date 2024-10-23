@@ -12,7 +12,10 @@ public:
     Audio();
     ~Audio();
 
-    void Play(SEParam param);
+    void Play(AudioParam param);
+
+    // çXêV
+    void Update();
 private:
     std::vector<AudioSource*> audio_source_pool;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-struct SEParam
+struct AudioParam
 {
     std::string filename{};
     float volume = 1.0f;

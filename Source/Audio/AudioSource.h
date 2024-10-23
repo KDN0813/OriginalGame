@@ -9,13 +9,16 @@
 class AudioSource
 {
 public:
-	AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resource, SEParam param);
+	AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resource, AudioParam param);
 	~AudioSource();
 
 	// 再生
 	void Play();
 	// 停止
 	void Stop();
+
+	// オーディオがアクティブであるか
+	bool IsAudioActive();
 
 	void SetVolume(float v) { source_voice->SetVolume(v); }
 	void GetVolume(float* v) { source_voice->GetVolume(v); }

@@ -283,7 +283,7 @@ void SceneGame::Initialize()
 			CameraManager::Instance()->SetDebugCamera(debug_camera_component.get());
 		}
 
-		SEParam param{};
+		AudioParam param{};
 		param.filename = "Data/Debug/Audio/BGM.wav";
 		Audio::Instance()->Play(param);
 #endif // _DEBUG
@@ -302,10 +302,12 @@ void SceneGame::Update(float elapsed_time)
 
 	CollisionManager::Instance()->Update();
 
+	Audio::Instance()->Update();
+
 	// スペースキーでゲーム画面に遷移(仮)
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
-		SEParam param{};
+		AudioParam param{};
 		param.filename = "Data/Debug/Audio/SE.wav";
 		Audio::Instance()->Play(param);
 	}
