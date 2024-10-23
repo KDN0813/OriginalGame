@@ -300,7 +300,7 @@ void Sprite::Render(
 			v[i].position.y = positions[i].y;
 			v[i].position.z = 0.0f;
 
-			v[i].color.x = a;
+			v[i].color.x = r;
 			v[i].color.y = g;
 			v[i].color.z = b;
 			v[i].color.w = a;

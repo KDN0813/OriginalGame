@@ -23,7 +23,7 @@ void SceneLoading::Initialize()
         {
             SpriteComponent::SpriteParam param{};
             param.filename = "Data/Debug/Sprite/Title.png";
-            param.color = { 0.3f,0.3f ,0.3f ,1.0f };
+            param.color = { 0.0f,0.8f, 0.0f, 1.0f };
             auto sprite = object->AddComponent<SpriteComponent>(param);
             this->sprite_shader->AddSprite(sprite);
         }

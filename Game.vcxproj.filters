@@ -297,6 +297,9 @@
     <ClInclude Include="Source\Sprite\Sprite.h">
       <Filter>Source\Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\SceneResult.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -469,6 +472,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\CameraControllerComponent.cpp">
       <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneResult.cpp">
+      <Filter>Source\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
