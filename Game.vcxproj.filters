@@ -318,6 +318,9 @@
     <ClInclude Include="External\imgui\imstb_truetype.h">
       <Filter>External\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Audio\AudioParam.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">

@@ -1,21 +1,13 @@
 #pragma once
 #include <xaudio2.h>
 #include <vector>
-#include <string>
 #include <memory>
 #include "System/ClassBase/Singleton.h"
 #include "Audio/AudioSource.h"
+#include "Audio/AudioParam.h"
 
 class Audio : public Singleton<Audio>
 {
-public:
-    struct SEParam
-    {
-        std::string filename{};
-        float volume = 1.0f;
-        bool loop = false;
-    };
-
 public:
     Audio();
     ~Audio();

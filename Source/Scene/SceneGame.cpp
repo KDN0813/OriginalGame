@@ -285,7 +285,7 @@ void SceneGame::Initialize()
 #endif // _DEBUG
 	}
 
-	Audio::SEParam param{};
+	SEParam param{};
 	param.filename = "Data/Debug/Audio/BGM.wav";
 	Audio::Instance()->Play(param);
 }
