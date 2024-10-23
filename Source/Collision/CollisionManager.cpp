@@ -3,7 +3,6 @@
 #include <imgui.h>
 #endif // _DEBUG
 
-
 CollisionManager::CollisionManager()
     : Singleton(this)
 {

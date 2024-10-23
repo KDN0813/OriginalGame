@@ -183,7 +183,15 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 
 void Framework::DrawDebugGUI()
 {
+	// ƒV[ƒ“
 	this->scene_manager.DrawDebugGUI();
+
+	// ƒJƒƒ‰
+	CameraManager* camera_manager = CameraManager::Instance();
+	if (camera_manager)
+	{
+		camera_manager->DrawDebugGUI();
+	}
 }
 
 #endif // DEBUG

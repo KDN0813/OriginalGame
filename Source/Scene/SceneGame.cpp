@@ -349,30 +349,6 @@ void SceneGame::ReStart()
 
 void SceneGame::DebugDrawGUI()
 {
-	if (ImGui::Begin("Test", nullptr,ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
-	{
-		if (ImGui::BeginMenuBar())
-		{
-			// カメラ切り替え
-			if (ImGui::BeginMenu("Camera"))
-			{
-				bool& debug_flag = CameraManager::Instance()->debug_flag;
-
-				std::string label = debug_flag ? "normal camera" : "debug camera";
-
-				if (ImGui::MenuItem(label.c_str()))
-				{
-					debug_flag = !debug_flag;
-					CameraManager::Instance()->SetDebugCamera();
-				}
-
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
-		}
-	}
-	ImGui::End();
-
 	this->object_manager.DrawDebugGUI();
 
 	// シェーダー

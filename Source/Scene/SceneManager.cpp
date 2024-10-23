@@ -4,6 +4,7 @@
 #include "Scene/SceneTitle.h"
 #include "Scene/SceneResult.h"
 #include "Scene/SceneGame.h"
+#include "Scene/SceneLoading.h"
 #endif // DEBUG
 
 

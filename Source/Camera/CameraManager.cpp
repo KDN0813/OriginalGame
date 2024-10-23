@@ -63,10 +63,28 @@ void CameraManager::Update(float elapsed_time)
 
 void CameraManager::DrawDebugGUI()
 {
-	if (ImGui::Checkbox("debugFlag", &this->debug_flag))
-	{
-		SetDebugCamera();
-	}
+    if (ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
+    {
+        // メニューバー設定
+        if (ImGui::BeginMenuBar())
+        {
+            // デバッグカメラ切り替えメニュー
+            if (this->debug_camera !=nullptr && ImGui::BeginMenu("SetCamera"))
+            {
+                std::string label = this->debug_flag ? "normal camera" : "debug camera";
+
+                if (ImGui::MenuItem(label.c_str()))
+                {
+                    this->debug_flag = !this->debug_flag;
+                    CameraManager::Instance()->SetDebugCamera();
+                }
+
+                ImGui::EndMenu();
+            }
+            ImGui::EndMenuBar();
+        }
+    }
+    ImGui::End();
 }
 
 void CameraManager::SetDebugCamera()
