@@ -1,3 +1,6 @@
+#ifdef _DEBUG
+#include <imgui.h>
+#endif // _DEBUG
 #include "System/Misc.h"
 #include "Audio/AudioSource.h"
 
@@ -38,7 +41,6 @@ void AudioSource::Play(bool loop)
 
 	HRESULT hr = source_voice->Start();
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	source_voice->SetVolume(1.0f);
 }
 
 // ’âŽ~
@@ -47,3 +49,17 @@ void AudioSource::Stop()
 	source_voice->FlushSourceBuffers();
 	source_voice->Stop();
 }
+
+#ifdef _DEBUG
+
+void AudioSource::DebugDrawGUI()
+{
+	float volume{};
+	this->source_voice->GetVolume(&volume);
+	if (ImGui::SliderFloat("volume", &volume, 0.0f, 1.0f))
+	{
+		this->source_voice->SetVolume(volume);
+	}
+}
+
+#endif // DEBUG
