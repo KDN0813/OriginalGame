@@ -3,12 +3,13 @@
 #include <memory>
 #include <xaudio2.h>
 #include "Audio/AudioResource.h"
+#include "Audio/AudioParam.h"
 
 // オーディオソース
 class AudioSource
 {
 public:
-	AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resource);
+	AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resource, SEParam param);
 	~AudioSource();
 
 	// 再生

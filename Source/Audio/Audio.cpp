@@ -65,7 +65,7 @@ void Audio::Play(SEParam param)
 	// リソース作成
 	std::shared_ptr<AudioResource> resource = std::make_shared<AudioResource>(param.filename.c_str());
 	// オーディオソース作成
-	AudioSource* audio = this->audio_source_pool.emplace_back(new AudioSource(this->xaudio, resource));
+	AudioSource* audio = this->audio_source_pool.emplace_back(new AudioSource(this->xaudio, resource, param));
 
 	audio->Play();
 }
