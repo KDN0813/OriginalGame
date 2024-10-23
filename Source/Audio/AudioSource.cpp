@@ -6,7 +6,7 @@
 
 // コンストラクタ
 AudioSource::AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resource, SEParam param)
-	: resource(resource)
+	: resource(resource), id(Allocate())
 {
 	HRESULT hr;
 
@@ -23,6 +23,10 @@ AudioSource::AudioSource(IXAudio2* xaudio, std::shared_ptr<AudioResource>& resou
 
 	SetVolume(param.volume);
 	source_voice->SubmitSourceBuffer(&buffer);
+
+#ifdef _DEBUG
+	filename = param.filename;
+#endif // DEBUG
 }
 
 // デストラクタ
@@ -54,11 +58,29 @@ void AudioSource::Stop()
 
 void AudioSource::DebugDrawGUI()
 {
-	float volume{};
-	this->source_voice->GetVolume(&volume);
-	if (ImGui::SliderFloat("volume", &volume, 0.0f, 1.0f))
+	std::string label;
+	label = this->filename + "##Audio" + std::to_string(id);
+	if (ImGui::CollapsingHeader(label.c_str()))
 	{
-		this->source_voice->SetVolume(volume);
+		float volume{};
+		this->source_voice->GetVolume(&volume);
+
+		label = "volume##Audio" + std::to_string(id);
+		if (ImGui::SliderFloat(label.c_str(), &volume, 0.0f, 1.0f))
+		{
+			this->source_voice->SetVolume(volume);
+		}
+		label = "Play##Audio" + std::to_string(id);
+		if (ImGui::Button(label.c_str()))
+		{
+			Play();
+		}
+		ImGui::SameLine();
+		label = "Stop##Audio" + std::to_string(id);
+		if (ImGui::Button(label.c_str()))
+		{
+			Stop();
+		}
 	}
 }
 

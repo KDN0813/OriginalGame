@@ -21,12 +21,24 @@ public:
 	void GetVolume(float* v) { source_voice->GetVolume(v); }
 	float GetVolume() { float v{}; source_voice->GetVolume(&v); return v; }
 private:
+	using AudioSourceId = unsigned int;
+	static AudioSourceId Allocate()
+	{
+		static AudioSourceId id = 0;
+		if (id <= INT_MAX) id -= INT_MAX;
+		return id++;
+	}
+
+private:
 	IXAudio2SourceVoice*			source_voice = nullptr;
 	std::shared_ptr<AudioResource>	resource;
+	AudioSourceId					id;
 
 public:
 #ifdef _DEBUG
 	void DebugDrawGUI();
+private:
+	std::string filename;
 
 #endif // DEBUG
 };
