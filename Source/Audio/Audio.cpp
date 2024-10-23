@@ -1,9 +1,10 @@
-#include "Audio.h"
-#include "System/Misc.h"
+#include <memory>
 #ifdef _DEBUG
 #include <imgui.h>
 #endif // DEBUG
-
+#include "Audio.h"
+#include "System/Misc.h"
+#include "Audio/AudioResource.h"
 
 Audio::Audio()
     :Singleton(this)
@@ -24,8 +25,36 @@ Audio::Audio()
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// マスタリングボイス生成
-	hr = xaudio->CreateMasteringVoice(&this->masteringVoice);
+	hr = xaudio->CreateMasteringVoice(&this->mastering_voice);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+}
+
+Audio::~Audio()
+{
+	// マスタリングボイス破棄
+	if (mastering_voice != nullptr)
+	{
+		mastering_voice->DestroyVoice();
+		mastering_voice = nullptr;
+	}
+
+	// XAudio終了化
+	if (xaudio != nullptr)
+	{
+		xaudio->Release();
+		xaudio = nullptr;
+	}
+
+	// COM終了化
+	CoUninitialize();
+}
+
+void Audio::Play(SEParam param)
+{
+	// リソース作成
+	std::shared_ptr<AudioResource> resource = std::make_shared<AudioResource>(param.filename);
+	//
+	audio_source_vec.emplace_back(std::make_unique<AudioSource>(this->xaudio, resource));
 }
 
 #ifdef _DEBUG

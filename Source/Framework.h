@@ -10,6 +10,7 @@
 #include "Debug/DebugManager.h"
 #include "Camera/CameraManager.h"
 #include "System/GameData.h"
+#include "Audio/Audio.h"
 
 class Framework
 {
@@ -36,6 +37,7 @@ private:
 	InstancingModelResourceManager	instancin_resource_manager;
 	CameraManager					camera_manager;
 	GameData						game_data;
+	Audio							audio;
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI();
