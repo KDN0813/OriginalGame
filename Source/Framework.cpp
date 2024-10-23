@@ -2,8 +2,13 @@
 #include <sstream>
 
 #include "Graphics/Graphics.h"
+#ifdef _DEBUG
 #include "Scene/SceneGame.h"
 #include "Scene/SceneTitle.h"
+#include "Scene/SceneResult.h"
+#else
+#include "Scene/SceneTitle.h"
+#endif _DEBUG
 #include "Scene/SceneManager.h"
 #include "Framework.h"
 
