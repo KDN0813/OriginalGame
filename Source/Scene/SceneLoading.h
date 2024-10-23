@@ -29,4 +29,10 @@ private:
 private:
     Scene* next_scene   = nullptr;
     std::unique_ptr<std::thread> thread;
+
+#ifdef _DEBUG
+public:
+    void DebugDrawGUI()override {};
+
+#endif // DEBUG
 };

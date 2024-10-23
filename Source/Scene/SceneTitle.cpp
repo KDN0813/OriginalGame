@@ -63,12 +63,9 @@ void SceneTitle::Render()
 	{
 		this->sprite_shader->Render();
 	}
-
-	// 2Dデバッグ描画
-	{
-		DebugDrawGUI();
-	}
 }
+
+#ifdef _DEBUG
 
 void SceneTitle::DebugDrawGUI()
 {
@@ -81,3 +78,5 @@ void SceneTitle::DebugDrawGUI()
 	}
 	ImGui::End();
 }
+
+#endif // DEBUG

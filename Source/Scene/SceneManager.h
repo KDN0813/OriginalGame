@@ -20,5 +20,11 @@ public:
 private:
     Scene* current_scene = nullptr;
     Scene* next_scene    = nullptr;
+
+#ifdef _DEBUG
+public:
+    void DrawDebugGUI();
+
+#endif // _DEBUG
 };
 

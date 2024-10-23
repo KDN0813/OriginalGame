@@ -332,14 +332,12 @@ void SceneGame::Render()
 
 		DebugManager::Instance()->GetDebugPrimitiveRenderer()->Render(dc, rc.view, rc.projection);;
 	}
+#endif // _DEBUG
 
 	// 2Dスプライト描画
 	{
 		sprite_shader->Render();
 	}
-
-	DrawImGui();
-#endif // _DEBUG
 }
 
 void SceneGame::ReStart()
@@ -349,7 +347,7 @@ void SceneGame::ReStart()
 
 #ifdef _DEBUG
 
-void SceneGame::DrawImGui()
+void SceneGame::DebugDrawGUI()
 {
 	ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_Appearing);
 	ImGui::SetNextWindowSize(ImVec2(300.0f, 400.0f), ImGuiCond_FirstUseEver);

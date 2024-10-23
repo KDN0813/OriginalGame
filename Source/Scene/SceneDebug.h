@@ -38,7 +38,7 @@ private:
         System,
     };
     ImGuiMode mode_index = ImGuiMode::Object;
-    void DrawImGui();
+    void DebugDrawGUI() override;
 
     void DrawShaderImGui();
 #endif // _DEBUG

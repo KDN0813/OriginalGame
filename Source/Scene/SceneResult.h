@@ -20,5 +20,11 @@ public:
 private:
     std::unique_ptr<SpriteShader> sprite_shader;
     ObjectManager object_manager;
+
+#ifdef _DEBUG
+public:
+    void DebugDrawGUI()override {};
+
+#endif // DEBUG
 };
 

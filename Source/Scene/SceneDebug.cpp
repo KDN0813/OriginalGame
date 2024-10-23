@@ -137,13 +137,13 @@ void SceneDebug::Render()
 	}
 
 #ifdef _DEBUG
-	DrawImGui();
+	DebugDrawGUI();
 #endif // _DEBUG
 }
 
 #ifdef _DEBUG
 
-void SceneDebug::DrawImGui()
+void SceneDebug::DebugDrawGUI()
 {
 	ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_Appearing);
 	ImGui::SetNextWindowSize(ImVec2(300.0f, 400.0f), ImGuiCond_FirstUseEver);

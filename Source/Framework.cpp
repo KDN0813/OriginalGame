@@ -72,6 +72,7 @@ void Framework::Render(float elapsed_time)
 	scene_manager.Render();
 
 #ifdef _DEBUG
+	DrawDebugGUI();
 	debug_manager.GetImGuiRenderer()->Render(dc);
 #endif // _DEBUG
 
@@ -177,3 +178,12 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 	}
 	return 0;
 }
+
+#ifdef _DEBUG
+
+void Framework::DrawDebugGUI()
+{
+	this->scene_manager.DrawDebugGUI();
+}
+
+#endif // DEBUG

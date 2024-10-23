@@ -37,6 +37,10 @@ private:
 	CameraManager					camera_manager;
 	GameData						game_data;
 #ifdef _DEBUG
+public:
+	void DrawDebugGUI();
+
+private:
 	DebugManager					debug_manager;
 	bool stop_delta = false;
 #endif // _DEBUG

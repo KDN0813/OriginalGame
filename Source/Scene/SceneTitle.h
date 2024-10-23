@@ -23,6 +23,6 @@ private:
 
 #ifdef _DEBUG
 public:
-    void DebugDrawGUI();
+    void DebugDrawGUI() override;
 #endif // DEBUG
 };

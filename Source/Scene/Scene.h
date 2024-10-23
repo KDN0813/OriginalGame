@@ -15,4 +15,10 @@ public:
     void SetReady() { ready = true; }
 private:
     bool ready = false;
+
+#ifdef _DEBUG
+public:
+    virtual void DebugDrawGUI() = 0;
+
+#endif // DEBUG
 };
