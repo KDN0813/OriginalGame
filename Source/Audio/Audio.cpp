@@ -32,7 +32,7 @@ Audio::~Audio()
 {
 	// オーディオソースの削除
 	{
-		for (AudioSource* source : this->audio_source_vec)
+		for (AudioSource* source : this->audio_source_pool)
 		{
 			if (source != nullptr)
 			{
@@ -65,7 +65,7 @@ void Audio::Play(SEParam param)
 	// リソース作成
 	std::shared_ptr<AudioResource> resource = std::make_shared<AudioResource>(param.filename.c_str());
 	// オーディオソース作成
-	AudioSource* audio = this->audio_source_vec.emplace_back(new AudioSource(this->xaudio, resource));
+	AudioSource* audio = this->audio_source_pool.emplace_back(new AudioSource(this->xaudio, resource));
 
 	audio->Play(param.loop);
 }
@@ -85,7 +85,7 @@ void Audio::DebugDrawGUI()
 
 		// オーディオソース
 		{
-			for (auto audio_source : audio_source_vec)
+			for (auto audio_source : audio_source_pool)
 			{
 				audio_source->DebugDrawGUI();
 			}

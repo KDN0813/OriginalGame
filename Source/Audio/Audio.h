@@ -22,7 +22,7 @@ public:
 
     void Play(SEParam param);
 private:
-    std::vector<AudioSource*> audio_source_vec;
+    std::vector<AudioSource*> audio_source_pool;
 
 private:
     IXAudio2* xaudio = nullptr;
