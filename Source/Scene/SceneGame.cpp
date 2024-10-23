@@ -349,25 +349,29 @@ void SceneGame::ReStart()
 
 void SceneGame::DebugDrawGUI()
 {
-	if (ImGui::BeginMenuBar())
+	if (ImGui::Begin("Test", nullptr,ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
 	{
-		// ƒJƒƒ‰Ø‚è‘Ö‚¦
-		if (ImGui::BeginMenu("Camera"))
+		if (ImGui::BeginMenuBar())
 		{
-			bool& debug_flag = CameraManager::Instance()->debug_flag;
-
-			std::string label = debug_flag ? "normal camera" : "debug camera";
-
-			if (ImGui::MenuItem(label.c_str()))
+			// ƒJƒƒ‰Ø‚è‘Ö‚¦
+			if (ImGui::BeginMenu("Camera"))
 			{
-				debug_flag = !debug_flag;
-				CameraManager::Instance()->SetDebugCamera();
-			}
+				bool& debug_flag = CameraManager::Instance()->debug_flag;
 
-			ImGui::EndMenu();
+				std::string label = debug_flag ? "normal camera" : "debug camera";
+
+				if (ImGui::MenuItem(label.c_str()))
+				{
+					debug_flag = !debug_flag;
+					CameraManager::Instance()->SetDebugCamera();
+				}
+
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
 		}
-		ImGui::EndMenuBar();
 	}
+	ImGui::End();
 
 	this->object_manager.DrawDebugGUI();
 }

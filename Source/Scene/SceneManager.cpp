@@ -1,6 +1,9 @@
 #include "SceneManager.h"
 #ifdef _DEBUG
 #include <imgui.h>
+#include "Scene/SceneTitle.h"
+#include "Scene/SceneResult.h"
+#include "Scene/SceneGame.h"
 #endif // DEBUG
 
 
@@ -52,11 +55,25 @@ void SceneManager::ChangeScene(Scene* scene)
 
 void SceneManager::DrawDebugGUI()
 {
+    // シーン毎のデバッグ処理
     this->current_scene->DebugDrawGUI();
-    if (ImGui::BeginTabItem("Scene"))
+    
+    if (ImGui::Begin("Scene Manager"))
     {
-        ImGui::EndTabItem();
+        if (ImGui::Button("Chenge SceneTitle"))
+        {
+            ChangeScene(new SceneTitle);
+        }
+        if (ImGui::Button("Chenge SceneGame"))
+        {
+            ChangeScene(new SceneGame);
+        }
+        if (ImGui::Button("Chenge SceneResult"))
+        {
+            ChangeScene(new SceneResult);
+        }
     }
+    ImGui::End();
 }
 
 #endif // DEBUG

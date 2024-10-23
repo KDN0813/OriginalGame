@@ -292,7 +292,7 @@ void ObjectManager::DrawDebugPrimitive()
 
 void ObjectManager::DrawLister()
 {
-    if (ImGui::BeginTabItem("Object"))
+    if (ImGui::Begin("Object"))
     {
         auto DrawDebugNode = [&](const std::shared_ptr<Object>& object)
             {
@@ -347,15 +347,12 @@ void ObjectManager::DrawLister()
             }
         }
 
-        ImGui::EndTabItem();
     }
+    ImGui::End();
 }
 
 void ObjectManager::DrawDetail()
 {
-    ImGui::SetNextWindowPos(ImVec2(1425, 10.0f), ImGuiCond_Appearing);
-    ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
-
     ImGui::Begin("Object Detail", nullptr, ImGuiWindowFlags_None);
 
     std::shared_ptr<Object> last_selected = selection_object_vec.empty() ? nullptr : *selection_object_vec.rbegin();
