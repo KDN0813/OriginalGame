@@ -34,7 +34,7 @@ Framework::Framework(HWND hWnd)
 	scene_manager.ChangeScene(new SceneTitle);
 	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(0.4f, 0.4f, 0.4f, 1.00f);  // デフォルト値を再設定
 #else
-	scene_manager.ChangeScene(new SceneGame);
+	scene_manager.ChangeScene(new SceneTitle);
 #endif // _DEBUG
 }
 

@@ -11,8 +11,6 @@ SpriteComponent::SpriteComponent(const SpriteParam& param)
     this->sprite = std::make_unique<Sprite>(this->param.filename.c_str());
 }
 
-#ifdef _DEBUG
-
 void SpriteComponent::Render(ID3D11DeviceContext* dc)
 {
     this->sprite->Render(dc,
@@ -24,6 +22,8 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
         this->param.color
     );
 }
+
+#ifdef _DEBUG
 
 void SpriteComponent::DrawDebugGUI()
 {
