@@ -192,6 +192,12 @@ void Framework::DrawDebugGUI()
 	{
 		camera_manager->DrawDebugGUI();
 	}
+
+	Audio* audio = Audio::Instance();
+	if (audio)
+	{
+		audio->DebugDrawGUI();
+	}
 }
 
 #endif // DEBUG

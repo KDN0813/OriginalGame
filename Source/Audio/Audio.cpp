@@ -76,6 +76,12 @@ void Audio::DebugDrawGUI()
 {
     if (ImGui::Begin("Audio"))
     {
+		float volume{};
+		mastering_voice->GetVolume(&volume);
+		if (ImGui::SliderFloat("volume", &volume, 0.0f, 1.0f))
+		{
+			mastering_voice->SetVolume(volume);
+		}
 
     }
     ImGui::End();
