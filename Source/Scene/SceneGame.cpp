@@ -16,6 +16,7 @@
 
 #include "System/MyMath/MyMathf.h"
 #include "Collision/Collision.h"
+#include "Audio/Audio.h"
 
 #include "Component/ModelComponent.h"
 #include "Component/ModelShaderComponent.h"
@@ -283,6 +284,10 @@ void SceneGame::Initialize()
 		}
 #endif // _DEBUG
 	}
+
+	Audio::SEParam param{};
+	param.filename = "Data/Debug/Audio/BGM.wav";
+	Audio::Instance()->Play(param);
 }
 
 void SceneGame::Finalize()

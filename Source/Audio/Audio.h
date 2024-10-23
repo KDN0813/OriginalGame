@@ -2,6 +2,7 @@
 #include <xaudio2.h>
 #include <vector>
 #include <string>
+#include <memory>
 #include "System/ClassBase/Singleton.h"
 #include "Audio/AudioSource.h"
 
@@ -21,7 +22,7 @@ public:
 
     void Play(SEParam param);
 private:
-    std::vector<AudioSource> audio_source_vec;
+    std::vector<AudioSource*> audio_source_vec;
 
 private:
     IXAudio2* xaudio = nullptr;

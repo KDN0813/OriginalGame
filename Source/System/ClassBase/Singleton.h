@@ -10,8 +10,8 @@ class Singleton : virtual public CopyDisable
 protected:
 	Singleton(T* const pInstance)
 	{
-		assert(instance == nullptr);//インスタンスを複数生成しないように制限
-		instance = pInstance;
+		assert(this->instance == nullptr);//インスタンスを複数生成しないように制限
+		this->instance = pInstance;
 	};
 	virtual ~Singleton() { instance = nullptr; };
 public:

@@ -1,4 +1,3 @@
-#include <memory>
 #ifdef _DEBUG
 #include <imgui.h>
 #endif // DEBUG
@@ -7,7 +6,7 @@
 #include "Audio/AudioResource.h"
 
 Audio::Audio()
-    :Singleton(this)
+    : Singleton(this)
 {
 	HRESULT hr;
 
@@ -31,6 +30,18 @@ Audio::Audio()
 
 Audio::~Audio()
 {
+	// オーディオソースの削除
+	{
+		for (AudioSource* source : this->audio_source_vec)
+		{
+			if (source != nullptr)
+			{
+				delete source;
+				source = nullptr;
+			}
+		}
+	}
+
 	// マスタリングボイス破棄
 	if (mastering_voice != nullptr)
 	{
@@ -52,9 +63,11 @@ Audio::~Audio()
 void Audio::Play(SEParam param)
 {
 	// リソース作成
-	std::shared_ptr<AudioResource> resource = std::make_shared<AudioResource>(param.filename);
-	//
-	audio_source_vec.emplace_back(std::make_unique<AudioSource>(this->xaudio, resource));
+	std::shared_ptr<AudioResource> resource = std::make_shared<AudioResource>(param.filename.c_str());
+	// オーディオソース作成
+	AudioSource* audio = this->audio_source_vec.emplace_back(new AudioSource(this->xaudio, resource));
+
+	audio->Play(param.loop);
 }
 
 #ifdef _DEBUG
