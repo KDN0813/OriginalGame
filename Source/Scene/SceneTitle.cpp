@@ -69,7 +69,17 @@ void SceneTitle::Render()
 
 void SceneTitle::DebugDrawGUI()
 {
+	// Object
 	this->object_manager.DrawDebugGUI();
+
+	// シェーダー
+	{
+		if (ImGui::Begin("Sahder"))
+		{
+			this->sprite_shader->DrawDebugGUI();
+		}
+		ImGui::End();
+	}
 }
 
 #endif // DEBUG

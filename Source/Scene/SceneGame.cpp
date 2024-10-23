@@ -374,22 +374,29 @@ void SceneGame::DebugDrawGUI()
 	ImGui::End();
 
 	this->object_manager.DrawDebugGUI();
+
+	// シェーダー
+	DrawShaderImGui();
 }
 
 void SceneGame::DrawShaderImGui()
 {
-	if (ImGui::CollapsingHeader(model_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::Begin("Sahder"))
 	{
-		model_shader->DrawDebugGUI();
+		if (ImGui::CollapsingHeader(model_shader->GetName()))
+		{
+			model_shader->DrawDebugGUI();
+		}
+		if (ImGui::CollapsingHeader(instancing_model_shader->GetName()))
+		{
+			instancing_model_shader->DrawDebugGUI();
+		}
+		if (ImGui::CollapsingHeader(sprite_shader->GetName()))
+		{
+			sprite_shader->DrawDebugGUI();
+		}
 	}
-	if (ImGui::CollapsingHeader(instancing_model_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		instancing_model_shader->DrawDebugGUI();
-	}
-	if (ImGui::CollapsingHeader(sprite_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		sprite_shader->DrawDebugGUI();
-	}
+	ImGui::End();
 }
 
 void SceneGame::DrawSystemImGui()
