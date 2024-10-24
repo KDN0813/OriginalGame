@@ -56,6 +56,14 @@ void CameraManager_ver2::SetMainCamera(CAMERA_TYPE type)
 #endif // DEBUG
 }
 
+std::shared_ptr<CameraComponent_ver2> CameraManager_ver2::GetCamera(CAMERA_TYPE type)
+{
+    assert(!IsErrorType(type));
+    if (IsErrorType(type)) return nullptr;
+
+    return this->camera_pool[static_cast<size_t>(type)];
+}
+
 void CameraManager_ver2::Update(float elapsed_time)
 {
 }

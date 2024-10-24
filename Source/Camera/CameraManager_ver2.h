@@ -18,6 +18,9 @@ public:
 
     void SetMainCamera(CAMERA_TYPE type);
 
+    // ƒJƒƒ‰‚Ìæ“¾
+    std::shared_ptr<CameraComponent_ver2> GetCamera(CAMERA_TYPE type);
+
     // XVˆ—
     void Update(float elapsed_time);
 
