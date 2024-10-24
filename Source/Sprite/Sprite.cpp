@@ -7,7 +7,9 @@
 // コンストラクタ
 Sprite::Sprite(const char* filename)
 {
-	ID3D11Device* device = Graphics::Instance()->GetDevice();
+	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	ID3D11Device* device = graphics->GetDevice();
 
 	HRESULT hr = S_OK;
 
