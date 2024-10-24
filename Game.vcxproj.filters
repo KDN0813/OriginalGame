@@ -324,6 +324,15 @@
     <ClInclude Include="Source\Audio\AudioResourceManager.h">
       <Filter>Source\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Camera\CameraManager_ver2.h">
+      <Filter>Source\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\CameraComponent_ver2.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\CameraParam.h">
+      <Filter>Source\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -523,6 +532,12 @@
     </ClCompile>
     <ClCompile Include="Source\System\GameData.cpp">
       <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\CameraComponent_ver2.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\CameraManager_ver2.cpp">
+      <Filter>Source\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

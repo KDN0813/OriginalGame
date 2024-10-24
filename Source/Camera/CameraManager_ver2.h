@@ -1,8 +1,14 @@
 #pragma once
-#include "System/ClassBase/Singleton.h"
 #include <vector>
+#include <memory>
+#include "Camera/CameraParam.h"
+#include "System/ClassBase/Singleton.h"
+#include "System/MyMath/MYMATRIX.h"
+#ifdef _DEBUG
+#include <string>   // デバッグのみ使用
+#endif // DEBUG
 
-class CameraComponent;
+class CameraComponent_ver2;
 
 class CameraManager_ver2 : public Singleton<CameraManager_ver2>
 {
@@ -10,44 +16,28 @@ public:
     CameraManager_ver2();
     ~CameraManager_ver2();
 
-    CameraComponent* GetMainCamera() { return this->main_camera; }
-
-    /**
-     * \fn AddCamera
-     * \brief カメラの追加
-     *
-     * \param camera 追加するCameraComponentのポインタ
-     */
-    void AddCamera(CameraComponent* camera);
-    /**
-     * \fn AddCamera
-     * \brief カメラの削除
-     *
-     * \param camera 追加するCameraComponentのポインタ
-     */
-    void RemoveCamera(CameraComponent* camera);
-    /**
-     * \fn SetMainCamera
-     * \brief メインカメラの設定
-     *
-     * \param camera 設定するCameraComponentのポインタ
-     */
-    void SetMainCamera(CameraComponent* camera);
+    void SetMainCamera(CAMERA_TYPE type);
 
     // 更新処理
     void Update(float elapsed_time);
+
+    // カメラタイプが異常であるか
+    bool IsErrorType(CAMERA_TYPE type);
+
+    // ビュープロジェクション行列を取得
+    DirectX::XMFLOAT4X4 GetViewProjection();
+    // ビュープロジェクション行列(MYMATRIX)を取得
+    MYMATRIX GetViewProjectionMatrix();
 private:
-    std::vector<CameraComponent*> camera_vector;
-    CameraComponent* main_camera = nullptr; // メインカメラ
+    std::vector<std::shared_ptr<CameraComponent_ver2>> camera_pool;  // メインカメラ
+    std::shared_ptr<CameraComponent_ver2> main_camera;  // メインカメラ
+
 #ifdef _DEBUG
 public:
     void DrawDebugGUI();
-    void SetDebugCamera();
-    void SetDebugCamera(CameraComponent* debug_camera) { this->debug_camera = debug_camera; }
-
-    CameraComponent* debug_camera = nullptr;    // デバッグ用カメラ
-    CameraComponent* temp_camera = nullptr;     // メインカメラを一時保存する
-    bool debug_flag = false;
+private:
+    std::vector<std::string> camera_name_pool;
+    int camera_index = 0;    // 現在のカメラインデックス
 #endif // _DEBUG
 };
 

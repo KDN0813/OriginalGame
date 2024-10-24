@@ -2,9 +2,7 @@
 #include <memory>
 #include "System/MyMath/MYVECTOR3.h"
 #include "Component.h"
-
-class CameraManager;
-class Transform3DComponent;
+#include "Camera/CameraParam.h"
 
 class CameraComponent_ver2 : public Component
 {
@@ -71,8 +69,8 @@ public:
 	void SetRotateY(float rotateY) { this->change_value = true; this->camera_param.rotateY = rotateY; }
 	// X軸回転度設定
 	void SetRotateX(float rotateX) { this->change_value = true; this->camera_param.rotateX = rotateX; }
-	// メインカメラフラグの設定
-	void SetIsMainCamera(bool is_main_camera) { this->is_main_camera = is_main_camera; }
+	// カメラタイプ設定
+	void GetCameraType(CAMERA_TYPE type) { this->camera_type = type; }
 
 	// ビュー行列取得
 	DirectX::XMFLOAT4X4 GetViewTransform() const { return this->view_transform; }
@@ -89,21 +87,21 @@ public:
 	// 前方向取得
 	DirectX::XMFLOAT3 GetForward() const { return this->camera_param.forward; }
 	// 画角取得
-	float GetFovY() { return this->camera_param.fovY; }
+	float GetFovY() const { return this->camera_param.fovY; }
 	// アスペクト比取得
-	float GetAspect() { return this->camera_param.aspect; }
+	float GetAspect() const { return this->camera_param.aspect; }
 	// ニアクリップ値取得
-	float GetNearZ() { return this->camera_param.nearZ; }
+	float GetNearZ() const { return this->camera_param.nearZ; }
 	// ファークリップ値取得
-	float GetFarZ() { return this->camera_param.farZ; }
+	float GetFarZ() const { return this->camera_param.farZ; }
 	// カメラの距離取得
-	float GetRange() { return this->camera_param.range; }
+	float GetRange() const { return this->camera_param.range; }
 	// Y軸回転度取得
-	float GetRotateY() { return this->camera_param.rotateY; }
+	float GetRotateY() const { return this->camera_param.rotateY; }
 	// X軸回転度取得
-	float GetRotateX() { return this->camera_param.rotateX; }
-	// メインカメラであるか
-	bool GetIsMainCamera() { return this->is_main_camera; }
+	float GetRotateX() const { return this->camera_param.rotateX; }
+	// カメラタイプ取得
+	CAMERA_TYPE GetCameraType() const { return this->camera_type; }
 private:
 	// 指定方向を向く
 	void SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up);
@@ -117,10 +115,7 @@ private:
 	DirectX::XMFLOAT4X4	projection_transform = {};
 
 	bool change_value = true;
-	bool is_main_camera = false;
-	CameraManager* camera_manager;
-private:
-	std::weak_ptr<Transform3DComponent> transform_Wptr;
+	CAMERA_TYPE camera_type = CAMERA_TYPE::NONE;
 
 #ifdef _DEBUG
 public:

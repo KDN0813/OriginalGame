@@ -125,6 +125,7 @@
     <ClInclude Include="Source\Audio\AudioSource.h" />
     <ClInclude Include="Source\Camera\CameraManager.h" />
     <ClInclude Include="Source\Camera\CameraManager_ver2.h" />
+    <ClInclude Include="Source\Camera\CameraParam.h" />
     <ClInclude Include="Source\Collision\CircleCollider.h" />
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Collision\CollisionManager.h" />

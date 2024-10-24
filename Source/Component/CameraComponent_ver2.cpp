@@ -1,6 +1,6 @@
 #include <imgui.h>
 #include "System/MyMath/MYMATRIX.h"
-#include "Camera.h"
+#include "CameraComponent_ver2.h"
 #include "Object/Object.h"
 #include "Camera/CameraManager.h"
 
@@ -94,9 +94,6 @@ void CameraComponent_ver2::DrawDebugGUI()
     {
         this->change_value = true;
     }
-
-    ImGui::Checkbox("Is Main Camera", &this->is_main_camera);
-
 
     if (ImGui::Button("SetMainCamera"))
     {
