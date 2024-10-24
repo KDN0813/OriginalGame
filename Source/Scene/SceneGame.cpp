@@ -336,21 +336,7 @@ void SceneGame::Update(float elapsed_time)
 void SceneGame::Render()
 {
 	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
-	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
-	ID3D11RenderTargetView* rtv = graphics->GetRenderTargetView();
-	ID3D11DepthStencilView* dsv = graphics->GetDepthStencilView();
-
-	CameraManager* camera_manager = CameraManager::Instance();
-	auto camera = camera_manager->GetMainCamera();
-	RenderContext rc;
-	rc.view = camera->GetViewTransform();
-	rc.projection = camera->GetProjectionTransform();
-
-	FLOAT color[] = { 0.5f, 1.0f, 0.5f, 1.0f };
-	dc->ClearRenderTargetView(rtv, color);
-	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	dc->OMSetRenderTargets(1, &rtv, dsv);
+	graphics->PrepareRenderTargets(DirectX::XMFLOAT4(0.5f, 1.0f, 0.5f, 1.0f));
 
 	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
 	{
@@ -366,7 +352,7 @@ void SceneGame::Render()
 	{
 		object_manager.DrawDebugPrimitive();
 
-		DebugManager::Instance()->GetDebugPrimitiveRenderer()->Render(dc, rc.view, rc.projection);;
+		DebugManager::Instance()->GetDebugPrimitiveRenderer()->Render();
 	}
 #endif // _DEBUG
 

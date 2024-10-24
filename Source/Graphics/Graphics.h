@@ -23,6 +23,9 @@ public:
 	float GetScreenWidth() const { return screen_width; }
 	float GetScreenHeight() const { return screen_height; }
 
+	// 描画準備
+	// レンダーターゲットビューとデプスステンシルビューのクリアおよびレンダリングターゲットの設定を行う
+	void PrepareRenderTargets(DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device>			device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>		immediate_context;

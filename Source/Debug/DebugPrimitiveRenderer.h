@@ -73,7 +73,7 @@ public:
 
 public:
 	// •`‰æÀs
-	void Render(ID3D11DeviceContext* context, MYMATRIX view, MYMATRIX projection);
+	void Render();
 
 	// ‹…•`‰æ
 	void DrawSphere(const DirectX::XMFLOAT3& center, float radius, const DirectX::XMFLOAT4& color);

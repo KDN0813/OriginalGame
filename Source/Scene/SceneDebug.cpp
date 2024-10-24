@@ -122,15 +122,7 @@ void SceneDebug::Render()
 	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
 	{
 		Graphics* graphics = Graphics::Instance();
-		std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
-		ID3D11DeviceContext* dc = graphics->GetDeviceContext();
-		//Camera& camera = Camera::Intance();
-
-		CameraManager* camera_manager = CameraManager::Instance();
-		auto camera= camera_manager->GetMainCamera();
-		RenderContext rc;
-		rc.view = camera->GetViewTransform();
-		rc.projection = camera->GetProjectionTransform();
+		graphics->PrepareRenderTargets();
 
 		// ƒ‚ƒfƒ‹•`‰æ
 		this->model_shader->Render();

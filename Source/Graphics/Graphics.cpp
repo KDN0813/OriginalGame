@@ -250,3 +250,16 @@ Graphics::Graphics(HWND hWnd)
 Graphics::~Graphics()
 {
 }
+
+void Graphics::PrepareRenderTargets(DirectX::XMFLOAT4 color)
+{
+	std::lock_guard<std::mutex> lock(this->GetInstanceMutex());
+	ID3D11DeviceContext* dc = GetDeviceContext();
+	ID3D11RenderTargetView* rtv = GetRenderTargetView();
+	ID3D11DepthStencilView* dsv = GetDepthStencilView();
+
+	FLOAT Color[] = { color.x, color.y, color.z, color.w };
+	dc->ClearRenderTargetView(rtv, Color);
+	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	dc->OMSetRenderTargets(1, &rtv, dsv);
+}

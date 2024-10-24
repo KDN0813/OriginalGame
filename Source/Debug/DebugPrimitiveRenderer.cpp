@@ -2,7 +2,11 @@
 #include <memory>
 #include <imgui.h>
 #include "System/Misc.h"
+#include "Graphics/Graphics.h"
+#include "Camera/CameraManager.h"
 #include "Debug/DebugPrimitiveRenderer.h"
+
+#include "Component/CameraComponent.h"
 
 void SphereParam::DrawDebugGUI(std::string header_name)
 {
@@ -180,8 +184,17 @@ DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 }
 
 // 描画開始
-void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view, MYMATRIX projection)
+void DebugPrimitiveRenderer::Render()
 {
+	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	ID3D11DeviceContext* context = graphics->GetDeviceContext();
+
+	CameraManager* camera_manager = CameraManager::Instance();
+	auto camera = camera_manager->GetMainCamera();
+	MYMATRIX View = camera->GetViewTransform();
+	MYMATRIX Projection = camera->GetProjectionTransform();
+
 	// シェーダー設定
 	context->VSSetShader(vertex_shader.Get(), nullptr, 0);
 	context->PSSetShader(pixel_shader.Get(), nullptr, 0);
@@ -198,7 +211,7 @@ void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view,
 	context->RSSetState(rasterizer_state.Get());
 
 	// ビュープロジェクション行列作成
-	MYMATRIX view_projection = view * projection;
+	MYMATRIX View_projection = View * Projection;
 
 	// プリミティブ設定
 	UINT stride = sizeof(DirectX::XMFLOAT3);
@@ -218,7 +231,7 @@ void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view,
 		// 定数バッファ更新
 		CbMesh cbMesh{};
 		cbMesh.color = sphere.color;
-		cbMesh.wvp = W * view_projection;
+		cbMesh.wvp = W * View_projection;
 
 		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
 		context->Draw(sphere_vertex_count, 0);
@@ -238,7 +251,7 @@ void DebugPrimitiveRenderer::Render(ID3D11DeviceContext* context, MYMATRIX view,
 		// 定数バッファ更新
 		CbMesh cbMesh{};
 		cbMesh.color = cylinder.color;
-		cbMesh.wvp = W * view_projection;
+		cbMesh.wvp = W * View_projection;
 
 		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
 		context->Draw(cylinder_vertex_count, 0);
