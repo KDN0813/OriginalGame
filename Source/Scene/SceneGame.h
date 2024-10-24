@@ -24,6 +24,11 @@ public:
 	void Render() override;
     void ReStart() override;
 private:
+    // ゲーム状態を処理する
+    // GameStatusに応じてシーンの遷移・リスタート処理を行う
+    void ProcessGameState();
+
+private:
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
     std::unique_ptr<ModelShader> model_shader;

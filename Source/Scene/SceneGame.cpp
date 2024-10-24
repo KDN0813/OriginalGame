@@ -3,7 +3,12 @@
 #include "Graphics/Graphics.h"
 #include "System/Misc.h"
 #include "Camera/CameraManager.h"
+
+// シーン
 #include "Scene/SceneManager.h"
+#include "Scene/SceneTitle.h"
+#include "Scene/SceneResult.h"
+#include "Scene/SceneLoading.h"
 
 #ifdef _DEBUG
 #include "Debug/DebugManager.h"
@@ -301,6 +306,13 @@ void SceneGame::Finalize()
 	{
 		game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
 	}
+
+	// オーディオのリセット
+	Audio* audio = Audio::Instance();
+	if (audio)
+	{
+		audio->AllClear();
+	}
 }
 
 void SceneGame::Update(float elapsed_time)
@@ -313,6 +325,7 @@ void SceneGame::Update(float elapsed_time)
 
 	Audio::Instance()->Update();
 
+#ifdef _DEBUG
 	// スペースキーでゲーム画面に遷移(仮)
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
@@ -320,6 +333,10 @@ void SceneGame::Update(float elapsed_time)
 		param.filename = "Data/Debug/Audio/SE.wav";
 		Audio::Instance()->Play(param);
 	}
+#endif // DEBUG
+
+	// ゲーム状態を処理する
+	ProcessGameState();
 }
 
 void SceneGame::Render()
@@ -373,6 +390,49 @@ void SceneGame::ReStart()
 	if (game_data)
 	{
 		game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
+	}
+}
+
+void SceneGame::ProcessGameState()
+{
+	GameData* game_data = GameData::Instance();
+	if (!game_data) return;
+
+	// ゲーム状態を取得
+	const GameData::GameStatus& game_status = game_data->GetGameStatus();
+
+	switch (game_status)
+	{
+	case GameData::GameStatus::DEFEAT:	// プレイヤーの敗北
+	{
+		SceneManager* scene_manager = SceneManager::Instance();
+		if (!scene_manager) return;
+
+		scene_manager->ChangeScene(new SceneResult);
+		break;
+	}
+	case GameData::GameStatus::VICTORY:	// プレイヤーの勝利
+	{
+		SceneManager* scene_manager = SceneManager::Instance();
+		if (!scene_manager) return;
+
+		scene_manager->ChangeScene(new SceneLoading(new SceneResult));
+		break;
+	}
+	case GameData::GameStatus::RETURN_TO_TITLE: // タイトルに戻る
+	{
+		SceneManager* scene_manager = SceneManager::Instance();
+		if (!scene_manager) return;
+
+		scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
+		break;
+	}
+	case GameData::GameStatus::RESTART:	// リスタート
+	{
+		ReStart();
+		break;
+	}
+	default:break;
 	}
 }
 

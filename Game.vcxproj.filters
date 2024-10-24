@@ -522,7 +522,7 @@
       <Filter>Source\Audio</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\GameData.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
