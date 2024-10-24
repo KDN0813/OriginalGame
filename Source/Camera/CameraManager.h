@@ -5,6 +5,7 @@
 #include "System/ClassBase/Singleton.h"
 #include "System/MyMath/MYMATRIX.h"
 #ifdef _DEBUG
+#include "Object/Object.h"
 #include <string>   // デバッグのみ使用
 #endif // DEBUG
 
@@ -45,6 +46,7 @@ private:
 public:
     void DrawDebugGUI();
 private:
+    std::shared_ptr<Object> debug_camera;
     std::vector<std::string> camera_name_pool;
     int camera_index = 0;    // 現在のカメラインデックス
 #endif // _DEBUG

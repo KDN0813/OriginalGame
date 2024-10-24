@@ -6,8 +6,8 @@
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #include <magic_enum.hpp>
-#include "Object/Object.h"
 #include "Graphics/Graphics.h"
+#include "Component/CameraControllerComponent.h"
 #endif // _DEBUG
 
 CameraManager::CameraManager()
@@ -42,6 +42,14 @@ CameraManager::CameraManager()
 #ifdef _DEBUG
     // デバッグ用のカメラインデックス設定
     this->camera_index = static_cast<int>(CAMERA_TYPE::MAIN);
+
+    // デバッグカメラ作成
+    {
+        this->debug_camera = std::make_shared<Object>();
+        this->debug_camera->SetName("Debug Camera");
+        this->debug_camera->AddComponent<CameraComponent>(GetCamera(CAMERA_TYPE::DEBUG));
+        this->debug_camera->AddComponent<CameraControllerDebug>();
+    }
 #endif // DEBUG
 }
 
@@ -71,6 +79,9 @@ std::shared_ptr<CameraComponent> CameraManager::GetCamera(CAMERA_TYPE type)
 
 void CameraManager::Update(float elapsed_time)
 {
+#ifdef _DEBUG
+    this->debug_camera->Update(elapsed_time);
+#endif // DEBUG
 }
 
 bool CameraManager::IsErrorType(CAMERA_TYPE type)
