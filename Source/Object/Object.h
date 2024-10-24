@@ -89,7 +89,6 @@ public:
 	/**
 	 * @fn AddComponent
 	 * @brief コンポーネント追加関数。
-	 * 全てのコンポーネントの追加が終わったらAfterComponentAdded関数を読んでください
 	 * 
 	 * @tparam ComponentType 追加するコンポーネントの型
 	 * @tparam Arguments 可変長引数型種
@@ -99,6 +98,25 @@ public:
 	std::shared_ptr<ComponentType> AddComponent(Arguments ... args)
 	{	
 		std::shared_ptr<ComponentType> component = std::make_shared<ComponentType>(args...);
+		component->SetOwner(shared_from_this());
+		component->SetComponentID(GetComponentID<ComponentType>());
+		component_vec.emplace_back(component);
+		return component;
+	}
+	/**
+	* @fn AddComponent
+	* @brief コンポーネント追加関数。
+	*
+	* @tparam ComponentType 追加するコンポーネントの型
+	* @param component 追加するコンポーネントのシェアドポインタ
+	* \return 追加したコンポーネントのポインタを返す
+	*/
+	template<is_Component	ComponentType>
+	std::shared_ptr<ComponentType> AddComponent(std::shared_ptr<ComponentType> component)
+	{
+		auto owner = component->GetOwner();
+		assert(owner);	// 既に所有者がいればエラー
+		if (owner) return nullptr;	// 既に所有者がいる場合追加しない
 		component->SetOwner(shared_from_this());
 		component->SetComponentID(GetComponentID<ComponentType>());
 		component_vec.emplace_back(component);
