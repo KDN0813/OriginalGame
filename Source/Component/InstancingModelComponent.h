@@ -39,7 +39,7 @@ public:
 		std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
 	};
 public:
-	AnimatedInstancedModelComponent(InstancedModelParam param,ID3D11Device* device, const char* filename);
+	AnimatedInstancedModelComponent(InstancedModelParam param, const char* filename);
 
 	// リスタート処理
 	void ReStart() override;      // パラメータの初期化

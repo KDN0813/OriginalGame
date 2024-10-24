@@ -1,5 +1,6 @@
 #include "Debug/ImGuiHelper.h"
 #include "InstancingModelComponent.h"
+#include "Graphics/Graphics.h"
 #include "Object/Object.h"
 
 #include "Model/InstancingModelResourceManager.h"
@@ -7,12 +8,15 @@
 
 #include "Component/TransformComponent.h"
 
-AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(InstancedModelParam param, ID3D11Device* device, const char* filename)
+AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(InstancedModelParam param, const char* filename)
     :param(param), default_param(param)
 {
 #ifdef _DEBUG
     this->model_filename = filename;
 #endif // _DEBUG
+    Graphics* graphics = Graphics::Instance();
+    std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+    ID3D11Device* device = graphics->GetDevice();
 
     this->model_resource =
         ModelResourceManager::Instance()->LoadModelResource(device,filename);

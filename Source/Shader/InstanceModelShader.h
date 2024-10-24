@@ -48,7 +48,7 @@ private:
 		DirectX::XMFLOAT4X4 world_transform = {};;
 	};
 public:
-	InstancingModelShader(ID3D11Device* device);
+	InstancingModelShader();
 	~InstancingModelShader() override {}
 
 	void Render()override;

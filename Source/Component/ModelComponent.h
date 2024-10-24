@@ -27,7 +27,7 @@ public:
 	};
 
 public:
-	ModelComponent(ID3D11Device* device, const char* filename);
+	ModelComponent(const char* filename);
 
 	// äJénä÷êî
 	void Start() override;

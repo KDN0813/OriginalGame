@@ -1,17 +1,22 @@
 #include <imgui.h>
 #include "System/MyMath/MYMATRIX.h"
 #include "System/MyMath/MYVECTOR4.h"
+#include "Graphics/Graphics.h"
 #include "ModelComponent.h"
 #include "Object/Object.h"
 #include "Model/ModelResourceManager.h"
 
 #include "Component/TransformComponent.h"
 
-ModelComponent::ModelComponent(ID3D11Device* device, const char* filename)
+ModelComponent::ModelComponent( const char* filename)
 {
 #ifdef _DEBUG
 	this->model_filename = filename;
 #endif // _DEBUG
+
+	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	ID3D11Device* device = graphics->GetDevice();
 
 	// ƒŠƒ\[ƒX“Ç‚Ýž‚Ý
 	this->resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);

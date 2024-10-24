@@ -12,8 +12,12 @@
 #include "Component/TransformComponent.h"
 #include "Component/CameraComponent.h"
 
-InstancingModelShader::InstancingModelShader(ID3D11Device* device)
+InstancingModelShader::InstancingModelShader()
 {
+	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	ID3D11Device* device = graphics->GetDevice();
+
 	// 頂点シェーダー
 	{
 		// ファイルを開く

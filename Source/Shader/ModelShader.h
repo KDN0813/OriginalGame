@@ -28,7 +28,7 @@ private:
 		DirectX::XMFLOAT4	material_color;
 	};
 public:
-    ModelShader(ID3D11Device* device);
+    ModelShader();
 
     void Render() override;
     const char* GetName() override { return "ModelShader"; };

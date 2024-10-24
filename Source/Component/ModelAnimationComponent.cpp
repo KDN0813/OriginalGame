@@ -1,13 +1,18 @@
 #include "Debug/ImGuiHelper.h"
 #include "ModelAnimationComponent.h"
+#include "Graphics/Graphics.h"
 #include "Object/Object.h"
 #include "Model/ModelResourceManager.h"
 
 #include "Component/ModelComponent.h"
 
-ModelAnimationComponent::ModelAnimationComponent(AnimationParam param ,ID3D11Device* device, const char* filename)
+ModelAnimationComponent::ModelAnimationComponent(AnimationParam param , const char* filename)
 	:param(param),default_param(param)
 {
+	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	ID3D11Device* device = graphics->GetDevice();
+
 	// ƒŠƒ\[ƒX“Ç‚Ýž‚Ý
 	auto model_resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
 	this->model_resource_Wptr = model_resource;

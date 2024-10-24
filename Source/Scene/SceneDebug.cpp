@@ -109,15 +109,7 @@ void SceneDebug::Update(float elapsed_time)
 void SceneDebug::Render()
 {
 	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
-	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
-	ID3D11RenderTargetView* rtv = graphics->GetRenderTargetView();
-	ID3D11DepthStencilView* dsv = graphics->GetDepthStencilView();
-
-	FLOAT color[] = { 0.5f, 1.0f, 1.0f, 1.0f };
-	dc->ClearRenderTargetView(rtv, color);
-	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	dc->OMSetRenderTargets(1, &rtv, dsv);
+	graphics->PrepareRenderTargets();
 
 	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
 	{

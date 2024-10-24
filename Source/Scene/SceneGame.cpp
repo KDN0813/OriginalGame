@@ -47,12 +47,10 @@
 void SceneGame::Initialize()
 {
 	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
-	ID3D11Device* device = graphics->GetDevice();
 	// シェーダーの作成
 	{
-		instancing_model_shader = std::make_unique<InstancingModelShader>(device);
-		model_shader = std::make_unique<ModelShader>(device);
+		instancing_model_shader = std::make_unique<InstancingModelShader>();
+		model_shader = std::make_unique<ModelShader>();
 		sprite_shader = std::make_unique<SpriteShader>();
 	}
 
@@ -62,7 +60,7 @@ void SceneGame::Initialize()
 		{
 			auto stage = object_manager.Create();
 			stage->SetName("Stage");
-			stage->AddComponent<ModelComponent>(device, "Data/Debug/Model/Cube/Cube.mdl");
+			stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
@@ -82,7 +80,7 @@ void SceneGame::Initialize()
 		{
 			auto player = object_manager.Create();
 			player->SetName("Player");
-			auto model = player->AddComponent<ModelComponent>(device, "Data/Model/Player/Player.mdl");
+			auto model = player->AddComponent<ModelComponent>("Data/Model/Player/Player.mdl");
 			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
@@ -90,7 +88,7 @@ void SceneGame::Initialize()
 				param.current_animation_index = PlayerCT::ANIMATION::IDLE;
 				param.animation_loop_flag = true;
 
-				auto model_animation = player->AddComponent<ModelAnimationComponent>(param ,device, "Data/Model/Player/Player.mdl");
+				auto model_animation = player->AddComponent<ModelAnimationComponent>(param , "Data/Model/Player/Player.mdl");
 				// 待機
 				model_animation->SetAnimationState(PlayerCT::ANIMATION::IDLE, true);
 				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::IDLE, PlayerCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_Move>(player),0.2f);
@@ -174,7 +172,7 @@ void SceneGame::Initialize()
 			{
 				std::shared_ptr<Object> object = player->AddChildren();
 				object->SetName("player child");
-				object->AddComponent<ModelComponent>(device, "Data/Debug/Model/Jammo/Jammo.mdl");
+				object->AddComponent<ModelComponent>("Data/Debug/Model/Jammo/Jammo.mdl");
 
 				// トランスフォーム設定
 				{
@@ -219,7 +217,7 @@ void SceneGame::Initialize()
 					param.anime_loop = true;
 					param.anime_play = true;
 
-					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(param, device, "Data/Model/ChestMonster/ChestMonster.mdl");
+					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
 					{
 						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
 						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
