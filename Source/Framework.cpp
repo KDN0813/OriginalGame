@@ -193,10 +193,18 @@ void Framework::DrawDebugGUI()
 		camera_manager->DrawDebugGUI();
 	}
 
+	// オーディオ
 	Audio* audio = Audio::Instance();
 	if (audio)
 	{
 		audio->DebugDrawGUI();
+	}
+
+	// ゲームデータ
+	GameData* game_data = GameData::Instance();
+	if (game_data)
+	{
+		game_data->DebugDrawGUI();
 	}
 }
 

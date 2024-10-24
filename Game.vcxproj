@@ -258,6 +258,7 @@
     <ClCompile Include="Source\StateMachine\StateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\TransitionJudgement.cpp" />
     <ClCompile Include="Source\StateMachine\TransitionJudgementDerived.cpp" />
+    <ClCompile Include="Source\System\GameData.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp" />
   </ItemGroup>

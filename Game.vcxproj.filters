@@ -521,6 +521,9 @@
     <ClCompile Include="Source\Audio\AudioResourceManager.cpp">
       <Filter>Source\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\GameData.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\ImGui.hlsli">

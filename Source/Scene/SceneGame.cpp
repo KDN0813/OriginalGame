@@ -13,6 +13,7 @@
 
 #include "ConstantManager.h"
 #include "Input/GamePad.h"
+#include "System/GameData.h"
 
 #include "System/MyMath/MyMathf.h"
 #include "Collision/Collision.h"
@@ -284,6 +285,8 @@ void SceneGame::Initialize()
 		}
 
 		AudioParam param{};
+		param.volume = 0.3f;
+		param.loop = true;
 		param.filename = "Data/Debug/Audio/BGM.wav";
 		Audio::Instance()->Play(param);
 #endif // _DEBUG
@@ -292,6 +295,12 @@ void SceneGame::Initialize()
 
 void SceneGame::Finalize()
 {
+	// ゲーム状態をデフォルトに設定
+	GameData* game_data = GameData::Instance();
+	if (game_data)
+	{
+		game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
+	}
 }
 
 void SceneGame::Update(float elapsed_time)
@@ -358,6 +367,13 @@ void SceneGame::Render()
 void SceneGame::ReStart()
 {
 	object_manager.ReStart();
+
+	// ゲーム状態をデフォルトに設定
+	GameData* game_data = GameData::Instance();
+	if (game_data)
+	{
+		game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
+	}
 }
 
 #ifdef _DEBUG

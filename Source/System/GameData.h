@@ -1,5 +1,9 @@
 #pragma once
 #include "System/ClassBase/Singleton.h"
+#ifdef _DEBUG
+#include <vector>   // デバッグ時しか使用していない
+#endif // _DEBUG
+
 
 class GameData : public Singleton<GameData>
 {
@@ -12,7 +16,9 @@ public:
         VICTORY,            // 敵が全滅したとき（勝利）
         RETURN_TO_TITLE,    // タイトルに戻るとき
         RESTART,            // ゲームをリスタートするとき
-        PAUSED              // ポーズ中
+        PAUSED,             // ポーズ中
+
+        MAX,
     };
 public:
     struct GameParam
@@ -22,10 +28,10 @@ public:
         GameStatus game_status = GameStatus::DEFAULT;   // ゲームの状態
     };
 public:
-    GameData() :Singleton(this) {};
+    GameData();
     ~GameData() {};
 
-    void ClearParam() { this->param.score = 0; this->param.game_elapsed_time = 0.0f; }
+    void ClearParam() { this->param = GameParam(); }
 
     //  現在のゲーム状態が指定された状態かどうか判定する
     bool IsCurrentGameState(GameStatus status) { return (this->param.game_status == status); };
@@ -39,4 +45,13 @@ public:
     void SetGameStatus(GameStatus status) { this->param.game_status = status; }
 private:
     GameParam param{};
+
+#ifdef _DEBUG
+public:
+    void DebugDrawGUI();
+private:
+    std::vector<std::string> game_status_name_pool;
+    int select_game_status_index = 0;
+
+#endif // _DEBUG
 };
