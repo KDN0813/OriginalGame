@@ -17,7 +17,7 @@ protected:
 public:
 	static T* Instance()noexcept{return instance;}
 	static const T* const CInstance()noexcept{return instance;}
-	static const std::mutex& GetInstanceMutex()noexcept{return mutex;}
+	static std::mutex& GetInstanceMutex()noexcept{return mutex;}
 private:
 	inline static T* instance = nullptr;
 	inline static std::mutex mutex;

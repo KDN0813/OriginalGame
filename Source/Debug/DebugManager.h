@@ -8,7 +8,7 @@
 class DebugManager : public Singleton<DebugManager>
 {
 public:
-    DebugManager(HWND hWnd, ID3D11Device* device);
+    DebugManager(HWND hWnd);
     ~DebugManager() {}
 
     ImGuiRenderer* GetImGuiRenderer() const { return this->imGui_renderer.get(); }

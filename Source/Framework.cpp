@@ -27,7 +27,7 @@ Framework::Framework(HWND hWnd)
 	, graphics(hWnd)
 	, input(hWnd)
 #ifdef _DEBUG
-	, debug_manager(hWnd, graphics.GetDevice())
+	, debug_manager(hWnd)
 #endif // _DEBUG
 {
 #ifdef _DEBUG
