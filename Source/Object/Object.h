@@ -115,7 +115,7 @@ public:
 	std::shared_ptr<ComponentType> AddComponent(std::shared_ptr<ComponentType> component)
 	{
 		auto owner = component->GetOwner();
-		assert(owner);	// 既に所有者がいればエラー
+		assert(!owner);	// 既に所有者がいればエラー
 		if (owner) return nullptr;	// 既に所有者がいる場合追加しない
 		component->SetOwner(shared_from_this());
 		component->SetComponentID(GetComponentID<ComponentType>());

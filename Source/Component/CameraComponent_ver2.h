@@ -4,7 +4,7 @@
 #include "Component.h"
 #include "Camera/CameraParam.h"
 
-class CameraComponent_ver2 : public Component
+class CameraComponent : public Component
 {
 public:
 	struct CameraParam
@@ -23,7 +23,7 @@ public:
 		float					rotateX = 0.0f;
 	};
 public:
-	CameraComponent_ver2(const CameraParam& camera_param);
+	CameraComponent(const CameraParam& camera_param);
 
 	// äJénä÷êî
 	void Start()override;

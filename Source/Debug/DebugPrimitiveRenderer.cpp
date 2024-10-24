@@ -190,11 +190,6 @@ void DebugPrimitiveRenderer::Render()
 	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
 	ID3D11DeviceContext* context = graphics->GetDeviceContext();
 
-	CameraManager* camera_manager = CameraManager::Instance();
-	auto camera = camera_manager->GetMainCamera();
-	MYMATRIX View = camera->GetViewTransform();
-	MYMATRIX Projection = camera->GetProjectionTransform();
-
 	// シェーダー設定
 	context->VSSetShader(vertex_shader.Get(), nullptr, 0);
 	context->PSSetShader(pixel_shader.Get(), nullptr, 0);
@@ -211,7 +206,13 @@ void DebugPrimitiveRenderer::Render()
 	context->RSSetState(rasterizer_state.Get());
 
 	// ビュープロジェクション行列作成
-	MYMATRIX View_projection = View * Projection;
+	MYMATRIX View_projection{};
+
+	CameraManager* camera_manager = CameraManager::Instance();;
+	if (camera_manager)
+	{
+		View_projection = camera_manager->GetViewProjectionMatrix();
+	}
 
 	// プリミティブ設定
 	UINT stride = sizeof(DirectX::XMFLOAT3);

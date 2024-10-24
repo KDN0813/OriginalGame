@@ -181,7 +181,7 @@ void ModelShader::Render()
 	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 	RenderContext rc{};
 
-	CameraComponent* camera = CameraManager::Instance()->GetMainCamera();
+	std::shared_ptr<CameraComponent> camera = CameraManager::Instance()->GetCurrentCamera();
 	if (camera)
 	{
 		rc.view = camera->GetViewTransform();

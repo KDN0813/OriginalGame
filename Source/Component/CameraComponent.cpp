@@ -1,15 +1,14 @@
 #include <imgui.h>
 #include "System/MyMath/MYMATRIX.h"
-#include "CameraComponent.h"
+#include "CameraComponent_ver2.h"
 #include "Object/Object.h"
 #include "Camera/CameraManager.h"
 
 #include "Component/TransformComponent.h"
 
-CameraComponent::CameraComponent(const CameraParam& camera_param, CameraManager* camera_manager)
-    :camera_manager(camera_manager),camera_param(camera_param),default_param(camera_param)
+CameraComponent::CameraComponent(const CameraParam& camera_param)
+    : camera_param(camera_param), default_param(camera_param)
 {
-    this->camera_manager->AddCamera(this);
 }
 
 void CameraComponent::Start()
@@ -18,7 +17,6 @@ void CameraComponent::Start()
 
 void CameraComponent::End()
 {
-    this->camera_manager->RemoveCamera(this);
 }
 
 void CameraComponent::ReStart()
@@ -44,7 +42,6 @@ void CameraComponent::Update(float elapsed_time)
 
 void CameraComponent::SetMainCamera()
 {
-    this->camera_manager->SetMainCamera(this);
 }
 
 void CameraComponent::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
@@ -97,9 +94,6 @@ void CameraComponent::DrawDebugGUI()
     {
         this->change_value = true;
     }
-
-    ImGui::Checkbox("Is Main Camera", &this->is_main_camera);
-
 
     if (ImGui::Button("SetMainCamera"))
     {

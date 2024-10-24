@@ -177,12 +177,6 @@
     <ClInclude Include="Source\Shader\ModelShader.h">
       <Filter>Source\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera\CameraManager.h">
-      <Filter>Source\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\CameraComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\PlayerComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
@@ -324,10 +318,10 @@
     <ClInclude Include="Source\Audio\AudioResourceManager.h">
       <Filter>Source\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera\CameraManager_ver2.h">
+    <ClInclude Include="Source\Camera\CameraManager.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\CameraComponent_ver2.h">
+    <ClInclude Include="Source\Component\CameraComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Camera\CameraParam.h">
@@ -415,12 +409,6 @@
     </ClCompile>
     <ClCompile Include="Source\Input\Mouse.cpp">
       <Filter>Source\input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera\CameraManager.cpp">
-      <Filter>Source\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\CameraComponent.cpp">
-      <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\PlayerComponent.cpp">
       <Filter>Source\Component</Filter>
@@ -533,11 +521,11 @@
     <ClCompile Include="Source\System\GameData.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\CameraComponent_ver2.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera\CameraManager_ver2.cpp">
+    <ClCompile Include="Source\Camera\CameraManager.cpp">
       <Filter>Source\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\CameraComponent.cpp">
+      <Filter>Source\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

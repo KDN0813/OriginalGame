@@ -9,7 +9,7 @@
 #include "Model/InstancingModelResourceManager.h"
 #include "Debug/DebugManager.h"
 #include "Camera/CameraManager.h"
-#include "Camera/CameraManager_ver2.h"
+#include "Camera/CameraManager.h"
 #include "System/GameData.h"
 #include "Audio/Audio.h"
 #include "Audio/AudioResourceManager.h"
@@ -39,7 +39,6 @@ private:
 	InstancingModelResourceManager	instancin_resource_manager;
 	AudioResourceManager			audio_resource_manager;
 	CameraManager					camera_manager;
-	CameraManager_ver2				camera_manager_ver2;
 	GameData						game_data;
 	Audio							audio;
 #ifdef _DEBUG

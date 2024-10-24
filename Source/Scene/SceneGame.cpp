@@ -30,7 +30,7 @@
 #include "Component/TransformComponent.h"
 #include "Component/InstancingModelShaderComponent.h"
 #include "Component/MovementComponent.h"
-#include "Component/CameraComponent.h"
+#include "Component/CameraComponent_ver2.h"
 #include "Component/PlayerComponent.h"
 #include "Component/GravityComponent.h"
 #include "Component/ModelAnimationComponent.h"
@@ -135,16 +135,12 @@ void SceneGame::Initialize()
 			//player->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
 			// カメラ設定
 			{
-				CameraComponent::CameraParam camera_param{};
-				camera_param.fovY = DirectX::XMConvertToRadians(45.0f);
-				camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
-				camera_param.nearZ = 0.1f;
-				camera_param.farZ = 1000.0f;
-				camera_param.range = 10.0f;
-				camera_param.rotateX = 0.4f;
-
-				auto camera = player->AddComponent<CameraComponent>(camera_param, CameraManager::Instance());
-				camera->SetMainCamera();
+				CameraManager* camera_manager = CameraManager::Instance();
+				if (camera_manager)
+				{
+					auto camera = player->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
+					camera->SetMainCamera();
+				}
 
 			}
 			// カメラコントローラー設定
@@ -269,25 +265,6 @@ void SceneGame::Initialize()
 		}
 
 #ifdef _DEBUG	// デバッグ用object
-		auto debug_camera = object_manager.Create();
-		debug_camera->SetName("Debug Camera");
-		debug_camera->AddComponent<Transform3DComponent>(Transform3DComponent::Transform3DParam());
-		debug_camera->AddComponent<CameraControllerDebug>();
-		
-		// カメラ設定
-		{
-			CameraComponent::CameraParam camera_param{};
-			camera_param.fovY = DirectX::XMConvertToRadians(45.0f);
-			camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
-			camera_param.nearZ = 0.1f;
-			camera_param.farZ = 1000.0f;
-			camera_param.range = 10.0f;
-			camera_param.rotateX = 0.4f;
-
-			auto debug_camera_component = debug_camera->AddComponent<CameraComponent>(camera_param, CameraManager::Instance());
-			CameraManager::Instance()->SetDebugCamera(debug_camera_component.get());
-		}
-
 		AudioParam param{};
 		param.volume = 0.3f;
 		param.loop = true;

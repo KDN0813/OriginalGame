@@ -22,7 +22,7 @@ void CameraControllerGamepad::Update(float elapsed_time)
 	if (!owner) return;
 	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);
 	if (!camera) return;
-	if (!camera->GetIsMainCamera()) return;
+	if (!camera->GetIsActive()) return;
 	DirectX::XMFLOAT3 focus{};
 	{
 		auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
@@ -79,7 +79,7 @@ void CameraControllerDebug::Update(float elapsed_time)
 	if (!owner) return ;
 	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);
 	if (!camera) return;
-	if (!camera->GetIsMainCamera()) return;
+	if (!camera->GetIsActive()) return;
 
 	Mouse& mouse = Input::Instance()->GetMouse();
 

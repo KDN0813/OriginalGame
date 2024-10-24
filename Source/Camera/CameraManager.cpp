@@ -1,109 +1,140 @@
 #include "CameraManager.h"
-#include <imgui.h>
-#include "Input/Input.h"
+#include "Graphics/Graphics.h"
 
 #include "Component/CameraComponent.h"
 
-
 #ifdef _DEBUG
+#include "Debug/ImGuiHelper.h"
+#include <magic_enum.hpp>
+#include "Object/Object.h"
 #include "Graphics/Graphics.h"
-#include "Component/CameraControllerComponent.h"
-
 #endif // _DEBUG
 
 CameraManager::CameraManager()
     :Singleton(this)
 {
+    // グラフィックス取得
+    Graphics* graphics = Graphics::Instance();
+    // カメラパラメータ作成
+    CameraComponent::CameraParam camera_param{};
+    camera_param.fovY = DirectX::XMConvertToRadians(45.0f);
+    camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
+    camera_param.nearZ = 0.1f;
+    camera_param.farZ = 1000.0f;
+    camera_param.range = 10.0f;
+    camera_param.rotateX = 0.4f;
+
+    this->camera_pool.resize(static_cast<size_t>(CAMERA_TYPE::MAX));
+    for (size_t i = 0; i < this->camera_pool.size();++i)
+    {
+        // カメラ作成
+        this->camera_pool[i] = std::make_shared<CameraComponent>(camera_param);
+#ifdef _DEBUG
+        // デバッグ用のカメラの名前を設定
+        this->camera_name_pool.emplace_back(magic_enum::enum_name(static_cast<CAMERA_TYPE>(i)));
+#endif // DEBUG
+    }
+    // メインカメラ設定
+    this->current_camera = this->camera_pool[static_cast<size_t>(CAMERA_TYPE::MAIN)];
+#ifdef _DEBUG
+    // デバッグ用のカメラインデックス設定
+    this->camera_index = static_cast<int>(CAMERA_TYPE::MAIN);
+#endif // DEBUG
 }
 
 CameraManager::~CameraManager()
 {
 }
 
-void CameraManager::AddCamera(CameraComponent* camera)
+void CameraManager::SetMainCamera(CAMERA_TYPE type)
 {
-    this->camera_vector.push_back(camera);
-    if (!main_camera)
-    {
-        main_camera = camera;
-    }
-}
-
-void CameraManager::RemoveCamera(CameraComponent* camera)
-{
-    auto it = std::find(this->camera_vector.begin(), this->camera_vector.end(), camera);
-    if (it != camera_vector.end())
-    {
-        this->camera_vector.erase(it);
-    }
-}
-
-void CameraManager::SetMainCamera(CameraComponent* camera)
-{
+    assert(!IsErrorType(type));
+    if (IsErrorType(type)) return;
+    this->current_camera = this->camera_pool[static_cast<size_t>(type)];
 #ifdef _DEBUG
-    if (this->debug_flag) return;   // デバッグ中がカメラの変更を受け付けない
-#endif // _DEBUG
+    this->camera_index = static_cast<int>(type);
+#endif // DEBUG
+}
 
+std::shared_ptr<CameraComponent> CameraManager::GetCamera(CAMERA_TYPE type)
+{
+    assert(!IsErrorType(type));
+    if (IsErrorType(type)) return nullptr;
 
-    auto it = std::find(this->camera_vector.begin(), this->camera_vector.end(), camera);
-    if (it == camera_vector.end()) return;
-
-    this->main_camera->SetIsMainCamera(false);
-
-    this->main_camera = camera;
-    this->main_camera->SetIsMainCamera(true);
+    return this->camera_pool[static_cast<size_t>(type)];
 }
 
 void CameraManager::Update(float elapsed_time)
 {
-    this->main_camera;
+}
+
+bool CameraManager::IsErrorType(CAMERA_TYPE type)
+{
+    return (type < CAMERA_TYPE::NONE || CAMERA_TYPE::MAX <= type);
+}
+
+void CameraManager::Reset()
+{
+    for (const auto& camera : this->camera_pool)
+    {
+        camera->ReStart();
+    }
+}
+
+DirectX::XMFLOAT4X4 CameraManager::GetViewProjection()
+{
+    DirectX::XMFLOAT4X4 float4x4{};
+    GetViewProjectionMatrix().GetFlaot4x4(float4x4);
+    return float4x4;
+}
+
+MYMATRIX CameraManager::GetViewProjectionMatrix()
+{
+    if (!this->current_camera)
+    {
+        // メインカメラが空の場合
+        return MYMATRIX();
+    }
+
+    MYMATRIX View = current_camera->GetViewTransform();
+    MYMATRIX Projection = current_camera->GetProjectionTransform();
+    return View * Projection;
 }
 
 #ifdef _DEBUG
 
 void CameraManager::DrawDebugGUI()
 {
-    if (ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
+    if (ImGui::Begin("CameraManager", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
     {
-        // メニューバー設定
-        if (ImGui::BeginMenuBar())
+        if (ImGui::Button("Reset##CameraManager"))
         {
-            // デバッグカメラ切り替えメニュー
-            if (this->debug_camera !=nullptr && ImGui::BeginMenu("SetCamera"))
+            Reset();
+        }
+
+        // カメラ切り替え
+        std::string now_name{};
+        now_name = magic_enum::enum_name(static_cast<CAMERA_TYPE>(this->camera_index));
+        if (ImGui::ComboUI("Camera Type##CameraManager", now_name, this->camera_name_pool, this->camera_index))
+        {
+            this->current_camera = this->camera_pool[static_cast<size_t>(this->camera_index)];
+        }
+        if (ImGui::CollapsingHeader("Target Camera"))
+        {
+            if (this->current_camera)
             {
-                std::string label = this->debug_flag ? "normal camera" : "debug camera";
-
-                if (ImGui::MenuItem(label.c_str()))
+                std::string owner_name = "Eroor";
+                auto owner = this->current_camera->GetOwner();
+                if (owner)
                 {
-                    this->debug_flag = !this->debug_flag;
-                    CameraManager::Instance()->SetDebugCamera();
+                    owner_name = owner->GetName();
                 }
-
-                ImGui::EndMenu();
+                ImGui::InputTextString("Owner##CameraManager", owner_name);
+                this->current_camera->DrawDebugGUI();
             }
-            ImGui::EndMenuBar();
         }
     }
     ImGui::End();
-}
-
-void CameraManager::SetDebugCamera()
-{
-	if (this->debug_flag)
-	{
-        this->main_camera->SetIsMainCamera(false);
-
-		this->temp_camera = this->main_camera;
-		this->main_camera = this->debug_camera;
-        this->debug_camera->SetIsMainCamera(true);
-	}
-	else
-	{
-        this->debug_camera->SetIsMainCamera(false);
-
-		this->main_camera = this->temp_camera;
-        this->main_camera->SetIsMainCamera(true);
-	}
 }
 
 #endif // _DEBUG

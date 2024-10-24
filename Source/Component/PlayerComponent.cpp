@@ -58,7 +58,8 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
 
     // カメラ方向とスティックの入力値によって進行方向を計算する
     CameraManager* camera_manager = CameraManager::Instance();
-    CameraComponent* camera = camera_manager->GetMainCamera();
+    if (!camera_manager) return DirectX::XMFLOAT3();
+    std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
     MYVECTOR3 Camera_right = camera->GetRight();
     MYVECTOR3 Camera_front = camera->GetForward();
 
