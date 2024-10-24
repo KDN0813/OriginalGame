@@ -43,7 +43,7 @@ public:
 	 * \brief メインカメラに設定する
 	 *
 	 */
-	void SetMainCamera();
+	void SetCurrentCamera();
 
 	// 視点設定
 	void SetEye(DirectX::XMFLOAT3 eye) { this->change_value = true; this->camera_param.eye = eye; }
@@ -70,7 +70,7 @@ public:
 	// X軸回転度設定
 	void SetRotateX(float rotateX) { this->change_value = true; this->camera_param.rotateX = rotateX; }
 	// カメラタイプ設定
-	void GetCameraType(CAMERA_TYPE type) { this->camera_type = type; }
+	void SetCameraType(CAMERA_TYPE type) { this->camera_type = type; }
 
 	// ビュー行列取得
 	DirectX::XMFLOAT4X4 GetViewTransform() const { return this->view_transform; }

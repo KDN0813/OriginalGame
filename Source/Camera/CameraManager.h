@@ -16,7 +16,8 @@ public:
     CameraManager();
     ~CameraManager();
 
-    void SetMainCamera(CAMERA_TYPE type);
+    // 使用するカメラの設定
+    void SetCurrentCamera(CAMERA_TYPE type);
 
     // カメラの取得
     std::shared_ptr<CameraComponent> GetCamera(CAMERA_TYPE type);

@@ -194,6 +194,7 @@ void SceneGame::Initialize()
 		// ƒfƒXƒJƒƒ‰
 		{
 			auto death_camera = object_manager.Create();
+			death_camera->SetName("Death Camera");
 			CameraManager* camera_manager = CameraManager::Instance();
 			if (camera_manager)
 			{

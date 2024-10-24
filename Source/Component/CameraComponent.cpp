@@ -40,8 +40,12 @@ void CameraComponent::Update(float elapsed_time)
     SetPerspectiveFov(this->camera_param.fovY, this->camera_param.aspect, this->camera_param.nearZ, this->camera_param.farZ);
 }
 
-void CameraComponent::SetMainCamera()
+void CameraComponent::SetCurrentCamera()
 {
+    CameraManager* camera_manager = CameraManager::Instance();
+    if (!camera_manager) return;    // マネージャーの取得に失敗したら
+    // カメラ設定
+    camera_manager->SetCurrentCamera(this->camera_type);
 }
 
 void CameraComponent::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
@@ -97,7 +101,7 @@ void CameraComponent::DrawDebugGUI()
 
     if (ImGui::Button("SetMainCamera"))
     {
-        SetMainCamera();
+        SetCurrentCamera();
     }
 }
 

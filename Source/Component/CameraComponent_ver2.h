@@ -39,11 +39,11 @@ public:
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOWEST; }
 
 	/**
-	 * \fn SetMainCamera
+	 * \fn SetCurrentCamera
 	 * \brief ƒƒCƒ“ƒJƒƒ‰‚Éİ’è‚·‚é
 	 *
 	 */
-	void SetMainCamera();
+	void SetCurrentCamera();
 
 	// ‹“_İ’è
 	void SetEye(DirectX::XMFLOAT3 eye) { this->change_value = true; this->camera_param.eye = eye; }

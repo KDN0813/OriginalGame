@@ -29,6 +29,8 @@ CameraManager::CameraManager()
     {
         // カメラ作成
         this->camera_pool[i] = std::make_shared<CameraComponent>(camera_param);
+        this->camera_pool[i]->SetCameraType(static_cast<CAMERA_TYPE>(i));   // カメラタイプ設定
+        this->camera_pool[i]->SetIsActive(false);                           // カメラを非アクティブに設定
 #ifdef _DEBUG
         // デバッグ用のカメラの名前を設定
         this->camera_name_pool.emplace_back(magic_enum::enum_name(static_cast<CAMERA_TYPE>(i)));
@@ -36,6 +38,7 @@ CameraManager::CameraManager()
     }
     // メインカメラ設定
     this->current_camera = this->camera_pool[static_cast<size_t>(CAMERA_TYPE::MAIN)];
+    this->current_camera->SetIsActive(true);    // カメラをアクティブにする
 #ifdef _DEBUG
     // デバッグ用のカメラインデックス設定
     this->camera_index = static_cast<int>(CAMERA_TYPE::MAIN);
@@ -46,11 +49,13 @@ CameraManager::~CameraManager()
 {
 }
 
-void CameraManager::SetMainCamera(CAMERA_TYPE type)
+void CameraManager::SetCurrentCamera(CAMERA_TYPE type)
 {
     assert(!IsErrorType(type));
     if (IsErrorType(type)) return;
+    this->current_camera->SetIsActive(false);
     this->current_camera = this->camera_pool[static_cast<size_t>(type)];
+    this->current_camera->SetIsActive(true);
 #ifdef _DEBUG
     this->camera_index = static_cast<int>(type);
 #endif // DEBUG
@@ -117,7 +122,7 @@ void CameraManager::DrawDebugGUI()
         now_name = magic_enum::enum_name(static_cast<CAMERA_TYPE>(this->camera_index));
         if (ImGui::ComboUI("Camera Type##CameraManager", now_name, this->camera_name_pool, this->camera_index))
         {
-            this->current_camera = this->camera_pool[static_cast<size_t>(this->camera_index)];
+            SetCurrentCamera(static_cast<CAMERA_TYPE>(this->camera_index));
         }
         if (ImGui::CollapsingHeader("Target Camera"))
         {
