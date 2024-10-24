@@ -139,7 +139,6 @@ void SceneGame::Initialize()
 				if (camera_manager)
 				{
 					auto camera = player->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
-					camera->SetMainCamera();
 				}
 
 			}
@@ -189,6 +188,17 @@ void SceneGame::Initialize()
 
 			// GameObject‚ÉÝ’è
 			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::PLAYER, player);
+		}
+
+
+		// ƒfƒXƒJƒƒ‰
+		{
+			auto death_camera = object_manager.Create();
+			CameraManager* camera_manager = CameraManager::Instance();
+			if (camera_manager)
+			{
+				auto camera = death_camera->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
+			}
 		}
 
 		// “G
