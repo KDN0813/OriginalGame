@@ -336,6 +336,7 @@ void SceneGame::Update(float elapsed_time)
 void SceneGame::Render()
 {
 	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
 	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 	ID3D11RenderTargetView* rtv = graphics->GetRenderTargetView();
 	ID3D11DepthStencilView* dsv = graphics->GetDepthStencilView();

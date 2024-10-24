@@ -9,7 +9,9 @@
 
 void SpriteShader::Render()
 {
-    ID3D11DeviceContext* const dc = Graphics::Instance()->GetDeviceContext();
+    Graphics* graphics = Graphics::Instance();
+    std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+    ID3D11DeviceContext* const dc = graphics->GetDeviceContext();
 
     // —LŒø‚Å‚È‚¢weak_ptr‚ðœ‹Ž‚·‚é
     this->sprite_pool.erase(

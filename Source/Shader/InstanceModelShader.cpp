@@ -211,7 +211,9 @@ InstancingModelShader::InstancingModelShader(ID3D11Device* device)
 
 void InstancingModelShader::Render()
 {
-	ID3D11DeviceContext* dc = Graphics::Instance()->GetDeviceContext();
+	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 	RenderContext rc{};
 
 	CameraComponent* camera = CameraManager::Instance()->GetMainCamera();

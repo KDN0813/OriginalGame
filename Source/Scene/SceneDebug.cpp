@@ -109,6 +109,7 @@ void SceneDebug::Update(float elapsed_time)
 void SceneDebug::Render()
 {
 	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
 	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 	ID3D11RenderTargetView* rtv = graphics->GetRenderTargetView();
 	ID3D11DepthStencilView* dsv = graphics->GetDepthStencilView();
@@ -121,6 +122,7 @@ void SceneDebug::Render()
 	// 3Dƒ‚ƒfƒ‹‚Ì•`‰æ
 	{
 		Graphics* graphics = Graphics::Instance();
+		std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
 		ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 		//Camera& camera = Camera::Intance();
 
