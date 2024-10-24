@@ -124,7 +124,7 @@ MYMATRIX CameraManager::GetViewProjectionMatrix()
 
 void CameraManager::DrawDebugGUI()
 {
-    if (ImGui::Begin("CameraManager", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar))
+    if (ImGui::Begin("CameraManager"))
     {
         if (ImGui::Button("Reset##CameraManager"))
         {
