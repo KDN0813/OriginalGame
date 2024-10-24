@@ -6,26 +6,26 @@
 
 #include "Component/TransformComponent.h"
 
-Camera::Camera(const CameraParam& camera_param)
+CameraComponent_ver2::CameraComponent_ver2(const CameraParam& camera_param)
     : camera_param(camera_param), default_param(camera_param)
 {
 }
 
-void Camera::Start()
+void CameraComponent_ver2::Start()
 {
 }
 
-void Camera::End()
+void CameraComponent_ver2::End()
 {
 }
 
-void Camera::ReStart()
+void CameraComponent_ver2::ReStart()
 {
     this->camera_param = this->default_param;
     change_value = true;
 }
 
-void Camera::Update(float elapsed_time)
+void CameraComponent_ver2::Update(float elapsed_time)
 {
     if (!this->change_value) return;
 
@@ -40,11 +40,11 @@ void Camera::Update(float elapsed_time)
     SetPerspectiveFov(this->camera_param.fovY, this->camera_param.aspect, this->camera_param.nearZ, this->camera_param.farZ);
 }
 
-void Camera::SetMainCamera()
+void CameraComponent_ver2::SetMainCamera()
 {
 }
 
-void Camera::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
+void CameraComponent_ver2::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
 {
     // 視点、中視点、上方向からビューを行列を作成
     MYMATRIX View_transform;
@@ -64,7 +64,7 @@ void Camera::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
     Focus.GetFlaot3(this->camera_param.focus);
 }
 
-void Camera::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ)
+void CameraComponent_ver2::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ)
 {
     // 画面比率、クリップ距離からプロジェクション行列を作成
     MYMATRIX Projection_transform;
@@ -74,7 +74,7 @@ void Camera::SetPerspectiveFov(float fovY, float aspect, float nearX, float farZ
 
 #ifdef _DEBUG
 
-void Camera::DrawDebugGUI()
+void CameraComponent_ver2::DrawDebugGUI()
 {
     if (ImGui::SliderFloat("front_range", &this->camera_param.range, 1.0f, 50.0f))
     {

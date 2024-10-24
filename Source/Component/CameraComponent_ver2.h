@@ -6,7 +6,7 @@
 class CameraManager;
 class Transform3DComponent;
 
-class Camera : public Component
+class CameraComponent_ver2 : public Component
 {
 public:
 	struct CameraParam
@@ -25,7 +25,7 @@ public:
 		float					rotateX = 0.0f;
 	};
 public:
-	Camera(const CameraParam& camera_param);
+	CameraComponent_ver2(const CameraParam& camera_param);
 
 	// ŠJnŠÖ”
 	void Start()override;
