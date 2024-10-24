@@ -62,9 +62,6 @@ void Framework::Update(float elapsed_time)
 
 void Framework::Render(float elapsed_time)
 {
-	std::lock_guard<std::mutex> lock(graphics.GetMutex());
-	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
-
 #ifdef _DEBUG
 	debug_manager.GetImGuiRenderer()->NewFrame();
 #endif // _DEBUG
@@ -73,7 +70,7 @@ void Framework::Render(float elapsed_time)
 
 #ifdef _DEBUG
 	DrawDebugGUI();
-	debug_manager.GetImGuiRenderer()->Render(dc);
+	debug_manager.GetImGuiRenderer()->Render();
 #endif // _DEBUG
 
 	graphics.GetSwapChain()->Present(syncInterval, 0);

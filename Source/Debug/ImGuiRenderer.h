@@ -17,7 +17,7 @@ public:
 	void NewFrame();
 
 	// 描画実行
-	void Render(ID3D11DeviceContext* context);
+	void Render();
 
 	// WIN32メッセージハンドラー
 	LRESULT HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

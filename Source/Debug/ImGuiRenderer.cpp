@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <memory>
+#include "Graphics/Graphics.h"
 #include "System/Misc.h"
 #include "Debug/ImGuiRenderer.h"
 
@@ -281,8 +282,12 @@ void ImGuiRenderer::NewFrame()
 }
 
 // •`‰æ
-void ImGuiRenderer::Render(ID3D11DeviceContext* context)
+void ImGuiRenderer::Render()
 {
+	Graphics* graphics = Graphics::Instance();
+	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	ID3D11DeviceContext* context = graphics->GetDeviceContext();
+
 	ImGui::Render();
 
 	ImDrawData* draw_data = ImGui::GetDrawData();
