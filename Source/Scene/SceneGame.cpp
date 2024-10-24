@@ -358,6 +358,12 @@ void SceneGame::ReStart()
 	{
 		game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
 	}
+
+	CameraManager* camera_manager = CameraManager::Instance();
+	if (camera_manager)
+	{
+		camera_manager->Reset();
+	}
 }
 
 void SceneGame::ProcessGameState()

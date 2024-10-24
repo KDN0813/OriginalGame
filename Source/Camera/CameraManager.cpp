@@ -84,6 +84,9 @@ void CameraManager::Reset()
     {
         camera->ReStart();
     }
+
+    // ƒJƒƒ‰‚ğƒƒCƒ“ƒJƒƒ‰‚Éİ’è
+    SetCurrentCamera(CAMERA_TYPE::MAIN);
 }
 
 DirectX::XMFLOAT4X4 CameraManager::GetViewProjection()
