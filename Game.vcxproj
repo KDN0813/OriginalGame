@@ -128,6 +128,7 @@
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Collision\CollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionParam.h" />
+    <ClInclude Include="Source\Component\Camera.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\CameraControllerComponent.h" />
     <ClInclude Include="Source\Component\CircleCollisionComponent.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="Source\Collision\CircleCollider.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager.cpp" />
+    <ClCompile Include="Source\Component\Camera.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
     <ClCompile Include="Source\Component\CameraControllerComponent.cpp" />
     <ClCompile Include="Source\Component\CircleCollisionComponent.cpp" />
