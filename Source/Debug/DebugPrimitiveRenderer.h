@@ -95,7 +95,7 @@ private:
 private:
 	struct CbMesh
 	{
-		MYMATRIX	wvp;
+		DirectX::XMFLOAT4X4	wvp;
 		DirectX::XMFLOAT4	color;
 	};
 

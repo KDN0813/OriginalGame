@@ -227,11 +227,12 @@ void DebugPrimitiveRenderer::Render()
 		S.SetScalingMatrix(sphere.radius);
 		T.SetTranslationMatrix(sphere.center);
 		MYMATRIX W = S * T;
+		MYMATRIX WVP = W * View_projection;
 
 		// 定数バッファ更新
 		CbMesh cbMesh{};
 		cbMesh.color = sphere.color;
-		cbMesh.wvp = W * View_projection;
+		WVP.GetFlaot4x4(cbMesh.wvp);
 
 		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
 		context->Draw(sphere_vertex_count, 0);
@@ -247,11 +248,12 @@ void DebugPrimitiveRenderer::Render()
 		S.SetScalingMatrix(cylinder.radius, cylinder.height, cylinder.radius);
 		T.SetTranslationMatrix(cylinder.position);
 		MYMATRIX W = S * T;
+		MYMATRIX WVP = W * View_projection;
 
 		// 定数バッファ更新
 		CbMesh cbMesh{};
 		cbMesh.color = cylinder.color;
-		cbMesh.wvp = W * View_projection;
+		WVP.GetFlaot4x4(cbMesh.wvp);
 
 		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
 		context->Draw(cylinder_vertex_count, 0);
