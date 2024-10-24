@@ -300,13 +300,6 @@ void SceneGame::Initialize()
 
 void SceneGame::Finalize()
 {
-	// ゲーム状態をデフォルトに設定
-	GameData* game_data = GameData::Instance();
-	if (game_data)
-	{
-		game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
-	}
-
 	// オーディオのリセット
 	Audio* audio = Audio::Instance();
 	if (audio)

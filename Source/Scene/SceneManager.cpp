@@ -1,4 +1,6 @@
 #include "SceneManager.h"
+#include "System/GameData.h"
+
 #ifdef _DEBUG
 #include <imgui.h>
 #include "Scene/SceneTitle.h"
@@ -19,6 +21,13 @@ void SceneManager::Update(float elpsed_time)
 
         if (!this->current_scene->IsReady())
         {
+            // ゲーム状態をデフォルトに設定
+            GameData* game_data = GameData::Instance();
+            if (game_data)
+            {
+                game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
+            }
+
             this->current_scene->Initialize();
         }
     }

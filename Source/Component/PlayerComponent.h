@@ -14,6 +14,7 @@ public:
     };
 public:
     PlayerComponent(PlayerParam param) :param(param), default_param(param) {};
+    ~PlayerComponent();
     // リスタート処理
     void ReStart() override { this->param = this->default_param; };      // パラメータの初期化
     // 更新関数

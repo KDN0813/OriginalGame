@@ -3,10 +3,22 @@
 #include "Input/Input.h"
 #include "Camera/CameraManager.h"
 #include "Object/Object.h"
+#include "System/GameData.h"
 
 #include "Component/CameraComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/TransformComponent.h"
+
+PlayerComponent::~PlayerComponent()
+{
+    // TODO 10/24ƒvƒŒƒCƒ„[‚ÌŽ€–S”»’è‰¼
+    // ‘Ì—Í‚ªŽÀ‘•‚Å‚«‚½‚çíœ‚·‚é
+    GameData* game_data = GameData::Instance();
+    if (game_data)
+    {
+        game_data->SetGameStatus(GameData::GameStatus::DEFEAT);
+    }
+}
 
 void PlayerComponent::Update(float elapsed_time)
 {
