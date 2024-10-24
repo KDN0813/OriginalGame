@@ -22,7 +22,6 @@ public:
 	ID3D11DepthStencilView* GetDepthStencilView() const { return depth_stencil_view.Get(); }
 	float GetScreenWidth() const { return screen_width; }
 	float GetScreenHeight() const { return screen_height; }
-	std::mutex& GetMutex() { return mutex; }
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device>			device;
@@ -46,6 +45,5 @@ private:
 
 	float	screen_width;
 	float	screen_height;
-	std::mutex										mutex;
 };
 
