@@ -4,10 +4,8 @@
 #include "Debug/ImGuiHelper.h"
 #endif // DEBUG
 
-#ifdef _DEBUG
-
 GameData::GameData()
-    :Singleton(this) 
+    :Singleton(this)
 {
 #ifdef _DEBUG
     for (int i = 0; i < static_cast<int>(GameStatus::MAX); ++i)
@@ -17,6 +15,8 @@ GameData::GameData()
     }
 #endif // _DEBUG
 }
+
+#ifdef _DEBUG
 
 void GameData::DebugDrawGUI()
 {

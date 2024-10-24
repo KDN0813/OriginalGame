@@ -38,16 +38,6 @@ private:
     ObjectManager object_manager;
     CollisionManager collision_manager;
 #ifdef _DEBUG
-    enum class ImGuiMode
-    {
-        Object = 0,
-        Shader,
-        Camera,
-        Collison,
-        System,
-    };
-    ImGuiMode mode_index = ImGuiMode::Object;
-
     void DebugDrawGUI();
 
     void DrawShaderImGui();
