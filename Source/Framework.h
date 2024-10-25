@@ -20,15 +20,18 @@ public:
 	Framework(HWND hWnd);
 	~Framework();
 
+public:
+	int Run();
+	LRESULT CALLBACK HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 private:
 	void Update(float elapsed_time);
 	void Render(float elapsed_time);
 
 	void CalculateFrameStats();
-public:
-	int Run();
-	LRESULT CALLBACK HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+	// ウィンドウ終了キーが押されているか
+	bool IsWindowCloseKey();
 private:
 	const HWND						hWnd;
 	HighResolutionTimer				timer;

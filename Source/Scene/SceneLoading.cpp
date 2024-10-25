@@ -1,6 +1,7 @@
 #include "SceneLoading.h"
 #include "System/Misc.h"
 
+#include "System/GameData.h"
 #include "Graphics/Graphics.h"
 #include "SceneManager.h"
 
@@ -28,11 +29,23 @@ void SceneLoading::Initialize()
             this->sprite_shader->AddSprite(sprite);
         }
     }
+
+    if (GameData* gamedata = GameData::Instance())
+    {
+        // ロード中フラグ立てる
+        gamedata->SetIsLoading(true);
+    }
 }
 
 void SceneLoading::Finalize()
 {
     this->thread->join();
+
+    if (GameData* gamedata = GameData::Instance())
+    {
+        // ロード中フラグ解除
+        gamedata->SetIsLoading(false);
+    }
 }
 
 void SceneLoading::Update(float elapsed_time)

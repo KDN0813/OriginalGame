@@ -103,6 +103,11 @@ void Framework::CalculateFrameStats()
 	}
 }
 
+bool Framework::IsWindowCloseKey()
+{
+	return (GetAsyncKeyState(VK_CONTROL) & 0x8000) && (GetAsyncKeyState('Q') & 0x8000);
+}
+
 int Framework::Run()
 {
 	MSG msg = {};
@@ -167,7 +172,8 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 	case WM_CREATE:
 		break;
 	case WM_KEYDOWN:
-		//if (wParam == VK_ESCAPE) PostMessage(hWnd, WM_CLOSE, 0, 0);
+		// 終了キーが押されていればウィンドウを閉じる
+		if (IsWindowCloseKey()) PostMessage(hWnd, WM_CLOSE, 0, 0);
 		break;
 	case WM_ENTERSIZEMOVE:
 		timer.Stop();
