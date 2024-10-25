@@ -160,8 +160,6 @@ void SceneGame::Initialize()
 				param.target_type = OBJECT_TYPE::ENEMY;
 				param.default_active_flag = false;
 				auto collision = player->AddComponent<CircleCollisionComponent>(param);
-
-				CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
 			}
 
 			// キャラクターステータス
@@ -258,7 +256,6 @@ void SceneGame::Initialize()
 					param.self_type = OBJECT_TYPE::ENEMY;
 					param.target_type = OBJECT_TYPE::PLAYER;
 					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
-					CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
 				}
 				// トランスフォーム設定
 				{
@@ -318,9 +315,19 @@ void SceneGame::Update(float elapsed_time)
 
 	CameraManager::Instance()->Update(elapsed_time);
 
-	CollisionManager::Instance()->Update();
-
 	Audio::Instance()->Update();
+
+	// 当たり判定
+	if(GameObject* game_object = GameObject::Instance())
+	{
+		const auto& player = game_object->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
+		if (!player) return;
+		const auto& player_circle = player->GetComponent<CircleCollisionComponent>();
+		if (!player_circle) return;
+
+		// プレイヤー(攻)Vs敵(受)の
+		//Collision::IntersectCircleVsCircle();
+	}
 
 #ifdef _DEBUG
 	// スペースキーでゲーム画面に遷移(仮)
@@ -434,9 +441,6 @@ void SceneGame::DebugDrawGUI()
 
 	// シェーダー
 	DrawShaderImGui();
-
-	// コリジョン
-	this->collision_manager.DrawDebugGUI();
 }
 
 void SceneGame::DrawShaderImGui()
