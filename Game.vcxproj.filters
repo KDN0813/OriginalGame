@@ -246,9 +246,6 @@
     <ClInclude Include="Source\Debug\DebugComponent.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision\CircleCollider.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\CircleCollisionComponent.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
@@ -256,9 +253,6 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\CollisionParam.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\CollisionManager.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\GameData.h">
@@ -464,14 +458,8 @@
     <ClCompile Include="Source\Debug\DebugComponent.cpp">
       <Filter>Source\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collision\CircleCollider.cpp">
-      <Filter>Source\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\CircleCollisionComponent.cpp">
       <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\CollisionManager.cpp">
-      <Filter>Source\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\SpriteComponent.cpp">
       <Filter>Source\Component</Filter>

@@ -158,8 +158,6 @@ void SceneGame::Initialize()
 			{
 				CircleCollisionComponent::CollisionParam param{};
 				param.collision_type = COLLISION_TYPE::ATTACKER;
-				param.self_type = OBJECT_TYPE::PLAYER;
-				param.target_type = OBJECT_TYPE::ENEMY;
 				param.default_active_flag = false;
 				auto collision = player->AddComponent<CircleCollisionComponent>(param);
 			}
@@ -258,8 +256,6 @@ void SceneGame::Initialize()
 				{
 					CircleCollisionComponent::CollisionParam param{};
 					param.collision_type = COLLISION_TYPE::DEFENDER;
-					param.self_type = OBJECT_TYPE::ENEMY;
-					param.target_type = OBJECT_TYPE::PLAYER;
 					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 				}
 				// トランスフォーム設定

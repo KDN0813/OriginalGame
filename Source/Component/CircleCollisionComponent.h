@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Collision/CollisionParam.h"
-#include "Collision/CircleCollider.h"
 #ifdef _DEBUG
 #include "Debug/DebugPrimitiveRenderer.h"
 #endif // _DEBUG
@@ -15,8 +14,6 @@ public:
     struct CollisionParam
     {
         COLLISION_TYPE collision_type = COLLISION_TYPE::NONE;
-        OBJECT_TYPE target_type = OBJECT_TYPE::NONE;
-        OBJECT_TYPE self_type = OBJECT_TYPE::NONE;
         float radius = 1.0f;    // 円の半径
         bool default_active_flag = true;    // アクティブフラグの初期値
     };
@@ -41,14 +38,10 @@ public:
 
     // 各種取得・設定関数
     COLLISION_TYPE GetCollisionType() const { return this->param.collision_type; }
-    OBJECT_TYPE GetTargetType() const { return this->param.target_type; }
-    OBJECT_TYPE GetSelfType() const { return this->param.self_type; }
     float GetRadius() const { return this->param.radius; }
     CircleParam GetCircleParam();
     bool GetHitFlag() const { return this->hit_flag; }
     void SetCollisionType(COLLISION_TYPE type) { this->param.collision_type = type; }
-    void SetTargetType(OBJECT_TYPE type) { this->param.target_type = type; }
-    void SetSelfType(OBJECT_TYPE type) { this->param.self_type = type; }
     void SetRadius(float radius) { this->param.radius = radius; }
     void SetHitFlag(bool hit) { this->hit_flag = hit; }
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }

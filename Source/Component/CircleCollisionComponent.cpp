@@ -5,7 +5,6 @@
 #endif // _DEBUG
 #include "CircleCollisionComponent.h"
 #include "Object/Object.h"
-#include "Collision/CollisionManager.h"
 
 #include "Component/TransformComponent.h"
 
@@ -83,18 +82,6 @@ void CircleCollisionComponent::DrawDebugGUI()
         auto a = magic_enum::enum_name(this->param.collision_type);
         text_str += magic_enum::enum_name(this->param.collision_type);
         ImGui::InputTextString("COLLISION TYPE", text_str);
-    }
-    // self_type•\Ž¦
-    {
-        std::string text_str;
-        text_str += magic_enum::enum_name(this->param.self_type);
-        ImGui::InputTextString("SELF TYPE", text_str);
-    }
-    // target_type•\Ž¦
-    {
-        std::string text_str;
-        text_str += magic_enum::enum_name(this->param.target_type);
-        ImGui::InputTextString("TARGET TYPE", text_str);
     }
     ImGui::DragFloat("radius##CircleCollisionComponent", &param.radius, 0.01f);
     ImGui::Checkbox("Hit Flag" ,&hit_flag);
