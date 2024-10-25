@@ -328,16 +328,53 @@ void SceneGame::Update(float elapsed_time)
 	Audio::Instance()->Update();
 
 	// 当たり判定
-	//if(GameObject* game_object = GameObject::Instance())
-	//{
-	//	const auto& player = game_object->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
-	//	if (!player) return;
-	//	const auto& player_circle = player->GetComponent<CircleCollisionComponent>();
-	//	if (!player_circle) return;
+	if(GameObject* game_object = GameObject::Instance())
+	{
+		// プレイヤー取得
+		const auto& player = game_object->GetPlayer();
+		if (!player) return;
+		if (player->GetIsActive())	// プレイヤーが非アクティブなら処理しない
+		{
+			const auto& player_circle = player->GetComponent<CircleCollisionComponent>();
+			if (!player_circle) return;
+			if (player_circle->GetIsActive())
+			{
 
-	//	// プレイヤー(攻)Vs敵(受)の
-	//	//Collision::IntersectCircleVsCircle();
-	//}
+				// 敵取得
+				for (const std::shared_ptr<Object>& enemy : game_object->GetEnemyPool())
+				{
+					if (!enemy) continue;
+					if (!enemy->GetIsActive()) continue;
+					const auto& enemy_circle = enemy->GetComponent<CircleCollisionComponent>();
+					if (!enemy_circle) return;
+					if (!enemy_circle->GetIsActive()) return;
+
+					// プレイヤー(攻)Vs敵(受)の
+					CircleHitResult player_hit_result{};
+					CircleHitResult enemy_hit_result{};
+					if (Collision::IntersectCircleVsCircle(
+						player_circle->GetCircleParam(),
+						enemy_circle->GetCircleParam(),
+						player_hit_result,
+						enemy_hit_result
+					))
+					{
+						// 衝突した場合、攻撃側と防御側にヒットフラグを設定
+						player_circle->SetHitFlag(true);
+						enemy_circle->SetHitFlag(true);
+
+						// 攻撃側のリザルト設定
+						player_hit_result.hit_object_Wptr = enemy_circle->GetOwner();
+						player_circle->SetHitResult(player_hit_result);
+
+						// 防御側のリザルト設定
+						enemy_hit_result.hit_object_Wptr = player_circle->GetOwner();
+						enemy_circle->SetHitResult(enemy_hit_result);
+					}
+				}
+			}
+		}
+	}
 
 #ifdef _DEBUG
 	// スペースキーでゲーム画面に遷移(仮)
