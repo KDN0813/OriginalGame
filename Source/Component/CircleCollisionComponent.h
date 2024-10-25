@@ -71,6 +71,6 @@ public:
     CylinderParam circle_collsion_primitive;
 #endif // DEBUG
 private:
-    float height = 0.1f;    // circle_collsion_primitive‚Ì‰~’Œ‚Ì‚‚³
+    float height = 1.3f;    // circle_collsion_primitive‚Ì‰~’Œ‚Ì‚‚³
 };
 
