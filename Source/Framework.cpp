@@ -103,9 +103,15 @@ void Framework::CalculateFrameStats()
 	}
 }
 
-bool Framework::IsWindowCloseKey()
+bool Framework::IsPressedWindowCloseKey()
 {
 	return (GetAsyncKeyState(VK_CONTROL) & 0x8000) && (GetAsyncKeyState('Q') & 0x8000);
+}
+
+bool Framework::IsPressedPauseKey()
+{
+	GamePad& game_pad = input.GetGamePad();
+	return (GamePad::BTN_START & game_pad.GetButtonDown());
 }
 
 int Framework::Run()
@@ -130,6 +136,14 @@ int Framework::Run()
 			CalculateFrameStats();
 #endif // _DEBUG
 
+			// ポーズキーが押されたらポーズ設定(解除)する
+			if (IsPressedPauseKey())
+			{
+				if (GameData* game_data = GameData::Instance())
+				{
+					game_data->SetIsPause(!game_data->GetIsPause());
+				}
+			}
 
 			float elapsed_time = timer.TimeInterval();
 			Update(elapsed_time);
@@ -173,7 +187,7 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 		break;
 	case WM_KEYDOWN:
 		// 終了キーが押されていればウィンドウを閉じる
-		if (IsWindowCloseKey()) PostMessage(hWnd, WM_CLOSE, 0, 0);
+		if (IsPressedWindowCloseKey()) PostMessage(hWnd, WM_CLOSE, 0, 0);
 		break;
 	case WM_ENTERSIZEMOVE:
 		timer.Stop();

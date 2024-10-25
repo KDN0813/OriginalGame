@@ -31,7 +31,9 @@ private:
 	void CalculateFrameStats();
 
 	// ウィンドウ終了キーが押されているか
-	bool IsWindowCloseKey();
+	bool IsPressedWindowCloseKey();
+	// ポーズキーが押されているか
+	bool IsPressedPauseKey();
 private:
 	const HWND						hWnd;
 	HighResolutionTimer				timer;

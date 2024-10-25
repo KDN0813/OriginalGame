@@ -13,16 +13,9 @@ void SceneManager::Update(float elpsed_time)
 {
     // ポーズ処理
     {
-        GameData* game_data = GameData::Instance();
-        if (game_data)
+        if (GameData* game_data = GameData::Instance())
         {
-            // ゲーム状態を取得
-            const GameData::GameStatus& game_status = game_data->GetGameStatus();
-            // ポーズ状態なら処理を止める
-            if (game_status == GameData::GameStatus::PAUSED)
-            {
-                return;
-            }
+            if (game_data->GetIsPause()) return;
         }
     }
 
