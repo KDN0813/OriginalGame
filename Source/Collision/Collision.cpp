@@ -15,7 +15,7 @@ bool Collision::IntersectCircleVsCircle(
     MYVECTOR2 vec = CenterA - CenterB;
 
     // ‹——£”»’è
-    float range = circleA.radius + circleA.radius;
+    float range = circleA.radius + circleB.radius;
     // LengthSp‚ª“ñæ‚µ‚½’l‚È‚Ì‚Årange‚à“ñæ‚·‚é
     if (vec.LengthSq() > range * range)
     {
