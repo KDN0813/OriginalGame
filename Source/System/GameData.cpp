@@ -24,6 +24,7 @@ void GameData::DebugDrawGUI()
     {
         ImGui::InputInt("Score##GameData", &this->param.score);
         ImGui::InputFloat("Game Elapsed Time##GameData", &this->param.game_elapsed_time);
+        ImGui::Checkbox("Is Loading##GameData", &this->param.is_loading);
 
         // ƒQ[ƒ€ó‘Ô‚Ì•\¦
         {

@@ -153,13 +153,21 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 		EndPaint(hWnd, &ps);
 		break;
 	}
+	case WM_CLOSE:
+		if (GameData* gamedata = GameData::Instance())
+		{
+			// ロード中ならウィンドウを閉じない
+			if (gamedata->GetIsLoading()) break;
+		}
+		DestroyWindow(hWnd);
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 	case WM_CREATE:
 		break;
 	case WM_KEYDOWN:
-		if (wParam == VK_ESCAPE) PostMessage(hWnd, WM_CLOSE, 0, 0);
+		//if (wParam == VK_ESCAPE) PostMessage(hWnd, WM_CLOSE, 0, 0);
 		break;
 	case WM_ENTERSIZEMOVE:
 		timer.Stop();

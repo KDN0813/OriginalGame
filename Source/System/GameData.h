@@ -25,6 +25,7 @@ public:
     {
         int score = 0;                                  // スコア
         float game_elapsed_time = 0.0f;                 // 経過時間
+        bool is_loading = false;                        // ロード中であるか
         GameStatus game_status = GameStatus::DEFAULT;   // ゲームの状態
     };
 public:
@@ -39,9 +40,11 @@ public:
     // 各種取得・設定関数
     int GetScore()const { return this->param.score; }
     float GetGameElapsedTime()const { return this->param.game_elapsed_time; }
+    bool GetIsLoading()const { return this->param.is_loading; }
     GameStatus GetGameStatus()const { return this->param.game_status; }
-    void SetScore(int s) { this->param.score = s; }
-    void SetGameElapsedTime(float t) { this->param.game_elapsed_time = t; }
+    void SetScore(int score) { this->param.score = score; }
+    void SetGameElapsedTime(float game_elapsed_time) { this->param.game_elapsed_time = game_elapsed_time; }
+    void SetIsLoading(bool is_loading) { this->param.is_loading = is_loading; }
     void SetGameStatus(GameStatus status) { this->param.game_status = status; }
 private:
     GameParam param{};
