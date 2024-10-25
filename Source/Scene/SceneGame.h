@@ -27,6 +27,8 @@ private:
     // GameStatusに応じてシーンの遷移・リスタート処理を行う
     void ProcessGameState();
 
+    // プレイヤーとエネミーの当たり判定
+    void PlayerVsEnemy();
 private:
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
