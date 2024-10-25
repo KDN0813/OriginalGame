@@ -231,6 +231,12 @@ void Framework::DrawDebugGUI()
 	{
 		game_data->DebugDrawGUI();
 	}
+
+	// ゲームオブジェクト
+	if (GameObject* game_object = GameObject::Instance())
+	{
+		game_object->DebugDrawGUI();
+	}
 }
 
 #endif // DEBUG

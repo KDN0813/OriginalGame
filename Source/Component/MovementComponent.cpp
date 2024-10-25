@@ -156,7 +156,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 		transform->AddLocalPosition(this->param.velocity);
 		return;
 	}
-	auto stage_object = GameObject::Instance()->GetGameObject(GameObject::OBJECT_TYPE::STAGE);
+	auto stage_object = GameObject::Instance()->GetStage();
 	if (!stage_object)
 	{
 		transform->AddLocalPosition(this->param.velocity);

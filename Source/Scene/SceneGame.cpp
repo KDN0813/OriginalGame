@@ -73,8 +73,10 @@ void SceneGame::Initialize()
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
 
-			// GameObjectに設定
-			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::STAGE, stage);
+			if (GameObject* game_object = GameObject::Instance())
+			{
+				game_object->SetStage(stage);
+			}
 		}
 
 		// プレイヤー
@@ -194,7 +196,10 @@ void SceneGame::Initialize()
 			}
 
 			// GameObjectに設定
-			GameObject::Instance()->SetGameObject(GameObject::OBJECT_TYPE::PLAYER, player);
+			if (GameObject* game_object = GameObject::Instance())
+			{
+				game_object->SetPlayer(player);
+			}
 		}
 
 
@@ -286,6 +291,11 @@ void SceneGame::Initialize()
 				// シェーダー設定
 				auto shader_component =
 					enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
+			
+				if (GameObject* game_object = GameObject::Instance())
+				{
+					game_object->SetEnemy(enemy);
+				}
 			}
 		}
 
@@ -318,16 +328,16 @@ void SceneGame::Update(float elapsed_time)
 	Audio::Instance()->Update();
 
 	// 当たり判定
-	if(GameObject* game_object = GameObject::Instance())
-	{
-		const auto& player = game_object->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
-		if (!player) return;
-		const auto& player_circle = player->GetComponent<CircleCollisionComponent>();
-		if (!player_circle) return;
+	//if(GameObject* game_object = GameObject::Instance())
+	//{
+	//	const auto& player = game_object->GetGameObject(GameObject::OBJECT_TYPE::PLAYER);
+	//	if (!player) return;
+	//	const auto& player_circle = player->GetComponent<CircleCollisionComponent>();
+	//	if (!player_circle) return;
 
-		// プレイヤー(攻)Vs敵(受)の
-		//Collision::IntersectCircleVsCircle();
-	}
+	//	// プレイヤー(攻)Vs敵(受)の
+	//	//Collision::IntersectCircleVsCircle();
+	//}
 
 #ifdef _DEBUG
 	// スペースキーでゲーム画面に遷移(仮)

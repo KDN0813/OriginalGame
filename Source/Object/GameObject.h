@@ -5,21 +5,24 @@
 class GameObject : public Singleton<GameObject>
 {
 public:
-    enum class OBJECT_TYPE : size_t
-    {
-        STAGE = 0,
-        PLAYER,
-
-        MAX,
-    };
-
-public:
     GameObject();
     ~GameObject() {};
 
-    std::shared_ptr<Object> GetGameObject(OBJECT_TYPE type);
-    void SetGameObject(OBJECT_TYPE type,std::shared_ptr<Object> object);
+    // äeéÌê›íËÅEéÊìæä÷êî
+    void SetPlayer(std::shared_ptr<Object> player) { this->player_Wptr = player; };
+    void SetStage(std::shared_ptr<Object> stage) { this->stage_Wptr = stage; };
+    void SetEnemy(std::shared_ptr<Object> enenmy) { this->enemy_Wptr_pool.emplace_back(enenmy); };
+    const std::shared_ptr<Object>& GetPlayer() { return this->player_Wptr.lock(); }
+    const std::shared_ptr<Object>& GetStage() { return this->stage_Wptr.lock(); }
+    std::vector<std::shared_ptr<Object>> GetEnemyPool();
 private:
-    std::vector<std::weak_ptr<Object>> game_object_pool;
-};
+    std::weak_ptr<Object> player_Wptr;
+    std::weak_ptr<Object> stage_Wptr;
+    std::vector<std::weak_ptr<Object>> enemy_Wptr_pool;
 
+#ifdef _DEBUG
+public:
+    void DebugDrawGUI();
+
+#endif // DEBUG
+};

@@ -1,17 +1,70 @@
 #include "GameObject.h"
+#ifdef _DEBUG
+#include "Debug/ImGuiHelper.h"
+#endif // DEBUG
 
 GameObject::GameObject()
     :Singleton(this)
 {
-    this->game_object_pool.resize(static_cast<size_t>(OBJECT_TYPE::MAX));
 }
 
-std::shared_ptr<Object> GameObject::GetGameObject(OBJECT_TYPE type)
+std::vector<std::shared_ptr<Object>> GameObject::GetEnemyPool()
 {
-    return this->game_object_pool[static_cast<size_t>(type)].lock();
+    std::vector<std::shared_ptr<Object>> enemy_pool;
+
+    for (const std::weak_ptr<Object>& enemy_Wptr : enemy_Wptr_pool)
+    {
+        if (std::shared_ptr<Object> enemy = enemy_Wptr.lock())
+        {
+            if (!enemy->GetIsActive()) continue;    // 非アクティブならスキップ
+            enemy_pool.emplace_back(enemy);
+        }
+    }
+    return enemy_pool;
 }
 
-void GameObject::SetGameObject(OBJECT_TYPE type, std::shared_ptr<Object> object)
+#ifdef _DEBUG
+
+void GameObject::DebugDrawGUI()
 {
-    this->game_object_pool[static_cast<size_t>(type)] = object;
+    if (ImGui::Begin("GameObject"))
+    {
+        if (ImGui::CollapsingHeader("Player##GameObject"))
+        {
+            std::string object_name = "Not Object";
+            if (std::shared_ptr<Object> player = this->player_Wptr.lock())
+            {
+                object_name = player->GetName();
+            }
+            ImGui::InputTextString("Object Name##GameObjectPlayer", object_name);
+        }
+
+        if (ImGui::CollapsingHeader("Stage##GameObject"))
+        {
+            std::string object_name = "Not Object";
+            if (std::shared_ptr<Object> stage = this->stage_Wptr.lock())
+            {
+                object_name = stage->GetName();
+            }
+            ImGui::InputTextString("Object Name##GameObjectStage", object_name);
+        }
+
+        if (ImGui::CollapsingHeader("Enemy##GameObject"))
+        {
+            int enemy_id = 0;   // エネミーのID(ImGuiで別データとして扱う用)
+            for (const std::weak_ptr<Object>& enemy_Wptr : this->enemy_Wptr_pool)
+            {
+                if (std::shared_ptr<Object> enemy = enemy_Wptr.lock())
+                {
+                    std::string object_name = enemy->GetName();
+                    std::string label = +"Object Name##GameObjectenemy" + std::to_string(enemy_id);
+                    ImGui::InputTextString(label.c_str(), object_name);
+                }
+                ++enemy_id;
+            }
+        }
+    }
+    ImGui::End();
 }
+
+#endif // DEBUG
