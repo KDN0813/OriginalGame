@@ -278,6 +278,14 @@ void SceneGame::Initialize()
 					auto transform = enemy->AddComponent<Transform3DComponent>(param);
 				}
 
+				// キャラクターステータス
+				{
+					CharacterComponent::CharacterParam param{};
+					param.max_hp = 10;
+					param.hp = 5;
+					enemy->AddComponent<CharacterComponent>(param);
+				}
+
 				// シェーダー設定
 				auto shader_component =
 					enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
