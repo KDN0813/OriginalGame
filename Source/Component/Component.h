@@ -85,7 +85,7 @@ class DefaultComponent : public Component
 {
 public:
     DefaultComponent() {};
-    virtual ~DefaultComponent() {};
+    ~DefaultComponent() {};
 
     // 開始関数
     void Start()  override {};
@@ -116,6 +116,6 @@ public:
      * デバッグプリミティブ表示用ImGui
      */
     void DrawDebugPrimitiveGUI()  override {};
-    bool IsDebugPrimitive() { return false; }   // DebugPrimitiveが存在するか
+    bool IsDebugPrimitive() override { return false; }   // DebugPrimitiveが存在するか
 #endif // DEBUG
 };
