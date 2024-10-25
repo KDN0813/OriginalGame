@@ -131,6 +131,7 @@
     <ClInclude Include="Source\Collision\CollisionParam.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\CameraControllerComponent.h" />
+    <ClInclude Include="Source\Component\CharacterComponent.h" />
     <ClInclude Include="Source\Component\CircleCollisionComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\EnemyComponent.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="Source\Collision\CollisionManager.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
     <ClCompile Include="Source\Component\CameraControllerComponent.cpp" />
+    <ClCompile Include="Source\Component\CharacterComponent.cpp" />
     <ClCompile Include="Source\Component\CircleCollisionComponent.cpp" />
     <ClCompile Include="Source\Component\EnemyComponent.cpp" />
     <ClCompile Include="Source\Component\GravityComponent.cpp" />
