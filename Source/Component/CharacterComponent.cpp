@@ -16,7 +16,7 @@ void CharacterComponent::ReStart()
 
 void CharacterComponent::ApplyDamage(int damege)
 {
-    this->param.hp = (std::max)(this->param.hp - damege, 0);
+    this->param.hp = (std::min)((std::max)(this->param.hp - damege, 0), this->param.max_hp);
 }
 
 bool CharacterComponent::IsAlive()

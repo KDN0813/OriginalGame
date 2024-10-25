@@ -39,6 +39,7 @@
 #include "Component/CircleCollisionComponent.h"
 #include "Component/CameraControllerComponent.h"
 #include "Component/SpriteComponent.h"
+#include "Component/CharacterComponent.h"
 
 #include "StateMachine/TransitionJudgementDerived.h"
 #include "StateMachine/StateDerived.h"
@@ -161,6 +162,14 @@ void SceneGame::Initialize()
 				auto collision = player->AddComponent<CircleCollisionComponent>(param);
 
 				CollisionManager::Instance()->GetCircleCollider()->AddCircle(collision);
+			}
+
+			// キャラクターステータス
+			{
+				CharacterComponent::CharacterParam param{};
+				param.max_hp = 100;
+				param.hp = 50;
+				player->AddComponent<CharacterComponent>(param);
 			}
 
 			// 子オブジェクト設定
