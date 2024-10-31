@@ -109,6 +109,9 @@
     <Filter Include="Source\Component\Transform">
       <UniqueIdentifier>{3705d6be-a4ec-4307-a30e-6ff4028b82da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\StateMachine\Legacy">
+      <UniqueIdentifier>{9f6993a0-431f-47ac-b7a5-daa35789afac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -357,11 +360,11 @@
     <ClInclude Include="Source\Component\SpriteComponent.h">
       <Filter>Source\Component\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\StateMachineComponent.h">
-      <Filter>Source\Component\StateMachine</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\TransformComponent.h">
       <Filter>Source\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\LegacyStateMachineComponent.h">
+      <Filter>Source\Component\StateMachine\Legacy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -554,11 +557,11 @@
     <ClCompile Include="Source\Component\SpriteComponent.cpp">
       <Filter>Source\Component\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\StateMachineComponent.cpp">
-      <Filter>Source\Component\StateMachine</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\TransformComponent.cpp">
       <Filter>Source\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\LegacyStateMachineComponent.cpp">
+      <Filter>Source\Component\StateMachine\Legacy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

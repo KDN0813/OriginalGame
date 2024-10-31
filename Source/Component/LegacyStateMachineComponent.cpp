@@ -1,23 +1,23 @@
 #include "Debug/ImGuiHelper.h"
-#include "StateMachineComponent.h"
+#include "LegacyStateMachineComponent.h"
 #include "StateMachine/TransitionJudgement.h"
 
-StateMachineComponent::StateMachineComponent()
+LegacyStateMachineComponent::LegacyStateMachineComponent()
 {
 }
 
-void StateMachineComponent::Start()
+void LegacyStateMachineComponent::Start()
 {
     this->state_index = (this->default_state == INVALID_STATE_INDEX) ? 0 : this->default_state;
     this->next_state = this->state_index;
     this->state_pool[this->state_index]->Start();
 }
 
-void StateMachineComponent::End()
+void LegacyStateMachineComponent::End()
 {
 }
 
-void StateMachineComponent::ReStart()
+void LegacyStateMachineComponent::ReStart()
 {
     this->next_state = this->default_state;
     this->state_pool[this->state_index]->End();
@@ -25,7 +25,7 @@ void StateMachineComponent::ReStart()
     this->state_pool[this->state_index]->Start();
 }
 
-void StateMachineComponent::Update(float elapsed_time)
+void LegacyStateMachineComponent::Update(float elapsed_time)
 {
     if (this->state_index < 0 || this->state_index == INVALID_STATE_INDEX || this->state_index >= this->state_pool.size()) return;
 
@@ -43,29 +43,29 @@ void StateMachineComponent::Update(float elapsed_time)
     }
 }
 
-void StateMachineComponent::ChangeState(StateIndex state_index)
+void LegacyStateMachineComponent::ChangeState(StateIndex state_index)
 {
     if (state_index < 0 || state_index == INVALID_STATE_INDEX || state_index >= this->state_pool.size()) return;
     this->next_state = state_index;
 }
 
-void StateMachineComponent::SetDefaultState(StateIndex state_index)
+void LegacyStateMachineComponent::SetDefaultState(StateIndex state_index)
 {
     if (state_index < 0 || state_index == INVALID_STATE_INDEX || state_index >= this->state_pool.size()) return;
     this->default_state = state_index;
 }
 
-void StateMachineComponent::SetDefaultState(std::string state_name)
+void LegacyStateMachineComponent::SetDefaultState(std::string state_name)
 {
     SetDefaultState(MyHash(state_name));
 }
 
-void StateMachineComponent::SetDefaultState(MyHash state_name)
+void LegacyStateMachineComponent::SetDefaultState(MyHash state_name)
 {
     SetDefaultState(FindStateIndex(state_name));
 }
 
-void StateMachineComponent::PreTransitionJudgemen(StateBase* state)
+void LegacyStateMachineComponent::PreTransitionJudgemen(StateBase* state)
 {
     if (!state) return;
     for (auto& state_jugement : state->GetPreUpdateJudgementPool())
@@ -87,7 +87,7 @@ void StateMachineComponent::PreTransitionJudgemen(StateBase* state)
     }
 }
 
-void StateMachineComponent::PostTransitionJudgemen(StateBase* state)
+void LegacyStateMachineComponent::PostTransitionJudgemen(StateBase* state)
 {
     if (!state) return;
     for (auto& state_jugement : state->GetPostUpdateJudgementPool())
@@ -111,7 +111,7 @@ void StateMachineComponent::PostTransitionJudgemen(StateBase* state)
     }
 }
 
-StateBase* StateMachineComponent::FindState(MyHash name)
+StateBase* LegacyStateMachineComponent::FindState(MyHash name)
 {
     for (size_t i = 0; i < this->state_pool.size(); ++i)
     {
@@ -124,7 +124,7 @@ StateBase* StateMachineComponent::FindState(MyHash name)
     return nullptr;
 }
 
-StateIndex StateMachineComponent::FindStateIndex(MyHash name)
+StateIndex LegacyStateMachineComponent::FindStateIndex(MyHash name)
 {
     StateBase* state = FindState(name);
     assert(state != nullptr);
@@ -134,7 +134,7 @@ StateIndex StateMachineComponent::FindStateIndex(MyHash name)
 
 #ifdef _DEBUG
 
-void StateMachineComponent::DrawDebugGUI()
+void LegacyStateMachineComponent::DrawDebugGUI()
 {
     ImGui::InputSize_t("State Index", this->state_index);
 

@@ -3,11 +3,12 @@
 #include "StateMachine/State.h"
 #include "System/MyHash.h"
 
-class StateMachineComponent : public Component
+// 旧コンポーネントクラス
+class LegacyStateMachineComponent : public Component
 {
 public:
-    StateMachineComponent();
-    virtual ~StateMachineComponent() {};
+    LegacyStateMachineComponent();
+    virtual ~LegacyStateMachineComponent() {};
 
     // 開始関数
     void Start()  override;
@@ -18,7 +19,7 @@ public:
     // 更新関数
     void Update(float elapsed_time) override;
     // 名前取得
-    const char* GetName()const  override { return "StateMachineComponent"; };
+    const char* GetName()const  override { return "LegacyStateMachineComponent"; };
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 

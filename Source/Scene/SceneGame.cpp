@@ -35,11 +35,13 @@
 #include "Component/GravityComponent.h"
 #include "Component/ModelAnimationComponent.h"
 #include "Component/EnemyComponent.h"
-#include "Component/StateMachineComponent.h"
 #include "Component/CircleCollisionComponent.h"
 #include "Component/CameraControllerComponent.h"
 #include "Component/SpriteComponent.h"
 #include "Component/CharacterComponent.h"
+
+// Legacy
+#include "Component/LegacyStateMachineComponent.h"
 
 #include "StateMachine/TransitionJudgementDerived.h"
 #include "StateMachine/StateDerived.h"
@@ -107,7 +109,7 @@ void SceneGame::Initialize()
 				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::ATTACK01, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.2f);
 			}
 			// ステートマシン設定
-			auto state_machine = player->AddComponent<StateMachineComponent>();
+			auto state_machine = player->AddComponent<LegacyStateMachineComponent>();
 			{
 				auto idle_state = state_machine->RegisterState<IdelState>();
 				idle_state->AddStateTransition(std::make_unique<StateTransitionInfo>("AttackState", std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X)), StateBase::JudgementUpdatePhase::PostUpdate);
@@ -244,7 +246,7 @@ void SceneGame::Initialize()
 					}
 				}
 				// ステート設定
-				auto state_machine = enemy->AddComponent<StateMachineComponent>();
+				auto state_machine = enemy->AddComponent<LegacyStateMachineComponent>();
 				{
 					auto idle_state = state_machine->RegisterState<IdelState>();
 					idle_state->AddStateTransition(std::make_unique<StateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
