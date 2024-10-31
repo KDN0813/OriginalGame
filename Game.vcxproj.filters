@@ -369,6 +369,12 @@
     <ClInclude Include="Source\StateMachine\LegacyTransitionJudgement.h">
       <Filter>Source\StateMachine\Legacy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\StateMachineComponent.h">
+      <Filter>Source\Component\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\StateBase.h">
+      <Filter>Source\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -565,6 +571,9 @@
     </ClCompile>
     <ClCompile Include="Source\StateMachine\LegacyTransitionJudgementDerived.cpp">
       <Filter>Source\StateMachine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\StateMachineComponent.cpp">
+      <Filter>Source\Component\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

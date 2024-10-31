@@ -143,6 +143,7 @@
     <ClInclude Include="Source\Component\PlayerComponent.h" />
     <ClInclude Include="Source\Component\SpriteComponent.h" />
     <ClInclude Include="Source\Component\LegacyStateMachineComponent.h" />
+    <ClInclude Include="Source\Component\StateMachineComponent.h" />
     <ClInclude Include="Source\Component\TransformComponent.h" />
     <ClInclude Include="Source\ConstantManager.h" />
     <ClInclude Include="Source\Debug\DebugComponent.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Source\StateMachine\LegacyStateDerived.h" />
     <ClInclude Include="Source\StateMachine\LegacyTransitionJudgement.h" />
     <ClInclude Include="Source\StateMachine\LegacyTransitionJudgementDerived.h" />
+    <ClInclude Include="Source\StateMachine\StateBase.h" />
     <ClInclude Include="Source\System\Alias\OwnerAlias.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
@@ -224,6 +226,7 @@
     <ClCompile Include="Source\Component\PlayerComponent.cpp" />
     <ClCompile Include="Source\Component\SpriteComponent.cpp" />
     <ClCompile Include="Source\Component\LegacyStateMachineComponent.cpp" />
+    <ClCompile Include="Source\Component\StateMachineComponent.cpp" />
     <ClCompile Include="Source\Component\TransformComponent.cpp" />
     <ClCompile Include="Source\ConstantManager.cpp" />
     <ClCompile Include="Source\Debug\DebugComponent.cpp" />
