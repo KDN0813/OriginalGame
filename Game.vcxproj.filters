@@ -70,6 +70,45 @@
     <Filter Include="Source\Audio">
       <UniqueIdentifier>{31b811d9-ace3-49e5-b107-f4b9c1bb2ea1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\Camera">
+      <UniqueIdentifier>{90e6e921-d95d-430d-8d2c-b615ead3d540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Character">
+      <UniqueIdentifier>{ac003f48-b1a1-428c-88bf-f00581718f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Collision">
+      <UniqueIdentifier>{46c68ff4-65b9-40d9-bce0-f731b9fbbc51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Enemy">
+      <UniqueIdentifier>{411c35fd-f5a3-4527-864f-1f808d280628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Gravity">
+      <UniqueIdentifier>{43a1368b-7f7c-4390-bcb5-f2d8a0e8750c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Model">
+      <UniqueIdentifier>{6b393aeb-dcb3-4065-a67c-3422bc717030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Shader">
+      <UniqueIdentifier>{6bb80e3d-d809-4030-97bb-2198e0e4a097}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Model\Animation">
+      <UniqueIdentifier>{dfce0b40-367d-4449-b903-6e8513c75fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Movement">
+      <UniqueIdentifier>{a862f07d-5a4d-4e81-971c-3d9947b2a033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Player">
+      <UniqueIdentifier>{0808af7c-7813-4b92-8faa-3ab3d917e570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Sprite">
+      <UniqueIdentifier>{daceb145-fb9e-4973-94f1-12c3cdaa5121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\StateMachine">
+      <UniqueIdentifier>{a4b354ec-5abe-476f-8852-c8046700a207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Transform">
+      <UniqueIdentifier>{3705d6be-a4ec-4307-a30e-6ff4028b82da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -141,9 +180,6 @@
     <ClInclude Include="Source\Scene\SceneDebug.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\InstancingModelComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Model\InstancingModelResource.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
@@ -156,29 +192,11 @@
     <ClInclude Include="Source\Model\InstancingModelResourceManager.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\InstancingModelShaderComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\TransformComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Object\Object.h">
       <Filter>Source\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\MovementComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\ModelComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\ModelShaderComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Shader\ModelShader.h">
       <Filter>Source\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\PlayerComponent.h">
-      <Filter>Source\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Debug\ImGuiHelper.h">
       <Filter>Source\Debug</Filter>
@@ -195,12 +213,6 @@
     <ClInclude Include="Source\Collision\Collision.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\ModelAnimationComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\GravityComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Debug\DebugPrimitiveRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
     </ClInclude>
@@ -215,12 +227,6 @@
     </ClInclude>
     <ClInclude Include="Source\System\MyMath\MYVECTOR4.h">
       <Filter>Source\System\MyMath</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\EnemyComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\StateMachineComponent.h">
-      <Filter>Source\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\StateMachine\State.h">
       <Filter>Source\StateMachine</Filter>
@@ -246,9 +252,6 @@
     <ClInclude Include="Source\Debug\DebugComponent.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\CircleCollisionComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ConstantManager.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -257,12 +260,6 @@
     </ClInclude>
     <ClInclude Include="Source\System\GameData.h">
       <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\CameraControllerComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\SpriteComponent.h">
-      <Filter>Source\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Shader\SpriteShader.h">
       <Filter>Source\Shader</Filter>
@@ -315,14 +312,56 @@
     <ClInclude Include="Source\Camera\CameraManager.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\CameraComponent.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Camera\CameraParam.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\CameraComponent.h">
+      <Filter>Source\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\CameraControllerComponent.h">
+      <Filter>Source\Component\Camera</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Component\CharacterComponent.h">
-      <Filter>Source\Component</Filter>
+      <Filter>Source\Component\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\CircleCollisionComponent.h">
+      <Filter>Source\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\EnemyComponent.h">
+      <Filter>Source\Component\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\GravityComponent.h">
+      <Filter>Source\Component\Gravity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\InstancingModelComponent.h">
+      <Filter>Source\Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\InstancingModelShaderComponent.h">
+      <Filter>Source\Component\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ModelAnimationComponent.h">
+      <Filter>Source\Component\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ModelComponent.h">
+      <Filter>Source\Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ModelShaderComponent.h">
+      <Filter>Source\Component\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\MovementComponent.h">
+      <Filter>Source\Component\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\PlayerComponent.h">
+      <Filter>Source\Component\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\SpriteComponent.h">
+      <Filter>Source\Component\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\StateMachineComponent.h">
+      <Filter>Source\Component\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\TransformComponent.h">
+      <Filter>Source\Component\Transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -371,9 +410,6 @@
     <ClCompile Include="Source\Scene\SceneDebug.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\InstancingModelComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Model\InstancingModelResource.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
@@ -383,23 +419,8 @@
     <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\TransformComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Object\Object.cpp">
       <Filter>Source\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\MovementComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\ModelShaderComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\ModelComponent.cpp">
-      <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Shader\ModelShader.cpp">
       <Filter>Source\Shader</Filter>
@@ -407,17 +428,8 @@
     <ClCompile Include="Source\Input\Mouse.cpp">
       <Filter>Source\input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\PlayerComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ConstantManager.cpp">
       <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\ModelAnimationComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\GravityComponent.cpp">
-      <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Object\GameObject.cpp">
       <Filter>Source\Object</Filter>
@@ -427,12 +439,6 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\Collision.cpp">
       <Filter>Source\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\EnemyComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\StateMachineComponent.cpp">
-      <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\StateMachine\State.cpp">
       <Filter>Source\StateMachine</Filter>
@@ -458,20 +464,11 @@
     <ClCompile Include="Source\Debug\DebugComponent.cpp">
       <Filter>Source\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\CircleCollisionComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\SpriteComponent.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Shader\SpriteShader.cpp">
       <Filter>Source\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Sprite\Sprite.cpp">
       <Filter>Source\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\CameraControllerComponent.cpp">
-      <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneResult.cpp">
       <Filter>Source\Scene</Filter>
@@ -516,10 +513,52 @@
       <Filter>Source\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\CameraComponent.cpp">
-      <Filter>Source\Component</Filter>
+      <Filter>Source\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\CameraControllerComponent.cpp">
+      <Filter>Source\Component\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\CharacterComponent.cpp">
-      <Filter>Source\Component</Filter>
+      <Filter>Source\Component\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\CircleCollisionComponent.cpp">
+      <Filter>Source\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\EnemyComponent.cpp">
+      <Filter>Source\Component\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\GravityComponent.cpp">
+      <Filter>Source\Component\Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\InstancingModelComponent.cpp">
+      <Filter>Source\Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp">
+      <Filter>Source\Component\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ModelAnimationComponent.cpp">
+      <Filter>Source\Component\Model\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ModelComponent.cpp">
+      <Filter>Source\Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ModelShaderComponent.cpp">
+      <Filter>Source\Component\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\MovementComponent.cpp">
+      <Filter>Source\Component\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\PlayerComponent.cpp">
+      <Filter>Source\Component\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpriteComponent.cpp">
+      <Filter>Source\Component\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\StateMachineComponent.cpp">
+      <Filter>Source\Component\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\TransformComponent.cpp">
+      <Filter>Source\Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
