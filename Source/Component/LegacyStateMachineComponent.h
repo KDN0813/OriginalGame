@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "StateMachine/State.h"
+#include "StateMachine/LegacyState.h"
 #include "System/MyHash.h"
 
 // 旧コンポーネントクラス

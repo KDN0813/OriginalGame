@@ -40,11 +40,12 @@
 #include "Component/SpriteComponent.h"
 #include "Component/CharacterComponent.h"
 
-// Legacy
+#pragma region LegacyComponent(旧コンポーネント)
 #include "Component/LegacyStateMachineComponent.h"
+#pragma endregion LegacyComponent(旧コンポーネント)
 
-#include "StateMachine/TransitionJudgementDerived.h"
-#include "StateMachine/StateDerived.h"
+#include "StateMachine/LegacyTransitionJudgementDerived.h"
+#include "StateMachine/LegacyStateDerived.h"
 
 
 void SceneGame::Initialize()
@@ -112,7 +113,7 @@ void SceneGame::Initialize()
 			auto state_machine = player->AddComponent<LegacyStateMachineComponent>();
 			{
 				auto idle_state = state_machine->RegisterState<IdelState>();
-				idle_state->AddStateTransition(std::make_unique<StateTransitionInfo>("AttackState", std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X)), StateBase::JudgementUpdatePhase::PostUpdate);
+				idle_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("AttackState", std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X)), StateBase::JudgementUpdatePhase::PostUpdate);
 				auto attack_state = state_machine->RegisterState<AttackState>();
 				//attack_state->AddStateTransition(std::make_unique<StateTransitionInfo>("IdelState", std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_Y)), StateBase::JudgementUpdatePhase::PostUpdate);
 
@@ -249,9 +250,9 @@ void SceneGame::Initialize()
 				auto state_machine = enemy->AddComponent<LegacyStateMachineComponent>();
 				{
 					auto idle_state = state_machine->RegisterState<IdelState>();
-					idle_state->AddStateTransition(std::make_unique<StateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
+					idle_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
 					auto wander_state = state_machine->RegisterState<WanderState>();
-					wander_state->AddStateTransition(std::make_unique<StateTransitionInfo>("IdelState", std::make_unique<Judgement_IsAtTarget>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
+					wander_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("IdelState", std::make_unique<Judgement_IsAtTarget>(enemy)), StateBase::JudgementUpdatePhase::PostUpdate);
 
 					state_machine->SetDefaultState("WanderState");
 				}

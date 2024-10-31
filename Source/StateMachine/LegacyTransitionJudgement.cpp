@@ -1,6 +1,6 @@
 #include <imgui.h>
 #include <string>
-#include "TransitionJudgement.h"
+#include "LegacyTransitionJudgement.h"
 #include "Object/Object.h"
 #include "Component/ModelComponent.h"
 

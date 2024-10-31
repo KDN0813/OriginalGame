@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "State.h"
+#include "LegacyState.h"
 
 class MovementComponent;
 class EnemyComponent;

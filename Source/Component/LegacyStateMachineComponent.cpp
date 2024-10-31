@@ -1,6 +1,6 @@
 #include "Debug/ImGuiHelper.h"
 #include "LegacyStateMachineComponent.h"
-#include "StateMachine/TransitionJudgement.h"
+#include "StateMachine/LegacyTransitionJudgement.h"
 
 LegacyStateMachineComponent::LegacyStateMachineComponent()
 {

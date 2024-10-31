@@ -1,8 +1,8 @@
-#include "State.h"
-#include "StateMachine/TransitionJudgement.h"
+#include "LegacyState.h"
+#include "StateMachine/LegacyTransitionJudgement.h"
 #include "Object/Object.h"
 
-StateTransitionInfo::StateTransitionInfo(
+LegacyStateTransitionInfo::LegacyStateTransitionInfo(
     std::string next_state_name,
     std::unique_ptr<TransitionJudgementBase>&& judgement
 )
@@ -30,7 +30,7 @@ bool StateBase::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }
 
-void StateBase::AddStateTransition(std::unique_ptr<StateTransitionInfo> state_transition_info, JudgementUpdatePhase phase)
+void StateBase::AddStateTransition(std::unique_ptr<LegacyStateTransitionInfo> state_transition_info, JudgementUpdatePhase phase)
 {
     auto& judgement_pool = (phase == JudgementUpdatePhase::PreUpdate) ?
         pre_update_judgement_pool : post_update_judgement_pool;

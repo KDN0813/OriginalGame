@@ -112,6 +112,9 @@
     <Filter Include="Source\Component\StateMachine\Legacy">
       <UniqueIdentifier>{9f6993a0-431f-47ac-b7a5-daa35789afac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\StateMachine\Legacy">
+      <UniqueIdentifier>{cfdec03e-914e-4650-9e32-cd43e26654e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -231,20 +234,8 @@
     <ClInclude Include="Source\System\MyMath\MYVECTOR4.h">
       <Filter>Source\System\MyMath</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StateMachine\State.h">
-      <Filter>Source\StateMachine</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMachine\StateDerived.h">
-      <Filter>Source\StateMachine</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\MyMath\MyMathf.h">
       <Filter>Source\System\MyMath</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMachine\TransitionJudgement.h">
-      <Filter>Source\StateMachine</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMachine\TransitionJudgementDerived.h">
-      <Filter>Source\StateMachine</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\MyHash.h">
       <Filter>Source\System</Filter>
@@ -366,6 +357,18 @@
     <ClInclude Include="Source\Component\LegacyStateMachineComponent.h">
       <Filter>Source\Component\StateMachine\Legacy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StateMachine\LegacyTransitionJudgementDerived.h">
+      <Filter>Source\StateMachine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\LegacyState.h">
+      <Filter>Source\StateMachine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\LegacyStateDerived.h">
+      <Filter>Source\StateMachine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\LegacyTransitionJudgement.h">
+      <Filter>Source\StateMachine\Legacy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -443,20 +446,8 @@
     <ClCompile Include="Source\Collision\Collision.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StateMachine\State.cpp">
-      <Filter>Source\StateMachine</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMachine\StateDerived.cpp">
-      <Filter>Source\StateMachine</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp">
       <Filter>Source\System\MyMath</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMachine\TransitionJudgement.cpp">
-      <Filter>Source\StateMachine</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMachine\TransitionJudgementDerived.cpp">
-      <Filter>Source\StateMachine</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework.cpp">
       <Filter>Source</Filter>
@@ -562,6 +553,18 @@
     </ClCompile>
     <ClCompile Include="Source\Component\LegacyStateMachineComponent.cpp">
       <Filter>Source\Component\StateMachine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\LegacyState.cpp">
+      <Filter>Source\StateMachine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\LegacyStateDerived.cpp">
+      <Filter>Source\StateMachine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\LegacyTransitionJudgement.cpp">
+      <Filter>Source\StateMachine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\LegacyTransitionJudgementDerived.cpp">
+      <Filter>Source\StateMachine\Legacy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

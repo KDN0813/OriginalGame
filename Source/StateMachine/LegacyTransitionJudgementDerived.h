@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "StateMachine/TransitionJudgement.h"
+#include "StateMachine/LegacyTransitionJudgement.h"
 
 class MovementComponent;
 class ModelComponent;

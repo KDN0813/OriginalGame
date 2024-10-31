@@ -4,18 +4,18 @@
 #include <string>
 #include "System/Alias/OwnerAlias.h"
 #include "System/MyHash.h"
-#include "StateMachine/TransitionJudgement.h"
+#include "StateMachine/LegacyTransitionJudgement.h"
 
 static constexpr size_t INVALID_STATE_INDEX = SIZE_MAX;   // 無効なステートのインデックス(ステートのインデックスの初期値・エラーコードに使用する)
 using StateIndex = size_t;
 
-// ステートの遷移情報
-class StateTransitionInfo
+// (旧)ステートの遷移情報
+class LegacyStateTransitionInfo
 {
 public:
 public:
-    StateTransitionInfo(std::string next_state_name, std::unique_ptr<TransitionJudgementBase>&& judgement);
-    ~StateTransitionInfo() {};
+    LegacyStateTransitionInfo(std::string next_state_name, std::unique_ptr<TransitionJudgementBase>&& judgement);
+    ~LegacyStateTransitionInfo() {};
 
     StateIndex GetNextStateIndex() { return this->next_state_index; }
     MyHash GetNextStateNameHash() { return this->next_state_name; }
@@ -65,11 +65,11 @@ public:
     bool PerformTransitionJudgement(TransitionJudgementBase* judgemen);
     
     // 遷移ステートの追加
-    void AddStateTransition(std::unique_ptr<StateTransitionInfo> state_transition, JudgementUpdatePhase phase);
+    void AddStateTransition(std::unique_ptr<LegacyStateTransitionInfo> state_transition, JudgementUpdatePhase phase);
     
     // 各種設定・取得関数
-    const std::vector<std::unique_ptr<StateTransitionInfo>>& GetPreUpdateJudgementPool() { return this->pre_update_judgement_pool; }
-    const std::vector<std::unique_ptr<StateTransitionInfo>>& GetPostUpdateJudgementPool() { return this->post_update_judgement_pool; }
+    const std::vector<std::unique_ptr<LegacyStateTransitionInfo>>& GetPreUpdateJudgementPool() { return this->pre_update_judgement_pool; }
+    const std::vector<std::unique_ptr<LegacyStateTransitionInfo>>& GetPostUpdateJudgementPool() { return this->post_update_judgement_pool; }
     StateIndex GetStateIndex() { return this->state_index; }
     void SetStateIndex(StateIndex index) { this->state_index = index; }
 protected:
@@ -77,8 +77,8 @@ protected:
 private:
     StateIndex state_index = -1;
     MyHash name;
-    std::vector<std::unique_ptr<StateTransitionInfo>> pre_update_judgement_pool;     // Update前に遷移判定を行う
-    std::vector<std::unique_ptr<StateTransitionInfo>> post_update_judgement_pool;    // Update後に遷移判定を行う
+    std::vector<std::unique_ptr<LegacyStateTransitionInfo>> pre_update_judgement_pool;     // Update前に遷移判定を行う
+    std::vector<std::unique_ptr<LegacyStateTransitionInfo>> post_update_judgement_pool;    // Update後に遷移判定を行う
 #ifdef _DEBUG
 public:
     virtual void DrawDebugGUI() {};

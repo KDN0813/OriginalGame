@@ -2,7 +2,7 @@
 #include <d3d11.h>
 #include "Component/Component.h"
 #include "Model/ModelCommonData.h"
-#include "StateMachine/TransitionJudgement.h"
+#include "StateMachine/LegacyTransitionJudgement.h"
 
 class ModelComponent;
 class ModelResource;
