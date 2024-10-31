@@ -12,12 +12,12 @@ LegacyStateTransitionInfo::LegacyStateTransitionInfo(
 {
 }
 
-void StateBase::SetOwner(OwnerPtr owner)
+void LegacyStateBase::SetOwner(OwnerPtr owner)
 {
     this->owner_Wptr = owner;
 }
 
-bool StateBase::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
+bool LegacyStateBase::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
 {
     if (!judgemen) return false;
 #ifdef _DEBUG
@@ -30,7 +30,7 @@ bool StateBase::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }
 
-void StateBase::AddStateTransition(std::unique_ptr<LegacyStateTransitionInfo> state_transition_info, JudgementUpdatePhase phase)
+void LegacyStateBase::AddStateTransition(std::unique_ptr<LegacyStateTransitionInfo> state_transition_info, JudgementUpdatePhase phase)
 {
     auto& judgement_pool = (phase == JudgementUpdatePhase::PreUpdate) ?
         pre_update_judgement_pool : post_update_judgement_pool;

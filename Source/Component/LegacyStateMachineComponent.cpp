@@ -29,7 +29,7 @@ void LegacyStateMachineComponent::Update(float elapsed_time)
 {
     if (this->state_index < 0 || this->state_index == INVALID_STATE_INDEX || this->state_index >= this->state_pool.size()) return;
 
-    StateBase* state = this->state_pool[this->state_index].get();
+    LegacyStateBase* state = this->state_pool[this->state_index].get();
 
     PreTransitionJudgemen(state);
     state->Update(elapsed_time);
@@ -65,7 +65,7 @@ void LegacyStateMachineComponent::SetDefaultState(MyHash state_name)
     SetDefaultState(FindStateIndex(state_name));
 }
 
-void LegacyStateMachineComponent::PreTransitionJudgemen(StateBase* state)
+void LegacyStateMachineComponent::PreTransitionJudgemen(LegacyStateBase* state)
 {
     if (!state) return;
     for (auto& state_jugement : state->GetPreUpdateJudgementPool())
@@ -77,7 +77,7 @@ void LegacyStateMachineComponent::PreTransitionJudgemen(StateBase* state)
             else if (next_index < 0)
             {
                 // –¼‘OŒŸõ
-                StateBase* state = FindState(state_jugement->GetNextStateNameHash());
+                LegacyStateBase* state = FindState(state_jugement->GetNextStateNameHash());
                 if (!state) continue;
                 state_jugement->SetNextStateIndex(state->GetStateIndex());
                 this->next_state = state->GetStateIndex();
@@ -87,7 +87,7 @@ void LegacyStateMachineComponent::PreTransitionJudgemen(StateBase* state)
     }
 }
 
-void LegacyStateMachineComponent::PostTransitionJudgemen(StateBase* state)
+void LegacyStateMachineComponent::PostTransitionJudgemen(LegacyStateBase* state)
 {
     if (!state) return;
     for (auto& state_jugement : state->GetPostUpdateJudgementPool())
@@ -98,7 +98,7 @@ void LegacyStateMachineComponent::PostTransitionJudgemen(StateBase* state)
             if (next_index == INVALID_STATE_INDEX)
             {
                 // –¼‘OŒŸõ
-                StateBase* state = FindState(state_jugement->GetNextStateNameHash());
+                LegacyStateBase* state = FindState(state_jugement->GetNextStateNameHash());
                 if (!state) continue;
                 state_jugement->SetNextStateIndex(state->GetStateIndex());
                 next_index = state->GetStateIndex();
@@ -111,11 +111,11 @@ void LegacyStateMachineComponent::PostTransitionJudgemen(StateBase* state)
     }
 }
 
-StateBase* LegacyStateMachineComponent::FindState(MyHash name)
+LegacyStateBase* LegacyStateMachineComponent::FindState(MyHash name)
 {
     for (size_t i = 0; i < this->state_pool.size(); ++i)
     {
-        StateBase* state = this->state_pool[i].get();
+        LegacyStateBase* state = this->state_pool[i].get();
         if (state->GetHash().PerfectEqual(name))
         {
             return state;
@@ -126,7 +126,7 @@ StateBase* LegacyStateMachineComponent::FindState(MyHash name)
 
 StateIndex LegacyStateMachineComponent::FindStateIndex(MyHash name)
 {
-    StateBase* state = FindState(name);
+    LegacyStateBase* state = FindState(name);
     assert(state != nullptr);
     if (!state) return INVALID_STATE_INDEX;
     return state->GetStateIndex();

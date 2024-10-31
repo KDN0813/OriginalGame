@@ -29,7 +29,7 @@ private:
     std::unique_ptr<TransitionJudgementBase> judgement;	// 遷移判定
 };
 
-class StateBase
+class LegacyStateBase
 {
 public:
     enum class JudgementUpdatePhase
@@ -38,9 +38,9 @@ public:
         PostUpdate,     // 更新後の状態
     };
 public:
-    StateBase() = delete;
-    StateBase(std::string name) :name(name) {};
-    virtual ~StateBase() {};
+    LegacyStateBase() = delete;
+    LegacyStateBase(std::string name) :name(name) {};
+    virtual ~LegacyStateBase() {};
 
     // 開始関数
     virtual void Start() {};
@@ -87,4 +87,4 @@ public:
 };
 
 template <class T>
-concept is_State = requires{ std::is_base_of_v<StateBase, T>; };
+concept is_State = requires{ std::is_base_of_v<LegacyStateBase, T>; };

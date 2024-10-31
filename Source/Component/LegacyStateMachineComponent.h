@@ -30,12 +30,12 @@ public:
     void SetDefaultState(MyHash state_name);
 
     // 更新関数の前の遷移判定
-    void PreTransitionJudgemen(StateBase* state);
+    void PreTransitionJudgemen(LegacyStateBase* state);
     // 更新関数の後の遷移判定
-    void PostTransitionJudgemen(StateBase* state);
+    void PostTransitionJudgemen(LegacyStateBase* state);
 
     // ステートを名前検索する
-    StateBase* FindState(MyHash name);
+    LegacyStateBase* FindState(MyHash name);
     StateIndex FindStateIndex(MyHash name);
 
     template<is_State State, typename ... Arguments>
@@ -52,7 +52,7 @@ public:
         return state;
     }
 private:
-    std::vector<std::unique_ptr<StateBase>> state_pool;
+    std::vector<std::unique_ptr<LegacyStateBase>> state_pool;
     StateIndex state_index = INVALID_STATE_INDEX;
     StateIndex next_state = INVALID_STATE_INDEX;
     StateIndex default_state = INVALID_STATE_INDEX;
