@@ -106,6 +106,7 @@ void SceneGame::Initialize()
 				model_animation->SetAnimationState(PlayerCT::ANIMATION::ATTACK01, false);
 				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::ATTACK01, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.2f);
 			}
+			// ステートマシン設定
 			auto state_machine = player->AddComponent<StateMachineComponent>();
 			{
 				auto idle_state = state_machine->RegisterState<IdelState>();
