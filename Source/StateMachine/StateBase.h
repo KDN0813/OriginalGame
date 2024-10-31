@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "System/MyHash.h"
 
 class Object;
 
@@ -8,7 +9,7 @@ class State
 {
 public:
 	// コンストラクタ
-	State(const std::shared_ptr<Object>& owner) :owner(owner) {}
+	State() = default;
 	virtual ~State() {}
 	// ステートに入った時のメソッド
 	virtual void Enter() = 0;
@@ -16,15 +17,18 @@ public:
 	virtual void Execute(float elapsed_time) = 0;
 	// ステートから出ていくときのメソッド
 	virtual void Exit() = 0;
+
+	void SetOwner(const std::shared_ptr<Object>& owner) { this->owner = owner; }
 protected:
 	std::weak_ptr<Object> owner;	// 所有者のポインタ
+	MyHash state_name;
 };
 
 class Default_State : public State
 {
 public:
 	// コンストラクタ
-	Default_State(const std::shared_ptr<Object>& owner) :State(owner) {}
+	Default_State() = default;
 	~Default_State() {}
 	// ステートに入った時のメソッド
 	void Enter() override{};

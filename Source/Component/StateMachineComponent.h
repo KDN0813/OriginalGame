@@ -33,7 +33,9 @@ public:
     template<is_State State>
     void RegisterState()
     {
-        state_pool.emplace_back(std::make_unique<State>(GetOwner()));
+        std::unique_ptr<State> state = std::make_unique<State>();
+        state->SetOnwer(GetOwner());
+        state_pool.emplace_back(std::move(state));
     }
     // 現在のステート番号取得
     int GetStateIndex();
