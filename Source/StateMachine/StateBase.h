@@ -18,6 +18,7 @@ public:
 	// ステートから出ていくときのメソッド
 	virtual void Exit() = 0;
 
+	// 所有者の設定
 	void SetOwner(const std::shared_ptr<Object>& owner) { this->owner = owner; }
 protected:
 	std::weak_ptr<Object> owner;	// 所有者のポインタ
