@@ -9,7 +9,8 @@ class State
 {
 public:
 	// コンストラクタ
-	State() = default;
+	State() = delete;
+	State(std::string name) : state_name(name) {}
 	virtual ~State() {}
 	// ステートに入った時のメソッド
 	virtual void Enter() = 0;
@@ -25,12 +26,12 @@ protected:
 	MyHash state_name;
 };
 
-class Default_State : public State
+class DefaultState : public State
 {
 public:
 	// コンストラクタ
-	Default_State() = default;
-	~Default_State() {}
+	DefaultState() :State("DefaultState") {};
+	~DefaultState() {}
 	// ステートに入った時のメソッド
 	void Enter() override{};
 	// ステートで実行するメソッド
