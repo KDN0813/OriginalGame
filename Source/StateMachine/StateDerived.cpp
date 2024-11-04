@@ -6,6 +6,8 @@
 #include "Component/StateMachineComponent.h"
 #include "Component/ModelAnimationControlComponent.h"
 #include "Component/MovementComponent.h"
+#include "Component/PlayerComponent.h"
+#include "Component/CircleCollisionComponent.h"
 
 PlayerIdleState::PlayerIdleState()
     : State("PlayerIdleState")
@@ -84,9 +86,18 @@ void PlayerAttackState::Staet()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
+
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
-    if (!animation) return;
-    animation->PlayAnimation(PlayerCT::ANIMATION::ATTACK01, false, 0.2f);
+    if (animation)
+        animation->PlayAnimation(PlayerCT::ANIMATION::ATTACK01, false, 0.2f);
+
+    auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
+    if (player)
+        player->SetIsActive(false);  // コントロールを無効にする
+
+    auto collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->collision_Wprt);
+    if (collision)
+        collision->SetIsActive(true);  // コリジョンを有効にする
 }
 
 void PlayerAttackState::Update(float elapsed_time)
@@ -103,4 +114,18 @@ void PlayerAttackState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_idle_state);
     }
     return;
+}
+
+void PlayerAttackState::End()
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+
+    auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
+    if (player)
+        player->SetIsActive(true);  // コントロールを有効にする
+
+    auto collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->collision_Wprt);
+    if (collision)
+        collision->SetIsActive(false);  // コリジョンを無効にする
 }

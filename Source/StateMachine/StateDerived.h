@@ -4,6 +4,8 @@
 
 class ModelAnimationControlComponent;
 class MovementComponent;
+class PlayerComponent;
+class CircleCollisionComponent;
 
 class PlayerIdleState : public State
 {
@@ -55,9 +57,11 @@ public:
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
-	void End() override {};
+	void End() override;
 private:
 	State::ChangeState change_idle_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<PlayerComponent> player_Wprt;
+	std::weak_ptr<CircleCollisionComponent> collision_Wprt;
 };
