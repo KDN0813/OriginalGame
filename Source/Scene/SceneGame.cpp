@@ -34,6 +34,7 @@
 #include "Component/PlayerComponent.h"
 #include "Component/GravityComponent.h"
 #include "Component/ModelAnimationComponent.h"
+#include "Component/ModelAnimationControlComponent.h"
 #include "Component/EnemyComponent.h"
 #include "Component/CircleCollisionComponent.h"
 #include "Component/CameraControllerComponent.h"
@@ -91,24 +92,11 @@ void SceneGame::Initialize()
 			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
-				ModelAnimationComponent::AnimationParam param{};
+				ModelAnimationControlComponent::AnimationParam param{};
 				param.current_animation_index = PlayerCT::ANIMATION::IDLE;
 				param.animation_loop_flag = true;
 
-				auto model_animation = player->AddComponent<ModelAnimationComponent>(param , "Data/Model/Player/Player.mdl");
-				// 待機
-				model_animation->SetAnimationState(PlayerCT::ANIMATION::IDLE, true);
-				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::IDLE, PlayerCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_Move>(player),0.2f);
-				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::IDLE, PlayerCT::ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.2f);
-
-				// 前方移動
-				model_animation->SetAnimationState(PlayerCT::ANIMATION::MOVE_FWD, true);
-				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::MOVE_FWD, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_Move>(player, true), 0.2f);
-				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::MOVE_FWD, PlayerCT::ANIMATION::ATTACK01, std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X), 0.2f);
-
-				// 攻撃01
-				model_animation->SetAnimationState(PlayerCT::ANIMATION::ATTACK01, false);
-				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::ATTACK01, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.2f);
+				auto model_animation = player->AddComponent<ModelAnimationControlComponent>(param , "Data/Model/Player/Player.mdl");
 			}
 			// ステートマシン設定
 			auto state_machine = player->AddComponent<StateMachineComponent>();
