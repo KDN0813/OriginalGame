@@ -93,8 +93,7 @@ void SceneGame::Initialize()
 			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
-				ModelAnimationControlComponent::AnimationParam param{};
-				auto model_animation = player->AddComponent<ModelAnimationControlComponent>(param , "Data/Model/Player/Player.mdl");
+				auto model_animation = player->AddComponent<ModelAnimationControlComponent>("Data/Model/Player/Player.mdl");
 			}
 			// ステートマシン設定
 			auto state_machine = player->AddComponent<StateMachineComponent>();

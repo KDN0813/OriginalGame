@@ -6,8 +6,8 @@
 
 #include "Component/ModelComponent.h"
 
-ModelAnimationControlComponent::ModelAnimationControlComponent(AnimationParam param, const char* filename)
-	:param(param)
+ModelAnimationControlComponent::ModelAnimationControlComponent(const char* filename)
+	:param()
 {
 	Graphics* graphics = Graphics::Instance();
 	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());

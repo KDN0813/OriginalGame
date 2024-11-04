@@ -21,7 +21,7 @@ public:
 		bool dummy[2]{};
 	};
 public:
-	ModelAnimationControlComponent(AnimationParam param, const char* filename);
+	ModelAnimationControlComponent(const char* filename);
 
 	// äJénä÷êî
 	void Start() override {};
