@@ -102,6 +102,7 @@ void SceneGame::Initialize()
 				// ステートの追加
 				state_machine->RegisterState<PlayerIdleState>();
 				state_machine->RegisterState<PlayerMoveState>();
+				state_machine->RegisterState<PlayerAttackState>();
 
 				state_machine->SetDefaultState("PlayerIdleState");	// デフォルトステートの設定
 			}
@@ -205,7 +206,7 @@ void SceneGame::Initialize()
 		// 敵
 		{
 			float territory_range = 45.0f;
-			for (int i = 0; i < 1000; ++i)
+			for (int i = 0; i < 1; ++i)
 			{
 				auto enemy = object_manager.Create();
 				// エネミーコンポーネント設定
