@@ -375,7 +375,12 @@
     <ClInclude Include="Source\StateMachine\StateBase.h">
       <Filter>Source\StateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StateMachine\StateDerived.h" />
+    <ClInclude Include="Source\StateMachine\StateDerived.h">
+      <Filter>Source\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ModelAnimationControlComponent.h">
+      <Filter>Source\Component\Model\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -577,7 +582,10 @@
       <Filter>Source\Component\StateMachine</Filter>
     </ClCompile>
     <ClCompile Include="Source\StateMachine\StateDerived.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ModelAnimationControlComponent.cpp">
+      <Filter>Source\Component\Model\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

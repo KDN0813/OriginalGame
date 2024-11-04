@@ -136,6 +136,7 @@
     <ClInclude Include="Source\Component\GravityComponent.h" />
     <ClInclude Include="Source\Component\InstancingModelComponent.h" />
     <ClInclude Include="Source\Component\ModelAnimationComponent.h" />
+    <ClInclude Include="Source\Component\ModelAnimationControlComponent.h" />
     <ClInclude Include="Source\Component\ModelComponent.h" />
     <ClInclude Include="Source\Component\ModelShaderComponent.h" />
     <ClInclude Include="Source\Component\MovementComponent.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="Source\Component\GravityComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelComponent.cpp" />
     <ClCompile Include="Source\Component\ModelAnimationComponent.cpp" />
+    <ClCompile Include="Source\Component\ModelAnimationControlComponent.cpp" />
     <ClCompile Include="Source\Component\ModelComponent.cpp" />
     <ClCompile Include="Source\Component\ModelShaderComponent.cpp" />
     <ClCompile Include="Source\Component\MovementComponent.cpp" />
