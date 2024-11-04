@@ -7,6 +7,7 @@ template <class T>
 concept is_State = requires{ std::is_base_of_v<State, T>; };
 
 // ステートマシン
+// 内部で条件を保持し、独立して状態遷移を行う
 class StateMachineComponent : public Component
 {
 public:

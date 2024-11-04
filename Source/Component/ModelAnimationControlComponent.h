@@ -30,7 +30,7 @@ public:
 	// 更新関数
 	void Update(float elapsed_time) override;
 	// 名前取得
-	const char* GetName()const override { return "ModelAnimationComponent"; };
+	const char* GetName()const override { return "ModelAnimationControlComponent"; };
 	// 優先度
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::MEDIUM; }
 

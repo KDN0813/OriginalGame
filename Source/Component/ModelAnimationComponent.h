@@ -27,7 +27,7 @@ public:
 	struct AnimeTransitionInfo
 	{
 		AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
-		std::unique_ptr<TransitionJudgementBase> judgement;	// 遷移判定
+		std::unique_ptr<TransitionJudgementBase> judgement;			// 遷移判定
 		float blend_time = 1.0f;									// ブレンド時間
 	};
 	// アニメーション状態
