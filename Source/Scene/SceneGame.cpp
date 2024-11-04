@@ -115,7 +115,6 @@ void SceneGame::Initialize()
 			{
 				// ステートの追加
 				state_machine->RegisterState<DefaultState>();
-				state_machine->RegisterState<DefaultState2>();
 
 				state_machine->SetDefaultState("DefaultState");	// デフォルトステートの設定
 			}

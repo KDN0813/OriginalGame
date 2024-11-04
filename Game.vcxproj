@@ -182,6 +182,7 @@
     <ClInclude Include="Source\StateMachine\LegacyTransitionJudgement.h" />
     <ClInclude Include="Source\StateMachine\LegacyTransitionJudgementDerived.h" />
     <ClInclude Include="Source\StateMachine\StateBase.h" />
+    <ClInclude Include="Source\StateMachine\StateDerived.h" />
     <ClInclude Include="Source\System\Alias\OwnerAlias.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="Source\StateMachine\LegacyStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyTransitionJudgement.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyTransitionJudgementDerived.cpp" />
+    <ClCompile Include="Source\StateMachine\StateDerived.cpp" />
     <ClCompile Include="Source\System\GameData.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp" />

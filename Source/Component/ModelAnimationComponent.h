@@ -8,6 +8,7 @@ class ModelComponent;
 class ModelResource;
 
 // モデルクラスのアニメーションクラス
+// 内部で条件を保持し、独立してアニメーション遷移を行う
 class ModelAnimationComponent : public Component
 {
 public:

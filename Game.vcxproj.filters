@@ -375,6 +375,7 @@
     <ClInclude Include="Source\StateMachine\StateBase.h">
       <Filter>Source\StateMachine</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StateMachine\StateDerived.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -574,6 +575,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\StateMachineComponent.cpp">
       <Filter>Source\Component\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\StateDerived.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
