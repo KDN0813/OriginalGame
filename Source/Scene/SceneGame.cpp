@@ -425,7 +425,10 @@ void SceneGame::PlayerVsEnemy()
 		if (!player) return;
 		if (!player->GetIsActive()) return;	// プレイヤーが非アクティブなら処理しない
 
-		const auto& player_circle = player->GetComponent<CircleCollisionComponent>();
+		// プレイヤーの攻撃用オブジェクト取得
+		const auto& attack_object = player->FindChildObject(MyHash("AttackObject"));
+
+		const auto& player_circle = attack_object->GetComponent<CircleCollisionComponent>();
 		if (!player_circle) return;
 		if (!player_circle->GetIsActive()) return;
 
