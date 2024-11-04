@@ -18,6 +18,14 @@ std::shared_ptr<Object> Object::CreateChildObject()
 
 std::shared_ptr<Object> Object::FindChildObject(MyHash name)
 {
+    // 子オブジェクトを名前検索する
+    for (const auto& child : this->children)
+    {
+        if (child->GetHash().PerfectEqual(name))
+        {
+            return child;
+        }
+    }
     return nullptr;
 }
 
