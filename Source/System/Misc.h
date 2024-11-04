@@ -2,12 +2,18 @@
 
 #include <windows.h>
 #include <crtdbg.h>
+#include <cwchar>
 
 #if defined( DEBUG ) || defined( _DEBUG )
 #define _ASSERT_EXPR_A(expr, msg) \
 	(void)((!!(expr)) || \
 	(1 != _CrtDbgReport(_CRT_ASSERT, __FILE__, __LINE__, NULL, "%s", msg)) || \
 	(_CrtDbgBreak(), 0))
+
+#define _ASSERT_EXPR_W(expr, msg) \
+    (void)((!!(expr)) || \
+    (1 != _CrtDbgReportW(_CRT_ASSERT, __FILEW__, __LINE__, NULL, L"%s", msg)) || \
+    (_CrtDbgBreak(), 0))
 #else
 #define  _ASSERT_EXPR_A(expr, expr_str) ((void)0)
 #endif

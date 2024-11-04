@@ -27,7 +27,12 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
 
     // ステート変更
-    void ChangeState(int newState);
+    void ChangeState(State::ChangeState& chage_state);
+
+    // ステートを名前検索する
+    State* FindState(MyHash name);
+    // ステートのインデックスを名前検索する
+    State::StateIndex FindStateIndex(MyHash name);
     
     // ステート登録
     template<is_State State>
@@ -35,10 +40,9 @@ public:
     {
         std::unique_ptr<State> state = std::make_unique<State>();
         state->SetOnwer(GetOwner());
-        state_pool.emplace_back(std::move(state));
-    }
-    // 現在のステート番号取得
-    int GetStateIndex();
+        state->SetStateIndex(this->state_pool.size());
+        this->state_pool.emplace_back(std::move(state));
+    };
 private:
     // 現在のステート
     State* current_state = nullptr;
