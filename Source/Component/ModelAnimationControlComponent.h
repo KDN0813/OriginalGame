@@ -45,7 +45,6 @@ public:
 	float GetCurrentAnimationSeconds()const { return this->param.current_animation_seconds; }
 private:
 	AnimationParam param;
-	AnimationParam default_param;
 
 private:
 	std::weak_ptr<ModelComponent> model_Wptr;

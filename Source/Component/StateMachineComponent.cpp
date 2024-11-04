@@ -80,9 +80,9 @@ void StateMachineComponent::DrawDebugGUI()
 	int current_index_int = static_cast<int>(current_state_index);
 	if (ImGui::ComboUI("State", current_state_name, this->state_name_pool, current_index_int))
 	{
-		this->state_pool[current_state_index]->End();
+		current_state->End();
 		this->current_state = this->state_pool.at(static_cast<size_t>(current_index_int)).get();
-		this->state_pool[current_state_index]->Staet();
+		current_state->Staet();
 	}
 }
 

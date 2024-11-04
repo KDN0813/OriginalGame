@@ -7,7 +7,7 @@
 #include "Component/ModelComponent.h"
 
 ModelAnimationControlComponent::ModelAnimationControlComponent(AnimationParam param, const char* filename)
-	:param(param), default_param(param)
+	:param(param)
 {
 	Graphics* graphics = Graphics::Instance();
 	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
@@ -30,7 +30,6 @@ ModelAnimationControlComponent::ModelAnimationControlComponent(AnimationParam pa
 
 void ModelAnimationControlComponent::ReStart()
 {
-	this->param = this->default_param;
 }
 
 void ModelAnimationControlComponent::Update(float elapsed_time)

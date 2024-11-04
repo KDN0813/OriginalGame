@@ -3,6 +3,7 @@
 #include "System/MyHash.h"
 
 class Object;
+class StateMachineComponent;
 
 // ステートマシンで使用するステートの基底クラス
 class State
@@ -39,10 +40,13 @@ public:
 
 	// 所有者の設定
 	void SetOwner(const std::shared_ptr<Object>& owner) { this->owner = owner; }
+	// 所有者の取得
+	std::shared_ptr<Object> GetOwner() const { return this->owner.lock(); }
 protected:
-	std::weak_ptr<Object> owner;	// 所有者のポインタ
+	std::weak_ptr<Object> owner;								// 所有者のポインタ
+	std::weak_ptr<StateMachineComponent> state_machine_Wptr;	// 自分が所属しているステートマシンのポインタ
 	MyHash state_name;				// ハッシュ()
-	StateIndex state_index = INVALID_STATE_INDEX;	// 自分が所属しているステート配列のインデックス
+	StateIndex state_index = INVALID_STATE_INDEX;				// 自分が所属しているステート配列のインデックス
 };
 
 class DefaultState : public State

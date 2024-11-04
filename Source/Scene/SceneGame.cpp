@@ -48,6 +48,7 @@
 
 #include "StateMachine/LegacyTransitionJudgementDerived.h"
 #include "StateMachine/LegacyStateDerived.h"
+#include "StateMachine/StateDerived.h"
 
 
 void SceneGame::Initialize()
@@ -93,18 +94,16 @@ void SceneGame::Initialize()
 			// アニメーション設定
 			{
 				ModelAnimationControlComponent::AnimationParam param{};
-				param.current_animation_index = PlayerCT::ANIMATION::IDLE;
-				param.animation_loop_flag = true;
-
 				auto model_animation = player->AddComponent<ModelAnimationControlComponent>(param , "Data/Model/Player/Player.mdl");
 			}
 			// ステートマシン設定
 			auto state_machine = player->AddComponent<StateMachineComponent>();
 			{
 				// ステートの追加
-				state_machine->RegisterState<DefaultState>();
+				state_machine->RegisterState<PlayerIdleState>();
+				state_machine->RegisterState<PlayerMoveState>();
 
-				state_machine->SetDefaultState("DefaultState");	// デフォルトステートの設定
+				state_machine->SetDefaultState("PlayerIdleState");	// デフォルトステートの設定
 			}
 
 			// トランスフォーム設定
