@@ -24,11 +24,11 @@ public:
 	State(std::string name) : state_name(name) {}
 	virtual ~State() {}
 	// ステートに入った時のメソッド
-	virtual void Enter() = 0;
+	virtual void Staet() = 0;
 	// ステートで実行するメソッド
-	virtual void Execute(float elapsed_time) = 0;
+	virtual void Update(float elapsed_time) = 0;
 	// ステートから出ていくときのメソッド
-	virtual void Exit() = 0;
+	virtual void End() = 0;
 
 	// ハッシュの取得
 	MyHash GetHash() const { return this->state_name; }
@@ -52,9 +52,9 @@ public:
 	DefaultState() :State("DefaultState") {};
 	~DefaultState() {}
 	// ステートに入った時のメソッド
-	void Enter() override{};
+	void Staet() override{};
 	// ステートで実行するメソッド
-	void Execute(float elapsed_time) override {};
+	void Update(float elapsed_time) override {};
 	// ステートから出ていくときのメソッド
-	void Exit() override {};
+	void End() override {};
 };

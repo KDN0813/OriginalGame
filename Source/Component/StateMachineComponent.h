@@ -44,17 +44,15 @@ public:
         this->state_pool.emplace_back(std::move(state));
     };
 private:
-    // 現在のステート
-    State* current_state = nullptr;
-    // 各ステートを保持する配列
-    std::vector<std::unique_ptr<State>> state_pool;
+    State* current_state = nullptr;                     // 現在のステート
+    std::vector<std::unique_ptr<State>> state_pool;     // 各ステートを保持する配列
 
 #ifdef _DEBUG
 public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI()  override {};
+    void DrawDebugGUI()  override;
     /**
      * デバックの情報を3D画面上に出力する関数
      */
@@ -64,6 +62,8 @@ public:
      */
     void DrawDebugPrimitiveGUI()  override {};
     bool IsDebugPrimitive() override { return false; }   // DebugPrimitiveが存在するか
+private:
+    std::vector<std::string> state_name_pool;                   // ステートの名前の配列
 #endif // DEBUG
 };
 
