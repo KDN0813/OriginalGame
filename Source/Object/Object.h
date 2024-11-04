@@ -156,13 +156,14 @@ public:
 	void ReStart();
 
 	// ŠeŽæ“¾ŠÖ”
-	void SetName(const char* name) { this->name = name; }
-	const std::string GetName() const { return this->name; }
-	const char* GetNameCStr() const { return this->name.c_str(); }
+	MyHash GetHash () const { return this->name; }
+	const std::string GetName() const { return this->name.GetString(); }
+	const char* GetNameCStr() const { return this->name.GetString().c_str(); }
 	std::shared_ptr<Object> GetParent() { return this->parent_Wptr.lock(); }
 	const std::vector<std::shared_ptr<Object>>& GetChildren() { return this->children; }
 	const bool& GetIsActive() { return this->is_active; }
 	const bool& GetIsRemove() { return this->is_remove; }
+	void SetName(const char* name) { this->name.GenerateHash(name); }
 	void SetIsActive(const bool is_active) { this->is_active = is_active; }
 	void SetParent(std::shared_ptr<Object> parent) { this->parent_Wptr = parent; }
 	void SetIsRemove(bool is_remove) { this->is_remove = is_remove; }
@@ -174,7 +175,7 @@ private:
 	 */
 	void sortComponentsByPriority();
 private:
-	std::string name;
+	MyHash name;
 	bool is_active = true;
 	bool is_remove = false;
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
@@ -202,6 +203,7 @@ public:
 	~ObjectManager() {};
 
 	std::shared_ptr<Object> Create();
+	std::shared_ptr<Object> Create(const char* name);
 
 	void Update(float elapsedTime);
 

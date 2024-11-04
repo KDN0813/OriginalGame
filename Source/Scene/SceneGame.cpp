@@ -65,8 +65,7 @@ void SceneGame::Initialize()
 	{
 		// ステージ
 		{
-			auto stage = object_manager.Create();
-			stage->SetName("Stage");
+			auto stage = object_manager.Create("Stage");
 			stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
 			// トランスフォーム設定
 			{
@@ -87,8 +86,7 @@ void SceneGame::Initialize()
 
 		// プレイヤー
 		{
-			auto player = object_manager.Create();
-			player->SetName("Player");
+			auto player = object_manager.Create("Player");
 			auto model = player->AddComponent<ModelComponent>("Data/Model/Player/Player.mdl");
 			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
@@ -192,8 +190,7 @@ void SceneGame::Initialize()
 
 		// デスカメラ
 		{
-			auto death_camera = object_manager.Create();
-			death_camera->SetName("Death Camera");
+			auto death_camera = object_manager.Create("Death Camera");
 			CameraManager* camera_manager = CameraManager::Instance();
 			if (camera_manager)
 			{

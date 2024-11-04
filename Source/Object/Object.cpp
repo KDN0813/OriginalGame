@@ -212,11 +212,16 @@ void Object::DrawDebugPrimitive()
 
 std::shared_ptr<Object> ObjectManager::Create()
 {
+    static int id = 0;
+    char name[256];
+    ::sprintf_s(name, sizeof(name), "object%d", id++);
+    return Create(name);
+}
+
+std::shared_ptr<Object> ObjectManager::Create(const char* name)
+{
     std::shared_ptr<Object> object = std::make_shared<Object>();
     {
-        static int id = 0;
-        char name[256];
-        ::sprintf_s(name, sizeof(name), "object%d", id++);
         object->SetName(name);
     }
     this->start_object_vec.emplace_back(object);
