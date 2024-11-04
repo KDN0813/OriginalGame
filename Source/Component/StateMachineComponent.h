@@ -10,16 +10,11 @@ concept is_State = requires{ std::is_base_of_v<State, T>; };
 class StateMachineComponent : public Component
 {
 public:
-    struct StateMachineParam
-    {
-        State::ChangeState default_state;   // 初期のステート
-    };
-public:
-    StateMachineComponent(StateMachineParam param);
+    StateMachineComponent();
     ~StateMachineComponent() {};
 
     // 開始関数
-    void Start()  override {};
+    void Start()  override;
     // 終了関数
     void End()  override {};
     // リスタート処理
@@ -33,6 +28,8 @@ public:
 
     // ステート変更
     void ChangeState(State::ChangeState& chage_state);
+    // デフォルトステートの設定
+    void SetDefaultState(std::string default_name);
 
     // ステートを名前検索する
     State* FindState(MyHash name);
@@ -44,14 +41,17 @@ public:
     void RegisterState()
     {
         std::unique_ptr<State> state = std::make_unique<State>();
-        state->SetOnwer(GetOwner());
+        state->SetOwner(GetOwner());
         state->SetStateIndex(this->state_pool.size());
+#ifdef _DEBUG
+        this->state_name_pool.emplace_back(state->GetHash().GetString());
+#endif // _DEBUG
         this->state_pool.emplace_back(std::move(state));
     };
 private:
     State* current_state = nullptr;                     // 現在のステート
     std::vector<std::unique_ptr<State>> state_pool;     // 各ステートを保持する配列
-    StateMachineParam default_param;
+    State::ChangeState default_state;
 
 #ifdef _DEBUG
 public:

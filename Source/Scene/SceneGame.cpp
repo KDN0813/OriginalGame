@@ -111,14 +111,14 @@ void SceneGame::Initialize()
 				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::ATTACK01, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.2f);
 			}
 			// ステートマシン設定
-			//auto state_machine = player->AddComponent<StateMachineComponent>();
-			//{
-			//	StateMachineComponent::StateMachineParam param;
-			//	State::ChangeState default_state{};
-			//	param.default_state = State::ChangeState();
+			auto state_machine = player->AddComponent<StateMachineComponent>();
+			{
+				// ステートの追加
+				state_machine->RegisterState<DefaultState>();
+				state_machine->RegisterState<DefaultState2>();
 
-			//	state_machine->SetDefaultState("IdelState");
-			//}
+				state_machine->SetDefaultState("DefaultState");	// デフォルトステートの設定
+			}
 
 			// トランスフォーム設定
 			{
