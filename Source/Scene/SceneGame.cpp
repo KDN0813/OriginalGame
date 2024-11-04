@@ -39,6 +39,7 @@
 #include "Component/CameraControllerComponent.h"
 #include "Component/SpriteComponent.h"
 #include "Component/CharacterComponent.h"
+#include "Component/StateMachineComponent.h"
 
 #pragma region LegacyComponent(旧コンポーネント)
 #include "Component/LegacyStateMachineComponent.h"
@@ -110,15 +111,14 @@ void SceneGame::Initialize()
 				model_animation->AddAnimationTransition(PlayerCT::ANIMATION::ATTACK01, PlayerCT::ANIMATION::IDLE, std::make_unique<Judgement_TransitionReady>(player, false, true), 0.2f);
 			}
 			// ステートマシン設定
-			auto state_machine = player->AddComponent<LegacyStateMachineComponent>();
-			{
-				auto idle_state = state_machine->RegisterState<IdelState>();
-				idle_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("AttackState", std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_X)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
-				auto attack_state = state_machine->RegisterState<AttackState>();
-				//attack_state->AddStateTransition(std::make_unique<StateTransitionInfo>("IdelState", std::make_unique<Judgement_ButtonDown>(player, GamePad::BTN_Y)), StateBase::JudgementUpdatePhase::PostUpdate);
+			//auto state_machine = player->AddComponent<StateMachineComponent>();
+			//{
+			//	StateMachineComponent::StateMachineParam param;
+			//	State::ChangeState default_state{};
+			//	param.default_state = State::ChangeState();
 
-				state_machine->SetDefaultState("IdelState");
-			}
+			//	state_machine->SetDefaultState("IdelState");
+			//}
 
 			// トランスフォーム設定
 			{
@@ -249,9 +249,9 @@ void SceneGame::Initialize()
 				// ステート設定
 				auto state_machine = enemy->AddComponent<LegacyStateMachineComponent>();
 				{
-					auto idle_state = state_machine->RegisterState<IdelState>();
+					auto idle_state = state_machine->RegisterState<Legacy_IdelState>();
 					idle_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
-					auto wander_state = state_machine->RegisterState<WanderState>();
+					auto wander_state = state_machine->RegisterState<Legacy_WanderState>();
 					wander_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("IdelState", std::make_unique<Judgement_IsAtTarget>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
 
 					state_machine->SetDefaultState("WanderState");

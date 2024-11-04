@@ -6,11 +6,11 @@ class MovementComponent;
 class EnemyComponent;
 class CircleCollisionComponent;
 
-class DefaultState : public LegacyStateBase
+class Legacy_DefaultState : public LegacyStateBase
 {
 public:
-    DefaultState() :LegacyStateBase("DefaultState") {}
-    ~DefaultState() override {};
+    Legacy_DefaultState() :LegacyStateBase("DefaultState") {}
+    ~Legacy_DefaultState() override {};
 
     // 開始関数
     void Start() override {};
@@ -29,11 +29,11 @@ public:
 #endif // DEBUG
 };
 
-class IdelState : public LegacyStateBase
+class Legacy_IdelState : public LegacyStateBase
 {
 public:
-    IdelState() :LegacyStateBase("IdelState") {}
-    ~IdelState() override {};
+    Legacy_IdelState() :LegacyStateBase("IdelState") {}
+    ~Legacy_IdelState() override {};
 
     void Start() override;
 
@@ -55,11 +55,11 @@ public:
 #endif // DEBUG
 };
 
-class WanderState : public LegacyStateBase
+class Legacy_WanderState : public LegacyStateBase
 {
 public:
-    WanderState() :LegacyStateBase("WanderState") {}
-    ~WanderState() override {};
+    Legacy_WanderState() :LegacyStateBase("WanderState") {}
+    ~Legacy_WanderState() override {};
 
     // 開始関数
     void Start() override;
@@ -82,11 +82,11 @@ public:
 #endif // DEBUG
 };
 
-class AttackState : public LegacyStateBase
+class Legacy_AttackState : public LegacyStateBase
 {
 public:
-    AttackState() :LegacyStateBase("AttackState") {}
-    ~AttackState() override {};
+    Legacy_AttackState() :LegacyStateBase("AttackState") {}
+    ~Legacy_AttackState() override {};
 
     // 開始関数
     void Start() override;

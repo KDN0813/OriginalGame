@@ -3,7 +3,7 @@
 #include "Component/EnemyComponent.h"
 #include "Component/CircleCollisionComponent.h"
 
-void WanderState::Start()
+void Legacy_WanderState::Start()
 {
     auto owner = this->owner_Wptr.lock();
     if (!owner) return;
@@ -12,7 +12,7 @@ void WanderState::Start()
     enemy->SetRandomTargetPosition();
 }
 
-void WanderState::End()
+void Legacy_WanderState::End()
 {
     auto owner = this->owner_Wptr.lock();
     if (!owner) return;
@@ -20,7 +20,7 @@ void WanderState::End()
     if (!enemy) return;
 }
 
-void IdelState::Start()
+void Legacy_IdelState::Start()
 {
     auto owner = this->owner_Wptr.lock();
     if (!owner) return;
@@ -30,7 +30,7 @@ void IdelState::Start()
     enemy->SetRandomIdleTime();
 }
 
-void IdelState::End()
+void Legacy_IdelState::End()
 {
     auto owner = this->owner_Wptr.lock();
     if (!owner) return;
@@ -40,7 +40,7 @@ void IdelState::End()
     enemy->SetIdleTime(0.0f);
 }
 
-void AttackState::Start()
+void Legacy_AttackState::Start()
 {
     auto owner = this->owner_Wptr.lock();
     if (!owner) return;
@@ -50,11 +50,11 @@ void AttackState::Start()
     circle_collision->SetIsActive(true);
 }
 
-void AttackState::Update(float elapsed_time)
+void Legacy_AttackState::Update(float elapsed_time)
 {
 }
 
-void AttackState::End()
+void Legacy_AttackState::End()
 {
     auto owner = this->owner_Wptr.lock();
     if (!owner) return;

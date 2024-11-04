@@ -87,4 +87,4 @@ public:
 };
 
 template <class T>
-concept is_State = requires{ std::is_base_of_v<LegacyStateBase, T>; };
+concept Legacy_is_State = requires{ std::is_base_of_v<LegacyStateBase, T>; };

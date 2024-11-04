@@ -38,7 +38,7 @@ public:
     LegacyStateBase* FindState(MyHash name);
     StateIndex FindStateIndex(MyHash name);
 
-    template<is_State State, typename ... Arguments>
+    template<Legacy_is_State State, typename ... Arguments>
     State* RegisterState(Arguments ... args)
     {
         std::unique_ptr<State> state_Uptr = std::make_unique<State>(args...);

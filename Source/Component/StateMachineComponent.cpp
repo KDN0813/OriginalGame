@@ -4,6 +4,17 @@
 #endif // DEBUG
 #include "StateMachineComponent.h"
 
+StateMachineComponent::StateMachineComponent(StateMachineParam param)
+	:default_param(param)
+{
+	ChangeState(this->default_param.default_state);
+}
+
+void StateMachineComponent::ReStart()
+{
+	ChangeState(this->default_param.default_state);
+}
+
 void StateMachineComponent::Update(float elapsed_time)
 {
     this->current_state->Update(elapsed_time);
@@ -21,7 +32,7 @@ void StateMachineComponent::ChangeState(State::ChangeState& chage_state)
 	}
 
 	// 現在のステートの終了関数を実行
-	this->current_state->End();
+	if (this->current_state) this->current_state->End();
 
 	// 新しいステートをセット
 	this->current_state = this->state_pool.at(chage_state.change_state_index).get();

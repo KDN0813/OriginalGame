@@ -58,3 +58,17 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 };
+
+class DefaultState2 : public State
+{
+public:
+	// コンストラクタ
+	DefaultState2() :State("TestState") {};
+	~DefaultState2() {}
+	// ステートに入った時のメソッド
+	void Staet() override {};
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override {};
+	// ステートから出ていくときのメソッド
+	void End() override {};
+};

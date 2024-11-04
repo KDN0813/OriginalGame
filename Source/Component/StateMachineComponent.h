@@ -10,7 +10,12 @@ concept is_State = requires{ std::is_base_of_v<State, T>; };
 class StateMachineComponent : public Component
 {
 public:
-    StateMachineComponent() {};
+    struct StateMachineParam
+    {
+        State::ChangeState default_state;   // 初期のステート
+    };
+public:
+    StateMachineComponent(StateMachineParam param);
     ~StateMachineComponent() {};
 
     // 開始関数
@@ -18,7 +23,7 @@ public:
     // 終了関数
     void End()  override {};
     // リスタート処理
-    void ReStart() override {};      // パラメータの初期化
+    void ReStart() override;      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override;
     // 名前取得
@@ -46,6 +51,7 @@ public:
 private:
     State* current_state = nullptr;                     // 現在のステート
     std::vector<std::unique_ptr<State>> state_pool;     // 各ステートを保持する配列
+    StateMachineParam default_param;
 
 #ifdef _DEBUG
 public:
