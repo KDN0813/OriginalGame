@@ -5,6 +5,7 @@
 #include <concepts>
 #include <memory>
 #include "Component/Component.h"
+#include "System/MyHash.h"
 
 template <class T>
 concept is_Component = requires{ std::is_base_of_v<Component, T>; };
@@ -123,7 +124,10 @@ public:
 		return component;
 	}
 
-	std::shared_ptr<Object> AddChildren();
+	// 子オブジェクトの作成
+	std::shared_ptr<Object> CreateChildObject();
+	// 子オブジェクトの取得
+	std::shared_ptr<Object> FindChildObject(MyHash name);
 
 	/**
 	 * @fn Update

@@ -87,15 +87,20 @@ void PlayerAttackState::Staet()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
+    // アニメーションの再生
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
         animation->PlayAnimation(PlayerCT::ANIMATION::ATTACK01, false, 0.2f);
 
+    // プレイヤーのコントロールを無効にする
     auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
     if (player)
-        player->SetIsActive(false);  // コントロールを無効にする
+        player->SetIsActive(false);
 
-    auto collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->collision_Wprt);
+    // 攻撃判定オブジェクトを有効にする
+    const auto& attack_object = owner->FindChildObject(MyHash("ChildObject"));  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
         collision->SetIsActive(true);  // コリジョンを有効にする
 }
@@ -121,11 +126,15 @@ void PlayerAttackState::End()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
+    // プレイヤーのコントロールを有効にする
     auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
     if (player)
-        player->SetIsActive(true);  // コントロールを有効にする
+        player->SetIsActive(true);
 
-    auto collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->collision_Wprt);
-    if (collision)
-        collision->SetIsActive(false);  // コリジョンを無効にする
+    // 攻撃判定オブジェクトを無効にする
+    const auto& attack_object = owner->FindChildObject(MyHash("ChildObject"));  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto child_collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (child_collision)
+        child_collision->SetIsActive(false);  // コリジョンを無効にする
 }

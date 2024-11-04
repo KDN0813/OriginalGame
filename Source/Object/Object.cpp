@@ -8,12 +8,17 @@
 #include <string>
 #include "Component/Component.h"
 
-std::shared_ptr<Object> Object::AddChildren()
+std::shared_ptr<Object> Object::CreateChildObject()
 {
     std::shared_ptr<Object> object = std::make_unique<Object>();
     object->SetParent(shared_from_this());
     this->children.emplace_back(object);
     return object;
+}
+
+std::shared_ptr<Object> Object::FindChildObject(MyHash name)
+{
+    return nullptr;
 }
 
 void Object::Update(float elapsedTime)

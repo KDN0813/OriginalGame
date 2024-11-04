@@ -144,14 +144,6 @@ void SceneGame::Initialize()
 			{
 				player->AddComponent<GravityComponent>(GravityComponent::GravityParam());
 			}
-			// 円のコライダー
-			{
-				CircleCollisionComponent::CollisionParam param{};
-				param.collision_type = COLLISION_TYPE::ATTACKER;
-				param.default_active_flag = false;
-				auto collision = player->AddComponent<CircleCollisionComponent>(param);
-			}
-
 			// キャラクターステータス
 			{
 				CharacterComponent::CharacterParam param{};
@@ -160,11 +152,11 @@ void SceneGame::Initialize()
 				player->AddComponent<CharacterComponent>(param);
 			}
 
-			// 子オブジェクト設定
+			// プレイヤーの攻撃判定用オブジェクト
 			{
-				std::shared_ptr<Object> object = player->AddChildren();
-				object->SetName("player child");
-				object->AddComponent<ModelComponent>("Data/Debug/Model/Jammo/Jammo.mdl");
+				std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
+				player_attack_object->SetName("AttackObject");
+				player_attack_object->AddComponent<ModelComponent>("Data/Debug/Model/Jammo/Jammo.mdl");
 
 				// トランスフォーム設定
 				{
@@ -172,15 +164,22 @@ void SceneGame::Initialize()
 					param.local_position = DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f);
 					param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
 
-					auto transform = object->AddComponent<Transform3DComponent>(param);
+					auto transform = player_attack_object->AddComponent<Transform3DComponent>(param);
 				}
 				// ムーブメント設定
 				{
-					auto movement = object->AddComponent<MovementComponent>(MovementComponent::MovementParam());
+					auto movement = player_attack_object->AddComponent<MovementComponent>(MovementComponent::MovementParam());
+				}
+				// 円のコライダー
+				{
+					CircleCollisionComponent::CollisionParam param{};
+					param.collision_type = COLLISION_TYPE::ATTACKER;
+					param.default_active_flag = false;
+					auto collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 				}
 				// シェーダー設定
 				auto shader_component =
-					object->AddComponent<ModelShaderComponent>(model_shader.get());
+					player_attack_object->AddComponent<ModelShaderComponent>(model_shader.get());
 			}
 
 			// GameObjectに設定

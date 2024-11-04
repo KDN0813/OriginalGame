@@ -63,5 +63,5 @@ private:
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
-	std::weak_ptr<CircleCollisionComponent> collision_Wprt;
+	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 };
