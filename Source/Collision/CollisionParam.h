@@ -25,7 +25,6 @@ struct CircleParam
 struct CircleHitResult
 {
     DirectX::XMFLOAT2 out_position;
-    std::weak_ptr<Object> hit_object_Wptr;
 };
 
 /**

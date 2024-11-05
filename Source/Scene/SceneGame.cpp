@@ -440,9 +440,6 @@ void SceneGame::PlayerVsEnemy()
 		const auto& player_circle = attack_object->GetComponent<CircleCollisionComponent>();
 		if (!player_circle) return;
 
-		// ヒットフラグの更新
-		player_circle->SetHitOldFlag(player_circle->GetHitFlag());
-		player_circle->SetHitFlag(false);
 		if (!player_circle->GetIsActive()) return;
 
 		// 敵取得
@@ -452,9 +449,6 @@ void SceneGame::PlayerVsEnemy()
 			if (!enemy->GetIsActive()) continue;
 			const auto& enemy_circle = enemy->GetComponent<CircleCollisionComponent>();
 			if (!enemy_circle) return;
-			// ヒットフラグの更新
-			enemy_circle->SetHitOldFlag(enemy_circle->GetHitFlag());
-			enemy_circle->SetHitFlag(false);
 			if (!enemy_circle->GetIsActive()) return;
 
 			// プレイヤー(攻)Vs敵(受)の
@@ -467,20 +461,9 @@ void SceneGame::PlayerVsEnemy()
 				enemy_hit_result
 			))
 			{
-				// 旧処理(最終的に削除する)
-				{
-					// 衝突した場合、攻撃側と防御側にヒットフラグを設定
-					player_circle->SetHitFlag(true);
-					enemy_circle->SetHitFlag(true);
-
-					// 攻撃側のリザルト設定
-					player_hit_result.hit_object_Wptr = enemy_circle->GetOwner();
-					player_circle->SetHitResult(player_hit_result);
-
-					// 防御側のリザルト設定
-					enemy_hit_result.hit_object_Wptr = player_circle->GetOwner();
-					enemy_circle->SetHitResult(enemy_hit_result);
-				}
+				// ヒットリザルト設定
+				player_circle->SetHitResult(player_hit_result);
+				enemy_circle->SetHitResult(enemy_hit_result);
 
 				// 接触処理
 				player_circle->OnCollision(player_circle->GetOwner());

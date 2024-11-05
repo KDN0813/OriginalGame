@@ -36,7 +36,6 @@ void CircleCollisionComponent::End()
 void CircleCollisionComponent::ReStart()
 {
     this->param = this->default_param;
-    this->hit_flag = false;
     this->hit_result = {};
     SetIsActive(this->param.default_active_flag);
 }
@@ -117,19 +116,12 @@ void CircleCollisionComponent::DrawDebugGUI()
         ImGui::InputTextString("COLLISION TYPE", text_str);
     }
     ImGui::DragFloat("radius##CircleCollisionComponent", &param.radius, 0.01f);
-    ImGui::Checkbox("Hit Flag" ,&hit_flag);
 
     // hit_result•\Ž¦
     {
         ImGui::Spacing();
-        if(ImGui::CollapsingHeader("Circle Hit Result"))
+        if (ImGui::CollapsingHeader("Circle Hit Result"))
         {
-            std::string hit_object_name;
-            auto hit_object = hit_result.hit_object_Wptr.lock();
-            if (hit_object) hit_object_name = hit_object->GetName();
-            else hit_object_name = "null";
-
-            ImGui::InputTextString("Hit Object Name", hit_object_name);
         }
     }
 }

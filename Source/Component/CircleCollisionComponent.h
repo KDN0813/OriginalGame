@@ -47,12 +47,8 @@ public:
     float GetRadius() const { return this->param.radius; }
     CircleParam GetCircleParam();
     CircleHitResult GetCircleHitResult()const { return this->hit_result; }
-    bool GetHitFlag() const { return this->hit_flag; }
-    bool GetFastHitFlag() const { return (this->hit_flag && !this->old_hit_flag); } // 初回ヒットであるか
     void SetCollisionType(COLLISION_TYPE type) { this->param.collision_type = type; }
     void SetRadius(float radius) { this->param.radius = radius; }
-    void SetHitFlag(bool hit) { this->hit_flag = hit; }
-    void SetHitOldFlag(bool hit) { this->old_hit_flag = hit; }
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }
 
 private:
@@ -64,8 +60,6 @@ private:
 private:
     CollisionParam param;
     CollisionParam default_param;
-    bool hit_flag = false;
-    bool old_hit_flag = false;
     CircleHitResult hit_result{};
 
     std::vector<std::weak_ptr<Component>> collision_enter_component_Wptr_pool;  // 接触した瞬間処理するコンポーネント

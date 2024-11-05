@@ -80,10 +80,6 @@ bool Judgement_HitDamage::CheckTransitionCondition()
 	if (!owner) return false;
 	auto collision = owner->EnsureComponentValid(this->collision_Wptr);
 	if (!collision) return false;
-	if (collision->GetFastHitFlag())
-	{
-		return true;
-	}
 
-	return collision->GetFastHitFlag();
+	return false;
 }
