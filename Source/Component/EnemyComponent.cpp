@@ -31,6 +31,8 @@ void EnemyComponent::Update(float elapsed_time)
 	auto owner = GetOwner();
 	if (!owner) return;
 	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+
+	// ˆÚ“®ˆ—
 	if (transform)
 	{
 		// –Ú“I’n“_‚Ü‚Å‚ÌXZ•½–Ê‚Å‚Ì‹——£”»’è

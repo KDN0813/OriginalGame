@@ -227,7 +227,7 @@ void SceneGame::Initialize()
 						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::TAUNTING, std::make_unique<Judgement_HitDamage>(enemy));
 						// ダメージ(仮)
 						model->SetAnimationState(EnemyCT::ANIMATION::TAUNTING, false);
-						//model->AddAnimationTransition(EnemyCT::ANIMATION::TAUNTING, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_TransitionReady>(enemy));
+						model->AddAnimationTransition(EnemyCT::ANIMATION::TAUNTING, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_TransitionReady>(enemy));
 					}
 				}
 				// ステート設定

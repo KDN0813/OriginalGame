@@ -36,9 +36,17 @@ INT WINAPI wWinMain(HINSTANCE instance, HINSTANCE prev_instance, LPWSTR cmd_line
 	wcex.hIconSm = 0;
 	RegisterClassEx(&wcex);
 
-	RECT rc = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-	HWND hWnd = CreateWindow(_T("Game"), _T("MAEYANA_GAME"), WS_OVERLAPPEDWINDOW ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, instance, NULL);
+	//RECT rc = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+	//AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+	//HWND hWnd = CreateWindow(_T("Game"), _T("MAEYANA_GAME"), WS_OVERLAPPEDWINDOW ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, instance, NULL);
+	//ShowWindow(hWnd, cmd_show);
+
+	DWORD windowStyle = WS_BORDER;
+	RECT rc = { 0,0,GetSystemMetrics(SM_CXSCREEN),GetSystemMetrics(SM_CYSCREEN) };
+	AdjustWindowRect(&rc, windowStyle, FALSE);
+	HWND hWnd = CreateWindow(_T("Game"), _T(""), windowStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, instance, NULL);
+	SetWindowLongPtr(hWnd, GWL_STYLE, WS_POPUP);
+	SetWindowPos(hWnd, NULL, 0, 0, rc.right, rc.bottom, SWP_FRAMECHANGED);
 	ShowWindow(hWnd, cmd_show);
 
 	Framework f(hWnd);
