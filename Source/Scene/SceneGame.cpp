@@ -154,12 +154,10 @@ void SceneGame::Initialize()
 			{
 				std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
 				player_attack_object->SetName("AttackObject");
-				player_attack_object->AddComponent<ModelComponent>("Data/Debug/Model/Jammo/Jammo.mdl");
-
 				// トランスフォーム設定
 				{
 					Transform3DComponent::Transform3DParam param{};
-					param.local_position = DirectX::XMFLOAT3(100.0f, 0.0f, 0.0f);
+					param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 100.0f);
 					param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 					auto transform = player_attack_object->AddComponent<Transform3DComponent>(param);
@@ -175,9 +173,6 @@ void SceneGame::Initialize()
 					param.default_active_flag = false;
 					auto collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 				}
-				// シェーダー設定
-				auto shader_component =
-					player_attack_object->AddComponent<ModelShaderComponent>(model_shader.get());
 			}
 
 			// GameObjectに設定
