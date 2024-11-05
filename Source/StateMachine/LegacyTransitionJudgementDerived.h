@@ -5,6 +5,7 @@
 class MovementComponent;
 class ModelComponent;
 class EnemyComponent;
+class CircleCollisionComponent;
 
 class TestJudgement_Q : public TransitionJudgementBase
 {
@@ -66,7 +67,7 @@ public:
 class Judgement_TransitionReady : public TransitionJudgementBase
 {
 public:
-	Judgement_TransitionReady(OwnerPtr object , bool reversal = false, bool require_transition_ready = false)
+	Judgement_TransitionReady(OwnerPtr object , bool reversal = false, bool require_transition_ready = true)
 		:TransitionJudgementBase(object, reversal, require_transition_ready) {}
 
 	const char* GetName()const override { return "TransitionReady"; }
@@ -86,6 +87,20 @@ public:
 	bool CheckTransitionCondition() override;
 private:
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
+};
+
+// ダメージを受けた時
+class Judgement_HitDamage : public TransitionJudgementBase
+{
+public:
+	Judgement_HitDamage(OwnerPtr object, bool reversal = false, bool require_transition_ready = false)
+		:TransitionJudgementBase(object, reversal, require_transition_ready) {}
+
+	const char* GetName()const override { return "Judgement_IsAtTarget"; }
+
+	bool CheckTransitionCondition() override;
+private:
+	std::weak_ptr<CircleCollisionComponent> collision_Wptr;
 };
 
 // エネミーの待機行動が終了した時

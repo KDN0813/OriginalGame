@@ -217,10 +217,17 @@ void SceneGame::Initialize()
 
 					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
 					{
+						// 移動
 						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
 						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
+						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::TAUNTING, std::make_unique<Judgement_HitDamage>(enemy));
+						// 攻撃
 						model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
 						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
+						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::TAUNTING, std::make_unique<Judgement_HitDamage>(enemy));
+						// ダメージ(仮)
+						model->SetAnimationState(EnemyCT::ANIMATION::TAUNTING, false);
+						//model->AddAnimationTransition(EnemyCT::ANIMATION::TAUNTING, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_TransitionReady>(enemy));
 					}
 				}
 				// ステート設定

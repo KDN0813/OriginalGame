@@ -7,6 +7,7 @@
 
 #include "Component/MovementComponent.h"
 #include "Component/EnemyComponent.h"
+#include "Component/CircleCollisionComponent.h"
 
 bool TestJudgement_Q::CheckTransitionCondition()
 {
@@ -71,4 +72,18 @@ bool Judgement_IdleFinished::CheckTransitionCondition()
 	auto enemy = owner->EnsureComponentValid(this->enemy_Wptr);
 	if (!enemy) return false;
 	return !enemy->IsIdle();
+}
+
+bool Judgement_HitDamage::CheckTransitionCondition()
+{
+	auto owner = this->owner_Wptr.lock();
+	if (!owner) return false;
+	auto collision = owner->EnsureComponentValid(this->collision_Wptr);
+	if (!collision) return false;
+	if (collision->GetFastHitFlag())
+	{
+		return true;
+	}
+
+	return collision->GetFastHitFlag();
 }
