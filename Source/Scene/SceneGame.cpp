@@ -220,14 +220,14 @@ void SceneGame::Initialize()
 						// 移動
 						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
 						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
-						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::TAUNTING, std::make_unique<Judgement_HitDamage>(enemy));
+						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::DIE, std::make_unique<Judgement_HitDamage>(enemy));
 						// 攻撃
 						model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
 						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
-						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::TAUNTING, std::make_unique<Judgement_HitDamage>(enemy));
-						// ダメージ(仮)
-						model->SetAnimationState(EnemyCT::ANIMATION::TAUNTING, false);
-						model->AddAnimationTransition(EnemyCT::ANIMATION::TAUNTING, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_TransitionReady>(enemy));
+						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::DIE, std::make_unique<Judgement_HitDamage>(enemy));
+						// 死亡(仮)
+						model->SetAnimationState(EnemyCT::ANIMATION::DIE, false);
+						//model->AddAnimationTransition(EnemyCT::ANIMATION::DIE, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_TransitionReady>(enemy));
 					}
 				}
 				// ステート設定
@@ -235,8 +235,12 @@ void SceneGame::Initialize()
 				{
 					auto idle_state = state_machine->RegisterState<Legacy_IdelState>();
 					idle_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
+					idle_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("DamageState", std::make_unique<Judgement_HitDamage>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
 					auto wander_state = state_machine->RegisterState<Legacy_WanderState>();
 					wander_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("IdelState", std::make_unique<Judgement_IsAtTarget>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
+					wander_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("DamageState", std::make_unique<Judgement_HitDamage>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
+					auto damage_state = state_machine->RegisterState<Legacy_DamageState>();
+					damage_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("IdelState", std::make_unique<Judgement_TransitionReady>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
 
 					state_machine->SetDefaultState("WanderState");
 				}
@@ -255,9 +259,11 @@ void SceneGame::Initialize()
 					Transform3DComponent::Transform3DParam param{};
 					param.local_position  = 
 					{
-						sinf(theta) * range,
+						//sinf(theta) * range,
 						0.0f,
-						cosf(theta) * range ,
+						0.0f,
+						0.0f,
+						//cosf(theta) * range ,
 					};
 					param.local_scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
 

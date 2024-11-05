@@ -21,6 +21,7 @@ public:
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;
         float min_idle_time = 0.5f;
+        bool move_validity_flag = true;   // 移動が有効であるかのフラグ
     };
 public:
     EnemyComponent(EnemyParam param) :param(param),default_param(param){};
@@ -52,8 +53,10 @@ public:
     bool IsIdle() { return (this->param.idle_timer > 0.0f); }
 
     // 各種・設定取得関数
+    bool GetMoveValidityFlag() const { return this->param.move_validity_flag; }
     float GetIdleTime() { return this->param.idle_timer; }
     void SetIdleTime(float time) { this->param.idle_timer = time; }
+    void SetMoveValidityFlag(bool flag) { this->param.move_validity_flag = flag; }
 private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);

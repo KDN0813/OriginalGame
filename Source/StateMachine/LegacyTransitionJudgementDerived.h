@@ -96,9 +96,10 @@ public:
 	Judgement_HitDamage(OwnerPtr object, bool reversal = false, bool require_transition_ready = false)
 		:TransitionJudgementBase(object, reversal, require_transition_ready) {}
 
+	bool CheckTransitionCondition() override;
+
 	const char* GetName()const override { return "Judgement_IsAtTarget"; }
 
-	bool CheckTransitionCondition() override;
 private:
 	std::weak_ptr<CircleCollisionComponent> collision_Wptr;
 };

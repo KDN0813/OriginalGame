@@ -30,10 +30,10 @@ void EnemyComponent::Update(float elapsed_time)
 
 	auto owner = GetOwner();
 	if (!owner) return;
-	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 
+	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
 	// ˆÚ“®ˆ—
-	if (transform)
+	if (transform && this->param.move_validity_flag)
 	{
 		// –Ú“I’n“_‚Ü‚Å‚ÌXZ•½–Ê‚Å‚Ì‹——£”»’è
 		MYVECTOR3 Position = transform->GetWorldPosition();
@@ -129,6 +129,7 @@ void EnemyComponent::DrawDebugGUI()
 	ImGui::InputFloat("Idle Timer", &this->param.idle_timer);
 	ImGui::InputFloat("Idle Max Timer", &this->param.max_idle_time);
 	ImGui::InputFloat("Idle Min Timer", &this->param.min_idle_time);
+	ImGui::Checkbox("Move Validity Flag", &this->param.move_validity_flag);
 }
 
 void EnemyComponent::DrawDebugPrimitive()

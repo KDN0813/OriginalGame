@@ -25,7 +25,7 @@ bool LegacyStateBase::PerformTransitionJudgement(TransitionJudgementBase* judgem
 #endif // _DEBUG
 
     // 遷移準備を待つフラグがオンの場合、遷移の準備が整うまで待機する
-    if (judgemen->GetRequireTransitionReady() && !IsTransitionReady()) return false;
+   if (judgemen->GetRequireTransitionReady() && !IsTransitionReady()) return false;
 
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }

@@ -1,7 +1,9 @@
 #include "LegacyStateDerived.h"
 #include "Object/Object.h"
+
 #include "Component/EnemyComponent.h"
 #include "Component/CircleCollisionComponent.h"
+#include "Component/InstancingModelComponent.h"
 
 void Legacy_WanderState::Start()
 {
@@ -62,4 +64,41 @@ void Legacy_AttackState::End()
     if (!circle_collision) return;
 
     circle_collision->SetIsActive(false);
+}
+
+void Legacy_DamageState::Start()
+{
+    auto owner = this->owner_Wptr.lock();
+    if (!owner) return;
+    auto enemy = owner->EnsureComponentValid<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+    enemy->SetMoveValidityFlag(false);  // 移動不可に設定
+}
+
+void Legacy_DamageState::Update(float elapsed_time)
+{
+    int a = 0;
+}
+
+void Legacy_DamageState::End()
+{
+    auto owner = this->owner_Wptr.lock();
+    if (!owner) return;
+    auto enemy = owner->EnsureComponentValid<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+    enemy->SetMoveValidityFlag(true);  // 移動不可に設定
+
+    // 自信を削除するように設定
+    owner->SetIsRemove(true);
+}
+
+bool Legacy_DamageState::IsTransitionReady()
+{
+    auto owner = this->owner_Wptr.lock();
+    if (!owner) return true;
+    const auto& model = owner->EnsureComponentValid<AnimatedInstancedModelComponent>(this->model_Wptr);
+    if (!model) return true;
+
+    // モデルの遷移準備ができているか
+    return model->IsTransitionReady();
 }
