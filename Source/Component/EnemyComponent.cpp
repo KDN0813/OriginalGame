@@ -54,8 +54,14 @@ void EnemyComponent::Update(float elapsed_time)
 
 		if (!character->IsAlive())
 		{
-			// Ž€–S‚µ‚Ä‚¢‚½‚çŽ©g‚ðíœ‚·‚é
-			owner->SetIsRemove(true);
+			if (this->param.deat_timer > 0.0f)
+			{
+				this->param.deat_timer -= elapsed_time;
+			}
+			else
+			{
+				owner->SetIsRemove(true);
+			}
 		}
 	}
 }
@@ -129,6 +135,7 @@ void EnemyComponent::DrawDebugGUI()
 	ImGui::InputFloat("Idle Timer", &this->param.idle_timer);
 	ImGui::InputFloat("Idle Max Timer", &this->param.max_idle_time);
 	ImGui::InputFloat("Idle Min Timer", &this->param.min_idle_time);
+	ImGui::InputFloat("Deat Timer", &this->param.deat_timer);
 	ImGui::Checkbox("Move Validity Flag", &this->param.move_validity_flag);
 }
 

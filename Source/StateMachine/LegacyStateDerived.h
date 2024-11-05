@@ -111,6 +111,31 @@ public:
 #endif // DEBUG
 };
 
+class Legacy_DeathIdleState : public LegacyStateBase
+{
+public:
+    Legacy_DeathIdleState() :LegacyStateBase("DeathIdleState") {}
+    ~Legacy_DeathIdleState() override {};
+
+    // 開始関数
+    void Start() override {};
+    // 個々の更新と状態遷移の更新をする
+    // 更新関数
+    void Update(float elapsed_time) override {};
+    // 終了関数
+    void End() override {};
+
+private:
+    std::weak_ptr<EnemyComponent> enemy_Wptr;
+    std::weak_ptr<AnimatedInstancedModelComponent> model_Wptr;
+
+#ifdef _DEBUG
+public:
+    void DrawDebugGUI() override {};
+
+#endif // DEBUG
+};
+
 class Legacy_AttackState : public LegacyStateBase
 {
 public:

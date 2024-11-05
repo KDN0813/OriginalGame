@@ -21,6 +21,7 @@ public:
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;
         float min_idle_time = 0.5f;
+        float deat_timer = 2.0f;    // 死亡してから削除されるまでの時間
         bool move_validity_flag = true;   // 移動が有効であるかのフラグ
     };
 public:

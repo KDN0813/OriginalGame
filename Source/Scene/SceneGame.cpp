@@ -240,7 +240,8 @@ void SceneGame::Initialize()
 					wander_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("IdelState", std::make_unique<Judgement_IsAtTarget>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
 					wander_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("DamageState", std::make_unique<Judgement_HitDamage>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
 					auto damage_state = state_machine->RegisterState<Legacy_DamageState>();
-					damage_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("IdelState", std::make_unique<Judgement_TransitionReady>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
+					damage_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("DeathIdleState", std::make_unique<Judgement_TransitionReady>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
+					auto death_idle_state = state_machine->RegisterState<Legacy_DeathIdleState>();
 
 					state_machine->SetDefaultState("WanderState");
 				}
@@ -274,7 +275,7 @@ void SceneGame::Initialize()
 				{
 					CharacterComponent::CharacterParam param{};
 					param.max_hp = 10;
-					param.hp = 5;
+					param.hp = 1;
 					enemy->AddComponent<CharacterComponent>(param);
 				}
 
