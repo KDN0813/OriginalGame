@@ -86,6 +86,7 @@ void Legacy_DamageState::End()
     if (!owner) return;
     auto enemy = owner->EnsureComponentValid<EnemyComponent>(this->enemy_Wptr);
     if (!enemy) return;
+    enemy->SetMoveValidityFlag(true);  // ˆÚ“®‰Â‚Éİ’è
 }
 
 bool Legacy_DamageState::IsTransitionReady()
