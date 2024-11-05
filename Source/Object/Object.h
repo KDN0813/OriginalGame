@@ -84,6 +84,7 @@ public:
 		
 		// コンポーネントを取得する
 		component = GetComponent<ComponentType>();
+		_ASSERT_EXPR_W(component, L"コンポーネントがnullptrです");
 		componentWptr = component;
 		return component;
 	}

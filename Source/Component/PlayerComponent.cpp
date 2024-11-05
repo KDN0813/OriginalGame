@@ -34,8 +34,14 @@ void PlayerComponent::Update(float elapsed_time)
     // UŒ‚ˆ—
     {
         if (!owner) return;
-        const auto& collision = owner->EnsureComponentValid(this->collision_Wptr);
-
+        // AttackObject
+        const auto& attack_object = owner->FindChildObject(MyHash("AttackObject"));
+        if (!attack_object) return;
+        const auto& collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->collision_Wptr);
+        if (collision)
+        {
+            int a = 0;
+        }
     }
 }
 

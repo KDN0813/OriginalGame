@@ -6,6 +6,7 @@
 #include "Object.h"
 #include <algorithm>
 #include <string>
+#include "System/Misc.h"
 #include "Component/Component.h"
 
 std::shared_ptr<Object> Object::CreateChildObject()
@@ -26,6 +27,7 @@ std::shared_ptr<Object> Object::FindChildObject(MyHash name)
             return child;
         }
     }
+    _ASSERT_EXPR_W(false, L"子オブジェクトが存在しません");
     return nullptr;
 }
 
