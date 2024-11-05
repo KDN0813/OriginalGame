@@ -29,6 +29,9 @@ public:
 
     bool GetInputMoveValidityFlag()const { return this->param.input_move_validity_flag; }
     void SetInputMoveValidityFlag(bool flag) { this->param.input_move_validity_flag = flag; }
+
+    // 他オブジェクトに接触した時の処理
+    void OnCollision(const std::shared_ptr<Object>& hit_object)override;
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
@@ -41,7 +44,6 @@ private:
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
-    std::weak_ptr<CircleCollisionComponent> child_collision_Wptr;
     std::weak_ptr<CharacterComponent> hit_object_character_Wptr;
 
 #ifdef _DEBUG

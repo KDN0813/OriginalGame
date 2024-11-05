@@ -8,7 +8,6 @@
 #include "Component/CameraComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/TransformComponent.h"
-#include "Component/CircleCollisionComponent.h"
 #include "Component/CharacterComponent.h"
 
 PlayerComponent::~PlayerComponent()
@@ -32,29 +31,17 @@ void PlayerComponent::Update(float elapsed_time)
     {
         InputMove(elapsed_time);
     }
+}
 
-    // 攻撃処理
+void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
+{
+    if (hit_object)
     {
-        if (!owner) return;
-        // 子オブジェクトからコリジョン取得
-        const auto& child_attack_object = owner->FindChildObject(MyHash("AttackObject"));
-        if (!child_attack_object) return;
-        const auto& child_collision = child_attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wptr);
-        // ヒット判定
-        if (child_collision && child_collision->GetFastHitFlag())
+        // ヒットしたオブジェクトにダメージを与える
+        const auto& hit_object_character = hit_object->EnsureComponentValid<CharacterComponent>(this->hit_object_character_Wptr);
+        if (hit_object_character)
         {
-            // ヒットしたオブジェクト取得
-            CircleHitResult hit_result = child_collision->GetCircleHitResult();
-            const auto& hit_object = hit_result.hit_object_Wptr.lock();
-            if (hit_object)
-            {
-                // ヒットしたオブジェクトにダメージを与える
-                const auto& hit_object_character = hit_object->EnsureComponentValid<CharacterComponent>(this->hit_object_character_Wptr);
-                if (hit_object_character)
-                {
-                    hit_object_character->ApplyDamage(this->param.damage_amount);
-                }
-            }
+            hit_object_character->ApplyDamage(this->param.damage_amount);
         }
     }
 }

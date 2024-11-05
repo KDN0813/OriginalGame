@@ -36,6 +36,12 @@ public:
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::LOWEST; };
 
+    // 他オブジェクトに接触した時の処理
+    void OnCollision(const std::shared_ptr<Object>& hit_object)override;
+
+    // ヒットが発生した瞬間かどうか
+    bool IsHitTriggered() const { return true; }
+
     // 各種取得・設定関数
     COLLISION_TYPE GetCollisionType() const { return this->param.collision_type; }
     float GetRadius() const { return this->param.radius; }
@@ -50,11 +56,20 @@ public:
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }
 
 private:
+    // 接触した瞬間呼ばれる関数
+    void OnCollisionEnter(const std::shared_ptr<Object>& hit_object);
+    // 接触している間呼ばれる関数
+    void OnCollisionStay(const std::shared_ptr<Object>& hit_object);
+
+private:
     CollisionParam param;
     CollisionParam default_param;
     bool hit_flag = false;
     bool old_hit_flag = false;
     CircleHitResult hit_result{};
+
+    std::vector<std::weak_ptr<Component>> collision_enter_component_Wptr_pool;  // 接触した瞬間処理するコンポーネント
+    std::vector<std::weak_ptr<Component>> collision_stay_component_Wptr_pool;   // 接触している間処理するコンポーネント
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
 #ifdef _DEBUG

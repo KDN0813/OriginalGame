@@ -2,6 +2,7 @@
 #include "Debug/ImGuiHelper.h"
 #include <magic_enum.hpp>
 #include "Debug/DebugManager.h"
+#include "System/Misc.h"
 #endif // _DEBUG
 #include "CircleCollisionComponent.h"
 #include "Object/Object.h"
@@ -56,6 +57,17 @@ void CircleCollisionComponent::Update(float elapsed_time)
 #endif // _DEBUG
 }
 
+void CircleCollisionComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
+{
+    _ASSERT_EXPR_W((hit_object != nullptr), "hit_object‚ªnullptr‚Å‚·");
+    if (!hit_object) return;
+
+    // ÚG‚µ‚½uŠÔ‚Ìˆ—
+    if(IsHitTriggered()) OnCollisionEnter(hit_object);
+    // ÚG‚µ‚Ä‚¢‚éŠÔ‚Ìˆ—
+    OnCollisionStay(hit_object);
+}
+
 CircleParam CircleCollisionComponent::GetCircleParam()
 {
     CircleParam circle_param{};
@@ -69,6 +81,28 @@ CircleParam CircleCollisionComponent::GetCircleParam()
     DirectX::XMFLOAT3 world_pos = transform->GetWorldPosition();
     circle_param.center = DirectX::XMFLOAT2(world_pos.x, world_pos.z);
     return circle_param;
+}
+
+void CircleCollisionComponent::OnCollisionEnter(const std::shared_ptr<Object>& hit_object)
+{
+    for (const auto& component_Wptr : this->collision_enter_component_Wptr_pool)
+    {
+        if (const auto& component = component_Wptr.lock())
+        {
+            component->OnCollision(hit_object);
+        }
+    }
+}
+
+void CircleCollisionComponent::OnCollisionStay(const std::shared_ptr<Object>& hit_object)
+{
+    for (const auto& component_Wptr : this->collision_stay_component_Wptr_pool)
+    {
+        if (const auto& component = component_Wptr.lock())
+        {
+            component->OnCollision(hit_object);
+        }
+    }
 }
 
 #ifdef _DEBUG

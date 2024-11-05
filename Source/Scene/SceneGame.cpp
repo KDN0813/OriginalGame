@@ -467,19 +467,24 @@ void SceneGame::PlayerVsEnemy()
 				enemy_hit_result
 			))
 			{
-				// Õ“Ë‚µ‚½ê‡AUŒ‚‘¤‚Æ–hŒä‘¤‚Éƒqƒbƒgƒtƒ‰ƒO‚ðÝ’è
-				player_circle->SetHitFlag(true);
-				enemy_circle->SetHitFlag(true);
+				// ‹Œˆ—(ÅI“I‚Éíœ‚·‚é)
+				{
+					// Õ“Ë‚µ‚½ê‡AUŒ‚‘¤‚Æ–hŒä‘¤‚Éƒqƒbƒgƒtƒ‰ƒO‚ðÝ’è
+					player_circle->SetHitFlag(true);
+					enemy_circle->SetHitFlag(true);
 
-				// UŒ‚‘¤‚ÌƒŠƒUƒ‹ƒgÝ’è
-				player_hit_result.hit_object_Wptr = enemy_circle->GetOwner();
-				player_circle->SetHitResult(player_hit_result);
+					// UŒ‚‘¤‚ÌƒŠƒUƒ‹ƒgÝ’è
+					player_hit_result.hit_object_Wptr = enemy_circle->GetOwner();
+					player_circle->SetHitResult(player_hit_result);
 
-				// –hŒä‘¤‚ÌƒŠƒUƒ‹ƒgÝ’è
-				enemy_hit_result.hit_object_Wptr = player_circle->GetOwner();
-				enemy_circle->SetHitResult(enemy_hit_result);
+					// –hŒä‘¤‚ÌƒŠƒUƒ‹ƒgÝ’è
+					enemy_hit_result.hit_object_Wptr = player_circle->GetOwner();
+					enemy_circle->SetHitResult(enemy_hit_result);
+				}
+
+				// ÚGˆ—
+				player_circle->OnCollision(player_circle->GetOwner());
 			}
-
 		}
 	}
 }

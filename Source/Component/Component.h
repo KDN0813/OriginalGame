@@ -39,6 +39,9 @@ public:
     // 優先度
     virtual const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::DEFAULT; };
     
+    // 他オブジェクトに接触した時の処理
+    virtual void OnCollision(const std::shared_ptr<Object>& hit_object) {};
+
     // 各取得・設定関数
     void SetOwner(std::shared_ptr<Object> owner) { this->owner_Wptr = owner; }
     std::shared_ptr<Object> GetOwner() const 
