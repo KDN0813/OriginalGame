@@ -214,7 +214,7 @@ ImGuiRenderer::ImGuiRenderer(HWND hWnd, ID3D11Device* device)
 			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 			desc.CPUAccessFlags = 0;
 
-			D3D11_SUBRESOURCE_DATA subresourceData;
+			D3D11_SUBRESOURCE_DATA subresourceData{};
 			subresourceData.pSysMem = pixels;
 			subresourceData.SysMemPitch = desc.Width * 4;
 			subresourceData.SysMemSlicePitch = 0;
@@ -257,7 +257,7 @@ void ImGuiRenderer::NewFrame()
 	io.DisplaySize = ImVec2((float)(rect.right - rect.left), (float)(rect.bottom - rect.top));
 
 	// Setup time step
-	INT64 current_time;
+	INT64 current_time{};
 	::QueryPerformanceCounter((LARGE_INTEGER*)& current_time);
 	io.DeltaTime = (float)(current_time - time) / ticks_per_second;
 	time = current_time;
@@ -340,7 +340,7 @@ void ImGuiRenderer::Render()
 
 	// 定数バッファ更新
 	{
-		ConstantBuffer data;
+		ConstantBuffer data{};
 
 		float left = draw_data->DisplayPos.x;
 		float right = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
