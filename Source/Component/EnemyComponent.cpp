@@ -11,6 +11,7 @@
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/CircleCollisionComponent.h"
+#include "Component/CharacterComponent.h"
 
 void EnemyComponent::Start()
 {
@@ -41,6 +42,18 @@ void EnemyComponent::Update(float elapsed_time)
 		{
 			// –Ú“I’n“_‚ÖˆÚ“®
 			MoveToTarget(elapsed_time, transform, this->param.speed_rate);
+		}
+	}
+
+	// Ž€–S”»’è
+	{
+		const auto& character = owner->EnsureComponentValid<CharacterComponent>(this->character_Wptr);
+		if (!character)return;
+
+		if (!character->IsAlive())
+		{
+			// Ž€–S‚µ‚Ä‚¢‚½‚çŽ©g‚ðíœ‚·‚é
+			owner->SetIsRemove(true);
 		}
 	}
 }

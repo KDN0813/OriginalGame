@@ -5,6 +5,7 @@
 class Transform3DComponent;
 class MovementComponent;
 class CircleCollisionComponent;
+class CharacterComponent;
 
 class EnemyComponent : public Component
 {
@@ -64,6 +65,7 @@ private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
     std::weak_ptr<CircleCollisionComponent> circle_collision_Wptr;
+    std::weak_ptr<CharacterComponent> character_Wptr;
 #ifdef _DEBUG
 public:
     /**
