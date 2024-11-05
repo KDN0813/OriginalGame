@@ -41,7 +41,7 @@ void PlayerComponent::Update(float elapsed_time)
         if (!child_attack_object) return;
         const auto& child_collision = child_attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wptr);
         // ヒット判定
-        if (child_collision && child_collision->GetHitFlag())
+        if (child_collision && child_collision->GetFastHitFlag())
         {
             // ヒットしたオブジェクト取得
             CircleHitResult hit_result = child_collision->GetCircleHitResult();

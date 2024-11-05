@@ -430,6 +430,10 @@ void SceneGame::PlayerVsEnemy()
 
 		const auto& player_circle = attack_object->GetComponent<CircleCollisionComponent>();
 		if (!player_circle) return;
+
+		// ヒットフラグの更新
+		player_circle->SetHitOldFlag(player_circle->GetHitFlag());
+		player_circle->SetHitFlag(false);
 		if (!player_circle->GetIsActive()) return;
 
 		// 敵取得
@@ -439,6 +443,9 @@ void SceneGame::PlayerVsEnemy()
 			if (!enemy->GetIsActive()) continue;
 			const auto& enemy_circle = enemy->GetComponent<CircleCollisionComponent>();
 			if (!enemy_circle) return;
+			// ヒットフラグの更新
+			enemy_circle->SetHitOldFlag(enemy_circle->GetHitFlag());
+			enemy_circle->SetHitFlag(false);
 			if (!enemy_circle->GetIsActive()) return;
 
 			// プレイヤー(攻)Vs敵(受)の

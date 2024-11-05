@@ -42,15 +42,18 @@ public:
     CircleParam GetCircleParam();
     CircleHitResult GetCircleHitResult()const { return this->hit_result; }
     bool GetHitFlag() const { return this->hit_flag; }
+    bool GetFastHitFlag() const { return (this->hit_flag && !this->old_hit_flag); } // ‰‰ñƒqƒbƒg‚Å‚ ‚é‚©
     void SetCollisionType(COLLISION_TYPE type) { this->param.collision_type = type; }
     void SetRadius(float radius) { this->param.radius = radius; }
     void SetHitFlag(bool hit) { this->hit_flag = hit; }
+    void SetHitOldFlag(bool hit) { this->old_hit_flag = hit; }
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }
 
 private:
     CollisionParam param;
     CollisionParam default_param;
     bool hit_flag = false;
+    bool old_hit_flag = false;
     CircleHitResult hit_result{};
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
