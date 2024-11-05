@@ -34,12 +34,13 @@ public:
     const char* GetName()const  override { return "CircleCollisionComponent"; };
 
     // —Dæ“x
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::LOWEST; };
 
     // Šeíæ“¾Eİ’èŠÖ”
     COLLISION_TYPE GetCollisionType() const { return this->param.collision_type; }
     float GetRadius() const { return this->param.radius; }
     CircleParam GetCircleParam();
+    CircleHitResult GetCircleHitResult()const { return this->hit_result; }
     bool GetHitFlag() const { return this->hit_flag; }
     void SetCollisionType(COLLISION_TYPE type) { this->param.collision_type = type; }
     void SetRadius(float radius) { this->param.radius = radius; }

@@ -53,8 +53,8 @@ void CircleCollisionComponent::Update(float elapsed_time)
             this->circle_collsion_primitive.SetRadius(this->param.radius);
         }
     }
-
 #endif // _DEBUG
+    this->hit_flag = false; // ヒットフラグを折る
 }
 
 CircleParam CircleCollisionComponent::GetCircleParam()

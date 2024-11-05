@@ -9,6 +9,7 @@
 #include "Component/MovementComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/CircleCollisionComponent.h"
+#include "Component/CharacterComponent.h"
 
 PlayerComponent::~PlayerComponent()
 {
@@ -27,6 +28,7 @@ void PlayerComponent::Update(float elapsed_time)
     const auto& owner = GetOwner();
 
     // 移動処理
+    if(this->param.input_move_validity_flag)
     {
         InputMove(elapsed_time);
     }
@@ -34,13 +36,25 @@ void PlayerComponent::Update(float elapsed_time)
     // 攻撃処理
     {
         if (!owner) return;
-        // AttackObject
-        const auto& attack_object = owner->FindChildObject(MyHash("AttackObject"));
-        if (!attack_object) return;
-        const auto& collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->collision_Wptr);
-        if (collision)
+        // 子オブジェクトからコリジョン取得
+        const auto& child_attack_object = owner->FindChildObject(MyHash("AttackObject"));
+        if (!child_attack_object) return;
+        const auto& child_collision = child_attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wptr);
+        // ヒット判定
+        if (child_collision && child_collision->GetHitFlag())
         {
-            int a = 0;
+            // ヒットしたオブジェクト取得
+            CircleHitResult hit_result = child_collision->GetCircleHitResult();
+            const auto& hit_object = hit_result.hit_object_Wptr.lock();
+            if (hit_object)
+            {
+                // ヒットしたオブジェクトにダメージを与える
+                const auto& hit_object_character = hit_object->EnsureComponentValid<CharacterComponent>(this->hit_object_character_Wptr);
+                if (hit_object_character)
+                {
+                    hit_object_character->ApplyDamage(this->param.damage_amount);
+                }
+            }
         }
     }
 }
@@ -124,6 +138,7 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
 void PlayerComponent::DrawDebugGUI()
 {
     ImGui::InputFloat("move_speed", &this->param.move_speed);
+    ImGui::Checkbox("Input Move Validity Flag", &this->param.input_move_validity_flag);
 }
 
 #endif // DEBUG

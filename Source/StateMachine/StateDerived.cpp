@@ -92,10 +92,10 @@ void PlayerAttackState::Staet()
     if (animation)
         animation->PlayAnimation(PlayerCT::ANIMATION::ATTACK01, false, 0.2f);
 
-    // プレイヤーのコントロールを無効にする
+    // プレイヤーの入力移動を無効にする
     auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
     if (player)
-        player->SetIsActive(false);
+        player->SetInputMoveValidityFlag(false);
 
     // 攻撃判定オブジェクトを有効にする
     const auto& attack_object = owner->FindChildObject(MyHash("AttackObject"));  // 子オブジェクト(攻撃用オブジェクト)取得
@@ -126,10 +126,10 @@ void PlayerAttackState::End()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // プレイヤーのコントロールを有効にする
+    // プレイヤーの入力移動を有効にする
     auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
     if (player)
-        player->SetIsActive(true);
+        player->SetInputMoveValidityFlag(true);
 
     // 攻撃判定オブジェクトを無効にする
     const auto& attack_object = owner->FindChildObject(MyHash("AttackObject"));  // 子オブジェクト(攻撃用オブジェクト)取得

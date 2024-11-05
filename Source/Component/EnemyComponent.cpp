@@ -43,14 +43,6 @@ void EnemyComponent::Update(float elapsed_time)
 			MoveToTarget(elapsed_time, transform, this->param.speed_rate);
 		}
 	}
-	auto circle_collision = owner->EnsureComponentValid<CircleCollisionComponent>(this->circle_collision_Wptr);
-	if (circle_collision)
-	{
-		if (circle_collision->GetHitFlag())
-		{
-			owner->SetIsRemove(true);
-		}
-	}
 }
 
 void EnemyComponent::Move(float vx, float vz, float speed)

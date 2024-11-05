@@ -40,7 +40,7 @@ void Object::Update(float elapsedTime)
     if (!this->is_active) return;
 #endif // _DEBUG
 
-    for (auto& component : component_vec)
+    for (auto& component : this->component_vec)
     {
         if (!component->GetIsActive()) continue;
 #ifdef RELEASE_DEBUG

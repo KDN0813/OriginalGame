@@ -5,6 +5,7 @@
 class MovementComponent;
 class Transform3DComponent;
 class CircleCollisionComponent;
+class CharacterComponent;
 
 class PlayerComponent : public Component
 {
@@ -13,6 +14,7 @@ public:
     {
         float move_speed = 10.0f;
         int damage_amount = 1;
+        bool input_move_validity_flag = true;   // “ü—Í‚É‚æ‚éˆÚ“®‚ª—LŒø‚Å‚ ‚é‚©‚Ìƒtƒ‰ƒO
     };
 public:
     PlayerComponent(PlayerParam param) :param(param), default_param(param) {};
@@ -25,6 +27,8 @@ public:
     const char* GetName()const override { return "PlayerComponent"; };
     const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::VERY_HIGH; };
 
+    bool GetInputMoveValidityFlag()const { return this->param.input_move_validity_flag; }
+    void SetInputMoveValidityFlag(bool flag) { this->param.input_move_validity_flag = flag; }
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
@@ -37,7 +41,8 @@ private:
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
-    std::weak_ptr<CircleCollisionComponent> collision_Wptr;
+    std::weak_ptr<CircleCollisionComponent> child_collision_Wptr;
+    std::weak_ptr<CharacterComponent> hit_object_character_Wptr;
 
 #ifdef _DEBUG
 public:
