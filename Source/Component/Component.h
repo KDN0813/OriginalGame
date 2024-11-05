@@ -51,6 +51,7 @@ public:
     void SetComponentID(const int unique_id) { this->component_id = unique_id; }
     bool GetIsActive() { return this->is_active; }
     void SetIsActive(const bool is_active) { this->is_active = is_active; }
+    bool IsOwner() const { return (this->owner_Wptr.lock() != nullptr); }   // Š—LÒ‚ª‘¶İ‚·‚é‚©
 private:
     std::weak_ptr<Object>	owner_Wptr = {};
     unsigned int component_id = {};

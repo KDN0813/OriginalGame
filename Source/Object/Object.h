@@ -4,6 +4,7 @@
 #include <string>
 #include <concepts>
 #include <memory>
+#include "System/Misc.h"
 #include "Component/Component.h"
 #include "System/MyHash.h"
 
@@ -115,9 +116,9 @@ public:
 	template<is_Component	ComponentType>
 	std::shared_ptr<ComponentType> AddComponent(std::shared_ptr<ComponentType> component)
 	{
-		auto owner = component->GetOwner();
-		assert(!owner);	// 既に所有者がいればエラー
-		if (owner) return nullptr;	// 既に所有者がいる場合追加しない
+		bool is_owner = component->IsOwner();
+		_ASSERT_EXPR_W(!is_owner,L"既に所有者が存在します");	// 既に所有者がいればエラー
+		if (is_owner) return nullptr;	// 既に所有者がいる場合追加しない
 		component->SetOwner(shared_from_this());
 		component->SetComponentID(GetComponentID<ComponentType>());
 		component_vec.emplace_back(component);

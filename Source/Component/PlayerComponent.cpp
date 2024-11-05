@@ -33,6 +33,8 @@ void PlayerComponent::Update(float elapsed_time)
 
     // UŒ‚ˆ—
     {
+        if (!owner) return;
+        const auto& collision = owner->EnsureComponentValid(this->collision_Wptr);
 
     }
 }
