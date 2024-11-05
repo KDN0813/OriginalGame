@@ -16,6 +16,7 @@
     (_CrtDbgBreak(), 0))
 #else
 #define  _ASSERT_EXPR_A(expr, expr_str) ((void)0)
+#define  _ASSERT_EXPR_W(expr, expr_str) ((void)0)
 #endif
 
 inline LPWSTR HRTrace(HRESULT hr)

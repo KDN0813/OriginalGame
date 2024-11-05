@@ -4,6 +4,7 @@
 
 class MovementComponent;
 class Transform3DComponent;
+class CircleCollisionComponent;
 
 class PlayerComponent : public Component
 {
@@ -11,6 +12,7 @@ public:
     struct PlayerParam
     {
         float move_speed = 10.0f;
+        int damage_amount = 1;
     };
 public:
     PlayerComponent(PlayerParam param) :param(param), default_param(param) {};
@@ -35,6 +37,7 @@ private:
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
+    std::weak_ptr<CircleCollisionComponent> collision_Wptr;
 
 #ifdef _DEBUG
 public:

@@ -8,6 +8,7 @@
 #include "Component/CameraComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/TransformComponent.h"
+#include "Component/CircleCollisionComponent.h"
 
 PlayerComponent::~PlayerComponent()
 {
@@ -22,7 +23,18 @@ PlayerComponent::~PlayerComponent()
 
 void PlayerComponent::Update(float elapsed_time)
 {
-    InputMove(elapsed_time);
+    // Š—LÒ‚Ìæ“¾
+    const auto& owner = GetOwner();
+
+    // ˆÚ“®ˆ—
+    {
+        InputMove(elapsed_time);
+    }
+
+    // UŒ‚ˆ—
+    {
+
+    }
 }
 
 bool PlayerComponent::InputMove(float elapsed_time)

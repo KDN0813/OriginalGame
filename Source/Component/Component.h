@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "System/Misc.h"
 
 class Object;
 
@@ -39,14 +40,19 @@ public:
     virtual const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::DEFAULT; };
     
     // 各取得・設定関数
-    void SetOwner(std::shared_ptr<Object> owner) { this->owner = owner; }
-    std::shared_ptr<Object> GetOwner() const { return this->owner.lock(); }
+    void SetOwner(std::shared_ptr<Object> owner) { this->owner_Wptr = owner; }
+    std::shared_ptr<Object> GetOwner() const 
+    {
+        std::shared_ptr<Object> owner = this->owner_Wptr.lock();
+        _ASSERT_EXPR_W((owner != nullptr) , L"所有者のポインタがnullです");
+        return owner;
+    }
     const unsigned int GetComponentID() { return this->component_id; }
     void SetComponentID(const int unique_id) { this->component_id = unique_id; }
     bool GetIsActive() { return this->is_active; }
     void SetIsActive(const bool is_active) { this->is_active = is_active; }
 private:
-    std::weak_ptr<Object>	owner = {};
+    std::weak_ptr<Object>	owner_Wptr = {};
     unsigned int component_id = {};
 protected:
     bool is_active = true;
