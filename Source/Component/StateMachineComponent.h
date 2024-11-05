@@ -25,7 +25,7 @@ public:
     // 名前取得
     const char* GetName()const  override { return "StateMachine"; };
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
 
     // ステート変更
     void ChangeState(State::ChangeState& chage_state);

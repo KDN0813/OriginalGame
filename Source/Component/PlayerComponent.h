@@ -21,7 +21,7 @@ public:
     void Update(float elapsed_time) override;
     // –¼‘OŽæ“¾
     const char* GetName()const override { return "PlayerComponent"; };
-    const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::CRITICAL; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::VERY_HIGH; };
 
 private:
     bool InputMove(float elapsed_time);

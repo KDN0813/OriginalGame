@@ -38,7 +38,7 @@ public:
     const char* GetName()const  override { return "EnemyComponent"; };
 
     // —Dæ“x
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::VERY_HIGH; };
 
     // Ÿ‚Ì–Ú“I’nİ’è
     void SetRandomTargetPosition();
