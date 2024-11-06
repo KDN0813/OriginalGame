@@ -6,12 +6,13 @@
 #include <imgui.h>
 #include "Debug/DebugManager.h"
 #endif // DEBUG
-
+#include "ConstantManager.h"
 
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/CircleCollisionComponent.h"
 #include "Component/CharacterComponent.h"
+#include "Component/InstancedModelWithAnimationComponent.h"
 
 void EnemyComponent::Start()
 {
@@ -23,28 +24,93 @@ void EnemyComponent::End()
 
 void EnemyComponent::Update(float elapsed_time)
 {
-	if (this->param.idle_timer > 0.0f)
-	{
-		this->param.idle_timer -= elapsed_time;
-	}
-
-	auto owner = GetOwner();
+	const auto& owner = GetOwner();
 	if (!owner) return;
+	const auto& model_component = owner->EnsureComponentValid(this->model_Wptr);
+	if (!model_component) return;
 
-	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
-	// 移動処理
-	if (transform && this->param.move_validity_flag)
+	switch (this->param.state)
 	{
-		// 目的地点までのXZ平面での距離判定
-		MYVECTOR3 Position = transform->GetWorldPosition();
-		MYVECTOR3 Target_position = this->param.target_position;
-		float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
-
-		if (!this->IsAtTarget(distSq))
+	case EnemyComponent::STATE::IDLE:
+	{
+		if (this->param.idle_timer > 0.0f)
 		{
-			// 目的地点へ移動
-			MoveToTarget(elapsed_time, transform, this->param.speed_rate);
+			// 待機タイマー更新
+			this->param.idle_timer -= elapsed_time;
 		}
+		else
+		{
+			// 待機時間が終了したら移動状態に遷移
+			this->param.state = STATE::MOVE;
+
+			// 移動状態への準備
+			{
+				model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
+				SetRandomTargetPosition();
+				return;
+			}
+		}
+		break;
+	}
+	case EnemyComponent::STATE::MOVE:
+	{
+		// 移動処理
+		{
+			auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+			// 移動処理
+			if (transform && this->param.move_validity_flag)
+			{
+				// 目的地点までのXZ平面での距離判定
+				MYVECTOR3 Position = transform->GetWorldPosition();
+				MYVECTOR3 Target_position = this->param.target_position;
+				float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
+
+				if (!this->IsAtTarget(distSq))
+				{
+					// 目的地点へ移動
+					MoveToTarget(elapsed_time, transform, this->param.speed_rate);
+				}
+			}
+		}
+
+		if (IsAtTarget())
+		{
+			// 目的地に到着したら待機状態に遷移
+			this->param.state = STATE::IDLE;
+
+			// 待機状態への準備
+			{
+				model_component->PlayAnimation(EnemyCT::IDLE_BATTLE, true);
+				SetRandomIdleTime();
+				return;
+			}
+		}
+
+		break;
+	}
+	case EnemyComponent::STATE::DAMAGE:
+	{
+		if (!model_component->IsPlayAnime())
+		{
+			// アニメーションが終了移動状態に遷移
+			this->param.state = STATE::MOVE;
+
+			// 移動状態への準備
+			{
+				model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
+				SetRandomTargetPosition();
+				return;
+			}
+		}
+
+		break;
+	}
+	case EnemyComponent::STATE::DETH:
+	{
+
+		break;
+	}
+	default:break;
 	}
 
 	// 死亡判定
@@ -89,6 +155,12 @@ void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3
 	Move(vx, vz, this->param.move_speed * speed_rate);
 }
 
+void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
+{
+	// ダメージステートに遷移させる
+	SetDamageState();
+}
+
 void EnemyComponent::SetRandomTargetPosition()
 {
 	float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
@@ -121,6 +193,17 @@ bool EnemyComponent::IsAtTarget()
 bool EnemyComponent::IsAtTarget(float distSq)
 {
 	return (distSq < this->param.radius * this->param.radius);
+}
+
+void EnemyComponent::SetDamageState()
+{
+	const auto& owner = GetOwner();
+	if (!owner) return;
+	const auto& model_component = owner->EnsureComponentValid(this->model_Wptr);
+	if (!model_component) return;
+
+	this->param.state = STATE::DAMAGE;
+	model_component->PlayAnimation(EnemyCT::ANIMATION::TAUNTING, false);
 }
 
 #ifdef _DEBUG

@@ -216,10 +216,14 @@ void SceneGame::Initialize()
 			for (int i = 0; i < 1; ++i)
 			{
 				auto enemy = object_manager.Create();
+				
+				// コリジョンに設定するコンポーネントは事前に作成しておく
+				std::shared_ptr<EnemyComponent> enemy_component;
+
 				// エネミーコンポーネント設定
 				{
 					EnemyComponent::EnemyParam param{};
-					auto enemy_component = enemy->AddComponent<EnemyComponent>(param);
+					enemy_component = enemy->AddComponent<EnemyComponent>(param);
 				}
 				// ムーブメント設定
 				{
@@ -233,27 +237,6 @@ void SceneGame::Initialize()
 					param.anime_play = true;
 
 					auto model = enemy->AddComponent<InstancedModelWithAnimationComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
-				}
-				// ステート設定
-				auto state_machine = enemy->AddComponent<LegacyStateMachineComponent>();
-				{
-					auto idle_state = state_machine->RegisterState<Legacy_IdelState>();
-					idle_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("WanderState", std::make_unique<Judgement_IdleFinished>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
-					idle_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("DamageState", std::make_unique<Judgement_HitDamage>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
-					auto wander_state = state_machine->RegisterState<Legacy_WanderState>();
-					wander_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("IdelState", std::make_unique<Judgement_IsAtTarget>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
-					wander_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("DamageState", std::make_unique<Judgement_HitDamage>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
-					auto damage_state = state_machine->RegisterState<Legacy_DamageState>();
-					damage_state->AddStateTransition(std::make_unique<LegacyStateTransitionInfo>("WanderState", std::make_unique<Judgement_TransitionReady>(enemy)), LegacyStateBase::JudgementUpdatePhase::PostUpdate);
-					auto death_idle_state = state_machine->RegisterState<Legacy_DeathIdleState>();
-
-					state_machine->SetDefaultState("WanderState");
-				}
-				// 円のコライダー
-				{
-					CircleCollisionComponent::CollisionParam param{};
-					param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
-					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 				}
 				// トランスフォーム設定
 				{
@@ -290,6 +273,14 @@ void SceneGame::Initialize()
 				if (GameObject* game_object = GameObject::Instance())
 				{
 					game_object->SetEnemy(enemy);
+				}
+
+				// 円のコライダー
+				{
+					CircleCollisionComponent::CollisionParam param{};
+					param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
+					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
+					collision->AddCollisionEntercomponent(enemy_component);
 				}
 			}
 		}

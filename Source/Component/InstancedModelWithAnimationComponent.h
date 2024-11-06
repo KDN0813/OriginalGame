@@ -46,6 +46,9 @@ public:
 
 	void UpdateAnimation(float elapsed_time);
 
+	// アニメーションが再生中であるか
+	bool IsPlayAnime() { return this->param.anime_play; }
+
 	// 各取得・設定関数
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
 	ModelResource* GetModelResource() { return this->model_resource.get(); }

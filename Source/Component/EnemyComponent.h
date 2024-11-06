@@ -6,10 +6,19 @@ class Transform3DComponent;
 class MovementComponent;
 class CircleCollisionComponent;
 class CharacterComponent;
+class InstancedModelWithAnimationComponent;
 
 class EnemyComponent : public Component
 {
 public:
+    enum class STATE
+    {
+        IDLE = 0,
+        MOVE,
+        DAMAGE,
+        DETH,
+    };
+
     struct EnemyParam
     {
         DirectX::XMFLOAT3 target_position{};
@@ -23,6 +32,7 @@ public:
         float min_idle_time = 0.5f;
         float deat_timer = 2.0f;    // 死亡してから削除されるまでの時間
         bool move_validity_flag = true;   // 移動が有効であるかのフラグ
+        STATE state = STATE::IDLE;  // 状態
     };
 public:
     EnemyComponent(EnemyParam param) :param(param),default_param(param){};
@@ -43,6 +53,8 @@ public:
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::VERY_HIGH; };
 
+    void OnCollision(const std::shared_ptr<Object>& hit_object);
+
     // 次の目的地設定
     void SetRandomTargetPosition();
     // 待機時間設定
@@ -62,6 +74,8 @@ private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);
 
+    // ダメージステートに遷移
+    void SetDamageState();
 private:
     EnemyParam param;
     EnemyParam default_param;
@@ -70,6 +84,7 @@ private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
     std::weak_ptr<CircleCollisionComponent> circle_collision_Wptr;
     std::weak_ptr<CharacterComponent> character_Wptr;
+    std::weak_ptr<InstancedModelWithAnimationComponent> model_Wptr;
 #ifdef _DEBUG
 public:
     /**
