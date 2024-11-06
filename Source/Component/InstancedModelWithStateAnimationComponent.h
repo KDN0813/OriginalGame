@@ -11,8 +11,8 @@ class ModelResource;
 class Transform3DComponent;
 
 // アニメーション付インスタンスモデル
-// 内部で条件を保持し、独立してアニメーション遷移を行う
-class AnimatedInstancedModelComponent : public Component
+// 内部でステートを管理し、独立してアニメーション遷移を行う
+class InstancedModelWithStateAnimationComponent : public Component
 {
 public:
 	struct InstancedModelParam
@@ -40,7 +40,7 @@ public:
 		std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
 	};
 public:
-	AnimatedInstancedModelComponent(InstancedModelParam param, const char* filename);
+	InstancedModelWithStateAnimationComponent(InstancedModelParam param, const char* filename);
 
 	// リスタート処理
 	void ReStart() override;      // パラメータの初期化

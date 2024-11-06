@@ -1,5 +1,5 @@
 #include "Debug/ImGuiHelper.h"
-#include "AnimatedControlInstancedModelComponent.h"
+#include "InstancedModelWithAnimationComponent.h"
 #include "Graphics/Graphics.h"
 #include "Object/Object.h"
 
@@ -8,7 +8,7 @@
 
 #include "Component/TransformComponent.h"
 
-AnimatedControlInstancedModelComponent::AnimatedControlInstancedModelComponent(InstancedModelParam param, const char* filename)
+InstancedModelWithAnimationComponent::InstancedModelWithAnimationComponent(InstancedModelParam param, const char* filename)
     :param(param), default_param(param)
 {
 #ifdef _DEBUG
@@ -32,18 +32,18 @@ AnimatedControlInstancedModelComponent::AnimatedControlInstancedModelComponent(I
 #endif // _DEBUG
 }
 
-void AnimatedControlInstancedModelComponent::ReStart()
+void InstancedModelWithAnimationComponent::ReStart()
 {
     param = default_param;
 }
 
-void AnimatedControlInstancedModelComponent::Update(float elapsed_time)
+void InstancedModelWithAnimationComponent::Update(float elapsed_time)
 {
     if (!this->param.anime_play)return;
     UpdateAnimation(elapsed_time);
 }
 
-void AnimatedControlInstancedModelComponent::PlayAnimation(int animeIndex, bool loop)
+void InstancedModelWithAnimationComponent::PlayAnimation(int animeIndex, bool loop)
 {
     if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
 
@@ -53,7 +53,7 @@ void AnimatedControlInstancedModelComponent::PlayAnimation(int animeIndex, bool 
     this->param.anime_play = true;
 }
 
-void AnimatedControlInstancedModelComponent::PlayAnimation(const PlayAnimeParam& play_anime_param)
+void InstancedModelWithAnimationComponent::PlayAnimation(const PlayAnimeParam& play_anime_param)
 {
     this->param.current_animation_seconds = 0;;
     this->param.anime_index = static_cast<UINT>(play_anime_param.anime_index);
@@ -61,7 +61,7 @@ void AnimatedControlInstancedModelComponent::PlayAnimation(const PlayAnimeParam&
     this->param.anime_play = true;
 }
 
-void AnimatedControlInstancedModelComponent::UpdateAnimation(float elapsed_time)
+void InstancedModelWithAnimationComponent::UpdateAnimation(float elapsed_time)
 {
     const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
     const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
@@ -83,7 +83,7 @@ void AnimatedControlInstancedModelComponent::UpdateAnimation(float elapsed_time)
     }
 }
 
-UINT AnimatedControlInstancedModelComponent::GetAnimeFrame()
+UINT InstancedModelWithAnimationComponent::GetAnimeFrame()
 {
     const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
     const UINT animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
@@ -93,19 +93,19 @@ UINT AnimatedControlInstancedModelComponent::GetAnimeFrame()
     return static_cast<UINT>(animation_frame_max_float * (this->param.current_animation_seconds / animation_length));
 }
 
-UINT AnimatedControlInstancedModelComponent::GetAnimationStartOffset()
+UINT InstancedModelWithAnimationComponent::GetAnimationStartOffset()
 {
     return this->instancing_model_resource->GetAnimationOffsets()[this->param.anime_index];
 }
 
-int AnimatedControlInstancedModelComponent::GetModelId()
+int InstancedModelWithAnimationComponent::GetModelId()
 {
     return this->instancing_model_resource->GetModelId();
 }
 
 #ifdef _DEBUG
 
-void AnimatedControlInstancedModelComponent::DrawDebugGUI()
+void InstancedModelWithAnimationComponent::DrawDebugGUI()
 {
     ImGui::Checkbox("Animation Play", &this->param.anime_play);
 
@@ -116,7 +116,7 @@ void AnimatedControlInstancedModelComponent::DrawDebugGUI()
     ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
 }
 
-void AnimatedControlInstancedModelComponent::DrawDebugAnimationGUI()
+void InstancedModelWithAnimationComponent::DrawDebugAnimationGUI()
 {
     int anime_index_int = static_cast<int>(this->param.anime_index);
     if (anime_index_int < 0) return;

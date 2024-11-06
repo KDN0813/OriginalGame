@@ -3,7 +3,7 @@
 
 #include "Component/EnemyComponent.h"
 #include "Component/CircleCollisionComponent.h"
-#include "Component/AnimatedInstancedModelComponent.h"
+#include "Component/InstancedModelWithStateAnimationComponent.h"
 
 void Legacy_WanderState::Start()
 {
@@ -93,7 +93,7 @@ bool Legacy_DamageState::IsTransitionReady()
 {
     auto owner = this->owner_Wptr.lock();
     if (!owner) return true;
-    const auto& model = owner->EnsureComponentValid<AnimatedInstancedModelComponent>(this->model_Wptr);
+    const auto& model = owner->EnsureComponentValid<InstancedModelWithStateAnimationComponent>(this->model_Wptr);
     if (!model) return true;
 
     // ƒ‚ƒfƒ‹‚Ì‘JˆÚ€”õ‚ª‚Å‚«‚Ä‚¢‚é‚©

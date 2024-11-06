@@ -6,7 +6,7 @@
 #include "Model/ModelResource.h"
 
 class InstancingModelShaderComponent;
-class AnimatedInstancedModelComponent;
+class InstancedModelWithStateAnimationComponent;
 class Transform3DComponent;
 
 class InstancingModelShader : public Shader
@@ -58,9 +58,9 @@ public:
 	// インスタンシング描画開始
 	void InstancingStart();
 	// インスタンスの追加
-	void InstancingAdd(AnimatedInstancedModelComponent* model, Transform3DComponent* transform);
+	void InstancingAdd(InstancedModelWithStateAnimationComponent* model, Transform3DComponent* transform);
 	// インスタンシング描画修了
-	void InstancingEnd(ID3D11DeviceContext* dc, AnimatedInstancedModelComponent* model);
+	void InstancingEnd(ID3D11DeviceContext* dc, InstancedModelWithStateAnimationComponent* model);
 
 	// 描画するobjectのシェーダーを追加
 	void AddShaderComponent(InstancingModelShaderComponent* shader_component);
@@ -79,7 +79,7 @@ public:
 	InstancingModelShaderComponent* IsShaderValid(InstancingModelShaderComponent* shader_component);
 private:
 	// インスタンシング描画
-	void InstancingRender(ID3D11DeviceContext* dc, AnimatedInstancedModelComponent* model);
+	void InstancingRender(ID3D11DeviceContext* dc, InstancedModelWithStateAnimationComponent* model);
 	void DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset);
 
 private:

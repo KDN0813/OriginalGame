@@ -327,7 +327,7 @@
     <ClInclude Include="Source\Component\GravityComponent.h">
       <Filter>Source\Component\Gravity</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\AnimatedInstancedModelComponent.h">
+    <ClInclude Include="Source\Component\InstancedModelWithStateAnimationComponent.h">
       <Filter>Source\Component\Model</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\InstancingModelShaderComponent.h">
@@ -384,7 +384,7 @@
     <ClInclude Include="Source\Collision\CircleCollisionManager.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\AnimatedControlInstancedModelComponent.h">
+    <ClInclude Include="Source\Component\InstancedModelWithAnimationComponent.h">
       <Filter>Source\Component\Model</Filter>
     </ClInclude>
   </ItemGroup>
@@ -542,7 +542,7 @@
     <ClCompile Include="Source\Component\GravityComponent.cpp">
       <Filter>Source\Component\Gravity</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\AnimatedInstancedModelComponent.cpp">
+    <ClCompile Include="Source\Component\InstancedModelWithStateAnimationComponent.cpp">
       <Filter>Source\Component\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp">
@@ -596,7 +596,7 @@
     <ClCompile Include="Source\Collision\CircleCollisionManager.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\AnimatedControlInstancedModelComponent.cpp">
+    <ClCompile Include="Source\Component\InstancedModelWithAnimationComponent.cpp">
       <Filter>Source\Component\Model</Filter>
     </ClCompile>
   </ItemGroup>

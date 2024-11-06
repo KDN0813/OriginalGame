@@ -1,5 +1,5 @@
 #include "Debug/ImGuiHelper.h"
-#include "AnimatedInstancedModelComponent.h"
+#include "InstancedModelWithStateAnimationComponent.h"
 #include "Graphics/Graphics.h"
 #include "Object/Object.h"
 
@@ -8,7 +8,7 @@
 
 #include "Component/TransformComponent.h"
 
-AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(InstancedModelParam param, const char* filename)
+InstancedModelWithStateAnimationComponent::InstancedModelWithStateAnimationComponent(InstancedModelParam param, const char* filename)
     :param(param), default_param(param)
 {
 #ifdef _DEBUG
@@ -39,19 +39,19 @@ AnimatedInstancedModelComponent::AnimatedInstancedModelComponent(InstancedModelP
     }
 }
 
-void AnimatedInstancedModelComponent::ReStart()
+void InstancedModelWithStateAnimationComponent::ReStart()
 {
     param = default_param;
 }
 
-void AnimatedInstancedModelComponent::Update(float elapsed_time)
+void InstancedModelWithStateAnimationComponent::Update(float elapsed_time)
 {
     UpdateAnimationState();
     if (!this->param.anime_play)return;
     UpdateAnimation(elapsed_time);
 }
 
-void AnimatedInstancedModelComponent::PlayAnimation(int animeIndex, bool loop)
+void InstancedModelWithStateAnimationComponent::PlayAnimation(int animeIndex, bool loop)
 {
     if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
 
@@ -61,7 +61,7 @@ void AnimatedInstancedModelComponent::PlayAnimation(int animeIndex, bool loop)
     this->param.anime_play = true;
 }
 
-void AnimatedInstancedModelComponent::PlayAnimation(const AnimeState& animation_info)
+void InstancedModelWithStateAnimationComponent::PlayAnimation(const AnimeState& animation_info)
 {
     this->param.current_animation_seconds = 0;;
     this->param.anime_index = static_cast<UINT>(animation_info.anime_index);
@@ -69,7 +69,7 @@ void AnimatedInstancedModelComponent::PlayAnimation(const AnimeState& animation_
     this->param.anime_play = true;
 }
 
-void AnimatedInstancedModelComponent::UpdateAnimation(float elapsed_time)
+void InstancedModelWithStateAnimationComponent::UpdateAnimation(float elapsed_time)
 {    
     const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
     const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
@@ -91,7 +91,7 @@ void AnimatedInstancedModelComponent::UpdateAnimation(float elapsed_time)
     }
 }
 
-void AnimatedInstancedModelComponent::UpdateAnimationState()
+void InstancedModelWithStateAnimationComponent::UpdateAnimationState()
 {
 #ifdef _DEBUG
     if (this->stop_anime_state_update) return;
@@ -111,14 +111,14 @@ void AnimatedInstancedModelComponent::UpdateAnimationState()
     }
 }
 
-void AnimatedInstancedModelComponent::SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time)
+void InstancedModelWithStateAnimationComponent::SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time)
 {
     auto& anime_state = this->anime_state_pool[anime_index];
     anime_state.loop = loop;
     anime_state.transition_ready_time = transition_ready_time;
 }
 
-void AnimatedInstancedModelComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<TransitionJudgementBase> judgement)
+void InstancedModelWithStateAnimationComponent::AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<TransitionJudgementBase> judgement)
 {
     auto& transition_info_pool = this->anime_state_pool[anime_index].transition_info_pool;
     // 遷移するアニメーションステート
@@ -128,7 +128,7 @@ void AnimatedInstancedModelComponent::AddAnimationTransition(AnimeIndex anime_in
     transition_info->judgement = std::move(judgement);
 }
 
-bool AnimatedInstancedModelComponent::IsTransitionReady()
+bool InstancedModelWithStateAnimationComponent::IsTransitionReady()
 {
     // 再生中でなければ準備完了
     if (!this->param.anime_play) return true;
@@ -141,7 +141,7 @@ bool AnimatedInstancedModelComponent::IsTransitionReady()
     return false;
 }
 
-bool AnimatedInstancedModelComponent::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
+bool InstancedModelWithStateAnimationComponent::PerformTransitionJudgement(TransitionJudgementBase* judgemen)
 {
     if (!judgemen) return false;
 #ifdef _DEBUG
@@ -156,7 +156,7 @@ bool AnimatedInstancedModelComponent::PerformTransitionJudgement(TransitionJudge
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
 }
 
-UINT AnimatedInstancedModelComponent::GetAnimeFrame()
+UINT InstancedModelWithStateAnimationComponent::GetAnimeFrame()
 {
     const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
     const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
@@ -166,19 +166,19 @@ UINT AnimatedInstancedModelComponent::GetAnimeFrame()
     return static_cast<UINT>(animation_frame_max_f * (this->param.current_animation_seconds / animation_length));
 }
 
-UINT AnimatedInstancedModelComponent::GetAnimationStartOffset()
+UINT InstancedModelWithStateAnimationComponent::GetAnimationStartOffset()
 {
     return this->instancing_model_resource->GetAnimationOffsets()[this->param.anime_index];
 }
 
-int AnimatedInstancedModelComponent::GetModelId()
+int InstancedModelWithStateAnimationComponent::GetModelId()
 {
     return this->instancing_model_resource->GetModelId();
 }
 
 #ifdef _DEBUG
 
-void AnimatedInstancedModelComponent::DrawDebugGUI()
+void InstancedModelWithStateAnimationComponent::DrawDebugGUI()
 {
     ImGui::Checkbox("Animation Play", &this->param.anime_play);
 
@@ -189,7 +189,7 @@ void AnimatedInstancedModelComponent::DrawDebugGUI()
     ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
 }
 
-void AnimatedInstancedModelComponent::DrawDebugAnimationGUI()
+void InstancedModelWithStateAnimationComponent::DrawDebugAnimationGUI()
 {
     int anime_index_int = static_cast<int>(this->param.anime_index);
     if (anime_index_int < 0) return;
@@ -213,7 +213,7 @@ void AnimatedInstancedModelComponent::DrawDebugAnimationGUI()
     else this->is_draw_deletail = ImGui::Button("Draw Animation Deletail");
 }
 
-void AnimatedInstancedModelComponent::DrawDetail()
+void InstancedModelWithStateAnimationComponent::DrawDetail()
 {
     ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
 

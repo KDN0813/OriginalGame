@@ -26,7 +26,7 @@
 
 #include "Component/ModelComponent.h"
 #include "Component/ModelShaderComponent.h"
-#include "Component/AnimatedInstancedModelComponent.h"
+#include "Component/InstancedModelWithAnimationComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/InstancingModelShaderComponent.h"
 #include "Component/MovementComponent.h"
@@ -227,25 +227,12 @@ void SceneGame::Initialize()
 				}
 				// アニメーション設定
 				{
-					AnimatedInstancedModelComponent::InstancedModelParam param;
+					InstancedModelWithAnimationComponent::InstancedModelParam param;
 					param.anime_index = EnemyCT::ANIMATION::IDLE_BATTLE;
 					param.anime_loop = true;
 					param.anime_play = true;
 
-					auto model = enemy->AddComponent<AnimatedInstancedModelComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
-					{
-						// 移動
-						model->SetAnimationState(EnemyCT::ANIMATION::MOVE_FWD, true);
-						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::IDLE_BATTLE, std::make_unique<Judgement_IsAtTarget>(enemy));
-						model->AddAnimationTransition(EnemyCT::ANIMATION::MOVE_FWD, EnemyCT::ANIMATION::TAUNTING, std::make_unique<Judgement_HitDamage>(enemy));
-						// 攻撃
-						model->SetAnimationState(EnemyCT::ANIMATION::IDLE_BATTLE, true);
-						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_IdleFinished>(enemy));
-						model->AddAnimationTransition(EnemyCT::ANIMATION::IDLE_BATTLE, EnemyCT::ANIMATION::TAUNTING, std::make_unique<Judgement_HitDamage>(enemy));
-						// ダメージ(仮)
-						model->SetAnimationState(EnemyCT::ANIMATION::TAUNTING, false);
-						model->AddAnimationTransition(EnemyCT::ANIMATION::TAUNTING, EnemyCT::ANIMATION::MOVE_FWD, std::make_unique<Judgement_TransitionReady>(enemy));
-					}
+					auto model = enemy->AddComponent<InstancedModelWithAnimationComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
 				}
 				// ステート設定
 				auto state_machine = enemy->AddComponent<LegacyStateMachineComponent>();

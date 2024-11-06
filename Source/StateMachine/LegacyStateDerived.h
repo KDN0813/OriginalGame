@@ -5,7 +5,7 @@
 class MovementComponent;
 class EnemyComponent;
 class CircleCollisionComponent;
-class AnimatedInstancedModelComponent;
+class InstancedModelWithStateAnimationComponent;
 
 class Legacy_DefaultState : public LegacyStateBase
 {
@@ -102,7 +102,7 @@ public:
     bool IsTransitionReady() override;
 private:
     std::weak_ptr<EnemyComponent> enemy_Wptr;
-    std::weak_ptr<AnimatedInstancedModelComponent> model_Wptr;
+    std::weak_ptr<InstancedModelWithStateAnimationComponent> model_Wptr;
 
 #ifdef _DEBUG
 public:
@@ -127,7 +127,7 @@ public:
 
 private:
     std::weak_ptr<EnemyComponent> enemy_Wptr;
-    std::weak_ptr<AnimatedInstancedModelComponent> model_Wptr;
+    std::weak_ptr<InstancedModelWithStateAnimationComponent> model_Wptr;
 
 #ifdef _DEBUG
 public:

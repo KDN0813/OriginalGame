@@ -8,7 +8,7 @@
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 
-#include "Component/AnimatedInstancedModelComponent.h"
+#include "Component/InstancedModelWithStateAnimationComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/CameraComponent.h"
 
@@ -304,7 +304,7 @@ void InstancingModelShader::InstancingStart()
 }
 
 void InstancingModelShader::InstancingAdd(
-	AnimatedInstancedModelComponent* model,
+	InstancedModelWithStateAnimationComponent* model,
 	Transform3DComponent* transform
 )
 {
@@ -317,7 +317,7 @@ void InstancingModelShader::InstancingAdd(
 	++this->instance_count;
 }
 
-void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, AnimatedInstancedModelComponent* model)
+void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, InstancedModelWithStateAnimationComponent* model)
 {
 	InstancingRender(dc, model);
 }
@@ -351,7 +351,7 @@ InstancingModelShaderComponent* InstancingModelShader::IsShaderValid(InstancingM
 	return (shader_component->IsShaderValid())? shader_component : nullptr;
 }
 
-void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, AnimatedInstancedModelComponent* model)
+void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, InstancedModelWithStateAnimationComponent* model)
 {
 	// インスタンシングバッファの更新
 	D3D11_MAPPED_SUBRESOURCE mappedResource{};

@@ -11,8 +11,7 @@ class ModelResource;
 class Transform3DComponent;
 
 // アニメーション付インスタンスモデル
-// 外部からの指示でアニメーションを制御する
-class AnimatedControlInstancedModelComponent : public Component
+class InstancedModelWithAnimationComponent : public Component
 {
 public:
 	struct InstancedModelParam
@@ -32,7 +31,7 @@ public:
 		float anime_speed = 1.0f;
 	};
 public:
-	AnimatedControlInstancedModelComponent(InstancedModelParam param, const char* filename);
+	InstancedModelWithAnimationComponent(InstancedModelParam param, const char* filename);
 
 	// リスタート処理
 	void ReStart() override;      // パラメータの初期化
@@ -71,9 +70,6 @@ public:
 
 private:
 	std::vector<std::string> animation_name_pool;
-	bool stop_anime_state_update = false;
-	bool is_draw_deletail = false;
-	int select_animation_index = 0;			// 詳細を表示するアニメーションのインデックス
 	const char* model_filename;
 #endif // _DEBUG
 };
