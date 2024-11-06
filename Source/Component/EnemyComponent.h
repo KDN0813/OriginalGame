@@ -53,7 +53,8 @@ public:
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::VERY_HIGH; };
 
-    void OnCollision(const std::shared_ptr<Object>& hit_object);
+    // 他オブジェクトに接触した時の処理
+    void OnCollision(const std::shared_ptr<Object>& hit_object) override;
 
     // 次の目的地設定
     void SetRandomTargetPosition();
