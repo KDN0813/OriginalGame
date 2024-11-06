@@ -54,6 +54,7 @@ void CircleCollisionManager::VsEnemy()
 
 					// ÚGˆ—
 					player_circle->OnCollision(enemy_circle->GetOwner());
+					enemy_circle->OnCollision(enemy_circle->GetOwner());
 				}
 			}
 		}
