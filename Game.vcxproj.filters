@@ -384,6 +384,9 @@
     <ClInclude Include="Source\Collision\CircleCollisionManager.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\AnimatedControlInstancedModelComponent.h">
+      <Filter>Source\Component\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -592,6 +595,9 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\CircleCollisionManager.cpp">
       <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\AnimatedControlInstancedModelComponent.cpp">
+      <Filter>Source\Component\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
