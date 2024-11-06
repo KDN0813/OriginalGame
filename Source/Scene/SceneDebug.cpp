@@ -9,7 +9,7 @@
 
 #include "Component/ModelComponent.h"
 #include "Component/ModelShaderComponent.h"
-#include "Component/InstancingModelComponent.h"
+#include "Component/AnimatedInstancedModelComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/InstancingModelShaderComponent.h"
 #include "Component/MovementComponent.h"

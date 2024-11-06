@@ -327,7 +327,7 @@
     <ClInclude Include="Source\Component\GravityComponent.h">
       <Filter>Source\Component\Gravity</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\InstancingModelComponent.h">
+    <ClInclude Include="Source\Component\AnimatedInstancedModelComponent.h">
       <Filter>Source\Component\Model</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\InstancingModelShaderComponent.h">
@@ -539,7 +539,7 @@
     <ClCompile Include="Source\Component\GravityComponent.cpp">
       <Filter>Source\Component\Gravity</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\InstancingModelComponent.cpp">
+    <ClCompile Include="Source\Component\AnimatedInstancedModelComponent.cpp">
       <Filter>Source\Component\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp">

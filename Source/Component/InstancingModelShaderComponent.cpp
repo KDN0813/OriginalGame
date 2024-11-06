@@ -5,7 +5,7 @@
 
 #include "Shader/InstanceModelShader.h"
 
-#include "Component/InstancingModelComponent.h"
+#include "Component/AnimatedInstancedModelComponent.h"
 #include "Component/TransformComponent.h"
 
 InstancingModelShaderComponent::InstancingModelShaderComponent(InstancingModelShader* const shader)

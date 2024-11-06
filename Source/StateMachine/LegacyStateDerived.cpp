@@ -3,7 +3,7 @@
 
 #include "Component/EnemyComponent.h"
 #include "Component/CircleCollisionComponent.h"
-#include "Component/InstancingModelComponent.h"
+#include "Component/AnimatedInstancedModelComponent.h"
 
 void Legacy_WanderState::Start()
 {

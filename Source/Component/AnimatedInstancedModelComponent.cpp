@@ -1,5 +1,5 @@
 #include "Debug/ImGuiHelper.h"
-#include "InstancingModelComponent.h"
+#include "AnimatedInstancedModelComponent.h"
 #include "Graphics/Graphics.h"
 #include "Object/Object.h"
 

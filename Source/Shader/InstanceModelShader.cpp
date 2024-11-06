@@ -8,7 +8,7 @@
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 
-#include "Component/InstancingModelComponent.h"
+#include "Component/AnimatedInstancedModelComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/CameraComponent.h"
 
