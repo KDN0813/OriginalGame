@@ -14,7 +14,7 @@ public:
     void SetEnemy(std::shared_ptr<Object> enenmy) { this->enemy_Wptr_pool.emplace_back(enenmy); };
     std::shared_ptr<Object> GetPlayer() const { return this->player_Wptr.lock(); }
     std::shared_ptr<Object> GetStage() const { return this->stage_Wptr.lock(); }
-    const std::vector<std::weak_ptr<Object>>& const GetEnemyWptPool() { return this->enemy_Wptr_pool; };
+    const std::vector<std::weak_ptr<Object>>& GetEnemyWptPool() const { return this->enemy_Wptr_pool; };
 private:
     std::weak_ptr<Object> player_Wptr;
     std::weak_ptr<Object> stage_Wptr;

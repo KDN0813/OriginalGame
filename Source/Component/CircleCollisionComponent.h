@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "Component.h"
 #include "Collision/CollisionParam.h"
 #ifdef _DEBUG
