@@ -4,7 +4,7 @@
 #include <memory>
 
 class InstancingModelShader;
-class InstancedModelWithStateAnimationComponent;
+class InstancedModelWithAnimationComponent;
 class Transform3DComponent;
 
 class InstancingModelShaderComponent : public Component
@@ -33,7 +33,7 @@ private:
     InstancingModelShader* const shader;
 
 private:
-    std::weak_ptr<InstancedModelWithStateAnimationComponent> instancing_model_Wptr;
+    std::weak_ptr<InstancedModelWithAnimationComponent> instancing_model_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
 
 #ifdef _DEBUG
