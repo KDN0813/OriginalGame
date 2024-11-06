@@ -64,7 +64,6 @@ protected:
 	};
 	virtual ~Singleton()
 	{
-		mutex.lock();//これ以上アクセスされないようにロック
 		instance = nullptr;
 	}
 

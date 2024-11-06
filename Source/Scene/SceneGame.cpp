@@ -77,7 +77,7 @@ void SceneGame::Initialize()
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
 
-			if (GameObject::Instance game_object = GameObject::GetInstance() ; game_object.Get())
+			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
 				game_object->SetStage(stage);
 			}
@@ -86,7 +86,7 @@ void SceneGame::Initialize()
 		// プレイヤー
 		{
 			auto player = object_manager.Create("Player");
-			
+
 			// コリジョンに設定するコンポーネントは事前に作成しておく
 			std::shared_ptr<PlayerComponent> player_component;// プレイヤーコンポーネント
 
@@ -124,7 +124,7 @@ void SceneGame::Initialize()
 			}
 			// プレイヤーコンポーネント作成
 			{
-				player_component= player->AddComponent<PlayerComponent>(PlayerComponent::PlayerParam());
+				player_component = player->AddComponent<PlayerComponent>(PlayerComponent::PlayerParam());
 			}
 			// シェーダー設定
 			{
@@ -205,14 +205,13 @@ void SceneGame::Initialize()
 				auto camera = death_camera->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
 			}
 		}
-
 		// 敵
 		{
 			float territory_range = 45.0f;
 			for (int i = 0; i < 1000; ++i)
 			{
 				auto enemy = object_manager.Create();
-				
+
 				// コリジョンに設定するコンポーネントは事前に作成しておく
 				std::shared_ptr<EnemyComponent> enemy_component;
 
@@ -241,7 +240,7 @@ void SceneGame::Initialize()
 					float range = MyMathf::RandomRange(0.0f, territory_range);
 
 					Transform3DComponent::Transform3DParam param{};
-					param.local_position  = 
+					param.local_position =
 					{
 #if 0	// 初期値固定
 						0.0f,
@@ -269,7 +268,7 @@ void SceneGame::Initialize()
 				// シェーダー設定
 				auto shader_component =
 					enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
-			
+
 				// 円のコライダー
 				{
 					CircleCollisionComponent::CollisionParam param{};
@@ -284,17 +283,17 @@ void SceneGame::Initialize()
 				}
 			}
 		}
-
-#ifdef _DEBUG	// デバッグ用object
-		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
-		{
-			AudioParam param{};
-			param.volume = 0.3f;
-			param.loop = true;
-			param.filename = "Data/Debug/Audio/BGM.wav";
-			audio->Play(param);
-		}
-#endif // _DEBUG
+		
+		#ifdef _DEBUG	// デバッグ用object
+				if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+				{
+					AudioParam param{};
+					param.volume = 0.3f;
+					param.loop = true;
+					param.filename = "Data/Debug/Audio/BGM.wav";
+					audio->Play(param);
+				}
+		#endif // _DEBUG
 	}
 }
 
