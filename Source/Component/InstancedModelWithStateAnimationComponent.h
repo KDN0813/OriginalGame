@@ -1,28 +1,10 @@
 #pragma once
-#include "Component/Component.h"
-#include <d3d11.h>
-#include <DirectXMath.h>
-#include <memory>
-#include "Model/ModelCommonData.h"
-
-class InstancingModelResource;
-class ModelResource;
-
-class Transform3DComponent;
+#include "Component/InstancedModelWithAnimationComponent.h"
 
 // アニメーション付インスタンスモデル
 // 内部でステートを管理し、独立してアニメーション遷移を行う
-class InstancedModelWithStateAnimationComponent : public Component
+class InstancedModelWithStateAnimationComponent : public InstancedModelWithAnimationComponent
 {
-public:
-	struct InstancedModelParam
-	{
-		UINT anime_index = 0;
-		float current_animation_seconds = 0.0f;		// 現在の再生時間
-		int anime_speed = 1;
-		bool anime_loop = false;
-		bool anime_play = false;					// アニメーションが再生中であるか
-	};
 public:
 	// アニメーションの遷移情報
 	struct AnimeTransitionInfo
@@ -50,10 +32,8 @@ public:
 	// 優先度
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 	
-	void PlayAnimation(int animeIndex, bool loop = true);
 	void PlayAnimation(const AnimeState& animation_info);
 
-	void UpdateAnimation(float elapsed_time);
 	// アニメーション状態の更新
 	void UpdateAnimationState();
 	// アニメーション状態の設定
@@ -69,22 +49,8 @@ public:
 	bool PerformTransitionJudgement(TransitionJudgementBase* judgemen);
 
 	// 各取得・設定関数
-	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
-	ModelResource* GetModelResource() { return this->model_resource.get(); }
-	UINT GetAnimeFrame();
-	float GetCurrentAnimationSeconds() const { return this->param.current_animation_seconds; }
-	UINT GetAnimationStartOffset();
-	int GetModelId();
 private:
-	std::shared_ptr<InstancingModelResource> instancing_model_resource;
-	std::shared_ptr<ModelResource> model_resource;
-
 	std::vector<AnimeState>	anime_state_pool;	// アニメーション情報
-	InstancedModelParam param;
-	InstancedModelParam default_param;
-
-private:
-	std::weak_ptr<Transform3DComponent> transform_Wptr;
 
 #ifdef _DEBUG
 public:
@@ -93,11 +59,9 @@ public:
 	void DrawDetail();
 
 private:
-	std::vector<std::string> animation_name_pool;
 	bool stop_anime_state_update = false;
 	bool is_draw_deletail = false;
 	int select_animation_index = 0;			// 詳細を表示するアニメーションのインデックス
-	const char* model_filename;
 #endif // _DEBUG
 };
 

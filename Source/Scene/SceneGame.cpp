@@ -26,7 +26,7 @@
 
 #include "Component/ModelComponent.h"
 #include "Component/ModelShaderComponent.h"
-#include "Component/InstancedModelWithAnimationComponent.h"
+#include "Component/InstancedModelWithStateAnimationComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/InstancingModelShaderComponent.h"
 #include "Component/MovementComponent.h"
@@ -225,14 +225,14 @@ void SceneGame::Initialize()
 				{
 					auto movement = enemy->AddComponent<MovementComponent>(MovementComponent::MovementParam());
 				}
-				// アニメーション設定
+				// モデル設定
 				{
 					InstancedModelWithAnimationComponent::InstancedModelParam param;
 					param.anime_index = EnemyCT::ANIMATION::IDLE_BATTLE;
 					param.anime_loop = true;
 					param.anime_play = true;
 
-					auto model = enemy->AddComponent<InstancedModelWithAnimationComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
+					auto model = enemy->AddComponent<InstancedModelWithStateAnimationComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
 				}
 				// ステート設定
 				auto state_machine = enemy->AddComponent<LegacyStateMachineComponent>();
