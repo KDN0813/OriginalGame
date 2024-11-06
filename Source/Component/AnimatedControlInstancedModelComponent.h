@@ -24,20 +24,12 @@ public:
 		bool anime_play = false;					// アニメーションが再生中であるか
 	};
 public:
-	// アニメーションの遷移情報
-	struct AnimeTransitionInfo
+	// 再生するアニメーションのパラメータ
+	struct PlayAnimeParam
 	{
-		AnimeIndex next_anime_index = -1;							// 次のアニメのインデックス
-		std::unique_ptr<TransitionJudgementBase> judgement;	// 遷移判定
-	};
-	// アニメーション状態
-	struct AnimeState
-	{
-		std::string name = {};													// アニメーション名
-		AnimeIndex anime_index = -1;											// アニメのインデックス
-		bool loop = false;														// ループフラグ
-		float transition_ready_time = -1;										// 遷移準備が完了するまでの時間(0以下なら再生終了で準備完了)
-		std::vector<std::unique_ptr<AnimeTransitionInfo>> transition_info_pool;	// 遷移するアニメーション情報
+		UINT anime_index = 0;
+		bool loop = false;
+		float anime_speed = 1.0f;
 	};
 public:
 	AnimatedControlInstancedModelComponent(InstancedModelParam param, const char* filename);
@@ -51,35 +43,21 @@ public:
 	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
 
 	void PlayAnimation(int animeIndex, bool loop = true);
-	void PlayAnimation(const AnimeState& animation_info);
+	void PlayAnimation(const PlayAnimeParam& play_anime_param);
 
 	void UpdateAnimation(float elapsed_time);
-	// アニメーション状態の更新
-	void UpdateAnimationState();
-	// アニメーション状態の設定
-	void SetAnimationState(AnimeIndex anime_index, bool loop, float transition_ready_time = -1.0f);
-	// 遷移するアニメーションの追加
-	void AddAnimationTransition(AnimeIndex anime_index, AnimeIndex transition_anime_index, std::unique_ptr<TransitionJudgementBase> judgement);
-
-	// アニメーションの遷移準備が完了しているか
-	// 遷移判定クラスで遷移準備を待つ設定の時に使用する
-	bool IsTransitionReady();
-	// 遷移判定のロジックを実行
-	// `judgemenのshould_reverse` フラグがtrueなら、遷移判定結果を反転する
-	bool PerformTransitionJudgement(TransitionJudgementBase* judgemen);
 
 	// 各取得・設定関数
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
 	ModelResource* GetModelResource() { return this->model_resource.get(); }
-	UINT GetAnimeFrame();
+	UINT GetAnimeFrame();		// 現在の再生フレーム数を取得
 	float GetCurrentAnimationSeconds() const { return this->param.current_animation_seconds; }
-	UINT GetAnimationStartOffset();
+	UINT GetAnimationStartOffset();	// 現在再生しているアニメーションのオフセット値を取得
 	int GetModelId();
 private:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
 	std::shared_ptr<ModelResource> model_resource;
 
-	std::vector<AnimeState>	anime_state_pool;	// アニメーション情報
 	InstancedModelParam param;
 	InstancedModelParam default_param;
 
@@ -90,7 +68,6 @@ private:
 public:
 	void DrawDebugGUI()override;
 	void DrawDebugAnimationGUI();
-	void DrawDetail();
 
 private:
 	std::vector<std::string> animation_name_pool;
