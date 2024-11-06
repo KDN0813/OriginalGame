@@ -63,7 +63,9 @@ Audio::~Audio()
 void Audio::Play(AudioParam param)
 {
 	// リソース作成
-	std::shared_ptr<AudioResource> resource = AudioResourceManager::Instance()->LoadAudioResource(param.filename.c_str());
+	AudioResourceManager::Instance audio_resource_manager = AudioResourceManager::GetInstance();
+	if (!audio_resource_manager.Get()) return;
+	std::shared_ptr<AudioResource> resource = audio_resource_manager->LoadAudioResource(param.filename.c_str());
 	// オーディオソース作成
 	AudioSource* audio = this->audio_source_pool.emplace_back(new AudioSource(this->xaudio, resource, param));
 

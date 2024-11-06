@@ -9,22 +9,22 @@
 ModelAnimationControlComponent::ModelAnimationControlComponent(const char* filename)
 	:param()
 {
-	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	// ƒŠƒ\[ƒX“Ç‚Ýž‚Ý
-	auto model_resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
+	ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance();
+	if (!model_resource_manager.Get()) return;
+	auto model_resource = model_resource_manager->LoadModelResource(device, filename);
 	this->model_resource_Wptr = model_resource;
 
 	this->animation_size = static_cast<int>(model_resource->GetAnimations().size());
-
 #ifdef _DEBUG
 	for (size_t i = 0; i < this->animation_size; ++i)
 	{
 		this->animation_name_pool.emplace_back(model_resource->GetAnimations()[i].name);
 	}
-
 #endif // DEBUG
 }
 

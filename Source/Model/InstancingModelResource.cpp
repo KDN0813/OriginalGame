@@ -5,7 +5,9 @@
 
 InstancingModelResource::InstancingModelResource(ID3D11Device* device, const char* filename)
 {
-	auto resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
+	ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance();
+	if (!model_resource_manager.Get()) return;
+	auto resource = model_resource_manager->LoadModelResource(device, filename);
 
 	CreateBoneTransformTexture(device, resource.get());
 }

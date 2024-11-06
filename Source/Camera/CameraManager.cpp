@@ -13,12 +13,14 @@
 CameraManager::CameraManager()
     :Singleton(this)
 {
-    // グラフィックス取得
-    Graphics* graphics = Graphics::Instance();
     // カメラパラメータ作成
     CameraComponent::CameraParam camera_param{};
     camera_param.fovY = DirectX::XMConvertToRadians(45.0f);
-    camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
+    // グラフィックスからアスペクト比を計算
+    if (Graphics::Instance graphics = Graphics::GetInstance(); graphics.Get())
+    {
+        camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
+    }
     camera_param.nearZ = 0.1f;
     camera_param.farZ = 1000.0f;
     camera_param.range = 10.0f;

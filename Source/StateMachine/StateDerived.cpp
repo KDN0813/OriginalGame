@@ -39,10 +39,14 @@ void PlayerIdleState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_move_state);
     }
 
-    GamePad& pad = Input::Instance()->GetGamePad();
-    if (pad.GetButtonDown() & GamePad::BTN_X)
+    // “ü—Íó•t
+    if (Input::Instance input = Input::GetInstance(); input.Get())
     {
-        state_machine->ChangeState(this->change_attack_state);
+        GamePad& pad = input->GetGamePad();
+        if (pad.GetButtonDown() & GamePad::BTN_X)
+        {
+            state_machine->ChangeState(this->change_attack_state);
+        }
     }
 }
 

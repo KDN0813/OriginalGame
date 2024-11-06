@@ -28,7 +28,11 @@ void DebugComponent::DrawDebugPrimitive()
     if (!owner) return;
     auto transform = owner->GetComponent<Transform3DComponent>();
     if (!transform) return;
-    DebugPrimitiveRenderer* debug_primitive_render = DebugManager::Instance()->GetDebugPrimitiveRenderer();
+
+    DebugManager::Instance debug_manager = DebugManager::GetInstance();
+    if (!debug_manager.Get()) return;
+    DebugPrimitiveRenderer* debug_primitive_render = debug_manager->GetDebugPrimitiveRenderer();
+    if (!debug_primitive_render) return;
     debug_primitive_render->DrawSphere(transform->GetWorldPosition(), 1.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 

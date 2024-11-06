@@ -9,8 +9,8 @@
 
 void SpriteShader::Render()
 {
-    Graphics* graphics = Graphics::Instance();
-    std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+    Graphics::Instance graphics = Graphics::GetInstance();
+    if (!graphics.Get()) return;
     ID3D11DeviceContext* const dc = graphics->GetDeviceContext();
 
     // —LŒø‚Å‚È‚¢weak_ptr‚ğœ‹‚·‚é

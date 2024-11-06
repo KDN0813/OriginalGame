@@ -14,12 +14,16 @@ ModelComponent::ModelComponent( const char* filename)
 	this->model_filename = filename;
 #endif // _DEBUG
 
-	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	// ƒŠƒ\[ƒX“Ç‚Ýž‚Ý
-	this->resource = ModelResourceManager::Instance()->LoadModelResource(device, filename);
+	ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance();
+	if (model_resource_manager.Get())
+	{
+		this->resource = model_resource_manager->LoadModelResource(device, filename);
+	}
 }
 
 void ModelComponent::Start()

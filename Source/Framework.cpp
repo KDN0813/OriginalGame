@@ -139,7 +139,7 @@ int Framework::Run()
 			// ポーズキーが押されたらポーズ設定(解除)する
 			if (IsPressedPauseKey())
 			{
-				if (GameData* game_data = GameData::Instance())
+				if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 				{
 					game_data->SetIsPause(!game_data->GetIsPause());
 				}
@@ -173,10 +173,10 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 		break;
 	}
 	case WM_CLOSE:
-		if (GameData* gamedata = GameData::Instance())
+		if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 		{
 			// ロード中ならウィンドウを閉じない
-			if (gamedata->GetIsLoading()) break;
+			if (game_data->GetIsLoading()) break;
 		}
 		DestroyWindow(hWnd);
 		break;
@@ -196,7 +196,10 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 		timer.Start();
 		break;
 	case WM_MOUSEWHEEL:
-		Input::Instance()->GetMouse().SetWheel(GET_WHEEL_DELTA_WPARAM(wParam));
+		if (Input::Instance input = Input::GetInstance(); input.Get())
+		{
+			input->GetMouse().SetWheel(GET_WHEEL_DELTA_WPARAM(wParam));
+		}
 		break;
 	default:
 		return DefWindowProc(hWnd, msg, wParam, lParam);
@@ -212,28 +215,25 @@ void Framework::DrawDebugGUI()
 	this->scene_manager.DrawDebugGUI();
 
 	// カメラ
-	CameraManager* camera_manager = CameraManager::Instance();
-	if (camera_manager)
+	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
 		camera_manager->DrawDebugGUI();
 	}
 
 	// オーディオ
-	Audio* audio = Audio::Instance();
-	if (audio)
+	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 	{
 		audio->DebugDrawGUI();
 	}
 
 	// ゲームデータ
-	GameData* game_data = GameData::Instance();
-	if (game_data)
+	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
 		game_data->DebugDrawGUI();
 	}
 
 	// ゲームオブジェクト
-	if (GameObject* game_object = GameObject::Instance())
+	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
 		game_object->DebugDrawGUI();
 	}

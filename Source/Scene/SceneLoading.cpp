@@ -30,10 +30,10 @@ void SceneLoading::Initialize()
         }
     }
 
-    if (GameData* gamedata = GameData::Instance())
+    if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get() != nullptr)
     {
         // ロード中フラグ立てる
-        gamedata->SetIsLoading(true);
+        game_data->SetIsLoading(true);
     }
 }
 
@@ -41,10 +41,10 @@ void SceneLoading::Finalize()
 {
     this->thread->join();
 
-    if (GameData* gamedata = GameData::Instance())
+    if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
     {
         // ロード中フラグ解除
-        gamedata->SetIsLoading(false);
+        game_data->SetIsLoading(false);
     }
 }
 
@@ -54,14 +54,18 @@ void SceneLoading::Update(float elapsed_time)
 
     if (next_scene->IsReady())
     {
-        SceneManager::Instance()->ChangeScene(next_scene);
+        if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
+        {
+            scene_manager->ChangeScene(next_scene);
+        }
     }
 }
 
 void SceneLoading::Render()
 {
     // 描画準備
-    Graphics* graphics = Graphics::Instance();
+    Graphics::Instance graphics = Graphics::GetInstance();
+    if (!graphics.Get()) return; 
     graphics->PrepareRenderTargets();
 
     // 2Dスプライト描画

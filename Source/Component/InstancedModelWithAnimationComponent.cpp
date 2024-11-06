@@ -14,14 +14,19 @@ InstancedModelWithAnimationComponent::InstancedModelWithAnimationComponent(Insta
 #ifdef _DEBUG
     this->model_filename = filename;
 #endif // _DEBUG
-    Graphics* graphics = Graphics::Instance();
-    std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+    Graphics::Instance graphics = Graphics::GetInstance();
+    if (!graphics.Get()) return;
     ID3D11Device* device = graphics->GetDevice();
 
-    this->model_resource =
-        ModelResourceManager::Instance()->LoadModelResource(device, filename);
-    this->instancing_model_resource =
-        InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
+    if (ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance(); model_resource_manager.Get())
+    {
+        this->model_resource = model_resource_manager->LoadModelResource(device, filename);
+    }
+
+    if (InstancingModelResourceManager::Instance instancing_model_resource_manager = InstancingModelResourceManager::GetInstance(); instancing_model_resource_manager.Get())
+    {
+        this->instancing_model_resource = instancing_model_resource_manager->LoadModelResource(device, filename);
+    }
 
 #ifdef _DEBUG
     // アニメーションの名前を登録   

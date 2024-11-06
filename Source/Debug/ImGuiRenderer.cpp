@@ -284,8 +284,8 @@ void ImGuiRenderer::NewFrame()
 // •`‰æ
 void ImGuiRenderer::Render()
 {
-	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (!graphics.Get()) return;
 	ID3D11DeviceContext* context = graphics->GetDeviceContext();
 
 	ImGui::Render();

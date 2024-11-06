@@ -4,8 +4,8 @@
 DebugManager::DebugManager(HWND hWnd)
     :Singleton(this)
 {
-    Graphics* graphics = Graphics::Instance();
-    std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+    Graphics::Instance graphics = Graphics::GetInstance();
+    if (!graphics.Get()) return;
     ID3D11Device*  device = graphics->GetDevice();
 
     this->imGui_renderer = std::make_unique<ImGuiRenderer>(hWnd, device);

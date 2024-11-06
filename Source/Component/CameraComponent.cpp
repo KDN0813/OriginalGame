@@ -42,8 +42,8 @@ void CameraComponent::Update(float elapsed_time)
 
 void CameraComponent::SetCurrentCamera()
 {
-    CameraManager* camera_manager = CameraManager::Instance();
-    if (!camera_manager) return;    // マネージャーの取得に失敗したら
+    CameraManager::Instance camera_manager = CameraManager::GetInstance();
+    if (!camera_manager.Get()) return;    // マネージャーの取得に失敗したら
     // カメラ設定
     camera_manager->SetCurrentCamera(this->camera_type);
 }

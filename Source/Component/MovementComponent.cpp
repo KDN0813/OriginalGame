@@ -156,7 +156,10 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 		transform->AddLocalPosition(this->param.velocity);
 		return;
 	}
-	auto stage_object = GameObject::Instance()->GetStage();
+	GameObject::Instance game_object = GameObject::GetInstance();
+	if (!game_object.Get()) return;
+
+	auto stage_object = game_object->GetStage();
 	if (!stage_object)
 	{
 		transform->AddLocalPosition(this->param.velocity);
@@ -308,7 +311,9 @@ void MovementComponent::DrawDebugGUI()
 
 void MovementComponent::DrawDebugPrimitive()
 {
-	DebugPrimitiveRenderer* debug_render = DebugManager::Instance()->GetDebugPrimitiveRenderer();
+	DebugManager::Instance debug_manager = DebugManager::GetInstance();
+
+	DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();
 	debug_render->DrawSphere(this->rayY_start_pos);
 	debug_render->DrawSphere(this->rayY_end_pos);
 

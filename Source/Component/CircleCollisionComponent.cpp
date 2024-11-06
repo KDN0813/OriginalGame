@@ -59,7 +59,7 @@ void CircleCollisionComponent::Update(float elapsed_time)
 
 void CircleCollisionComponent::EvaluateCollision()
 {
-    if (CircleCollisionManager* manager = CircleCollisionManager::Instance())
+    if (CircleCollisionManager::Instance manager = CircleCollisionManager::GetInstance(); manager.Get())
     {
         manager->EvaluateCollision(shared_from_this());
     }
@@ -143,7 +143,11 @@ void CircleCollisionComponent::DrawDebugGUI()
 void CircleCollisionComponent::DrawDebugPrimitive()
 {
     if (this->param.collision_type >= COLLISION_OBJECT_TYPE::MAX) return;    // ƒ^ƒCƒv‚ªˆÈã‚È‚çˆ—‚µ‚È‚¢
-    DebugPrimitiveRenderer* debug_primitive_renderer = DebugManager::Instance()->GetDebugPrimitiveRenderer();
+    
+    DebugManager::Instance debug_manager = DebugManager::GetInstance();
+    if (!debug_manager.Get()) return;
+    DebugPrimitiveRenderer* debug_primitive_renderer = debug_manager->GetDebugPrimitiveRenderer();
+    if (!debug_primitive_renderer) return;
     debug_primitive_renderer->DrawCylinder(circle_collsion_primitive);
 }
 

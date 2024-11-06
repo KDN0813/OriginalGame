@@ -40,14 +40,17 @@ void SceneResult::Update(float elapsed_time)
 	// スペースキーでゲーム画面に遷移(仮)
 	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 	{
-		SceneManager::Instance()->ChangeScene(new SceneTitle());
+		SceneManager::Instance scene_manager = SceneManager::GetInstance();
+		if (!scene_manager.Get()) return;
+		scene_manager->ChangeScene(new SceneTitle());
 	}
 }
 
 void SceneResult::Render()
 {
 	// 描画準備
-	Graphics* graphics = Graphics::Instance();
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (!graphics.Get()) return;
 	graphics->PrepareRenderTargets();
 
 	// 2Dスプライト描画

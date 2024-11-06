@@ -30,14 +30,6 @@ private:
     ObjectManager object_manager;
 
 #ifdef _DEBUG
-    enum class ImGuiMode
-    {
-        Object = 0,
-        Shader,
-        Camera,
-        System,
-    };
-    ImGuiMode mode_index = ImGuiMode::Object;
     void DebugDrawGUI() override;
 
     void DrawShaderImGui();

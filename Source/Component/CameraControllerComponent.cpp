@@ -37,9 +37,15 @@ void CameraControllerGamepad::Update(float elapsed_time)
 	float range = camera->GetRange();
 	MYVECTOR3 Focus = focus;
 
-	GamePad& gamePad = Input::Instance()->GetGamePad();
-	float ax = gamePad.GetAxisRX();
-	float ay = gamePad.GetAxisRY();
+	// 入力情報を取り出す
+	float ax{};
+	float ay{};
+	if (Input::Instance input = Input::GetInstance(); input.Get())
+	{
+		GamePad& gamePad = input->GetGamePad();
+		ax = gamePad.GetAxisRX();
+		ay = gamePad.GetAxisRY();
+	}
 	// カメラの回転速度
 	float speed = this->param.roll_speed * elapsed_time;
 
@@ -76,13 +82,15 @@ void CameraControllerGamepad::Update(float elapsed_time)
 void CameraControllerDebug::Update(float elapsed_time)
 {
 	auto owner = GetOwner();
-	if (!owner) return ;
+	if (!owner) return;
 	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);
 	if (!camera) return;
 	if (!camera->GetIsActive()) return;
 
-	Mouse& mouse = Input::Instance()->GetMouse();
-
+	// マウス情報取得
+	Input::Instance input = Input::GetInstance();
+	if (!input.Get()) return;
+	Mouse& mouse = input->GetMouse();
 	float moveX = (mouse.GetPositionX() - mouse.GetOldPositionX()) * 0.02f;
 	float moveY = (mouse.GetPositionY() - mouse.GetOldPositionY()) * 0.02f;
 
@@ -116,27 +124,27 @@ void CameraControllerDebug::Update(float elapsed_time)
 				// キー移動
 				MYVECTOR3 Forward = camera->GetForward();
 				MYVECTOR3 Right = camera->GetRight();
-				if (GetKeyState('W') < 0) 
+				if (GetKeyState('W') < 0)
 				{
 					Focus += Forward * 10.f * elapsed_time;
 				}
-				if (GetKeyState('S') < 0) 
+				if (GetKeyState('S') < 0)
 				{
 					Focus -= Forward * 10.f * elapsed_time;
 				}
-				if (GetKeyState('A') < 0) 
+				if (GetKeyState('A') < 0)
 				{
 					Focus -= Right * 10.f * elapsed_time;
 				}
-				if (GetKeyState('D') < 0) 
+				if (GetKeyState('D') < 0)
 				{
 					Focus += Right * 10.f * elapsed_time;
 				}
-				if (GetKeyState('E') < 0) 
+				if (GetKeyState('E') < 0)
 				{
 					Focus.AddY(10.0f * elapsed_time);
 				}
-				if (GetKeyState('Q') < 0) 
+				if (GetKeyState('Q') < 0)
 				{
 					Focus.SubtractY(10.0f * elapsed_time);
 				}

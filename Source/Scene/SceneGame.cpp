@@ -53,7 +53,6 @@
 
 void SceneGame::Initialize()
 {
-	Graphics* graphics = Graphics::Instance();
 	// シェーダーの作成
 	{
 		instancing_model_shader = std::make_unique<InstancingModelShader>();
@@ -78,7 +77,7 @@ void SceneGame::Initialize()
 			auto shader_component =
 				stage->AddComponent<ModelShaderComponent>(model_shader.get());
 
-			if (GameObject* game_object = GameObject::Instance())
+			if (GameObject::Instance game_object = GameObject::GetInstance() ; game_object.Get())
 			{
 				game_object->SetStage(stage);
 			}
@@ -134,12 +133,10 @@ void SceneGame::Initialize()
 			}
 			// カメラ設定
 			{
-				CameraManager* camera_manager = CameraManager::Instance();
-				if (camera_manager)
+				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 				{
 					auto camera = player->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
 				}
-
 			}
 			// カメラコントローラー設定
 			{
@@ -193,7 +190,7 @@ void SceneGame::Initialize()
 			}
 
 			// GameObjectに設定
-			if (GameObject* game_object = GameObject::Instance())
+			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
 				game_object->SetPlayer(player);
 			}
@@ -203,8 +200,7 @@ void SceneGame::Initialize()
 		// デスカメラ
 		{
 			auto death_camera = object_manager.Create("Death Camera");
-			CameraManager* camera_manager = CameraManager::Instance();
-			if (camera_manager)
+			if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 			{
 				auto camera = death_camera->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
 			}
@@ -282,7 +278,7 @@ void SceneGame::Initialize()
 					collision->AddCollisionEntercomponent(enemy_component);
 				}
 
-				if (GameObject* game_object = GameObject::Instance())
+				if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 				{
 					game_object->SetEnemy(enemy);
 				}
@@ -290,11 +286,14 @@ void SceneGame::Initialize()
 		}
 
 #ifdef _DEBUG	// デバッグ用object
-		AudioParam param{};
-		param.volume = 0.3f;
-		param.loop = true;
-		param.filename = "Data/Debug/Audio/BGM.wav";
-		Audio::Instance()->Play(param);
+		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+		{
+			AudioParam param{};
+			param.volume = 0.3f;
+			param.loop = true;
+			param.filename = "Data/Debug/Audio/BGM.wav";
+			audio->Play(param);
+		}
 #endif // _DEBUG
 	}
 }
@@ -302,8 +301,7 @@ void SceneGame::Initialize()
 void SceneGame::Finalize()
 {
 	// オーディオのリセット
-	Audio* audio = Audio::Instance();
-	if (audio)
+	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 	{
 		audio->AllClear();
 	}
@@ -313,11 +311,17 @@ void SceneGame::Update(float elapsed_time)
 {
 	object_manager.Update(elapsed_time);
 
-	CameraManager::Instance()->Update(elapsed_time);
+	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+	{
+		camera_manager->Update(elapsed_time);
+	}
 
-	Audio::Instance()->Update();
+	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+	{
+		audio->Update();
+	}
 
-	if (CircleCollisionManager* collision_manager = CircleCollisionManager::Instance())
+	if (CircleCollisionManager::Instance collision_manager = CircleCollisionManager::GetInstance(); collision_manager.Get())
 	{
 		collision_manager->VsEnemy();
 	}
@@ -326,9 +330,12 @@ void SceneGame::Update(float elapsed_time)
 	// スペースキーでゲーム画面に遷移(仮)
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
-		AudioParam param{};
-		param.filename = "Data/Debug/Audio/SE.wav";
-		Audio::Instance()->Play(param);
+		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+		{
+			AudioParam param{};
+			param.filename = "Data/Debug/Audio/SE.wav";
+			audio->Play(param);
+		}
 	}
 #endif // DEBUG
 
@@ -338,8 +345,11 @@ void SceneGame::Update(float elapsed_time)
 
 void SceneGame::Render()
 {
-	Graphics* graphics = Graphics::Instance();
-	graphics->PrepareRenderTargets(DirectX::XMFLOAT4(0.5f, 1.0f, 0.5f, 1.0f));
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (graphics.Get())
+	{
+		graphics->PrepareRenderTargets(DirectX::XMFLOAT4(0.5f, 1.0f, 0.5f, 1.0f));
+	}
 
 	// 3Dモデルの描画
 	{
@@ -355,7 +365,10 @@ void SceneGame::Render()
 	{
 		object_manager.DrawDebugPrimitive();
 
-		DebugManager::Instance()->GetDebugPrimitiveRenderer()->Render();
+		if (DebugManager::Instance debug_manager = DebugManager::GetInstance(); debug_manager.Get())
+		{
+			debug_manager->GetDebugPrimitiveRenderer()->Render();
+		}
 	}
 #endif // _DEBUG
 
@@ -370,14 +383,12 @@ void SceneGame::ReStart()
 	object_manager.ReStart();
 
 	// ゲーム状態をデフォルトに設定
-	GameData* game_data = GameData::Instance();
-	if (game_data)
+	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
 		game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
 	}
 
-	CameraManager* camera_manager = CameraManager::Instance();
-	if (camera_manager)
+	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
 		camera_manager->Reset();
 	}
@@ -385,8 +396,8 @@ void SceneGame::ReStart()
 
 void SceneGame::ProcessGameState()
 {
-	GameData* game_data = GameData::Instance();
-	if (!game_data) return;
+	GameData::Instance game_data = GameData::GetInstance();
+	if (!game_data.Get()) return;
 
 	// ゲーム状態を取得
 	const GameData::GameStatus& game_status = game_data->GetGameStatus();
@@ -395,26 +406,26 @@ void SceneGame::ProcessGameState()
 	{
 	case GameData::GameStatus::DEFEAT:	// プレイヤーの敗北
 	{
-		SceneManager* scene_manager = SceneManager::Instance();
-		if (!scene_manager) return;
-
-		scene_manager->ChangeScene(new SceneResult);
+		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
+		{
+			scene_manager->ChangeScene(new SceneResult);
+		}
 		break;
 	}
 	case GameData::GameStatus::VICTORY:	// プレイヤーの勝利
 	{
-		SceneManager* scene_manager = SceneManager::Instance();
-		if (!scene_manager) return;
-
-		scene_manager->ChangeScene(new SceneLoading(new SceneResult));
+		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
+		{
+			scene_manager->ChangeScene(new SceneLoading(new SceneResult));
+		}
 		break;
 	}
 	case GameData::GameStatus::RETURN_TO_TITLE: // タイトルに戻る
 	{
-		SceneManager* scene_manager = SceneManager::Instance();
-		if (!scene_manager) return;
-
-		scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
+		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
+		{
+			scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
+		}
 		break;
 	}
 	case GameData::GameStatus::RESTART:	// リスタート
@@ -429,7 +440,7 @@ void SceneGame::ProcessGameState()
 void SceneGame::PlayerVsEnemy()
 {
 	// 当たり判定
-	if (GameObject* game_object = GameObject::Instance())
+	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
 		// プレイヤー取得
 		const auto& player = game_object->GetPlayer();

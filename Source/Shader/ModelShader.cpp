@@ -11,8 +11,8 @@
 
 ModelShader::ModelShader()
 {
-	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	// 頂点シェーダー
@@ -176,16 +176,21 @@ ModelShader::ModelShader()
 
 void ModelShader::Render()
 {
-	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (!graphics.Get()) return;
 	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 	RenderContext rc{};
 
-	std::shared_ptr<CameraComponent> camera = CameraManager::Instance()->GetCurrentCamera();
-	if (camera)
+	// RenderContext設定
 	{
-		rc.view = camera->GetViewTransform();
-		rc.projection = camera->GetProjectionTransform();
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
+		if (!camera_manager.Get()) return;
+		std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
+		if (camera)
+		{
+			rc.view = camera->GetViewTransform();
+			rc.projection = camera->GetProjectionTransform();
+		}
 	}
 
     Begin(dc, rc);

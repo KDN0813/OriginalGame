@@ -253,7 +253,6 @@ Graphics::~Graphics()
 
 void Graphics::PrepareRenderTargets(DirectX::XMFLOAT4 color)
 {
-	std::lock_guard<std::mutex> lock(this->GetInstanceMutex());
 	ID3D11DeviceContext* dc = GetDeviceContext();
 	ID3D11RenderTargetView* rtv = GetRenderTargetView();
 	ID3D11DepthStencilView* dsv = GetDepthStencilView();

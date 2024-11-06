@@ -21,8 +21,8 @@ SceneDebug::SceneDebug()
 
 void SceneDebug::Initialize()
 {
-	Graphics* graphics = Graphics::Instance();
-	std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 	//// シェーダーの作成
 	//{
@@ -103,19 +103,23 @@ void SceneDebug::Update(float elapsed_time)
 {
 	object_manager.Update(elapsed_time);
 
-	CameraManager::Instance()->Update(elapsed_time);
+	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+	{
+		camera_manager->Update(elapsed_time);
+	}
 }
 
 void SceneDebug::Render()
 {
-	Graphics* graphics = Graphics::Instance();
-	graphics->PrepareRenderTargets();
+	// 画面のクリア
+	{
+		Graphics::Instance graphics = Graphics::GetInstance();
+		if (!graphics.Get()) return;
+		graphics->PrepareRenderTargets();
+	}
 
 	// 3Dモデルの描画
 	{
-		Graphics* graphics = Graphics::Instance();
-		graphics->PrepareRenderTargets();
-
 		// モデル描画
 		this->model_shader->Render();
 
@@ -132,61 +136,6 @@ void SceneDebug::Render()
 
 void SceneDebug::DebugDrawGUI()
 {
-	ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_Appearing);
-	ImGui::SetNextWindowSize(ImVec2(300.0f, 400.0f), ImGuiCond_FirstUseEver);
-
-	if (ImGui::Begin("DebugMenu", nullptr, ImGuiWindowFlags_MenuBar))
-	{
-		// モード切り替え処理
-		if (ImGui::BeginMenuBar()) 
-		{
-			if (ImGui::BeginMenu("Mode"))
-			{
-				if (ImGui::MenuItem("Object")) 
-				{
-					mode_index = SceneDebug::ImGuiMode::Object;
-				}
-				if (ImGui::MenuItem("Shader")) 
-				{
-					mode_index = SceneDebug::ImGuiMode::Shader;
-				}
-				if (ImGui::MenuItem("Camera")) 
-				{
-					mode_index = SceneDebug::ImGuiMode::Camera;
-				}
-				if (ImGui::MenuItem("System")) 
-				{
-					mode_index = SceneDebug::ImGuiMode::System;
-				}
-
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
-		}
-
-		// 各モード表示
-		switch (mode_index)
-		{
-		case SceneDebug::ImGuiMode::Object:
-			ImGui::Text("Object");
-			object_manager.DrawDebugGUI();
-			break;
-		case SceneDebug::ImGuiMode::Shader:
-			ImGui::Text("System");
-			DrawShaderImGui();
-			break;
-		case SceneDebug::ImGuiMode::Camera:
-			ImGui::Text("Camera");
-			CameraManager::Instance()->DrawDebugGUI();
-			break;
-		case SceneDebug::ImGuiMode::System:
-			ImGui::Text("System");
-			break;
-		default:
-			break;
-		}
-	}
-	ImGui::End();
 }
 
 void SceneDebug::DrawShaderImGui()

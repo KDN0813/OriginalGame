@@ -14,8 +14,7 @@ PlayerComponent::~PlayerComponent()
 {
     // TODO 10/24プレイヤーの死亡判定仮
     // 体力が実装できたら削除する
-    GameData* game_data = GameData::Instance();
-    if (game_data)
+    if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
     {
         game_data->SetGameStatus(GameData::GameStatus::DEFEAT);
     }
@@ -72,17 +71,24 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
 {
     // 入力情報を取得
-    Input* input = Input::Instance();
-    GamePad& game_pad = input->GetGamePad();
-    float ax = game_pad.GetAxisLX();
-    float ay = game_pad.GetAxisLY();
+    float ax{};
+    float ay{};
+    if (Input::Instance input = Input::GetInstance(); input.Get())
+    {
+        GamePad& game_pad = input->GetGamePad();
+        ax = game_pad.GetAxisLX();
+        ay = game_pad.GetAxisLY();
+    }
 
     // カメラ方向とスティックの入力値によって進行方向を計算する
-    CameraManager* camera_manager = CameraManager::Instance();
-    if (!camera_manager) return DirectX::XMFLOAT3();
-    std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
-    MYVECTOR3 Camera_right = camera->GetRight();
-    MYVECTOR3 Camera_front = camera->GetForward();
+    MYVECTOR3 Camera_right;
+    MYVECTOR3 Camera_front;
+    if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+    {
+        std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
+        Camera_right = camera->GetRight();
+        Camera_front = camera->GetForward();
+    }
 
     // 移動ベクトルはXZ平面に水平なベクトルになるようにする
 

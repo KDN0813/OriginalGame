@@ -13,7 +13,7 @@ void SceneManager::Update(float elpsed_time)
 {
     // ポーズ処理
     {
-        if (GameData* game_data = GameData::Instance())
+        if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
         {
             if (game_data->GetIsPause()) return;
         }
@@ -29,8 +29,7 @@ void SceneManager::Update(float elpsed_time)
         if (!this->current_scene->IsReady())
         {
             // ゲーム状態をデフォルトに設定
-            GameData* game_data = GameData::Instance();
-            if (game_data)
+            if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
             {
                 game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
             }
