@@ -30,8 +30,9 @@ public:
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;
         float min_idle_time = 0.5f;
-        float deat_timer = 2.0f;    // 死亡してから削除されるまでの時間
+        float remove_timer = 2.0f;    // 削除タイマー
         bool move_validity_flag = true;   // 移動が有効であるかのフラグ
+        bool pending_removal_flag = false;     // 削除待ちをしているか(死亡演出を待っているか)
         STATE state = STATE::IDLE;  // 状態
     };
 public:

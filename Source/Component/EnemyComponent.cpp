@@ -28,7 +28,24 @@ void EnemyComponent::Update(float elapsed_time)
 	if (!owner) return;
 	const auto& model_component = owner->EnsureComponentValid(this->model_Wptr);
 	if (!model_component) return;
+	const auto& character = owner->EnsureComponentValid<CharacterComponent>(this->character_Wptr);
 
+	// 死亡判定
+	if (character && !character->IsAlive() && !this->param.pending_removal_flag)
+	{
+		// 削除待ちフラグを立てる
+		this->param.pending_removal_flag = true;
+
+		// 死亡状態へ遷移
+		this->param.state = STATE::DETH;
+
+		// 死亡状態への準備
+		{
+			model_component->PlayAnimation(EnemyCT::ANIMATION::DIE, false);
+		}
+	}
+
+	// ステート更新
 	switch (this->param.state)
 	{
 	case EnemyComponent::STATE::IDLE:
@@ -107,28 +124,20 @@ void EnemyComponent::Update(float elapsed_time)
 	}
 	case EnemyComponent::STATE::DETH:
 	{
+		if (model_component->IsPlayAnime()) break;	// アニメーション再生中ならbreak
 
+		if (this->param.remove_timer > 0.0f)
+		{
+			// 削除タイマー更新
+			this->param.remove_timer -= elapsed_time;
+		}
+		else
+		{
+			owner->SetIsRemove(true);
+		}
 		break;
 	}
 	default:break;
-	}
-
-	// 死亡判定
-	{
-		const auto& character = owner->EnsureComponentValid<CharacterComponent>(this->character_Wptr);
-		if (!character)return;
-
-		if (!character->IsAlive())
-		{
-			if (this->param.deat_timer > 0.0f)
-			{
-				this->param.deat_timer -= elapsed_time;
-			}
-			else
-			{
-				owner->SetIsRemove(true);
-			}
-		}
 	}
 }
 
@@ -197,6 +206,8 @@ bool EnemyComponent::IsAtTarget(float distSq)
 
 void EnemyComponent::SetDamageState()
 {
+	if (this->param.pending_removal_flag) return;	// 削除待ちの場合return
+
 	const auto& owner = GetOwner();
 	if (!owner) return;
 	const auto& model_component = owner->EnsureComponentValid(this->model_Wptr);
@@ -218,8 +229,9 @@ void EnemyComponent::DrawDebugGUI()
 	ImGui::InputFloat("Idle Timer", &this->param.idle_timer);
 	ImGui::InputFloat("Idle Max Timer", &this->param.max_idle_time);
 	ImGui::InputFloat("Idle Min Timer", &this->param.min_idle_time);
-	ImGui::InputFloat("Deat Timer", &this->param.deat_timer);
+	ImGui::InputFloat("Remove Timer", &this->param.remove_timer);
 	ImGui::Checkbox("Move Validity Flag", &this->param.move_validity_flag);
+	ImGui::Checkbox("Pending Removal Flag", &this->param.pending_removal_flag);
 }
 
 void EnemyComponent::DrawDebugPrimitive()
