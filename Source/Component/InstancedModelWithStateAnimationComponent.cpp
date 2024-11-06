@@ -9,20 +9,8 @@
 #include "Component/TransformComponent.h"
 
 InstancedModelWithStateAnimationComponent::InstancedModelWithStateAnimationComponent(InstancedModelParam param, const char* filename)
-    :param(param), default_param(param)
+    :InstancedModelWithAnimationComponent(param, filename)
 {
-#ifdef _DEBUG
-    this->model_filename = filename;
-#endif // _DEBUG
-    Graphics* graphics = Graphics::Instance();
-    std::lock_guard<std::mutex> lock(graphics->GetInstanceMutex());
-    ID3D11Device* device = graphics->GetDevice();
-
-    this->model_resource =
-        ModelResourceManager::Instance()->LoadModelResource(device,filename);
-    this->instancing_model_resource =
-        InstancingModelResourceManager::Instance()->LoadModelResource(device, filename);
-
     // アニメステートの初期設定
     {
         this->anime_state_pool.clear();
@@ -32,9 +20,6 @@ InstancedModelWithStateAnimationComponent::InstancedModelWithStateAnimationCompo
             auto& anime_state = this->anime_state_pool.emplace_back();
             anime_state.anime_index = index;
             anime_state.name = animation.name;
-#ifdef _DEBUG
-            this->animation_name_pool.emplace_back(animation.name);
-#endif // _DEBUG
         }
     }
 }
@@ -51,44 +36,12 @@ void InstancedModelWithStateAnimationComponent::Update(float elapsed_time)
     UpdateAnimation(elapsed_time);
 }
 
-void InstancedModelWithStateAnimationComponent::PlayAnimation(int animeIndex, bool loop)
-{
-    if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
-
-    this->param.current_animation_seconds = 0;;
-    this->param.anime_index = animeIndex;
-    this->param.anime_loop = loop;
-    this->param.anime_play = true;
-}
-
 void InstancedModelWithStateAnimationComponent::PlayAnimation(const AnimeState& animation_info)
 {
     this->param.current_animation_seconds = 0;;
     this->param.anime_index = static_cast<UINT>(animation_info.anime_index);
     this->param.anime_loop = animation_info.loop;
     this->param.anime_play = true;
-}
-
-void InstancedModelWithStateAnimationComponent::UpdateAnimation(float elapsed_time)
-{    
-    const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
-    const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
-    const float& animation_length = animation.seconds_length;
-    
-    this->param.current_animation_seconds += elapsed_time;
-
-    if (this->param.current_animation_seconds >= animation_length)
-    {
-        if (this->param.anime_loop)
-        {
-            this->param.current_animation_seconds = 0.0f;
-        }
-        else
-        {
-            this->param.current_animation_seconds = animation_length;
-            this->param.anime_play = false;
-        }
-    }
 }
 
 void InstancedModelWithStateAnimationComponent::UpdateAnimationState()
@@ -154,26 +107,6 @@ bool InstancedModelWithStateAnimationComponent::PerformTransitionJudgement(Trans
     if (judgemen->GetRequireTransitionReady() && !IsTransitionReady()) return false;
 
     return judgemen->GetShouldReversey() ? !judgemen->CheckTransitionCondition() : judgemen->CheckTransitionCondition();
-}
-
-UINT InstancedModelWithStateAnimationComponent::GetAnimeFrame()
-{
-    const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
-    const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
-    const float animation_frame_max_f = static_cast<float>(animation_frame_max);
-    const float& animation_length = animation.seconds_length;
-
-    return static_cast<UINT>(animation_frame_max_f * (this->param.current_animation_seconds / animation_length));
-}
-
-UINT InstancedModelWithStateAnimationComponent::GetAnimationStartOffset()
-{
-    return this->instancing_model_resource->GetAnimationOffsets()[this->param.anime_index];
-}
-
-int InstancedModelWithStateAnimationComponent::GetModelId()
-{
-    return this->instancing_model_resource->GetModelId();
 }
 
 #ifdef _DEBUG
