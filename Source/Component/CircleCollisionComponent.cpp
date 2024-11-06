@@ -5,6 +5,7 @@
 #include "System/Misc.h"
 #endif // _DEBUG
 #include "CircleCollisionComponent.h"
+#include "Collision/CircleCollisionManager.h"
 #include "Object/Object.h"
 
 #include "Component/TransformComponent.h"
@@ -54,6 +55,14 @@ void CircleCollisionComponent::Update(float elapsed_time)
         }
     }
 #endif // _DEBUG
+}
+
+void CircleCollisionComponent::EvaluateCollision()
+{
+    if (CircleCollisionManager* manager = CircleCollisionManager::Instance())
+    {
+        manager->EvaluateCollision(shared_from_this());
+    }
 }
 
 void CircleCollisionComponent::OnCollision(const std::shared_ptr<Object>& hit_object)

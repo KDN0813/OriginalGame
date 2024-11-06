@@ -8,7 +8,7 @@
 class Transform3DComponent;
 
 // 円の当たり判定用コンポーネント
-class CircleCollisionComponent : public Component
+class CircleCollisionComponent : public Component , public std::enable_shared_from_this<CircleCollisionComponent>
 {
 public:
     struct CollisionParam
@@ -37,6 +37,9 @@ public:
 
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::LOWEST; };
+
+    // 接触判定を行う
+    void EvaluateCollision();
 
     // 他オブジェクトに接触した時の処理
     void OnCollision(const std::shared_ptr<Object>& hit_object)override;

@@ -1,5 +1,5 @@
 #pragma once
-#include <set>
+#include <vector>
 #include <memory>
 #include "System/ClassBase/Singleton.h"
 
@@ -17,6 +17,6 @@ public:
     // エネミーと当たり判定を行う
     void VsEnemy();
 private:
-    std::set <std::weak_ptr<CircleCollisionComponent>> vs_enemy_collision_Wptr_pool; // エネミーと判定を行うコリジョン
+    std::vector<std::weak_ptr<CircleCollisionComponent>> vs_enemy_collision_Wptr_pool; // エネミーと判定を行うコリジョン
 };
 

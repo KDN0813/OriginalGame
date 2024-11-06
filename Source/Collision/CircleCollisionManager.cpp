@@ -11,7 +11,7 @@ void CircleCollisionManager::EvaluateCollision(const std::shared_ptr<CircleColli
 	{
 	case COLLISION_OBJECT_TYPE::PLAYER:
 	{
-		this->vs_enemy_collision_Wptr_pool.insert(collison);
+		this->vs_enemy_collision_Wptr_pool.emplace_back(collison);
 		break;
 	}
 	default:

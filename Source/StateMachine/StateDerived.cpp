@@ -103,6 +103,8 @@ void PlayerAttackState::Staet()
     auto collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
         collision->SetIsActive(true);  // ƒRƒŠƒWƒ‡ƒ“‚ð—LŒø‚É‚·‚é
+
+    collision->EvaluateCollision();
 }
 
 void PlayerAttackState::Update(float elapsed_time)
