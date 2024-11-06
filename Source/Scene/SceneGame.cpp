@@ -213,7 +213,7 @@ void SceneGame::Initialize()
 		// “G
 		{
 			float territory_range = 45.0f;
-			for (int i = 0; i < 1; ++i)
+			for (int i = 0; i < 1000; ++i)
 			{
 				auto enemy = object_manager.Create();
 				
@@ -247,11 +247,15 @@ void SceneGame::Initialize()
 					Transform3DComponent::Transform3DParam param{};
 					param.local_position  = 
 					{
-						//sinf(theta) * range,
+#if 0	// ‰Šú’lŒÅ’è
 						0.0f,
 						0.0f,
 						0.0f,
-						//cosf(theta) * range ,
+#else
+						sinf(theta) * range,
+						0.0f,
+						cosf(theta) * range ,
+#endif
 					};
 					param.local_scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
 
@@ -262,7 +266,7 @@ void SceneGame::Initialize()
 				{
 					CharacterComponent::CharacterParam param{};
 					param.max_hp = 10;
-					param.hp = 5;
+					param.hp = 2;
 					enemy->AddComponent<CharacterComponent>(param);
 				}
 
@@ -270,17 +274,17 @@ void SceneGame::Initialize()
 				auto shader_component =
 					enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
 			
-				if (GameObject* game_object = GameObject::Instance())
-				{
-					game_object->SetEnemy(enemy);
-				}
-
 				// ‰~‚ÌƒRƒ‰ƒCƒ_[
 				{
 					CircleCollisionComponent::CollisionParam param{};
 					param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
 					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 					collision->AddCollisionEntercomponent(enemy_component);
+				}
+
+				if (GameObject* game_object = GameObject::Instance())
+				{
+					game_object->SetEnemy(enemy);
 				}
 			}
 		}
@@ -313,7 +317,6 @@ void SceneGame::Update(float elapsed_time)
 
 	Audio::Instance()->Update();
 
-	//PlayerVsEnemy();
 	if (CircleCollisionManager* collision_manager = CircleCollisionManager::Instance())
 	{
 		collision_manager->VsEnemy();
@@ -440,9 +443,13 @@ void SceneGame::PlayerVsEnemy()
 		if (!player_circle) return;
 		if (!player_circle->GetIsActive()) return;
 
+		// “G‚Ì”z—ñŽæ“¾
+		const auto& enemy_Wptr_pool = game_object->GetEnemyWptPool();
+
 		// “GŽæ“¾
-		for (const std::shared_ptr<Object>& enemy : game_object->GetEnemyPool())
+		for (const auto& enemy_Wptr : enemy_Wptr_pool)
 		{
+			auto enemy = enemy_Wptr.lock();
 			if (!enemy) continue;
 			if (!enemy->GetIsActive()) continue;
 			const auto& enemy_circle = enemy->GetComponent<CircleCollisionComponent>();

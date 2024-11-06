@@ -29,9 +29,13 @@ void CircleCollisionManager::VsEnemy()
 	{
 		if (auto player_circle = collision_Wptr.lock())
 		{
+			// “G‚Ì”z—ñŽæ“¾
+			const auto& enemy_Wptr_pool = game_object->GetEnemyWptPool();
+
 			// “GŽæ“¾
-			for (const std::shared_ptr<Object>& enemy : game_object->GetEnemyPool())
+			for (const auto& enemy_Wptr : enemy_Wptr_pool)
 			{
+				auto enemy = enemy_Wptr.lock();
 				if (!enemy) continue;
 				if (!enemy->GetIsActive()) continue;
 				const auto& enemy_circle = enemy->GetComponent<CircleCollisionComponent>();
@@ -53,8 +57,8 @@ void CircleCollisionManager::VsEnemy()
 					enemy_circle->SetHitResult(enemy_hit_result);
 
 					// ÚGˆ—
-					player_circle->OnCollision(enemy_circle->GetOwner());
-					enemy_circle->OnCollision(enemy_circle->GetOwner());
+					player_circle->OnCollision(enemy);
+					enemy_circle->OnCollision(player_circle->GetOwner());
 				}
 			}
 		}

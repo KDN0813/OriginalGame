@@ -8,21 +8,6 @@ GameObject::GameObject()
 {
 }
 
-std::vector<std::shared_ptr<Object>> GameObject::GetEnemyPool()
-{
-    std::vector<std::shared_ptr<Object>> enemy_pool;
-
-    for (const std::weak_ptr<Object>& enemy_Wptr : enemy_Wptr_pool)
-    {
-        if (std::shared_ptr<Object> enemy = enemy_Wptr.lock())
-        {
-            if (!enemy->GetIsActive()) continue;    // 非アクティブならスキップ
-            enemy_pool.emplace_back(enemy);
-        }
-    }
-    return enemy_pool;
-}
-
 #ifdef _DEBUG
 
 void GameObject::DebugDrawGUI()

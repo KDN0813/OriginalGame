@@ -38,7 +38,7 @@ void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
     if (hit_object)
     {
         // ヒットしたオブジェクトにダメージを与える
-        const auto& hit_object_character = hit_object->EnsureComponentValid<CharacterComponent>(this->hit_object_character_Wptr);
+        const auto& hit_object_character = hit_object->GetComponent<CharacterComponent>();
         if (hit_object_character)
         {
             hit_object_character->ApplyDamage(this->param.damage_amount);
