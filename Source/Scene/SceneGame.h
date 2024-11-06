@@ -5,6 +5,7 @@
 #include <memory>
 #include "Object/Object.h"
 #include "Object/GameObject.h"
+#include "Collision/CircleCollisionManager.h"
 
 // シェーダー
 #include "Shader/InstanceModelShader.h"
@@ -37,6 +38,7 @@ private:
 
     GameObject game_object;
     ObjectManager object_manager;
+    CircleCollisionManager circle_collision_manager;
 #ifdef _DEBUG
     void DebugDrawGUI();
 

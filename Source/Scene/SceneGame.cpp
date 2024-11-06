@@ -87,7 +87,14 @@ void SceneGame::Initialize()
 		// プレイヤー
 		{
 			auto player = object_manager.Create("Player");
-			auto model = player->AddComponent<ModelComponent>("Data/Model/Player/Player.mdl");
+			
+			// コリジョンに設定するコンポーネントは事前に作成しておく
+			std::shared_ptr<PlayerComponent> player_component;// プレイヤーコンポーネント
+
+			// モデル設定
+			{
+				auto model = player->AddComponent<ModelComponent>("Data/Model/Player/Player.mdl");
+			}
 			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
@@ -116,14 +123,15 @@ void SceneGame::Initialize()
 				param.is_stage_raycas = true;
 				auto movement = player->AddComponent<MovementComponent>(param);
 			}
+			// プレイヤーコンポーネント作成
 			{
-				player->AddComponent<PlayerComponent>(PlayerComponent::PlayerParam());
+				player_component= player->AddComponent<PlayerComponent>(PlayerComponent::PlayerParam());
 			}
 			// シェーダー設定
-			auto shader_component =
-				player->AddComponent<ModelShaderComponent>(model_shader.get());
-			//auto shader_component =
-			//player->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
+			{
+				auto shader_component =
+					player->AddComponent<ModelShaderComponent>(model_shader.get());
+			}
 			// カメラ設定
 			{
 				CameraManager* camera_manager = CameraManager::Instance();
@@ -150,28 +158,37 @@ void SceneGame::Initialize()
 				player->AddComponent<CharacterComponent>(param);
 			}
 
-			// プレイヤーの攻撃判定用オブジェクト
-			{
-				std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
-				player_attack_object->SetName("AttackObject");
-				// トランスフォーム設定
-				{
-					Transform3DComponent::Transform3DParam param{};
-					param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 100.0f);
-					param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
 
-					auto transform = player_attack_object->AddComponent<Transform3DComponent>(param);
-				}
-				// ムーブメント設定
+			// 子オブジェクト
+			{
+				// プレイヤーの攻撃判定用オブジェクト
 				{
-					auto movement = player_attack_object->AddComponent<MovementComponent>(MovementComponent::MovementParam());
-				}
-				// 円のコライダー
-				{
-					CircleCollisionComponent::CollisionParam param{};
-					param.collision_type = COLLISION_TYPE::ATTACKER;
-					param.default_active_flag = false;
-					auto collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
+					std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
+					player_attack_object->SetName("AttackObject");
+					// トランスフォーム設定
+					{
+						Transform3DComponent::Transform3DParam param{};
+						param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 100.0f);
+						param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
+
+						auto child_transform = player_attack_object->AddComponent<Transform3DComponent>(param);
+					}
+					// ムーブメント設定
+					{
+						auto child_movement = player_attack_object->AddComponent<MovementComponent>(MovementComponent::MovementParam());
+					}
+					// 円のコライダー
+					{
+						CircleCollisionComponent::CollisionParam param{};
+						param.collision_type = COLLISION_OBJECT_TYPE::PLAYER;
+						param.default_active_flag = false;
+						auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
+
+						// 接触時処理するコンポーネントの追加
+						{
+							child_collision->AddCollisionEntercomponent(player_component);
+						}
+					}
 				}
 			}
 
@@ -248,7 +265,7 @@ void SceneGame::Initialize()
 				// 円のコライダー
 				{
 					CircleCollisionComponent::CollisionParam param{};
-					param.collision_type = COLLISION_TYPE::DEFENDER;
+					param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
 					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 				}
 				// トランスフォーム設定
@@ -318,7 +335,11 @@ void SceneGame::Update(float elapsed_time)
 
 	Audio::Instance()->Update();
 
-	PlayerVsEnemy();
+	//PlayerVsEnemy();
+	if (CircleCollisionManager* collision_manager = CircleCollisionManager::Instance())
+	{
+		collision_manager->VsEnemy();
+	}
 
 #ifdef _DEBUG
 	// スペースキーでゲーム画面に遷移(仮)
@@ -439,7 +460,6 @@ void SceneGame::PlayerVsEnemy()
 
 		const auto& player_circle = attack_object->GetComponent<CircleCollisionComponent>();
 		if (!player_circle) return;
-
 		if (!player_circle->GetIsActive()) return;
 
 		// 敵取得
@@ -466,7 +486,7 @@ void SceneGame::PlayerVsEnemy()
 				enemy_circle->SetHitResult(enemy_hit_result);
 
 				// 接触処理
-				player_circle->OnCollision(player_circle->GetOwner());
+				player_circle->OnCollision(enemy_circle->GetOwner());
 			}
 		}
 	}

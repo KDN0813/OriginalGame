@@ -13,8 +13,10 @@ class CircleCollisionComponent : public Component
 public:
     struct CollisionParam
     {
-        COLLISION_TYPE collision_type = COLLISION_TYPE::NONE;
-        float radius = 1.0f;    // 円の半径
+        COLLISION_OBJECT_TYPE collision_type = COLLISION_OBJECT_TYPE::NONE;
+        float radius = 1.0f;                // 円の半径
+        bool hit_flag = false;    
+        bool old_hit_flag = false; 
         bool default_active_flag = true;    // アクティブフラグの初期値
     };
 public:
@@ -42,15 +44,20 @@ public:
     // ヒットが発生した瞬間かどうか
     bool IsHitTriggered() const { return true; }
 
+    // 接触した瞬間処理するコンポーネントの追加
+    void AddCollisionEntercomponent(const std::shared_ptr<Component> component);
+    // 接触している間処理するコンポーネントの追加
+    void AddCollisionStaycomponent(const std::shared_ptr<Component> component);
+
     // 各種取得・設定関数
-    COLLISION_TYPE GetCollisionType() const { return this->param.collision_type; }
+    COLLISION_OBJECT_TYPE GetCollisionType() const { return this->param.collision_type; }
     float GetRadius() const { return this->param.radius; }
     CircleParam GetCircleParam();
     CircleHitResult GetCircleHitResult()const { return this->hit_result; }
-    void SetCollisionType(COLLISION_TYPE type) { this->param.collision_type = type; }
+    void SetCollisionType(COLLISION_OBJECT_TYPE type) { this->param.collision_type = type; }
     void SetRadius(float radius) { this->param.radius = radius; }
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }
-
+    void SetHitFlag(bool flag) { this->param.hit_flag = flag; }
 private:
     // 接触した瞬間呼ばれる関数
     void OnCollisionEnter(const std::shared_ptr<Object>& hit_object);

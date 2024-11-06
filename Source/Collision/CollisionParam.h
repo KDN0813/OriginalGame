@@ -6,12 +6,10 @@ class Object;
 
 using CollisionType = size_t;
 
-// コライダーの種類を定義する列挙型
-// オブジェクトが衝突の際にどの役割を果たすかを指定する
-enum class COLLISION_TYPE : CollisionType
+enum class COLLISION_OBJECT_TYPE : CollisionType
 {
-    ATTACKER = 0,    // ぶつける側（アクティブに衝突を引き起こすオブジェクト）
-    DEFENDER,        // ぶつけられる側（衝突されるオブジェクト）
+    PLAYER = 0,
+    ENEMY,     
     MAX,
     NONE,
 };

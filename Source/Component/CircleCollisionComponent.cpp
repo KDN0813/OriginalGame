@@ -21,7 +21,7 @@ void CircleCollisionComponent::Start()
     // デバッグプリミティブの設定
     {
         // タイプの値が以上な場合設定しない
-        if (this->param.collision_type >= COLLISION_TYPE::MAX) return;
+        if (this->param.collision_type >= COLLISION_OBJECT_TYPE::MAX) return;
         DirectX::XMFLOAT4 color[2] = { DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) ,DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) };
         circle_collsion_primitive = CylinderParam(color[static_cast<size_t>(this->param.collision_type)],
             this->param.radius, height);
@@ -65,6 +65,16 @@ void CircleCollisionComponent::OnCollision(const std::shared_ptr<Object>& hit_ob
     if(IsHitTriggered()) OnCollisionEnter(hit_object);
     // 接触している間の処理
     OnCollisionStay(hit_object);
+}
+
+void CircleCollisionComponent::AddCollisionEntercomponent(const std::shared_ptr<Component> component)
+{
+    this->collision_enter_component_Wptr_pool.emplace_back(component);
+}
+
+void CircleCollisionComponent::AddCollisionStaycomponent(const std::shared_ptr<Component> component)
+{
+    this->collision_stay_component_Wptr_pool.emplace_back(component);
 }
 
 CircleParam CircleCollisionComponent::GetCircleParam()
@@ -117,25 +127,20 @@ void CircleCollisionComponent::DrawDebugGUI()
     }
     ImGui::DragFloat("radius##CircleCollisionComponent", &param.radius, 0.01f);
 
-    // hit_result表示
-    {
-        ImGui::Spacing();
-        if (ImGui::CollapsingHeader("Circle Hit Result"))
-        {
-        }
-    }
+    // ヒットフラグ表示
+    ImGui::Checkbox("Hit Flag", &param.hit_flag);
 }
 
 void CircleCollisionComponent::DrawDebugPrimitive()
 {
-    if (this->param.collision_type >= COLLISION_TYPE::MAX) return;    // タイプが以上なら処理しない
+    if (this->param.collision_type >= COLLISION_OBJECT_TYPE::MAX) return;    // タイプが以上なら処理しない
     DebugPrimitiveRenderer* debug_primitive_renderer = DebugManager::Instance()->GetDebugPrimitiveRenderer();
     debug_primitive_renderer->DrawCylinder(circle_collsion_primitive);
 }
 
 void CircleCollisionComponent::DrawDebugPrimitiveGUI()
 {
-    if (this->param.collision_type >= COLLISION_TYPE::MAX) return;    // タイプが以上なら処理しない
+    if (this->param.collision_type >= COLLISION_OBJECT_TYPE::MAX) return;    // タイプが以上なら処理しない
     circle_collsion_primitive.DrawDebugGUI("Circle Collsion");
 }
 
