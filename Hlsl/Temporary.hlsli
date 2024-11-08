@@ -1,5 +1,3 @@
-#include "SceneConstantBuffer.hlsli"
-
 struct VsIn
 {
     float4 position : POSITION;
@@ -22,6 +20,11 @@ struct VsOut
 cbuffer MeshConstantBuffer : register(b1)
 {
     row_major float4x4 bone_transforms[MAX_BONES];
+};
+
+cbuffer SceneConstantBuffer : register(b0)
+{
+    row_major float4x4 view_projection;
 };
 
 cbuffer SubsetConstantBuffer : register(b2)

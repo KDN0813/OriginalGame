@@ -2,7 +2,7 @@
 
 //  1頂点から4頂点生成する
 [maxvertexcount(4)]
-void main(point GS_IN gin[1], inout TriangleStream<PS_IN> output)
+void main(point GsIn gin[1], inout TriangleStream<PsIn> output)
 {
     //  ビルボード化するために、
     //  頂点座標をワールド空間＞ビュー空間へ変換
@@ -30,7 +30,7 @@ void main(point GS_IN gin[1], inout TriangleStream<PS_IN> output)
     float2 uv = float2((type % komax) * w, (type / komax) * h);
 
 	//  左上の点の位置(射影座標系)・UV・色を計算して出力
-    PS_IN pout = (PS_IN) 0;
+    PsIn pout = (PsIn) 0;
     pout.color = gin[0].color;
     pout.position = mul(pos_left_top, projection_matrix);
     pout.texcoord = uv + float2(0, 0); //   テクスチャ左上

@@ -1,5 +1,3 @@
-#include "SceneConstantBuffer.hlsli"
-
 // 【入力データ】
 struct VsIn
 {
@@ -23,6 +21,11 @@ struct VsOut
 
 
 // 【構造体】
+cbuffer SceneConstantBuffer : register(b0)
+{
+    row_major float4x4 view_projection;
+};
+
 struct InstanceData
 {
     uint animation_start_offset;    // バッファ内で使用するアニメーションの開始位置を示すオフセット値
