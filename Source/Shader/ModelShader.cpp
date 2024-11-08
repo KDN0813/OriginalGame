@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include "Shader/ShaderLoader.h"
 #include "Graphics/Graphics.h"
 #include "Camera/CameraManager.h"
 #include "ModelShader.h"
@@ -15,63 +16,26 @@ ModelShader::ModelShader()
 	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
-	// 頂点シェーダー
+	HRESULT hr{};
+
+	// 入力レイアウト
+	D3D11_INPUT_ELEMENT_DESC input_element_desc[] =
 	{
-		// ファイルを開く
-		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\TemporaryVS.cso", "rb");
-		_ASSERT_EXPR_A(fp, "CSO File not found");
-
-		// ファイルのサイズを求める
-		fseek(fp, 0, SEEK_END);
-		long cso_size = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		// メモリ上に頂点シェーダーデータを格納する領域を用意する
-		std::unique_ptr<u_char[]> cso_data = std::make_unique<u_char[]>(cso_size);
-		fread(cso_data.get(), cso_size, 1, fp);
-		fclose(fp);
-
-		// 頂点シェーダー生成
-		HRESULT hr = device->CreateVertexShader(cso_data.get(), cso_size, nullptr, this->vertex_shader.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		// 入力レイアウト
-		D3D11_INPUT_ELEMENT_DESC input_element_desc[] =
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TANGENT",  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-		hr = device->CreateInputLayout(input_element_desc, ARRAYSIZE(input_element_desc), cso_data.get(), cso_size, this->input_layout.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TANGENT",  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+	// 頂点シェーダー
+	hr = CreateShader::VsFromCso(device, "Shader\\TemporaryVS.cso", this->vertex_shader.GetAddressOf(), this->input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
+	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// ピクセルシェーダー
-	{
-		// ファイルを開く
-		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\TemporaryPS.cso", "rb");
-		_ASSERT_EXPR_A(fp, "CSO File not found");
-
-		// ファイルのサイズを求める
-		fseek(fp, 0, SEEK_END);
-		long cso_size = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		// メモリ上に頂点シェーダーデータを格納する領域を用意する
-		std::unique_ptr<u_char[]> cso_data = std::make_unique<u_char[]>(cso_size);
-		fread(cso_data.get(), cso_size, 1, fp);
-		fclose(fp);
-
-		// ピクセルシェーダー生成
-		HRESULT hr = device->CreatePixelShader(cso_data.get(), cso_size, nullptr, this->pixel_shader.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
+	hr = CreateShader::PsFromCso(device, "Shader\\TemporaryPS.cso", this->pixel_shader.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// 定数バッファ
 	{

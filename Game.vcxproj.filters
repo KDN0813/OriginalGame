@@ -396,6 +396,9 @@
     <ClInclude Include="Source\Shader\ParticleSystem.h">
       <Filter>Source\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Shader\ShaderLoader.h">
+      <Filter>Source\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -612,6 +615,9 @@
       <Filter>Source\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Source\Shader\ParticleSystem.h.cpp">
+      <Filter>Source\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\ShaderLoader.cpp">
       <Filter>Source\Shader</Filter>
     </ClCompile>
   </ItemGroup>
