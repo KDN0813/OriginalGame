@@ -308,6 +308,16 @@ void SceneGame::Finalize()
 
 void SceneGame::Update(float elapsed_time)
 {
+	if (GameData::Instance game_data = GameData::GetInstance() ; game_data.Get())
+	{
+		game_data->UpdateGameEndTimer(elapsed_time);
+		if (game_data->IsTimeUp())
+		{
+			// 制限時間を過ぎていたらゲーム状態を変更
+			game_data->SetGameStatus(GameData::GameStatus::VICTORY);
+		}
+	}
+
 	object_manager.Update(elapsed_time);
 
 	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
@@ -326,7 +336,7 @@ void SceneGame::Update(float elapsed_time)
 	}
 
 #ifdef _DEBUG
-	// スペースキーでゲーム画面に遷移(仮)
+	// スペースキーでSE再生
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
 		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
