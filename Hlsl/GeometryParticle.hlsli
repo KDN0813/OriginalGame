@@ -22,15 +22,15 @@ struct PsIn
     float2 texcoord : TEXCOORD;
 };
 
-cbuffer GeometryParticleData : register(b0)
-{
-    float2 Size; //  パーティクルの大きさ
-    float2 dummy;
-};
-
-cbuffer SceneConstantBuffer : register(b1)
+// 定数バッファ
+cbuffer SceneConstantBuffer : register(b0)
 {
     row_major float4x4 view_projection;
     row_major float4x4 view_matrix;
     row_major float4x4 projection_matrix;
+};
+cbuffer GeometryParticleData : register(b0)
+{
+    float2 Size; //  パーティクルの大きさ
+    float2 dummy;
 };

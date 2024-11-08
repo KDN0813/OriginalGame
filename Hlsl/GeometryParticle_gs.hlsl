@@ -1,14 +1,14 @@
 #include "GeometryParticle.hlsli"
 
-//  1頂点から4頂点生成する
+// 1頂点から4頂点生成する
 [maxvertexcount(4)]
 void main(point GsIn gin[1], inout TriangleStream<PsIn> output)
 {
-    //  ビルボード化するために、
-    //  頂点座標をワールド空間＞ビュー空間へ変換
+    // ビルボード化するために、
+    // 頂点座標をワールド空間＞ビュー空間へ変換
     float4 pos = mul(float4(gin[0].position, 1.0f), view_matrix);
 
-	//  点を面にするため4頂点の座標を生成
+	// 点を面にするため4頂点の座標を生成
     float rot = gin[0].param.x;
     float s = sin(rot);
     float c = cos(rot);
