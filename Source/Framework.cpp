@@ -6,6 +6,7 @@
 #include "Scene/SceneGame.h"
 #include "Scene/SceneTitle.h"
 #include "Scene/SceneResult.h"
+#include <imgui.h>
 #else
 #include "Scene/SceneTitle.h"
 #endif _DEBUG
@@ -86,21 +87,26 @@ void Framework::CalculateFrameStats()
 {
 	static int frames = 0;
 	static float time_tlapsed = 0.0f;
+	static float fps = 0.0f;
+	static float mspf = 0.0f;
 
 	frames++;
 
 	if ((timer.TimeStamp() - time_tlapsed) >= 1.0f)
 	{
-		float fps = static_cast<float>(frames); // fps = frameCnt / 1
-		float mspf = 1000.0f / fps;
-		std::ostringstream outs;
-		outs.precision(6);
-		outs << "FPS : " << fps << " / " << "Frame Time : " << mspf << " (ms)";
-		SetWindowTextA(hWnd, outs.str().c_str());
-
+		fps = static_cast<float>(frames); // fps = frameCnt / 1
+		mspf = 1000.0f / fps;		
 		frames = 0;
 		time_tlapsed += 1.0f;
 	}
+
+	// ImGuiに表示
+	if (ImGui::Begin("FPS"))
+	{
+		ImGui::InputFloat("FPS", &fps);
+		ImGui::InputFloat("mspf", &mspf);
+	}
+	ImGui::End();
 }
 
 bool Framework::IsPressedWindowCloseKey()
@@ -130,11 +136,6 @@ int Framework::Run()
 			//if (!IsWindowActive(hWnd)) continue;
 
 			timer.Tick();
-#ifdef _DEBUG
-			CalculateFrameStats();
-#elif RELEASE_DEBUG
-			CalculateFrameStats();
-#endif // _DEBUG
 
 			// ポーズキーが押されたらポーズ設定(解除)する
 			if (IsPressedPauseKey())
@@ -236,6 +237,11 @@ void Framework::DrawDebugGUI()
 	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
 		game_object->DebugDrawGUI();
+	}
+
+	// FPS
+	{
+		CalculateFrameStats();
 	}
 }
 
