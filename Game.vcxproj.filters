@@ -115,6 +115,9 @@
     <Filter Include="Source\StateMachine\Legacy">
       <UniqueIdentifier>{cfdec03e-914e-4650-9e32-cd43e26654e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Texture">
+      <UniqueIdentifier>{3ccba67f-6c98-45b0-b54c-37de7ef251ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -390,6 +393,7 @@
     <ClInclude Include="Source\Shader\ParticleSystem.h">
       <Filter>Source\Component\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Texture\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -604,6 +608,9 @@
     </ClCompile>
     <ClCompile Include="Source\Shader\ParticleSystem.h.cpp">
       <Filter>Source\Component\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture\Texture.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

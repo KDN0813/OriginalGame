@@ -3,6 +3,8 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include <memory>
+#include "Texture/Texture.h"
 
 // スプライト
 class Sprite
@@ -48,5 +50,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>		depthStencilState;
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>			sampler_state;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	shader_resource_view;
+	std::unique_ptr<Texture>							texture;
 };
