@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include "Shader/ShaderLoader.h"
 #include "Graphics/Graphics.h"
 #include "Camera/CameraManager.h"
 #include "System/MyMath/MYMATRIX.h"
@@ -18,63 +19,25 @@ InstancingModelShader::InstancingModelShader()
 	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
-	// 頂点シェーダー
+	HRESULT hr{};
+	// 入力レイアウト
+	D3D11_INPUT_ELEMENT_DESC input_element_desc[] =
 	{
-		// ファイルを開く
-		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\InstanceVS.cso", "rb");
-		_ASSERT_EXPR_A(fp, "CSO File not found");
-
-		// ファイルのサイズを求める
-		fseek(fp, 0, SEEK_END);
-		long csoSize = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		// メモリ上に頂点シェーダーデータを格納する領域を用意する
-		std::unique_ptr<u_char[]> csoData = std::make_unique<u_char[]>(csoSize);
-		fread(csoData.get(), csoSize, 1, fp);
-		fclose(fp);
-
-		// 頂点シェーダー生成
-		HRESULT hr = device->CreateVertexShader(csoData.get(), csoSize, nullptr, this->vertexShader.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		// 入力レイアウト
-		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] =
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TANGENT",  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-		hr = device->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), csoData.get(), csoSize, this->inputLayout.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TANGENT",  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+	// 頂点シェーダー
+	hr = CreateShader::VsFromCso(device, "Shader\\InstanceVS.cso", this->vertex_shader.GetAddressOf(), this->input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
+	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// ピクセルシェーダー
-	{
-		// ファイルを開く
-		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\InstancePS.cso", "rb");
-		_ASSERT_EXPR_A(fp, "CSO File not found");
-
-		// ファイルのサイズを求める
-		fseek(fp, 0, SEEK_END);
-		long csoSize = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-
-		// メモリ上に頂点シェーダーデータを格納する領域を用意する
-		std::unique_ptr<u_char[]> csoData = std::make_unique<u_char[]>(csoSize);
-		fread(csoData.get(), csoSize, 1, fp);
-		fclose(fp);
-
-		// ピクセルシェーダー生成
-		HRESULT hr = device->CreatePixelShader(csoData.get(), csoSize, nullptr, this->pixelShader.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
+	hr = CreateShader::PsFromCso(device, "Shader\\InstancePS.cso", this->pixel_shader.ReleaseAndGetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// 定数バッファ
 	{
@@ -88,13 +51,13 @@ InstancingModelShader::InstancingModelShader()
 		desc.ByteWidth = sizeof(SceneConstantBuffer);
 		desc.StructureByteStride = 0;
 
-		HRESULT hr = device->CreateBuffer(&desc, 0, this->sceneConstantBuffer.GetAddressOf());
+		HRESULT hr = device->CreateBuffer(&desc, 0, this->scene_constant_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// サブセット用バッファ
 		desc.ByteWidth = sizeof(SubsetConstantBuffer);
 
-		hr = device->CreateBuffer(&desc, 0, this->subsetConstantBuffer.GetAddressOf());
+		hr = device->CreateBuffer(&desc, 0, this->subset_constant_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// CommonDataConstantBuffer
@@ -123,7 +86,7 @@ InstancingModelShader::InstancingModelShader()
 		desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		HRESULT hr = device->CreateBlendState(&desc, this->blendState.GetAddressOf());
+		HRESULT hr = device->CreateBlendState(&desc, this->blend_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -135,7 +98,7 @@ InstancingModelShader::InstancingModelShader()
 		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
-		HRESULT hr = device->CreateDepthStencilState(&desc, this->depthStencilState.GetAddressOf());
+		HRESULT hr = device->CreateDepthStencilState(&desc, this->depthStencil_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -154,7 +117,7 @@ InstancingModelShader::InstancingModelShader()
 		desc.CullMode = D3D11_CULL_BACK;
 		desc.AntialiasedLineEnable = false;
 
-		HRESULT hr = device->CreateRasterizerState(&desc, this->rasterizerState.GetAddressOf());
+		HRESULT hr = device->CreateRasterizerState(&desc, this->rasterizer_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -176,7 +139,7 @@ InstancingModelShader::InstancingModelShader()
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 
-		HRESULT hr = device->CreateSamplerState(&desc, this->samplerState.GetAddressOf());
+		HRESULT hr = device->CreateSamplerState(&desc, this->sampler_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -238,19 +201,19 @@ void InstancingModelShader::Render()
 
 	// 初期設定
 	{
-		dc->PSSetShader(this->pixelShader.Get(), nullptr, 0);
+		dc->PSSetShader(this->pixel_shader.Get(), nullptr, 0);
 
 		const float blend_factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		dc->OMSetBlendState(this->blendState.Get(), blend_factor, 0xFFFFFFFF);
-		dc->OMSetDepthStencilState(this->depthStencilState.Get(), 0);
-		dc->RSSetState(this->rasterizerState.Get());
-		dc->PSSetSamplers(0, 1, this->samplerState.GetAddressOf());
+		dc->OMSetBlendState(this->blend_state.Get(), blend_factor, 0xFFFFFFFF);
+		dc->OMSetDepthStencilState(this->depthStencil_state.Get(), 0);
+		dc->RSSetState(this->rasterizer_state.Get());
+		dc->PSSetSamplers(0, 1, this->sampler_state.GetAddressOf());
 
 		// 定数buffer設定
 		ID3D11Buffer* constantBuffers[] =
 		{
-			this->sceneConstantBuffer.Get(),
-			this->subsetConstantBuffer.Get(),
+			this->scene_constant_buffer.Get(),
+			this->subset_constant_buffer.Get(),
 			this->common_data_constant_buffer.Get(),
 			this->mesh_constant_buffer.Get(),
 		};
@@ -266,7 +229,7 @@ void InstancingModelShader::Render()
 
 		View_projection.GetFlaot4x4(cbScene.viewProjection);
 
-		dc->UpdateSubresource(this->sceneConstantBuffer.Get(), 0, 0, &cbScene, 0, 0);
+		dc->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cbScene, 0, 0);
 
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
@@ -384,8 +347,8 @@ void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, InstancedM
 		{
 			// バッファ設定
 			{
-				dc->VSSetShader(vertexShader.Get(), nullptr, 0);
-				dc->IASetInputLayout(inputLayout.Get());
+				dc->VSSetShader(vertex_shader.Get(), nullptr, 0);
+				dc->IASetInputLayout(input_layout.Get());
 
 				ID3D11Buffer* vertex_buffers[] =
 				{
@@ -415,9 +378,9 @@ void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResou
 {
 	SubsetConstantBuffer cbSubset;
 	cbSubset.materialColor = subset.material->color;
-	dc->UpdateSubresource(subsetConstantBuffer.Get(), 0, 0, &cbSubset, 0, 0);
+	dc->UpdateSubresource(subset_constant_buffer.Get(), 0, 0, &cbSubset, 0, 0);
 	dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
-	dc->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+	dc->PSSetSamplers(0, 1, sampler_state.GetAddressOf());
 
 	dc->DrawIndexedInstanced(subset.index_count, this->instance_count, subset.start_index, 0, 0);
 }

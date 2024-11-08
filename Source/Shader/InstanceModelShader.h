@@ -84,20 +84,20 @@ private:
 
 private:
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer>			sceneConstantBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>			subsetConstantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			scene_constant_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			subset_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			common_data_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			mesh_constant_buffer;
 
-	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertexShader;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader>		pixelShader;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout>		inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertex_shader;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader>		pixel_shader;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout>		input_layout;
 
-	Microsoft::WRL::ComPtr<ID3D11BlendState>		blendState;
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState>	rasterizerState;
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depthStencilState;
+	Microsoft::WRL::ComPtr<ID3D11BlendState>		blend_state;
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState>	rasterizer_state;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState>	depthStencil_state;
 
-	Microsoft::WRL::ComPtr<ID3D11SamplerState>		samplerState;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState>		sampler_state;
 
 	// インスタンス毎のワールドトランスフォームをGPUに渡すためのデータ
 	int instance_count = 0;
