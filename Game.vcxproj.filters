@@ -387,6 +387,9 @@
     <ClInclude Include="Source\Component\InstancedModelWithAnimationComponent.h">
       <Filter>Source\Component\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Shader\ParticleSystem.h">
+      <Filter>Source\Component\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -598,6 +601,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\InstancedModelWithAnimationComponent.cpp">
       <Filter>Source\Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\ParticleSystem.h.cpp">
+      <Filter>Source\Component\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,17 @@
+
+// パーティクル情報
+struct ParticleParam
+{
+    float rot : ROTATION;
+};
+
 //  頂点情報
 struct VsIn
 {
     float3 position : POSITION;
     float2 size : TEXCOORD;
     float4 color : COLOR;
-    float4 param : PARAMETER;
+    ParticleParam param;
 };
 
 struct GsIn
@@ -12,7 +19,7 @@ struct GsIn
     float3 position : POSITION;
     float2 size : TEXCOORD;
     float4 color : COLOR;
-    float4 param : PARAMETER;
+    ParticleParam param;
 };
 
 struct PsIn
