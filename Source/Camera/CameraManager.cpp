@@ -23,7 +23,7 @@ CameraManager::CameraManager()
     }
     camera_param.nearZ = 0.1f;
     camera_param.farZ = 1000.0f;
-    camera_param.range = 10.0f;
+    camera_param.range = 15.0f;
     camera_param.rotateX = 0.4f;
 
     this->camera_pool.resize(static_cast<size_t>(CAMERA_TYPE::MAX));

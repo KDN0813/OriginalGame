@@ -23,7 +23,7 @@ public:
     {
         DirectX::XMFLOAT3 target_position{};
         float territory_range = 45.0f;
-        float radius = 1.0f;
+        float radius = 0.1f;
         float move_speed = 3.0f;
         float speed_rate = 0.5f;
 
