@@ -101,12 +101,14 @@ void Framework::CalculateFrameStats()
 	}
 
 	// ImGui‚É•\Ž¦
+#ifdef _DEBUG
 	if (ImGui::Begin("FPS"))
 	{
 		ImGui::InputFloat("FPS", &fps);
 		ImGui::InputFloat("mspf", &mspf);
 	}
 	ImGui::End();
+#endif // DEBUG
 }
 
 bool Framework::IsPressedWindowCloseKey()
