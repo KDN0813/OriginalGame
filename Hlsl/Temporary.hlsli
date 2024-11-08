@@ -1,3 +1,5 @@
+#include "SceneConstantBuffer.hlsli"
+
 struct VsIn
 {
     float4 position : POSITION;
@@ -14,11 +16,6 @@ struct VsOut
 	float4 position : SV_POSITION;
 	float2 texcoord : TEXCOORD;
 	float4 color    : COLOR;
-};
-
-cbuffer SceneConstantBuffer : register(b0)
-{
-    row_major float4x4 view_projection;
 };
 
 #define MAX_BONES 128

@@ -1,3 +1,5 @@
+#include "SceneConstantBuffer.hlsli"
+
 // 【入力データ】
 struct VsIn
 {
@@ -34,11 +36,6 @@ struct BoneTransform
 
 
 // 【定数バッファ】
-cbuffer SceneConstantBuffer : register(b0)
-{
-    row_major float4x4 view_projection;
-};
-
 cbuffer SubsetConstantBuffer : register(b1)
 {
     float4 material_color;

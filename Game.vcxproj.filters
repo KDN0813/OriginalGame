@@ -619,6 +619,12 @@
     <None Include="Hlsl\MatrixDecompose.hlsli">
       <Filter>HLSL</Filter>
     </None>
+    <None Include="Hlsl\GeometryParticle.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="Hlsl\SceneConstantBuffer.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Hlsl\ImGuiPS.hlsl">
@@ -649,6 +655,15 @@
       <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\SpriteVS.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\GeometryParticle_gs.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\GeometryParticle_ps.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\GeometryParticle_vs.hlsl">
       <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>

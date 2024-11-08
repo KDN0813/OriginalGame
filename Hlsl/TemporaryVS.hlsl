@@ -1,4 +1,3 @@
-
 #include "Temporary.hlsli"
 
 // ランバードシェーダーの計算こっちでやってるぽい
