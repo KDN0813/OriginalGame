@@ -1,9 +1,8 @@
 #include "ParticleSystem.h"
+#include "Shader/ShaderLoader.h"
 
-ParticleSystem::ParticleSystem(ID3D11Device* device, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shader_resource_view, int komax, int komay, int num)
-	: komax(komax)
-	, komay(komay)
-	, num_particles(num)
+ParticleSystem::ParticleSystem(ID3D11Device* device, const char* filename, int num)
+	: num_particles(num),texture(std::make_unique<Texture>(filename))
 {
 	HRESULT hr;
 
@@ -16,9 +15,6 @@ ParticleSystem::ParticleSystem(ID3D11Device* device, Microsoft::WRL::ComPtr<ID3D
 	ZeroMemory(v, sizeof(Vertex) * num);
 
 	for (int i = 0; i < num_particles; i++) { data[i].type = -1; }
-
-	//	パーティクル用画像ロード
-	//this->shader_resource_view = shader_resource_view;
 
 	//	頂点バッファ作成
 	D3D11_BUFFER_DESC bd;
@@ -51,13 +47,13 @@ ParticleSystem::ParticleSystem(ID3D11Device* device, Microsoft::WRL::ComPtr<ID3D
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "ROTATION", 0, DXGI_FORMAT_R32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
-	//create_vs_from_cso(device, "geometry_particle_vs.cso", vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, _countof(input_element_desc));
+	CreateShader::VsFromCso(device, "GeometryParticle_vs.cso", vertex_shader.ReleaseAndGetAddressOf(), input_layout.ReleaseAndGetAddressOf(), input_element_desc, _countof(input_element_desc));
 
 	//	ジオメトリシェーダー
-	//create_gs_from_cso(device, "geometry_particle_gs.cso", geometry_shader.ReleaseAndGetAddressOf());
+	CreateShader::GsFromCso(device, "GeometryParticle_gs.cso", geometry_shader.ReleaseAndGetAddressOf());
 
 	//	ピクセルシェーダー
-	//create_ps_from_cso(device, "geometry_particle_ps.cso", pixel_shader.ReleaseAndGetAddressOf());
+	CreateShader::PsFromCso(device, "GeometryParticle_ps.cso", pixel_shader.ReleaseAndGetAddressOf());
 }
 
 ParticleSystem::~ParticleSystem()
@@ -81,9 +77,6 @@ void ParticleSystem::Update(float elapsed_time)
 
 		data[i].timer -= elapsed_time;
 		data[i].alpha = sqrtf(data[i].timer);
-		// アニメ
-		if (data[i].anime)
-			data[i].type += elapsed_time * data[i].anime_speed;	// speedコマ/秒
 
 		// 終了判定
 		if (data[i].timer <= 0)
@@ -113,7 +106,7 @@ void ParticleSystem::Render(ID3D11DeviceContext* immediate_context)
 	immediate_context->IASetInputLayout(input_layout.Get());
 
 	//	テクスチャ設定
-	//immediate_context->PSSetShaderResources(0, 1, shader_resource_view.GetAddressOf());
+	immediate_context->PSSetShaderResources(0, 1, texture->GetAddressOf());
 
 	//	パーティクル情報を頂点バッファに転送
 	int n = 0; //パーティクル発生数
@@ -149,12 +142,16 @@ void ParticleSystem::Render(ID3D11DeviceContext* immediate_context)
 	immediate_context->PSSetShader(nullptr, nullptr, 0);
 }
 
-void ParticleSystem::Set(int type, float timer, DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 v, DirectX::XMFLOAT3 f, DirectX::XMFLOAT2 size, bool anime, float anime_speed)
+void ParticleSystem::Set(
+	float timer,
+	DirectX::XMFLOAT3 p,
+	DirectX::XMFLOAT3 v,
+	DirectX::XMFLOAT3 f,
+	DirectX::XMFLOAT2 size
+)
 {
 	for (int i = 0; i < num_particles; i++)
 	{
-		if (data[i].type >= 0) continue;
-		data[i].type = (float)type;
 		data[i].x = p.x;
 		data[i].y = p.y;
 		data[i].z = p.z;
@@ -168,8 +165,7 @@ void ParticleSystem::Set(int type, float timer, DirectX::XMFLOAT3 p, DirectX::XM
 		data[i].h = size.y;
 		data[i].alpha = 1.0f;
 		data[i].timer = timer;
-		data[i].anime = anime;
-		data[i].anime_speed = anime_speed;
+		data[i].type = 0;
 		break;
 	}
 }

@@ -34,11 +34,7 @@ private:
 		float ax, ay, az;
 		float alpha;
 		float timer;
-		float anime_timer;
 		float type;
-
-		bool anime;
-		float anime_speed;
 	};
 
 	//	定数バッファのデータ定義
@@ -49,7 +45,7 @@ private:
 	};
 
 public:
-	ParticleSystem(ID3D11Device* device, Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shader_resource_view, int komax = 1, int komay = 1, int num = 1000);
+	ParticleSystem(ID3D11Device* device, const char* filename, int num = 1000);
 
 	~ParticleSystem();
 	void Update(float elapsed_time);
@@ -57,21 +53,17 @@ public:
 	void Render(ID3D11DeviceContext* immediate_context);
 
 	void Set(
-		int type,
 		float timer,
 		DirectX::XMFLOAT3 p,
 		DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
 		DirectX::XMFLOAT3 f = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(1.0f, 1.0f),
-		bool anime = false,
-		float anime_speed = 24.0f
+		DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(1.0f, 1.0f)
 	);
 
 private:
 	ParticleData* data;		//	パーティクル情報
 	Vertex* v;				//	頂点バッファ書き込み情報
 	int num_particles = 0;	//	パーティクル数
-	int komax, komay;		//	Textureの縦横分割数
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer;
