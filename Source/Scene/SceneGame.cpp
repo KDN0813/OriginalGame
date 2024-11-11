@@ -13,7 +13,7 @@
 #ifdef _DEBUG
 #include "Debug/DebugManager.h"
 #include "Debug/DebugComponent.h"
-
+#include "Input/Input.h"
 #endif // _DEBUG
 
 #include "ConstantManager.h"
@@ -338,25 +338,29 @@ void SceneGame::Update(float elapsed_time)
 
 #ifdef _DEBUG
 	// スペースキーでSE再生
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
-		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+		GamePad& game_pad = input->GetGamePad();
+		if (GamePad::BTN_Y & game_pad.GetButton())
 		{
-			AudioParam param{};
-			param.filename = "Data/Debug/Audio/SE.wav";
-			audio->Play(param);
-		}
+			if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+			{
+				AudioParam param{};
+				param.filename = "Data/Debug/Audio/SE.wav";
+				audio->Play(param);
+			}
 
-		particle_system->Set(
-			0.2f,
-			DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f),
-			DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-			DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-			DirectX::XMFLOAT2(0.340f, 1.28f),
-			DirectX::XMFLOAT2(1.5, 1.0),
-			DirectX::XMFLOAT2(1.0, 3.0),
-			45.0f
-		);
+			particle_system->Set(
+				0.2f,
+				DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f),
+				DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+				DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+				DirectX::XMFLOAT2(0.340f, 1.28f),
+				DirectX::XMFLOAT2(1.8, 1.0),
+				DirectX::XMFLOAT2(1.0, 3.0),
+				45.0f
+			);
+		}
 	}
 #endif // DEBUG
 
