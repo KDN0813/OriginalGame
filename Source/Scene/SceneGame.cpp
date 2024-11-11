@@ -58,6 +58,7 @@ void SceneGame::Initialize()
 		instancing_model_shader = std::make_unique<InstancingModelShader>();
 		model_shader = std::make_unique<ModelShader>();
 		sprite_shader = std::make_unique<SpriteShader>();
+		particle_system = std::make_unique<ParticleSystem>("Data/Effect/Texture/Line01.png");
 	}
 
 	// オブジェクト作成
@@ -208,7 +209,7 @@ void SceneGame::Initialize()
 		// 敵
 		{
 			float territory_range = 45.0f;
-			for (int i = 0; i < 2000; ++i)
+			for (int i = 0; i < 0; ++i)
 			{
 				auto enemy = object_manager.Create();
 
@@ -345,8 +346,18 @@ void SceneGame::Update(float elapsed_time)
 			param.filename = "Data/Debug/Audio/SE.wav";
 			audio->Play(param);
 		}
+
+		particle_system->Set(
+			10.0f,
+			DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f),
+			DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+			DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+			DirectX::XMFLOAT2(10.0f, 10.0f)
+		);
 	}
 #endif // DEBUG
+
+	particle_system->Update(elapsed_time);
 
 	// ゲーム状態を処理する
 	ProcessGameState();
@@ -383,6 +394,11 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
+		if (particle_system.get())
+		{
+			particle_system->Render();
+		}
+
 		sprite_shader->Render();
 	}
 }

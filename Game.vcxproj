@@ -264,7 +264,7 @@
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
     <ClCompile Include="Source\Shader\ModelShader.cpp" />
-    <ClCompile Include="Source\Shader\ParticleSystem.h.cpp" />
+    <ClCompile Include="Source\Shader\ParticleSystem.cpp" />
     <ClCompile Include="Source\Shader\ShaderLoader.cpp" />
     <ClCompile Include="Source\Shader\SpriteShader.cpp" />
     <ClCompile Include="Source\Sprite\Sprite.cpp" />

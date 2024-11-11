@@ -614,7 +614,7 @@
     <ClCompile Include="Source\Texture\Texture.cpp">
       <Filter>Source\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shader\ParticleSystem.h.cpp">
+    <ClCompile Include="Source\Shader\ParticleSystem.cpp">
       <Filter>Source\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Shader\ShaderLoader.cpp">

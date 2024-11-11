@@ -45,12 +45,13 @@ private:
 	};
 
 public:
-	ParticleSystem(ID3D11Device* device, const char* filename, int num = 1000);
+	ParticleSystem() = delete;
+	ParticleSystem(const char* filename, int num = 1000);
 
 	~ParticleSystem();
 	void Update(float elapsed_time);
 
-	void Render(ID3D11DeviceContext* immediate_context);
+	void Render();
 
 	void Set(
 		float timer,
