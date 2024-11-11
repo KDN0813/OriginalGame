@@ -118,6 +118,24 @@
     <Filter Include="Source\Texture">
       <UniqueIdentifier>{3ccba67f-6c98-45b0-b54c-37de7ef251ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL\Debug">
+      <UniqueIdentifier>{ea3063bd-8a59-4de3-b2d8-6d565a274740}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\GeometryParticle">
+      <UniqueIdentifier>{a3013234-736f-4305-aeb3-469b80e131ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\ImGui">
+      <UniqueIdentifier>{8e363695-7ee0-4d1b-846d-5969427be6c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\Instance">
+      <UniqueIdentifier>{5a90b2b6-9c68-44aa-9e98-24cf6c228845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\Sprite">
+      <UniqueIdentifier>{1787cac4-2479-494d-9b88-349645b76614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\Temporary">
+      <UniqueIdentifier>{2dfa8f07-0d81-4693-8db7-ac61c24e340a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -622,67 +640,67 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Hlsl\ImGui.hlsli">
-      <Filter>HLSL</Filter>
-    </None>
-    <None Include="Hlsl\Temporary.hlsli">
-      <Filter>HLSL</Filter>
-    </None>
-    <None Include="Hlsl\Instance.hlsli">
-      <Filter>HLSL</Filter>
-    </None>
-    <None Include="Hlsl\Debug.hlsli">
-      <Filter>HLSL</Filter>
-    </None>
-    <None Include="Hlsl\Sprite.hlsli">
-      <Filter>HLSL</Filter>
-    </None>
     <None Include="Hlsl\MatrixDecompose.hlsli">
       <Filter>HLSL</Filter>
     </None>
+    <None Include="Hlsl\Debug.hlsli">
+      <Filter>HLSL\Debug</Filter>
+    </None>
     <None Include="Hlsl\GeometryParticle.hlsli">
-      <Filter>HLSL</Filter>
+      <Filter>HLSL\GeometryParticle</Filter>
+    </None>
+    <None Include="Hlsl\ImGui.hlsli">
+      <Filter>HLSL\ImGui</Filter>
+    </None>
+    <None Include="Hlsl\Instance.hlsli">
+      <Filter>HLSL\Instance</Filter>
+    </None>
+    <None Include="Hlsl\Sprite.hlsli">
+      <Filter>HLSL\Sprite</Filter>
+    </None>
+    <None Include="Hlsl\Temporary.hlsli">
+      <Filter>HLSL\Temporary</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Hlsl\ImGuiPS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\ImGuiVS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\TemporaryPS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\TemporaryVS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\InstanceVS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\InstancePS.hlsl">
-      <Filter>HLSL</Filter>
+    <FxCompile Include="Hlsl\DebugVS.hlsl">
+      <Filter>HLSL\Debug</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\DebugPS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\DebugVS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\SpritePS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\SpriteVS.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\GeometryParticle_gs.hlsl">
-      <Filter>HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\GeometryParticle_ps.hlsl">
-      <Filter>HLSL</Filter>
+      <Filter>HLSL\Debug</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\GeometryParticle_vs.hlsl">
-      <Filter>HLSL</Filter>
+      <Filter>HLSL\GeometryParticle</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\GeometryParticle_gs.hlsl">
+      <Filter>HLSL\GeometryParticle</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\GeometryParticle_ps.hlsl">
+      <Filter>HLSL\GeometryParticle</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\ImGuiPS.hlsl">
+      <Filter>HLSL\ImGui</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\ImGuiVS.hlsl">
+      <Filter>HLSL\ImGui</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\InstanceVS.hlsl">
+      <Filter>HLSL\Instance</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\InstancePS.hlsl">
+      <Filter>HLSL\Instance</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\SpritePS.hlsl">
+      <Filter>HLSL\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\SpriteVS.hlsl">
+      <Filter>HLSL\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\TemporaryVS.hlsl">
+      <Filter>HLSL\Temporary</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\TemporaryPS.hlsl">
+      <Filter>HLSL\Temporary</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
