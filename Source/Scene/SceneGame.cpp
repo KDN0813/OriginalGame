@@ -352,7 +352,8 @@ void SceneGame::Update(float elapsed_time)
 			DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f),
 			DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
 			DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-			DirectX::XMFLOAT2(3.0f, 3.0f),
+			DirectX::XMFLOAT2(0.640f, 2.56f),
+			DirectX::XMFLOAT2(1.0, 1.0),
 			45.0f
 		);
 	}

@@ -61,6 +61,7 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "ROTATION", 0, DXGI_FORMAT_R32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "SCALE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	CreateShader::VsFromCso(device, "Shader\\GeometryParticle_vs.cso", this->vertex_shader.ReleaseAndGetAddressOf(), this->input_layout.ReleaseAndGetAddressOf(), input_element_desc, _countof(input_element_desc));
 
@@ -215,9 +216,11 @@ void ParticleSystem::Render()
 		this->v[n].position.x = this->data[i].x;
 		this->v[n].position.y = this->data[i].y;
 		this->v[n].position.z = this->data[i].z;
-		this->v[n].texcoord.x = this->data[i].w;
-		this->v[n].texcoord.y = this->data[i].h;
+		this->v[n].texture_size.x = this->data[i].w;
+		this->v[n].texture_size.y = this->data[i].h;
 		this->v[n].param.rot = this->data[i].rot;
+		this->v[n].param.scale.x = this->data[i].sx;
+		this->v[n].param.scale.y = this->data[i].sy;
 		this->v[n].color.x = this->v[n].color.y = this->v[n].color.z = 1.0f;
 		this->v[n].color.w = this->data[i].alpha;
 		++n;
@@ -244,7 +247,8 @@ void ParticleSystem::Set(
 	DirectX::XMFLOAT3 p,
 	DirectX::XMFLOAT3 v,
 	DirectX::XMFLOAT3 f,
-	DirectX::XMFLOAT2 size,
+	DirectX::XMFLOAT2 tx,
+	DirectX::XMFLOAT2 scale,
 	float rot
 )
 {
@@ -259,8 +263,10 @@ void ParticleSystem::Set(
 		this->data[i].ax = f.x;
 		this->data[i].ay = f.y;
 		this->data[i].az = f.z;
-		this->data[i].w = size.x;
-		this->data[i].h = size.y;
+		this->data[i].w = tx.x;
+		this->data[i].h = tx.y;
+		this->data[i].sx = scale.x;
+		this->data[i].sy = scale.y;
 		this->data[i].alpha = 1.0f;
 		this->data[i].timer = timer;
 		this->data[i].rot = rot;

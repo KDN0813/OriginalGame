@@ -15,20 +15,22 @@ class ParticleSystem
 private:
 	struct ParticleParam
 	{
-		float rot;
+		float rot;							// 回転角度
+		DirectX::XMFLOAT2 scale;			// 拡大率
 	};
 	struct Vertex
 	{
-		DirectX::XMFLOAT3 position;	//	位置
-		DirectX::XMFLOAT2 texcoord;	//	UV
-		DirectX::XMFLOAT4 color;	//	頂点色		
+		DirectX::XMFLOAT3 position;			//	位置
+		DirectX::XMFLOAT2 texture_size;		//	画像サイズ
+		DirectX::XMFLOAT4 color;			//	頂点色		
 		ParticleParam param;
 	};
 
 	struct ParticleData
 	{
-		float x, y, z;		// 位置
+		float x, y, z;		// 描画位置
 		float w, h;			// 画像サイズ
+		float sx, sy;		// 拡大率
 		float vx, vy, vz;	// 移動速度
 		float ax, ay, az;	// 加速度
 		float alpha;		// 透明度
@@ -67,14 +69,16 @@ public:
 	 * \param v 移動速度
 	 * \param f 加速度
 	 * \param rot 角度
-	 * \param size サイズ
+	 * \param tx 画像サイズ
+	 * \param scale 拡大率
 	 */
 	void Set(
 		float timer,
 		DirectX::XMFLOAT3 p,
 		DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
 		DirectX::XMFLOAT3 f = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(1.0f, 1.0f),
+		DirectX::XMFLOAT2 tx = DirectX::XMFLOAT2(1.0f, 1.0f),
+		DirectX::XMFLOAT2 scale = DirectX::XMFLOAT2(1.0f, 1.0f),
 		float rot = 0.0f
 	);
 

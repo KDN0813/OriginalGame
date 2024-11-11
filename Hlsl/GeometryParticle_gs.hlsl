@@ -12,8 +12,8 @@ void main(point GsIn gin[1], inout TriangleStream<PsIn> output)
     float rot = gin[0].param.rot;
     float s = sin(rot);
     float c = cos(rot);
-    float4 right = float4(c, -s, 0, 0) * (gin[0].size.x * 0.5);
-    float4 up = float4(s, c, 0, 0) * (gin[0].size.y * 0.5);
+    float4 right = float4(c, -s, 0, 0) * (gin[0].size.x * 0.5 * gin[0].param.scale.x);
+    float4 up = float4(s, c, 0, 0) * (gin[0].size.y * 0.5 * gin[0].param.scale.y);
 
     //  4äpå`É|ÉäÉSÉìÇê∂ê¨
     float4 pos_left_top = pos - right + up;

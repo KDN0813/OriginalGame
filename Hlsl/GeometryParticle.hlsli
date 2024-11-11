@@ -3,6 +3,7 @@
 struct ParticleParam
 {
     float rot : ROTATION;
+    float2 scale : SCALE;
 };
 
 //  ’¸“_î•ñ
