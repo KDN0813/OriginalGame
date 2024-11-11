@@ -122,6 +122,24 @@ ParticleSystem::~ParticleSystem()
 	delete[] this->v;
 }
 
+float f_lerp(float a,float b,float t)
+{
+	return a + t * (b - a);
+}
+
+float EaseOutQuad(float min, float max, float t) 
+{
+	// tを0.0から1.0の範囲にクランプする
+	if (t < 0.0f) t = 0.0f;
+	if (t > 1.0f) t = 1.0f;
+
+	// イージング計算 (EaseOutQuad)
+	float easedValue = 1 - (1 - t) * (1 - t);
+
+	// 最小値と最大値の範囲にスケール
+	return min + (max - min) * easedValue;
+}
+
 void ParticleSystem::Update(float elapsed_time)
 {
 	for (int i = 0; i < num_particles; i++) {
@@ -137,6 +155,10 @@ void ParticleSystem::Update(float elapsed_time)
 
 		this->data[i].timer -= elapsed_time;
 		this->data[i].alpha = sqrtf(this->data[i].timer);
+
+		const float t = (this->data[i].timer_max - this->data[i].timer) / this->data[i].timer_max;
+		this->data[i].sx = EaseOutQuad(this->data[i].f_sx, this->data[i].e_sx, (t));
+		this->data[i].sy = EaseOutQuad(this->data[i].f_sy, this->data[i].e_sy, (t));
 
 		// 終了判定
 		if (this->data[i].timer <= 0)
@@ -248,7 +270,8 @@ void ParticleSystem::Set(
 	DirectX::XMFLOAT3 v,
 	DirectX::XMFLOAT3 f,
 	DirectX::XMFLOAT2 tx,
-	DirectX::XMFLOAT2 scale,
+	DirectX::XMFLOAT2 f_scale,
+	DirectX::XMFLOAT2 e_scale,
 	float rot
 )
 {
@@ -265,9 +288,12 @@ void ParticleSystem::Set(
 		this->data[i].az = f.z;
 		this->data[i].w = tx.x;
 		this->data[i].h = tx.y;
-		this->data[i].sx = scale.x;
-		this->data[i].sy = scale.y;
+		this->data[i].f_sx = f_scale.x;
+		this->data[i].f_sy = f_scale.y;
+		this->data[i].e_sx = e_scale.x;
+		this->data[i].e_sy = e_scale.y;
 		this->data[i].alpha = 1.0f;
+		this->data[i].timer_max = timer;
 		this->data[i].timer = timer;
 		this->data[i].rot = rot;
 		this->data[i].type = 1;

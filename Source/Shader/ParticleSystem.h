@@ -31,9 +31,12 @@ private:
 		float x, y, z;		// 描画位置
 		float w, h;			// 画像サイズ
 		float sx, sy;		// 拡大率
+		float f_sx, f_sy;	// 拡大率(開始)
+		float e_sx, e_sy;	// 拡大率(終了)
 		float vx, vy, vz;	// 移動速度
 		float ax, ay, az;	// 加速度
 		float alpha;		// 透明度
+		float timer_max;	// 生存時間(最大値)
 		float timer;		// 生存時間
 		float rot;			// 角度
 		float type;
@@ -54,7 +57,7 @@ private:
 
 public:
 	ParticleSystem() = delete;
-	ParticleSystem(const char* filename, int num = 1000);
+	ParticleSystem(const char* filename, int num = 1);
 
 	~ParticleSystem();
 	void Update(float elapsed_time);
@@ -78,7 +81,8 @@ public:
 		DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
 		DirectX::XMFLOAT3 f = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
 		DirectX::XMFLOAT2 tx = DirectX::XMFLOAT2(1.0f, 1.0f),
-		DirectX::XMFLOAT2 scale = DirectX::XMFLOAT2(1.0f, 1.0f),
+		DirectX::XMFLOAT2 f_scale = DirectX::XMFLOAT2(1.0f, 1.0f),
+		DirectX::XMFLOAT2 e_scale = DirectX::XMFLOAT2(1.0f, 1.0f),
 		float rot = 0.0f
 	);
 
