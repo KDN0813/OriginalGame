@@ -27,13 +27,12 @@ private:
 
 	struct ParticleData
 	{
-		float x, y, z;
-		float w, h;
-		float aw, ah;
-		float vx, vy, vz;
-		float ax, ay, az;
-		float alpha;
-		float timer;
+		float x, y, z;		// 位置
+		float w, h;			// 画像サイズ
+		float vx, vy, vz;	// 移動速度
+		float ax, ay, az;	// 加速度
+		float alpha;		// 透明度
+		float timer;		// 生存時間
 		float type;
 	};
 	// シーン定数
@@ -59,6 +58,15 @@ public:
 
 	void Render();
 
+	/**
+	 * .
+	 * 
+	 * \param timer 生存時間
+	 * \param p 生成位置
+	 * \param v 移動速度
+	 * \param f 加速度
+	 * \param size サイズ
+	 */
 	void Set(
 		float timer,
 		DirectX::XMFLOAT3 p,
