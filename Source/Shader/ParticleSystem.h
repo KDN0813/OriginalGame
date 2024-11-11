@@ -73,5 +73,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
 	Microsoft::WRL::ComPtr<ID3D11GeometryShader> geometry_shader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
+
+	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state;
 	std::unique_ptr<Texture> texture;
 };
