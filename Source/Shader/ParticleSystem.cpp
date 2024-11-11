@@ -1,6 +1,8 @@
 #include "ParticleSystem.h"
 #include "Shader/ShaderLoader.h"
 #include "Graphics/Graphics.h"
+#include "Camera/CameraManager.h"
+#include "Component/CameraComponent.h"
 #include "System/Misc.h"
 
 ParticleSystem::ParticleSystem(const char* filename, int num)
@@ -35,15 +37,22 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 	assert(SUCCEEDED(hr));
 
 	//	定数バッファ生成
-	D3D11_BUFFER_DESC cbd;
-	ZeroMemory(&cbd, sizeof(cbd));
-	cbd.Usage = D3D11_USAGE_DEFAULT;
-	cbd.ByteWidth = sizeof(ConstantBufferForPerFrame);
-	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbd.CPUAccessFlags = 0;
-
-	hr = device->CreateBuffer(&cbd, nullptr, this->constant_buffer.GetAddressOf());
-	assert(SUCCEEDED(hr));
+	D3D11_BUFFER_DESC buffer_desc{};
+	buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+	buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	buffer_desc.CPUAccessFlags = 0;
+	buffer_desc.MiscFlags = 0;
+	buffer_desc.StructureByteStride = 0; 
+	{
+		buffer_desc.ByteWidth = sizeof(ForPerFrameConstantBuffer);
+		hr = device->CreateBuffer(&buffer_desc, nullptr, this->for_per_frame_constant_buffer.GetAddressOf());
+		assert(SUCCEEDED(hr));
+	}
+	{
+		buffer_desc.ByteWidth = sizeof(SceneConstantsBuffer);
+		hr = device->CreateBuffer(&buffer_desc, nullptr, this->scene_constant_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
 
 	//	頂点シェーダー
 	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
@@ -140,6 +149,21 @@ void ParticleSystem::Render()
 	if (graphics.Get() == nullptr)return;
 	ID3D11DeviceContext* immediate_context = graphics->GetDeviceContext();
 
+	RenderContext rc{};
+	// RenderContext設定
+	{
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
+		if (camera_manager.Get())
+		{
+			std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
+			if (camera)
+			{
+				rc.view = camera->GetViewTransform();
+				rc.projection = camera->GetProjectionTransform();
+			}
+		}
+	}
+
 	// ブレンドステート設定
 	immediate_context->OMSetBlendState(this->blend_state.Get(), nullptr, 0xFFFFFFFF);
 	// 深度ステンシルステートの設定
@@ -148,12 +172,25 @@ void ParticleSystem::Render()
 	immediate_context->RSSetState(this->rasterizer_state.Get());
 
 	//定数バッファの更新
-	ConstantBufferForPerFrame cb;
-	cb.size = { 0.1f,0.1f };
-	immediate_context->UpdateSubresource(this->constant_buffer.Get(), 0, nullptr, &cb, 0, 0);
-	immediate_context->VSSetConstantBuffers(0, 1, this->constant_buffer.GetAddressOf());
-	immediate_context->GSSetConstantBuffers(0, 1, this->constant_buffer.GetAddressOf());
-	immediate_context->PSSetConstantBuffers(0, 1, this->constant_buffer.GetAddressOf());
+	// シーン定数更新・設定
+	SceneConstantsBuffer cbScene;
+	MYMATRIX View = rc.view;
+	MYMATRIX Projection = rc.projection;
+	MYMATRIX View_projection = View * Projection;
+	cbScene.view_matrix = rc.view;
+	cbScene.projection_matrix = rc.projection;
+	View_projection.GetFlaot4x4(cbScene.view_projection);
+	immediate_context->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cbScene, 0, 0);
+	immediate_context->VSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
+	immediate_context->GSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
+	immediate_context->PSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
+	// パーティクル定数更新・設定
+	ForPerFrameConstantBuffer cb;
+	cb.size = { 1.0f,1.0f };
+	immediate_context->UpdateSubresource(this->for_per_frame_constant_buffer.Get(), 0, nullptr, &cb, 0, 0);
+	immediate_context->VSSetConstantBuffers(1, 1, this->for_per_frame_constant_buffer.GetAddressOf());
+	immediate_context->GSSetConstantBuffers(1, 1, this->for_per_frame_constant_buffer.GetAddressOf());
+	immediate_context->PSSetConstantBuffers(1, 1, this->for_per_frame_constant_buffer.GetAddressOf());
 
 	//	点描画設定
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -187,12 +224,12 @@ void ParticleSystem::Render()
 		++n;
 	}
 	//	頂点データ更新
-	immediate_context->UpdateSubresource(vertex_buffer.Get(), 0, nullptr, v, 0, 0);
+	immediate_context->UpdateSubresource(this->vertex_buffer.Get(), 0, nullptr, v, 0, 0);
 
 	//	バーテックスバッファーをセット
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
-	immediate_context->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
+	immediate_context->IASetVertexBuffers(0, 1, this->vertex_buffer.GetAddressOf(), &stride, &offset);
 
 	//	パーティクル情報分描画コール
 	immediate_context->Draw(n, 0);

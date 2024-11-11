@@ -36,9 +36,15 @@ private:
 		float timer;
 		float type;
 	};
-
-	//	定数バッファのデータ定義
-	struct ConstantBufferForPerFrame
+	// シーン定数
+	struct SceneConstantsBuffer
+	{
+		DirectX::XMFLOAT4X4 view_projection;
+		DirectX::XMFLOAT4X4 view_matrix;
+		DirectX::XMFLOAT4X4 projection_matrix;
+	};
+	// フレーム毎の定数
+	struct ForPerFrameConstantBuffer
 	{
 		DirectX::XMFLOAT2 size;
 		DirectX::XMFLOAT2 dummy;
@@ -67,7 +73,7 @@ private:
 	int num_particles = 0;	//	パーティクル数
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> for_per_frame_constant_buffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
@@ -77,5 +83,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> scene_constant_buffer;
 	std::unique_ptr<Texture> texture;
 };
