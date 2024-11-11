@@ -217,10 +217,9 @@ void ParticleSystem::Render()
 		this->v[n].position.z = this->data[i].z;
 		this->v[n].texcoord.x = this->data[i].w;
 		this->v[n].texcoord.y = this->data[i].h;
+		this->v[n].param.rot = this->data[i].rot;
 		this->v[n].color.x = this->v[n].color.y = this->v[n].color.z = 1.0f;
 		this->v[n].color.w = this->data[i].alpha;
-
-		this->v[n].param.rot = 0;
 		++n;
 	}
 	//	頂点データ更新
@@ -245,7 +244,8 @@ void ParticleSystem::Set(
 	DirectX::XMFLOAT3 p,
 	DirectX::XMFLOAT3 v,
 	DirectX::XMFLOAT3 f,
-	DirectX::XMFLOAT2 size
+	DirectX::XMFLOAT2 size,
+	float rot
 )
 {
 	for (int i = 0; i < num_particles; i++)
@@ -263,6 +263,7 @@ void ParticleSystem::Set(
 		this->data[i].h = size.y;
 		this->data[i].alpha = 1.0f;
 		this->data[i].timer = timer;
+		this->data[i].rot = rot;
 		this->data[i].type = 1;
 		break;
 	}

@@ -33,6 +33,7 @@ private:
 		float ax, ay, az;	// 加速度
 		float alpha;		// 透明度
 		float timer;		// 生存時間
+		float rot;			// 角度
 		float type;
 	};
 	// シーン定数
@@ -65,6 +66,7 @@ public:
 	 * \param p 生成位置
 	 * \param v 移動速度
 	 * \param f 加速度
+	 * \param rot 角度
 	 * \param size サイズ
 	 */
 	void Set(
@@ -72,7 +74,8 @@ public:
 		DirectX::XMFLOAT3 p,
 		DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
 		DirectX::XMFLOAT3 f = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(1.0f, 1.0f)
+		DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(1.0f, 1.0f),
+		float rot = 0.0f
 	);
 
 private:
