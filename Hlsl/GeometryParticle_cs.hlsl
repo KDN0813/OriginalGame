@@ -35,6 +35,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     {
         Result[node] = Input[node];   
     }
+    float3 test_pos = Result[node].pos;
 
     --Result[node].timer;;
 

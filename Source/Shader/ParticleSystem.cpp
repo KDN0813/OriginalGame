@@ -301,7 +301,7 @@ void ParticleSystem::Update()
 
 		for (int i = 0; i < this->num_particles; ++i)
 		{
-			this->datas[i].type = -1;
+			//this->datas[i].type = -1;
 		}
 	}
 
@@ -407,6 +407,9 @@ void ParticleSystem::Render()
 	}
 	//	頂点データ更新
 	immediate_context->UpdateSubresource(this->vertex_buffer.Get(), 0, nullptr, v, 0, 0);
+
+	// 頂点シェーダーにパーティクル情報送る
+	immediate_context->VSSetShaderResources(0, 1, this->particle_data_bufferSRV[chainSRV].GetAddressOf());
 
 	//	バーテックスバッファーをセット
 	UINT stride = sizeof(Vertex);

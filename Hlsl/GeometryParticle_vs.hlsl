@@ -1,12 +1,16 @@
 #include "GeometryParticle.hlsli"
 
-GsIn main(VsIn vin, uint vid : SV_VertexID)
+StructuredBuffer<ParticleData> Input : register(t0);
+
+GsIn main(VsIn vin, uint index : SV_VertexID)
 {
     GsIn output = (GsIn) 0;
-    output.position = vin.position;
+    output.position = Input[index].pos;
     output.color = vin.color;
-    output.size = vin.size;
+    output.size.x = Input[index].w;
+    output.size.y = Input[index].h;
 	
-    output.param = vin.param;
+    output.param.rot = Input[index].rot;
+    output.param.scale = Input[index].scale;
     return output;
 }

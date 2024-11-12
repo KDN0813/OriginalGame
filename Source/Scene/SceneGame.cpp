@@ -401,10 +401,9 @@ void SceneGame::Render()
 	{
 		if (particle_system.get())
 		{
+			particle_system->Update();
 			particle_system->Render();
 		}
-
-		particle_system->Update();
 		sprite_shader->Render();
 	}
 }
