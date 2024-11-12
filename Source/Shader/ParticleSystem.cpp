@@ -253,7 +253,7 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 		// アンオーダード・アクセス・ビューの作成
 		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_bufferUAV[0].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_bufferUAV[1].GetAddressOf());
+		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[1].Get(), &DescUAV, this->particle_data_bufferUAV[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
@@ -301,7 +301,7 @@ void ParticleSystem::Update()
 
 		for (int i = 0; i < this->num_particles; ++i)
 		{
-			//this->datas[i].type = -1;
+			this->datas[i].type = -1;
 		}
 	}
 
