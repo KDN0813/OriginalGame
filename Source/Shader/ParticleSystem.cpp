@@ -426,7 +426,7 @@ void ParticleSystem::Render()
 }
 
 void ParticleSystem::Set(
-	float timer,
+	int timer,
 	DirectX::XMFLOAT3 p,
 	DirectX::XMFLOAT3 v,
 	DirectX::XMFLOAT3 f,

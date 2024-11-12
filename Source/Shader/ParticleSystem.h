@@ -36,8 +36,8 @@ private:
 		DirectX::XMFLOAT3 v;			// 移動速度
 		DirectX::XMFLOAT3 a;			// 加速度
 		float alpha;					// 透明度
-		float timer_max;				// 生存時間(最大値)
-		float timer;					// 生存時間
+		int timer_max;				// 生存時間(最大値)
+		int timer;					// 生存時間
 		float rot;						// 角度
 		float type;
 	};
@@ -77,7 +77,7 @@ public:
 	 * \param scale 拡大率
 	 */
 	void Set(
-		float timer,
+		int timer,
 		DirectX::XMFLOAT3 p,
 		DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
 		DirectX::XMFLOAT3 f = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),

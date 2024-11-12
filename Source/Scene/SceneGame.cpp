@@ -351,7 +351,7 @@ void SceneGame::Update(float elapsed_time)
 			}
 
 			particle_system->Set(
-				0.2f,
+				1000.0f,
 				DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f),
 				DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
 				DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),

@@ -37,7 +37,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     }
     float3 test_pos = Result[node].pos;
 
-    --Result[node].timer;
+    Result[node].timer -= 1.0f;
 
     const float t = (Result[node].timer_max - Result[node].timer) / Result[node].timer_max;
     // 透明度の補間
