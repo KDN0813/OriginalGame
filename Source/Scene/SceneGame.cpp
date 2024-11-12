@@ -364,8 +364,6 @@ void SceneGame::Update(float elapsed_time)
 	}
 #endif // DEBUG
 
-	particle_system->Update(elapsed_time);
-
 	// ƒQ[ƒ€ó‘Ô‚ğˆ—‚·‚é
 	ProcessGameState();
 }
@@ -406,6 +404,7 @@ void SceneGame::Render()
 			particle_system->Render();
 		}
 
+		particle_system->Update();
 		sprite_shader->Render();
 	}
 }
