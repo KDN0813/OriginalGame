@@ -18,13 +18,6 @@ private:
 		float rot;							// 回転角度
 		DirectX::XMFLOAT2 scale;			// 拡大率
 	};
-	struct Vertex
-	{
-		DirectX::XMFLOAT3 position;			//	位置
-		DirectX::XMFLOAT2 texture_size;		//	画像サイズ
-		DirectX::XMFLOAT4 color;			//	頂点色		
-		ParticleParam param;
-	};
 
 	struct ParticleData
 	{
@@ -89,10 +82,8 @@ public:
 
 private:
 	ParticleData* datas;		//	パーティクル情報
-	Vertex* v;				//	頂点バッファ書き込み情報
 	int num_particles = 0;	//	パーティクル数
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> for_per_frame_constant_buffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader;

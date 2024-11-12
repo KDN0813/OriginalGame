@@ -41,7 +41,8 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
 
     const float t = (Result[node].timer_max - Result[node].timer) / Result[node].timer_max;
     // 透明度の補間
-    Result[node].alpha = lerp(0.0f, 1.0f, t);
+    //Result[node].alpha = lerp(0.0f, 1.0f, t);
+    Result[node].alpha = 1.0f;
     // 拡大率の補間
     Result[node].scale.x = EaseOutQuadInRange(Result[node].f_scale.x, Result[node].e_scale.x, (t));
     Result[node].scale.y = EaseOutQuadInRange(Result[node].f_scale.y, Result[node].e_scale.y, (t));

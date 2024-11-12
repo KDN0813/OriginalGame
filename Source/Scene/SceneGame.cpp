@@ -343,12 +343,12 @@ void SceneGame::Update(float elapsed_time)
 		GamePad& game_pad = input->GetGamePad();
 		if (GamePad::BTN_Y & game_pad.GetButton())
 		{
-			if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
-			{
-				AudioParam param{};
-				param.filename = "Data/Debug/Audio/SE.wav";
-				audio->Play(param);
-			}
+			//if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+			//{
+			//	AudioParam param{};
+			//	param.filename = "Data/Debug/Audio/SE.wav";
+			//	audio->Play(param);
+			//}
 
 			particle_system->Set(
 				1000.0f,

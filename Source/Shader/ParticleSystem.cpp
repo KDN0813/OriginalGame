@@ -20,23 +20,7 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 	this->datas = new ParticleData[num];
 	ZeroMemory(this->datas, sizeof(ParticleData) * num);
 
-	//	頂点情報リスト
-	this->v = new Vertex[num];
-	ZeroMemory(v, sizeof(Vertex) * num);
-
 	for (int i = 0; i < this->num_particles; i++) { this->datas[i].type = -1; }
-
-	//	頂点バッファ作成
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	//	頂点数分のバッファ
-	bd.ByteWidth = sizeof(Vertex) * num_particles;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-
-	hr = device->CreateBuffer(&bd, NULL, this->vertex_buffer.GetAddressOf());
-	assert(SUCCEEDED(hr));
 
 	//	定数バッファ生成
 	D3D11_BUFFER_DESC buffer_desc{};
@@ -261,7 +245,6 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 ParticleSystem::~ParticleSystem()
 {
 	delete[] this->datas;
-	delete[] this->v;
 }
 
 float f_lerp(float a,float b,float t)
@@ -396,37 +379,11 @@ void ParticleSystem::Render()
 	//	テクスチャ設定
 	immediate_context->PSSetShaderResources(0, 1, this->texture->GetAddressOf());
 
-	//	パーティクル情報を頂点バッファに転送
-	int n = 0; //パーティクル発生数
-	for (int i = 0; i < this->num_particles; i++)
-	{
-		if (this->datas[i].type < 0) continue;
-
-		this->v[n].position.x = this->datas[i].pos.x;
-		this->v[n].position.y = this->datas[i].pos.y;
-		this->v[n].position.z = this->datas[i].pos.z;
-		this->v[n].texture_size.x = this->datas[i].w;
-		this->v[n].texture_size.y = this->datas[i].h;
-		this->v[n].param.rot = this->datas[i].rot;
-		this->v[n].param.scale.x = this->datas[i].scale.x;
-		this->v[n].param.scale.y = this->datas[i].scale.y;
-		this->v[n].color.x = this->v[n].color.y = this->v[n].color.z = 1.0f;
-		this->v[n].color.w = this->datas[i].alpha;
-		++n;
-	}
-	//	頂点データ更新
-	immediate_context->UpdateSubresource(this->vertex_buffer.Get(), 0, nullptr, v, 0, 0);
-
 	// 頂点シェーダーにパーティクル情報送る
 	immediate_context->VSSetShaderResources(0, 1, this->particle_data_bufferSRV[chainSRV].GetAddressOf());
 
-	//	バーテックスバッファーをセット
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	immediate_context->IASetVertexBuffers(0, 1, this->vertex_buffer.GetAddressOf(), &stride, &offset);
-
 	//	パーティクル情報分描画コール
-	immediate_context->Draw(n, 0);
+	immediate_context->Draw(this->num_particles, 0);
 
 	//	シェーダ無効化
 	immediate_context->VSSetShader(nullptr, nullptr, 0);
