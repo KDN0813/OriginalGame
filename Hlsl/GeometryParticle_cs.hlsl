@@ -38,11 +38,11 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     float3 test_pos = Result[node].pos;
 
     Result[node].timer -= 1.0f;
-
-    const float t = (Result[node].timer_max - Result[node].timer) / Result[node].timer_max;
+    if (Result[node].timer < 0) Result[node].timer = 0;
+    
+    const float t = (float) ((Result[node].timer_max - Result[node].timer)) / (float) (Result[node].timer_max);
     // 透明度の補間
-    //Result[node].alpha = lerp(0.0f, 1.0f, t);
-    Result[node].alpha = 1.0f;
+    Result[node].alpha = EaseOutQuadInRange(0.8f, 0.0f, t);
     // 拡大率の補間
     Result[node].scale.x = EaseOutQuadInRange(Result[node].f_scale.x, Result[node].e_scale.x, (t));
     Result[node].scale.y = EaseOutQuadInRange(Result[node].f_scale.y, Result[node].e_scale.y, (t));
