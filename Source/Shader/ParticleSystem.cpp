@@ -132,9 +132,9 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 			data[i].pos = DirectX::XMFLOAT3(0, 0, 0);      // 位置
 			data[i].w = 0.0f;							   // 画像の高さ
 			data[i].h = 0.0f;							   // 画像幅
-			data[i].scale = DirectX::XMFLOAT3(0, 0, 0);	   // 拡大率
-			data[i].f_scale = DirectX::XMFLOAT3(0, 0, 0);  // 拡大率(開始)
-			data[i].e_scale = DirectX::XMFLOAT3(0, 0, 0);  // 拡大率(終了)
+			data[i].scale = DirectX::XMFLOAT2(0, 0);	   // 拡大率
+			data[i].f_scale = DirectX::XMFLOAT2(0, 0);		// 拡大率(開始)
+			data[i].e_scale = DirectX::XMFLOAT2(0, 0);		// 拡大率(終了)
 			data[i].v = DirectX::XMFLOAT3(0, 0, 0);        // 速度
 			data[i].a = DirectX::XMFLOAT3(0, 0, 0); 	   // 加速度
 			data[i].alpha = 0;							   // 透明度
@@ -185,19 +185,19 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 		struct ParticleData* data = new ParticleData[PERTICLES_PIECE_NO];
 		for (int i = 0; i < PERTICLES_PIECE_NO; ++i) {
 
-			data[i].pos = DirectX::XMFLOAT3(0, 0, 0);      // 位置
-			data[i].w = 0.0f;							   // 画像の高さ
-			data[i].h = 0.0f;							   // 画像幅
-			data[i].scale = DirectX::XMFLOAT3(0, 0, 0);	   // 拡大率
-			data[i].f_scale = DirectX::XMFLOAT3(0, 0, 0);  // 拡大率(開始)
-			data[i].e_scale = DirectX::XMFLOAT3(0, 0, 0);  // 拡大率(終了)
-			data[i].v = DirectX::XMFLOAT3(0, 0, 0);        // 速度
-			data[i].a = DirectX::XMFLOAT3(0, 0, 0); 	   // 加速度
-			data[i].alpha = 0;							   // 透明度
-			data[i].timer_max = 0;						   // 生存時間(最大)
-			data[i].timer = 0;							   // 生存時間
-			data[i].rot = 0.0f;							   // 角度
-			data[i].type = 0.0f;						   // 
+			data[i].pos = DirectX::XMFLOAT3(0, 0, 0);		// 位置
+			data[i].w = 0.0f;								// 画像の高さ
+			data[i].h = 0.0f;								// 画像幅
+			data[i].scale = DirectX::XMFLOAT2(0, 0);		// 拡大率
+			data[i].f_scale = DirectX::XMFLOAT2(0, 0);		// 拡大率(開始)
+			data[i].e_scale = DirectX::XMFLOAT2(0, 0);		// 拡大率(終了)
+			data[i].v = DirectX::XMFLOAT3(0, 0, 0);			// 速度
+			data[i].a = DirectX::XMFLOAT3(0, 0, 0); 		// 加速度
+			data[i].alpha = 0;								// 透明度
+			data[i].timer_max = 0;							// 生存時間(最大)
+			data[i].timer = 0;								// 生存時間
+			data[i].rot = 0.0f;								// 角度
+			data[i].type = 0.0f;							// 
 		}
 
 
@@ -316,6 +316,15 @@ void ParticleSystem::Update()
 
 	// コンピュート・シェーダの実行
 	immediate_context->Dispatch(PERTICLES_DISPATCH_NO, 1, 1);//グループの数
+
+	// リソースビューの解除
+	{
+		ID3D11UnorderedAccessView* view_null_uav = nullptr;
+		immediate_context->CSSetUnorderedAccessViews(0, 1, &view_null_uav, NULL);
+		ID3D11ShaderResourceView* view_null_srv = nullptr;
+		immediate_context->CSSetShaderResources(0, 1, &view_null_srv);
+		immediate_context->CSSetShaderResources(1, 1, &view_null_srv);
+	}
 
 	// バッファの切り替え
 	{

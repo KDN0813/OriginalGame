@@ -30,9 +30,9 @@ private:
 	{
 		DirectX::XMFLOAT3 pos;			// 描画位置
 		float w, h;						// 画像サイズ
-		DirectX::XMFLOAT3 scale;		// 拡大率
-		DirectX::XMFLOAT3 f_scale;		// 拡大率(開始)
-		DirectX::XMFLOAT3 e_scale;		// 拡大率(終了)
+		DirectX::XMFLOAT2 scale;		// 拡大率
+		DirectX::XMFLOAT2 f_scale;		// 拡大率(開始)
+		DirectX::XMFLOAT2 e_scale;		// 拡大率(終了)
 		DirectX::XMFLOAT3 v;			// 移動速度
 		DirectX::XMFLOAT3 a;			// 加速度
 		float alpha;					// 透明度

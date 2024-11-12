@@ -4,9 +4,9 @@ struct ParticleData
 {
     float3 pos;         // 描画位置
     float w, h;         // 画像サイズ
-    float3 scale;       // 拡大率
-    float3 f_scale;     // 拡大率(開始)
-    float3 e_scale;     // 拡大率(終了)
+    float2 scale;       // 拡大率
+    float2 f_scale;     // 拡大率(開始)
+    float2 e_scale;     // 拡大率(終了)
     float3 v;           // 移動速度
     float3 a;           // 加速度
     float alpha;        // 透明度
