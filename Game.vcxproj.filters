@@ -136,6 +136,18 @@
     <Filter Include="HLSL\Temporary">
       <UniqueIdentifier>{2dfa8f07-0d81-4693-8db7-ac61c24e340a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Shader\InstanceModel">
+      <UniqueIdentifier>{db53149d-35f2-4910-9888-ec1941eb02e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shader\Model">
+      <UniqueIdentifier>{9cbf845a-77d7-402e-849a-562bd9c0aeec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shader\Particle">
+      <UniqueIdentifier>{211b9cb5-7417-466b-a211-071c11690192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shader\Sprite">
+      <UniqueIdentifier>{edd5686b-f3be-4bb7-b7a0-5a40af2f5c1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -210,9 +222,6 @@
     <ClInclude Include="Source\Model\InstancingModelResource.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shader\InstanceModelShader.h">
-      <Filter>Source\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Shader\Shader.h">
       <Filter>Source\Shader</Filter>
     </ClInclude>
@@ -221,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="Source\Object\Object.h">
       <Filter>Source\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Shader\ModelShader.h">
-      <Filter>Source\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Debug\ImGuiHelper.h">
       <Filter>Source\Debug</Filter>
@@ -275,9 +281,6 @@
     </ClInclude>
     <ClInclude Include="Source\System\GameData.h">
       <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Shader\SpriteShader.h">
-      <Filter>Source\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Sprite\Sprite.h">
       <Filter>Source\Sprite</Filter>
@@ -411,11 +414,23 @@
     <ClInclude Include="Source\Texture\Texture.h">
       <Filter>Source\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shader\ParticleSystem.h">
-      <Filter>Source\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Shader\ShaderLoader.h">
       <Filter>Source\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\InstanceModelShader.h">
+      <Filter>Source\Shader\InstanceModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\ModelShader.h">
+      <Filter>Source\Shader\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\ParticleSystem.h">
+      <Filter>Source\Shader\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\SpriteShader.h">
+      <Filter>Source\Shader\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\ParticleDisp.h">
+      <Filter>Source\Shader\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -467,17 +482,11 @@
     <ClCompile Include="Source\Model\InstancingModelResource.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shader\InstanceModelShader.cpp">
-      <Filter>Source\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Object\Object.cpp">
       <Filter>Source\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Shader\ModelShader.cpp">
-      <Filter>Source\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Input\Mouse.cpp">
       <Filter>Source\input</Filter>
@@ -505,9 +514,6 @@
     </ClCompile>
     <ClCompile Include="Source\Debug\DebugComponent.cpp">
       <Filter>Source\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Shader\SpriteShader.cpp">
-      <Filter>Source\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Sprite\Sprite.cpp">
       <Filter>Source\Sprite</Filter>
@@ -632,11 +638,20 @@
     <ClCompile Include="Source\Texture\Texture.cpp">
       <Filter>Source\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shader\ParticleSystem.cpp">
-      <Filter>Source\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Shader\ShaderLoader.cpp">
       <Filter>Source\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\InstanceModelShader.cpp">
+      <Filter>Source\Shader\InstanceModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\ModelShader.cpp">
+      <Filter>Source\Shader\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\ParticleSystem.cpp">
+      <Filter>Source\Shader\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\SpriteShader.cpp">
+      <Filter>Source\Shader\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

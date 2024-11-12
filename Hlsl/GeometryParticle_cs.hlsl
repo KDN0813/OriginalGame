@@ -1,7 +1,7 @@
 #include "GeometryParticle.hlsli"
 #include "EasingFunctions.hlsli"
 
-#define PERTICLES_PIECE_NO  1  //パーティクルの数
+#define PERTICLES_COMP_NO  1  //GPU側のスレッド数
 
 // 入力バッファ(構造化バッファ。読み込み専用)
 // 前回の値
@@ -10,7 +10,7 @@ StructuredBuffer<ParticleData> Input : register(t0);
 RWStructuredBuffer<ParticleData> Result : register(u0);
 
 //スレッドの数
-#define TH_X PERTICLES_PIECE_NO
+#define TH_X PERTICLES_COMP_NO
 #define TH_Y 1
 #define TH_Z 1
 

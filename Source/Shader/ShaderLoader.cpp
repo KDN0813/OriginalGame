@@ -70,3 +70,23 @@ HRESULT CreateShader::PsFromCso(ID3D11Device* device, const char* cso_name, ID3D
 
 	return hr;
 }
+
+HRESULT CreateShader::CsFromCso(ID3D11Device* device, const char* cso_name, ID3D11ComputeShader** pixel_shader)
+{
+	FILE* fp = nullptr;
+	fopen_s(&fp, cso_name, "rb");
+	_ASSERT_EXPR_A(fp, "CSO File not found");
+
+	fseek(fp, 0, SEEK_END);
+	long cso_sz = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	std::unique_ptr<unsigned char[]> cso_data = std::make_unique<unsigned char[]>(cso_sz);
+	fread(cso_data.get(), cso_sz, 1, fp);
+	fclose(fp);
+
+	HRESULT hr = device->CreateComputeShader(cso_data.get(), cso_sz, nullptr, pixel_shader);
+	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+	return hr;
+}

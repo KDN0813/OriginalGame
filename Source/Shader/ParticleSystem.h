@@ -60,7 +60,8 @@ public:
 	ParticleSystem(const char* filename, int num = 1);
 
 	~ParticleSystem();
-	void Update(float elapsed_time);
+	// コンピュートシェーダーの更新
+	void Update();
 
 	void Render();
 
@@ -99,9 +100,17 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11GeometryShader> geometry_shader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
 
+	Microsoft::WRL::ComPtr<ID3D11ComputeShader> compute_shader;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_data_buffer[2] = { NULL,NULL };
+	Microsoft::WRL::ComPtr <ID3D11UnorderedAccessView> particle_data_bufferUAV[2] = { NULL, NULL }; // アンオーダード アクセス ビュー
+	Microsoft::WRL::ComPtr <ID3D11ShaderResourceView>  particle_data_bufferSRV[2] = { NULL, NULL }; // シェーダ リソース ビュー
+
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> scene_constant_buffer;
 	std::unique_ptr<Texture> texture;
+
+	int chainSRV = 0;//バッファーの切り替え
+	int chainUAV = 1;//バッファーの切り替え
 };
