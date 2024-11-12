@@ -28,17 +28,17 @@ private:
 
 	struct ParticleData
 	{
-		float x, y, z;		// 描画位置
-		float w, h;			// 画像サイズ
-		float sx, sy;		// 拡大率
-		float f_sx, f_sy;	// 拡大率(開始)
-		float e_sx, e_sy;	// 拡大率(終了)
-		float vx, vy, vz;	// 移動速度
-		float ax, ay, az;	// 加速度
-		float alpha;		// 透明度
-		float timer_max;	// 生存時間(最大値)
-		float timer;		// 生存時間
-		float rot;			// 角度
+		DirectX::XMFLOAT3 pos;			// 描画位置
+		float w, h;						// 画像サイズ
+		DirectX::XMFLOAT3 scale;		// 拡大率
+		DirectX::XMFLOAT3 f_scale;		// 拡大率(開始)
+		DirectX::XMFLOAT3 e_scale;		// 拡大率(終了)
+		DirectX::XMFLOAT3 v;			// 移動速度
+		DirectX::XMFLOAT3 a;			// 加速度
+		float alpha;					// 透明度
+		float timer_max;				// 生存時間(最大値)
+		float timer;					// 生存時間
+		float rot;						// 角度
 		float type;
 	};
 	// シーン定数

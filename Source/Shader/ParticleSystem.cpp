@@ -145,20 +145,20 @@ void ParticleSystem::Update(float elapsed_time)
 	for (int i = 0; i < num_particles; i++) {
 		if (data[i].type < 0) continue;
 
-		this->data[i].vx += this->data[i].ax * elapsed_time;
-		this->data[i].vy += this->data[i].ay * elapsed_time;
-		this->data[i].vz += this->data[i].az * elapsed_time;
+		this->data[i].v.x += this->data[i].a.x * elapsed_time;
+		this->data[i].v.y += this->data[i].a.y * elapsed_time;
+		this->data[i].v.z += this->data[i].a.z * elapsed_time;
 
-		this->data[i].x += this->data[i].vx * elapsed_time;
-		this->data[i].y += this->data[i].vy * elapsed_time;
-		this->data[i].z += this->data[i].vz * elapsed_time;
+		this->data[i].pos.x += this->data[i].v.x * elapsed_time;
+		this->data[i].pos.y += this->data[i].v.y * elapsed_time;
+		this->data[i].pos.z += this->data[i].v.z * elapsed_time;
 
 		this->data[i].timer -= elapsed_time;
 		this->data[i].alpha = sqrtf(this->data[i].timer);
 
 		const float t = (this->data[i].timer_max - this->data[i].timer) / this->data[i].timer_max;
-		this->data[i].sx = EaseOutQuad(this->data[i].f_sx, this->data[i].e_sx, (t));
-		this->data[i].sy = EaseOutQuad(this->data[i].f_sy, this->data[i].e_sy, (t));
+		this->data[i].scale.x = EaseOutQuad(this->data[i].f_scale.x, this->data[i].e_scale.x, (t));
+		this->data[i].scale.y = EaseOutQuad(this->data[i].f_scale.y, this->data[i].e_scale.y, (t));
 
 		// I—¹”»’è
 		if (this->data[i].timer <= 0)
@@ -235,14 +235,14 @@ void ParticleSystem::Render()
 	{
 		if (this->data[i].type < 0) continue;
 
-		this->v[n].position.x = this->data[i].x;
-		this->v[n].position.y = this->data[i].y;
-		this->v[n].position.z = this->data[i].z;
+		this->v[n].position.x = this->data[i].pos.x;
+		this->v[n].position.y = this->data[i].pos.y;
+		this->v[n].position.z = this->data[i].pos.z;
 		this->v[n].texture_size.x = this->data[i].w;
 		this->v[n].texture_size.y = this->data[i].h;
 		this->v[n].param.rot = this->data[i].rot;
-		this->v[n].param.scale.x = this->data[i].sx;
-		this->v[n].param.scale.y = this->data[i].sy;
+		this->v[n].param.scale.x = this->data[i].scale.x;
+		this->v[n].param.scale.y = this->data[i].scale.y;
 		this->v[n].color.x = this->v[n].color.y = this->v[n].color.z = 1.0f;
 		this->v[n].color.w = this->data[i].alpha;
 		++n;
@@ -277,21 +277,21 @@ void ParticleSystem::Set(
 {
 	for (int i = 0; i < num_particles; i++)
 	{
-		this->data[i].x = p.x;
-		this->data[i].y = p.y;
-		this->data[i].z = p.z;
-		this->data[i].vx = v.x;
-		this->data[i].vy = v.y;
-		this->data[i].vz = v.z;
-		this->data[i].ax = f.x;
-		this->data[i].ay = f.y;
-		this->data[i].az = f.z;
+		this->data[i].pos.x = p.x;
+		this->data[i].pos.y = p.y;
+		this->data[i].pos.z = p.z;
+		this->data[i].v.x = v.x;
+		this->data[i].v.y = v.y;
+		this->data[i].v.z = v.z;
+		this->data[i].a.x = f.x;
+		this->data[i].a.y = f.y;
+		this->data[i].a.z = f.z;
 		this->data[i].w = tx.x;
 		this->data[i].h = tx.y;
-		this->data[i].f_sx = f_scale.x;
-		this->data[i].f_sy = f_scale.y;
-		this->data[i].e_sx = e_scale.x;
-		this->data[i].e_sy = e_scale.y;
+		this->data[i].f_scale.x = f_scale.x;
+		this->data[i].f_scale.y = f_scale.y;
+		this->data[i].e_scale.x = e_scale.x;
+		this->data[i].e_scale.y = e_scale.y;
 		this->data[i].alpha = 1.0f;
 		this->data[i].timer_max = timer;
 		this->data[i].timer = timer;

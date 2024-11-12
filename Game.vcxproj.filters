@@ -702,5 +702,8 @@
     <FxCompile Include="Hlsl\TemporaryPS.hlsl">
       <Filter>HLSL\Temporary</Filter>
     </FxCompile>
+    <FxCompile Include="Hlsl\GeometryParticle_cs.hlsl">
+      <Filter>HLSL\GeometryParticle</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
