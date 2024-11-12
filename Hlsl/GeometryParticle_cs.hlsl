@@ -6,6 +6,9 @@
 // 入力バッファ(構造化バッファ。読み込み専用)
 // 前回の値
 StructuredBuffer<ParticleData> Input : register(t0);
+
+// 初期化用パラメータ
+StructuredBuffer<ParticleData> Input2 : register(t1);
 // 出力バッファ(構造化バッファ。読み書き可能)
 RWStructuredBuffer<ParticleData> Result : register(u0);
 
@@ -24,7 +27,14 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     uint y = Gid.x;
     int node = TH_X * y + x;
     
-    Result[node] = Input[node];
+    if (0.0 <= Input2[node].type)
+    {
+        Result[node] = Input2[node];
+    }
+    else
+    {
+        Result[node] = Input[node];   
+    }
 
     --Result[node].timer;;
 

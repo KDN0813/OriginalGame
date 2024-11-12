@@ -17,14 +17,14 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 	HRESULT hr;
 
 	//	パーティクル情報リスト
-	data = new ParticleData[num];
-	ZeroMemory(this->data, sizeof(ParticleData) * num);
+	this->datas = new ParticleData[num];
+	ZeroMemory(this->datas, sizeof(ParticleData) * num);
 
 	//	頂点情報リスト
 	this->v = new Vertex[num];
 	ZeroMemory(v, sizeof(Vertex) * num);
 
-	for (int i = 0; i < this->num_particles; i++) { this->data[i].type = -1; }
+	for (int i = 0; i < this->num_particles; i++) { this->datas[i].type = -1; }
 
 	//	頂点バッファ作成
 	D3D11_BUFFER_DESC bd;
@@ -124,7 +124,48 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// 入力用リソースビューの設定
+	// 初期化用バッファの作成
+	{
+		struct ParticleData* data = new ParticleData[PERTICLES_PIECE_NO];
+		for (int i = 0; i < PERTICLES_PIECE_NO; ++i) {
+
+			data[i].pos = DirectX::XMFLOAT3(0, 0, 0);      // 位置
+			data[i].w = 0.0f;							   // 画像の高さ
+			data[i].h = 0.0f;							   // 画像幅
+			data[i].scale = DirectX::XMFLOAT3(0, 0, 0);	   // 拡大率
+			data[i].f_scale = DirectX::XMFLOAT3(0, 0, 0);  // 拡大率(開始)
+			data[i].e_scale = DirectX::XMFLOAT3(0, 0, 0);  // 拡大率(終了)
+			data[i].v = DirectX::XMFLOAT3(0, 0, 0);        // 速度
+			data[i].a = DirectX::XMFLOAT3(0, 0, 0); 	   // 加速度
+			data[i].alpha = 0;							   // 透明度
+			data[i].timer_max = 0;						   // 生存時間(最大)
+			data[i].timer = 0;							   // 生存時間
+			data[i].rot = 0.0f;							   // 角度
+			data[i].type = -1.0f;						   // 
+		}
+
+		// ワークリソースの設定
+		D3D11_BUFFER_DESC Desc;
+		ZeroMemory(&Desc, sizeof(Desc));
+		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(ParticleData); // バッファ サイズ
+		Desc.Usage = D3D11_USAGE_DYNAMIC;//ステージの入出力はOK。GPUの入出力OK。
+		Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;//UNORDEREDのダイナミックはダメだった。
+		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
+		Desc.StructureByteStride = sizeof(ParticleData);
+		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;     // CPUから書き込む
+		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
+		SubResource.pSysMem = data;
+		SubResource.SysMemPitch = 0;
+		SubResource.SysMemSlicePitch = 0;
+
+		// 最初の入力リソース(データを初期化する)
+		hr = device->CreateBuffer(&Desc, &SubResource, this->init_particle_data_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		delete[] data;
+	}
+
+	// 初期化用構造体作成
 	{
 		// 入力ワークリソース ビューの設定（入力用）
 		D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
@@ -135,24 +176,7 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 		DescSRV.Buffer.ElementWidth = PERTICLES_PIECE_NO; // データ数
 
 		// シェーダ リソース ビューの作成
-		hr = device->CreateShaderResourceView(this->particle_data_buffer[0].Get(), &DescSRV, this->particle_data_bufferSRV[0].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateShaderResourceView(this->particle_data_buffer[1].Get(), &DescSRV, this->particle_data_bufferSRV[1].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
-	// 出力用アンオーダード・アクセス・ビュー（出力用）
-	{
-		D3D11_UNORDERED_ACCESS_VIEW_DESC DescUAV;
-		ZeroMemory(&DescUAV, sizeof(DescUAV));
-		DescUAV.Format = DXGI_FORMAT_UNKNOWN;
-		DescUAV.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-		DescUAV.Buffer.NumElements = PERTICLES_PIECE_NO; // データ数
-
-		// アンオーダード・アクセス・ビューの作成
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_bufferUAV[0].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_bufferUAV[1].GetAddressOf());
+		hr = device->CreateShaderResourceView(this->init_particle_data_buffer.Get(), &DescSRV, this->init_particle_data_bufferSRV.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -199,13 +223,44 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_data_buffer[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		delete[] data;
+	}
 
+	// 入力用リソースビューの設定
+	{
+		// 入力ワークリソース ビューの設定（入力用）
+		D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
+		ZeroMemory(&DescSRV, sizeof(DescSRV));
+		DescSRV.Format = DXGI_FORMAT_UNKNOWN;
+		DescSRV.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+
+		DescSRV.Buffer.ElementWidth = PERTICLES_PIECE_NO; // データ数
+
+		// シェーダ リソース ビューの作成
+		hr = device->CreateShaderResourceView(this->particle_data_buffer[0].Get(), &DescSRV, this->particle_data_bufferSRV[0].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		hr = device->CreateShaderResourceView(this->particle_data_buffer[1].Get(), &DescSRV, this->particle_data_bufferSRV[1].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// 出力用アンオーダード・アクセス・ビュー（出力用）
+	{
+		D3D11_UNORDERED_ACCESS_VIEW_DESC DescUAV;
+		ZeroMemory(&DescUAV, sizeof(DescUAV));
+		DescUAV.Format = DXGI_FORMAT_UNKNOWN;
+		DescUAV.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+		DescUAV.Buffer.NumElements = PERTICLES_PIECE_NO; // データ数
+
+		// アンオーダード・アクセス・ビューの作成
+		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_bufferUAV[0].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_bufferUAV[1].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
 
 ParticleSystem::~ParticleSystem()
 {
-	delete[] this->data;
+	delete[] this->datas;
 	delete[] this->v;
 }
 
@@ -235,11 +290,29 @@ void ParticleSystem::Update()
 
 	immediate_context->CSSetShader(this->compute_shader.Get(), 0, 0);
 
+	// 初期化用パラメータを更新
+	{
+		D3D11_MAPPED_SUBRESOURCE mappedResource{};
+		HRESULT hr = immediate_context->Map(this->init_particle_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		memcpy_s(mappedResource.pData, sizeof(ParticleData) * PERTICLES_DISPATCH_NO,
+			this->datas, sizeof(ParticleData) * this->num_particles);
+		immediate_context->Unmap(this->init_particle_data_buffer.Get(), 0);
+
+		for (int i = 0; i < this->num_particles; ++i)
+		{
+			this->datas[i].type = -1;
+		}
+	}
+
 	// アンオーダード・アクセス・ビューの設定
 	immediate_context->CSSetUnorderedAccessViews(0, 1, this->particle_data_bufferUAV[chainUAV].GetAddressOf(), NULL);
 
 	//書き込み用ワークリソース ビューの設定
 	immediate_context->CSSetShaderResources(0, 1, this->particle_data_bufferSRV[chainSRV].GetAddressOf());
+	
+	// 初期化用リソースビューの設定
+	immediate_context->CSSetShaderResources(1, 1, this->init_particle_data_bufferSRV.GetAddressOf());
 
 	// コンピュート・シェーダの実行
 	immediate_context->Dispatch(PERTICLES_DISPATCH_NO, 1, 1);//グループの数
@@ -318,18 +391,18 @@ void ParticleSystem::Render()
 	int n = 0; //パーティクル発生数
 	for (int i = 0; i < this->num_particles; i++)
 	{
-		if (this->data[i].type < 0) continue;
+		if (this->datas[i].type < 0) continue;
 
-		this->v[n].position.x = this->data[i].pos.x;
-		this->v[n].position.y = this->data[i].pos.y;
-		this->v[n].position.z = this->data[i].pos.z;
-		this->v[n].texture_size.x = this->data[i].w;
-		this->v[n].texture_size.y = this->data[i].h;
-		this->v[n].param.rot = this->data[i].rot;
-		this->v[n].param.scale.x = this->data[i].scale.x;
-		this->v[n].param.scale.y = this->data[i].scale.y;
+		this->v[n].position.x = this->datas[i].pos.x;
+		this->v[n].position.y = this->datas[i].pos.y;
+		this->v[n].position.z = this->datas[i].pos.z;
+		this->v[n].texture_size.x = this->datas[i].w;
+		this->v[n].texture_size.y = this->datas[i].h;
+		this->v[n].param.rot = this->datas[i].rot;
+		this->v[n].param.scale.x = this->datas[i].scale.x;
+		this->v[n].param.scale.y = this->datas[i].scale.y;
 		this->v[n].color.x = this->v[n].color.y = this->v[n].color.z = 1.0f;
-		this->v[n].color.w = this->data[i].alpha;
+		this->v[n].color.w = this->datas[i].alpha;
 		++n;
 	}
 	//	頂点データ更新
@@ -362,26 +435,26 @@ void ParticleSystem::Set(
 {
 	for (int i = 0; i < num_particles; i++)
 	{
-		this->data[i].pos.x = p.x;
-		this->data[i].pos.y = p.y;
-		this->data[i].pos.z = p.z;
-		this->data[i].v.x = v.x;
-		this->data[i].v.y = v.y;
-		this->data[i].v.z = v.z;
-		this->data[i].a.x = f.x;
-		this->data[i].a.y = f.y;
-		this->data[i].a.z = f.z;
-		this->data[i].w = tx.x;
-		this->data[i].h = tx.y;
-		this->data[i].f_scale.x = f_scale.x;
-		this->data[i].f_scale.y = f_scale.y;
-		this->data[i].e_scale.x = e_scale.x;
-		this->data[i].e_scale.y = e_scale.y;
-		this->data[i].alpha = 1.0f;
-		this->data[i].timer_max = timer;
-		this->data[i].timer = timer;
-		this->data[i].rot = rot;
-		this->data[i].type = 1;
+		this->datas[i].pos.x = p.x;
+		this->datas[i].pos.y = p.y;
+		this->datas[i].pos.z = p.z;
+		this->datas[i].v.x = v.x;
+		this->datas[i].v.y = v.y;
+		this->datas[i].v.z = v.z;
+		this->datas[i].a.x = f.x;
+		this->datas[i].a.y = f.y;
+		this->datas[i].a.z = f.z;
+		this->datas[i].w = tx.x;
+		this->datas[i].h = tx.y;
+		this->datas[i].f_scale.x = f_scale.x;
+		this->datas[i].f_scale.y = f_scale.y;
+		this->datas[i].e_scale.x = e_scale.x;
+		this->datas[i].e_scale.y = e_scale.y;
+		this->datas[i].alpha = 1.0f;
+		this->datas[i].timer_max = timer;
+		this->datas[i].timer = timer;
+		this->datas[i].rot = rot;
+		this->datas[i].type = 1;
 		break;
 	}
 }

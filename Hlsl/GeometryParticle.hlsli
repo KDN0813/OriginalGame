@@ -13,6 +13,7 @@ struct ParticleData
     int timer_max;    // 生存時間(最大値)
     int timer;        // 生存時間
     float rot;          // 角度
+    float type;
 };
 
 // パーティクル情報

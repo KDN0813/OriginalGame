@@ -88,7 +88,7 @@ public:
 	);
 
 private:
-	ParticleData* data;		//	パーティクル情報
+	ParticleData* datas;		//	パーティクル情報
 	Vertex* v;				//	頂点バッファ書き込み情報
 	int num_particles = 0;	//	パーティクル数
 
@@ -102,8 +102,11 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> compute_shader;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_data_buffer[2] = { NULL,NULL };
-	Microsoft::WRL::ComPtr <ID3D11UnorderedAccessView> particle_data_bufferUAV[2] = { NULL, NULL }; // アンオーダード アクセス ビュー
-	Microsoft::WRL::ComPtr <ID3D11ShaderResourceView>  particle_data_bufferSRV[2] = { NULL, NULL }; // シェーダ リソース ビュー
+	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particle_data_bufferUAV[2] = { NULL, NULL }; // アンオーダード アクセス ビュー
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  particle_data_bufferSRV[2] = { NULL, NULL }; // シェーダ リソース ビュー
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> init_particle_data_buffer = NULL; // 初期化用バッファ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  init_particle_data_bufferSRV = NULL; // 初期化構造体バッファ
 
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
