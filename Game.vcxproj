@@ -280,6 +280,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\Debug.hlsli" />
+    <None Include="Hlsl\EasingFunctions.hlsli" />
     <None Include="Hlsl\GeometryParticle.hlsli" />
     <None Include="Hlsl\ImGui.hlsli" />
     <None Include="Hlsl\Instance.hlsli" />

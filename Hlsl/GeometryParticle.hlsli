@@ -1,4 +1,20 @@
 
+// CSで計算するパーティクル情報
+struct ParticleData
+{
+    float3 pos;         // 描画位置
+    float w, h;         // 画像サイズ
+    float3 scale;       // 拡大率
+    float3 f_scale;     // 拡大率(開始)
+    float3 e_scale;     // 拡大率(終了)
+    float3 v;           // 移動速度
+    float3 a;           // 加速度
+    float alpha;        // 透明度
+    int timer_max;    // 生存時間(最大値)
+    int timer;        // 生存時間
+    float rot;          // 角度
+};
+
 // パーティクル情報
 struct ParticleParam
 {

@@ -661,6 +661,9 @@
     <None Include="Hlsl\Temporary.hlsli">
       <Filter>HLSL\Temporary</Filter>
     </None>
+    <None Include="Hlsl\EasingFunctions.hlsli">
+      <Filter>HLSL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Hlsl\DebugVS.hlsl">
