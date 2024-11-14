@@ -4,8 +4,9 @@
 #include <wrl.h>
 #include <directxmath.h>
 
-#include <vector>
+#include <optional>
 #include <memory>
+#include "System\MySequenceVector.h"
 
 #include "Texture/Texture.h"
 #include "shader.h"
@@ -81,7 +82,7 @@ public:
 	);
 
 private:
-	std::vector<ParticleData> particle_data_pool;		//	パーティクル情報
+	MySequenceVector<ParticleData> particle_data_pool;		//	パーティクル情報
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> for_per_frame_constant_buffer;
 

@@ -9,6 +9,7 @@
 
 ParticleSystem::ParticleSystem(const char* filename)
 	: texture(std::make_unique<Texture>(filename))
+	, particle_data_pool()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (graphics.Get() == nullptr)return;
@@ -16,10 +17,10 @@ ParticleSystem::ParticleSystem(const char* filename)
 
 	HRESULT hr;
 
-	//	パーティクル情報リスト
-	this->particle_data_pool.resize(PERTICLES_PIECE_NO);
-
-	for (int i = 0; i < PERTICLES_PIECE_NO; i++) { this->particle_data_pool[i].type = -1; }
+	// 入力用パーティクル情報の初期設定
+	ParticleData initial_value{};	// 初期化用の値設定
+	initial_value.type = -1.0f;
+	particle_data_pool.Initialize(PERTICLES_PIECE_NO, initial_value);
 
 	//	定数バッファ生成
 	D3D11_BUFFER_DESC buffer_desc{};
