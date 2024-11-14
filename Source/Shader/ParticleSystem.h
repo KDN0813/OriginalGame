@@ -29,8 +29,8 @@ private:
 		DirectX::XMFLOAT3 v;			// 移動速度
 		DirectX::XMFLOAT3 a;			// 加速度
 		float alpha;					// 透明度
-		int timer_max;				// 生存時間(最大値)
-		int timer;					// 生存時間
+		int timer_max;					// 生存時間(最大値)
+		int timer;						// 生存時間
 		float rot;						// 角度
 		float type;
 	};
@@ -50,7 +50,7 @@ private:
 
 public:
 	ParticleSystem() = delete;
-	ParticleSystem(const char* filename, int num = 1);
+	ParticleSystem(const char* filename);
 
 	~ParticleSystem();
 	// コンピュートシェーダーの更新
@@ -81,8 +81,7 @@ public:
 	);
 
 private:
-	ParticleData* datas;		//	パーティクル情報
-	int num_particles = 0;	//	パーティクル数
+	 std::vector<ParticleData> particle_data_pool;		//	パーティクル情報
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> for_per_frame_constant_buffer;
 

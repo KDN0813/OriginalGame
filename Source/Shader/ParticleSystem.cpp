@@ -7,8 +7,8 @@
 
 #include "Component/CameraComponent.h"
 
-ParticleSystem::ParticleSystem(const char* filename, int num)
-	: num_particles(num),texture(std::make_unique<Texture>(filename))
+ParticleSystem::ParticleSystem(const char* filename)
+	: texture(std::make_unique<Texture>(filename))
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (graphics.Get() == nullptr)return;
@@ -17,10 +17,9 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 	HRESULT hr;
 
 	//	パーティクル情報リスト
-	this->datas = new ParticleData[num];
-	ZeroMemory(this->datas, sizeof(ParticleData) * num);
+	this->particle_data_pool.resize(PERTICLES_PIECE_NO);
 
-	for (int i = 0; i < this->num_particles; i++) { this->datas[i].type = -1; }
+	for (int i = 0; i < PERTICLES_PIECE_NO; i++) { this->particle_data_pool[i].type = -1; }
 
 	//	定数バッファ生成
 	D3D11_BUFFER_DESC buffer_desc{};
@@ -244,7 +243,6 @@ ParticleSystem::ParticleSystem(const char* filename, int num)
 
 ParticleSystem::~ParticleSystem()
 {
-	delete[] this->datas;
 }
 
 float f_lerp(float a,float b,float t)
@@ -279,12 +277,12 @@ void ParticleSystem::Update()
 		HRESULT hr = immediate_context->Map(this->init_particle_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		memcpy_s(mappedResource.pData, sizeof(ParticleData) * PERTICLES_DISPATCH_NO,
-			this->datas, sizeof(ParticleData) * this->num_particles);
+			this->particle_data_pool.data(), sizeof(ParticleData) * PERTICLES_PIECE_NO);
 		immediate_context->Unmap(this->init_particle_data_buffer.Get(), 0);
 
-		for (int i = 0; i < this->num_particles; ++i)
+		for (int i = 0; i < PERTICLES_PIECE_NO; ++i)
 		{
-			this->datas[i].type = -1;
+			this->particle_data_pool[i].type = -1;
 		}
 	}
 
@@ -383,7 +381,7 @@ void ParticleSystem::Render()
 	immediate_context->VSSetShaderResources(0, 1, this->particle_data_bufferSRV[chainSRV].GetAddressOf());
 
 	//	パーティクル情報分描画コール
-	immediate_context->Draw(this->num_particles, 0);
+	immediate_context->Draw(PERTICLES_PIECE_NO, 0);
 
 	//	シェーダ無効化
 	immediate_context->VSSetShader(nullptr, nullptr, 0);
@@ -402,28 +400,28 @@ void ParticleSystem::Set(
 	float rot
 )
 {
-	for (int i = 0; i < num_particles; i++)
+	for (int i = 0; i < PERTICLES_PIECE_NO; i++)
 	{
-		this->datas[i].pos.x = p.x;
-		this->datas[i].pos.y = p.y;
-		this->datas[i].pos.z = p.z;
-		this->datas[i].v.x = v.x;
-		this->datas[i].v.y = v.y;
-		this->datas[i].v.z = v.z;
-		this->datas[i].a.x = f.x;
-		this->datas[i].a.y = f.y;
-		this->datas[i].a.z = f.z;
-		this->datas[i].w = tx.x;
-		this->datas[i].h = tx.y;
-		this->datas[i].f_scale.x = f_scale.x;
-		this->datas[i].f_scale.y = f_scale.y;
-		this->datas[i].e_scale.x = e_scale.x;
-		this->datas[i].e_scale.y = e_scale.y;
-		this->datas[i].alpha = 1.0f;
-		this->datas[i].timer_max = timer;
-		this->datas[i].timer = timer;
-		this->datas[i].rot = rot;
-		this->datas[i].type = 1;
+		this->particle_data_pool[i].pos.x = p.x;
+		this->particle_data_pool[i].pos.y = p.y;
+		this->particle_data_pool[i].pos.z = p.z;
+		this->particle_data_pool[i].v.x = v.x;
+		this->particle_data_pool[i].v.y = v.y;
+		this->particle_data_pool[i].v.z = v.z;
+		this->particle_data_pool[i].a.x = f.x;
+		this->particle_data_pool[i].a.y = f.y;
+		this->particle_data_pool[i].a.z = f.z;
+		this->particle_data_pool[i].w = tx.x;
+		this->particle_data_pool[i].h = tx.y;
+		this->particle_data_pool[i].f_scale.x = f_scale.x;
+		this->particle_data_pool[i].f_scale.y = f_scale.y;
+		this->particle_data_pool[i].e_scale.x = e_scale.x;
+		this->particle_data_pool[i].e_scale.y = e_scale.y;
+		this->particle_data_pool[i].alpha = 1.0f;
+		this->particle_data_pool[i].timer_max = timer;
+		this->particle_data_pool[i].timer = timer;
+		this->particle_data_pool[i].rot = rot;
+		this->particle_data_pool[i].type = 1;
 		break;
 	}
 }
