@@ -87,7 +87,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> for_per_frame_constant_buffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout;
 	Microsoft::WRL::ComPtr<ID3D11GeometryShader> geometry_shader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
 

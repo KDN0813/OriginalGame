@@ -40,16 +40,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	//	頂点シェーダー
-	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "ROTATION", 0, DXGI_FORMAT_R32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "SCALE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	hr = CreateShader::VsFromCso(device, "Shader\\GeometryParticle_vs.cso", this->vertex_shader.ReleaseAndGetAddressOf(), this->input_layout.ReleaseAndGetAddressOf(), input_element_desc, _countof(input_element_desc));
+	hr = CreateShader::VsFromCso(device, "Shader\\GeometryParticle_vs.cso", this->vertex_shader.ReleaseAndGetAddressOf(), nullptr, nullptr, 0);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	//	ジオメトリシェーダー
@@ -368,9 +359,6 @@ void ParticleSystem::Render()
 	immediate_context->VSSetShader(this->vertex_shader.Get(), nullptr, 0);
 	immediate_context->GSSetShader(this->geometry_shader.Get(), nullptr, 0);
 	immediate_context->PSSetShader(this->pixel_shader.Get(), nullptr, 0);
-
-	//	入力レイアウト設定
-	immediate_context->IASetInputLayout(this->input_layout.Get());
 
 	//	テクスチャ設定
 	immediate_context->PSSetShaderResources(0, 1, this->texture->GetAddressOf());
