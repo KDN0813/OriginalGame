@@ -341,7 +341,7 @@ void SceneGame::Update(float elapsed_time)
 	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
 		GamePad& game_pad = input->GetGamePad();
-		if (GamePad::BTN_Y & game_pad.GetButton())
+		if (GamePad::BTN_Y & game_pad.GetButtonDown())
 		{
 			//if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 			//{

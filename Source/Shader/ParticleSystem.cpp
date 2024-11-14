@@ -281,10 +281,7 @@ void ParticleSystem::Update()
 			this->particle_data_pool.data(), sizeof(ParticleData) * PERTICLES_PIECE_NO);
 		immediate_context->Unmap(this->init_particle_data_buffer.Get(), 0);
 
-		for (int i = 0; i < PERTICLES_PIECE_NO; ++i)
-		{
-			this->particle_data_pool[i].type = -1;
-		}
+		this->particle_data_pool.DataClear();
 	}
 
 	// アンオーダード・アクセス・ビューの設定
@@ -401,28 +398,30 @@ void ParticleSystem::Set(
 	float rot
 )
 {
-	for (int i = 0; i < PERTICLES_PIECE_NO; i++)
+
+	ParticleData particle_data{};
 	{
-		this->particle_data_pool[i].pos.x = p.x;
-		this->particle_data_pool[i].pos.y = p.y;
-		this->particle_data_pool[i].pos.z = p.z;
-		this->particle_data_pool[i].v.x = v.x;
-		this->particle_data_pool[i].v.y = v.y;
-		this->particle_data_pool[i].v.z = v.z;
-		this->particle_data_pool[i].a.x = f.x;
-		this->particle_data_pool[i].a.y = f.y;
-		this->particle_data_pool[i].a.z = f.z;
-		this->particle_data_pool[i].w = tx.x;
-		this->particle_data_pool[i].h = tx.y;
-		this->particle_data_pool[i].f_scale.x = f_scale.x;
-		this->particle_data_pool[i].f_scale.y = f_scale.y;
-		this->particle_data_pool[i].e_scale.x = e_scale.x;
-		this->particle_data_pool[i].e_scale.y = e_scale.y;
-		this->particle_data_pool[i].alpha = 1.0f;
-		this->particle_data_pool[i].timer_max = timer;
-		this->particle_data_pool[i].timer = timer;
-		this->particle_data_pool[i].rot = rot;
-		this->particle_data_pool[i].type = 1;
-		break;
+		particle_data.pos.x = p.x;
+		particle_data.pos.y = p.y;
+		particle_data.pos.z = p.z;
+		particle_data.v.x = v.x;
+		particle_data.v.y = v.y;
+		particle_data.v.z = v.z;
+		particle_data.a.x = f.x;
+		particle_data.a.y = f.y;
+		particle_data.a.z = f.z;
+		particle_data.w = tx.x;
+		particle_data.h = tx.y;
+		particle_data.f_scale.x = f_scale.x;
+		particle_data.f_scale.y = f_scale.y;
+		particle_data.e_scale.x = e_scale.x;
+		particle_data.e_scale.y = e_scale.y;
+		particle_data.alpha = 1.0f;
+		particle_data.timer_max = timer;
+		particle_data.timer = timer;
+		particle_data.rot = rot;
+		particle_data.type = 1;
 	}
+
+	this->particle_data_pool.AddData(particle_data);
 }

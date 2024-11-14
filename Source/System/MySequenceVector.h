@@ -48,7 +48,6 @@ public:
         if (!this->vec.empty()) return;
 
         this->max_size = num;                   // 最大要素数の設定
-        this->write_index = num;                // 書き込みインデックスを初期化
         this->initial_value = initial_value;    // 初期化値の設定
         this->vec.resize(num, initial_value);   // ベクターのサイズをnumに変更し、初期値で埋める
     }
@@ -63,7 +62,7 @@ public:
      */
     void AddData(const T& data)
     {
-        _ASSERT_EXPR_W(this->write_index < this->max_size, L"要素数が最大です");    // エラー処理を行う
+        //_ASSERT_EXPR_W(this->write_index < this->max_size, L"要素数が最大です");    // エラー処理を行う
         if (this->max_size <= this->write_index) return;   // 書き込みインデックスが最大に達していれば何もしない
 
         this->vec[this->write_index] = data;    // 指定されたインデックスにデータを書き込む
@@ -79,6 +78,7 @@ public:
     {
         // vectorのすべての要素をinitial_valueで初期化
         std::fill(this->vec.begin(), this->vec.end(), this->initial_value);  // initial_valueで初期化
+        this->write_index = 0;
     }
 
     /**
@@ -108,11 +108,11 @@ public:
     * @param index インデックス
     * @return 指定されたインデックスの要素
     */
-    T& operator[](size_t index)
-    {
-        _ASSERT_EXPR_W(index < this->max_size, L"指定された要素が存在しません");    // エラー処理を行う
-        return this->vec[index];
-    }
+    //T& operator[](size_t index)
+    //{
+    //    _ASSERT_EXPR_W(index < this->max_size, L"指定された要素が存在しません");    // エラー処理を行う
+    //    return this->vec[index];
+    //}
 private:
     std::vector<T> vec;         // 要素を格納するstd::vector
     T initial_value;            // 初期化に使う値
