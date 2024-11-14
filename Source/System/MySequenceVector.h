@@ -101,18 +101,6 @@ public:
      * @return vectorの参照
      */
     const std::vector<T>& GetVector() { return this->vec; }
-
-    /**
-    * @brief インデックス指定で要素にアクセスするオペレータ
-    *
-    * @param index インデックス
-    * @return 指定されたインデックスの要素
-    */
-    //T& operator[](size_t index)
-    //{
-    //    _ASSERT_EXPR_W(index < this->max_size, L"指定された要素が存在しません");    // エラー処理を行う
-    //    return this->vec[index];
-    //}
 private:
     std::vector<T> vec;         // 要素を格納するstd::vector
     T initial_value;            // 初期化に使う値
