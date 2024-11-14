@@ -1,8 +1,6 @@
 #include "GeometryParticle.hlsli"
 #include "EasingFunctions.hlsli"
 
-#define PERTICLES_COMP_NO  1  //GPU側のスレッド数
-
 // 入力バッファ(構造化バッファ。読み込み専用)
 // 前回の値
 StructuredBuffer<ParticleData> Input : register(t0);
