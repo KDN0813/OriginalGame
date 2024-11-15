@@ -429,8 +429,11 @@
     <ClInclude Include="Source\Shader\SpriteShader.h">
       <Filter>Source\Shader\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shader\ParticleDisp.h">
-      <Filter>Source\Shader\Particle</Filter>
+    <ClInclude Include="Source\System\MySequenceVector.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Hlsl\ParticleDisp.h">
+      <Filter>HLSL\GeometryParticle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
