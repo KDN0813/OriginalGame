@@ -1,5 +1,6 @@
 #include "GeometryParticle.hlsli"
 #include "EasingFunctions.hlsli"
+#include "./ParticleDisp.h"
 
 // 入力バッファ(構造化バッファ。読み込み専用)
 // 前回の値

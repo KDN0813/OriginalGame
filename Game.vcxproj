@@ -118,6 +118,7 @@
     <ClInclude Include="External\imgui\imstb_rectpack.h" />
     <ClInclude Include="External\imgui\imstb_textedit.h" />
     <ClInclude Include="External\imgui\imstb_truetype.h" />
+    <ClInclude Include="Hlsl\ParticleDisp.h" />
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioParam.h" />
     <ClInclude Include="Source\Audio\AudioResource.h" />
@@ -176,7 +177,6 @@
     <ClInclude Include="Source\Scene\SceneDebug.h" />
     <ClInclude Include="Source\Scene\SceneTitle.h" />
     <ClInclude Include="Source\Shader\ModelShader.h" />
-    <ClInclude Include="Source\Shader\ParticleDisp.h" />
     <ClInclude Include="Source\Shader\ParticleSystem.h" />
     <ClInclude Include="Source\Shader\Shader.h" />
     <ClInclude Include="Source\Shader\InstanceModelShader.h" />

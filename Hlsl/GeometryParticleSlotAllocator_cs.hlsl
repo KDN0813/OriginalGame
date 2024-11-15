@@ -1,5 +1,5 @@
 #include "GeometryParticle.hlsli"
-
+#include "./ParticleDisp.h"
 
 // 初期化用入力バッファ(構造化バッファ。読み込み専用)
 StructuredBuffer<ParticleData> Input : register(t0);
@@ -17,5 +17,12 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
 	uint3 GTid : SV_GroupThreadID //スレッドID　ここで指定
 )
 {
-
+    uint x = GTid.x;
+    uint y = Gid.x;
+    int node = TH_X * y + x;
+    
+    // 値が入っていなければ処理を終了する
+    if (Input[node].type < 0.0f) return;
+    
+    
 };

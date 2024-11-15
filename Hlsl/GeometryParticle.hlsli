@@ -59,5 +59,3 @@ cbuffer GeometryParticleData : register(b0)
     float2 Size; //  パーティクルの大きさ
     float2 dummy;
 };
-
-#define PERTICLES_COMP_NO  15  //GPU側のスレッド数

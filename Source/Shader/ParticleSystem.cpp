@@ -1,5 +1,5 @@
 #include "ParticleSystem.h"
-#include "Shader/ParticleDisp.h"
+#include "../Hlsl/ParticleDisp.h"
 #include "Shader/ShaderLoader.h"
 #include "Graphics/Graphics.h"
 #include "Camera/CameraManager.h"
@@ -268,7 +268,7 @@ void ParticleSystem::Update()
 		D3D11_MAPPED_SUBRESOURCE mappedResource{};
 		HRESULT hr = immediate_context->Map(this->init_particle_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		memcpy_s(mappedResource.pData, sizeof(ParticleData) * PERTICLES_DISPATCH_NO,
+		memcpy_s(mappedResource.pData, sizeof(ParticleData) * PERTICLES_PIECE_NO,
 			this->particle_data_pool.data(), sizeof(ParticleData) * PERTICLES_PIECE_NO);
 		immediate_context->Unmap(this->init_particle_data_buffer.Get(), 0);
 
@@ -285,7 +285,7 @@ void ParticleSystem::Update()
 	immediate_context->CSSetShaderResources(1, 1, this->init_particle_data_bufferSRV.GetAddressOf());
 
 	// コンピュート・シェーダの実行
-	immediate_context->Dispatch(PERTICLES_DISPATCH_NO, 1, 1);//グループの数
+	immediate_context->Dispatch(PERTICLES_PIECE_NO, 1, 1);//グループの数
 
 	// リソースビューの解除
 	{
