@@ -232,24 +232,6 @@ ParticleSystem::~ParticleSystem()
 {
 }
 
-float f_lerp(float a,float b,float t)
-{
-	return a + t * (b - a);
-}
-
-float EaseOutQuad(float min, float max, float t) 
-{
-	// tを0.0から1.0の範囲にクランプする
-	if (t < 0.0f) t = 0.0f;
-	if (t > 1.0f) t = 1.0f;
-
-	// イージング計算 (EaseOutQuad)
-	float easedValue = 1 - (1 - t) * (1 - t);
-
-	// 最小値と最大値の範囲にスケール
-	return min + (max - min) * easedValue;
-}
-
 void ParticleSystem::Update()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
