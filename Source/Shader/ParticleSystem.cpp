@@ -157,25 +157,6 @@ ParticleSystem::ParticleSystem(const char* filename)
 
 	// パーティクルデータの設定
 	{
-		struct ParticleData* data = new ParticleData[PERTICLES_PIECE_NO];
-		for (int i = 0; i < PERTICLES_PIECE_NO; ++i) {
-
-			data[i].pos = DirectX::XMFLOAT3(0, 0, 0);		// 位置
-			data[i].w = 0.0f;								// 画像の高さ
-			data[i].h = 0.0f;								// 画像幅
-			data[i].scale = DirectX::XMFLOAT2(0, 0);		// 拡大率
-			data[i].f_scale = DirectX::XMFLOAT2(0, 0);		// 拡大率(開始)
-			data[i].e_scale = DirectX::XMFLOAT2(0, 0);		// 拡大率(終了)
-			data[i].v = DirectX::XMFLOAT3(0, 0, 0);			// 速度
-			data[i].a = DirectX::XMFLOAT3(0, 0, 0); 		// 加速度
-			data[i].alpha = 0;								// 透明度
-			data[i].timer_max = 0;							// 生存時間(最大)
-			data[i].timer = 0;								// 生存時間
-			data[i].rot = 0.0f;								// 角度
-			data[i].type = 0.0f;							// 
-		}
-
-
 		// パーティクルデータの設定
 		D3D11_BUFFER_DESC Desc;
 		ZeroMemory(&Desc, sizeof(Desc));
@@ -186,7 +167,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 		Desc.StructureByteStride = sizeof(ParticleData);
 
 		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
-		SubResource.pSysMem = data;
+		SubResource.pSysMem = particle_data_pool.data();
 		SubResource.SysMemPitch = 0;
 		SubResource.SysMemSlicePitch = 0;
 
@@ -197,7 +178,6 @@ ParticleSystem::ParticleSystem(const char* filename)
 		// 最初の出力リソース（初期化用データは必要ない）
 		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_data_buffer[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		delete[] data;
 	}
 
 	// 入力用リソースビューの設定
@@ -229,6 +209,21 @@ ParticleSystem::ParticleSystem(const char* filename)
 		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_bufferUAV[0].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[1].Get(), &DescUAV, this->particle_data_bufferUAV[1].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// ステージングバッファ(GPU出力データをCPUで扱うためのバッファ)
+	{
+		// リードバック用バッファ リソースの作成
+		D3D11_BUFFER_DESC Desc;
+		ZeroMemory(&Desc, sizeof(Desc));
+		Desc.ByteWidth = Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(ParticleData);	// バッファ サイズ
+		Desc.Usage = D3D11_USAGE_STAGING;  // CPUから読み書き可能なリソース
+		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ; // CPUから読み込む
+		Desc.StructureByteStride = sizeof(ParticleData);//コンピュートシェーダーで構造体を扱う場合必要
+		
+		// ステージングバッファの作成
+		hr = device->CreateBuffer(&Desc, NULL, this->staging_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }

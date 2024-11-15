@@ -98,6 +98,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> init_particle_data_buffer = NULL; // 初期化用バッファ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  init_particle_data_bufferSRV = NULL; // 初期化構造体バッファ
 
+	Microsoft::WRL::ComPtr<ID3D11Buffer> staging_buffer;	// GPUでの出力バッファをCPUで扱うためのバッファ
+
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state;
