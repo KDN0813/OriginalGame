@@ -25,7 +25,10 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     uint x = GTid.x;
     uint y = Gid.x;
     int node = TH_X * y + x;
-    
+        
+    // 現状全てのパーティクル情報をステージングバッファでコピーしているので、
+    // 新規入力が入力情報と同じなので、一旦新規入力を入力として扱う
+#if 0
     if (0.0 <= Input2[node].type)
     {
         Result[node] = Input2[node];
@@ -34,7 +37,9 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     {
         Result[node] = Input[node];   
     }
-    float3 test_pos = Result[node].pos;
+#else
+    Result[node] = Input2[node];
+#endif
 
     Result[node].timer -= 1.0f;
     if (Result[node].timer < 0) Result[node].timer = 0;
@@ -45,4 +50,6 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     // 拡大率の補間
     Result[node].scale.x = EaseOutQuadInRange(Result[node].f_scale.x, Result[node].e_scale.x, (t));
     Result[node].scale.y = EaseOutQuadInRange(Result[node].f_scale.y, Result[node].e_scale.y, (t));
+
+    Result[node].type = (Result[node].timer <= 0.0f) ? -1.0f : 1.0f;
 }

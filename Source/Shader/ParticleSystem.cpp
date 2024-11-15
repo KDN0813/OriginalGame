@@ -20,7 +20,8 @@ ParticleSystem::ParticleSystem(const char* filename)
 	// 入力用パーティクル情報の初期設定
 	ParticleData initial_value{};	// 初期化用の値設定
 	initial_value.type = -1.0f;
-	particle_data_pool.Initialize(PERTICLES_PIECE_NO, initial_value);
+	//particle_data_pool.Initialize(PERTICLES_PIECE_NO, initial_value);
+	particle_data_pool.resize(PERTICLES_PIECE_NO, initial_value);
 
 	//	定数バッファ生成
 	D3D11_BUFFER_DESC buffer_desc{};
@@ -248,8 +249,6 @@ void ParticleSystem::Update()
 		memcpy_s(mappedResource.pData, sizeof(ParticleData) * PERTICLES_PIECE_NO,
 			this->particle_data_pool.data(), sizeof(ParticleData) * PERTICLES_PIECE_NO);
 		immediate_context->Unmap(this->init_particle_data_buffer.Get(), 0);
-
-		this->particle_data_pool.DataClear();
 	}
 
 	// アンオーダード・アクセス・ビューの設定
@@ -263,6 +262,24 @@ void ParticleSystem::Update()
 
 	// コンピュート・シェーダの実行
 	immediate_context->Dispatch(PERTICLES_PIECE_NO, 1, 1);//グループの数
+
+	// 出力バッファをCPUで扱えるようにする
+	{
+		HRESULT hr = S_OK;
+
+		immediate_context->CopyResource(this->staging_buffer.Get(), this->particle_data_buffer[this->chainUAV].Get());
+		// 結果をCPUから読み込む
+		//リードバッファ読み込みの為のロック
+		D3D11_MAPPED_SUBRESOURCE mapped_resource;
+		hr = immediate_context->Map(this->staging_buffer.Get(), 0, D3D11_MAP_READ, 0, &mapped_resource);
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		ParticleData* pd = (ParticleData*)mapped_resource.pData;
+
+		this->particle_data_pool.assign(pd, &pd[PERTICLES_PIECE_NO]);
+
+		//リードバッファのロック解除
+		immediate_context->Unmap(this->staging_buffer.Get(), 0);
+	}
 
 	// リソースビューの解除
 	{
@@ -363,30 +380,34 @@ void ParticleSystem::Set(
 	float rot
 )
 {
-
-	ParticleData particle_data{};
+	for (size_t i = 0 ; i < this->particle_data_pool.size(); ++i)
 	{
-		particle_data.pos.x = p.x;
-		particle_data.pos.y = p.y;
-		particle_data.pos.z = p.z;
-		particle_data.v.x = v.x;
-		particle_data.v.y = v.y;
-		particle_data.v.z = v.z;
-		particle_data.a.x = f.x;
-		particle_data.a.y = f.y;
-		particle_data.a.z = f.z;
-		particle_data.w = tx.x;
-		particle_data.h = tx.y;
-		particle_data.f_scale.x = f_scale.x;
-		particle_data.f_scale.y = f_scale.y;
-		particle_data.e_scale.x = e_scale.x;
-		particle_data.e_scale.y = e_scale.y;
-		particle_data.alpha = 1.0f;
-		particle_data.timer_max = timer;
-		particle_data.timer = timer;
-		particle_data.rot = rot;
-		particle_data.type = 1;
-	}
+		if (0 <= this->particle_data_pool[i].type) continue;
 
-	this->particle_data_pool.AddData(particle_data);
+		ParticleData particle_data{};
+		{
+			particle_data.pos.x = p.x;
+			particle_data.pos.y = p.y;
+			particle_data.pos.z = p.z;
+			particle_data.v.x = v.x;
+			particle_data.v.y = v.y;
+			particle_data.v.z = v.z;
+			particle_data.a.x = f.x;
+			particle_data.a.y = f.y;
+			particle_data.a.z = f.z;
+			particle_data.w = tx.x;
+			particle_data.h = tx.y;
+			particle_data.f_scale.x = f_scale.x;
+			particle_data.f_scale.y = f_scale.y;
+			particle_data.e_scale.x = e_scale.x;
+			particle_data.e_scale.y = e_scale.y;
+			particle_data.alpha = 1.0f;
+			particle_data.timer_max = timer;
+			particle_data.timer = timer;
+			particle_data.rot = rot;
+			particle_data.type = 1;
+		}
+
+		this->particle_data_pool[i] = particle_data;
+	}
 }
