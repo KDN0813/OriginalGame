@@ -18,9 +18,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 	HRESULT hr;
 
 	// 入力用パーティクル情報の初期設定
-	ParticleData initial_value{};	// 初期化用の値設定
-	initial_value.type = -1.0f;
-	//particle_data_pool.Initialize(PERTICLES_PIECE_NO, initial_value);
+	CPUGPUBuffer initial_value{};	// 初期化用の値設定
 	particle_data_pool.resize(PERTICLES_PIECE_NO, initial_value);
 
 	//	定数バッファ生成
@@ -31,8 +29,8 @@ ParticleSystem::ParticleSystem(const char* filename)
 	buffer_desc.MiscFlags = 0;
 	buffer_desc.StructureByteStride = 0; 
 	{
-		buffer_desc.ByteWidth = sizeof(ForPerFrameConstantBuffer);
-		hr = device->CreateBuffer(&buffer_desc, nullptr, this->for_per_frame_constant_buffer.GetAddressOf());
+		buffer_desc.ByteWidth = sizeof(ParticleCommonConstant);
+		hr = device->CreateBuffer(&buffer_desc, nullptr, this->particle_common_constant.GetAddressOf());
 		assert(SUCCEEDED(hr));
 	}
 	{
@@ -102,32 +100,22 @@ ParticleSystem::ParticleSystem(const char* filename)
 
 	// 初期化用バッファの作成
 	{
-		struct ParticleData* data = new ParticleData[PERTICLES_PIECE_NO];
+		struct CPUGPUBuffer* data = new CPUGPUBuffer[PERTICLES_PIECE_NO];
 		for (int i = 0; i < PERTICLES_PIECE_NO; ++i) {
 
-			data[i].pos = DirectX::XMFLOAT3(0, 0, 0);      // 位置
-			data[i].w = 0.0f;							   // 画像の高さ
-			data[i].h = 0.0f;							   // 画像幅
-			data[i].scale = DirectX::XMFLOAT2(0, 0);	   // 拡大率
-			data[i].f_scale = DirectX::XMFLOAT2(0, 0);		// 拡大率(開始)
-			data[i].e_scale = DirectX::XMFLOAT2(0, 0);		// 拡大率(終了)
-			data[i].v = DirectX::XMFLOAT3(0, 0, 0);        // 速度
-			data[i].a = DirectX::XMFLOAT3(0, 0, 0); 	   // 加速度
-			data[i].alpha = 0;							   // 透明度
-			data[i].timer_max = 0;						   // 生存時間(最大)
-			data[i].timer = 0;							   // 生存時間
-			data[i].rot = 0.0f;							   // 角度
-			data[i].type = -1.0f;						   // 
+			data[i].rot = 0.0f;
+			data[i].step = 0;
+			data[i].is_busy = 0;
 		}
 
-		// ワークリソースの設定
+		// リソースの設定
 		D3D11_BUFFER_DESC Desc;
 		ZeroMemory(&Desc, sizeof(Desc));
-		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(ParticleData); // バッファ サイズ
+		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(CPUGPUBuffer); // バッファ サイズ
 		Desc.Usage = D3D11_USAGE_DYNAMIC;//ステージの入出力はOK。GPUの入出力OK。
 		Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;//UNORDEREDのダイナミックはダメだった。
 		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
-		Desc.StructureByteStride = sizeof(ParticleData);
+		Desc.StructureByteStride = sizeof(CPUGPUBuffer);
 		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;     // CPUから書き込む
 		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
 		SubResource.pSysMem = data;
@@ -135,7 +123,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 		SubResource.SysMemSlicePitch = 0;
 
 		// 最初の入力リソース(データを初期化する)
-		hr = device->CreateBuffer(&Desc, &SubResource, this->init_particle_data_buffer.GetAddressOf());
+		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_init_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		delete[] data;
@@ -152,7 +140,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 		DescSRV.Buffer.ElementWidth = PERTICLES_PIECE_NO; // データ数
 
 		// シェーダ リソース ビューの作成
-		hr = device->CreateShaderResourceView(this->init_particle_data_buffer.Get(), &DescSRV, this->init_particle_data_bufferSRV.GetAddressOf());
+		hr = device->CreateShaderResourceView(this->particle_init_buffer.Get(), &DescSRV, this->particle_init_SRV.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -161,11 +149,11 @@ ParticleSystem::ParticleSystem(const char* filename)
 		// パーティクルデータの設定
 		D3D11_BUFFER_DESC Desc;
 		ZeroMemory(&Desc, sizeof(Desc));
-		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(ParticleData); // バッファ サイズ
+		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(CPUGPUBuffer); // バッファ サイズ
 		Desc.Usage = D3D11_USAGE_DEFAULT;//ステージの入出力はOK。GPUの入出力OK。
 		Desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
 		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
-		Desc.StructureByteStride = sizeof(ParticleData);
+		Desc.StructureByteStride = sizeof(CPUGPUBuffer);
 
 		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
 		SubResource.pSysMem = particle_data_pool.data();
@@ -192,9 +180,9 @@ ParticleSystem::ParticleSystem(const char* filename)
 		DescSRV.Buffer.ElementWidth = PERTICLES_PIECE_NO; // データ数
 
 		// シェーダ リソース ビューの作成
-		hr = device->CreateShaderResourceView(this->particle_data_buffer[0].Get(), &DescSRV, this->particle_data_bufferSRV[0].GetAddressOf());
+		hr = device->CreateShaderResourceView(this->particle_data_buffer[0].Get(), &DescSRV, this->particle_data_SRV[0].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateShaderResourceView(this->particle_data_buffer[1].Get(), &DescSRV, this->particle_data_bufferSRV[1].GetAddressOf());
+		hr = device->CreateShaderResourceView(this->particle_data_buffer[1].Get(), &DescSRV, this->particle_data_SRV[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -207,9 +195,9 @@ ParticleSystem::ParticleSystem(const char* filename)
 		DescUAV.Buffer.NumElements = PERTICLES_PIECE_NO; // データ数
 
 		// アンオーダード・アクセス・ビューの作成
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_bufferUAV[0].GetAddressOf());
+		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_UAV[0].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[1].Get(), &DescUAV, this->particle_data_bufferUAV[1].GetAddressOf());
+		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[1].Get(), &DescUAV, this->particle_data_UAV[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -218,10 +206,10 @@ ParticleSystem::ParticleSystem(const char* filename)
 		// リードバック用バッファ リソースの作成
 		D3D11_BUFFER_DESC Desc;
 		ZeroMemory(&Desc, sizeof(Desc));
-		Desc.ByteWidth = Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(ParticleData);	// バッファ サイズ
+		Desc.ByteWidth = Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(CPUGPUBuffer);	// バッファ サイズ
 		Desc.Usage = D3D11_USAGE_STAGING;  // CPUから読み書き可能なリソース
 		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ; // CPUから読み込む
-		Desc.StructureByteStride = sizeof(ParticleData);//コンピュートシェーダーで構造体を扱う場合必要
+		Desc.StructureByteStride = sizeof(CPUGPUBuffer);//コンピュートシェーダーで構造体を扱う場合必要
 		
 		// ステージングバッファの作成
 		hr = device->CreateBuffer(&Desc, NULL, this->staging_buffer.GetAddressOf());
@@ -244,21 +232,21 @@ void ParticleSystem::Update()
 	// 初期化用パラメータを更新
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource{};
-		HRESULT hr = immediate_context->Map(this->init_particle_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		HRESULT hr = immediate_context->Map(this->particle_init_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		memcpy_s(mappedResource.pData, sizeof(ParticleData) * PERTICLES_PIECE_NO,
-			this->particle_data_pool.data(), sizeof(ParticleData) * PERTICLES_PIECE_NO);
-		immediate_context->Unmap(this->init_particle_data_buffer.Get(), 0);
+		memcpy_s(mappedResource.pData, sizeof(CPUGPUBuffer) * PERTICLES_PIECE_NO,
+			this->particle_data_pool.data(), sizeof(CPUGPUBuffer) * PERTICLES_PIECE_NO);
+		immediate_context->Unmap(this->particle_init_buffer.Get(), 0);
 	}
 
 	// アンオーダード・アクセス・ビューの設定
-	immediate_context->CSSetUnorderedAccessViews(0, 1, this->particle_data_bufferUAV[chainUAV].GetAddressOf(), NULL);
+	immediate_context->CSSetUnorderedAccessViews(0, 1, this->particle_data_UAV[chainUAV].GetAddressOf(), NULL);
 
 	//書き込み用ワークリソース ビューの設定
-	immediate_context->CSSetShaderResources(0, 1, this->particle_data_bufferSRV[chainSRV].GetAddressOf());
+	immediate_context->CSSetShaderResources(0, 1, this->particle_data_SRV[chainSRV].GetAddressOf());
 	
 	// 初期化用リソースビューの設定
-	immediate_context->CSSetShaderResources(1, 1, this->init_particle_data_bufferSRV.GetAddressOf());
+	immediate_context->CSSetShaderResources(1, 1, this->particle_init_SRV.GetAddressOf());
 
 	// コンピュート・シェーダの実行
 	immediate_context->Dispatch(PERTICLES_PIECE_NO, 1, 1);//グループの数
@@ -273,7 +261,7 @@ void ParticleSystem::Update()
 		D3D11_MAPPED_SUBRESOURCE mapped_resource;
 		hr = immediate_context->Map(this->staging_buffer.Get(), 0, D3D11_MAP_READ, 0, &mapped_resource);
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		ParticleData* pd = (ParticleData*)mapped_resource.pData;
+		CPUGPUBuffer* pd = (CPUGPUBuffer*)mapped_resource.pData;
 
 		this->particle_data_pool.assign(pd, &pd[PERTICLES_PIECE_NO]);
 
@@ -338,13 +326,17 @@ void ParticleSystem::Render()
 	immediate_context->VSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
 	immediate_context->GSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
 	immediate_context->PSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
+	
 	// パーティクル定数更新・設定
-	ForPerFrameConstantBuffer cb;
-	cb.size = { 1.0f,1.0f };
-	immediate_context->UpdateSubresource(this->for_per_frame_constant_buffer.Get(), 0, nullptr, &cb, 0, 0);
-	immediate_context->VSSetConstantBuffers(1, 1, this->for_per_frame_constant_buffer.GetAddressOf());
-	immediate_context->GSSetConstantBuffers(1, 1, this->for_per_frame_constant_buffer.GetAddressOf());
-	immediate_context->PSSetConstantBuffers(1, 1, this->for_per_frame_constant_buffer.GetAddressOf());
+	ParticleCommonConstant pcc;
+	pcc.default_size = { 0.340f, 1.28f };
+	pcc.timer_max = 100.0f;
+	pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
+	pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
+	immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &pcc, 0, 0);
+	immediate_context->VSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
+	immediate_context->GSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
+	immediate_context->PSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
 
 	//	点描画設定
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -358,7 +350,7 @@ void ParticleSystem::Render()
 	immediate_context->PSSetShaderResources(0, 1, this->texture->GetAddressOf());
 
 	// 頂点シェーダーにパーティクル情報送る
-	immediate_context->VSSetShaderResources(0, 1, this->particle_data_bufferSRV[chainSRV].GetAddressOf());
+	immediate_context->VSSetShaderResources(0, 1, this->particle_data_SRV[chainSRV].GetAddressOf());
 
 	//	パーティクル情報分描画コール
 	immediate_context->Draw(PERTICLES_PIECE_NO, 0);
@@ -370,44 +362,21 @@ void ParticleSystem::Render()
 }
 
 void ParticleSystem::Set(
-	int timer,
 	DirectX::XMFLOAT3 p,
-	DirectX::XMFLOAT3 v,
-	DirectX::XMFLOAT3 f,
-	DirectX::XMFLOAT2 tx,
-	DirectX::XMFLOAT2 f_scale,
-	DirectX::XMFLOAT2 e_scale,
 	float rot
 )
 {
 	for (size_t i = 0 ; i < this->particle_data_pool.size(); ++i)
 	{
-		if (0 <= this->particle_data_pool[i].type) continue;
+		if ( this->particle_data_pool[i].is_busy) continue;
 
-		ParticleData particle_data{};
+		CPUGPUBuffer particle_data
 		{
-			particle_data.pos.x = p.x;
-			particle_data.pos.y = p.y;
-			particle_data.pos.z = p.z;
-			particle_data.v.x = v.x;
-			particle_data.v.y = v.y;
-			particle_data.v.z = v.z;
-			particle_data.a.x = f.x;
-			particle_data.a.y = f.y;
-			particle_data.a.z = f.z;
-			particle_data.w = tx.x;
-			particle_data.h = tx.y;
-			particle_data.f_scale.x = f_scale.x;
-			particle_data.f_scale.y = f_scale.y;
-			particle_data.e_scale.x = e_scale.x;
-			particle_data.e_scale.y = e_scale.y;
-			particle_data.alpha = 1.0f;
-			particle_data.timer_max = timer;
-			particle_data.timer = timer;
-			particle_data.rot = rot;
-			particle_data.type = 1;
-		}
-
+			p,
+			rot,
+			0,	// step
+			1,	// is_busy
+		};
 		this->particle_data_pool[i] = particle_data;
 	}
 }

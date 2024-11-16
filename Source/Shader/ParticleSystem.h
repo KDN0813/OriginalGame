@@ -6,7 +6,7 @@
 
 #include <optional>
 #include <memory>
-#include "System\MySequenceVector.h"
+#include <vector>
 
 #include "Texture/Texture.h"
 #include "shader.h"
@@ -20,21 +20,15 @@ private:
 		DirectX::XMFLOAT2 scale;			// 拡大率
 	};
 
-	struct ParticleData
+	// CPUで共有するデータ
+	struct CPUGPUBuffer
 	{
-		DirectX::XMFLOAT3 pos;			// 描画位置
-		float w, h;						// 画像サイズ
-		DirectX::XMFLOAT2 scale;		// 拡大率
-		DirectX::XMFLOAT2 f_scale;		// 拡大率(開始)
-		DirectX::XMFLOAT2 e_scale;		// 拡大率(終了)
-		DirectX::XMFLOAT3 v;			// 移動速度
-		DirectX::XMFLOAT3 a;			// 加速度
-		float alpha;					// 透明度
-		int timer_max;					// 生存時間(最大値)
-		int timer;						// 生存時間
-		float rot;						// 角度
-		float type;
+		DirectX::XMFLOAT3 position;
+		float rot;      // 角度
+		int step;
+		int is_busy;    // 要素が稼働中であるか
 	};
+
 	// シーン定数
 	struct SceneConstantsBuffer
 	{
@@ -42,11 +36,13 @@ private:
 		DirectX::XMFLOAT4X4 view_matrix;
 		DirectX::XMFLOAT4X4 projection_matrix;
 	};
-	// フレーム毎の定数
-	struct ForPerFrameConstantBuffer
+	// パーティク共通の定数
+	struct ParticleCommonConstant
 	{
-		DirectX::XMFLOAT2 size;
-		DirectX::XMFLOAT2 dummy;
+		DirectX::XMFLOAT2 default_size;		// 画像サイズ
+		DirectX::XMFLOAT2 f_scale;			// 拡大率(開始)
+		DirectX::XMFLOAT2 e_scale;			// 拡大率(終了)
+		int timer_max;						// 生存時間
 	};
 
 public:
@@ -71,21 +67,12 @@ public:
 	 * \param scale 拡大率
 	 */
 	void Set(
-		int timer,
 		DirectX::XMFLOAT3 p,
-		DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT3 f = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT2 tx = DirectX::XMFLOAT2(1.0f, 1.0f),
-		DirectX::XMFLOAT2 f_scale = DirectX::XMFLOAT2(1.0f, 1.0f),
-		DirectX::XMFLOAT2 e_scale = DirectX::XMFLOAT2(1.0f, 1.0f),
 		float rot = 0.0f
 	);
 
 private:
-	//MySequenceVector<ParticleData> particle_data_pool;		//	パーティクル情報
-	std::vector<ParticleData> particle_data_pool;
-
-	Microsoft::WRL::ComPtr<ID3D11Buffer> for_per_frame_constant_buffer;
+	std::vector<CPUGPUBuffer> particle_data_pool;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader;
 	Microsoft::WRL::ComPtr<ID3D11GeometryShader> geometry_shader;
@@ -93,18 +80,21 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> compute_shader;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_data_buffer[2] = { NULL,NULL };
-	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particle_data_bufferUAV[2] = { NULL, NULL }; // アンオーダード アクセス ビュー
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  particle_data_bufferSRV[2] = { NULL, NULL }; // シェーダ リソース ビュー
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  particle_data_SRV[2] = { NULL, NULL }; // シェーダ リソース ビュー(読み込み)
+	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particle_data_UAV[2] = { NULL, NULL }; // アンオーダード アクセス ビュー(書き込み)
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer> init_particle_data_buffer = NULL; // 初期化用バッファ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  init_particle_data_bufferSRV = NULL; // 初期化構造体バッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_init_buffer = NULL;			// 初期化バッファ CPUで管理したデータ(CPUGPUBuffer)を元に更新しているバッファ。更新はCSに送る前に毎回している。particle_init_SRVの元になったバッファ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  particle_init_SRV = NULL; // 初期化リソースビュー　particle_init_bufferを元に作られた
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer> staging_buffer;	// GPUでの出力バッファをCPUで扱うためのバッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer>  particle_to_cpu_buffer = NULL;			// CPUへの書き込み用バッファ リソース（stagingの手前）particle_to_cpu_UAV作成に使われたバッファ
+	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView>  particle_to_cpu_UAV = NULL;	// アンオーダード アクセス ビュー
+	Microsoft::WRL::ComPtr<ID3D11Buffer> staging_buffer;							// GPUでの出力バッファをCPUで扱うためのバッファ
 
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> scene_constant_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_common_constant;
 	std::unique_ptr<Texture> texture;
 
 	int chainSRV = 0;//バッファーの切り替え
