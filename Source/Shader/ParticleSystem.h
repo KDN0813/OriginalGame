@@ -26,7 +26,7 @@ private:
 		DirectX::XMFLOAT3 position;// 描画位置
 		DirectX::XMFLOAT2 scale;   // 拡大率
 		float alpha;    // 透明度
-		int timer;      // 生存時間(最大値は定数で持つ)
+		float timer;    // 生存時間(最大値は定数で持つ)
 	};
 
 	// CPUで共有するデータ
@@ -51,7 +51,8 @@ private:
 		DirectX::XMFLOAT2 default_size;		// 画像サイズ
 		DirectX::XMFLOAT2 f_scale;			// 拡大率(開始)
 		DirectX::XMFLOAT2 e_scale;			// 拡大率(終了)
-		int timer_max;						// 生存時間
+		float timer_max;					// 生存時間
+		float dummy;
 	};
 
 public:

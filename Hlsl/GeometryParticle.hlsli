@@ -42,10 +42,10 @@ cbuffer SceneConstantBuffer : register(b0)
 // CPUで共有しないデータ
 struct InputGp
 {
-    float3 position;// 描画位置
+    float3 position; // 描画位置
     float2 scale;   // 拡大率
     float alpha;    // 透明度
-    int timer;      // 生存時間(最大値は定数で持つ)
+    float timer;    // 生存時間(最大値は定数で持つ)
 };
 
 // CPUで共有するデータ
@@ -63,5 +63,6 @@ cbuffer ParticleCommonConstant : register(b1)
     float2 default_size;    // 通常画像サイズ
     float2 f_scale;         // 拡大率(開始)
     float2 e_scale;         // 拡大率(終了)
-    int timer_max;          // 生存時間
+    float timer_max;        // 生存時間
+    float dummy;
 };

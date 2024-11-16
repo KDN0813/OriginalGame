@@ -221,14 +221,13 @@ ParticleSystem::ParticleSystem(const char* filename)
 		D3D11_BUFFER_DESC Desc;
 		ZeroMemory(&Desc, sizeof(Desc));
 		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(CPUGPUBuffer); // バッファ サイズ
-		Desc.Usage = D3D11_USAGE_DYNAMIC;//ステージの入出力はOK。GPUの入出力OK。
-		Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;//UNORDEREDのダイナミックはダメだった。
+		Desc.Usage = D3D11_USAGE_DEFAULT;//ステージの入出力はOK。GPUの入出力OK。
+		Desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
 		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
 		Desc.StructureByteStride = sizeof(CPUGPUBuffer);
-		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;     // CPUから書き込む
 
-		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
-		SubResource.pSysMem = particle_data_pool.data();
+		D3D11_SUBRESOURCE_DATA SubResource;//初期化サブリソースの初期化用データを定義
+		SubResource.pSysMem = this->particle_data_pool.data();
 		SubResource.SysMemPitch = 0;
 		SubResource.SysMemSlicePitch = 0;
 

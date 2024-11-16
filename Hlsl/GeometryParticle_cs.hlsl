@@ -40,7 +40,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
         case 0: // 初期設定
         
             // GPU専用データの設定
-            Result[node].position = Result2[node].position;
+            //Result[node].position = Result2[node].position;
             Result[node].alpha = 0.0f;
             Result[node].scale = f_scale;
             Result[node].timer = timer_max;
