@@ -451,18 +451,18 @@ void ParticleSystem::DebugDrawGUI()
 {
 	if(ImGui::Begin("ParticleSystem"))
 	{
+		if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			ImGui::InputFloat2("Default Size", &debug_particle_data.default_size.x);
+			ImGui::InputFloat2("Fast Scale", &debug_particle_data.f_scale.x);
+			ImGui::InputFloat2("End Scale", &debug_particle_data.e_scale.x);
+			ImGui::InputFloat("Timer Max", &debug_particle_data.timer_max);
+			ImGui::ColorEdit3("Color", &debug_particle_data.color.x);
+			ImGui::TreePop();
+		}
+
 		for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
 		{
-			if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
-			{
-				ImGui::InputFloat2("Default Size", &debug_particle_data.default_size.x);
-				ImGui::InputFloat2("Fast Scale", &debug_particle_data.f_scale.x);
-				ImGui::InputFloat2("End Scale", &debug_particle_data.e_scale.x);
-				ImGui::InputFloat("Timer Max", &debug_particle_data.timer_max);
-				ImGui::ColorEdit3("Color", &debug_particle_data.color.x);
-				ImGui::TreePop();
-			}
-
 			std::string label = "Particle" + std::to_string(i);
 			if (ImGui::TreeNode(label.c_str()))
 			{
