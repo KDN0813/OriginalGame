@@ -35,31 +35,44 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     // 前フレームの情報をコピーする
     Result[node] = Input[node];
 
+    // 計算用変数
+    // Resultに直接加算すると中間結果が取得できないため、
+    // 一度変数に代入してから計算する
+    float3 position = Input[node].position;
+    float2 scale = Input[node].scale;
+    float alpha = Input[node].alpha;
+    float timer = Input[node].timer;
+    
     switch (Input2[node].step)
     {
         case 0: // 初期設定
         
             // GPU専用データの設定
-            //Result[node].position = Result2[node].position;
-            Result[node].alpha = 0.0f;
-            Result[node].scale = f_scale;
-            Result[node].timer = timer_max;
+            position = Input2[node].position;
+            alpha = 0.0f;
+            scale = f_scale;
+            timer = timer_max;
             // CPU共有データの設定
-            Result2[node].step = 1;
+            //Result2[node].step = 1;
             break;
         case 1: // 更新
         
-            Result[node].timer = min(0.0f, Result[node].timer - 1.0f); // 寿命更新
-    
-            const float t = (float) ((timer_max - Result[node].timer)) / (float) (timer_max);
+            timer = min(0.0f, timer - 1.0f); // 寿命更新
+            const float t = (timer_max - timer) / timer_max;
             // 透明度の補間
-            Result[node].alpha = FadeInOut(t);
+            alpha = FadeInOut(t);
             // 拡大率の補間
-            Result[node].scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
-            Result[node].scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
+            scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
+            scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
 
             // 稼働中であるか判定する
-            Result2[node].is_busy = (0.0f < Result[node].timer) ? 1 : 0;
+            //Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
             break;
     }
+    
+    // Resultに計算結果を代入
+    Result[node].position = position;
+    Result[node].scale = scale;
+    Result[node].alpha = alpha;
+    Result[node].timer = timer;
 }
