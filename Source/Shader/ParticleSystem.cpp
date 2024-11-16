@@ -272,34 +272,32 @@ void ParticleSystem::Update()
 		immediate_context->Unmap(this->particle_init_buffer.Get(), 0);
 	}
 
-	// アンオーダード・アクセス・ビューの設定
-	immediate_context->CSSetUnorderedAccessViews(0, 1, this->particle_gpu_data_UAV[chainUAV].GetAddressOf(), NULL);
-
-	//書き込み用ワークリソース ビューの設定
+	// GPU専用データを扱う入力リソースビューの設定 
 	immediate_context->CSSetShaderResources(0, 1, this->particle_gpu_data_SRV[chainSRV].GetAddressOf());
-	
-	// 初期化用リソースビューの設定
-	immediate_context->CSSetShaderResources(1, 1, this->particle_init_SRV.GetAddressOf());
+	// CPU・GPU共通のデータを扱う入力リソースビューの設定
+	immediate_context->CSSetShaderResources(1, 1, this->particle_init_SRV.GetAddressOf());	
 
-	// 
+	// GPU専用データを扱う書き込みリソースビューの設定 
+	immediate_context->CSSetUnorderedAccessViews(0, 1, this->particle_gpu_data_UAV[chainUAV].GetAddressOf(), NULL);
+	// CPU・GPU共通のデータを扱う出力リソースビューの設定
 	immediate_context->CSSetUnorderedAccessViews(1, 1, this->particle_to_cpu_UAV.GetAddressOf(), NULL);
 
 	// コンピュート・シェーダの実行
 	immediate_context->Dispatch(PERTICLES_PIECE_NO, 1, 1);//グループの数
 
-	// 出力バッファをCPUで扱えるようにする
+	// CPU・GPU共通のデータを扱うデータの取得
 	{
 		HRESULT hr = S_OK;
 
-		immediate_context->CopyResource(this->staging_buffer.Get(), this->particle_gpu_data_buffer[this->chainUAV].Get());
+		immediate_context->CopyResource(this->staging_buffer.Get(), this->particle_to_cpu_buffer.Get());
 		// 結果をCPUから読み込む
-		//リードバッファ読み込みの為のロック
+		// リードバッファ読み込みの為のロック
 		D3D11_MAPPED_SUBRESOURCE mapped_resource;
 		hr = immediate_context->Map(this->staging_buffer.Get(), 0, D3D11_MAP_READ, 0, &mapped_resource);
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		CPUGPUBuffer* pd = (CPUGPUBuffer*)mapped_resource.pData;
+		CPUGPUBuffer* cpgp_buffer = (CPUGPUBuffer*)mapped_resource.pData;
 
-		this->particle_data_pool.assign(pd, &pd[PERTICLES_PIECE_NO]);
+		this->particle_data_pool.assign(cpgp_buffer, &cpgp_buffer[PERTICLES_PIECE_NO]);
 
 		//リードバッファのロック解除
 		immediate_context->Unmap(this->staging_buffer.Get(), 0);
