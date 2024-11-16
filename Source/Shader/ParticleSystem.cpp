@@ -365,18 +365,23 @@ void ParticleSystem::Render()
 	immediate_context->RSSetState(this->rasterizer_state.Get());
 
 	//定数バッファの更新
-	// シーン定数更新・設定
-	SceneConstantsBuffer cbScene;
-	MYMATRIX View = rc.view;
-	MYMATRIX Projection = rc.projection;
-	MYMATRIX View_projection = View * Projection;
-	cbScene.view_matrix = rc.view;
-	cbScene.projection_matrix = rc.projection;
-	View_projection.GetFlaot4x4(cbScene.view_projection);
-	immediate_context->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cbScene, 0, 0);
-	immediate_context->VSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
-	immediate_context->GSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
-	immediate_context->PSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
+	{
+		// シーン定数更新・設定
+		SceneConstantsBuffer cbScene;
+		MYMATRIX View = rc.view;
+		MYMATRIX Projection = rc.projection;
+		MYMATRIX View_projection = View * Projection;
+		cbScene.view_matrix = rc.view;
+		cbScene.projection_matrix = rc.projection;
+		View_projection.GetFlaot4x4(cbScene.view_projection);
+		immediate_context->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cbScene, 0, 0);
+		immediate_context->VSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
+		immediate_context->GSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
+		immediate_context->PSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
+
+		// パーティクル共通データの設定
+		immediate_context->VSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
+	}
 	
 	//	点描画設定
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
