@@ -309,6 +309,7 @@ void ParticleSystem::Update()
 	{
 		ID3D11UnorderedAccessView* view_null_uav = nullptr;
 		immediate_context->CSSetUnorderedAccessViews(0, 1, &view_null_uav, NULL);
+		immediate_context->CSSetUnorderedAccessViews(1, 1, &view_null_uav, NULL);
 		ID3D11ShaderResourceView* view_null_srv = nullptr;
 		immediate_context->CSSetShaderResources(0, 1, &view_null_srv);
 		immediate_context->CSSetShaderResources(1, 1, &view_null_srv);

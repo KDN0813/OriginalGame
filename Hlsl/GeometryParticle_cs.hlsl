@@ -53,7 +53,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
             scale = f_scale;
             timer = timer_max;
             // CPU共有データの設定
-            //Result2[node].step = 1;
+            Result2[node].step = 1;
             break;
         case 1: // 更新
         
@@ -66,7 +66,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
             scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
 
             // 稼働中であるか判定する
-            //Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
+            Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
             break;
     }
     
