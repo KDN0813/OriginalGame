@@ -42,6 +42,7 @@ cbuffer SceneConstantBuffer : register(b0)
 // CPUで共有しないデータ
 struct InputGp
 {
+    float3 color;
     float3 position; // 描画位置
     float2 scale;   // 拡大率
     float rot;      // 角度
@@ -61,9 +62,11 @@ struct CPUGPUBuffer
 // パーティク共通の定数
 cbuffer ParticleCommonConstant : register(b1)
 {
+    float3 default_color;
+    float dummy1;
     float2 default_size;    // 通常画像サイズ
     float2 f_scale;         // 拡大率(開始)
     float2 e_scale;         // 拡大率(終了)
     float timer_max;        // 生存時間
-    float dummy;
+    float dummy2;
 };

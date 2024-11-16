@@ -23,6 +23,7 @@ private:
 	// CPUで共有しないデータ
 	struct InputGp
 	{
+		DirectX::XMFLOAT3 color;
 		DirectX::XMFLOAT3 position;// 描画位置
 		DirectX::XMFLOAT2 scale;   // 拡大率
 		float rot;      // 角度
@@ -49,11 +50,13 @@ private:
 	// パーティク共通の定数
 	struct ParticleCommonConstant
 	{
+		DirectX::XMFLOAT3 color;
+		float dummy1;
 		DirectX::XMFLOAT2 default_size;		// 画像サイズ
 		DirectX::XMFLOAT2 f_scale;			// 拡大率(開始)
 		DirectX::XMFLOAT2 e_scale;			// 拡大率(終了)
 		float timer_max;					// 生存時間
-		float dummy;
+		float dummy2;
 	};
 
 public:

@@ -37,6 +37,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     // 計算用変数
     // Resultに直接加算すると中間結果が取得できないため、
     // 一度変数に代入してから計算する
+    float3 color = Input[node].color;
     float3 position = Input[node].position;
     float2 scale = Input[node].scale;
     float rot = Input[node].rot;
@@ -48,6 +49,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
         case 0: // 初期設定
         
             // GPU専用データの設定
+            color = default_color;
             position = Input2[node].position;
             rot = Input2[node].rot;
             alpha = 0.0f;
@@ -72,6 +74,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     }
     
     // Resultに計算結果を代入
+    Result[node].color = color;
     Result[node].position = position;
     Result[node].scale = scale;
     Result[node].rot = rot;

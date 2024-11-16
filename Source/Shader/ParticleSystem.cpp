@@ -36,12 +36,14 @@ ParticleSystem::ParticleSystem(const char* filename)
 		{
 			D3D11_SUBRESOURCE_DATA subresource{};
 			ParticleCommonConstant pcc;
+			pcc.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
 			pcc.timer_max = 60.0f;
 			pcc.default_size = { 0.340f, 1.28f };
 			pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
 			pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
 			subresource.pSysMem = &pcc;
 #ifdef _DEBUG
+			debug_particle_data.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
 			debug_particle_data.timer_max = 60.0f;
 			debug_particle_data.default_size = { 0.340f, 1.28f };
 			debug_particle_data.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
@@ -449,6 +451,7 @@ void ParticleSystem::DebugDrawGUI()
 				ImGui::InputFloat2("Fast Scale", &debug_particle_data.f_scale.x);
 				ImGui::InputFloat2("End Scale", &debug_particle_data.e_scale.x);
 				ImGui::InputFloat("Timer Max", &debug_particle_data.timer_max);
+				ImGui::ColorEdit3("Color", &debug_particle_data.color.x);
 				ImGui::TreePop();
 			}
 
