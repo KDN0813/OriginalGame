@@ -58,7 +58,11 @@ void SceneGame::Initialize()
 		instancing_model_shader = std::make_unique<InstancingModelShader>();
 		model_shader = std::make_unique<ModelShader>();
 		sprite_shader = std::make_unique<SpriteShader>();
-		particle_system = std::make_unique<ParticleSystem>("Data/Effect/Texture/Line01.png");
+	}
+
+	// パーティクルシステムのテクスチャロード
+	{
+		particle_system.LoadTexture("Data/Effect/Texture/Line01.png");
 	}
 
 	// オブジェクト作成
@@ -350,10 +354,13 @@ void SceneGame::Update(float elapsed_time)
 			//	audio->Play(param);
 			//}
 
-			particle_system->Set(
-				DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f),
-				45.0f
-			);
+			if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
+			{
+				particle_system->Set(
+					DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f),
+					45.0f
+				);
+			}
 		}
 	}
 #endif // DEBUG
@@ -393,7 +400,7 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
-		if (particle_system.get())
+		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 		{
 			particle_system->Update();
 			particle_system->Render();
@@ -522,7 +529,10 @@ void SceneGame::DebugDrawGUI()
 	DrawShaderImGui();
 
 	// パーティクルシステム
-	this->particle_system->DebugDrawGUI();
+	if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
+	{
+		particle_system->DebugDrawGUI();
+	}
 }
 
 void SceneGame::DrawShaderImGui()

@@ -36,11 +36,11 @@ private:
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
     std::unique_ptr<ModelShader> model_shader;
     std::unique_ptr<SpriteShader> sprite_shader;
-    std::unique_ptr<ParticleSystem> particle_system;
 
     GameObject game_object;
     ObjectManager object_manager;
     CircleCollisionManager circle_collision_manager;
+    ParticleSystem particle_system;
 #ifdef _DEBUG
     void DebugDrawGUI();
 

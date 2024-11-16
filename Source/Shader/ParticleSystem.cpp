@@ -10,8 +10,8 @@
 
 #include "Component/CameraComponent.h"
 
-ParticleSystem::ParticleSystem(const char* filename)
-	: texture(std::make_unique<Texture>(filename))
+ParticleSystem::ParticleSystem()
+	: Singleton(this)
 	, particle_data_pool()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
@@ -415,6 +415,14 @@ void ParticleSystem::Render()
 	immediate_context->VSSetShader(nullptr, nullptr, 0);
 	immediate_context->GSSetShader(nullptr, nullptr, 0);
 	immediate_context->PSSetShader(nullptr, nullptr, 0);
+}
+
+void ParticleSystem::LoadTexture(const char* filename)
+{
+	_ASSERT_EXPR_W(!this->texture.get(), L"テクスチャは既に読み込まれています");
+	if (this->texture.get()) return;
+	this->texture = std::make_unique<Texture>(filename);
+
 }
 
 void ParticleSystem::Set(

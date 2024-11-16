@@ -8,10 +8,11 @@
 #include <memory>
 #include <vector>
 
+#include "System\ClassBase\Singleton.h"
 #include "Texture/Texture.h"
 #include "shader.h"
 
-class ParticleSystem
+class ParticleSystem : public Singleton<ParticleSystem>
 {
 private:
 	struct ParticleParam
@@ -60,14 +61,16 @@ private:
 	};
 
 public:
-	ParticleSystem() = delete;
-	ParticleSystem(const char* filename);
+	ParticleSystem();
 
 	~ParticleSystem();
 	// コンピュートシェーダーの更新
 	void Update();
 
 	void Render();
+
+	// テクスチャの読み込み
+	void LoadTexture(const char* filename);
 
 	/**
 	 * 
