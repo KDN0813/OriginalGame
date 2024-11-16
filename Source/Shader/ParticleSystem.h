@@ -89,9 +89,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader;
 
 	Microsoft::WRL::ComPtr<ID3D11ComputeShader> compute_shader;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_data_buffer[2] = { NULL,NULL };
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  particle_data_SRV[2] = { NULL, NULL }; // シェーダ リソース ビュー(読み込み)
-	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particle_data_UAV[2] = { NULL, NULL }; // アンオーダード アクセス ビュー(書き込み)
+	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_gpu_data_buffer[2] = { NULL,NULL };				// GPU専用のパーティクル情報を扱うバッファ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  particle_gpu_data_SRV[2] = { NULL, NULL };	// GPU専用のパーティクル情報を扱シェーダ リソース ビュー(読み込み)
+	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> particle_gpu_data_UAV[2] = { NULL, NULL };	// GPU専用のパーティクル情報を扱アンオーダード アクセス ビュー(書き込み)
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_init_buffer = NULL;			// 初期化バッファ CPUで管理したデータ(CPUGPUBuffer)を元に更新しているバッファ。更新はCSに送る前に毎回している。particle_init_SRVの元になったバッファ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>  particle_init_SRV = NULL; // 初期化リソースビュー　particle_init_bufferを元に作られた

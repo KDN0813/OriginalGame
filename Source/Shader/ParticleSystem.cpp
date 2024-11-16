@@ -98,7 +98,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// CPUで共有しないパーティクルデータバッファ作成
+	// GPU専用のパーティクルデータを扱うバッファの作成
 	{
 		D3D11_BUFFER_DESC Desc;
 		ZeroMemory(&Desc, sizeof(Desc));
@@ -123,15 +123,15 @@ ParticleSystem::ParticleSystem(const char* filename)
 		SubResource.SysMemSlicePitch = 0;
 
 		// 最初の入力リソース(データを初期化する)
-		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_data_buffer[0].GetAddressOf());
+		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_gpu_data_buffer[0].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 		// 最初の出力リソース（初期化用データは必要ない）
-		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_data_buffer[1].GetAddressOf());
+		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_gpu_data_buffer[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// 入力用リソースビューの作成
+	// GPU専用のパーティクルデータを扱う入力用リソースビューの作成
 	{
 		// 入力ワークリソース ビューの作成
 		D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
@@ -142,13 +142,13 @@ ParticleSystem::ParticleSystem(const char* filename)
 		DescSRV.Buffer.ElementWidth = PERTICLES_PIECE_NO; // データ数
 
 		// シェーダ リソース ビューの作成
-		hr = device->CreateShaderResourceView(this->particle_data_buffer[0].Get(), &DescSRV, this->particle_data_SRV[0].GetAddressOf());
+		hr = device->CreateShaderResourceView(this->particle_gpu_data_buffer[0].Get(), &DescSRV, this->particle_gpu_data_SRV[0].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateShaderResourceView(this->particle_data_buffer[1].Get(), &DescSRV, this->particle_data_SRV[1].GetAddressOf());
+		hr = device->CreateShaderResourceView(this->particle_gpu_data_buffer[1].Get(), &DescSRV, this->particle_gpu_data_SRV[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// アンオーダード・アクセス・ビュー作成
+	// GPU専用のパーティクルデータを扱う出力用リソースビューの作成
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC DescUAV;
 		ZeroMemory(&DescUAV, sizeof(DescUAV));
@@ -157,9 +157,9 @@ ParticleSystem::ParticleSystem(const char* filename)
 		DescUAV.Buffer.NumElements = PERTICLES_PIECE_NO; // データ数
 
 		// アンオーダード・アクセス・ビューの作成
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_UAV[0].GetAddressOf());
+		hr = device->CreateUnorderedAccessView(this->particle_gpu_data_buffer[0].Get(), &DescUAV, this->particle_gpu_data_UAV[0].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[1].Get(), &DescUAV, this->particle_data_UAV[1].GetAddressOf());
+		hr = device->CreateUnorderedAccessView(this->particle_gpu_data_buffer[1].Get(), &DescUAV, this->particle_gpu_data_UAV[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -185,7 +185,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// 初期化用構造体作成
+	// 初期化用入力用リソースビューの作成
 	{
 		// 入力ワークリソース ビューの設定（入力用）
 		D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
@@ -215,7 +215,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// particle_to_cpu_bufferの作成
+	// CPUへの書き込み用バッファの作成
 	{
 		// リソースの設定
 		D3D11_BUFFER_DESC Desc;
@@ -236,7 +236,7 @@ ParticleSystem::ParticleSystem(const char* filename)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// particle_to_cpu_UAVの作成
+	// CPUへの書き込み用リソースビューの作成
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC DescUAV;
 		ZeroMemory(&DescUAV, sizeof(DescUAV));
@@ -273,10 +273,10 @@ void ParticleSystem::Update()
 	}
 
 	// アンオーダード・アクセス・ビューの設定
-	immediate_context->CSSetUnorderedAccessViews(0, 1, this->particle_data_UAV[chainUAV].GetAddressOf(), NULL);
+	immediate_context->CSSetUnorderedAccessViews(0, 1, this->particle_gpu_data_UAV[chainUAV].GetAddressOf(), NULL);
 
 	//書き込み用ワークリソース ビューの設定
-	immediate_context->CSSetShaderResources(0, 1, this->particle_data_SRV[chainSRV].GetAddressOf());
+	immediate_context->CSSetShaderResources(0, 1, this->particle_gpu_data_SRV[chainSRV].GetAddressOf());
 	
 	// 初期化用リソースビューの設定
 	immediate_context->CSSetShaderResources(1, 1, this->particle_init_SRV.GetAddressOf());
@@ -291,7 +291,7 @@ void ParticleSystem::Update()
 	{
 		HRESULT hr = S_OK;
 
-		immediate_context->CopyResource(this->staging_buffer.Get(), this->particle_data_buffer[this->chainUAV].Get());
+		immediate_context->CopyResource(this->staging_buffer.Get(), this->particle_gpu_data_buffer[this->chainUAV].Get());
 		// 結果をCPUから読み込む
 		//リードバッファ読み込みの為のロック
 		D3D11_MAPPED_SUBRESOURCE mapped_resource;
@@ -387,7 +387,7 @@ void ParticleSystem::Render()
 	immediate_context->PSSetShaderResources(0, 1, this->texture->GetAddressOf());
 
 	// 頂点シェーダーにパーティクル情報送る
-	immediate_context->VSSetShaderResources(0, 1, this->particle_data_SRV[chainSRV].GetAddressOf());
+	immediate_context->VSSetShaderResources(0, 1, this->particle_gpu_data_SRV[chainSRV].GetAddressOf());
 
 	//	パーティクル情報分描画コール
 	immediate_context->Draw(PERTICLES_PIECE_NO, 0);
