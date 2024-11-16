@@ -432,7 +432,7 @@ void ParticleSystem::Set(
 {
 	for (size_t i = 0 ; i < this->particle_data_pool.size(); ++i)
 	{
-		if ( this->particle_data_pool[i].is_busy) continue;
+		if (this->particle_data_pool[i].is_busy) continue;
 
 		CPUGPUBuffer particle_data
 		{
@@ -442,6 +442,7 @@ void ParticleSystem::Set(
 			1,	// is_busy
 		};
 		this->particle_data_pool[i] = particle_data;
+		break;
 	}
 }
 

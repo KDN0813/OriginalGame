@@ -51,7 +51,7 @@ void PlayerComponent::Update(float elapsed_time)
                 {
                     // ¶¬ˆÊ’u‚ðÝ’è
                     pos = transform->GetWorldPosition();
-                    pos.y += 0.5f;
+                    pos.y += 2.0f;
                     pos.z += 1.0f;
                 }
             }
