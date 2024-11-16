@@ -29,8 +29,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     int node = TH_X * y + x;
     
     // 稼働していなければ処理しない
-    if (!Input2[node].is_busy)
-        return;
+    if (!Input2[node].is_busy) return;
     
     // 前フレームの情報をコピーする
     Result2[node] = Input2[node];
@@ -57,7 +56,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
             break;
         case 1: // 更新
         
-            timer = min(0.0f, timer - 1.0f); // 寿命更新
+            timer = max(0.0f, timer - 1.0f); // 寿命更新
             const float t = (timer_max - timer) / timer_max;
             // 透明度の補間
             alpha = FadeInOut(t);
