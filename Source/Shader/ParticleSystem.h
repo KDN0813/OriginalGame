@@ -70,15 +70,9 @@ public:
 	void Render();
 
 	/**
-	 * .
 	 * 
 	 * \param timer 生存時間
-	 * \param p 生成位置
-	 * \param v 移動速度
-	 * \param f 加速度
 	 * \param rot 角度
-	 * \param tx 画像サイズ
-	 * \param scale 拡大率
 	 */
 	void Set(
 		DirectX::XMFLOAT3 p,
