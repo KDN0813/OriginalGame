@@ -33,7 +33,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
         return;
     
     // 前フレームの情報をコピーする
-    Result[node] = Input[node];
+    Result2[node] = Input2[node];
 
     // 計算用変数
     // Resultに直接加算すると中間結果が取得できないため、
