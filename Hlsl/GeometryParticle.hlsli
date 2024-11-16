@@ -59,8 +59,8 @@ struct CPUGPUBuffer
 // パーティク共通の定数
 cbuffer ParticleCommonConstant : register(b1)
 {
-    float w, h;     // 画像サイズ
-    float2 f_scale; // 拡大率(開始)
-    float2 e_scale; // 拡大率(終了)
-    int timer_max;   // 生存時間
+    float default_size;     // 通常画像サイズ
+    float2 f_scale;         // 拡大率(開始)
+    float2 e_scale;         // 拡大率(終了)
+    int timer_max;          // 生存時間
 };
