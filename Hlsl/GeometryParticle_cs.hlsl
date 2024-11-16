@@ -3,13 +3,15 @@
 #include "./ParticleDisp.h"
 
 // 入力バッファ(構造化バッファ。読み込み専用)
-// 前回の値
-StructuredBuffer<ParticleData> Input : register(t0);
+// 入力情報(前フレームの情報)
+StructuredBuffer<InputGp> Input : register(t0);
+// 入力情報(前フレームの情報。CPUで共有する)
+RWStructuredBuffer<CPUGPUBuffer> Input2 : register(u0);
 
-// 初期化用パラメータ
-StructuredBuffer<ParticleData> Input2 : register(t1);
-// 出力バッファ(構造化バッファ。読み書き可能)
-RWStructuredBuffer<ParticleData> Result : register(u0);
+// 出力情報
+StructuredBuffer<InputGp> Result : register(t1);
+// 出力情報(CPUで共有する)
+RWStructuredBuffer<CPUGPUBuffer> Result2 : register(u1);
 
 //スレッドの数
 #define TH_X PERTICLES_COMP_NO
@@ -25,31 +27,23 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     uint x = GTid.x;
     uint y = Gid.x;
     int node = TH_X * y + x;
-        
-    // 現状全てのパーティクル情報をステージングバッファでコピーしているので、
-    // 新規入力が入力情報と同じなので、一旦新規入力を入力として扱う
-#if 0
-    if (0.0 <= Input2[node].type)
-    {
-        Result[node] = Input2[node];
-    }
-    else
-    {
-        Result[node] = Input[node];   
-    }
-#else
-    Result[node] = Input2[node];
-#endif
+    
+    // 稼働していなければ処理しない
+    if (!Input2[node].is_busy) return;
+    
+    // 前フレームの情報をコピーする
+    Result[node] = Input[node];
 
     Result[node].timer -= 1.0f;
     if (Result[node].timer < 0) Result[node].timer = 0;
     
-    const float t = (float) ((Result[node].timer_max - Result[node].timer)) / (float) (Result[node].timer_max);
+    const float t = (float) ((timer_max - Result[node].timer)) / (float) (timer_max);
     // 透明度の補間
     Result[node].alpha = FadeInOut(t);
     // 拡大率の補間
-    Result[node].scale.x = EaseOutQuadInRange(Result[node].f_scale.x, Result[node].e_scale.x, (t));
-    Result[node].scale.y = EaseOutQuadInRange(Result[node].f_scale.y, Result[node].e_scale.y, (t));
+    Result[node].scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
+    Result[node].scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
 
-    Result[node].type = (Result[node].timer <= 0.0f) ? -1.0f : 1.0f;
+    // 稼働中であるか判定する
+    Result2[node].is_busy = (0.0f < Result[node].timer) ? 1 : 0;
 }

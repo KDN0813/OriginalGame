@@ -1,21 +1,4 @@
 
-// CSで計算するパーティクル情報
-struct ParticleData
-{
-    float3 pos;         // 描画位置
-    float w, h;         // 画像サイズ
-    float2 scale;       // 拡大率
-    float2 f_scale;     // 拡大率(開始)
-    float2 e_scale;     // 拡大率(終了)
-    float3 v;           // 移動速度
-    float3 a;           // 加速度
-    float alpha;        // 透明度
-    int timer_max;    // 生存時間(最大値)
-    int timer;        // 生存時間
-    float rot;          // 角度
-    float type;
-};
-
 // パーティクル情報
 struct ParticleParam
 {
@@ -54,8 +37,30 @@ cbuffer SceneConstantBuffer : register(b0)
     row_major float4x4 view_matrix;
     row_major float4x4 projection_matrix;
 };
-cbuffer GeometryParticleData : register(b0)
+
+// シェーダの入力データ定義（シェーダー内ループ用)
+// CPUで共有しないデータ
+struct InputGp
 {
-    float2 Size; //  パーティクルの大きさ
-    float2 dummy;
+    float3 position; // 描画位置
+    float2 scale;   // 拡大率
+    float alpha;    // 透明度
+    int timer;      // 生存時間(最大値は定数で持つ)
+};
+
+// CPUで共有するデータ
+struct CPUGPUBuffer
+{
+    float rot;      // 角度
+    int step;
+    int is_busy;    // 要素が稼働中であるか
+};
+
+// パーティク共通の定数
+cbuffer ParticleCommonConstant : register(b1)
+{
+    float w, h;     // 画像サイズ
+    float2 f_scale; // 拡大率(開始)
+    float2 e_scale; // 拡大率(終了)
+    int timer_max;   // 生存時間
 };
