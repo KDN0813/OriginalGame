@@ -9,7 +9,7 @@ GsIn main(uint index : SV_VertexID)
     output.color = float4(1.0f, 1.0f, 1.0f, Input[index].alpha);
     output.size = default_size;
 	
-    output.param.rot = Input[index].position;
+    output.param.rot = Input[index].rot;
     output.param.scale = Input[index].scale;
     return output;
 }

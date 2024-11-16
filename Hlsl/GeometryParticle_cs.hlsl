@@ -39,6 +39,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     // 一度変数に代入してから計算する
     float3 position = Input[node].position;
     float2 scale = Input[node].scale;
+    float rot = Input[node].rot;
     float alpha = Input[node].alpha;
     float timer = Input[node].timer;
     
@@ -48,6 +49,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
         
             // GPU専用データの設定
             position = Input2[node].position;
+            rot = Input2[node].rot;
             alpha = 0.0f;
             scale = f_scale;
             timer = timer_max;
@@ -56,7 +58,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
             break;
         case 1: // 更新
         
-            timer = max(0.0f, timer - 1.0f); // 寿命更新
+            timer -= 1.0f;
             const float t = (timer_max - timer) / timer_max;
             // 透明度の補間
             alpha = FadeInOut(t);
@@ -65,13 +67,14 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
             scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
 
             // 稼働中であるか判定する
-            Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
+            Result2[node].is_busy = (0.0f <= timer) ? 1 : 0;
             break;
     }
     
     // Resultに計算結果を代入
     Result[node].position = position;
     Result[node].scale = scale;
+    Result[node].rot = rot;
     Result[node].alpha = alpha;
     Result[node].timer = timer;
 }

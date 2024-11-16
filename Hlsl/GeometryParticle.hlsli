@@ -44,6 +44,7 @@ struct InputGp
 {
     float3 position; // 描画位置
     float2 scale;   // 拡大率
+    float rot;      // 角度
     float alpha;    // 透明度
     float timer;    // 生存時間(最大値は定数で持つ)
 };
@@ -51,8 +52,8 @@ struct InputGp
 // CPUで共有するデータ
 struct CPUGPUBuffer
 {
-    float3 position;// 発生位置
-    float rot;      // 角度
+    float3 position; // 初期位置
+    float rot;      // 初期角度
     int step;
     int is_busy;    // 要素が稼働中であるか
 };

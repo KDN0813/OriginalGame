@@ -269,9 +269,8 @@ void ParticleSystem::Update()
 	{
 		// パーティクル共通定数更新・設定
 		ParticleCommonConstant pcc;
-		pcc.timer_max = 100.0f;
+		pcc.timer_max = 10.0f;
 		pcc.default_size = { 0.340f, 1.28f };
-		pcc.timer_max = 100.0f;
 		pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
 		pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
 		immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &pcc, 0, 0);

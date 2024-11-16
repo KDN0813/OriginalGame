@@ -25,6 +25,7 @@ private:
 	{
 		DirectX::XMFLOAT3 position;// 描画位置
 		DirectX::XMFLOAT2 scale;   // 拡大率
+		float rot;      // 角度
 		float alpha;    // 透明度
 		float timer;    // 生存時間(最大値は定数で持つ)
 	};
