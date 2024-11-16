@@ -109,4 +109,10 @@ private:
 
 	int chainSRV = 0;//バッファーの切り替え
 	int chainUAV = 1;//バッファーの切り替え
+
+#ifdef _DEBUG
+public:
+	void DebugDrawGUI();
+
+#endif // _DEBUG
 };

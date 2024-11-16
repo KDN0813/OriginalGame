@@ -4,6 +4,9 @@
 #include "Graphics/Graphics.h"
 #include "Camera/CameraManager.h"
 #include "System/Misc.h"
+#ifdef _DEBUG
+#include <imgui.h>
+#endif // _DEBUG
 
 #include "Component/CameraComponent.h"
 
@@ -416,3 +419,37 @@ void ParticleSystem::Set(
 		this->particle_data_pool[i] = particle_data;
 	}
 }
+
+#ifdef _DEBUG
+
+void ParticleSystem::DebugDrawGUI()
+{
+	DirectX::XMFLOAT3 position;
+	float rot;      // Šp“x
+	int step;
+	int is_busy;    // —v‘f‚ª‰Ò“­’†‚Å‚ ‚é‚©
+
+	if(ImGui::Begin("ParticleSystem"))
+	{
+		for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
+		{
+			std::string label = "Particle" + std::to_string(i);
+			if (ImGui::TreeNode(label.c_str()))
+			{
+				CPUGPUBuffer& data = this->particle_data_pool[i];
+				ImGui::InputFloat3("Position", &data.position.x);
+				ImGui::InputFloat("Rrot", &data.rot);
+				ImGui::InputInt("Step", &data.step);
+				bool flag = static_cast<bool> (data.is_busy);
+				if (ImGui::Checkbox("Is Busy", &flag))
+				{
+					data.is_busy = static_cast<int>(flag);
+				}
+				ImGui::TreePop();
+			}
+		}
+	}
+	ImGui::End();
+}
+
+#endif // DEBUG

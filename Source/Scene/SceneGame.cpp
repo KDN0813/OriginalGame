@@ -520,6 +520,9 @@ void SceneGame::DebugDrawGUI()
 
 	// シェーダー
 	DrawShaderImGui();
+
+	// パーティクルシステム
+	this->particle_system->DebugDrawGUI();
 }
 
 void SceneGame::DrawShaderImGui()
