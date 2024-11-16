@@ -98,16 +98,73 @@ ParticleSystem::ParticleSystem(const char* filename)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// 初期化用バッファの作成
+	// CPUで共有しないパーティクルデータバッファ作成
 	{
-		struct CPUGPUBuffer* data = new CPUGPUBuffer[PERTICLES_PIECE_NO];
-		for (int i = 0; i < PERTICLES_PIECE_NO; ++i) {
+		D3D11_BUFFER_DESC Desc;
+		ZeroMemory(&Desc, sizeof(Desc));
+		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(InputGp); // バッファ サイズ
+		Desc.Usage = D3D11_USAGE_DEFAULT;//ステージの入出力はOK。GPUの入出力OK。
+		Desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
+		Desc.StructureByteStride = sizeof(InputGp);
 
-			data[i].rot = 0.0f;
-			data[i].step = 0;
-			data[i].is_busy = 0;
+		InputGp* input_gp = new InputGp[PERTICLES_PIECE_NO];
+		for (int i = 0; i < PERTICLES_PIECE_NO;++i)
+		{
+			input_gp[i].position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+			input_gp[i].scale = DirectX::XMFLOAT2(0.0f, 0.0f);
+			input_gp[i].alpha = 0.0f;
+			input_gp[i].timer = 0;
 		}
 
+		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
+		SubResource.pSysMem = input_gp;
+		SubResource.SysMemPitch = 0;
+		SubResource.SysMemSlicePitch = 0;
+
+		// 最初の入力リソース(データを初期化する)
+		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_data_buffer[0].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// 最初の出力リソース（初期化用データは必要ない）
+		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_data_buffer[1].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// 入力用リソースビューの作成
+	{
+		// 入力ワークリソース ビューの作成
+		D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
+		ZeroMemory(&DescSRV, sizeof(DescSRV));
+		DescSRV.Format = DXGI_FORMAT_UNKNOWN;
+		DescSRV.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+
+		DescSRV.Buffer.ElementWidth = PERTICLES_PIECE_NO; // データ数
+
+		// シェーダ リソース ビューの作成
+		hr = device->CreateShaderResourceView(this->particle_data_buffer[0].Get(), &DescSRV, this->particle_data_SRV[0].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		hr = device->CreateShaderResourceView(this->particle_data_buffer[1].Get(), &DescSRV, this->particle_data_SRV[1].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// アンオーダード・アクセス・ビュー作成
+	{
+		D3D11_UNORDERED_ACCESS_VIEW_DESC DescUAV;
+		ZeroMemory(&DescUAV, sizeof(DescUAV));
+		DescUAV.Format = DXGI_FORMAT_UNKNOWN;
+		DescUAV.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+		DescUAV.Buffer.NumElements = PERTICLES_PIECE_NO; // データ数
+
+		// アンオーダード・アクセス・ビューの作成
+		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_UAV[0].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[1].Get(), &DescUAV, this->particle_data_UAV[1].GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// 初期化用バッファの作成
+	{
 		// リソースの設定
 		D3D11_BUFFER_DESC Desc;
 		ZeroMemory(&Desc, sizeof(Desc));
@@ -117,16 +174,15 @@ ParticleSystem::ParticleSystem(const char* filename)
 		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
 		Desc.StructureByteStride = sizeof(CPUGPUBuffer);
 		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;     // CPUから書き込む
+		
 		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
-		SubResource.pSysMem = data;
+		SubResource.pSysMem = particle_data_pool.data();
 		SubResource.SysMemPitch = 0;
 		SubResource.SysMemSlicePitch = 0;
 
 		// 最初の入力リソース(データを初期化する)
 		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_init_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		delete[] data;
 	}
 
 	// 初期化用構造体作成
@@ -144,63 +200,6 @@ ParticleSystem::ParticleSystem(const char* filename)
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
-	// パーティクルデータの設定
-	{
-		// パーティクルデータの設定
-		D3D11_BUFFER_DESC Desc;
-		ZeroMemory(&Desc, sizeof(Desc));
-		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(CPUGPUBuffer); // バッファ サイズ
-		Desc.Usage = D3D11_USAGE_DEFAULT;//ステージの入出力はOK。GPUの入出力OK。
-		Desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
-		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
-		Desc.StructureByteStride = sizeof(CPUGPUBuffer);
-
-		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
-		SubResource.pSysMem = particle_data_pool.data();
-		SubResource.SysMemPitch = 0;
-		SubResource.SysMemSlicePitch = 0;
-
-		// 最初の入力リソース(データを初期化する)
-		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_data_buffer[0].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-
-		// 最初の出力リソース（初期化用データは必要ない）
-		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_data_buffer[1].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
-	// 入力用リソースビューの設定
-	{
-		// 入力ワークリソース ビューの設定（入力用）
-		D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
-		ZeroMemory(&DescSRV, sizeof(DescSRV));
-		DescSRV.Format = DXGI_FORMAT_UNKNOWN;
-		DescSRV.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-
-		DescSRV.Buffer.ElementWidth = PERTICLES_PIECE_NO; // データ数
-
-		// シェーダ リソース ビューの作成
-		hr = device->CreateShaderResourceView(this->particle_data_buffer[0].Get(), &DescSRV, this->particle_data_SRV[0].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateShaderResourceView(this->particle_data_buffer[1].Get(), &DescSRV, this->particle_data_SRV[1].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
-	// 出力用アンオーダード・アクセス・ビュー（出力用）
-	{
-		D3D11_UNORDERED_ACCESS_VIEW_DESC DescUAV;
-		ZeroMemory(&DescUAV, sizeof(DescUAV));
-		DescUAV.Format = DXGI_FORMAT_UNKNOWN;
-		DescUAV.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-		DescUAV.Buffer.NumElements = PERTICLES_PIECE_NO; // データ数
-
-		// アンオーダード・アクセス・ビューの作成
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[0].Get(), &DescUAV, this->particle_data_UAV[0].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-		hr = device->CreateUnorderedAccessView(this->particle_data_buffer[1].Get(), &DescUAV, this->particle_data_UAV[1].GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	}
-
 	// ステージングバッファ(GPU出力データをCPUで扱うためのバッファ)
 	{
 		// リードバック用バッファ リソースの作成
@@ -213,6 +212,41 @@ ParticleSystem::ParticleSystem(const char* filename)
 		
 		// ステージングバッファの作成
 		hr = device->CreateBuffer(&Desc, NULL, this->staging_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// particle_to_cpu_bufferの作成
+	{
+		// リソースの設定
+		D3D11_BUFFER_DESC Desc;
+		ZeroMemory(&Desc, sizeof(Desc));
+		Desc.ByteWidth = PERTICLES_PIECE_NO * sizeof(CPUGPUBuffer); // バッファ サイズ
+		Desc.Usage = D3D11_USAGE_DYNAMIC;//ステージの入出力はOK。GPUの入出力OK。
+		Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;//UNORDEREDのダイナミックはダメだった。
+		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
+		Desc.StructureByteStride = sizeof(CPUGPUBuffer);
+		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;     // CPUから書き込む
+
+		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
+		SubResource.pSysMem = particle_data_pool.data();
+		SubResource.SysMemPitch = 0;
+		SubResource.SysMemSlicePitch = 0;
+
+		// 最初の入力リソース(データを初期化する)
+		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_to_cpu_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// particle_to_cpu_UAVの作成
+	{
+		D3D11_UNORDERED_ACCESS_VIEW_DESC DescUAV;
+		ZeroMemory(&DescUAV, sizeof(DescUAV));
+		DescUAV.Format = DXGI_FORMAT_UNKNOWN;
+		DescUAV.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+		DescUAV.Buffer.NumElements = PERTICLES_PIECE_NO; // データ数
+
+		// アンオーダード・アクセス・ビューの作成
+		hr = device->CreateUnorderedAccessView(this->particle_to_cpu_buffer.Get(), &DescUAV, this->particle_to_cpu_UAV.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
@@ -247,6 +281,9 @@ void ParticleSystem::Update()
 	
 	// 初期化用リソースビューの設定
 	immediate_context->CSSetShaderResources(1, 1, this->particle_init_SRV.GetAddressOf());
+
+	// 
+	immediate_context->CSSetUnorderedAccessViews(1, 1, this->particle_to_cpu_UAV.GetAddressOf(), NULL);
 
 	// コンピュート・シェーダの実行
 	immediate_context->Dispatch(PERTICLES_PIECE_NO, 1, 1);//グループの数

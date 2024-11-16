@@ -20,6 +20,15 @@ private:
 		DirectX::XMFLOAT2 scale;			// 拡大率
 	};
 
+	// CPUで共有しないデータ
+	struct InputGp
+	{
+		DirectX::XMFLOAT3 position;// 描画位置
+		DirectX::XMFLOAT2 scale;   // 拡大率
+		float alpha;    // 透明度
+		int timer;      // 生存時間(最大値は定数で持つ)
+	};
+
 	// CPUで共有するデータ
 	struct CPUGPUBuffer
 	{
