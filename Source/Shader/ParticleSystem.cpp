@@ -262,6 +262,18 @@ void ParticleSystem::Update()
 
 	immediate_context->CSSetShader(this->compute_shader.Get(), 0, 0);
 
+	// 定数バッファの設定
+	{
+		// パーティクル共通定数更新・設定
+		ParticleCommonConstant pcc;
+		pcc.default_size = { 0.340f, 1.28f };
+		pcc.timer_max = 100.0f;
+		pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
+		pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
+		immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &pcc, 0, 0);
+		immediate_context->CSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
+	}
+
 	// 初期化用パラメータを更新
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource{};
@@ -362,17 +374,6 @@ void ParticleSystem::Render()
 	immediate_context->GSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
 	immediate_context->PSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
 	
-	// パーティクル定数更新・設定
-	ParticleCommonConstant pcc;
-	pcc.default_size = { 0.340f, 1.28f };
-	pcc.timer_max = 100.0f;
-	pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
-	pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
-	immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &pcc, 0, 0);
-	immediate_context->VSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
-	immediate_context->GSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
-	immediate_context->PSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
-
 	//	点描画設定
 	immediate_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
