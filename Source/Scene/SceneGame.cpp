@@ -353,14 +353,6 @@ void SceneGame::Update(float elapsed_time)
 			//	param.filename = "Data/Debug/Audio/SE.wav";
 			//	audio->Play(param);
 			//}
-
-			if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
-			{
-				particle_system->Set(
-					DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f),
-					45.0f
-				);
-			}
 		}
 	}
 #endif // DEBUG
