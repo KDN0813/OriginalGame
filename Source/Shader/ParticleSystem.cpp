@@ -25,21 +25,37 @@ ParticleSystem::ParticleSystem(const char* filename)
 	particle_data_pool.resize(PERTICLES_PIECE_NO, initial_value);
 
 	//	定数バッファ生成
-	D3D11_BUFFER_DESC buffer_desc{};
-	buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-	buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	buffer_desc.CPUAccessFlags = 0;
-	buffer_desc.MiscFlags = 0;
-	buffer_desc.StructureByteStride = 0; 
 	{
-		buffer_desc.ByteWidth = sizeof(ParticleCommonConstant);
-		hr = device->CreateBuffer(&buffer_desc, nullptr, this->particle_common_constant.GetAddressOf());
-		assert(SUCCEEDED(hr));
-	}
-	{
-		buffer_desc.ByteWidth = sizeof(SceneConstantsBuffer);
-		hr = device->CreateBuffer(&buffer_desc, nullptr, this->scene_constant_buffer.GetAddressOf());
-		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		D3D11_BUFFER_DESC buffer_desc{};
+		buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+		buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		buffer_desc.CPUAccessFlags = 0;
+		buffer_desc.MiscFlags = 0;
+		buffer_desc.StructureByteStride = 0;
+
+		{
+			D3D11_SUBRESOURCE_DATA subresource{};
+			ParticleCommonConstant pcc;
+			pcc.timer_max = 60.0f;
+			pcc.default_size = { 0.340f, 1.28f };
+			pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
+			pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
+			subresource.pSysMem = &pcc;
+#ifdef _DEBUG
+			debug_particle_data.timer_max = 60.0f;
+			debug_particle_data.default_size = { 0.340f, 1.28f };
+			debug_particle_data.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
+			debug_particle_data.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
+#endif // DEBUG
+			buffer_desc.ByteWidth = sizeof(ParticleCommonConstant);
+			hr = device->CreateBuffer(&buffer_desc, &subresource, this->particle_common_constant.GetAddressOf());
+			assert(SUCCEEDED(hr));
+		}
+		{
+			buffer_desc.ByteWidth = sizeof(SceneConstantsBuffer);
+			hr = device->CreateBuffer(&buffer_desc, nullptr, this->scene_constant_buffer.GetAddressOf());
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		}
 	}
 
 	hr = CreateShader::VsFromCso(device, "Shader\\GeometryParticle_vs.cso", this->vertex_shader.ReleaseAndGetAddressOf(), nullptr, nullptr, 0);
@@ -267,13 +283,7 @@ void ParticleSystem::Update()
 
 	// 定数バッファの設定
 	{
-		// パーティクル共通定数更新・設定
-		ParticleCommonConstant pcc;
-		pcc.timer_max = 10.0f;
-		pcc.default_size = { 0.340f, 1.28f };
-		pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
-		pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
-		immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &pcc, 0, 0);
+		immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &this->debug_particle_data, 0, 0);
 		immediate_context->CSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
 	}
 
@@ -429,15 +439,19 @@ void ParticleSystem::Set(
 
 void ParticleSystem::DebugDrawGUI()
 {
-	DirectX::XMFLOAT3 position;
-	float rot;      // 角度
-	int step;
-	int is_busy;    // 要素が稼働中であるか
-
 	if(ImGui::Begin("ParticleSystem"))
 	{
 		for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
 		{
+			if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
+			{
+				ImGui::InputFloat2("Default Size", &debug_particle_data.default_size.x);
+				ImGui::InputFloat2("Fast Scale", &debug_particle_data.f_scale.x);
+				ImGui::InputFloat2("End Scale", &debug_particle_data.e_scale.x);
+				ImGui::InputFloat("Timer Max", &debug_particle_data.timer_max);
+				ImGui::TreePop();
+			}
+
 			std::string label = "Particle" + std::to_string(i);
 			if (ImGui::TreeNode(label.c_str()))
 			{

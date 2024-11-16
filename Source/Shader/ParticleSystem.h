@@ -115,5 +115,8 @@ private:
 public:
 	void DebugDrawGUI();
 
+private:
+	ParticleCommonConstant debug_particle_data{};
+
 #endif // _DEBUG
 };
