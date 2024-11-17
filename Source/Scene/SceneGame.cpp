@@ -192,6 +192,7 @@ void SceneGame::Initialize()
 					{
 						CircleCollisionComponent::CollisionParam param{};
 						param.collision_type = COLLISION_OBJECT_TYPE::PLAYER;
+						param.radius = 2.0f;
 						param.default_active_flag = false;
 						auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 
@@ -222,7 +223,7 @@ void SceneGame::Initialize()
 		// “G
 		{
 			float territory_range = 45.0f;
-			for (int i = 0; i < 10; ++i)
+			for (int i = 0; i < 100; ++i)
 			{
 				auto enemy = object_manager.Create();
 
