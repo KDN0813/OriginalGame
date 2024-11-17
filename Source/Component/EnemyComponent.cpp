@@ -7,6 +7,7 @@
 #include "Debug/DebugManager.h"
 #endif // DEBUG
 #include "ConstantManager.h"
+#include "Shader\ParticleSystem.h"
 
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
@@ -168,6 +169,31 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
 	// ダメージステートに遷移させる
 	SetDamageState();
+
+	// 斬撃effect再生
+	{
+		DirectX::XMFLOAT3 pos{};    // 生成位置
+		DirectX::XMFLOAT3 offset{ 0.0f,1.0f,1.0f };
+		// transform取得
+		if (const auto& owner = GetOwner())
+		{
+			if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+			{
+				// 生成位置を設定
+				pos = transform->GetWorldPosition();
+				pos.x += offset.x;
+				pos.y += offset.y;
+				pos.z += offset.z;
+			}
+		}
+		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
+		{
+			particle_system->Set(
+				pos,
+				45.0f
+			);
+		}
+	}
 }
 
 void EnemyComponent::SetRandomTargetPosition()
