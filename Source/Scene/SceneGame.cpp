@@ -99,7 +99,6 @@ void SceneGame::Initialize()
 			{
 				auto model = player->AddComponent<ModelComponent>("Data/Model/Player/Player.mdl");
 			}
-			//auto model = player->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Player/Player.mdl");
 			// アニメーション設定
 			{
 				auto model_animation = player->AddComponent<ModelAnimationControlComponent>("Data/Model/Player/Player.mdl");
@@ -136,18 +135,6 @@ void SceneGame::Initialize()
 				auto shader_component =
 					player->AddComponent<ModelShaderComponent>(model_shader.get());
 			}
-			// カメラ設定
-			{
-				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
-				{
-					auto camera = player->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
-				}
-			}
-			// カメラコントローラー設定
-			{
-				CameraControllerGamepad::CameraControllerParam param{};
-				player->AddComponent<CameraControllerGamepad>(param);
-			}
 			// 重力
 			{
 				player->AddComponent<GravityComponent>(GravityComponent::GravityParam());
@@ -163,6 +150,28 @@ void SceneGame::Initialize()
 
 			// 子オブジェクト
 			{
+				// プレイヤーカメラ
+				{
+					std::shared_ptr<Object> player_camera_object = player->CreateChildObject();
+
+					// カメラ設定
+					{
+						if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+						{
+							auto camera = player_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
+						}
+					}
+					// カメラコントローラー設定
+					{
+						CameraControllerGamepad::CameraControllerParam param{};
+						player_camera_object->AddComponent<CameraControllerGamepad>(param);
+					}
+					// トランスフォーム設定
+					{
+						Transform3DComponent::Transform3DParam param{};
+						player_camera_object->AddComponent<Transform3DComponent>(param);
+					}
+				}
 				// プレイヤーの攻撃判定用オブジェクト
 				{
 					std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
