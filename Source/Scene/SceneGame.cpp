@@ -329,7 +329,7 @@ void SceneGame::Update(float elapsed_time)
 {
 	if (GameData::Instance game_data = GameData::GetInstance() ; game_data.Get())
 	{
-		game_data->UpdateGameEndTimer(elapsed_time);
+		//game_data->UpdateGameEndTimer(elapsed_time);
 		if (game_data->IsTimeUp())
 		{
 			// §ŒÀŽžŠÔ‚ð‰ß‚¬‚Ä‚¢‚½‚çƒQ[ƒ€ó‘Ô‚ð•ÏX
