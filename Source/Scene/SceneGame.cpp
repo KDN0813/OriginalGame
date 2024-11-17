@@ -296,7 +296,7 @@ void SceneGame::Initialize()
 						// トランスフォーム
 						{
 							Transform3DComponent::Transform3DParam param{};
-							param.local_position = { 0.0f,3.0f,1.0f };
+							param.local_position = { -40.0f,80.0f,0.0f };
 							slash_effect_object->AddComponent<Transform3DComponent>(param);
 						}
 					}

@@ -85,6 +85,7 @@ private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
     std::weak_ptr<CircleCollisionComponent> circle_collision_Wptr;
+    std::weak_ptr<Transform3DComponent> child_transform_Wptr;
     std::weak_ptr<CharacterComponent> character_Wptr;
     std::weak_ptr<InstancedModelWithAnimationComponent> model_Wptr;
 #ifdef _DEBUG

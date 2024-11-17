@@ -173,19 +173,23 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 	// 斬撃effect再生
 	{
 		DirectX::XMFLOAT3 pos{};    // 生成位置
-		DirectX::XMFLOAT3 offset{ 0.0f,1.0f,1.0f };
-		// transform取得
+		
+		// 発生位置取得
 		if (const auto& owner = GetOwner())
 		{
-			if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+			// エフェクトの再生位置を管理する子オブジェクトの取得
+			if (const auto& child_object = owner->FindChildObject(MyHash("SlashEffectObject")))
 			{
-				// 生成位置を設定
-				pos = transform->GetWorldPosition();
-				pos.x += offset.x;
-				pos.y += offset.y;
-				pos.z += offset.z;
+				// トランスフォーム取得
+				if (const auto& child_transform = child_object->EnsureComponentValid(this->child_transform_Wptr))
+				{
+					// 生成位置を設定
+					pos = child_transform->GetWorldPosition();
+				}
 			}
 		}
+
+		// エフェクト再生
 		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 		{
 			particle_system->Set(
