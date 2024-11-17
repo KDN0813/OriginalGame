@@ -285,7 +285,9 @@ void ParticleSystem::Update()
 
 	// 定数バッファの設定
 	{
+#ifdef _DEBUG
 		immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &this->debug_particle_data, 0, 0);
+#endif // _DEBUG
 		immediate_context->CSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
 	}
 

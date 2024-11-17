@@ -4,6 +4,7 @@
 #ifdef _DEBUG
 #include "Debug/DebugPrimitiveRenderer.h"
 #endif // _DEBUG
+#include "System\MyMath\MYMATRIX.h"
 
 
 class Transform3DComponent : public Component
