@@ -153,7 +153,7 @@ void SceneGame::Initialize()
 				// プレイヤーカメラ
 				{
 					std::shared_ptr<Object> player_camera_object = player->CreateChildObject();
-
+					player_camera_object->SetName("PlayerCamera");
 					// カメラ設定
 					{
 						if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
