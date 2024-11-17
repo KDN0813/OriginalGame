@@ -35,7 +35,7 @@ ParticleSystem::ParticleSystem()
 
 		{
 			D3D11_SUBRESOURCE_DATA subresource{};
-			ParticleCommonConstant pcc;
+			ParticleCommonConstant pcc{};
 			pcc.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
 			pcc.timer_max = 100.0f;
 			pcc.default_size = { 0.340f, 1.28f };
@@ -138,7 +138,7 @@ ParticleSystem::ParticleSystem()
 			input_gp[i].timer = 0;
 		}
 
-		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
+		D3D11_SUBRESOURCE_DATA SubResource{};//サブリソースの初期化用データを定義
 		SubResource.pSysMem = input_gp;
 		SubResource.SysMemPitch = 0;
 		SubResource.SysMemSlicePitch = 0;
@@ -196,7 +196,7 @@ ParticleSystem::ParticleSystem()
 		Desc.StructureByteStride = sizeof(CPUGPUBuffer);
 		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;     // CPUから書き込む
 		
-		D3D11_SUBRESOURCE_DATA SubResource;//サブリソースの初期化用データを定義
+		D3D11_SUBRESOURCE_DATA SubResource{};//サブリソースの初期化用データを定義
 		SubResource.pSysMem = particle_data_pool.data();
 		SubResource.SysMemPitch = 0;
 		SubResource.SysMemSlicePitch = 0;
@@ -247,7 +247,7 @@ ParticleSystem::ParticleSystem()
 		Desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 構造化バッファ
 		Desc.StructureByteStride = sizeof(CPUGPUBuffer);
 
-		D3D11_SUBRESOURCE_DATA SubResource;//初期化サブリソースの初期化用データを定義
+		D3D11_SUBRESOURCE_DATA SubResource{};//初期化サブリソースの初期化用データを定義
 		SubResource.pSysMem = this->particle_data_pool.data();
 		SubResource.SysMemPitch = 0;
 		SubResource.SysMemSlicePitch = 0;
@@ -380,7 +380,7 @@ void ParticleSystem::Render()
 	//定数バッファの更新
 	{
 		// シーン定数更新・設定
-		SceneConstantsBuffer cbScene;
+		SceneConstantsBuffer cbScene{};
 		MYMATRIX View = rc.view;
 		MYMATRIX Projection = rc.projection;
 		MYMATRIX View_projection = View * Projection;
