@@ -58,6 +58,11 @@ void Framework::Update(float elapsed_time)
 #endif // _DEBUG
 
 
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
+	// フレームレート計算
+	CalculateFrameStats();
+#endif
+
 	scene_manager.Update(elapsed_time);
 }
 
@@ -85,11 +90,6 @@ bool IsWindowActive(HWND hwnd)
 // フレームレート計算
 void Framework::CalculateFrameStats()
 {
-	static int frames = 0;
-	static float time_tlapsed = 0.0f;
-	static float fps = 0.0f;
-	static float mspf = 0.0f;
-
 	frames++;
 
 	if ((timer.TimeStamp() - time_tlapsed) >= 1.0f)
@@ -98,17 +98,12 @@ void Framework::CalculateFrameStats()
 		mspf = 1000.0f / fps;		
 		frames = 0;
 		time_tlapsed += 1.0f;
+		std::string str;
+		str = "Fps : ";
+		str += std::to_string(fps);
+		str += "\n";
+		OutputDebugStringA(str.c_str());
 	}
-
-	// ImGuiに表示
-#ifdef _DEBUG
-	if (ImGui::Begin("FPS"))
-	{
-		ImGui::InputFloat("FPS", &fps);
-		ImGui::InputFloat("mspf", &mspf);
-	}
-	ImGui::End();
-#endif // DEBUG
 }
 
 bool Framework::IsPressedWindowCloseKey()
@@ -243,7 +238,14 @@ void Framework::DrawDebugGUI()
 
 	// FPS
 	{
-		CalculateFrameStats();
+#ifdef _DEBUG
+		if (ImGui::Begin("FPS"))
+		{
+			ImGui::InputFloat("FPS", &fps);
+			ImGui::InputFloat("mspf", &mspf);
+		}
+		ImGui::End();
+#endif // DEBUG
 	}
 }
 

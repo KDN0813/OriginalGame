@@ -46,6 +46,13 @@ private:
 	CameraManager					camera_manager;
 	GameData						game_data;
 	Audio							audio;
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
+	// フレームレート計算用変数
+	int frames = 0;
+	float time_tlapsed = 0.0f;
+	float fps = 0.0f;
+	float mspf = 0.0f;
+#endif
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI();

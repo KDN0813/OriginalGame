@@ -224,7 +224,7 @@ void SceneGame::Initialize()
 		// “G
 		{
 			float territory_range = 110.0f;
-			for (int i = 0; i < 1000; ++i)
+			for (int i = 0; i < 2500; ++i)
 			{
 				auto enemy = object_manager.Create();
 
