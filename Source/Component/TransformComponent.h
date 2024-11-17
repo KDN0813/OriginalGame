@@ -20,32 +20,47 @@ public:
     ~Transform3DComponent() {};
 
     // リスタート処理
-    void ReStart() override { this->change_value = true;  this->param = this->default_param; };      // パラメータの初期化
+    void ReStart() override { this->world_dirty_flag = true; this->local_dirty_flag = true;  this->param = this->default_param; };      // パラメータの初期化
     void Update(float elapsed_time)override;
     const char* GetName()const override { return "TransformComponent"; }
     const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
 
-    void UpdateTransform();
-    const DirectX::XMFLOAT4X4& GetWolrdTransform();
-    const DirectX::XMFLOAT4X4& GetLocalTransform() { return this->local_transform; }
-    void SetTransform(DirectX::XMFLOAT4X4 transform) { this->local_transform = transform; }
+    /**
+     * ローカルパラメータの更新
+     * [更新内容]
+     * ・ローカルトランスフォーム
+     */
+    void UpdateLocalParam();
+    /**
+     * ワールドパラメータの更新
+     * [更新内容]
+     * ・ワールドトランスフォーム
+     * ・ワールドポジション
+     */
+    void UpdateWorldParam();
+    // ワールドポジションの更新
+    void UpdateWorldPosition();
+    void UpdateWorldPosition(MYMATRIX Parent_transform);
+
 
 #pragma region set・get parame
+    // ワールドパラメータの取得
+    const DirectX::XMFLOAT4X4& GetWolrdTransform();
+    DirectX::XMFLOAT3 GetWorldPosition();
+
+    // ローカルパラメータの取得
+    const DirectX::XMFLOAT4X4& GetLocalTransform();
+
     DirectX::XMFLOAT3 GetLocalPosition()const noexcept { return this->param.local_position; }
-    void SetLocalPosition(DirectX::XMFLOAT3 pos)noexcept { this->change_value = true; this->param.local_position = pos; }
+    void SetLocalPosition(DirectX::XMFLOAT3 pos)noexcept { this->world_dirty_flag = true; this->local_dirty_flag = true; this->param.local_position = pos; }
     DirectX::XMFLOAT3 AddLocalPosition(DirectX::XMFLOAT3 vec);
 
     DirectX::XMFLOAT3 GetLocalAngle()const noexcept { return this->param.local_angle; }
-    void SetLocalAngle(DirectX::XMFLOAT3 angle)noexcept { this->change_value = true; this->param.local_angle = angle; }
+    void SetLocalAngle(DirectX::XMFLOAT3 angle)noexcept { this->world_dirty_flag = true; this->local_dirty_flag = true; this->param.local_angle = angle; }
     
     DirectX::XMFLOAT3 GetLocalScale()const noexcept { return this->param.local_scale; }
-    void SetLocalScale(DirectX::XMFLOAT3 scale)noexcept { this->change_value = true; this->param.local_scale = scale; }
+    void SetLocalScale(DirectX::XMFLOAT3 scale)noexcept { this->world_dirty_flag = true; this->local_dirty_flag = true; this->param.local_scale = scale; }
     
-    DirectX::XMFLOAT3 GetWorldPosition();
-    void SetWorldPosition();
-    void SetWorldPosition(std::shared_ptr<Transform3DComponent> parent_transform);
-
-    bool GetChangeValue();
 #pragma endregion set parame
 private:
     Transform3DParam param;
@@ -53,7 +68,8 @@ private:
     DirectX::XMFLOAT4X4 local_transform{};
     DirectX::XMFLOAT4X4 world_transform{};
     DirectX::XMFLOAT3 world_position{};
-    bool change_value = false;
+    bool world_dirty_flag = true;  // ワールドパラメータの更新が必要かを示すフラグ
+    bool local_dirty_flag = true;  // ローカルパラメータの更新が必要かを示すフラグ
 private:
     std::weak_ptr<Transform3DComponent> parent_ransform_Wptr;
 
