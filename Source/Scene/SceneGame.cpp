@@ -286,6 +286,21 @@ void SceneGame::Initialize()
 				{
 					game_object->SetEnemy(enemy);
 				}
+
+				// 子オブジェクト
+				{
+					// 斬撃エフェクト再生用
+					{
+						std::shared_ptr<Object> slash_effect_object = enemy->CreateChildObject();
+						slash_effect_object->SetName("SlashEffectObject");
+						// トランスフォーム
+						{
+							Transform3DComponent::Transform3DParam param{};
+							param.local_position = { 0.0f,3.0f,1.0f };
+							slash_effect_object->AddComponent<Transform3DComponent>(param);
+						}
+					}
+				}
 			}
 		}
 		
