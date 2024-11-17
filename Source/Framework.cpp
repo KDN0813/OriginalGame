@@ -2,14 +2,18 @@
 #include <sstream>
 
 #include "Graphics/Graphics.h"
+
 #ifdef _DEBUG
-#include "Scene/SceneGame.h"
 #include "Scene/SceneTitle.h"
 #include "Scene/SceneResult.h"
 #include <imgui.h>
-#else
+#endif
+
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
+#include "Scene/SceneGame.h"
+#endif
+
 #include "Scene/SceneTitle.h"
-#endif _DEBUG
 #include "Scene/SceneManager.h"
 #include "Framework.h"
 
@@ -31,9 +35,11 @@ Framework::Framework(HWND hWnd)
 	, debug_manager(hWnd)
 #endif // _DEBUG
 {
-#ifdef _DEBUG
+#if defined(_DEBUG)
 	scene_manager.ChangeScene(new SceneGame);
 	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(0.4f, 0.4f, 0.4f, 1.00f);  // デフォルト値を再設定
+#elif defined(RELEASE_DEBUG)
+	scene_manager.ChangeScene(new SceneGame);
 #else
 	scene_manager.ChangeScene(new SceneTitle);
 #endif // _DEBUG
@@ -82,7 +88,7 @@ void Framework::Render(float elapsed_time)
 	graphics.GetSwapChain()->Present(syncInterval, 0);
 }
 
-bool IsWindowActive(HWND hwnd) 
+bool IsWindowActive(HWND hwnd)
 {
 	return (GetForegroundWindow() == hwnd);
 }
@@ -95,7 +101,7 @@ void Framework::CalculateFrameStats()
 	if ((timer.TimeStamp() - time_tlapsed) >= 1.0f)
 	{
 		fps = static_cast<float>(frames); // fps = frameCnt / 1
-		mspf = 1000.0f / fps;		
+		mspf = 1000.0f / fps;
 		frames = 0;
 		time_tlapsed += 1.0f;
 		std::string str;

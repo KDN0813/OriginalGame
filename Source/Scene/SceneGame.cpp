@@ -74,7 +74,7 @@ void SceneGame::Initialize()
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(300.0f, 1.0f, 300.0f);
+				param.local_scale = DirectX::XMFLOAT3(600.0f, 1.0f, 600.0f);
 				param.local_position = DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
@@ -223,8 +223,8 @@ void SceneGame::Initialize()
 		}
 		// 敵
 		{
-			float territory_range = 110.0f;
-			for (int i = 0; i < 2500; ++i)
+			float territory_range = 220.0f;
+			for (int i = 0; i < 5000; ++i)
 			{
 				auto enemy = object_manager.Create();
 

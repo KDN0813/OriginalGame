@@ -22,7 +22,7 @@ public:
     struct EnemyParam
     {
         DirectX::XMFLOAT3 target_position{};
-        float territory_range = 110.0f;
+        float territory_range = 220.0f;
         float radius = 0.1f;
         float move_speed = 3.0f;
         float speed_rate = 0.5f;

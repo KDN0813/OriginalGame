@@ -13,7 +13,7 @@ class ModelResource;
 class InstancingModelResource
 {
 public:
-    static const int MAX_INSTANCES = 3000;
+    static const int MAX_INSTANCES = 5100;
 public:
     /**
      * @fn InstancingModelResource
