@@ -37,6 +37,7 @@ void PlayerIdleState::Update(float elapsed_time)
     if (movement->IsMoveXZAxis())
     {
         state_machine->ChangeState(this->change_move_state);
+        return;
     }
 
     // “ü—Íó•t
@@ -46,6 +47,7 @@ void PlayerIdleState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
             state_machine->ChangeState(this->change_attack_state);
+            return;
         }
     }
 }
@@ -54,6 +56,7 @@ PlayerMoveState::PlayerMoveState()
     : State("PlayerMoveState")
 {
     this->change_idle_state.change_state_name = MyHash("PlayerIdleState");
+    this->change_attack_state.change_state_name = MyHash("PlayerAttackState");
 }
 
 void PlayerMoveState::Staet()
@@ -77,6 +80,18 @@ void PlayerMoveState::Update(float elapsed_time)
     if (!movement->IsMoveXZAxis())
     {
         state_machine->ChangeState(this->change_idle_state);
+        return;
+    }
+
+    // “ü—Íó•t
+    if (Input::Instance input = Input::GetInstance(); input.Get())
+    {
+        GamePad& pad = input->GetGamePad();
+        if (pad.GetButtonDown() & GamePad::BTN_X)
+        {
+            state_machine->ChangeState(this->change_attack_state);
+            return;
+        }
     }
 }
 
@@ -123,8 +138,8 @@ void PlayerAttackState::Update(float elapsed_time)
     if (!animation->IsPlayAnimation())
     {
         state_machine->ChangeState(this->change_idle_state);
+        return;
     }
-    return;
 }
 
 void PlayerAttackState::End()

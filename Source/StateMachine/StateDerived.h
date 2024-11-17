@@ -41,6 +41,7 @@ public:
 	void End() override {};
 private:
 	State::ChangeState change_idle_state;
+	State::ChangeState change_attack_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
