@@ -34,38 +34,6 @@ void PlayerComponent::Update(float elapsed_time)
     {
         InputMove(elapsed_time);
     }
-
-#ifdef _DEBUG
-    // スペースキーを押すとエフェクト再生
-    if (Input::Instance input = Input::GetInstance(); input.Get())
-    {
-        GamePad& game_pad = input->GetGamePad();
-        if (GamePad::BTN_Y & game_pad.GetButtonDown())
-        {
-            DirectX::XMFLOAT3 pos{};    // 生成位置
-
-            // transform取得
-            if (owner)
-            {
-                if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
-                {
-                    // 生成位置を設定
-                    pos = transform->GetWorldPosition();
-                    pos.y += 2.0f;
-                    pos.z += 1.0f;
-                }
-            }
-
-            if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
-            {
-                particle_system->Set(
-                    pos,
-                    45.0f
-                );
-            }
-        }
-    }
-#endif // DEBUG
 }
 
 void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)

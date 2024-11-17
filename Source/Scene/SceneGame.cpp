@@ -306,11 +306,11 @@ void SceneGame::Initialize()
 		#ifdef _DEBUG	// デバッグ用object
 				if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 				{
-					//AudioParam param{};
-					//param.volume = 0.3f;
-					//param.loop = true;
-					//param.filename = "Data/Debug/Audio/BGM.wav";
-					//audio->Play(param);
+					AudioParam param{};
+					param.volume = 0.0f;
+					param.loop = true;
+					param.filename = "Data/Audio/BGM.wav";
+					audio->Play(param);
 				}
 		#endif // _DEBUG
 	}
