@@ -8,12 +8,14 @@
 #endif // DEBUG
 #include "ConstantManager.h"
 #include "Shader\ParticleSystem.h"
+#include "Camera\CameraManager.h"
 
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/CircleCollisionComponent.h"
 #include "Component/CharacterComponent.h"
 #include "Component/InstancedModelWithAnimationComponent.h"
+#include "Component\CameraComponent.h"
 
 void EnemyComponent::Start()
 {
@@ -167,26 +169,46 @@ void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3
 
 void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
+	if (this->param.pending_removal_flag) return;	// 削除待ちの場合return
+
 	// ダメージステートに遷移させる
 	SetDamageState();
 
 	// 斬撃effect再生
 	{
+		MYVECTOR3 Pos{};    // 生成位置
 		DirectX::XMFLOAT3 pos{};    // 生成位置
 		
-		// 発生位置取得
-		if (const auto& owner = GetOwner())
+		// 発生位置計算
 		{
-			// エフェクトの再生位置を管理する子オブジェクトの取得
-			if (const auto& child_object = owner->FindChildObject(MyHash("SlashEffectObject")))
+			// エネミーの位置を設定
+			if (const auto& owner = GetOwner())
 			{
 				// トランスフォーム取得
-				if (const auto& child_transform = child_object->EnsureComponentValid(this->child_transform_Wptr))
+				if (const auto& child_transform = owner->EnsureComponentValid(this->child_transform_Wptr))
 				{
 					// 生成位置を設定
-					pos = child_transform->GetWorldPosition();
+					Pos = child_transform->GetWorldPosition();
 				}
 			}
+
+			// カメラの向取得
+			MYVECTOR3 Forward = MYVECTOR3(1.0f, 0.0f, 0.0f);
+			MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
+			if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+			{
+				if (const auto& camera = camera_manager->GetCamera(CAMERA_TYPE::MAIN))
+				{
+					Forward = camera->GetForward();
+					Up = camera->GetUp();
+				}
+			}
+
+			// 再生位置計算
+			const float forward_offset = -2.0f;
+			const float up_offset = 0.5f;
+			Pos += (Forward * forward_offset) + (Up * up_offset);
+			Pos.GetFlaot3(pos);
 		}
 
 		// エフェクト再生
@@ -236,8 +258,6 @@ bool EnemyComponent::IsAtTarget(float distSq)
 
 void EnemyComponent::SetDamageState()
 {
-	if (this->param.pending_removal_flag) return;	// 削除待ちの場合return
-
 	const auto& owner = GetOwner();
 	if (!owner) return;
 	const auto& model_component = owner->EnsureComponentValid(this->model_Wptr);
