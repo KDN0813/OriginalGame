@@ -34,21 +34,16 @@ ParticleSystem::ParticleSystem()
 		buffer_desc.StructureByteStride = 0;
 
 		{
+			// パーティクルデータの初期化
+			particle_data.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
+			particle_data.elapsed_time = 0.0f;
+			particle_data.timer_max = 0.8f;
+			particle_data.default_size = { 0.340f, 1.28f };
+			particle_data.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
+			particle_data.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
+
 			D3D11_SUBRESOURCE_DATA subresource{};
-			ParticleCommonConstant pcc{};
-			pcc.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
-			pcc.timer_max = 100.0f;
-			pcc.default_size = { 0.340f, 1.28f };
-			pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
-			pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
-			subresource.pSysMem = &pcc;
-#ifdef _DEBUG
-			debug_particle_data.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
-			debug_particle_data.timer_max = 60.0f;
-			debug_particle_data.default_size = { 0.340f, 1.28f };
-			debug_particle_data.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
-			debug_particle_data.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
-#endif // DEBUG
+			subresource.pSysMem = &particle_data;
 			buffer_desc.ByteWidth = sizeof(ParticleCommonConstant);
 			hr = device->CreateBuffer(&buffer_desc, &subresource, this->particle_common_constant.GetAddressOf());
 			assert(SUCCEEDED(hr));
@@ -285,9 +280,7 @@ void ParticleSystem::Update()
 
 	// 定数バッファの設定
 	{
-#ifdef _DEBUG
-		immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &this->debug_particle_data, 0, 0);
-#endif // _DEBUG
+		immediate_context->UpdateSubresource(this->particle_common_constant.Get(), 0, nullptr, &this->particle_data, 0, 0);
 		immediate_context->CSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
 	}
 
@@ -456,11 +449,12 @@ void ParticleSystem::DebugDrawGUI()
 	{
 		if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::InputFloat2("Default Size", &debug_particle_data.default_size.x);
-			ImGui::InputFloat2("Fast Scale", &debug_particle_data.f_scale.x);
-			ImGui::InputFloat2("End Scale", &debug_particle_data.e_scale.x);
-			ImGui::InputFloat("Timer Max", &debug_particle_data.timer_max);
-			ImGui::ColorEdit3("Color", &debug_particle_data.color.x);
+			ImGui::InputFloat2("Default Size", &particle_data.default_size.x);
+			ImGui::InputFloat("Elapsed Time", &particle_data.elapsed_time);
+			ImGui::InputFloat2("Fast Scale", &particle_data.f_scale.x);
+			ImGui::InputFloat2("End Scale", &particle_data.e_scale.x);
+			ImGui::InputFloat("Timer Max", &particle_data.timer_max);
+			ImGui::ColorEdit3("Color", &particle_data.color.x);
 			ImGui::TreePop();
 		}
 

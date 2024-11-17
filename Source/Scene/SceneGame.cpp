@@ -374,6 +374,11 @@ void SceneGame::Update(float elapsed_time)
 
 	// ƒQ[ƒ€ó‘Ô‚ðˆ—‚·‚é
 	ProcessGameState();
+
+	if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
+	{
+		particle_system->SetElapsedTime(elapsed_time);
+	}
 }
 
 void SceneGame::Render()

@@ -56,21 +56,21 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
             scale = f_scale;
             timer = timer_max;
             // CPU共有データの設定
-            Result2[node].step = 1;
-            break;
+            Result2[node].step = 1;    
+        break;
         case 1: // 更新
+
+            // 稼働中であるか判定する
+            Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
         
-            timer -= 1.0f;
+            timer = max(0.0f, timer - elapsed_time);
             const float t = (timer_max - timer) / timer_max;
             // 透明度の補間
             alpha = FadeInOut(t);
             // 拡大率の補間
             scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
             scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
-
-            // 稼働中であるか判定する
-            Result2[node].is_busy = (0.0f <= timer) ? 1 : 0;
-            break;
+        break;
     }
     
     // Resultに計算結果を代入

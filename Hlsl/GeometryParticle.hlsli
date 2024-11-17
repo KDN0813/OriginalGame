@@ -63,7 +63,7 @@ struct CPUGPUBuffer
 cbuffer ParticleCommonConstant : register(b1)
 {
     float3 default_color;
-    float dummy1;
+    float elapsed_time;     // 経過時間
     float2 default_size;    // 通常画像サイズ
     float2 f_scale;         // 拡大率(開始)
     float2 e_scale;         // 拡大率(終了)

@@ -52,7 +52,7 @@ private:
 	struct ParticleCommonConstant
 	{
 		DirectX::XMFLOAT3 color;
-		float dummy1;
+		float elapsed_time;					// 経過時間
 		DirectX::XMFLOAT2 default_size;		// 画像サイズ
 		DirectX::XMFLOAT2 f_scale;			// 拡大率(開始)
 		DirectX::XMFLOAT2 e_scale;			// 拡大率(終了)
@@ -82,6 +82,8 @@ public:
 		float rot = 0.0f
 	);
 
+	// 各種設定関数
+	void SetElapsedTime(float time) { this->particle_data.elapsed_time = time; }
 private:
 	std::vector<CPUGPUBuffer> particle_data_pool;
 
@@ -111,12 +113,10 @@ private:
 	int chainSRV = 0;//バッファーの切り替え
 	int chainUAV = 1;//バッファーの切り替え
 
+	ParticleCommonConstant particle_data{};
 #ifdef _DEBUG
 public:
 	void DebugDrawGUI();
-
-private:
-	ParticleCommonConstant debug_particle_data{};
 
 #endif // _DEBUG
 };
