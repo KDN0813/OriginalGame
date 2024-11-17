@@ -37,7 +37,7 @@ ParticleSystem::ParticleSystem()
 			D3D11_SUBRESOURCE_DATA subresource{};
 			ParticleCommonConstant pcc;
 			pcc.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
-			pcc.timer_max = 60.0f;
+			pcc.timer_max = 100.0f;
 			pcc.default_size = { 0.340f, 1.28f };
 			pcc.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
 			pcc.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);

@@ -74,7 +74,7 @@ void SceneGame::Initialize()
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(100.0f, 1.0f, 100.0f);
+				param.local_scale = DirectX::XMFLOAT3(300.0f, 1.0f, 300.0f);
 				param.local_position = DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
@@ -117,7 +117,7 @@ void SceneGame::Initialize()
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(0.015f, 0.015f, 0.015f);
+				param.local_scale = DirectX::XMFLOAT3(0.018f, 0.018f, 0.018f);
 				auto transform = player->AddComponent<Transform3DComponent>(param);
 			}
 			// ムーブメント設定
@@ -223,8 +223,8 @@ void SceneGame::Initialize()
 		}
 		// 敵
 		{
-			float territory_range = 45.0f;
-			for (int i = 0; i < 100; ++i)
+			float territory_range = 110.0f;
+			for (int i = 0; i < 1000; ++i)
 			{
 				auto enemy = object_manager.Create();
 
@@ -268,7 +268,7 @@ void SceneGame::Initialize()
 						cosf(theta) * range ,
 #endif
 					};
-					param.local_scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
+					param.local_scale = DirectX::XMFLOAT3(0.015f, 0.015f, 0.015f);
 
 					auto transform = enemy->AddComponent<Transform3DComponent>(param);
 				}
