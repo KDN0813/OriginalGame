@@ -48,12 +48,12 @@ void Object::Update(float elapsedTime)
 #endif // _DEBUG
 
         component->Update(elapsedTime);
+    }
 
-        // 子オブジェクト更新
-        for (auto chilled : this->children)
-        {
-            chilled->Update(elapsedTime);
-        }
+    // 子オブジェクト更新
+    for (auto chilled : this->children)
+    {
+        chilled->Update(elapsedTime);
     }
 }
 
