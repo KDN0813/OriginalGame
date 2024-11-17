@@ -123,6 +123,7 @@ void SceneGame::Initialize()
 			// ƒ€[ƒuƒƒ“ƒgÝ’è
 			{
 				MovementComponent::MovementParam param{};
+				param.max_accelerationXZ = 7.0f;
 				param.is_stage_raycas = true;
 				auto movement = player->AddComponent<MovementComponent>(param);
 			}
@@ -307,7 +308,7 @@ void SceneGame::Initialize()
 				if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 				{
 					AudioParam param{};
-					param.volume = 0.0f;
+					param.volume = 0.3f;
 					param.loop = true;
 					param.filename = "Data/Audio/BGM.wav";
 					audio->Play(param);
