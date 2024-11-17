@@ -52,15 +52,17 @@ public:
     const DirectX::XMFLOAT4X4& GetLocalTransform();
 
     DirectX::XMFLOAT3 GetLocalPosition()const noexcept { return this->param.local_position; }
-    void SetLocalPosition(DirectX::XMFLOAT3 pos)noexcept { this->world_dirty_flag = true; this->local_dirty_flag = true; this->param.local_position = pos; }
+    void SetLocalPosition(DirectX::XMFLOAT3 pos)noexcept;
     DirectX::XMFLOAT3 AddLocalPosition(DirectX::XMFLOAT3 vec);
 
     DirectX::XMFLOAT3 GetLocalAngle()const noexcept { return this->param.local_angle; }
-    void SetLocalAngle(DirectX::XMFLOAT3 angle)noexcept { this->world_dirty_flag = true; this->local_dirty_flag = true; this->param.local_angle = angle; }
+    void SetLocalAngle(DirectX::XMFLOAT3 angle)noexcept;
     
     DirectX::XMFLOAT3 GetLocalScale()const noexcept { return this->param.local_scale; }
-    void SetLocalScale(DirectX::XMFLOAT3 scale)noexcept { this->world_dirty_flag = true; this->local_dirty_flag = true; this->param.local_scale = scale; }
+    void SetLocalScale(DirectX::XMFLOAT3 scale)noexcept;
     
+    // ワールドパラメータの更新が必要なことを示すフラグを設定する
+    void SetWorldDirtyFlag() { this->world_dirty_flag = true; }
 #pragma endregion set parame
 private:
     Transform3DParam param;

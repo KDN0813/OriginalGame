@@ -79,15 +79,105 @@ const DirectX::XMFLOAT4X4& Transform3DComponent::GetLocalTransform()
 	return this->local_transform;
 }
 
-DirectX::XMFLOAT3 Transform3DComponent::AddLocalPosition(DirectX::XMFLOAT3 vec)
+void Transform3DComponent::SetLocalPosition(DirectX::XMFLOAT3 pos) noexcept
 {
+	// ローカル座標を更新
+	this->param.local_position = pos;
+	
+	// ワールドおよびローカルパラメータの更新が必要なフラグを立てる
 	this->world_dirty_flag = true;
 	this->local_dirty_flag = true;
 
+	// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+	{
+		if (const auto& owner = GetOwner())
+		{
+			for (const auto& chilled : owner->GetChildren())
+			{
+				if (auto chilled_transform = chilled->GetComponent<Transform3DComponent>())
+				{
+					chilled_transform->SetWorldDirtyFlag();
+				}
+			}
+		}
+	}
+}
+
+DirectX::XMFLOAT3 Transform3DComponent::AddLocalPosition(DirectX::XMFLOAT3 vec)
+{
+	// ローカル座標の更新
 	MYVECTOR3 Pos = this->param.local_position;
 	Pos += vec;
 	Pos.GetFlaot3(this->param.local_position);
+
+	// ワールドおよびローカルパラメータの更新が必要なフラグを立てる
+	this->world_dirty_flag = true;
+	this->local_dirty_flag = true;
+
+	// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+	{
+		if (const auto& owner = GetOwner())
+		{
+			for (const auto& chilled : owner->GetChildren())
+			{
+				if (auto chilled_transform = chilled->GetComponent<Transform3DComponent>())
+				{
+					chilled_transform->SetWorldDirtyFlag();
+				}
+			}
+		}
+	}
+
+	// ローカル座標を返す
 	return this->param.local_position;
+}
+
+void Transform3DComponent::SetLocalAngle(DirectX::XMFLOAT3 angle) noexcept
+{
+	// ローカルアングルを更新
+	this->param.local_angle = angle;
+
+	// ワールドおよびローカルパラメータの更新が必要なフラグを立てる
+	this->world_dirty_flag = true;
+	this->local_dirty_flag = true;
+
+	// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+	{
+		if (const auto& owner = GetOwner())
+		{
+			for (const auto& chilled : owner->GetChildren())
+			{
+				if (auto chilled_transform = chilled->GetComponent<Transform3DComponent>())
+				{
+					chilled_transform->SetWorldDirtyFlag();
+				}
+			}
+		}
+	}
+}
+
+void Transform3DComponent::SetLocalScale(DirectX::XMFLOAT3 scale) noexcept
+{
+	// ローカルアングルを更新
+	this->param.local_scale = scale;
+
+	// ワールドおよびローカルパラメータの更新が必要なフラグを立てる
+	this->world_dirty_flag = true;
+	this->local_dirty_flag = true;
+
+	// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+	{
+		if (const auto& owner = GetOwner())
+		{
+			for (const auto& chilled : owner->GetChildren())
+			{
+				if (auto chilled_transform = chilled->GetComponent<Transform3DComponent>())
+				{
+					chilled_transform->SetWorldDirtyFlag();
+				}
+			}
+		}
+	}
 }
 
 DirectX::XMFLOAT3 Transform3DComponent::GetWorldPosition()
