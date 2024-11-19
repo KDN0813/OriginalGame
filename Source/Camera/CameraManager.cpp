@@ -8,6 +8,7 @@
 #include <magic_enum.hpp>
 #include "Graphics/Graphics.h"
 #include "Component/CameraControllerComponent.h"
+#include "Input\Input.h"
 #endif // _DEBUG
 
 CameraManager::CameraManager()
@@ -82,6 +83,28 @@ std::shared_ptr<CameraComponent> CameraManager::GetCamera(CAMERA_TYPE type)
 void CameraManager::Update(float elapsed_time)
 {
 #ifdef _DEBUG
+    // デバッグカメラの切り替え
+    if (Input::Instance input = Input::GetInstance(); input.Get())
+    {
+        auto mouse = input->GetMouse();
+        if (Mouse::BTN_MIDDLE & mouse.GetButtonDown())
+        {
+            if (this->camera_index == static_cast<int>(CAMERA_TYPE::DEBUG))
+            {
+                // 元のカメラに戻す
+                SetCurrentCamera(static_cast<CAMERA_TYPE>(this->temp_camera_index));
+            }
+            else
+            {
+                // デバッグカメラに切り替わる
+                this->temp_camera_index = this->camera_index;
+                SetCurrentCamera(CAMERA_TYPE::DEBUG);
+            }
+        }
+    }
+
+
+    // デバッグカメラの更新
     this->debug_camera->Update(elapsed_time);
 #endif // DEBUG
 }

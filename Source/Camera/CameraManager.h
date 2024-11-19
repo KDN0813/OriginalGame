@@ -49,6 +49,7 @@ private:
     std::shared_ptr<Object> debug_camera;
     std::vector<std::string> camera_name_pool;
     int camera_index = 0;    // 現在のカメラインデックス
+    int temp_camera_index;   // デバッグカメラに分かる前のカメラのインデックス
 #endif // _DEBUG
 };
 
