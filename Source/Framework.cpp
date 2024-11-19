@@ -114,7 +114,7 @@ void Framework::CalculateFrameStats()
 
 bool Framework::IsPressedWindowCloseKey()
 {
-	return (GetAsyncKeyState(VK_ESCAPE) & 0x8000);
+	return (GetAsyncKeyState('Q') & 0x8000 && GetAsyncKeyState(VK_CONTROL) & 0x8000);
 }
 
 bool Framework::IsPressedPauseKey()
@@ -136,18 +136,18 @@ int Framework::Run()
 		}
 		else
 		{
-			//if (!IsWindowActive(hWnd)) continue;
+			if (!IsWindowActive(hWnd)) continue;
 
 			timer.Tick();
 
 			// ポーズキーが押されたらポーズ設定(解除)する
-			//if (IsPressedPauseKey())
-			//{
-			//	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-			//	{
-			//		game_data->SetIsPause(!game_data->GetIsPause());
-			//	}
-			//}
+			if (IsPressedPauseKey())
+			{
+				if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+				{
+					game_data->SetIsPause(!game_data->GetIsPause());
+				}
+			}
 
 			float elapsed_time = timer.TimeInterval();
 			Update(elapsed_time);
