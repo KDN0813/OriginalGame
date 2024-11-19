@@ -205,7 +205,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				RayHitResult hit;
 				if (Collision::IntersectRayVsModel(Start, End, stage_model.get(), hit))
 				{
-					hit.position.y += 3.0f;
+					hit.position.y += 0.1f;
 					transform->SetLocalPosition(hit.position);
 					gravity->SetIsGrounded(true);
 				}
