@@ -87,7 +87,7 @@ void CameraManager::Update(float elapsed_time)
     if (Input::Instance input = Input::GetInstance(); input.Get())
     {
         auto mouse = input->GetMouse();
-        if (Mouse::BTN_MIDDLE & mouse.GetButtonDown())
+        if (Mouse::BTN_MIDDLE & mouse.GetButtonDown() && GetKeyState(VK_SPACE))
         {
             if (this->camera_index == static_cast<int>(CAMERA_TYPE::DEBUG))
             {
