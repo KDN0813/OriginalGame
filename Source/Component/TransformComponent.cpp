@@ -223,10 +223,13 @@ void Transform3DComponent::UpdateWorldPosition(MYMATRIX Parent_transform)
 
 void Transform3DComponent::DrawDebugGUI()
 {
-	if (ImGui::DragFloat3("Local Position", &this->param.local_position.x,0.1f))
+	// local_positionÝ’è
 	{
-		this->local_dirty_flag = true;
-		this->world_dirty_flag = true;
+		DirectX::XMFLOAT3 local_position = this->param.local_position;
+		if (ImGui::DragFloat3("Local Position", &local_position.x, 0.1f))
+		{
+			SetLocalPosition(local_position);
+		}
 	}
 	if (ImGui::DragFloat3("Local Scale", &this->param.local_scale.x, 0.1f))
 	{
