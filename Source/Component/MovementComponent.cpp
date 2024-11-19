@@ -205,6 +205,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				RayHitResult hit;
 				if (Collision::IntersectRayVsModel(Start, End, stage_model.get(), hit))
 				{
+					hit.position.y += 3.0f;
 					transform->SetLocalPosition(hit.position);
 					gravity->SetIsGrounded(true);
 				}
@@ -228,6 +229,19 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 		const MYVECTOR3 Current_pos = current_pos;
 
 		float velocity_lengthXZ = MYVECTOR3(this->param.velocity).LengthXZ();
+		
+#ifdef _DEBUG
+		// デバッグプリミティブ表示用変数の更新
+		{
+			MYVECTOR3 Start = Current_pos + MYVECTOR3(0.0f, this->param.step_offset, 0.0f);
+
+			DirectX::XMFLOAT3 start_pos{};
+			Start.GetFlaot3(start_pos);
+			this->rayXZ_start_pos.SetCenter(start_pos);
+			this->rayXZ_end_pos.SetCenter(start_pos);		// 移動してない場合も終点を変更するためstart_posを代入している
+		}
+#endif // _DEBUG
+
 		if (velocity_lengthXZ > 0.0f)
 		{
 			// 水平方向の移動量
@@ -241,9 +255,6 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 #ifdef _DEBUG
 			// デバッグプリミティブ表示用変数の更新
 			{
-				DirectX::XMFLOAT3 start_pos{};
-				Start.GetFlaot3(start_pos);
-				this->rayXZ_start_pos.SetCenter(start_pos);
 				DirectX::XMFLOAT3 end_pos{};
 				End.GetFlaot3(end_pos);
 				this->rayXZ_end_pos.SetCenter(end_pos);

@@ -70,12 +70,12 @@ void SceneGame::Initialize()
 		// ステージ
 		{
 			auto stage = object_manager.Create("Stage");
-			stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
+			stage->AddComponent<ModelComponent>("Data/Model/Stage/SandTown.mdl");
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(600.0f, 1.0f, 600.0f);
-				param.local_position = DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f);
+				param.local_scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
+				param.local_position = DirectX::XMFLOAT3(0.0f, -15.0f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
 			// シェーダー設定
@@ -224,7 +224,11 @@ void SceneGame::Initialize()
 		// 敵
 		{
 			float territory_range = 220.0f;
+#ifdef _DEBUG
+			for (int i = 0; i < 500; ++i)
+#else
 			for (int i = 0; i < 5000; ++i)
+#endif // _DEBUG
 			{
 				auto enemy = object_manager.Create();
 

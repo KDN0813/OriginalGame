@@ -76,6 +76,7 @@
       <ObjectFileOutput>Shader\%(Filename).cso</ObjectFileOutput>
       <AssemblerOutput>AssemblyCode</AssemblerOutput>
       <AssemblerOutputFile>Shader\%(Filename).cod</AssemblerOutputFile>
+      <DisableOptimizations>true</DisableOptimizations>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
