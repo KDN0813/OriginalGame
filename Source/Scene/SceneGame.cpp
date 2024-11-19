@@ -75,7 +75,7 @@ void SceneGame::Initialize()
 			{
 				Transform3DComponent::Transform3DParam param{};
 				param.local_scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
-				param.local_position = DirectX::XMFLOAT3(0.0f, -16.0f, 0.0f);
+				param.local_position = DirectX::XMFLOAT3(5.0f, -12.0f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
 			// シェーダー設定
