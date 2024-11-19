@@ -71,6 +71,8 @@ public:
 	void SetRotateX(float rotateX) { this->change_value = true; this->camera_param.rotateX = rotateX; }
 	// カメラタイプ設定
 	void SetCameraType(CAMERA_TYPE type) { this->camera_type = type; }
+	// カメラパラメータの一括設定
+	void SetCameraParam(CameraParam param) { this->camera_param = param; }
 
 	// ビュー行列取得
 	DirectX::XMFLOAT4X4 GetViewTransform() const { return this->view_transform; }
@@ -102,6 +104,8 @@ public:
 	float GetRotateX() const { return this->camera_param.rotateX; }
 	// カメラタイプ取得
 	CAMERA_TYPE GetCameraType() const { return this->camera_type; }
+	// カメラパラメータの取得
+	CameraParam GetCameraParam() const { return this->camera_param; }
 private:
 	// 指定方向を向く
 	void SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up);

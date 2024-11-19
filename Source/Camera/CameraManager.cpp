@@ -99,6 +99,8 @@ void CameraManager::Update(float elapsed_time)
                 // デバッグカメラに切り替わる
                 this->temp_camera_index = this->camera_index;
                 SetCurrentCamera(CAMERA_TYPE::DEBUG);
+                // カメラ情報を元のカメラと同じにする
+                this->camera_pool[this->camera_index]->SetCameraParam(this->camera_pool[this->temp_camera_index]->GetCameraParam());
             }
         }
     }
