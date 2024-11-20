@@ -24,10 +24,14 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override {};
+    const char* GetName()const  override { return "DebugParticle"; };
 
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+private:
+    // 範囲内のランダムな位置にエフェクトを再生させる
+    void PlayEffect();
+
 private:
     float effect_area_radius = 2.0f;    // エフェクトを再生するエリア(円柱)の半径
     float effect_area_height = 2.0f;    // エフェクトを再生するエリア(円柱)の高さ

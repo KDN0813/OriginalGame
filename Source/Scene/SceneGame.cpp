@@ -41,6 +41,10 @@
 #include "Component/SpriteComponent.h"
 #include "Component/CharacterComponent.h"
 #include "Component/StateMachineComponent.h"
+#ifdef _DEBUG
+#include "Component\DebugParticle.h"
+#endif // DEBUG
+
 
 #pragma region LegacyComponent(旧コンポーネント)
 #include "Component/LegacyStateMachineComponent.h"
@@ -222,6 +226,27 @@ void SceneGame::Initialize()
 				auto camera = death_camera->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
 			}
 		}
+
+#ifdef _DEBUG	// デバッグ用オブジェクト
+		{
+			// パーティクル再生用オブジェクト
+			{
+				auto debug_Particle = object_manager.Create("Debug Particle");
+
+				// transform
+				{
+					Transform3DComponent::Transform3DParam param{};
+					param.local_position = DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f);
+					debug_Particle->AddComponent<Transform3DComponent>(param);
+				}
+				// DebugParticle
+				{
+					debug_Particle->AddComponent<DebugParticle>();
+				}
+			}
+		}
+#endif // _DEBUG
+
 		// 敵
 		{
 			float territory_range = 220.0f;
@@ -309,7 +334,7 @@ void SceneGame::Initialize()
 			}
 		}
 		
-		#ifdef _DEBUG	// デバッグ用object
+		#ifdef _DEBUG
 				if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 				{
 					AudioParam param{};
