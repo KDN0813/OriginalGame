@@ -41,14 +41,17 @@ public:
 private:
     std::vector<std::shared_ptr<CameraComponent>> camera_pool;  // カメラ一覧
     std::shared_ptr<CameraComponent> current_camera;            // 現在使用しているカメラ
+    int camera_index = 0;    // 現在のカメラインデックス
 
 #ifdef _DEBUG
 public:
     void DrawDebugGUI();
 private:
+    void ChegeDebugCamera();
+private:
     std::shared_ptr<Object> debug_camera;
     std::vector<std::string> camera_name_pool;
-    int camera_index = 0;    // 現在のカメラインデックス
+    int debug_camera_index = 0;    // デバッグImGui用の現在のカメラインデックス
     int temp_camera_index;   // デバッグカメラに分かる前のカメラのインデックス
 #endif // _DEBUG
 };

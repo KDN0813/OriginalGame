@@ -81,6 +81,8 @@ void CameraControllerGamepad::Update(float elapsed_time)
 
 void CameraControllerDebug::Update(float elapsed_time)
 {
+	if (!(GetKeyState(VK_CONTROL) & 0x8000)) return;
+
 	auto owner = GetOwner();
 	if (!owner) return;
 	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);

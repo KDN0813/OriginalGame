@@ -45,6 +45,7 @@ CameraManager::CameraManager()
 #ifdef _DEBUG
     // デバッグ用のカメラインデックス設定
     this->camera_index = static_cast<int>(CAMERA_TYPE::MAIN);
+    this->debug_camera_index = static_cast<int>(CAMERA_TYPE::MAIN);
 
     // デバッグカメラ作成
     {
@@ -69,6 +70,7 @@ void CameraManager::SetCurrentCamera(CAMERA_TYPE type)
     this->current_camera->SetIsActive(true);
 #ifdef _DEBUG
     this->camera_index = static_cast<int>(type);
+    this->debug_camera_index = static_cast<int>(type);
 #endif // DEBUG
 }
 
@@ -87,21 +89,9 @@ void CameraManager::Update(float elapsed_time)
     if (Input::Instance input = Input::GetInstance(); input.Get())
     {
         auto mouse = input->GetMouse();
-        if (Mouse::BTN_MIDDLE & mouse.GetButtonDown() && GetKeyState(VK_SPACE))
+        if ((Mouse::BTN_MIDDLE & mouse.GetButtonDown()) && !(GetKeyState(VK_CONTROL) & 0x8000))
         {
-            if (this->camera_index == static_cast<int>(CAMERA_TYPE::DEBUG))
-            {
-                // 元のカメラに戻す
-                SetCurrentCamera(static_cast<CAMERA_TYPE>(this->temp_camera_index));
-            }
-            else
-            {
-                // デバッグカメラに切り替わる
-                this->temp_camera_index = this->camera_index;
-                SetCurrentCamera(CAMERA_TYPE::DEBUG);
-                // カメラ情報を元のカメラと同じにする
-                this->camera_pool[this->camera_index]->SetCameraParam(this->camera_pool[this->temp_camera_index]->GetCameraParam());
-            }
+            ChegeDebugCamera();
         }
     }
 
@@ -161,9 +151,17 @@ void CameraManager::DrawDebugGUI()
         // カメラ切り替え
         std::string now_name{};
         now_name = magic_enum::enum_name(static_cast<CAMERA_TYPE>(this->camera_index));
-        if (ImGui::ComboUI("Camera Type##CameraManager", now_name, this->camera_name_pool, this->camera_index))
+        if (ImGui::ComboUI("Camera Type##CameraManager", now_name, this->camera_name_pool, this->debug_camera_index))
         {
-            SetCurrentCamera(static_cast<CAMERA_TYPE>(this->camera_index));
+            if (this->debug_camera_index == static_cast<int>(CAMERA_TYPE::DEBUG))
+            {
+                // デバッグカメラに遷移する場合
+                ChegeDebugCamera();
+            }
+            else
+            {
+                SetCurrentCamera(static_cast<CAMERA_TYPE>(this->debug_camera_index));
+            }
         }
         if (ImGui::CollapsingHeader("Target Camera"))
         {
@@ -181,6 +179,23 @@ void CameraManager::DrawDebugGUI()
         }
     }
     ImGui::End();
+}
+
+void CameraManager::ChegeDebugCamera()
+{
+    if (this->camera_index == static_cast<int>(CAMERA_TYPE::DEBUG))
+    {
+        // 元のカメラに戻す
+        SetCurrentCamera(static_cast<CAMERA_TYPE>(this->temp_camera_index));
+    }
+    else
+    {
+        // デバッグカメラに切り替わる
+        this->temp_camera_index = this->camera_index;
+        SetCurrentCamera(CAMERA_TYPE::DEBUG);
+        // カメラ情報を元のカメラと同じにする
+        this->camera_pool[this->camera_index]->SetCameraParam(this->camera_pool[this->temp_camera_index]->GetCameraParam());
+    }
 }
 
 #endif // _DEBUG
