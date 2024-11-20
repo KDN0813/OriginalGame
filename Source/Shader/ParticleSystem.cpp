@@ -428,7 +428,7 @@ int ParticleSystem::CalculateFreeParticleCount()
 
 	for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
 	{
-		if (this->particle_data_pool[i].is_busy) ++this->free_particle_count;
+		if (!this->particle_data_pool[i].is_busy) ++this->free_particle_count;
 	}
 	return this->free_particle_count;
 }
@@ -462,6 +462,7 @@ void ParticleSystem::PlayGroupEffect(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 c, i
 {
 	if (this->free_particle_count < effect_count) return;
 
+	int count = 0;
 	for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
 	{
 		if (this->particle_data_pool[i].is_busy) continue;
@@ -475,7 +476,10 @@ void ParticleSystem::PlayGroupEffect(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 c, i
 			1,	// is_busy
 		};
 		this->particle_data_pool[i] = particle_data;
-		break;
+
+		++count;
+
+		if (effect_count <= count) break;
 	}
 
 	this->free_particle_count -= effect_count;	// 空きパーティクルの数を減らす

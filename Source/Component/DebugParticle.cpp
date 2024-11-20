@@ -54,6 +54,25 @@ void DebugParticle::PlayEffect()
     }
 }
 
+void DebugParticle::PlayGroupEffect(int count)
+{
+    if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
+    {
+        const float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
+        const float range = MyMathf::RandomRange(0.0f, this->effect_area_radius);
+        const float height = MyMathf::RandomRange(0.0f, this->effect_area_height);
+
+        DirectX::XMFLOAT3 pos
+        {
+            this->area_pos.x + sinf(theta) * range,
+            this->area_pos.y + height,
+            this->area_pos.z + cosf(theta) * range ,
+        };
+
+        particle_system->PlayGroupEffect(pos, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f), count, theta);
+    }
+}
+
 #ifdef _DEBUG
 
 void DebugParticle::DrawDebugGUI()
@@ -85,6 +104,15 @@ void DebugParticle::DrawDebugGUI()
         {
             PlayEffect();
         }
+    }
+    if (ImGui::TreeNodeEx("Play Group", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::InputInt("Group Count", &this->group_count);
+        if (ImGui::Button("Play Group Effects"))
+        {
+            PlayGroupEffect(this->group_count);
+        }
+        ImGui::TreePop();
     }
 }
 
