@@ -49,7 +49,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
         case 0: // 初期設定
         
             // GPU専用データの設定
-            color = default_color;
+            color = Input2[node].color;
             position = Input2[node].position;
             rot = Input2[node].rot;
             alpha = 0.0f;

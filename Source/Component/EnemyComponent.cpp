@@ -216,6 +216,7 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 		{
 			particle_system->Play(
 				pos,
+				DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f),
 				45.0f
 			);
 		}

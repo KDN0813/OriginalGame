@@ -35,7 +35,6 @@ ParticleSystem::ParticleSystem()
 
 		{
 			// パーティクルデータの初期化
-			particle_data.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
 			particle_data.elapsed_time = 0.0f;
 			particle_data.timer_max = 0.8f;
 			particle_data.default_size = { 0.340f, 1.28f };
@@ -422,6 +421,7 @@ void ParticleSystem::LoadTexture(const char* filename)
 
 void ParticleSystem::Play(
 	DirectX::XMFLOAT3 p,
+	DirectX::XMFLOAT3 c,
 	float rot
 )
 {
@@ -432,6 +432,7 @@ void ParticleSystem::Play(
 		CPUGPUBuffer particle_data
 		{
 			p,
+			c,
 			rot,
 			0,	// step
 			1,	// is_busy
@@ -454,7 +455,6 @@ void ParticleSystem::DebugDrawGUI()
 			ImGui::InputFloat2("Fast Scale", &particle_data.f_scale.x);
 			ImGui::InputFloat2("End Scale", &particle_data.e_scale.x);
 			ImGui::InputFloat("Timer Max", &particle_data.timer_max);
-			ImGui::ColorEdit3("Color", &particle_data.color.x);
 			ImGui::TreePop();
 		}
 

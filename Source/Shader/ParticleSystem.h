@@ -36,6 +36,7 @@ private:
 	struct CPUGPUBuffer
 	{
 		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT3 color;
 		float rot;      // 角度
 		int step;
 		int is_busy;    // 要素が稼働中であるか
@@ -51,13 +52,11 @@ private:
 	// パーティク共通の定数
 	struct ParticleCommonConstant
 	{
-		DirectX::XMFLOAT3 color;
-		float elapsed_time;					// 経過時間
 		DirectX::XMFLOAT2 default_size;		// 画像サイズ
 		DirectX::XMFLOAT2 f_scale;			// 拡大率(開始)
 		DirectX::XMFLOAT2 e_scale;			// 拡大率(終了)
 		float timer_max;					// 生存時間
-		float dummy2;
+		float elapsed_time;					// 経過時間
 	};
 
 public:
@@ -79,6 +78,7 @@ public:
 	 */
 	void Play(
 		DirectX::XMFLOAT3 p,
+		DirectX::XMFLOAT3 c,
 		float rot = 0.0f
 	);
 

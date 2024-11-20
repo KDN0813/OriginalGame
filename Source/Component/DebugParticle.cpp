@@ -50,7 +50,7 @@ void DebugParticle::PlayEffect()
             this->area_pos.z + cosf(theta) * range ,
         };
 
-        particle_system->Play(pos, theta);
+        particle_system->Play(pos, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f), theta);
     }
 }
 

@@ -54,6 +54,7 @@ struct InputGp
 struct CPUGPUBuffer
 {
     float3 position; // 初期位置
+    float3 color;    // 初期色   
     float rot;      // 初期角度
     int step;
     int is_busy;    // 要素が稼働中であるか
@@ -62,11 +63,9 @@ struct CPUGPUBuffer
 // パーティク共通の定数
 cbuffer ParticleCommonConstant : register(b1)
 {
-    float3 default_color;
-    float elapsed_time;     // 経過時間
     float2 default_size;    // 通常画像サイズ
     float2 f_scale;         // 拡大率(開始)
     float2 e_scale;         // 拡大率(終了)
     float timer_max;        // 生存時間
-    float dummy2;
+    float elapsed_time;     // 経過時間
 };
