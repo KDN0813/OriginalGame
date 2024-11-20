@@ -130,6 +130,7 @@
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Collision\CircleCollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionParam.h" />
+    <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Component\InstancedModelWithAnimationComponent.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\CameraControllerComponent.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="Source\Camera\CameraManager.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Collision\CircleCollisionManager.cpp" />
+    <ClCompile Include="Source\Component\DebugParticle.cpp" />
     <ClCompile Include="Source\Component\InstancedModelWithAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
     <ClCompile Include="Source\Component\CameraControllerComponent.cpp" />

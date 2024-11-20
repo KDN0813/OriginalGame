@@ -77,7 +77,7 @@ public:
 	 * \param timer ê∂ë∂éûä‘
 	 * \param rot äpìx
 	 */
-	void Set(
+	void Play(
 		DirectX::XMFLOAT3 p,
 		float rot = 0.0f
 	);

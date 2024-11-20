@@ -214,7 +214,7 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 		// エフェクト再生
 		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 		{
-			particle_system->Set(
+			particle_system->Play(
 				pos,
 				45.0f
 			);

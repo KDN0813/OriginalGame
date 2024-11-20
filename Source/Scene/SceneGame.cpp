@@ -554,7 +554,7 @@ void SceneGame::DebugDrawGUI()
 
 void SceneGame::DrawShaderImGui()
 {
-	if (ImGui::Begin("Sahder"))
+	if (ImGui::Begin("Shader"))
 	{
 		if (ImGui::CollapsingHeader(model_shader->GetName()))
 		{

@@ -420,7 +420,7 @@ void ParticleSystem::LoadTexture(const char* filename)
 
 }
 
-void ParticleSystem::Set(
+void ParticleSystem::Play(
 	DirectX::XMFLOAT3 p,
 	float rot
 )
