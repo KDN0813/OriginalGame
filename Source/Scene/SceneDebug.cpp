@@ -24,75 +24,30 @@ void SceneDebug::Initialize()
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
-	//// シェーダーの作成
-	//{
-	//	instancing_model_shader = std::make_unique<InstancingModelShader>(device);
-	//	model_shader = std::make_unique<ModelShader>(device);
-	//}
+	// シェーダーの作成
+	{
+		model_shader = std::make_unique<ModelShader>();
+	}
+	// パーティクルシステムのテクスチャロード
+	{
+		particle_system.LoadTexture("Data/Effect/Texture/Line01.png");
+	}
 
-	//// カメラ作成
-	//{
-	//}
-
-	//// デバッグオブジェクト作成
-	//{
-	//	// ステージ
-	//	{
-	//		auto stage = object_manager.Create();
-	//		stage->SetName("Stage");
-	//		stage->AddComponent<ModelComponent>(device,"Data/Model/ExampleStage/ExampleStage.mdl");
-	//		auto transform = stage->AddComponent<Transform3DComponent>();
-	//		transform->SetLocalScale(DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f));
-	//		// シェーダー設定
-	//		auto shader_component =
-	//			stage->AddComponent<ModelShaderComponent>(model_shader.get());
-	//		model_shader->AddShaderComponent(shader_component.get());
-	//	}
-
-	//	// ボックス
-	//	{
-	//		auto cube = object_manager.Create();
-	//		cube->SetName("Cube");
-	//		cube->AddComponent<ModelComponent>(device,"Data/Model/Cube/Cube.mdl");
-	//		auto transform = cube->AddComponent<Transform3DComponent>();
-	//		transform->SetLocalScale(DirectX::XMFLOAT3(0.3f, 0.3f, 0.3f));
-	//		transform->SetLocalPosition(DirectX::XMFLOAT3(5.0f, 2.0f, 0.0f));
-	//		transform->SetLocalAngle(DirectX::XMFLOAT3(DirectX::XMConvertToRadians(90.0f), 0.0f, 0.0f));
-	//		// シェーダー設定
-	//		auto shader_component =
-	//			cube->AddComponent<ModelShaderComponent>(model_shader.get());
-	//		model_shader->AddShaderComponent(shader_component.get());
-	//	}
-
-	//	InstancingModelShader* const shader = instancing_model_shader.get();
-	//	// インスタンシング描画テスト
-	//	{
-	//		float offset = 3.0f;
-	//		for (int x = 0; x < 10; ++x)
-	//		{
-	//			for (int z = 0; z < 10; ++z)
-	//			{
-	//				DirectX::XMFLOAT3 pos =
-	//				{
-	//					static_cast<float>(x) * offset,
-	//					0.0f,
-	//					static_cast<float>(z) * offset,
-	//				};
-	//				auto object = object_manager.Create();
-	//				auto transform = object->AddComponent<Transform3DComponent>();
-	//				auto model = object->AddComponent<AnimatedInstancedModelComponent>(device, "Data/Model/Jammo/Jammo.mdl");
-	//				// シェーダー設定
-	//				auto shader_component =
-	//					object->AddComponent<InstancingModelShaderComponent>(shader);
-	//				shader->AddShaderComponent(shader_component.get());
-
-	//				model->PlayAnimation(z);
-	//				transform->SetLocalPosition(pos);
-	//				transform->SetLocalScale(DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f));
-	//			}
-	//		}
-	//	}
-	//}
+	// オブジェクト作成
+	{
+		auto stage = object_manager.Create("Stage");
+		stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
+		// トランスフォーム設定
+		{
+			Transform3DComponent::Transform3DParam param{};
+			param.local_scale = DirectX::XMFLOAT3(600.0f, 1.0f, 600.0f);
+			param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+			auto transform = stage->AddComponent<Transform3DComponent>(param);
+		}
+		// シェーダー設定
+		auto shader_component =
+			stage->AddComponent<ModelShaderComponent>(model_shader.get());
+	}
 }
 
 void SceneDebug::Finalize()
@@ -106,6 +61,11 @@ void SceneDebug::Update(float elapsed_time)
 	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
 		camera_manager->Update(elapsed_time);
+	}
+
+	if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
+	{
+		particle_system->SetElapsedTime(elapsed_time);
 	}
 }
 
@@ -122,14 +82,20 @@ void SceneDebug::Render()
 	{
 		// モデル描画
 		this->model_shader->Render();
-
-		// インスタンシング描画
-		this->instancing_model_shader->Render();
 	}
 
 #ifdef _DEBUG
 	DebugDrawGUI();
 #endif // _DEBUG
+
+	// 2Dスプライト描画
+	{
+		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
+		{
+			particle_system->Update();
+			particle_system->Render();
+		}
+	}
 }
 
 #ifdef _DEBUG
@@ -144,10 +110,10 @@ void SceneDebug::DrawShaderImGui()
 	{
 		model_shader->DrawDebugGUI();
 	}
-	if (ImGui::CollapsingHeader(instancing_model_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		instancing_model_shader->DrawDebugGUI();
-	}
+	//if (ImGui::CollapsingHeader(instancing_model_shader->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
+	//{
+	//	instancing_model_shader->DrawDebugGUI();
+	//}
 }
 
 #endif // _DEBUG

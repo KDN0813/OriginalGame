@@ -9,6 +9,7 @@
 // シェーダー
 #include "Shader/InstanceModelShader.h"
 #include "Shader/ModelShader.h"
+#include "Shader/ParticleSystem.h"
 
 class SceneDebug : public Scene
 {
@@ -24,10 +25,10 @@ public:
 private:
 
     // シェーダー
-    std::unique_ptr<InstancingModelShader> instancing_model_shader;
     std::unique_ptr<ModelShader> model_shader;
 
     ObjectManager object_manager;
+    ParticleSystem particle_system;
 
 #ifdef _DEBUG
     void DebugDrawGUI() override;
