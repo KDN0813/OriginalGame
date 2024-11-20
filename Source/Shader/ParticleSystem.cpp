@@ -322,6 +322,9 @@ void ParticleSystem::Update()
 
 		//リードバッファのロック解除
 		immediate_context->Unmap(this->staging_buffer.Get(), 0);
+
+		// 空いているパーティクルの数を計算する
+		CalculateFreeParticleCount();
 	}
 
 	// リソースビューの解除
@@ -419,7 +422,18 @@ void ParticleSystem::LoadTexture(const char* filename)
 
 }
 
-void ParticleSystem::Play(
+int ParticleSystem::CalculateFreeParticleCount()
+{
+	this->free_particle_count = 0;	// カウントをリセット
+
+	for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
+	{
+		if (this->particle_data_pool[i].is_busy) ++this->free_particle_count;
+	}
+	return this->free_particle_count;
+}
+
+void ParticleSystem::PlayEffect(
 	DirectX::XMFLOAT3 p,
 	DirectX::XMFLOAT3 c,
 	float rot
@@ -438,8 +452,33 @@ void ParticleSystem::Play(
 			1,	// is_busy
 		};
 		this->particle_data_pool[i] = particle_data;
+
+		--this->free_particle_count;	// 空きパーティクルの数を減らす
 		break;
 	}
+}
+
+void ParticleSystem::PlayGroupEffect(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 c, int effect_count, float rot)
+{
+	if (this->free_particle_count < effect_count) return;
+
+	for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
+	{
+		if (this->particle_data_pool[i].is_busy) continue;
+
+		CPUGPUBuffer particle_data
+		{
+			p,
+			c,
+			rot,
+			0,	// step
+			1,	// is_busy
+		};
+		this->particle_data_pool[i] = particle_data;
+		break;
+	}
+
+	this->free_particle_count -= effect_count;	// 空きパーティクルの数を減らす
 }
 
 #ifdef _DEBUG
@@ -448,6 +487,7 @@ void ParticleSystem::DebugDrawGUI()
 {
 	if(ImGui::Begin("ParticleSystem"))
 	{
+		ImGui::InputInt("Free Particle Count", &this->free_particle_count);
 		if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::InputFloat2("Default Size", &particle_data.default_size.x);

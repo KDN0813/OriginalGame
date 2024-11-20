@@ -12,22 +12,6 @@
 #include "Texture/Texture.h"
 #include "shader.h"
 
-// エフェクトの種類
-enum class EffectType
-{
-	SLASH = 0,
-};
-
-struct EffectParam
-{
-	EffectType type;	// エフェクトの種類
-};
-
-struct SlashEffect : public EffectParam
-{
-
-};
-
 class ParticleSystem : public Singleton<ParticleSystem>
 {
 private:
@@ -87,14 +71,36 @@ public:
 	// テクスチャの読み込み
 	void LoadTexture(const char* filename);
 
+	// 空いているパーティクルの数を計算する
+	int CalculateFreeParticleCount();
+
 	/**
+	 * エフェクト再生
 	 * 
+	 * \param p 生成位置
+	 * \param c	色
 	 * \param timer 生存時間
 	 * \param rot 角度
 	 */
-	void Play(
+	void PlayEffect(
 		DirectX::XMFLOAT3 p,
 		DirectX::XMFLOAT3 c,
+		float rot = 0.0f
+	);
+
+	/**
+	 * グループエフェクト再生
+	 * 
+	 * \param p 生成位置
+	 * \param c	色  
+	 * \param effect_count 生成数
+	 * \param timer 生存時間
+	 * \param rot 角度
+	 */
+	void PlayGroupEffect(
+		DirectX::XMFLOAT3 p,
+		DirectX::XMFLOAT3 c,
+		int effect_count,
 		float rot = 0.0f
 	);
 
@@ -128,6 +134,7 @@ private:
 
 	int chainSRV = 0;//バッファーの切り替え
 	int chainUAV = 1;//バッファーの切り替え
+	int free_particle_count = 0;	// 空いているパーティクルの数
 
 	ParticleCommonConstant particle_data{};
 #ifdef _DEBUG
