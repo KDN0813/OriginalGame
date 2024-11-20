@@ -36,6 +36,8 @@ private:
 	bool IsPressedPauseKey();
 private:
 	const HWND						hWnd;
+	HDC								hDC;
+
 	HighResolutionTimer				timer;
 	Graphics						graphics;
 	SceneManager					scene_manager;
@@ -46,6 +48,12 @@ private:
 	CameraManager					camera_manager;
 	GameData						game_data;
 	Audio							audio;
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
+	int sync_interval = 0;			// 垂直同期間隔設定
+#else
+	const int sync_interval = 1;	// 垂直同期間隔設定
+#endif // _DEBUG || RELEASE_DEBUG
+
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)
 	// フレームレート計算用変数
 	int frames = 0;

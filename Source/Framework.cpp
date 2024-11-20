@@ -17,16 +17,6 @@
 #include "Scene/SceneManager.h"
 #include "Framework.h"
 
-// 垂直同期間隔設定
-#ifdef _DEBUG
-static const int syncInterval = 0;
-#elif  RELEASE_DEBUG
-static const int syncInterval = 0;
-#else
-static const int syncInterval = 1;
-#endif // _DEBUG
-
-
 Framework::Framework(HWND hWnd)
 	: hWnd(hWnd)
 	, graphics(hWnd)
@@ -35,6 +25,7 @@ Framework::Framework(HWND hWnd)
 	, debug_manager(hWnd)
 #endif // _DEBUG
 {
+	hDC = GetDC(hWnd);
 #if defined(_DEBUG)
 	scene_manager.ChangeScene(new SceneGame);
 	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(0.4f, 0.4f, 0.4f, 1.00f);  // デフォルト値を再設定
@@ -48,6 +39,7 @@ Framework::Framework(HWND hWnd)
 Framework::~Framework()
 {
 	scene_manager.Clear();
+	ReleaseDC(hWnd, hDC);
 }
 
 void Framework::Update(float elapsed_time)
@@ -85,7 +77,7 @@ void Framework::Render(float elapsed_time)
 	debug_manager.GetImGuiRenderer()->Render();
 #endif // _DEBUG
 
-	graphics.GetSwapChain()->Present(syncInterval, 0);
+	graphics.GetSwapChain()->Present(this->sync_interval, 0);
 }
 
 bool IsWindowActive(HWND hwnd)
@@ -149,7 +141,9 @@ int Framework::Run()
 				}
 			}
 
-			float elapsed_time = timer.TimeInterval();
+			float elapsed_time = (this->sync_interval == 0)
+				? timer.TimeInterval()
+				: this->sync_interval / static_cast<float>(GetDeviceCaps(hDC, VREFRESH));
 			Update(elapsed_time);
 			Render(elapsed_time);
 		}
@@ -249,6 +243,7 @@ void Framework::DrawDebugGUI()
 		{
 			ImGui::InputFloat("FPS", &fps);
 			ImGui::InputFloat("mspf", &mspf);
+			ImGui::SliderInt("SyncInterval", &this->sync_interval, 0, 1);
 		}
 		ImGui::End();
 #endif // DEBUG
