@@ -74,7 +74,7 @@ void SceneGame::Initialize()
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f);
+				param.local_scale = DirectX::XMFLOAT3(1.01f, 1.0f, 1.0f);
 				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
@@ -118,7 +118,7 @@ void SceneGame::Initialize()
 			{
 				Transform3DComponent::Transform3DParam param{};
 				param.local_scale = DirectX::XMFLOAT3(0.018f, 0.018f, 0.018f);
-				param.local_position = DirectX::XMFLOAT3(-65.0f, 110.0f, 7.5f);
+				param.local_position = DirectX::XMFLOAT3(-614.0f, 1060.0f, -14.0f);
 				auto transform = player->AddComponent<Transform3DComponent>(param);
 			}
 			// ムーブメント設定

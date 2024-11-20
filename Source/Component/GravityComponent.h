@@ -8,7 +8,7 @@ class GravityComponent : public Component
 public:
     struct GravityParam
     {
-        float gravity = -0.5f;   // 重力加速度
+        float gravity = -1.0f;   // 重力加速度
         bool is_grounded = false;// 地面にいるか
     }; 
 public:

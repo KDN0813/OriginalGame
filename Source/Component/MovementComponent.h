@@ -18,7 +18,7 @@ public:
     {
         DirectX::XMFLOAT3 velocity{};               // 速度
         DirectX::XMFLOAT3 acceleration{};           // 加速度
-        float step_offset = 0.2f;                   // レイの開始位置を足元より少し上に設定するためのオフセット
+        float step_offset = 1.0f;                   // レイの開始位置を足元より少し上に設定するためのオフセット
         float max_accelerationXZ = 5.0f;            // XZ軸の最大加速度
         float turn_speed = 15.0f;                   // 回転速度
         bool is_stage_raycas = false;               // ステージとのレイキャストの有無
