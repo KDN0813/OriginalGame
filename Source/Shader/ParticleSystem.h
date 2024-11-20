@@ -12,6 +12,22 @@
 #include "Texture/Texture.h"
 #include "shader.h"
 
+// エフェクトの種類
+enum class EffectType
+{
+	SLASH = 0,
+};
+
+struct EffectParam
+{
+	EffectType type;	// エフェクトの種類
+};
+
+struct SlashEffect : public EffectParam
+{
+
+};
+
 class ParticleSystem : public Singleton<ParticleSystem>
 {
 private:
