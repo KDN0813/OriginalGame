@@ -170,7 +170,8 @@ bool Collision::IntersectRayVsModel(
         // 始点から終点へのベクトル
         MYVECTOR3 S = inverse_world_transform.Vector3TransformCoord(World_start);
         MYVECTOR3 E = inverse_world_transform.Vector3TransformCoord(World_end);
-        MYVECTOR3 V = (E - S).Normalize();
+        MYVECTOR3 V = (E - S);
+        MYVECTOR3 Vn = (E - S).Normalize();
 
         // レイの長さ
         float lay_length = V.Length();
@@ -203,10 +204,10 @@ bool Collision::IntersectRayVsModel(
                 MYVECTOR3 CA = A - C;
 
                 // 三角形の法線ベクトルを算出
-                MYVECTOR3 N = AB.Cross(BC);
+                MYVECTOR3 N = (AB.Cross(BC)).Normalize();
 
                 // 内積の結果がプラスなら裏向き
-                float dot = N.Dot(V);
+                float dot = N.Dot(Vn);
                 if (0.0f <= dot) continue;
 
                 // レイと平面の交差判定
@@ -215,7 +216,7 @@ bool Collision::IntersectRayVsModel(
                 if (x < 0.f || x > lay_length) continue;     // 交点までの距離が今までに計算した最近距離より大きいときはスキップ
 
                 // 三角形とレイの交点
-                MYVECTOR3 P = S + V * x;
+                MYVECTOR3 P = S + Vn * x;
 
                 // 交点が三角形の内側にあるか判定
                 // 1つめ

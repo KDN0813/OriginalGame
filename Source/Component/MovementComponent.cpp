@@ -205,10 +205,6 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				RayHitResult hit;
 				if (Collision::IntersectRayVsModel(Start, End, stage_model.get(), hit))
 				{
-					DirectX::XMFLOAT3 start_pos{};
-					Start.GetFlaot3(start_pos);
-					DirectX::XMFLOAT3 end_pos{};
-					End.GetFlaot3(end_pos);
 					transform->SetLocalPosition(hit.position);
 					gravity->SetIsGrounded(true);
 				}

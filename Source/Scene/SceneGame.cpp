@@ -70,11 +70,11 @@ void SceneGame::Initialize()
 		// ステージ
 		{
 			auto stage = object_manager.Create("Stage");
-			stage->AddComponent<ModelComponent>("Data/Model/Stage/SandTown.mdl");
+			stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(1.01f, 1.0f, 1.0f);
+				param.local_scale = DirectX::XMFLOAT3(100.0f, 1.0f, 100.0f);
 				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
@@ -118,7 +118,7 @@ void SceneGame::Initialize()
 			{
 				Transform3DComponent::Transform3DParam param{};
 				param.local_scale = DirectX::XMFLOAT3(0.018f, 0.018f, 0.018f);
-				param.local_position = DirectX::XMFLOAT3(-614.0f, 1060.0f, -14.0f);
+				param.local_position = DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f);
 				auto transform = player->AddComponent<Transform3DComponent>(param);
 			}
 			// ムーブメント設定
