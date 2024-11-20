@@ -5,6 +5,7 @@
 #include "Debug/DebugPrimitiveRenderer.h"
 #endif // _DEBUG
 
+class Transform3DComponent;
 
 // ParticleSystemを見せるためのデバッグ用コンポーネント
 class DebugParticle : public Component
@@ -20,13 +21,20 @@ public:
     // リスタート処理
     void ReStart() override {};      // パラメータの初期化
     // 更新関数
-    void Update(float elapsed_time) override {};
+    void Update(float elapsed_time) override;
 
     // 名前取得
     const char* GetName()const  override {};
 
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+private:
+    float effect_area_radius = 2.0f;    // エフェクトを再生するエリア(円柱)の半径
+    float effect_area_height = 2.0f;    // エフェクトを再生するエリア(円柱)の高さ
+    DirectX::XMFLOAT3 area_pos = {};    // エフェクトを再生するエリアの中心
+
+private:
+    std::weak_ptr<Transform3DComponent> transform_Wptr;
 
 #ifdef _DEBUG
 public:
@@ -45,8 +53,6 @@ public:
     bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveが存在するか
 private:
     CylinderParam debug_cylinder_effect_area;
-    float effect_area_radius = 2.0f;    // エフェクトを再生するエリア(円柱)の半径
-    float effect_area_height = 2.0f;    // エフェクトを再生するエリア(円柱)の高さ
 #endif // DEBUG
 };
 
