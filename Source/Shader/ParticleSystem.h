@@ -108,6 +108,9 @@ public:
 	// 各種取得・設定関数
 	void SetElapsedTime(float time) { this->particle_data.elapsed_time = time; }
 	size_t GetFreeParticleCount()const { return this->free_particle_count; }
+
+	// エフェクト情報
+	CPUGPUBuffer effect_slash;	// 斬撃エフェクトの初期値
 private:
 	std::vector<CPUGPUBuffer> particle_data_pool;
 

@@ -4,6 +4,7 @@
 #include "Graphics/Graphics.h"
 #include "Camera/CameraManager.h"
 #include "System/Misc.h"
+#include "System\Misc.h"
 #ifdef _DEBUG
 #include "Debug\ImGuiHelper.h"
 #endif // _DEBUG
@@ -260,6 +261,23 @@ ParticleSystem::ParticleSystem()
 		hr = device->CreateUnorderedAccessView(this->particle_to_cpu_buffer.Get(), &DescUAV, this->particle_to_cpu_UAV.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
+
+	// エフェクト作成
+	{
+		// 斬撃エフェクト
+		{
+			this->effect_slash.initial_lifetime = {};						// 初期位置
+			this->effect_slash.initial_scale = {};							// 初期拡大率
+			this->effect_slash.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);		// 拡大率(補間開始)
+			this->effect_slash.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);		// 拡大率(補間終了)
+			this->effect_slash.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
+			this->effect_slash.rot = {};									// 角度
+			this->effect_slash.initial_lifetime = 0.8f;						// 生存時間
+			this->effect_slash.type = EFFECT_SLASH;							// エフェクトタイプ
+			this->effect_slash.step = 0;									// step
+			this->effect_slash.is_busy = 1;									// 稼働フラグ
+		}
+	}
 }
 
 ParticleSystem::~ParticleSystem()
@@ -441,19 +459,27 @@ void ParticleSystem::PlayEffect(
 	{
 		if (this->particle_data_pool[i].is_busy) continue;
 
-		CPUGPUBuffer particle_data
+		CPUGPUBuffer particle_data{};
+		switch (type)
 		{
-			p,
-			DirectX::XMFLOAT2(0.0f,0.0f),	// 初期拡大率
-			DirectX::XMFLOAT2(2.0f, 1.0f),	// 拡大率(補間開始)
-			DirectX::XMFLOAT2(1.0f, 3.5f),	// 拡大率(補間終了)
-			c,
-			rot,
-			0.8f,	// 生存時間
-			type,
-			0,	// step
-			1,	// is_busy
-		};
+		case EFFECT_SLASH:		// 斬撃エフェクト
+		{
+			particle_data = this->effect_slash;
+			break;
+		}
+		case EFFECT_FALL_SLASH:	// 落下斬撃エフェクト
+		{
+			particle_data = this->effect_slash;
+			break;
+		}
+		default:
+			_ASSERT_EXPR_W(false,L"エフェクトタイプが存在しません");
+			break;
+		}
+
+		particle_data.initial_position = p;
+		particle_data.rot = rot;
+		particle_data.color = c;
 		this->particle_data_pool[i] = particle_data;
 
 		--this->free_particle_count;	// 空きパーティクルの数を減らす
