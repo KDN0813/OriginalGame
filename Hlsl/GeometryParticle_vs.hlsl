@@ -7,7 +7,6 @@ GsIn main(uint index : SV_VertexID)
     GsIn output = (GsIn) 0;
     output.position = Input[index].position;
     output.color = float4(Input[index].color, Input[index].alpha);
-    output.size = default_size;
 	
     output.param.rot = Input[index].rot;
     output.param.scale = Input[index].scale;

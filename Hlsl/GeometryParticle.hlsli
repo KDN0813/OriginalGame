@@ -10,7 +10,6 @@ struct ParticleParam
 struct VsIn
 {
     float3 position : POSITION;
-    float2 size : TEXCOORD;
     float4 color : COLOR;
     ParticleParam param;
 };
@@ -18,7 +17,6 @@ struct VsIn
 struct GsIn
 {
     float3 position : POSITION;
-    float2 size : TEXCOORD;
     float4 color : COLOR;
     ParticleParam param;
 };
@@ -68,7 +66,6 @@ struct CPUGPUBuffer
 // パーティク共通の定数
 cbuffer ParticleCommonConstant : register(b1)
 {
-    float2 default_size;    // 通常画像サイズ
     float elapsed_time;     // 経過時間
-    float dummy;
+    float dummy[3];
 };

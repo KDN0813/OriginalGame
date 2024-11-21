@@ -63,9 +63,8 @@ private:
 	// パーティク共通の定数
 	struct ParticleCommonConstant
 	{
-		DirectX::XMFLOAT2 default_size;		// 画像サイズ
 		float elapsed_time;					// 経過時間
-		float dummy;
+		float dummy[3];
 	};
 
 public:
@@ -146,11 +145,14 @@ private:
 	int chainSRV = 0;//バッファーの切り替え
 	int chainUAV = 1;//バッファーの切り替え
 	size_t free_particle_count = 0;	// 空いているパーティクルの数
+	size_t debug_particle_index_max = 20;	// デバッグ用のパーティクルの最大数
+	bool draw_debug_play = false;
 
 	ParticleCommonConstant particle_data{};
 #ifdef _DEBUG
 public:
 	void DebugDrawGUI();
 
+	void PlayDebugEffect();
 #endif // _DEBUG
 };

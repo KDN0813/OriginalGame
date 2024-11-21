@@ -37,7 +37,6 @@ ParticleSystem::ParticleSystem()
 		{
 			// パーティクルデータの初期化
 			particle_data.elapsed_time = 0.0f;
-			particle_data.default_size = { 0.340f, 1.28f };
 
 			D3D11_SUBRESOURCE_DATA subresource{};
 			subresource.pSysMem = &particle_data;
@@ -518,10 +517,18 @@ void ParticleSystem::PlayEffect(
 	const std::vector<CPUGPUBuffer>& particle_pool
 )
 {
+#ifdef _DEBUG
+	if (this->free_particle_count - this->debug_particle_index_max < particle_pool.size()) return;
+#else
 	if (this->free_particle_count < particle_pool.size()) return;	// 必用数の空きがなければreturn
+#endif // DEBUG
 
 	size_t count = 0;	// 追加したパーティクルの数
+#ifdef _DEBUG
+	for (size_t i = this->debug_particle_index_max; i < this->particle_data_pool.size(); ++i)
+#else
 	for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
+#endif // DEBUG
 	{
 		if (this->particle_data_pool[i].is_busy) continue;	// 稼働していたら飛ばす
 
@@ -560,9 +567,10 @@ void ParticleSystem::DebugDrawGUI()
 	if(ImGui::Begin("ParticleSystem"))
 	{
 		ImGui::InputSize_t("Free Particle Count", this->free_particle_count);
+		ImGui::InputSize_t("Debug Particle Index Max", this->debug_particle_index_max);
+		ImGui::Checkbox("Draw Debug Play", &this->draw_debug_play);
 		if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::InputFloat2("Default Size", &particle_data.default_size.x);
 			ImGui::InputFloat("Elapsed Time", &particle_data.elapsed_time);
 			ImGui::TreePop();
 		}
@@ -591,6 +599,11 @@ void ParticleSystem::DebugDrawGUI()
 		}
 	}
 	ImGui::End();
+}
+
+void ParticleSystem::PlayDebugEffect()
+{
+	if (!this->draw_debug_play) return;
 }
 
 #endif // DEBUG
