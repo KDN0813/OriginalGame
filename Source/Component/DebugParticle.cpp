@@ -72,7 +72,7 @@ void DebugParticle::PlayEffect(int type)
             rot = theta;
         }
 
-        particle_system->PlayEffect(type, pos, rot, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f), direction);
+        particle_system->PlayEffect(type, pos, rot, DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), direction);
     }
 }
 

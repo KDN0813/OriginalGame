@@ -118,9 +118,9 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     rot = NormalizeRadiansIfOutOfRange(rot + Input2[node].rot_speed * elapsed_time);
             
                     // 位置更新
-                    position += Input2[node].forward * velocity * elapsed_time;
+                    position += velocity * elapsed_time;
                     // 速度更新
-                    //velocity += Input2[node].acceleration * elapsed_time;
+                    velocity += Input2[node].acceleration * elapsed_time;
                       
                     if (0.0f < lifetimer)
                         break;

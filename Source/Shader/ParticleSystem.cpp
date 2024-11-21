@@ -288,28 +288,36 @@ ParticleSystem::ParticleSystem()
 		{
 			DirectX::XMFLOAT3 pos{};
 			float rot{};
-			for (size_t i = 0; i < 3; ++i)
+			const size_t particle_max = 10;	// ヒットエフェクトの星の数
+			const float step = (-DirectX::XM_PI - DirectX::XM_PI) / static_cast<float>(particle_max);	// 各区間の間隔
+			const float velocity = 2.5f;
+			const float initial_lifetime = 0.6f;
+			const float accelerationY = -velocity / initial_lifetime * 1.5f;
+			for (size_t i = 0; i < particle_max; ++i)
 			{
 				CPUGPUBuffer effect{};
 				effect.initial_position = pos;						// 初期位置
 				effect.forward = {};								// 前方方向
-				effect.velocity = {};								// 移動速度
-				effect.acceleration = {};							// 加速度
-				effect.initial_scale = DirectX::XMFLOAT2(0.3f, 0.3f);// 初期拡大率
+				// 移動速度
+				effect.velocity = 
+				{
+					sinf(step* i)* velocity,
+					velocity,
+					cosf(step* i)* velocity
+				};								
+				effect.acceleration = { 0.0f ,accelerationY ,0.0f };   // 加速度
+				effect.initial_scale = DirectX::XMFLOAT2(0.03f, 0.03f);// 初期拡大率
 				effect.f_scale = {};		// 拡大率(補間開始)
 				effect.e_scale = {};		// 拡大率(補間終了)
-				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
+				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f);	// 色
 				effect.rot = rot;									// 角度
 				effect.rot_speed = DirectX::XMConvertToRadians(360.0f);								// 回転速度
-				effect.initial_lifetime = 0.8f;						// 生存時間
+				effect.initial_lifetime = initial_lifetime;			// 生存時間
 				effect.type = EFFECT_HIT;							// エフェクトタイプ
 				effect.step = 0;									// step
 				effect.is_busy = 1;									// 稼働フラグ
 				this->effect_hit.emplace_back(effect);
 			}
-			this->effect_hit[0].velocity = { 1.0f,1.0f, 1.0f, };
-			this->effect_hit[1].velocity = { -1.5f,2.0f, 1.0f, };
-			this->effect_hit[2].velocity = { -2.0f,-1.0f, 1.0f, };
 		}
 	}
 }
