@@ -92,10 +92,10 @@ public:
 	 * \param rot Šp“x
 	 */
 	void PlayEffect(
-		DirectX::XMFLOAT3 p,
-		DirectX::XMFLOAT3 c,
 		int type,
-		float rot
+		DirectX::XMFLOAT3 p,
+		float rot,
+		DirectX::XMFLOAT3 c
 	);
 
 	/**

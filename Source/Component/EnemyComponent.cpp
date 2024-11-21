@@ -216,10 +216,10 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 		{
 			particle_system->PlayEffect(
-				pos,
-				DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f),
 				EFFECT_SLASH,
-				45.0f
+				pos,
+				45.0f,
+				DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f)
 			);
 		}
 	}

@@ -431,10 +431,10 @@ int ParticleSystem::CalculateFreeParticleCount()
 }
 
 void ParticleSystem::PlayEffect(
-	DirectX::XMFLOAT3 p,
-	DirectX::XMFLOAT3 c,
 	int type,
-	float rot
+	DirectX::XMFLOAT3 p,
+	float rot,
+	DirectX::XMFLOAT3 c
 )
 {
 	for (size_t i = 0 ; i < this->particle_data_pool.size(); ++i)
