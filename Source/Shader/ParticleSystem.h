@@ -86,16 +86,16 @@ public:
 	/**
 	 * エフェクト再生
 	 * 
-	 * \param p 生成位置
-	 * \param c	色
-	 * \param timer 生存時間
+	 * \param type 生成位置
+	 * \param pos 生成位置
 	 * \param rot 角度
+	 * \param color 色
 	 */
 	void PlayEffect(
 		int type,
-		DirectX::XMFLOAT3 parent_pos,
-		float parent_rot,
-		DirectX::XMFLOAT3 parent_color
+		DirectX::XMFLOAT3 pos,
+		float rot,
+		DirectX::XMFLOAT3 color
 	);
 
 	/**
