@@ -267,7 +267,7 @@ ParticleSystem::ParticleSystem()
 		// 斬撃エフェクト
 		{
 			CPUGPUBuffer effect{};
-			effect.initial_lifetime = {};						// 初期位置
+			effect.initial_position = {};						// 初期位置
 			effect.initial_scale = {};							// 初期拡大率
 			effect.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);		// 拡大率(補間開始)
 			effect.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);		// 拡大率(補間終了)
@@ -279,6 +279,30 @@ ParticleSystem::ParticleSystem()
 			effect.is_busy = 1;									// 稼働フラグ
 
 			this->effect_slash.emplace_back(effect);
+		}
+
+		// 落下斬撃エフェクト
+		{
+			DirectX::XMFLOAT3 pos{};
+			float rot{};
+			for (size_t i = 0; i < 4; ++i)
+			{
+				CPUGPUBuffer effect{};
+				effect.initial_position = pos;						// 初期位置
+				effect.initial_scale = {};							// 初期拡大率
+				effect.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);		// 拡大率(補間開始)
+				effect.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);		// 拡大率(補間終了)
+				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
+				effect.rot = rot;									// 角度
+				effect.initial_lifetime = 0.8f;						// 生存時間
+				effect.type = EFFECT_SLASH;							// エフェクトタイプ
+				effect.step = 0;									// step
+				effect.is_busy = 1;									// 稼働フラグ
+				this->effect_fall_slash.emplace_back(effect);
+
+				pos.x += 2.0f;
+				rot += 90.0f;
+			}
 		}
 	}
 }
@@ -458,68 +482,32 @@ void ParticleSystem::PlayEffect(
 	DirectX::XMFLOAT3 parent_color
 )
 {
-	for (size_t i = 0 ; i < this->particle_data_pool.size(); ++i)
+	switch (type)
 	{
-		if (this->particle_data_pool[i].is_busy) continue;
-
-		CPUGPUBuffer particle_data{};
-		switch (type)
-		{
-		case EFFECT_SLASH:		// 斬撃エフェクト
-		{
-			PlayEffect(
-				parent_pos,
-				parent_rot,
-				parent_color,
-				this->effect_slash
-			);
-			break;
-		}
-		case EFFECT_FALL_SLASH:	// 落下斬撃エフェクト
-		{
-			PlayEffect(
-				parent_pos,
-				parent_rot,
-				parent_color,
-				this->effect_slash
-			);
-			break;
-		}
-		default:
-			_ASSERT_EXPR_W(false,L"エフェクトタイプが存在しません");
-			break;
-		}
+	case EFFECT_SLASH:		// 斬撃エフェクト
+	{
+		PlayEffect(
+			parent_pos,
+			parent_rot,
+			parent_color,
+			this->effect_slash
+		);
 		break;
 	}
-}
-
-void ParticleSystem::PlayGroupEffect(const std::vector<ParticleParam>& particle_pool)
-{
-	const size_t effect_count = particle_pool.size();
-	if (this->free_particle_count < effect_count) return;
-
-	int count = 0;
-	for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
+	case EFFECT_FALL_SLASH:	// 落下斬撃エフェクト
 	{
-		if (this->particle_data_pool[i].is_busy) continue;
-
-		this->particle_data_pool[i].initial_position = particle_pool[count].initial_position;
-		this->particle_data_pool[i].initial_scale = DirectX::XMFLOAT2(1.0f, 1.0f);
-		this->particle_data_pool[i].f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
-		this->particle_data_pool[i].e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
-		this->particle_data_pool[i].color = particle_pool[count].color;
-		this->particle_data_pool[i].rot = particle_pool[count].rot;
-		this->particle_data_pool[i].initial_lifetime = particle_pool[count].initial_lifetime;
-		this->particle_data_pool[i].type = particle_pool[count].type;
-		this->particle_data_pool[i].is_busy = 1;
-		this->particle_data_pool[i].step = 0;
-
-		++count;
-
-		if (effect_count <= count) break;
+		PlayEffect(
+			parent_pos,
+			parent_rot,
+			parent_color,
+			this->effect_fall_slash
+		);
+		break;
 	}
-
-	this->free_particle_count -= effect_count;	// 空きパーティクルの数を減らす
+	default:
+		_ASSERT_EXPR_W(false, L"エフェクトタイプが存在しません");
+		break;
+	}
 }
 
 void ParticleSystem::PlayEffect(

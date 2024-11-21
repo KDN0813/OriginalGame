@@ -30,9 +30,7 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
 private:
     // 範囲内のランダムな位置にエフェクトを再生させる
-    void PlayEffect();
-    // 範囲内のランダムな位置にグループエフェクトを再生させる
-    void PlayGroupEffect(size_t count);
+    void PlayEffect(int type);
 
 private:
     float effect_area_radius = 2.0f;    // エフェクトを再生するエリア(円柱)の半径
@@ -61,6 +59,7 @@ public:
 private:
     CylinderParam debug_cylinder_effect_area;
     size_t group_count = 100;       // 再生するグループエフェクトの数
+    int draw_effect_type = 0;   // デバッグで描画するエフェクトのタイプ
 #endif // DEBUG
 };
 
