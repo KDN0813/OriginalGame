@@ -93,9 +93,9 @@ public:
 	 */
 	void PlayEffect(
 		int type,
-		DirectX::XMFLOAT3 p,
-		float rot,
-		DirectX::XMFLOAT3 c
+		DirectX::XMFLOAT3 parent_pos,
+		float parent_rot,
+		DirectX::XMFLOAT3 parent_color
 	);
 
 	/**
@@ -110,7 +110,19 @@ public:
 	size_t GetFreeParticleCount()const { return this->free_particle_count; }
 
 	// エフェクト情報
-	CPUGPUBuffer effect_slash;	// 斬撃エフェクトの初期値
+	std::vector<CPUGPUBuffer> effect_slash;	// 斬撃エフェクトの初期値
+private:
+	/**
+	 * エフェクト再生
+	 * 
+	 * \param particle_pool パーティクルの情報
+	 */
+	void PlayEffect(
+		DirectX::XMFLOAT3 parent_pos,
+		float parent_rot,
+		DirectX::XMFLOAT3 parent_color,
+		const std::vector<CPUGPUBuffer>& particle_pool
+	);
 private:
 	std::vector<CPUGPUBuffer> particle_data_pool;
 
