@@ -267,11 +267,15 @@ ParticleSystem::ParticleSystem()
 		{
 			CPUGPUBuffer effect{};
 			effect.initial_position = {};						// 初期位置
+			effect.direction = {};								// 移動方向
+			effect.velocity = {};								// 移動速度
+			effect.acceleration = {};							// 加速度
 			effect.initial_scale = {};							// 初期拡大率
 			effect.f_scale = DirectX::XMFLOAT2(0.02f, 0.01f);		// 拡大率(補間開始)
 			effect.e_scale = DirectX::XMFLOAT2(0.01f, 0.035f);		// 拡大率(補間終了)
 			effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
 			effect.rot = {};									// 角度
+			effect.rot_speed = {};								// 回転速度
 			effect.initial_lifetime = 0.8f;						// 生存時間
 			effect.type = EFFECT_SLASH;							// エフェクトタイプ
 			effect.step = 0;									// step
@@ -288,11 +292,15 @@ ParticleSystem::ParticleSystem()
 			{
 				CPUGPUBuffer effect{};
 				effect.initial_position = pos;						// 初期位置
+				effect.direction = {};								// 移動方向
+				effect.velocity = {};								// 移動速度
+				effect.acceleration = {};							// 加速度
 				effect.initial_scale = DirectX::XMFLOAT2(0.01f, 0.01f);// 初期拡大率
 				effect.f_scale = {};		// 拡大率(補間開始)
 				effect.e_scale = {};		// 拡大率(補間終了)
 				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
 				effect.rot = rot;									// 角度
+				effect.rot_speed = {};								// 回転速度
 				effect.initial_lifetime = 0.8f;						// 生存時間
 				effect.type = EFFECT_FALL_SLASH;							// エフェクトタイプ
 				effect.step = 0;									// step

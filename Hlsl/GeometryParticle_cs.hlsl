@@ -43,6 +43,8 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     // 一度変数に代入してから計算する
     float3 color = Input[node].color;
     float3 position = Input[node].position;
+    float3 direction = Input[node].direction;
+    float3 velocity = Input[node].velocity;
     float2 scale = Input[node].scale;
     float rot = Input[node].rot;
     float alpha = Input[node].alpha;
@@ -112,7 +114,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
             
                     // 角度更新
-                    //rot += 5.0f * elapsed_time;
+                    rot += Input2[node].rot_speed * elapsed_time;
             
                     // 位置更新
                     position.y -= 2.0f * elapsed_time;
@@ -132,6 +134,8 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     // Resultに計算結果を代入
     Result[node].color = color;
     Result[node].position = position;
+    Result[node].direction = direction;
+    Result[node].velocity = velocity;
     Result[node].scale = scale;
     Result[node].rot = rot;
     Result[node].alpha = alpha;

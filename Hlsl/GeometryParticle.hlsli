@@ -42,6 +42,8 @@ struct InputGp
 {
     float3 color;
     float3 position; // 描画位置
+    float3 direction;// 移動方向
+    float3 velocity; // 移動速度
     float2 scale;   // 拡大率
     float rot;      // 角度
     float alpha;    // 透明度
@@ -52,11 +54,15 @@ struct InputGp
 struct CPUGPUBuffer
 {
     float3 initial_position;// 初期位置
+    float3 direction;       // 移動方向
+    float3 velocity;        // 移動速度
+    float3 acceleration;    // 加速度
     float2 initial_scale;   // 初期拡大率
     float2 f_scale;         // 拡大率(開始)
     float2 e_scale;         // 拡大率(終了)
     float3 color;           // 初期色   
     float rot;              // 初期角度
+    float rot_speed;        // 回転速度
     float initial_lifetime; // 初期生存時間
     int type;               // エフェクトの種類
     int step;
