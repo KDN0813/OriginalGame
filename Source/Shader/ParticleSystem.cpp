@@ -512,6 +512,7 @@ void ParticleSystem::DebugDrawGUI()
 					CPUGPUBuffer& data = this->particle_data_pool[i];
 					ImGui::InputFloat3("Position", &data.position.x);
 					ImGui::InputFloat("Rrot", &data.rot);
+					ImGui::InputInt("type", &data.type);
 					ImGui::InputInt("Step", &data.step);
 					bool flag = static_cast<bool> (data.is_busy);
 					if (ImGui::Checkbox("Is Busy", &flag))

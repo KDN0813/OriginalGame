@@ -29,7 +29,8 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     int node = TH_X * y + x;
     
     // 稼働していなければ処理しない
-    if (!Input2[node].is_busy) return;
+    if (!Input2[node].is_busy)
+        return;
     
     // 前フレームの情報をコピーする
     Result2[node] = Input2[node];
@@ -44,33 +45,76 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     float alpha = Input[node].alpha;
     float timer = Input[node].timer;
     
-    switch (Input2[node].step)
+    // 補間率
+    float t = 0.0f;
+    
+    switch (Input2[node].type)
     {
-        case 0: // 初期設定
+        // 各種更新
         
-            // GPU専用データの設定
-            color = Input2[node].color;
-            position = Input2[node].position;
-            rot = Input2[node].rot;
-            alpha = 0.0f;
-            scale = f_scale;
-            timer = timer_max;
-            // CPU共有データの設定
-            Result2[node].step = 1;    
-        break;
-        case 1: // 更新
+        case EFFECT_SLASH:  // 斬撃エフェクト
+            switch (Input2[node].step)
+            {
+                case 0: // 初期設定
+                
+                    // GPU専用データの設定
+                    color = Input2[node].color;
+                    position = Input2[node].position;
+                    rot = Input2[node].rot;
+                    alpha = 0.0f;
+                    scale = f_scale;
+                    timer = timer_max;
+                    // CPU共有データの設定
+                    Result2[node].step = 1;
+                    break;
+                case 1: // 更新
 
-            // 稼働中であるか判定する
-            Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
+                    // 稼働中であるか判定する
+                    Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
+                
+                    timer = max(0.0f, timer - elapsed_time);
+                    t = (timer_max - timer) / timer_max;
+                    // 透明度の補間
+                    alpha = FadeInOut(t);
+                    // 拡大率の補間
+                    scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
+                    scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
+                    break;
+            }
         
-            timer = max(0.0f, timer - elapsed_time);
-            const float t = (timer_max - timer) / timer_max;
-            // 透明度の補間
-            alpha = FadeInOut(t);
-            // 拡大率の補間
-            scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
-            scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
-        break;
+            break;   // 斬撃エフェクト
+        
+        case EFFECT_FALL_SLASH: // 落下斬撃エフェクト
+            switch (Input2[node].step)
+            {
+                case 0: // 初期設定
+                
+                    // GPU専用データの設定
+                    color = Input2[node].color;
+                    position = Input2[node].position;
+                    rot = Input2[node].rot;
+                    alpha = 0.0f;
+                    scale = f_scale;
+                    timer = timer_max;
+                    // CPU共有データの設定
+                    Result2[node].step = 1;
+                    break;
+                case 1: // 更新
+
+                    // 稼働中であるか判定する
+                    Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
+                
+                    timer = max(0.0f, timer - elapsed_time);
+                    t = (timer_max - timer) / timer_max;
+                    // 色の変更
+                    alpha = FadeInOut(t);
+                    color.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
+                    color.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
+                    color.z = FadeInOut(t);
+                    break;
+            }
+        
+            break; // 落下斬撃エフェクト
     }
     
     // Resultに計算結果を代入
