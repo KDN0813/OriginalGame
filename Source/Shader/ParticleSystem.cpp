@@ -284,7 +284,7 @@ ParticleSystem::ParticleSystem()
 		{
 			DirectX::XMFLOAT3 pos{};
 			float rot{};
-			for (size_t i = 0; i < 4; ++i)
+			for (size_t i = 0; i < 3; ++i)
 			{
 				CPUGPUBuffer effect{};
 				effect.initial_position = pos;						// 初期位置
@@ -517,18 +517,10 @@ void ParticleSystem::PlayEffect(
 	const std::vector<CPUGPUBuffer>& particle_pool
 )
 {
-#ifdef _DEBUG
-	if (this->free_particle_count - this->debug_particle_index_max < particle_pool.size()) return;
-#else
 	if (this->free_particle_count < particle_pool.size()) return;	// 必用数の空きがなければreturn
-#endif // DEBUG
 
 	size_t count = 0;	// 追加したパーティクルの数
-#ifdef _DEBUG
-	for (size_t i = this->debug_particle_index_max; i < this->particle_data_pool.size(); ++i)
-#else
 	for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
-#endif // DEBUG
 	{
 		if (this->particle_data_pool[i].is_busy) continue;	// 稼働していたら飛ばす
 
@@ -567,14 +559,25 @@ void ParticleSystem::DebugDrawGUI()
 	if(ImGui::Begin("ParticleSystem"))
 	{
 		ImGui::InputSize_t("Free Particle Count", this->free_particle_count);
-		ImGui::InputSize_t("Debug Particle Index Max", this->debug_particle_index_max);
 		ImGui::Checkbox("Draw Debug Play", &this->draw_debug_play);
+
+		// パーティクル定数
 		if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::InputFloat("Elapsed Time", &particle_data.elapsed_time);
 			ImGui::TreePop();
 		}
 
+		// 再生するエフェクトの情報
+		if (ImGui::TreeNodeEx("Effect Param"))
+		{
+			DebugDrawEffectParamGUI("SLASH", this->effect_slash);
+			DebugDrawEffectParamGUI("FALL SLASH", this->effect_fall_slash);
+
+			ImGui::TreePop();
+		}
+
+		// 各CPUで操作するパーティクルの情報
 		if (ImGui::TreeNodeEx("Particle Param Pool"))
 		{
 			for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
@@ -599,6 +602,30 @@ void ParticleSystem::DebugDrawGUI()
 		}
 	}
 	ImGui::End();
+}
+
+void ParticleSystem::DebugDrawEffectParamGUI(std::string label, std::vector<CPUGPUBuffer>& effect_pool)
+{
+	int count = 0;
+	if (ImGui::TreeNodeEx(label.c_str()))
+	{
+		for (auto& effect : effect_pool)
+		{
+			if (ImGui::TreeNodeEx(std::to_string(count).c_str()))
+			{
+				ImGui::DragFloat3(("initial_position##" + label + std::to_string(count)).c_str(), &effect.initial_position.x);
+				ImGui::DragFloat2(("initial_scale##" + label + std::to_string(count)).c_str(), &effect.initial_scale.x);
+				ImGui::DragFloat2(("f_scale##" + label + std::to_string(count)).c_str(), &effect.f_scale.x);
+				ImGui::DragFloat2(("e_scale##" + label + std::to_string(count)).c_str(), &effect.e_scale.x);
+				ImGui::DragFloat2(("color##" + label + std::to_string(count)).c_str(), &effect.color.x);
+				ImGui::DragFloat(("rot##" + label + std::to_string(count)).c_str(), &effect.rot);
+				ImGui::DragFloat(("initial_lifetime##" + label + std::to_string(count)).c_str(), &effect.initial_lifetime);
+				ImGui::TreePop();
+			}
+			++count;
+		}
+		ImGui::TreePop();
+	}
 }
 
 void ParticleSystem::PlayDebugEffect()
