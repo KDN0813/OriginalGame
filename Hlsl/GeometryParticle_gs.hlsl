@@ -1,9 +1,17 @@
 #include "GeometryParticle.hlsli"
 
+Texture2D color_map : register(t0);
+
 // 1頂点から4頂点生成する
 [maxvertexcount(4)]
 void main(point GsIn gin[1], inout TriangleStream<PsIn> output)
 {
+    float texture_width = 0.0f;
+    float texture_height = 0.0f;
+    
+    // テクスチャサイズ取得
+    color_map.GetDimensions(texture_width, texture_height);
+    
     // ビルボード化するために、
     // 頂点座標をワールド空間＞ビュー空間へ変換
     float4 pos = mul(float4(gin[0].position, 1.0f), view_matrix);
@@ -12,8 +20,8 @@ void main(point GsIn gin[1], inout TriangleStream<PsIn> output)
     float rot = gin[0].param.rot;
     float s = sin(rot);
     float c = cos(rot);
-    float4 right = float4(c, -s, 0, 0) * (gin[0].size.x * 0.5 * gin[0].param.scale.x);
-    float4 up = float4(s, c, 0, 0) * (gin[0].size.y * 0.5 * gin[0].param.scale.y);
+    float4 right = float4(c, -s, 0, 0) * (texture_width * 0.5 * gin[0].param.scale.x);
+    float4 up = float4(s, c, 0, 0) * (texture_height * 0.5 * gin[0].param.scale.y);
 
     //  4角形ポリゴンを生成
     float4 pos_left_top = pos - right + up;

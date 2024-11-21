@@ -269,8 +269,8 @@ ParticleSystem::ParticleSystem()
 			CPUGPUBuffer effect{};
 			effect.initial_position = {};						// 初期位置
 			effect.initial_scale = {};							// 初期拡大率
-			effect.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);		// 拡大率(補間開始)
-			effect.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);		// 拡大率(補間終了)
+			effect.f_scale = DirectX::XMFLOAT2(0.02f, 0.01f);		// 拡大率(補間開始)
+			effect.e_scale = DirectX::XMFLOAT2(0.01f, 0.035f);		// 拡大率(補間終了)
 			effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
 			effect.rot = {};									// 角度
 			effect.initial_lifetime = 0.8f;						// 生存時間
@@ -289,13 +289,13 @@ ParticleSystem::ParticleSystem()
 			{
 				CPUGPUBuffer effect{};
 				effect.initial_position = pos;						// 初期位置
-				effect.initial_scale = {};							// 初期拡大率
-				effect.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);		// 拡大率(補間開始)
-				effect.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);		// 拡大率(補間終了)
+				effect.initial_scale = DirectX::XMFLOAT2(0.01f, 0.01f);// 初期拡大率
+				effect.f_scale = {};		// 拡大率(補間開始)
+				effect.e_scale = {};		// 拡大率(補間終了)
 				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
 				effect.rot = rot;									// 角度
 				effect.initial_lifetime = 0.8f;						// 生存時間
-				effect.type = EFFECT_SLASH;							// エフェクトタイプ
+				effect.type = EFFECT_FALL_SLASH;							// エフェクトタイプ
 				effect.step = 0;									// step
 				effect.is_busy = 1;									// 稼働フラグ
 				this->effect_fall_slash.emplace_back(effect);
@@ -443,6 +443,7 @@ void ParticleSystem::Render()
 
 	//	テクスチャ設定
 	immediate_context->PSSetShaderResources(0, 1, this->texture->GetAddressOf());
+	immediate_context->GSSetShaderResources(0, 1, this->texture->GetAddressOf());
 
 	// 頂点シェーダーにパーティクル情報送る
 	immediate_context->VSSetShaderResources(0, 1, this->particle_gpu_data_SRV[chainSRV].GetAddressOf());

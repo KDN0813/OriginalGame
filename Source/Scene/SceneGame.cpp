@@ -66,7 +66,7 @@ void SceneGame::Initialize()
 
 	// パーティクルシステムのテクスチャロード
 	{
-		particle_system.LoadTexture("Data/Effect/Texture/Line01.png");
+		particle_system.LoadTexture("Data/Effect/Texture/t0006.png");
 	}
 
 	// オブジェクト作成
