@@ -306,9 +306,12 @@ ParticleSystem::ParticleSystem()
 				effect.step = 0;									// step
 				effect.is_busy = 1;									// ‰Ò“­ƒtƒ‰ƒO
 				this->effect_hit.emplace_back(effect);
+
+				pos.x += 5.0f;
 			}
 			this->effect_hit[0].direction = { 0.5f,0.3f, 0.0f, };
-			this->effect_hit[0].velocity = { 1.0f,1.0f, 1.0f, };
+			this->effect_hit[0].velocity = { 3.0f,3.0f, 3.0f, };
+			this->effect_hit[0].initial_scale = { 0.1f,0.1f};
 		}
 	}
 }

@@ -65,6 +65,8 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     // GPU専用データの設定
                     color = Input2[node].color;
                     position = Input2[node].initial_position;
+                    direction = Input2[node].direction;
+                    velocity = Input2[node].velocity;
                     rot = Input2[node].rot;
                     alpha = 0.0f;
                     scale = Input2[node].initial_scale;
@@ -101,6 +103,8 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     // GPU専用データの設定
                     color = Input2[node].color;
                     position = Input2[node].initial_position;
+                    direction = Input2[node].direction;
+                    velocity = Input2[node].velocity;
                     rot = Input2[node].rot;
                     alpha = 1.0f;
                     scale = Input2[node].initial_scale;
@@ -117,9 +121,9 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     rot = NormalizeRadiansIfOutOfRange(rot + Input2[node].rot_speed * elapsed_time);
             
                     // 位置更新
-                    position += Input2[node].direction * velocity;            
+                    position += direction * velocity * elapsed_time;
                     // 速度更新
-                    velocity += Input2[node].acceleration;
+                    //velocity += Input2[node].acceleration * elapsed_time;
                       
                     if (0.0f < lifetimer)
                         break;
