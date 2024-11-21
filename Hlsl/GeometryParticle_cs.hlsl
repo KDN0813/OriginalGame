@@ -93,7 +93,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
         
             break;   // 斬撃エフェクト
         
-        case EFFECT_HIT: // 落下斬撃エフェクト
+        case EFFECT_HIT: // ヒットエフェクト
             switch (Input2[node].step)
             {
                 case 0: // 初期設定
@@ -115,7 +115,12 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
             
                     // 角度更新
                     rot = NormalizeRadiansIfOutOfRange(rot + Input2[node].rot_speed * elapsed_time);
-                                
+            
+                    // 位置更新
+                    position += Input2[node].direction * velocity;            
+                    // 速度更新
+                    velocity += Input2[node].acceleration;
+                      
                     if (0.0f < lifetimer)
                         break;
                     // パーティクルが地面まで移動したらor寿命が尽きたら実行

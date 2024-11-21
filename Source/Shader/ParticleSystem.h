@@ -107,9 +107,6 @@ public:
 	void SetElapsedTime(float time) { this->particle_data.elapsed_time = time; }
 	size_t GetFreeParticleCount()const { return this->free_particle_count; }
 
-	// エフェクト情報
-	std::vector<CPUGPUBuffer> effect_slash;			// 斬撃エフェクトの初期値
-	std::vector<CPUGPUBuffer> effect_fall_slash;	// 落下斬撃エフェクトの初期値
 private:
 	/**
 	 * エフェクト再生
@@ -152,6 +149,11 @@ private:
 	int chainUAV = 1;//バッファーの切り替え
 	size_t free_particle_count = 0;	// 空いているパーティクルの数
 
+	// エフェクト情報
+	std::vector<CPUGPUBuffer> effect_slash;			// 斬撃エフェクトの初期値
+	std::vector<CPUGPUBuffer> effect_hit;			// ヒットエフェクト
+
+	// パーティクの定数バッファ
 	ParticleCommonConstant particle_data{};
 #ifdef _DEBUG
 public:

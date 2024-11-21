@@ -284,7 +284,7 @@ ParticleSystem::ParticleSystem()
 			this->effect_slash.emplace_back(effect);
 		}
 
-		// 落下斬撃エフェクト
+		// ヒットエフェクト
 		{
 			DirectX::XMFLOAT3 pos{};
 			float rot{};
@@ -305,11 +305,10 @@ ParticleSystem::ParticleSystem()
 				effect.type = EFFECT_HIT;							// エフェクトタイプ
 				effect.step = 0;									// step
 				effect.is_busy = 1;									// 稼働フラグ
-				this->effect_fall_slash.emplace_back(effect);
-
-				pos.x += 2.0f;
-				rot += 90.0f;
+				this->effect_hit.emplace_back(effect);
 			}
+			this->effect_hit[0].direction = { 0.5f,0.3f, 0.0f, };
+			this->effect_hit[0].velocity = { 1.0f,1.0f, 1.0f, };
 		}
 	}
 }
@@ -508,7 +507,7 @@ void ParticleSystem::PlayEffect(
 			parent_pos,
 			parent_rot,
 			parent_color,
-			this->effect_fall_slash
+			this->effect_hit
 		);
 		break;
 	}
@@ -579,7 +578,7 @@ void ParticleSystem::DebugDrawGUI()
 		if (ImGui::TreeNodeEx("Effect Param"))
 		{
 			DebugDrawEffectParamGUI("SLASH", this->effect_slash);
-			DebugDrawEffectParamGUI("FALL SLASH", this->effect_fall_slash);
+			DebugDrawEffectParamGUI("EFFECT HIT", this->effect_hit);
 
 			ImGui::TreePop();
 		}
@@ -620,12 +619,16 @@ void ParticleSystem::DebugDrawEffectParamGUI(std::string label, std::vector<CPUG
 		{
 			if (ImGui::TreeNodeEx(std::to_string(count).c_str()))
 			{
-				ImGui::DragFloat3(("initial_position##" + label + std::to_string(count)).c_str(), &effect.initial_position.x);
+				ImGui::DragFloat3(("initial_position##" + label + std::to_string(count)).c_str(), &effect.initial_position.x, 0.01f);
+				ImGui::SliderFloat3(("direction##" + label + std::to_string(count)).c_str(), &effect.direction.x, 0.0f, 1.0f);
+				ImGui::DragFloat3(("velocity##" + label + std::to_string(count)).c_str(), &effect.velocity.x, 0.01f);
+				ImGui::DragFloat3(("acceleration##" + label + std::to_string(count)).c_str(), &effect.acceleration.x, 0.01f);
 				ImGui::DragFloat2(("initial_scale##" + label + std::to_string(count)).c_str(), &effect.initial_scale.x);
 				ImGui::DragFloat2(("f_scale##" + label + std::to_string(count)).c_str(), &effect.f_scale.x);
 				ImGui::DragFloat2(("e_scale##" + label + std::to_string(count)).c_str(), &effect.e_scale.x);
-				ImGui::DragFloat2(("color##" + label + std::to_string(count)).c_str(), &effect.color.x);
+				ImGui::ColorEdit3(("color##" + label + std::to_string(count)).c_str(), &effect.color.x);
 				ImGui::DragAngleSlider(("rot##" + label + std::to_string(count)).c_str(), effect.rot);
+				ImGui::DragAngleSlider(("rot_speed##" + label + std::to_string(count)).c_str(), effect.rot_speed);
 				ImGui::DragFloat(("initial_lifetime##" + label + std::to_string(count)).c_str(), &effect.initial_lifetime);
 				ImGui::TreePop();
 			}
