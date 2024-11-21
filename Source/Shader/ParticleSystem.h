@@ -100,7 +100,8 @@ public:
 		int type,
 		DirectX::XMFLOAT3 pos,
 		float rot,
-		DirectX::XMFLOAT3 color
+		DirectX::XMFLOAT3 color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f),
+		DirectX::XMFLOAT3 direction = DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f)
 	);
 
 	// äeéÌéÊìæÅEê›íËä÷êî
@@ -117,6 +118,7 @@ private:
 		DirectX::XMFLOAT3 parent_pos,
 		float parent_rot,
 		DirectX::XMFLOAT3 parent_color,
+		DirectX::XMFLOAT3 direction,
 		const std::vector<CPUGPUBuffer>& particle_pool
 	);
 private:

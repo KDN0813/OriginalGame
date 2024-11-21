@@ -7,8 +7,10 @@
 #include "Object\Object.h"
 #include "System\MyMath\MyMathf.h"
 #include "../Hlsl/ParticleDisp.h"
+#include "Camera\CameraManager.h"
 
 #include "Component\TransformComponent.h"
+#include "Component\CameraComponent.h"
 
 DebugParticle::DebugParticle()
 {
@@ -44,6 +46,15 @@ void DebugParticle::Update(float elapsed_time)
 
 void DebugParticle::PlayEffect(int type)
 {
+    DirectX::XMFLOAT3 direction{};
+    if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+    {
+        if (const auto& camera = camera_manager->GetCurrentCamera())
+        {
+            direction = camera->GetForward();
+        }
+    }
+
     if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
     {
         const float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
@@ -61,7 +72,7 @@ void DebugParticle::PlayEffect(int type)
             rot = theta;
         }
 
-        particle_system->PlayEffect(type, pos, rot, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f));
+        particle_system->PlayEffect(type, pos, rot, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f), direction);
     }
 }
 

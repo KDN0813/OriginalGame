@@ -295,7 +295,7 @@ ParticleSystem::ParticleSystem()
 				effect.direction = {};								// ˆÚ“®•ûŒü
 				effect.velocity = {};								// ˆÚ“®‘¬“x
 				effect.acceleration = {};							// ‰Á‘¬“x
-				effect.initial_scale = DirectX::XMFLOAT2(0.01f, 0.01f);// ‰ŠúŠg‘å—¦
+				effect.initial_scale = DirectX::XMFLOAT2(0.3f, 0.3f);// ‰ŠúŠg‘å—¦
 				effect.f_scale = {};		// Šg‘å—¦(•âŠÔŠJŽn)
 				effect.e_scale = {};		// Šg‘å—¦(•âŠÔI—¹)
 				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// F
@@ -306,12 +306,10 @@ ParticleSystem::ParticleSystem()
 				effect.step = 0;									// step
 				effect.is_busy = 1;									// ‰Ò“­ƒtƒ‰ƒO
 				this->effect_hit.emplace_back(effect);
-
-				pos.x += 5.0f;
 			}
-			this->effect_hit[0].direction = { 0.5f,0.3f, 0.0f, };
-			this->effect_hit[0].velocity = { 3.0f,3.0f, 3.0f, };
-			this->effect_hit[0].initial_scale = { 0.1f,0.1f};
+			this->effect_hit[0].velocity = { 1.0f,1.0f, 1.0f, };
+			this->effect_hit[1].velocity = { -1.5f,2.0f, 1.0f, };
+			this->effect_hit[2].velocity = { -2.0f,-1.0f, 1.0f, };
 		}
 	}
 }
@@ -489,7 +487,8 @@ void ParticleSystem::PlayEffect(
 	int type,
 	DirectX::XMFLOAT3 parent_pos,
 	float parent_rot,
-	DirectX::XMFLOAT3 parent_color
+	DirectX::XMFLOAT3 parent_color,
+	DirectX::XMFLOAT3 direction
 )
 {
 	switch (type)
@@ -500,6 +499,7 @@ void ParticleSystem::PlayEffect(
 			parent_pos,
 			parent_rot,
 			parent_color,
+			direction,
 			this->effect_slash
 		);
 		break;
@@ -510,6 +510,7 @@ void ParticleSystem::PlayEffect(
 			parent_pos,
 			parent_rot,
 			parent_color,
+			direction,
 			this->effect_hit
 		);
 		break;
@@ -524,6 +525,7 @@ void ParticleSystem::PlayEffect(
 	DirectX::XMFLOAT3 parent_pos,
 	float parent_rot,
 	DirectX::XMFLOAT3 parent_color,
+	DirectX::XMFLOAT3 direction,
 	const std::vector<CPUGPUBuffer>& particle_pool
 )
 {
@@ -542,6 +544,10 @@ void ParticleSystem::PlayEffect(
 			this->particle_data_pool[i].initial_position.x += parent_pos.x;
 			this->particle_data_pool[i].initial_position.y += parent_pos.y;
 			this->particle_data_pool[i].initial_position.z += parent_pos.z;
+		}
+		// ˆÚ“®•ûŒüÝ’è
+		{
+			this->particle_data_pool[i].direction = direction;
 		}
 		// Šp“xÝ’è
 		{
@@ -595,8 +601,17 @@ void ParticleSystem::DebugDrawGUI()
 				if (ImGui::TreeNode(label.c_str()))
 				{
 					CPUGPUBuffer& data = this->particle_data_pool[i];
-					ImGui::InputFloat3("Position", &data.initial_position.x);
-					ImGui::DragAngleSlider("Rot", data.rot);
+					ImGui::DragFloat3(("initial_position##" + label + std::to_string(i)).c_str(), &data.initial_position.x, 0.01f);
+					ImGui::SliderFloat3(("direction##" + label + std::to_string(i)).c_str(), &data.direction.x, 0.0f, 1.0f);
+					ImGui::DragFloat3(("velocity##" + label + std::to_string(i)).c_str(), &data.velocity.x, 0.01f);
+					ImGui::DragFloat3(("acceleration##" + label + std::to_string(i)).c_str(), &data.acceleration.x, 0.01f);
+					ImGui::DragFloat2(("initial_scale##" + label + std::to_string(i)).c_str(), &data.initial_scale.x);
+					ImGui::DragFloat2(("f_scale##" + label + std::to_string(i)).c_str(), &data.f_scale.x);
+					ImGui::DragFloat2(("e_scale##" + label + std::to_string(i)).c_str(), &data.e_scale.x);
+					ImGui::ColorEdit3(("color##" + label + std::to_string(i)).c_str(), &data.color.x);
+					ImGui::DragAngleSlider(("rot##" + label + std::to_string(i)).c_str(), data.rot);
+					ImGui::DragAngleSlider(("rot_speed##" + label + std::to_string(i)).c_str(), data.rot_speed);
+					ImGui::DragFloat(("initial_lifetime##" + label + std::to_string(i)).c_str(), &data.initial_lifetime); 
 					ImGui::InputInt("type", &data.type);
 					ImGui::InputInt("Step", &data.step);
 					bool flag = static_cast<bool> (data.is_busy);
