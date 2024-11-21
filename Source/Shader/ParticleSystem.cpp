@@ -586,7 +586,7 @@ void ParticleSystem::DebugDrawGUI()
 				{
 					CPUGPUBuffer& data = this->particle_data_pool[i];
 					ImGui::InputFloat3("Position", &data.initial_position.x);
-					ImGui::InputFloat("Rrot", &data.rot);
+					ImGui::DragAngleSlider("Rot", data.rot);
 					ImGui::InputInt("type", &data.type);
 					ImGui::InputInt("Step", &data.step);
 					bool flag = static_cast<bool> (data.is_busy);
