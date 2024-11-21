@@ -21,6 +21,7 @@ public:
 	{
 		DirectX::XMFLOAT3 position;
 		DirectX::XMFLOAT3 color;
+		int type;       // エフェクトの種類
 		float rot;      // 角度
 	};
 
@@ -42,6 +43,7 @@ private:
 		DirectX::XMFLOAT3 position;
 		DirectX::XMFLOAT3 color;
 		float rot;      // 角度
+		int type;       // エフェクトの種類
 		int step;
 		int is_busy;    // 要素が稼働中であるか
 	};
@@ -89,7 +91,8 @@ public:
 	void PlayEffect(
 		DirectX::XMFLOAT3 p,
 		DirectX::XMFLOAT3 c,
-		float rot = 0.0f
+		int type,
+		float rot
 	);
 
 	/**

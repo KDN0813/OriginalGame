@@ -436,6 +436,7 @@ int ParticleSystem::CalculateFreeParticleCount()
 void ParticleSystem::PlayEffect(
 	DirectX::XMFLOAT3 p,
 	DirectX::XMFLOAT3 c,
+	int type,
 	float rot
 )
 {
@@ -448,6 +449,7 @@ void ParticleSystem::PlayEffect(
 			p,
 			c,
 			rot,
+			type,
 			0,	// step
 			1,	// is_busy
 		};
@@ -471,6 +473,7 @@ void ParticleSystem::PlayGroupEffect(const std::vector<ParticleParam>& particle_
 		this->particle_data_pool[i].color = particle_pool[count].color;
 		this->particle_data_pool[i].position = particle_pool[count].position;
 		this->particle_data_pool[i].rot = particle_pool[count].rot;
+		this->particle_data_pool[i].type = particle_pool[count].type;
 		this->particle_data_pool[i].is_busy = 1;
 		this->particle_data_pool[i].step = 0;
 
@@ -499,22 +502,26 @@ void ParticleSystem::DebugDrawGUI()
 			ImGui::TreePop();
 		}
 
-		for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
+		if (ImGui::TreeNodeEx("Particle Param Pool"))
 		{
-			std::string label = "Particle" + std::to_string(i);
-			if (ImGui::TreeNode(label.c_str()))
+			for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
 			{
-				CPUGPUBuffer& data = this->particle_data_pool[i];
-				ImGui::InputFloat3("Position", &data.position.x);
-				ImGui::InputFloat("Rrot", &data.rot);
-				ImGui::InputInt("Step", &data.step);
-				bool flag = static_cast<bool> (data.is_busy);
-				if (ImGui::Checkbox("Is Busy", &flag))
+				std::string label = "Particle" + std::to_string(i);
+				if (ImGui::TreeNode(label.c_str()))
 				{
-					data.is_busy = static_cast<int>(flag);
+					CPUGPUBuffer& data = this->particle_data_pool[i];
+					ImGui::InputFloat3("Position", &data.position.x);
+					ImGui::InputFloat("Rrot", &data.rot);
+					ImGui::InputInt("Step", &data.step);
+					bool flag = static_cast<bool> (data.is_busy);
+					if (ImGui::Checkbox("Is Busy", &flag))
+					{
+						data.is_busy = static_cast<int>(flag);
+					}
+					ImGui::TreePop();
 				}
-				ImGui::TreePop();
 			}
+			ImGui::TreePop();
 		}
 	}
 	ImGui::End();

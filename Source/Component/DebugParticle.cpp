@@ -6,6 +6,7 @@
 #include "Shader\ParticleSystem.h"
 #include "Object\Object.h"
 #include "System\MyMath\MyMathf.h"
+#include "../Hlsl/ParticleDisp.h"
 
 #include "Component\TransformComponent.h"
 
@@ -56,7 +57,7 @@ void DebugParticle::PlayEffect()
             this->area_pos.z + cosf(theta) * range ,
         };
 
-        particle_system->PlayEffect(pos, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f), theta);
+        particle_system->PlayEffect(pos, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f), EFFECT_SLASH, theta);
     }
 }
 
@@ -86,6 +87,8 @@ void DebugParticle::PlayGroupEffect(size_t count)
 
             // 角度設定
             particle.rot = theta;
+            // タイプ設定
+            particle.type = EFFECT_FALL_SLASH;
         }
 
         // エフェクト再生

@@ -56,6 +56,7 @@ struct CPUGPUBuffer
     float3 position; // 初期位置
     float3 color;    // 初期色   
     float rot;      // 初期角度
+    int type;       // エフェクトの種類
     int step;
     int is_busy;    // 要素が稼働中であるか
 };

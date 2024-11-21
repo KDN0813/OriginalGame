@@ -6,6 +6,7 @@
 #include <imgui.h>
 #include "Debug/DebugManager.h"
 #endif // DEBUG
+#include "../Hlsl/ParticleDisp.h"
 #include "ConstantManager.h"
 #include "Shader\ParticleSystem.h"
 #include "Camera\CameraManager.h"
@@ -217,6 +218,7 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 			particle_system->PlayEffect(
 				pos,
 				DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f),
+				EFFECT_SLASH,
 				45.0f
 			);
 		}
