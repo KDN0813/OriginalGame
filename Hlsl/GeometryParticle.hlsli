@@ -75,3 +75,15 @@ cbuffer ParticleCommonConstant : register(b1)
     float elapsed_time;     // 経過時間
     float dummy[3];
 };
+
+// ラジアン値を [0, 2π) の範囲に外なら正規化する関数
+float NormalizeRadiansIfOutOfRange(float radians)
+{
+    const float two_pi = 6.28318530718; // 2π
+    if (radians < 0 || radians >= two_pi)
+    {
+        // 範囲外の場合にのみ正規化を行う
+        radians = radians - floor(radians / two_pi) * two_pi;
+    }
+    return radians;
+}

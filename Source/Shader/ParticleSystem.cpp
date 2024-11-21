@@ -300,7 +300,7 @@ ParticleSystem::ParticleSystem()
 				effect.e_scale = {};		// 拡大率(補間終了)
 				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
 				effect.rot = rot;									// 角度
-				effect.rot_speed = {};								// 回転速度
+				effect.rot_speed = DirectX::XMConvertToRadians(360.0f);								// 回転速度
 				effect.initial_lifetime = 0.8f;						// 生存時間
 				effect.type = EFFECT_FALL_SLASH;							// エフェクトタイプ
 				effect.step = 0;									// step
