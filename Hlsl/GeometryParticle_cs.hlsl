@@ -28,12 +28,15 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     uint y = Gid.x;
     int node = TH_X * y + x;
     
-    // 稼働していなければ処理しない
-    if (!Input2[node].is_busy)
-        return;
-    
     // 前フレームの情報をコピーする
     Result2[node] = Input2[node];
+    
+    // 稼働していなければ処理しない
+    if (!Input2[node].is_busy)
+    {
+        Result[node].alpha = 0.0f;
+        return;
+    }
 
     // 計算用変数
     // Resultに直接加算すると中間結果が取得できないため、
@@ -68,17 +71,21 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     Result2[node].step = 1;
                     break;
                 case 1: // 更新
-
-                    // 稼働中であるか判定する
-                    Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
-                
+            
                     timer = max(0.0f, timer - elapsed_time);
                     t = (timer_max - timer) / timer_max;
+            
                     // 透明度の補間
                     alpha = FadeInOut(t);
                     // 拡大率の補間
                     scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
                     scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
+            
+                    if (0.0f < timer) break;
+                    // 寿命が0以下になった実行
+                    Result2[node].is_busy = 0;
+                    alpha = 0.0f;
+                    
                     break;
             }
         
@@ -101,16 +108,23 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     break;
                 case 1: // 更新
 
-                    // 稼働中であるか判定する
-                    Result2[node].is_busy = (0.0f < timer) ? 1 : 0;
-                
                     timer = max(0.0f, timer - elapsed_time);
                     t = (timer_max - timer) / timer_max;
-                    // 色の変更
+                    timer = (timer == 0.0f) ? 1.0f : timer; // timerが0以下なら1に戻す
+            
+                    // 透明度の補間
                     alpha = FadeInOut(t);
-                    color.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
-                    color.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
-                    color.z = FadeInOut(t);
+                    // 拡大率の補間
+                    scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
+                    scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
+                    // 位置更新
+                    position.y -= 2.0f * elapsed_time;
+            
+                    if (0.0f < position.y) break;
+                    // パーティクルが地面まで移動したら実行
+                    Result2[node].is_busy = 0;
+                    alpha = 0.0f;
+            
                     break;
             }
         
