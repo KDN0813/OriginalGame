@@ -14,13 +14,17 @@
 
 class ParticleSystem : public Singleton<ParticleSystem>
 {
-private:
+public:
+	// エフェクトのパラメータ
+	// Play関数の引数で使用する
 	struct ParticleParam
 	{
-		float rot;							// 回転角度
-		DirectX::XMFLOAT2 scale;			// 拡大率
+		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT3 color;
+		float rot;      // 角度
 	};
 
+private:
 	// CPUで共有しないデータ
 	struct InputGp
 	{
@@ -91,21 +95,13 @@ public:
 	/**
 	 * グループエフェクト再生
 	 * 
-	 * \param p 生成位置
-	 * \param c	色  
-	 * \param effect_count 生成数
-	 * \param timer 生存時間
-	 * \param rot 角度
+	 * \param efect_pool 再生するパーティクル情報を格納したコンテナ
 	 */
-	void PlayGroupEffect(
-		DirectX::XMFLOAT3 p,
-		DirectX::XMFLOAT3 c,
-		int effect_count,
-		float rot = 0.0f
-	);
+	void PlayGroupEffect(const std::vector<ParticleParam>& particle_pool);
 
-	// 各種設定関数
+	// 各種取得・設定関数
 	void SetElapsedTime(float time) { this->particle_data.elapsed_time = time; }
+	size_t GetFreeParticleCount()const { return this->free_particle_count; }
 private:
 	std::vector<CPUGPUBuffer> particle_data_pool;
 
@@ -134,7 +130,7 @@ private:
 
 	int chainSRV = 0;//バッファーの切り替え
 	int chainUAV = 1;//バッファーの切り替え
-	int free_particle_count = 0;	// 空いているパーティクルの数
+	size_t free_particle_count = 0;	// 空いているパーティクルの数
 
 	ParticleCommonConstant particle_data{};
 #ifdef _DEBUG

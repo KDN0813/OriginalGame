@@ -234,7 +234,6 @@ void InstancingModelShader::Render()
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
-	// TODO (09/03)全ての要素を回す
 	for (auto shader_component_vec : shader_component_vec_map)
 	{
 		bool is_render_ready = false;	// 描画準備ができているか
@@ -296,7 +295,7 @@ void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* s
 {
 	if (shader_component == nullptr) return;
 
-	// TODO (09/03)同じモデルのコンテナがあるなら追加、ないなら要素を追加する
+	// TODO 同じモデルのコンテナがあるなら追加、ないなら要素を追加する
 	const int& modelId = shader_component->GetModelId();
 	shader_component_vec_map[modelId].emplace_back(shader_component);
 }
@@ -305,7 +304,6 @@ void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent
 {
 	if (shader_component == nullptr) return;
 
-	// TODO (09/03)削除した後、コンテナが空なら要素を削除する
 	const int& modelId = shader_component->GetModelId();
 	auto it = shader_component_vec_map.find(modelId);
 	if (it != shader_component_vec_map.end())

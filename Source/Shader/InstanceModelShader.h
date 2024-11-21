@@ -106,7 +106,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> instance_data_structured_buffer;
 
 	// 描画するインスタンスのシェーダー
-	// TODO (09/03)コンテナを持つコンテナにする 名前変える
 	std::map<int, std::vector<InstancingModelShaderComponent*>> shader_component_vec_map;
 
 #ifdef _DEBUG

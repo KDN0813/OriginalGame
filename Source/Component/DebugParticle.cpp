@@ -1,6 +1,6 @@
 #include "DebugParticle.h"
 #ifdef _DEBUG
-#include <imgui.h>
+#include "Debug\ImGuiHelper.h"
 #include "Debug\DebugManager.h"
 #endif // _DEBUG
 #include "Shader\ParticleSystem.h"
@@ -54,22 +54,36 @@ void DebugParticle::PlayEffect()
     }
 }
 
-void DebugParticle::PlayGroupEffect(int count)
+void DebugParticle::PlayGroupEffect(size_t count)
 {
     if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
     {
-        const float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-        const float range = MyMathf::RandomRange(0.0f, this->effect_area_radius);
-        const float height = MyMathf::RandomRange(0.0f, this->effect_area_height);
+        if (particle_system->GetFreeParticleCount() < count) return;   // 空き数より数が多いならreturnする
 
-        DirectX::XMFLOAT3 pos
+        std::vector<ParticleSystem::ParticleParam>  particle_pool;
+        particle_pool.resize(count);
+        for (ParticleSystem::ParticleParam& particle : particle_pool)
         {
-            this->area_pos.x + sinf(theta) * range,
-            this->area_pos.y + height,
-            this->area_pos.z + cosf(theta) * range ,
-        };
+            // 色設定
+            particle.color = DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f);
 
-        particle_system->PlayGroupEffect(pos, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f), count, theta);
+            const float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
+            const float range = MyMathf::RandomRange(0.0f, this->effect_area_radius);
+            const float height = MyMathf::RandomRange(0.0f, this->effect_area_height);
+            // 生成位置設定
+            particle.position =
+            {
+                this->area_pos.x + sinf(theta) * range,
+                this->area_pos.y + height,
+                this->area_pos.z + cosf(theta) * range ,
+            };
+
+            // 角度設定
+            particle.rot = theta;
+        }
+
+        // エフェクト再生
+        particle_system->PlayGroupEffect(particle_pool);
     }
 }
 
@@ -107,7 +121,7 @@ void DebugParticle::DrawDebugGUI()
     }
     if (ImGui::TreeNodeEx("Play Group", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::InputInt("Group Count", &this->group_count);
+        ImGui::InputSize_t("Group Count", this->group_count);
         if (ImGui::Button("Play Group Effects"))
         {
             PlayGroupEffect(this->group_count);

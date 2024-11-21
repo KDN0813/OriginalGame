@@ -16,7 +16,6 @@
 
 PlayerComponent::~PlayerComponent()
 {
-    // TODO 10/24ƒvƒŒƒCƒ„[‚Ì€–S”»’è‰¼
     // ‘Ì—Í‚ªÀ‘•‚Å‚«‚½‚çíœ‚·‚é
     if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
     {

@@ -33,7 +33,7 @@ std::shared_ptr<Object> Object::FindChildObject(MyHash name)
 
 void Object::Update(float elapsedTime)
 {
-    // Hack コンポーネント追加・削除があったときだけ実行するようにしたら軽くなるかも
+    // Hack コンポーネント追加・削除があったときだけ実行するようにする
     sortComponentsByPriority();
     
 #ifdef _DEBUG

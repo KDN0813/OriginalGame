@@ -32,7 +32,7 @@ private:
     // 範囲内のランダムな位置にエフェクトを再生させる
     void PlayEffect();
     // 範囲内のランダムな位置にグループエフェクトを再生させる
-    void PlayGroupEffect(int count);
+    void PlayGroupEffect(size_t count);
 
 private:
     float effect_area_radius = 2.0f;    // エフェクトを再生するエリア(円柱)の半径
@@ -59,7 +59,7 @@ public:
     bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveが存在するか
 private:
     CylinderParam debug_cylinder_effect_area;
-    int group_count = 100;  // 再生するグループエフェクトの数
+    size_t group_count = 100;  // 再生するグループエフェクトの数
 #endif // DEBUG
 };
 

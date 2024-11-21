@@ -5,7 +5,7 @@
 #include "Camera/CameraManager.h"
 #include "System/Misc.h"
 #ifdef _DEBUG
-#include <imgui.h>
+#include "Debug\ImGuiHelper.h"
 #endif // _DEBUG
 
 #include "Component/CameraComponent.h"
@@ -458,8 +458,9 @@ void ParticleSystem::PlayEffect(
 	}
 }
 
-void ParticleSystem::PlayGroupEffect(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 c, int effect_count, float rot)
+void ParticleSystem::PlayGroupEffect(const std::vector<ParticleParam>& particle_pool)
 {
+	const size_t effect_count = particle_pool.size();
 	if (this->free_particle_count < effect_count) return;
 
 	int count = 0;
@@ -467,15 +468,11 @@ void ParticleSystem::PlayGroupEffect(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 c, i
 	{
 		if (this->particle_data_pool[i].is_busy) continue;
 
-		CPUGPUBuffer particle_data
-		{
-			p,
-			c,
-			rot,
-			0,	// step
-			1,	// is_busy
-		};
-		this->particle_data_pool[i] = particle_data;
+		this->particle_data_pool[i].color = particle_pool[count].color;
+		this->particle_data_pool[i].position = particle_pool[count].position;
+		this->particle_data_pool[i].rot = particle_pool[count].rot;
+		this->particle_data_pool[i].is_busy = 1;
+		this->particle_data_pool[i].step = 0;
 
 		++count;
 
@@ -491,7 +488,7 @@ void ParticleSystem::DebugDrawGUI()
 {
 	if(ImGui::Begin("ParticleSystem"))
 	{
-		ImGui::InputInt("Free Particle Count", &this->free_particle_count);
+		ImGui::InputSize_t("Free Particle Count", this->free_particle_count);
 		if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::InputFloat2("Default Size", &particle_data.default_size.x);

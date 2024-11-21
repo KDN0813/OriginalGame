@@ -74,7 +74,6 @@ bool InstancingModelShaderComponent::IsShaderValid()
 
 int InstancingModelShaderComponent::GetModelId()
 {
-    // Hack idを変数で持ち、返すようにしたら処理軽くなるかテストする
     auto owner = GetOwner();
     if (!owner) return -1;
     auto instancing_model
