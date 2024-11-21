@@ -32,7 +32,6 @@ private:
 	{
 		DirectX::XMFLOAT3 color;
 		DirectX::XMFLOAT3 position;// 描画位置
-		DirectX::XMFLOAT3 direction;// 移動方向
 		DirectX::XMFLOAT3 velocity;// 移動速度
 		DirectX::XMFLOAT2 scale;   // 拡大率
 		float rot;      // 角度
@@ -44,7 +43,7 @@ private:
 	struct CPUGPUBuffer
 	{
 		DirectX::XMFLOAT3 initial_position;	// 初期位置
-		DirectX::XMFLOAT3 direction;		// 移動方向
+		DirectX::XMFLOAT3 forward;			// 前方方向
 		DirectX::XMFLOAT3 velocity;			// 移動速度
 		DirectX::XMFLOAT3 acceleration;		// 加速度
 		DirectX::XMFLOAT2 initial_scale;	// 初期拡大率
@@ -95,13 +94,14 @@ public:
 	 * \param pos 生成位置
 	 * \param rot 角度
 	 * \param color 色
+	 * \param forward 前方方向
 	 */
 	void PlayEffect(
 		int type,
 		DirectX::XMFLOAT3 pos,
 		float rot,
 		DirectX::XMFLOAT3 color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f),
-		DirectX::XMFLOAT3 direction = DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f)
+		DirectX::XMFLOAT3 forward = DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f)
 	);
 
 	// 各種取得・設定関数
@@ -118,7 +118,7 @@ private:
 		DirectX::XMFLOAT3 parent_pos,
 		float parent_rot,
 		DirectX::XMFLOAT3 parent_color,
-		DirectX::XMFLOAT3 direction,
+		DirectX::XMFLOAT3 forward,
 		const std::vector<CPUGPUBuffer>& particle_pool
 	);
 private:

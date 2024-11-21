@@ -43,7 +43,6 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     // 一度変数に代入してから計算する
     float3 color = Input[node].color;
     float3 position = Input[node].position;
-    float3 direction = Input[node].direction;
     float3 velocity = Input[node].velocity;
     float2 scale = Input[node].scale;
     float rot = Input[node].rot;
@@ -65,7 +64,6 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     // GPU専用データの設定
                     color = Input2[node].color;
                     position = Input2[node].initial_position;
-                    direction = Input2[node].direction;
                     velocity = Input2[node].velocity;
                     rot = Input2[node].rot;
                     alpha = 0.0f;
@@ -103,7 +101,6 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     // GPU専用データの設定
                     color = Input2[node].color;
                     position = Input2[node].initial_position;
-                    direction = Input2[node].direction;
                     velocity = Input2[node].velocity;
                     rot = Input2[node].rot;
                     alpha = 1.0f;
@@ -121,7 +118,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     rot = NormalizeRadiansIfOutOfRange(rot + Input2[node].rot_speed * elapsed_time);
             
                     // 位置更新
-                    position += direction * velocity * elapsed_time;
+                    position += Input2[node].forward * velocity * elapsed_time;
                     // 速度更新
                     //velocity += Input2[node].acceleration * elapsed_time;
                       
@@ -140,7 +137,6 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     // Resultに計算結果を代入
     Result[node].color = color;
     Result[node].position = position;
-    Result[node].direction = direction;
     Result[node].velocity = velocity;
     Result[node].scale = scale;
     Result[node].rot = rot;

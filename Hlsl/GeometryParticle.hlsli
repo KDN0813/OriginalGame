@@ -42,7 +42,6 @@ struct InputGp
 {
     float3 color;
     float3 position; // 描画位置
-    float3 direction;// 移動方向
     float3 velocity; // 移動速度
     float2 scale;   // 拡大率
     float rot;      // 角度
@@ -54,7 +53,7 @@ struct InputGp
 struct CPUGPUBuffer
 {
     float3 initial_position;// 初期位置
-    float3 direction;       // 移動方向
+    float3 forward;         // 前方方向
     float3 velocity;        // 移動速度
     float3 acceleration;    // 加速度
     float2 initial_scale;   // 初期拡大率

@@ -267,7 +267,7 @@ ParticleSystem::ParticleSystem()
 		{
 			CPUGPUBuffer effect{};
 			effect.initial_position = {};						// 初期位置
-			effect.direction = {};								// 移動方向
+			effect.forward = {};								// 移動方向
 			effect.velocity = {};								// 移動速度
 			effect.acceleration = {};							// 加速度
 			effect.initial_scale = {};							// 初期拡大率
@@ -292,7 +292,7 @@ ParticleSystem::ParticleSystem()
 			{
 				CPUGPUBuffer effect{};
 				effect.initial_position = pos;						// 初期位置
-				effect.direction = {};								// 移動方向
+				effect.forward = {};								// 前方方向
 				effect.velocity = {};								// 移動速度
 				effect.acceleration = {};							// 加速度
 				effect.initial_scale = DirectX::XMFLOAT2(0.3f, 0.3f);// 初期拡大率
@@ -488,7 +488,7 @@ void ParticleSystem::PlayEffect(
 	DirectX::XMFLOAT3 parent_pos,
 	float parent_rot,
 	DirectX::XMFLOAT3 parent_color,
-	DirectX::XMFLOAT3 direction
+	DirectX::XMFLOAT3 forward
 )
 {
 	switch (type)
@@ -499,7 +499,7 @@ void ParticleSystem::PlayEffect(
 			parent_pos,
 			parent_rot,
 			parent_color,
-			direction,
+			forward,
 			this->effect_slash
 		);
 		break;
@@ -510,7 +510,7 @@ void ParticleSystem::PlayEffect(
 			parent_pos,
 			parent_rot,
 			parent_color,
-			direction,
+			forward,
 			this->effect_hit
 		);
 		break;
@@ -525,7 +525,7 @@ void ParticleSystem::PlayEffect(
 	DirectX::XMFLOAT3 parent_pos,
 	float parent_rot,
 	DirectX::XMFLOAT3 parent_color,
-	DirectX::XMFLOAT3 direction,
+	DirectX::XMFLOAT3 forward,
 	const std::vector<CPUGPUBuffer>& particle_pool
 )
 {
@@ -547,7 +547,7 @@ void ParticleSystem::PlayEffect(
 		}
 		// 移動方向設定
 		{
-			this->particle_data_pool[i].direction = direction;
+			this->particle_data_pool[i].forward = forward;
 		}
 		// 角度設定
 		{
@@ -602,7 +602,6 @@ void ParticleSystem::DebugDrawGUI()
 				{
 					CPUGPUBuffer& data = this->particle_data_pool[i];
 					ImGui::DragFloat3(("initial_position##" + label + std::to_string(i)).c_str(), &data.initial_position.x, 0.01f);
-					ImGui::SliderFloat3(("direction##" + label + std::to_string(i)).c_str(), &data.direction.x, 0.0f, 1.0f);
 					ImGui::DragFloat3(("velocity##" + label + std::to_string(i)).c_str(), &data.velocity.x, 0.01f);
 					ImGui::DragFloat3(("acceleration##" + label + std::to_string(i)).c_str(), &data.acceleration.x, 0.01f);
 					ImGui::DragFloat2(("initial_scale##" + label + std::to_string(i)).c_str(), &data.initial_scale.x);
@@ -638,7 +637,7 @@ void ParticleSystem::DebugDrawEffectParamGUI(std::string label, std::vector<CPUG
 			if (ImGui::TreeNodeEx(std::to_string(count).c_str()))
 			{
 				ImGui::DragFloat3(("initial_position##" + label + std::to_string(count)).c_str(), &effect.initial_position.x, 0.01f);
-				ImGui::SliderFloat3(("direction##" + label + std::to_string(count)).c_str(), &effect.direction.x, 0.0f, 1.0f);
+				ImGui::SliderFloat3(("forward##" + label + std::to_string(count)).c_str(), &effect.forward.x, 0.0f, 1.0f);
 				ImGui::DragFloat3(("velocity##" + label + std::to_string(count)).c_str(), &effect.velocity.x, 0.01f);
 				ImGui::DragFloat3(("acceleration##" + label + std::to_string(count)).c_str(), &effect.acceleration.x, 0.01f);
 				ImGui::DragFloat2(("initial_scale##" + label + std::to_string(count)).c_str(), &effect.initial_scale.x);
