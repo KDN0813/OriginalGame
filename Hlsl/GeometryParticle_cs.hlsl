@@ -100,7 +100,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     color = Input2[node].color;
                     position = Input2[node].position;
                     rot = Input2[node].rot;
-                    alpha = 0.0f;
+                    alpha = 1.0f;
                     scale = f_scale;
                     timer = timer_max;
                     // CPU共有データの設定
@@ -110,18 +110,16 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
 
                     timer = max(0.0f, timer - elapsed_time);
                     t = (timer_max - timer) / timer_max;
-                    timer = (timer == 0.0f) ? 1.0f : timer; // timerが0以下なら1に戻す
             
-                    // 透明度の補間
-                    alpha = FadeInOut(t);
-                    // 拡大率の補間
-                    scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
-                    scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
+                    // 角度更新
+                    rot += 5.0f * elapsed_time;
+            
                     // 位置更新
                     position.y -= 2.0f * elapsed_time;
             
-                    if (0.0f < position.y) break;
-                    // パーティクルが地面まで移動したら実行
+                    if (0.0f < position.y && 0.0f < timer)
+                        break;
+                    // パーティクルが地面まで移動したらor寿命が尽きたら実行
                     Result2[node].is_busy = 0;
                     alpha = 0.0f;
             
