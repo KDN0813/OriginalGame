@@ -559,7 +559,6 @@ void ParticleSystem::DebugDrawGUI()
 	if(ImGui::Begin("ParticleSystem"))
 	{
 		ImGui::InputSize_t("Free Particle Count", this->free_particle_count);
-		ImGui::Checkbox("Draw Debug Play", &this->draw_debug_play);
 
 		// パーティクル定数
 		if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))
@@ -626,11 +625,6 @@ void ParticleSystem::DebugDrawEffectParamGUI(std::string label, std::vector<CPUG
 		}
 		ImGui::TreePop();
 	}
-}
-
-void ParticleSystem::PlayDebugEffect()
-{
-	if (!this->draw_debug_play) return;
 }
 
 #endif // DEBUG

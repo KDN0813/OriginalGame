@@ -145,7 +145,6 @@ private:
 	int chainSRV = 0;//バッファーの切り替え
 	int chainUAV = 1;//バッファーの切り替え
 	size_t free_particle_count = 0;	// 空いているパーティクルの数
-	bool draw_debug_play = false;
 
 	ParticleCommonConstant particle_data{};
 #ifdef _DEBUG
@@ -153,7 +152,5 @@ public:
 	void DebugDrawGUI();
 
 	void DebugDrawEffectParamGUI(std::string label, std::vector<CPUGPUBuffer>& effect_pool);
-
-	void PlayDebugEffect();
 #endif // _DEBUG
 };

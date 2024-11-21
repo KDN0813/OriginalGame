@@ -50,12 +50,16 @@ void DebugParticle::PlayEffect(int type)
         const float range = MyMathf::RandomRange(0.0f, this->effect_area_radius);
         const float height = MyMathf::RandomRange(0.0f, this->effect_area_height);
 
-        DirectX::XMFLOAT3 pos
+        DirectX::XMFLOAT3 pos{ 0.0f,this->effect_area_height ,0.0f };
+        if (this->is_random_spawn_position)
         {
-            this->area_pos.x + sinf(theta) * range,
-            this->area_pos.y + height,
-            this->area_pos.z + cosf(theta) * range ,
-        };
+            pos =
+            {
+                this->area_pos.x + sinf(theta) * range,
+                this->area_pos.y + height,
+                this->area_pos.z + cosf(theta) * range ,
+            };
+        }
 
         particle_system->PlayEffect(type, pos, theta, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f));
     }
@@ -67,6 +71,8 @@ void DebugParticle::DrawDebugGUI()
 {
     ImGui::DragFloat("Area Radius", &this->effect_area_radius, 0.1f);
     ImGui::DragFloat("Area Height", &this->effect_area_height, 0.1f);
+
+    ImGui::Checkbox("Is Random Spawn Position", &this->is_random_spawn_position);
 
     ImGui::SliderInt("Effect Type", &this->draw_effect_type, 0, 1);
     ImGui::Checkbox("Effect Looping", &this->effect_looping);

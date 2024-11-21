@@ -60,6 +60,7 @@ private:
     CylinderParam debug_cylinder_effect_area;
     size_t group_count = 100;       // 再生するグループエフェクトの数
     int draw_effect_type = 0;   // デバッグで描画するエフェクトのタイプ
+    bool is_random_spawn_position = true;	// パーティクルの生成位置をランダムにするかのフラグ
 #endif // DEBUG
 };
 
