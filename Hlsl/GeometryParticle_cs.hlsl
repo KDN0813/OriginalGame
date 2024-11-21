@@ -112,7 +112,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
             
                     // 角度更新
-                    rot += 5.0f * elapsed_time;
+                    //rot += 5.0f * elapsed_time;
             
                     // 位置更新
                     position.y -= 2.0f * elapsed_time;

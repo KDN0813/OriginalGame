@@ -50,6 +50,7 @@ void DebugParticle::PlayEffect(int type)
         const float range = MyMathf::RandomRange(0.0f, this->effect_area_radius);
         const float height = MyMathf::RandomRange(0.0f, this->effect_area_height);
 
+        float rot{};
         DirectX::XMFLOAT3 pos{ 0.0f,this->effect_area_height ,0.0f };
         if (this->is_random_spawn_position)
         {
@@ -59,9 +60,11 @@ void DebugParticle::PlayEffect(int type)
                 this->area_pos.y + height,
                 this->area_pos.z + cosf(theta) * range ,
             };
+
+            rot = theta;
         }
 
-        particle_system->PlayEffect(type, pos, theta, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f));
+        particle_system->PlayEffect(type, pos, rot, DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f));
     }
 }
 

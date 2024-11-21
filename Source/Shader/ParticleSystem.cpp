@@ -617,7 +617,7 @@ void ParticleSystem::DebugDrawEffectParamGUI(std::string label, std::vector<CPUG
 				ImGui::DragFloat2(("f_scale##" + label + std::to_string(count)).c_str(), &effect.f_scale.x);
 				ImGui::DragFloat2(("e_scale##" + label + std::to_string(count)).c_str(), &effect.e_scale.x);
 				ImGui::DragFloat2(("color##" + label + std::to_string(count)).c_str(), &effect.color.x);
-				ImGui::DragFloat(("rot##" + label + std::to_string(count)).c_str(), &effect.rot);
+				ImGui::DragAngleSlider(("rot##" + label + std::to_string(count)).c_str(), effect.rot);
 				ImGui::DragFloat(("initial_lifetime##" + label + std::to_string(count)).c_str(), &effect.initial_lifetime);
 				ImGui::TreePop();
 			}
