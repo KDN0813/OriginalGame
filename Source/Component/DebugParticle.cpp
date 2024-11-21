@@ -33,6 +33,12 @@ void DebugParticle::Update(float elapsed_time)
 #endif // DEBUG
         }
     }
+
+    if (this->effect_looping)
+    {
+        // エフェクトを連続再生させる
+        PlayEffect();
+    }
 }
 
 void DebugParticle::PlayEffect()
@@ -93,6 +99,8 @@ void DebugParticle::DrawDebugGUI()
 {
     ImGui::DragFloat("Area Radius", &this->effect_area_radius, 0.1f);
     ImGui::DragFloat("Area Height", &this->effect_area_height, 0.1f);
+
+    ImGui::Checkbox("Effect Looping", &this->effect_looping);
 
     if(ImGui::Button("Effect Play"))
     {

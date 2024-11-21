@@ -38,6 +38,7 @@ private:
     float effect_area_radius = 2.0f;    // エフェクトを再生するエリア(円柱)の半径
     float effect_area_height = 2.0f;    // エフェクトを再生するエリア(円柱)の高さ
     DirectX::XMFLOAT3 area_pos = {};    // エフェクトを再生するエリアの中心
+    bool effect_looping = false;    // エフェクトをループ再生させるフラグ
 
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
@@ -59,7 +60,7 @@ public:
     bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveが存在するか
 private:
     CylinderParam debug_cylinder_effect_area;
-    size_t group_count = 100;  // 再生するグループエフェクトの数
+    size_t group_count = 100;       // 再生するグループエフェクトの数
 #endif // DEBUG
 };
 
