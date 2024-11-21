@@ -302,7 +302,7 @@ ParticleSystem::ParticleSystem()
 				effect.rot = rot;									// 角度
 				effect.rot_speed = DirectX::XMConvertToRadians(360.0f);								// 回転速度
 				effect.initial_lifetime = 0.8f;						// 生存時間
-				effect.type = EFFECT_FALL_SLASH;							// エフェクトタイプ
+				effect.type = EFFECT_HIT;							// エフェクトタイプ
 				effect.step = 0;									// step
 				effect.is_busy = 1;									// 稼働フラグ
 				this->effect_fall_slash.emplace_back(effect);
@@ -502,7 +502,7 @@ void ParticleSystem::PlayEffect(
 		);
 		break;
 	}
-	case EFFECT_FALL_SLASH:	// 落下斬撃エフェクト
+	case EFFECT_HIT:	// 落下斬撃エフェクト
 	{
 		PlayEffect(
 			parent_pos,
