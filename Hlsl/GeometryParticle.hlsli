@@ -53,7 +53,10 @@ struct InputGp
 // CPUで共有するデータ
 struct CPUGPUBuffer
 {
-    float3 position;        // 初期位置
+    float3 initial_position;// 初期位置
+    float2 initial_scale;   // 初期拡大率
+    float2 f_scale;         // 拡大率(開始)
+    float2 e_scale;         // 拡大率(終了)
     float3 color;           // 初期色   
     float rot;              // 初期角度
     float initial_lifetime; // 初期生存時間
@@ -66,8 +69,6 @@ struct CPUGPUBuffer
 cbuffer ParticleCommonConstant : register(b1)
 {
     float2 default_size;    // 通常画像サイズ
-    float2 f_scale;         // 拡大率(開始)
-    float2 e_scale;         // 拡大率(終了)
     float elapsed_time;     // 経過時間
     float dummy;
 };

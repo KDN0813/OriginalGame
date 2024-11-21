@@ -37,8 +37,6 @@ ParticleSystem::ParticleSystem()
 			// パーティクルデータの初期化
 			particle_data.elapsed_time = 0.0f;
 			particle_data.default_size = { 0.340f, 1.28f };
-			particle_data.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
-			particle_data.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
 
 			D3D11_SUBRESOURCE_DATA subresource{};
 			subresource.pSysMem = &particle_data;
@@ -446,9 +444,12 @@ void ParticleSystem::PlayEffect(
 		CPUGPUBuffer particle_data
 		{
 			p,
+			DirectX::XMFLOAT2(0.0f,0.0f),	// 初期拡大率
+			DirectX::XMFLOAT2(2.0f, 1.0f),	// 拡大率(補間開始)
+			DirectX::XMFLOAT2(1.0f, 3.5f),	// 拡大率(補間終了)
 			c,
 			rot,
-			0.8f,
+			0.8f,	// 生存時間
 			type,
 			0,	// step
 			1,	// is_busy
@@ -470,8 +471,11 @@ void ParticleSystem::PlayGroupEffect(const std::vector<ParticleParam>& particle_
 	{
 		if (this->particle_data_pool[i].is_busy) continue;
 
+		this->particle_data_pool[i].initial_position = particle_pool[count].initial_position;
+		this->particle_data_pool[i].initial_scale = DirectX::XMFLOAT2(1.0f, 1.0f);
+		this->particle_data_pool[i].f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
+		this->particle_data_pool[i].e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
 		this->particle_data_pool[i].color = particle_pool[count].color;
-		this->particle_data_pool[i].position = particle_pool[count].position;
 		this->particle_data_pool[i].rot = particle_pool[count].rot;
 		this->particle_data_pool[i].initial_lifetime = particle_pool[count].initial_lifetime;
 		this->particle_data_pool[i].type = particle_pool[count].type;
@@ -497,8 +501,6 @@ void ParticleSystem::DebugDrawGUI()
 		{
 			ImGui::InputFloat2("Default Size", &particle_data.default_size.x);
 			ImGui::InputFloat("Elapsed Time", &particle_data.elapsed_time);
-			ImGui::InputFloat2("Fast Scale", &particle_data.f_scale.x);
-			ImGui::InputFloat2("End Scale", &particle_data.e_scale.x);
 			ImGui::TreePop();
 		}
 
@@ -510,7 +512,7 @@ void ParticleSystem::DebugDrawGUI()
 				if (ImGui::TreeNode(label.c_str()))
 				{
 					CPUGPUBuffer& data = this->particle_data_pool[i];
-					ImGui::InputFloat3("Position", &data.position.x);
+					ImGui::InputFloat3("Position", &data.initial_position.x);
 					ImGui::InputFloat("Rrot", &data.rot);
 					ImGui::InputInt("type", &data.type);
 					ImGui::InputInt("Step", &data.step);

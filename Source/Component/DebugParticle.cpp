@@ -78,7 +78,7 @@ void DebugParticle::PlayGroupEffect(size_t count)
             const float range = MyMathf::RandomRange(0.0f, this->effect_area_radius);
             const float height = MyMathf::RandomRange(this->effect_area_height - this->effect_area_height * 0.2, this->effect_area_height);
             // ¶¬ˆÊ’uÝ’è
-            particle.position =
+            particle.initial_position =
             {
                 this->area_pos.x + sinf(theta) * range,
                 this->area_pos.y + height,

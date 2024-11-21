@@ -47,7 +47,6 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     float rot = Input[node].rot;
     float alpha = Input[node].alpha;
     float lifetimer = Input[node].lifetimer;
-    const float initial_lifetime = Input2[node].initial_lifetime;
     
     // 補間率
     float t = 0.0f;
@@ -63,24 +62,24 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                 
                     // GPU専用データの設定
                     color = Input2[node].color;
-                    position = Input2[node].position;
+                    position = Input2[node].initial_position;
                     rot = Input2[node].rot;
                     alpha = 0.0f;
-                    scale = f_scale;
-                    lifetimer = initial_lifetime;
+                    scale = Input2[node].initial_scale;
+                    lifetimer = Input2[node].initial_lifetime;
                     // CPU共有データの設定
                     Result2[node].step = 1;
                     break;
                 case 1: // 更新
             
                     lifetimer = max(0.0f, lifetimer - elapsed_time);
-                    t = (initial_lifetime - lifetimer) / initial_lifetime;
+                    t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
             
                     // 透明度の補間
                     alpha = FadeInOut(t);
                     // 拡大率の補間
-                    scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
-                    scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
+                    scale.x = EaseOutQuadInRange(Input2[node].f_scale.x, Input2[node].e_scale.x, (t));
+                    scale.y = EaseOutQuadInRange(Input2[node].f_scale.y, Input2[node].e_scale.y, (t));
             
                     if (0.0f < lifetimer) break;
                     // 寿命が0以下になった実行
@@ -99,18 +98,18 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                 
                     // GPU専用データの設定
                     color = Input2[node].color;
-                    position = Input2[node].position;
+                    position = Input2[node].initial_position;
                     rot = Input2[node].rot;
                     alpha = 1.0f;
-                    scale = f_scale;
-                    lifetimer = initial_lifetime;
+                    scale = Input2[node].initial_scale;
+                    lifetimer = Input2[node].initial_lifetime;
                     // CPU共有データの設定
                     Result2[node].step = 1;
                     break;
                 case 1: // 更新
 
                     lifetimer = max(0.0f, lifetimer - elapsed_time);
-                    t = (initial_lifetime - lifetimer) / initial_lifetime;
+                    t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
             
                     // 角度更新
                     rot += 5.0f * elapsed_time;

@@ -19,7 +19,7 @@ public:
 	// Play関数の引数で使用する
 	struct ParticleParam
 	{
-		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT3 initial_position;
 		DirectX::XMFLOAT3 color;
 		float initial_lifetime; // 初期生存時間
 		int type;       // エフェクトの種類
@@ -41,13 +41,16 @@ private:
 	// CPUで共有するデータ
 	struct CPUGPUBuffer
 	{
-		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT3 initial_position;	// 初期位置
+		DirectX::XMFLOAT2 initial_scale;	// 初期拡大率
+		DirectX::XMFLOAT2 f_scale;			// 拡大率(補間開始)
+		DirectX::XMFLOAT2 e_scale;			// 拡大率(補間終了)
 		DirectX::XMFLOAT3 color;
-		float rot;				// 角度
-		float initial_lifetime; // 初期生存時間
-		int type;				// エフェクトの種類
+		float rot;							// 角度
+		float initial_lifetime;				// 初期生存時間
+		int type;							// エフェクトの種類
 		int step;
-		int is_busy;			// 要素が稼働中であるか
+		int is_busy;						// 要素が稼働中であるか
 	};
 
 	// シーン定数
@@ -61,8 +64,6 @@ private:
 	struct ParticleCommonConstant
 	{
 		DirectX::XMFLOAT2 default_size;		// 画像サイズ
-		DirectX::XMFLOAT2 f_scale;			// 拡大率(開始)
-		DirectX::XMFLOAT2 e_scale;			// 拡大率(終了)
 		float elapsed_time;					// 経過時間
 		float dummy;
 	};
