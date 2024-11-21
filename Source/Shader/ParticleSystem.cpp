@@ -36,7 +36,6 @@ ParticleSystem::ParticleSystem()
 		{
 			// パーティクルデータの初期化
 			particle_data.elapsed_time = 0.0f;
-			particle_data.timer_max = 0.8f;
 			particle_data.default_size = { 0.340f, 1.28f };
 			particle_data.f_scale = DirectX::XMFLOAT2(2.0f, 1.0f);
 			particle_data.e_scale = DirectX::XMFLOAT2(1.0f, 3.5f);
@@ -449,6 +448,7 @@ void ParticleSystem::PlayEffect(
 			p,
 			c,
 			rot,
+			0.8f,
 			type,
 			0,	// step
 			1,	// is_busy
@@ -473,6 +473,7 @@ void ParticleSystem::PlayGroupEffect(const std::vector<ParticleParam>& particle_
 		this->particle_data_pool[i].color = particle_pool[count].color;
 		this->particle_data_pool[i].position = particle_pool[count].position;
 		this->particle_data_pool[i].rot = particle_pool[count].rot;
+		this->particle_data_pool[i].initial_lifetime = particle_pool[count].initial_lifetime;
 		this->particle_data_pool[i].type = particle_pool[count].type;
 		this->particle_data_pool[i].is_busy = 1;
 		this->particle_data_pool[i].step = 0;
@@ -498,7 +499,6 @@ void ParticleSystem::DebugDrawGUI()
 			ImGui::InputFloat("Elapsed Time", &particle_data.elapsed_time);
 			ImGui::InputFloat2("Fast Scale", &particle_data.f_scale.x);
 			ImGui::InputFloat2("End Scale", &particle_data.e_scale.x);
-			ImGui::InputFloat("Timer Max", &particle_data.timer_max);
 			ImGui::TreePop();
 		}
 

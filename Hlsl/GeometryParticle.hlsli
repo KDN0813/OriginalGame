@@ -47,18 +47,19 @@ struct InputGp
     float2 scale;   // 拡大率
     float rot;      // 角度
     float alpha;    // 透明度
-    float timer;    // 生存時間(最大値は定数で持つ)
+    float lifetimer;// 生存時間
 };
 
 // CPUで共有するデータ
 struct CPUGPUBuffer
 {
-    float3 position; // 初期位置
-    float3 color;    // 初期色   
-    float rot;      // 初期角度
-    int type;       // エフェクトの種類
+    float3 position;        // 初期位置
+    float3 color;           // 初期色   
+    float rot;              // 初期角度
+    float initial_lifetime; // 初期生存時間
+    int type;               // エフェクトの種類
     int step;
-    int is_busy;    // 要素が稼働中であるか
+    int is_busy;            // 要素が稼働中であるか
 };
 
 // パーティク共通の定数
@@ -67,6 +68,6 @@ cbuffer ParticleCommonConstant : register(b1)
     float2 default_size;    // 通常画像サイズ
     float2 f_scale;         // 拡大率(開始)
     float2 e_scale;         // 拡大率(終了)
-    float timer_max;        // 生存時間
     float elapsed_time;     // 経過時間
+    float dummy;
 };

@@ -46,7 +46,8 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     float2 scale = Input[node].scale;
     float rot = Input[node].rot;
     float alpha = Input[node].alpha;
-    float timer = Input[node].timer;
+    float lifetimer = Input[node].lifetimer;
+    const float initial_lifetime = Input2[node].initial_lifetime;
     
     // 補間率
     float t = 0.0f;
@@ -66,14 +67,14 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     rot = Input2[node].rot;
                     alpha = 0.0f;
                     scale = f_scale;
-                    timer = timer_max;
+                    lifetimer = initial_lifetime;
                     // CPU共有データの設定
                     Result2[node].step = 1;
                     break;
                 case 1: // 更新
             
-                    timer = max(0.0f, timer - elapsed_time);
-                    t = (timer_max - timer) / timer_max;
+                    lifetimer = max(0.0f, lifetimer - elapsed_time);
+                    t = (initial_lifetime - lifetimer) / initial_lifetime;
             
                     // 透明度の補間
                     alpha = FadeInOut(t);
@@ -81,7 +82,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     scale.x = EaseOutQuadInRange(f_scale.x, e_scale.x, (t));
                     scale.y = EaseOutQuadInRange(f_scale.y, e_scale.y, (t));
             
-                    if (0.0f < timer) break;
+                    if (0.0f < lifetimer) break;
                     // 寿命が0以下になった実行
                     Result2[node].is_busy = 0;
                     alpha = 0.0f;
@@ -102,14 +103,14 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     rot = Input2[node].rot;
                     alpha = 1.0f;
                     scale = f_scale;
-                    timer = timer_max;
+                    lifetimer = initial_lifetime;
                     // CPU共有データの設定
                     Result2[node].step = 1;
                     break;
                 case 1: // 更新
 
-                    timer = max(0.0f, timer - elapsed_time);
-                    t = (timer_max - timer) / timer_max;
+                    lifetimer = max(0.0f, lifetimer - elapsed_time);
+                    t = (initial_lifetime - lifetimer) / initial_lifetime;
             
                     // 角度更新
                     rot += 5.0f * elapsed_time;
@@ -117,7 +118,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     // 位置更新
                     position.y -= 2.0f * elapsed_time;
             
-                    if (0.0f < position.y && 0.0f < timer)
+                    if (0.0f < position.y && 0.0f < lifetimer)
                         break;
                     // パーティクルが地面まで移動したらor寿命が尽きたら実行
                     Result2[node].is_busy = 0;
@@ -135,5 +136,5 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     Result[node].scale = scale;
     Result[node].rot = rot;
     Result[node].alpha = alpha;
-    Result[node].timer = timer;
+    Result[node].lifetimer = lifetimer;
 }

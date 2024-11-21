@@ -85,6 +85,8 @@ void DebugParticle::PlayGroupEffect(size_t count)
                 this->area_pos.z + cosf(theta) * range ,
             };
 
+            // 生存時間設定
+            particle.initial_lifetime = 2.0f;
             // 角度設定
             particle.rot = theta;
             // タイプ設定
