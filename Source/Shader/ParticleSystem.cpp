@@ -290,10 +290,12 @@ ParticleSystem::ParticleSystem()
 			float rot{};
 			const size_t particle_max = 10;	// ヒットエフェクトの星の数
 			const float step = (-DirectX::XM_PI - DirectX::XM_PI) / static_cast<float>(particle_max);	// 各区間の間隔
-			const float move = 1.7f;	// 移動量(仮)
+			const float moveXZ = 1.7f;	// 移動量(仮)
+			const float moveY = 4.0f;	// 移動量(仮)
 			const float initial_lifetime = 0.8f;
-			const float velocity = move / initial_lifetime;
-			const float accelerationY = -velocity / initial_lifetime * 1.5f;
+			const float velocityXZ = moveXZ / initial_lifetime;
+			const float velocityY = moveY / initial_lifetime;
+			const float accelerationY = -velocityY / initial_lifetime * 1.5f;
 			for (size_t i = 0; i < particle_max; ++i)
 			{
 				CPUGPUBuffer effect{};
@@ -302,9 +304,9 @@ ParticleSystem::ParticleSystem()
 				// 移動速度
 				effect.velocity = 
 				{
-					sinf(step* i)* velocity,
-					velocity,
-					cosf(step* i)* velocity
+					sinf(step* i)* velocityXZ,
+					velocityY,
+					cosf(step* i)* velocityXZ
 				};								
 				effect.acceleration = { 0.0f ,accelerationY ,0.0f };   // 加速度
 				effect.initial_scale = DirectX::XMFLOAT2(0.03f, 0.03f);// 初期拡大率

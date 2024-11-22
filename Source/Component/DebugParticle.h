@@ -37,6 +37,8 @@ private:
     float effect_area_height = 2.0f;    // エフェクトを再生するエリア(円柱)の高さ
     DirectX::XMFLOAT3 area_pos = {};    // エフェクトを再生するエリアの中心
     bool effect_looping = false;    // エフェクトをループ再生させるフラグ
+    bool is_random_spawn_position = false;	// パーティクルの生成位置をランダムにするかのフラグ
+    int draw_effect_type = 0;   // デバッグで描画するエフェクトのタイプ
 
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
@@ -59,8 +61,6 @@ public:
 private:
     CylinderParam debug_cylinder_effect_area;
     size_t group_count = 100;       // 再生するグループエフェクトの数
-    int draw_effect_type = 0;   // デバッグで描画するエフェクトのタイプ
-    bool is_random_spawn_position = false;	// パーティクルの生成位置をランダムにするかのフラグ
 #endif // DEBUG
 };
 
