@@ -8,6 +8,7 @@
 #include "Component/InstancingModelShaderComponent.h"
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
+#include "Shader\LightManager.h"
 
 #include "Component/InstancedModelWithStateAnimationComponent.h"
 #include "Component/TransformComponent.h"
@@ -221,15 +222,21 @@ void InstancingModelShader::Render()
 		dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
 
 		// シーン用定数バッファ更新
-		SceneConstantBuffer cbScene;
+		SceneConstantBuffer cb_scene{};
 
 		MYMATRIX View = rc.view;
 		MYMATRIX Projection = rc.projection;
 		MYMATRIX View_projection = View * Projection;
 
-		View_projection.GetFlaot4x4(cbScene.viewProjection);
+		// ライトの方向取得
+		if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
+		{
+			cb_scene.light_direction = light_manager->GetlightDirection();
+		}
 
-		dc->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cbScene, 0, 0);
+		View_projection.GetFlaot4x4(cb_scene.viewProjection);
+
+		dc->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cb_scene, 0, 0);
 
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}

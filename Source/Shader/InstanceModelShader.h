@@ -18,6 +18,9 @@ private:
 	struct SceneConstantBuffer
 	{
 		DirectX::XMFLOAT4X4 viewProjection;
+		DirectX::XMFLOAT4 light_direction;
+		float texture_maping = 1.0f;
+		DirectX::XMFLOAT3 dummy;
 	};
 	struct SubsetConstantBuffer
 	{

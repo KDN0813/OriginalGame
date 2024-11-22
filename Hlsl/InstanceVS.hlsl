@@ -29,8 +29,13 @@ VsOut main(VsIn vs_in)
     VsOut vout;
     vout.position = mul(float4(p, 1.0f), mul(world_transform, view_projection));
     
-    vout.color.rgb = vs_in.color.rgb * material_color.rgb;
-    vout.color.a = vs_in.color.a * material_color.a;
-    vout.texcoord = vs_in.texcoord; 
+    float3 N = normalize(n);
+    float3 L = normalize(-light_direction.xyz);
+    float d = dot(L, N);
+    float power = max(0, d) * 0.5f + 0.5f;
+    vout.color.rgb = vs_in.color.rgb * material_color.rgb * power;
+    vout.color.a = vs_in.color.a * material_color.a * 2.0f;
+    
+    vout.texcoord = vs_in.texcoord * texture_maping;
     return vout;
 }
