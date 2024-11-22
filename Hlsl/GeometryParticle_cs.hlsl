@@ -121,7 +121,9 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     position += velocity * elapsed_time;
                     // 速度更新
                     velocity += Input2[node].acceleration * elapsed_time;
-                      
+                    // 透明度更新
+                    alpha = EaseInQuartLerp(1.0f, 0.0f, t);
+            
                     if (0.0f < lifetimer)
                         break;
                     // パーティクルが地面まで移動したらor寿命が尽きたら実行
