@@ -51,10 +51,15 @@ public:
 	std::vector<Node>& GetNodes() { return node_vec; }
 	const ModelResource* GetResource() const { return resource.get(); }
 	std::shared_ptr<ModelResource>& GetResourceSptr() { return resource; }
+	float GetTileCount() const { return this->tile_count; }
+	void SetTileCount(float tile_count) { this->tile_count = tile_count; }
 
 private:
 	std::shared_ptr<ModelResource>	resource;	// モデルリソース
 	std::vector<Node>				node_vec;	// ノード
+
+	// TODO 地形モデルを実装したら削除する
+	float tile_count = 1;	// テクスチャをタイル化する時のタイル数(初期値は1)
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;
 

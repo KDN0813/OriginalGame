@@ -115,6 +115,8 @@ void ModelComponent::DrawDebugGUI()
 	char buffer[1024];
 	::strncpy_s(buffer, sizeof(buffer), model_filename, sizeof(buffer));
 	ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
+
+	ImGui::SliderFloat("TileCount", &this->tile_count, 1.0f, 100.0f);
 }
 
 #endif // _DEBUG

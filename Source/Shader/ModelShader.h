@@ -17,8 +17,6 @@ private:
 	{
 		DirectX::XMFLOAT4X4 view_projection;
 		DirectX::XMFLOAT4 light_direction;
-		float texture_maping = 1.0f;
-		DirectX::XMFLOAT3 dummy;
 	};
 
 	struct MeshConstantBuffer
@@ -29,6 +27,10 @@ private:
 	struct SubsetConstantBuffer
 	{
 		DirectX::XMFLOAT4	material_color;
+
+		// TODO ’nŒ`ƒ‚ƒfƒ‹‚ğÀ‘•‚µ‚½‚çíœ‚·‚é
+		float tile_count = 1.0f;
+		DirectX::XMFLOAT3 dummy;
 	};
 public:
     ModelShader();

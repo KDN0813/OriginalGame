@@ -244,6 +244,7 @@ void ModelShader::Draw(ID3D11DeviceContext* dc, const ModelComponent* model)
 		{
 			SubsetConstantBuffer cbSubset;
 			cbSubset.material_color = subset.material->color;
+			cbSubset.tile_count = model->GetTileCount();
 			dc->UpdateSubresource(subset_constant_buffer.Get(), 0, 0, &cbSubset, 0, 0);
 			dc->PSSetShaderResources(0, 1, subset.material->shader_resource_view.GetAddressOf());
 			dc->PSSetSamplers(0, 1, sampler_state.GetAddressOf());

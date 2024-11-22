@@ -21,6 +21,6 @@ VsOut main(VsIn vs_in)
     float power = max(0, d) * 0.5f + 0.5f;
     vout.color.rgb = vs_in.color.rgb * material_color.rgb * power;
     vout.color.a = vs_in.color.a * material_color.a * 2.0f;
-    vout.texcoord = vs_in.texcoord * texture_maping;
+    vout.texcoord = vs_in.texcoord * tile_count;
     return vout;
 }
