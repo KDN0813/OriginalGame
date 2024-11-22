@@ -50,6 +50,8 @@ private:
 		DirectX::XMFLOAT2 f_scale;			// 拡大率(補間開始)
 		DirectX::XMFLOAT2 e_scale;			// 拡大率(補間終了)
 		DirectX::XMFLOAT3 color;
+		DirectX::XMFLOAT3 f_color;
+		DirectX::XMFLOAT3 e_color;
 		float rot;							// 角度
 		float rot_speed;					// 回転速度
 		float initial_lifetime;				// 初期生存時間

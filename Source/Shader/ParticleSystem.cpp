@@ -311,6 +311,8 @@ ParticleSystem::ParticleSystem()
 				effect.f_scale = {};		// 拡大率(補間開始)
 				effect.e_scale = {};		// 拡大率(補間終了)
 				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f);	// 色
+				effect.f_color = DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f);	// 色
+				effect.e_color = DirectX::XMFLOAT3(0.74, 0.32, 0.0f);	// 色
 				effect.rot = rot;									// 角度
 				effect.rot_speed = DirectX::XMConvertToRadians(360.0f);								// 回転速度
 				effect.initial_lifetime = initial_lifetime;			// 生存時間

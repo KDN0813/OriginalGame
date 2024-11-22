@@ -123,6 +123,10 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     velocity += Input2[node].acceleration * elapsed_time;
                     // 透明度更新
                     alpha = EaseInQuartLerp(1.0f, 0.0f, t);
+                    // 色更新
+                    color.x = EaseInQuartLerp(Input2[node].f_color.x, Input2[node].e_color.x, t);
+                    color.y = EaseInQuartLerp(Input2[node].f_color.y, Input2[node].e_color.y, t);
+                    color.z = EaseInQuartLerp(Input2[node].f_color.z, Input2[node].e_color.z, t);
             
                     if (0.0f < lifetimer)
                         break;

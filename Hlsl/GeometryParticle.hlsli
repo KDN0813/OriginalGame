@@ -60,6 +60,8 @@ struct CPUGPUBuffer
     float2 f_scale;         // 拡大率(開始)
     float2 e_scale;         // 拡大率(終了)
     float3 color;           // 初期色   
+    float3 f_color;         // 初期色(開始)   
+    float3 e_color;         // 初期色(終了)   
     float rot;              // 初期角度
     float rot_speed;        // 回転速度
     float initial_lifetime; // 初期生存時間
