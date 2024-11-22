@@ -25,6 +25,9 @@ cbuffer MeshConstantBuffer : register(b1)
 cbuffer SceneConstantBuffer : register(b0)
 {
     row_major float4x4 view_projection;
+    float4 light_direction;
+    float texture_maping;
+    float3 dummy;
 };
 
 cbuffer SubsetConstantBuffer : register(b2)

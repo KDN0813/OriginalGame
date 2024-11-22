@@ -614,6 +614,12 @@ void SceneGame::DebugDrawGUI()
 	// シェーダー
 	DrawShaderImGui();
 
+	// ライトマネージャー
+	if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
+	{
+		light_manager->DrawDebugGUI();
+	}
+
 	// パーティクルシステム
 	if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 	{

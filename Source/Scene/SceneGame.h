@@ -12,6 +12,7 @@
 #include "Shader/ModelShader.h"
 #include "Shader/SpriteShader.h"
 #include "Shader/ParticleSystem.h"
+#include "Shader\LightManager.h"
 
 class SceneGame : public Scene 
 {
@@ -41,6 +42,7 @@ private:
     ObjectManager object_manager;
     CircleCollisionManager circle_collision_manager;
     ParticleSystem particle_system;
+    LightManager light_manager;
 #ifdef _DEBUG
     void DebugDrawGUI();
 

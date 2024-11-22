@@ -5,6 +5,7 @@
 #include "ModelShader.h"
 #include "Model/ModelResource.h"
 #include "System/Misc.h"
+#include "Shader\LightManager.h"
 
 #include "Component/ModelShaderComponent.h"
 #include "Component/ModelComponent.h"
@@ -189,13 +190,20 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	dc->PSSetSamplers(0, 1, sampler_state.GetAddressOf());
 
 	// シーン用定数バッファ更新
-	SceneConstantBuffer scene_CB;
+	SceneConstantBuffer scene_CB{};
 
 	MYMATRIX View = rc.view;
 	MYMATRIX Projection = rc.projection;
 	MYMATRIX View_projection = View * Projection;
 
 	View_projection.GetFlaot4x4(scene_CB.view_projection);
+
+	// ライトの方向取得
+	if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
+	{
+		scene_CB.light_direction = light_manager->GetlightDirection();
+	}
+
 	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
 }
 
