@@ -74,7 +74,8 @@ void SceneGame::Initialize()
 		// ステージ
 		{
 			auto stage = object_manager.Create("Stage");
-			stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
+			auto model = stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube3.mdl");
+			model->SetTileCount(50.0f);
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};

@@ -435,6 +435,8 @@
     <ClInclude Include="Hlsl\ParticleDisp.h">
       <Filter>HLSL\GeometryParticle</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\DebugParticle.h" />
+    <ClInclude Include="Source\Shader\LightManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -655,6 +657,12 @@
     </ClCompile>
     <ClCompile Include="Source\Shader\SpriteShader.cpp">
       <Filter>Source\Shader\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\DebugParticle.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\LightManager.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
