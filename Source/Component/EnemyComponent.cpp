@@ -206,9 +206,8 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 			}
 
 			// çƒê∂à íuåvéZ
-			const float forward_offset = -2.0f;
 			const float up_offset = 0.5f;
-			Pos += (Forward * forward_offset) + (Up * up_offset);
+			Pos += (Up * up_offset);
 			Pos.GetFlaot3(pos);
 		}
 
@@ -216,10 +215,10 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 		{
 			particle_system->PlayEffect(
-				EFFECT_SLASH,
+				EFFECT_HIT,
 				pos,
 				45.0f,
-				DirectX::XMFLOAT3(1.0f, 0.5f, 1.0f)
+				DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f)
 			);
 		}
 	}

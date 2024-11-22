@@ -269,7 +269,7 @@ void SceneGame::Initialize()
 		{
 			float territory_range = 220.0f;
 #ifdef _DEBUG
-			for (int i = 0; i < 0; ++i)
+			for (int i = 0; i < 500; ++i)
 #else
 			for (int i = 0; i < 5000; ++i)
 #endif // _DEBUG

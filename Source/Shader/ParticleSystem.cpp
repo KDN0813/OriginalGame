@@ -290,7 +290,7 @@ ParticleSystem::ParticleSystem()
 			float rot{};
 			const size_t particle_max = 10;	// ヒットエフェクトの星の数
 			const float step = (-DirectX::XM_PI - DirectX::XM_PI) / static_cast<float>(particle_max);	// 各区間の間隔
-			const float move = 1.56;	// 移動量(仮)
+			const float move = 1.7f;	// 移動量(仮)
 			const float initial_lifetime = 0.8f;
 			const float velocity = move / initial_lifetime;
 			const float accelerationY = -velocity / initial_lifetime * 1.5f;
