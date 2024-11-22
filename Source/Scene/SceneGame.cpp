@@ -114,6 +114,7 @@ void SceneGame::Initialize()
 				state_machine->RegisterState<PlayerIdleState>();
 				state_machine->RegisterState<PlayerMoveState>();
 				state_machine->RegisterState<PlayerAttackState>();
+				state_machine->RegisterState<PlayerSpinAttackState>();
 
 				state_machine->SetDefaultState("PlayerIdleState");	// デフォルトステートの設定
 			}
@@ -207,25 +208,50 @@ void SceneGame::Initialize()
 							child_collision->AddCollisionEntercomponent(player_component);
 						}
 					}
-#ifdef _DEBUG
-					// パーティクル再生用オブジェクト
+				}
+				// 回転攻撃用当たり判定オブジェクト
+				{
+					std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
+					player_attack_object->SetName("SpinAttackObject");
+					// トランスフォーム設定
 					{
-						auto debug_Particle = player->CreateChildObject();
-						debug_Particle->SetName("Debug Particle");
-						// transform
+						Transform3DComponent::Transform3DParam param{};
+						param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+						param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
+
+						auto child_transform = player_attack_object->AddComponent<Transform3DComponent>(param);
+					}
+					// 円のコライダー
+					{
+						CircleCollisionComponent::CollisionParam param{};
+						param.collision_type = COLLISION_OBJECT_TYPE::PLAYER;
+						param.radius = 5.0f;
+						param.default_active_flag = false;
+						auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
+
+						// 接触時処理するコンポーネントの追加
 						{
-							Transform3DComponent::Transform3DParam param{};
-							param.local_position = DirectX::XMFLOAT3(0.0f, 50.0f, 0.0f);
-							debug_Particle->AddComponent<Transform3DComponent>(param);
-						}
-						// DebugParticle
-						{
-							debug_Particle->AddComponent<DebugParticle>();
+							child_collision->AddCollisionEntercomponent(player_component);
 						}
 					}
-#endif // DEBUG
-
 				}
+#ifdef _DEBUG
+				// パーティクル再生用オブジェクト
+				{
+					auto debug_Particle = player->CreateChildObject();
+					debug_Particle->SetName("Debug Particle");
+					// transform
+					{
+						Transform3DComponent::Transform3DParam param{};
+						param.local_position = DirectX::XMFLOAT3(0.0f, 50.0f, 0.0f);
+						debug_Particle->AddComponent<Transform3DComponent>(param);
+					}
+					// DebugParticle
+					{
+						debug_Particle->AddComponent<DebugParticle>();
+					}
+				}
+#endif // DEBUG
 			}
 
 			// GameObjectに設定

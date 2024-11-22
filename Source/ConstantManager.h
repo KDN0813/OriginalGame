@@ -17,7 +17,7 @@ public:
         DEAD_STAY,
         ATTACK01,
         ATTACK02,
-        ATTACK03,
+        SPIN_ATTACK,
     };
 };
 

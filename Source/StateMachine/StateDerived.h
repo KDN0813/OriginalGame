@@ -22,6 +22,7 @@ public:
 private:
 	State::ChangeState change_move_state;
 	State::ChangeState change_attack_state;
+	State::ChangeState change_spin_attack_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
@@ -42,6 +43,7 @@ public:
 private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_attack_state;
+	State::ChangeState change_spin_attack_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
@@ -53,6 +55,27 @@ public:
 	// コンストラクタ
 	PlayerAttackState();
 	~PlayerAttackState() {}
+	// ステートに入った時のメソッド
+	void Staet() override;
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override;
+private:
+	State::ChangeState change_idle_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<PlayerComponent> player_Wprt;
+	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
+};
+
+// 回転攻撃
+class PlayerSpinAttackState : public State
+{
+public:
+	// コンストラクタ
+	PlayerSpinAttackState();
+	~PlayerSpinAttackState() {}
 	// ステートに入った時のメソッド
 	void Staet() override;
 	// ステートで実行するメソッド
