@@ -36,6 +36,6 @@ VsOut main(VsIn vs_in)
     vout.color.rgb = vs_in.color.rgb * material_color.rgb * power;
     vout.color.a = vs_in.color.a * material_color.a * 2.0f;
     
-    vout.texcoord = vs_in.texcoord * texture_maping;
+    vout.texcoord = vs_in.texcoord;
     return vout;
 }
