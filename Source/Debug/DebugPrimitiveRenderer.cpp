@@ -259,6 +259,10 @@ void DebugPrimitiveRenderer::Render()
 		context->Draw(cylinder_vertex_count, 0);
 	}
 	cylinders.clear();
+
+	// ‰Šú‰»
+	context->IASetInputLayout(nullptr);
+	context->IASetVertexBuffers(0, 0, nullptr, 0, 0);
 }
 
 // ‹…•`‰æ
