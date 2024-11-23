@@ -26,6 +26,8 @@ Audio::Audio()
 	// マスタリングボイス生成
 	hr = xaudio->CreateMasteringVoice(&this->mastering_voice);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	// マスターボイスのボリューム設定
+	mastering_voice->SetVolume(0.5f);
 }
 
 Audio::~Audio()
