@@ -75,11 +75,11 @@ void SceneGame::Initialize()
 		{
 			auto stage = object_manager.Create("Stage");
 			auto model = stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube3.mdl");
-			model->SetTileCount(50.0f);
+			model->SetTileCount(150.0f);
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(600.0f, 1.0f, 600.0f);
+				param.local_scale = DirectX::XMFLOAT3(700.0f, 1.0f, 700.0f);
 				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
@@ -294,6 +294,7 @@ void SceneGame::Initialize()
 
 		// 敵
 		{
+			// TODO 仮配置(マジックナンバー)をやめる
 			float territory_range = 220.0f;
 			float player_area_rage = 10.0f;
 #ifdef _DEBUG
@@ -413,6 +414,36 @@ void SceneGame::Update(float elapsed_time)
 	}
 
 	object_manager.Update(elapsed_time);
+
+	// プレイヤーの移動範囲制限
+	// TODO ステージを変更したらステージに合わせた移動範囲の制限をかける
+	if(GameObject::Instance game_object = GameObject::GetInstance() ; game_object.Get())
+	{
+		const auto& player = game_object->GetPlayer();
+		if (const auto& player_transform = player->GetComponent<Transform3DComponent>())
+		{
+			DirectX::XMFLOAT3 player_pos = player_transform->GetWorldPosition();
+
+			// TODO 仮配置(マジックナンバー)をやめる
+			float territory_range = 220.0f;
+			if (territory_range < player_pos.x)
+			{
+				player_transform->AddLocalPosition({ territory_range - player_pos.x,0.0f,0.0f });
+			}
+			if (player_pos.x < -territory_range)
+			{
+				player_transform->AddLocalPosition({ - territory_range - player_pos.x,0.0f,0.0f });
+			}
+			if (territory_range < player_pos.z)
+			{
+				player_transform->AddLocalPosition({ 0.0f,0.0f,territory_range - player_pos.z });
+			}
+			if (player_pos.z < -territory_range)
+			{
+				player_transform->AddLocalPosition({ 0.0f,0.0f,-territory_range - player_pos.z });
+			}
+		}
+	}
 
 	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
