@@ -295,6 +295,7 @@ void SceneGame::Initialize()
 		// “G
 		{
 			float territory_range = 220.0f;
+			float player_area_rage = 10.0f;
 #ifdef _DEBUG
 			for (int i = 0; i < 500; ++i)
 #else
@@ -328,7 +329,7 @@ void SceneGame::Initialize()
 				{
 					float offset = 2.0f;
 					float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-					float range = MyMathf::RandomRange(0.0f, territory_range);
+					float range = MyMathf::RandomRange(player_area_rage, territory_range);
 
 					Transform3DComponent::Transform3DParam param{};
 					param.local_position =

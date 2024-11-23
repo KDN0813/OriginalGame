@@ -337,7 +337,7 @@ ParticleSystem::ParticleSystem()
 				effect.e_scale = {};		// 拡大率(補間終了)
 				effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f);	// 色
 				effect.f_color = DirectX::XMFLOAT3(1.0f, 1.0f, 0.0f);	// 色
-				effect.e_color = DirectX::XMFLOAT3(0.74, 0.32, 0.0f);	// 色
+				effect.e_color = DirectX::XMFLOAT3(0.74f, 0.32f, 0.0f);	// 色
 				effect.rot = rot;									// 角度
 				effect.rot_speed = DirectX::XMConvertToRadians(360.0f);								// 回転速度
 				effect.initial_lifetime = initial_lifetime;			// 生存時間
@@ -520,7 +520,7 @@ int ParticleSystem::CalculateFreeParticleCount()
 	{
 		if (!this->particle_data_pool[i].is_busy) ++this->free_particle_count;
 	}
-	return this->free_particle_count;
+	return static_cast<int>(this->free_particle_count);
 }
 
 void ParticleSystem::PlayEffect(
