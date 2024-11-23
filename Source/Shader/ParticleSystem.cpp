@@ -162,6 +162,8 @@ ParticleSystem::ParticleSystem()
 		// 最初の出力リソース（初期化用データは必要ない）
 		hr = device->CreateBuffer(&Desc, &SubResource, this->particle_gpu_data_buffer[1].GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		delete[] input_gp;
 	}
 
 	// GPU専用のパーティクルデータを扱う入力用リソースビューの作成
