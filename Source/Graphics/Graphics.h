@@ -1,10 +1,11 @@
 #pragma once
 
 #include <memory>
-#include <d3d11.h>
+#include <d3d11_1.h>
 #include <wrl.h>
 #include <mutex>
 #include <vector>
+#include <dxgi1_6.h>
 #include "System/ClassBase/Singleton.h"
 
 #include "Graphics/RenderContext.h"
@@ -17,11 +18,12 @@ public:
 
 	ID3D11Device* GetDevice() const { return device.Get(); }
 	ID3D11DeviceContext* GetDeviceContext() const { return immediate_context.Get(); }
-	IDXGISwapChain* GetSwapChain() const { return swapchain.Get(); }
+	IDXGISwapChain* GetSwapChain() const { return swap_chain.Get(); }
 	ID3D11RenderTargetView* GetRenderTargetView() const { return render_target_view.Get(); }
 	ID3D11DepthStencilView* GetDepthStencilView() const { return depth_stencil_view.Get(); }
 	float GetScreenWidth() const { return screen_width; }
 	float GetScreenHeight() const { return screen_height; }
+	BOOL GetTearingSupported()const { return this->tearing_supported; }
 
 	// 描画準備
 	// レンダーターゲットビューとデプスステンシルビューのクリアおよびレンダリングターゲットの設定を行う
@@ -29,7 +31,7 @@ public:
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device>			device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>		immediate_context;
-	Microsoft::WRL::ComPtr<IDXGISwapChain>			swapchain;
+	Microsoft::WRL::ComPtr<IDXGISwapChain1>			swap_chain;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	render_target_view;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D>			depth_stencil_buffer;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	depth_stencil_view;
@@ -48,5 +50,7 @@ private:
 
 	float	screen_width;
 	float	screen_height;
+
+	BOOL tearing_supported{ FALSE };
 };
 

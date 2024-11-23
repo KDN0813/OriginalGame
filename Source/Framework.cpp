@@ -77,7 +77,8 @@ void Framework::Render(float elapsed_time)
 	debug_manager.GetImGuiRenderer()->Render();
 #endif // _DEBUG
 
-	graphics.GetSwapChain()->Present(this->sync_interval, 0);
+	UINT flags = (graphics.GetTearingSupported() && !fullscreen_mode && !this->sync_interval) ? DXGI_PRESENT_ALLOW_TEARING : 0;
+	graphics.GetSwapChain()->Present(this->sync_interval, flags);
 }
 
 bool IsWindowActive(HWND hwnd)

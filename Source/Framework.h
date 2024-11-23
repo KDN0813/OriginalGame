@@ -48,6 +48,8 @@ private:
 	CameraManager					camera_manager;
 	GameData						game_data;
 	Audio							audio;
+
+	BOOL fullscreen_mode{ FALSE };
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)
 	int sync_interval = 0;			// ‚’¼“¯ŠúŠÔŠuİ’è
 #else

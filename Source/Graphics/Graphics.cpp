@@ -21,8 +21,10 @@ Graphics::Graphics(HWND hWnd)
 #if defined(DEBUG) || defined(_DEBUG)
 		create_device_flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
+
 		D3D_FEATURE_LEVEL feature_levels[] =
 		{
+			D3D_FEATURE_LEVEL_11_1,
 			D3D_FEATURE_LEVEL_11_0,
 			D3D_FEATURE_LEVEL_10_1,
 			D3D_FEATURE_LEVEL_10_0,
@@ -30,55 +32,60 @@ Graphics::Graphics(HWND hWnd)
 			D3D_FEATURE_LEVEL_9_2,
 			D3D_FEATURE_LEVEL_9_1,
 		};
-
-		// スワップチェーンを作成するための設定オプション
-		DXGI_SWAP_CHAIN_DESC swapchain_desc;
-		{
-			swapchain_desc.BufferDesc.Width = screen_width_uint;
-			swapchain_desc.BufferDesc.Height = screen_height_uint;
-			swapchain_desc.BufferDesc.RefreshRate.Numerator = 60;
-			swapchain_desc.BufferDesc.RefreshRate.Denominator = 1;
-			swapchain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			swapchain_desc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-			swapchain_desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-
-			swapchain_desc.SampleDesc.Count = 1;
-			swapchain_desc.SampleDesc.Quality = 0;
-			swapchain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-			swapchain_desc.BufferCount = 1;
-			swapchain_desc.OutputWindow = hWnd;
-			swapchain_desc.Windowed = TRUE;
-			swapchain_desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-			swapchain_desc.Flags = 0;
-		}
-
-		D3D_FEATURE_LEVEL featureLevel;
-
-		// デバイス＆スワップチェーンの生成
-		hr = D3D11CreateDeviceAndSwapChain(
-			nullptr,
-			D3D_DRIVER_TYPE_HARDWARE,
-			nullptr,
-			create_device_flags,
-			feature_levels,
-			ARRAYSIZE(feature_levels),
-			D3D11_SDK_VERSION,
-			&swapchain_desc,
-			this->swapchain.GetAddressOf(),
-			this->device.GetAddressOf(),
-			&featureLevel,
-			this->immediate_context.GetAddressOf()
-		);
+		hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, create_device_flags, feature_levels, ARRAYSIZE(feature_levels), D3D11_SDK_VERSION, device.GetAddressOf(), NULL, immediate_context.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// スワップチェーン作成
+		UINT create_factory_flags{};
+#ifdef _DEBUG
+		create_factory_flags |= DXGI_CREATE_FACTORY_DEBUG;
+#endif
+		Microsoft::WRL::ComPtr<IDXGIFactory6> dxgi_factory6;
+		hr = CreateDXGIFactory2(create_factory_flags, IID_PPV_ARGS(dxgi_factory6.GetAddressOf()));
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		BOOL allow_tearing = FALSE;
+		if (SUCCEEDED(hr))
+		{
+			hr = dxgi_factory6->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING, &allow_tearing, sizeof(allow_tearing));
+		}
+		tearing_supported = SUCCEEDED(hr) && allow_tearing;
+
+		DXGI_SWAP_CHAIN_DESC1 swap_chain_desc1{};
+		swap_chain_desc1.Width = screen_width_uint;
+		swap_chain_desc1.Height = screen_height_uint;
+		swap_chain_desc1.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		swap_chain_desc1.Stereo = FALSE;
+		swap_chain_desc1.SampleDesc.Count = 1;
+		swap_chain_desc1.SampleDesc.Quality = 0;
+		swap_chain_desc1.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		swap_chain_desc1.BufferCount = 2;
+		swap_chain_desc1.Scaling = DXGI_SCALING_STRETCH;
+		swap_chain_desc1.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+		swap_chain_desc1.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
+		swap_chain_desc1.Flags = tearing_supported ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
+		hr = dxgi_factory6->CreateSwapChainForHwnd(this->device.Get(), hWnd, &swap_chain_desc1, NULL, NULL, this->swap_chain.ReleaseAndGetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		{
+			// スワップチェインの親ファクトリーを取得
+			Microsoft::WRL::ComPtr<IDXGIFactory> dxgi_factory;
+			hr = swap_chain->GetParent(IID_PPV_ARGS(&dxgi_factory));
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+			// ファクトリーを使って関連付けを行う
+			hr = dxgi_factory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
+			_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+		}
 	}
+
 
 	// レンダーターゲットビューの生成
 	{
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-		hr = this->swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> back_buffer;
+		hr = this->swap_chain->GetBuffer(0, IID_PPV_ARGS(back_buffer.GetAddressOf()));
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
-		hr = this->device->CreateRenderTargetView(backBuffer.Get(), nullptr, this->render_target_view.GetAddressOf());
+		hr = this->device->CreateRenderTargetView(back_buffer.Get(), nullptr, this->render_target_view.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
