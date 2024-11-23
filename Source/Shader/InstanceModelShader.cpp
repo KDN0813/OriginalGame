@@ -302,8 +302,8 @@ void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* s
 {
 	if (shader_component == nullptr) return;
 
-	// TODO 同じモデルのコンテナがあるなら追加、ないなら要素を追加する
-	const int& modelId = shader_component->GetModelId();
+	// 同じモデルのコンテナがあるなら追加、ないなら要素を追加する
+	const int modelId = shader_component->GetModelId();
 	shader_component_vec_map[modelId].emplace_back(shader_component);
 }
 

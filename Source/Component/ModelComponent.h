@@ -58,7 +58,7 @@ private:
 	std::shared_ptr<ModelResource>	resource;	// モデルリソース
 	std::vector<Node>				node_vec;	// ノード
 
-	// TODO 地形モデルを実装したら削除する
+	// Hack 地形モデルを変更したら削除する
 	float tile_count = 1;	// テクスチャをタイル化する時のタイル数(初期値は1)
 private:
 	std::weak_ptr<Transform3DComponent> transform_Wptr;

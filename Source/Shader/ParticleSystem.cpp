@@ -51,6 +51,7 @@ ParticleSystem::ParticleSystem()
 		}
 	}
 
+	// 頂点シェーダー
 	hr = CreateShader::VsFromCso(device, "Shader\\GeometryParticle_vs.cso", this->vertex_shader.ReleaseAndGetAddressOf(), nullptr, nullptr, 0);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
@@ -107,6 +108,26 @@ ParticleSystem::ParticleSystem()
 		rasterizer_desc.CullMode = D3D11_CULL_NONE;
 		rasterizer_desc.AntialiasedLineEnable = TRUE;
 		hr = device->CreateRasterizerState(&rasterizer_desc, this->rasterizer_state.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+
+	// サンプラステートの生成
+	{
+		D3D11_SAMPLER_DESC sampler_desc{};
+		sampler_desc.Filter = D3D11_FILTER_ANISOTROPIC;
+		sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampler_desc.MipLODBias = 0;
+		sampler_desc.MaxAnisotropy = 16;
+		sampler_desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		sampler_desc.BorderColor[0] = 0;
+		sampler_desc.BorderColor[1] = 0;
+		sampler_desc.BorderColor[2] = 0;
+		sampler_desc.BorderColor[3] = 0;
+		sampler_desc.MinLOD = 0;
+		sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
+		hr = device->CreateSamplerState(&sampler_desc, this->sampler_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
@@ -345,6 +366,7 @@ void ParticleSystem::Update()
 		immediate_context->CSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
 	}
 
+	// TODO エフェクトが追加された時だけ実行されるように変更する
 	// 初期化用パラメータを更新
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource{};
@@ -368,7 +390,8 @@ void ParticleSystem::Update()
 	// コンピュート・シェーダの実行
 	immediate_context->Dispatch(PERTICLES_PIECE_NO, 1, 1);//グループの数
 
-	// CPU・GPU共通のデータを扱うデータの取得
+	// TODO エフェクトの再生指示が行われた場合のみ実行するようにする。
+	// TODO 空いている用ののインデックスをキューで管理するように変更する
 	{
 		HRESULT hr = S_OK;
 
@@ -433,6 +456,8 @@ void ParticleSystem::Render()
 	immediate_context->OMSetDepthStencilState(this->depth_stencil_state.Get(), 0);
 	// ラスタライザーステートの設定
 	immediate_context->RSSetState(this->rasterizer_state.Get());
+	// サンプラーステートの設定
+	immediate_context->PSSetSamplers(0, 1, this->sampler_state.GetAddressOf());
 
 	//定数バッファの更新
 	{

@@ -145,6 +145,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler_state;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> scene_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> particle_common_constant;
 	std::unique_ptr<Texture> texture;
