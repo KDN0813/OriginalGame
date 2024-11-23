@@ -299,7 +299,7 @@ void SceneGame::Initialize()
 #ifdef _DEBUG
 			for (int i = 0; i < 500; ++i)
 #else
-			for (int i = 0; i < 5000; ++i)
+			for (int i = 0; i < 4000; ++i)
 #endif // _DEBUG
 			{
 				auto enemy = object_manager.Create();
@@ -379,17 +379,15 @@ void SceneGame::Initialize()
 				}
 			}
 		}
-		
-		#ifdef _DEBUG
-				if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
-				{
-					AudioParam param{};
-					param.volume = 0.3f;
-					param.loop = true;
-					param.filename = "Data/Audio/BGM.wav";
-					audio->Play(param);
-				}
-		#endif // _DEBUG
+
+		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+		{
+			AudioParam param{};
+			param.volume = 0.4f;
+			param.loop = true;
+			param.filename = "Data/Audio/BGM.wav";
+			audio->Play(param);
+		}
 	}
 }
 

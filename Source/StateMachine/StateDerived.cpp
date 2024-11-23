@@ -2,6 +2,7 @@
 #include "Input/Input.h"
 #include "Object/Object.h"
 #include "ConstantManager.h"
+#include "Audio\Audio.h"
 
 #include "Component/StateMachineComponent.h"
 #include "Component/ModelAnimationControlComponent.h"
@@ -123,6 +124,16 @@ void PlayerAttackState::Staet()
     if (animation)
         animation->PlayAnimation(PlayerCT::ANIMATION::ATTACK01, false, 0.2f);
 
+    // SE再生
+    if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+    {
+        AudioParam param{};
+        param.volume = 0.5f;
+        param.loop = false;
+        param.filename = "Data/Audio/SE_Slash01.wav";
+        audio->Play(param);
+    }
+
     // プレイヤーの入力移動を無効にする
     auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
     if (player)
@@ -187,6 +198,16 @@ void PlayerSpinAttackState::Staet()
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
         animation->PlayAnimation(PlayerCT::ANIMATION::SPIN_ATTACK, false, 0.2f);
+
+    // SE再生
+    if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+    {
+        AudioParam param{};
+        param.volume = 0.4f;
+        param.loop = false;
+        param.filename = "Data/Audio/SE_Slash02.wav";
+        audio->Play(param);
+    }
 
     // プレイヤーの入力移動を無効にする
     auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
