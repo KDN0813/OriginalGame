@@ -76,7 +76,7 @@ void CameraControllerGamepad::Update(float elapsed_time)
 	camera->SetRotateY(rotateY);
 }
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
 #include "Component/TransformComponent.h"
 
 void CameraControllerDebug::Update(float elapsed_time)
@@ -197,6 +197,8 @@ void CameraControllerDebug::Update(float elapsed_time)
 	camera->SetEye(eye);
 }
 
+#ifdef _DEBUG
+
 void CameraControllerGamepad::DrawDebugGUI()
 {
 	float roll_speed_deg = DirectX::XMConvertToDegrees(this->param.roll_speed);
@@ -205,5 +207,6 @@ void CameraControllerGamepad::DrawDebugGUI()
 		this->param.roll_speed = DirectX::XMConvertToRadians(roll_speed_deg);
 	}
 }
+#endif // DEBUG
 
 #endif // _DEBUG

@@ -61,7 +61,7 @@ public:
 #endif // _DEBUG
 };
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
 
 // デバッグ用カメラコントローラー
 class CameraControllerDebug : public Component
@@ -87,6 +87,8 @@ public:
 private:
     std::weak_ptr<CameraComponent> camera_Wptr;
 
+#ifdef _DEBUG
+
 public:
     /**
      * デバックの情報を2D画面に出力する関数
@@ -101,6 +103,7 @@ public:
      */
     void DrawDebugPrimitiveGUI()  override {};
     bool IsDebugPrimitive() { return false; }   // DebugPrimitiveが存在するか
+#endif // DEBUG
 };
 
 #endif // _DEBUG

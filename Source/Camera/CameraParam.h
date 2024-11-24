@@ -6,7 +6,7 @@ enum class CAMERA_TYPE
     MAIN = 0,   // メインカメラ
     DEATH,      // デスカメラ
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
     DEBUG,      // デバッグカメラ
 #endif // _DEBUG
     MAX,

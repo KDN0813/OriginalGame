@@ -97,6 +97,8 @@ void Framework::CalculateFrameStats()
 		std::string str;
 		str = "Fps : ";
 		str += std::to_string(fps);
+		str += "mspf : ";
+		str += std::to_string(mspf);
 		str += "\n";
 		OutputDebugStringA(str.c_str());
 	}
@@ -140,9 +142,7 @@ int Framework::Run()
 			//	}
 			//}
 
-			float elapsed_time = (this->sync_interval == 0)
-				? timer.TimeInterval()
-				: this->sync_interval / static_cast<float>(GetDeviceCaps(hDC, VREFRESH));
+			float elapsed_time = timer.TimeInterval();
 			Update(elapsed_time);
 			Render(elapsed_time);
 		}

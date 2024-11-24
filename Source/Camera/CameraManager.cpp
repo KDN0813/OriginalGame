@@ -5,11 +5,15 @@
 
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
-#include <magic_enum.hpp>
 #include "Graphics/Graphics.h"
-#include "Component/CameraControllerComponent.h"
-#include "Input\Input.h"
 #endif // _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
+#include "Input\Input.h"
+#include <magic_enum.hpp>
+#include "Object\Object.h"
+#include "Component/CameraControllerComponent.h"
+#endif // DEBUG
+
 
 CameraManager::CameraManager()
     :Singleton(this)
@@ -34,7 +38,7 @@ CameraManager::CameraManager()
         this->camera_pool[i] = std::make_shared<CameraComponent>(camera_param);
         this->camera_pool[i]->SetCameraType(static_cast<CAMERA_TYPE>(i));   // カメラタイプ設定
         this->camera_pool[i]->SetIsActive(false);                           // カメラを非アクティブに設定
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
         // デバッグ用のカメラの名前を設定
         this->camera_name_pool.emplace_back(magic_enum::enum_name(static_cast<CAMERA_TYPE>(i)));
 #endif // DEBUG
@@ -42,7 +46,7 @@ CameraManager::CameraManager()
     // メインカメラ設定
     this->current_camera = this->camera_pool[static_cast<size_t>(CAMERA_TYPE::MAIN)];
     this->current_camera->SetIsActive(true);    // カメラをアクティブにする
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
     // デバッグ用のカメラインデックス設定
     this->camera_index = static_cast<int>(CAMERA_TYPE::MAIN);
     this->debug_camera_index = static_cast<int>(CAMERA_TYPE::MAIN);
@@ -68,7 +72,7 @@ void CameraManager::SetCurrentCamera(CAMERA_TYPE type)
     this->current_camera->SetIsActive(false);
     this->current_camera = this->camera_pool[static_cast<size_t>(type)];
     this->current_camera->SetIsActive(true);
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
     this->camera_index = static_cast<int>(type);
     this->debug_camera_index = static_cast<int>(type);
 #endif // DEBUG
@@ -84,7 +88,7 @@ std::shared_ptr<CameraComponent> CameraManager::GetCamera(CAMERA_TYPE type)
 
 void CameraManager::Update(float elapsed_time)
 {
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
     // デバッグカメラの切り替え
     if (Input::Instance input = Input::GetInstance(); input.Get())
     {
@@ -180,7 +184,9 @@ void CameraManager::DrawDebugGUI()
     }
     ImGui::End();
 }
+#endif
 
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
 void CameraManager::ChegeDebugCamera()
 {
     if (this->camera_index == static_cast<int>(CAMERA_TYPE::DEBUG))

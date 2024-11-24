@@ -4,7 +4,7 @@
 #include "Camera/CameraParam.h"
 #include "System/ClassBase/Singleton.h"
 #include "System/MyMath/MYMATRIX.h"
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
 #include "Object/Object.h"
 #include <string>   // デバッグのみ使用
 #endif // DEBUG
@@ -46,6 +46,8 @@ private:
 #ifdef _DEBUG
 public:
     void DrawDebugGUI();
+#endif
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
 private:
     void ChegeDebugCamera();
 private:

@@ -51,7 +51,7 @@ private:
 
 	BOOL fullscreen_mode{ FALSE };
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)
-	int sync_interval = 0;			// ‚’¼“¯ŠúŠÔŠuİ’è
+	int sync_interval = 1;			// ‚’¼“¯ŠúŠÔŠuİ’è
 #else
 	const int sync_interval = 1;	// ‚’¼“¯ŠúŠÔŠuİ’è
 #endif // _DEBUG || RELEASE_DEBUG
