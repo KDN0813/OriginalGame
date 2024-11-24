@@ -56,13 +56,11 @@ private:
 	const int sync_interval = 1;	// 垂直同期間隔設定
 #endif // _DEBUG || RELEASE_DEBUG
 
-#if defined(_DEBUG) || defined(RELEASE_DEBUG)
 	// フレームレート計算用変数
 	int frames = 0;
 	float time_tlapsed = 0.0f;
 	float fps = 0.0f;
 	float mspf = 0.0f;
-#endif
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI();

@@ -55,11 +55,8 @@ void Framework::Update(float elapsed_time)
 	elapsed_time = this->stop_delta ? 0.0f : elapsed_time;
 #endif // _DEBUG
 
-
-#if defined(_DEBUG) || defined(RELEASE_DEBUG)
 	// フレームレート計算
 	CalculateFrameStats();
-#endif
 
 	scene_manager.Update(elapsed_time);
 }
