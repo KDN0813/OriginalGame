@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "System/MyMath/MYVECTOR3.h"
+#include <DirectXCollision.h>
 #include "Component.h"
 #include "Camera/CameraParam.h"
 
@@ -106,6 +107,8 @@ public:
 	CAMERA_TYPE GetCameraType() const { return this->camera_type; }
 	// カメラパラメータの取得
 	CameraParam GetCameraParam() const { return this->camera_param; }
+	// 視錐台取得
+	DirectX::BoundingFrustum GetBoundingFrustum();
 private:
 	// 指定方向を向く
 	void SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up);

@@ -1,6 +1,6 @@
 #include <imgui.h>
 #include "System/MyMath/MYMATRIX.h"
-#include "CameraComponent_ver2.h"
+#include "CameraComponent.h"
 #include "Object/Object.h"
 #include "Camera/CameraManager.h"
 
@@ -46,6 +46,20 @@ void CameraComponent::SetCurrentCamera()
     if (!camera_manager.Get()) return;    // マネージャーの取得に失敗したら
     // カメラ設定
     camera_manager->SetCurrentCamera(this->camera_type);
+}
+
+DirectX::BoundingFrustum CameraComponent::GetBoundingFrustum()
+{
+    // 視錐台作成
+    MYMATRIX projectionMatrix = this->projection_transform;
+    DirectX::BoundingFrustum old_bounding_frustum(projectionMatrix.GetMatrix());
+
+    // 視錐台更新
+    MYMATRIX view_matrix = this->view_transform;
+    DirectX::BoundingFrustum bounding_frustum;
+    old_bounding_frustum.Transform(bounding_frustum, view_matrix.GetInverse(nullptr).GetMatrix());
+
+    return bounding_frustum;
 }
 
 void CameraComponent::SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up)
