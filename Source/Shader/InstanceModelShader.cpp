@@ -396,6 +396,7 @@ void InstancingModelShader::DrawDebugGUI()
 {
 	std::string text = "shader_component_vector.size" + std::to_string(this->shader_component_vec_map.size());
 	ImGui::Text(text.c_str());
+	ImGui::InputInt("Instance Count", &this->instance_count);
 }
 
 #endif // _DEBUG

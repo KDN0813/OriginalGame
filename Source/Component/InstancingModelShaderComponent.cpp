@@ -4,9 +4,11 @@
 #include "Object/Object.h"
 
 #include "Shader/InstanceModelShader.h"
+#include "Camera\CameraManager.h"
 
 #include "Component/InstancedModelWithAnimationComponent.h"
 #include "Component/TransformComponent.h"
+#include "Component\CameraComponent.h"
 
 InstancingModelShaderComponent::InstancingModelShaderComponent(InstancingModelShader* const shader)
     :shader(shader)
@@ -45,6 +47,15 @@ void InstancingModelShaderComponent::InstancingAdd()
 
     if (instancing_model && transform)
     {
+        // ƒJƒŠƒ“ƒO‚ðs‚¤
+        if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+        {
+            const auto bounding_frustum = camera_manager->GetBoundingFrustum();
+            const auto bounding_box = instancing_model->GetBoundingBox();
+
+            if (!bounding_frustum.Intersects(bounding_box)) return;
+        }
+
         this->shader->InstancingAdd(instancing_model.get(), transform.get());
     }
 }

@@ -147,8 +147,14 @@ DirectX::BoundingFrustum CameraManager::GetBoundingFrustum()
     if (camera == nullptr) return DirectX::BoundingFrustum();
 
     MYMATRIX projectionMatrix = camera->GetProjectionTransform();
+    DirectX::BoundingFrustum old_bounding_frustum(projectionMatrix.GetMatrix());
+    DirectX::BoundingFrustum bounding_frustum;
 
-    return DirectX::BoundingFrustum(projectionMatrix.GetMatrix());
+    MYMATRIX view_matrix = camera->GetViewTransform();
+
+    old_bounding_frustum.Transform(bounding_frustum, view_matrix.GetInverse(nullptr).GetMatrix());
+
+    return bounding_frustum;
 }
 
 #ifdef _DEBUG

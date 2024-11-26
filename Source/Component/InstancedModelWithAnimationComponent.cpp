@@ -132,6 +132,22 @@ int InstancedModelWithAnimationComponent::GetModelId()
     return this->instancing_model_resource->GetModelId();
 }
 
+DirectX::BoundingBox InstancedModelWithAnimationComponent::GetBoundingBox()
+{
+    if (const auto& owner = GetOwner())
+    {
+        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        {
+            MYMATRIX World_transform = transform->GetWolrdTransform();
+
+            DirectX::BoundingBox bounding_box;
+            model_resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
+            return bounding_box;
+        }
+    }
+    return DirectX::BoundingBox();
+}
+
 #ifdef _DEBUG
 
 void InstancedModelWithAnimationComponent::DrawDebugGUI()

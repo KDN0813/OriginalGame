@@ -2,6 +2,7 @@
 #include "Component/Component.h"
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include <DirectXCollision.h>
 #include <memory>
 #include "Model/ModelCommonData.h"
 #ifdef _DEBUG
@@ -59,6 +60,7 @@ public:
 	float GetCurrentAnimationSeconds() const { return this->param.current_animation_seconds; }
 	UINT GetAnimationStartOffset();	// 現在再生しているアニメーションのオフセット値を取得
 	int GetModelId();
+	DirectX::BoundingBox GetBoundingBox();
 protected:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
 	std::shared_ptr<ModelResource> model_resource;
