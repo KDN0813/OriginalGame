@@ -6,6 +6,9 @@
 #include "System/MyMath/MYMATRIX.h"
 #include "Component.h"
 #include "Model/ModelCommonData.h"
+#ifdef _DEBUG
+#include "Debug\DebugPrimitiveRenderer.h"
+#endif // _DEBUG
 
 class ModelResource;
 
@@ -66,8 +69,16 @@ private:
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI() override;
+	void DrawDebugPrimitive()  override;
+	/**
+	 * デバッグプリミティブ表示用ImGui
+	 */
+	void DrawDebugPrimitiveGUI()  override;
+	bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveが存在するか
 private:
-	const char* model_filename;
+	const char* model_filename = nullptr;
+	
+	SphereParam boudybox_point[8];
 #endif // _DEBUG
 };
 

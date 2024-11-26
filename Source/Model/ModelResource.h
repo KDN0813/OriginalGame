@@ -124,7 +124,7 @@ public:
 	const std::vector<Node>& GetNodes() const { return this->node_vec; }
 	const std::vector<Animation>& GetAnimations() const { return this->animation_vec; }
 	const std::vector<Material>& GetMaterials() const { return this->material_vec; }
-	DirectX::BoundingBox GetBoundingBox()const { return this->bounding_box; }
+	DirectX::BoundingBox GetDefaultBoundingBox()const { return this->default_bounding_box; }
 
 	// 読み込み
 	void Load(ID3D11Device* device, const char* filename);
@@ -148,5 +148,5 @@ protected:
 	std::vector<Mesh>		meshe_vec;
 	std::vector<Animation>	animation_vec;
 
-	DirectX::BoundingBox bounding_box;      // バンディングボックス 
+	DirectX::BoundingBox default_bounding_box;      // バンディングボックス 
 };

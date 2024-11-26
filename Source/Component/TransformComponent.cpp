@@ -8,7 +8,7 @@ Transform3DComponent::Transform3DComponent(Transform3DParam param)
 	:param(param),default_param(param)
 {
 #ifdef _DEBUG
-	sphere_world_position = SphereParam(DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f), 0.1f);
+	this->sphere_world_position = SphereParam(DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f), 0.1f);
 	SetIsDebugPrimitive(false);
 #endif // _DEBUG
 }

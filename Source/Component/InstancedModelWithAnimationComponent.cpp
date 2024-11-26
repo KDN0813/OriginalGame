@@ -1,4 +1,8 @@
+#ifdef _DEBUG
+#include "Debug\DebugManager.h"
 #include "Debug/ImGuiHelper.h"
+#endif // _DEBUG
+
 #include "InstancedModelWithAnimationComponent.h"
 #include "Graphics/Graphics.h"
 #include "Object/Object.h"
@@ -46,6 +50,26 @@ void InstancedModelWithAnimationComponent::Update(float elapsed_time)
 {
     if (!this->param.anime_play)return;
     UpdateAnimation(elapsed_time);
+
+#ifdef _DEBUG	// バウンディングボックス位置更新
+
+    if (const auto& owner = GetOwner())
+    {
+        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        {
+            MYMATRIX World_transform = transform->GetWolrdTransform();
+
+            DirectX::BoundingBox bounding_box;
+            model_resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
+            DirectX::XMFLOAT3 corners[8];
+            bounding_box.GetCorners(corners);
+            for (size_t i = 0; i < 8; ++i)
+            {
+                this->boudybox_point[i].SetCenter(corners[i]);
+            }
+        }
+    }
+#endif // _DEBUG
 }
 
 void InstancedModelWithAnimationComponent::PlayAnimation(int animeIndex, bool loop)
@@ -139,6 +163,25 @@ void InstancedModelWithAnimationComponent::DrawDebugAnimationGUI()
         PlayAnimation(anime_index_int);
     }
     ImGui::Checkbox("Animation Loop Flag", &this->param.anime_loop);
+}
+
+void InstancedModelWithAnimationComponent::DrawDebugPrimitive()
+{
+    DebugManager::Instance debug_manager = DebugManager::GetInstance();
+    if (!debug_manager.Get()) return;
+    DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();;
+    for (size_t i = 0; i < 8; ++i)
+    {
+        debug_render->DrawSphere(this->boudybox_point[i]);
+    }
+}
+
+void InstancedModelWithAnimationComponent::DrawDebugPrimitiveGUI()
+{
+    for (size_t i = 0; i < 8; ++i)
+    {
+        this->boudybox_point[i].DrawDebugGUI(("boudybox_point##" + std::to_string(i)));
+    }
 }
 
 #endif // _DEBUG

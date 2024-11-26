@@ -1,4 +1,8 @@
+#ifdef _DEBUG
 #include <imgui.h>
+#include "Debug\DebugManager.h"
+#endif _DEBUG
+#include <DirectXCollision.h>
 #include "System/MyMath/MYMATRIX.h"
 #include "System/MyMath/MYVECTOR4.h"
 #include "Graphics/Graphics.h"
@@ -10,10 +14,6 @@
 
 ModelComponent::ModelComponent( const char* filename)
 {
-#ifdef _DEBUG
-	this->model_filename = filename;
-#endif // _DEBUG
-
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
@@ -24,6 +24,14 @@ ModelComponent::ModelComponent( const char* filename)
 	{
 		this->resource = model_resource_manager->LoadModelResource(device, filename);
 	}
+
+#ifdef _DEBUG
+	this->model_filename = filename;
+	for (size_t i = 0; i < 8;++i)
+	{
+		this->boudybox_point[i] = SphereParam(DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f), 0.1f);	
+	}
+#endif // _DEBUG
 }
 
 void ModelComponent::Start()
@@ -58,12 +66,24 @@ void ModelComponent::Update(float elapsed_time)
 	MYMATRIX World_transform;
 	World_transform.SetIdentity();
 
+
 	auto owner = GetOwner();
 	if (owner)
 	{
 		if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
 		{
 			World_transform = transform->GetWolrdTransform();
+			
+#ifdef _DEBUG	// バウンディングボックス位置更新
+			DirectX::BoundingBox bounding_box;
+			resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
+			DirectX::XMFLOAT3 corners[8];
+			bounding_box.GetCorners(corners);
+			for (size_t i = 0; i < 8; ++i)
+			{
+				this->boudybox_point[i].SetCenter(corners[i]);
+			}
+#endif // _DEBUG
 		}
 	}
 
@@ -117,6 +137,25 @@ void ModelComponent::DrawDebugGUI()
 	ImGui::InputText("Model FileName", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue);
 
 	ImGui::SliderFloat("TileCount", &this->tile_count, 1.0f, 100.0f);
+}
+
+void ModelComponent::DrawDebugPrimitive()
+{
+	DebugManager::Instance debug_manager = DebugManager::GetInstance();
+	if (!debug_manager.Get()) return;
+	DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();;
+	for (size_t i = 0; i < 8; ++i)
+	{
+		debug_render->DrawSphere(this->boudybox_point[i]);
+	}
+}
+
+void ModelComponent::DrawDebugPrimitiveGUI()
+{
+	for (size_t i = 0; i < 8; ++i)
+	{
+		this->boudybox_point[i].DrawDebugGUI(("boudybox_point##" + std::to_string(i)));
+	}
 }
 
 #endif // _DEBUG

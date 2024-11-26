@@ -4,6 +4,9 @@
 #include <DirectXMath.h>
 #include <memory>
 #include "Model/ModelCommonData.h"
+#ifdef _DEBUG
+#include "Debug\DebugPrimitiveRenderer.h"
+#endif // _DEBUG
 
 class InstancingModelResource;
 class ModelResource;
@@ -71,7 +74,15 @@ public:
 	void DrawDebugGUI()override;
 	void DrawDebugAnimationGUI();
 
+	void DrawDebugPrimitive()  override;
+	/**
+	 * デバッグプリミティブ表示用ImGui
+	 */
+	void DrawDebugPrimitiveGUI()  override;
+	bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveが存在するか
 protected:
+	SphereParam boudybox_point[8];
+
 	std::vector<std::string> animation_name_pool;
 	const char* model_filename;
 #endif // _DEBUG

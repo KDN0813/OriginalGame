@@ -202,7 +202,7 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 			}
 		}
 		if (vertices.size() == 0) return;
-		DirectX::BoundingBox::CreateFromPoints(this->bounding_box, static_cast<UINT>(vertices.size()), vertices.data(), sizeof(DirectX::XMFLOAT3));
+		DirectX::BoundingBox::CreateFromPoints(this->default_bounding_box, static_cast<UINT>(vertices.size()), vertices.data(), sizeof(DirectX::XMFLOAT3));
 	}
 }
 
