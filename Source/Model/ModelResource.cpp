@@ -189,6 +189,21 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 
 	// モデル構築
 	BuildModel(device, dirname);
+
+	// バンディングボックス作成
+	{
+		std::vector<DirectX::XMFLOAT3> vertices;
+		DirectX::XMFLOAT3 test[] = { {},{},{},{} };
+		for (const auto& mesh : this->meshe_vec)
+		{
+			for (const auto& vec : mesh.vertices)
+			{
+				vertices.emplace_back(vec.position);
+			}
+		}
+		if (vertices.size() == 0) return;
+		DirectX::BoundingBox::CreateFromPoints(this->bounding_box, static_cast<UINT>(vertices.size()), vertices.data(), sizeof(DirectX::XMFLOAT3));
+	}
 }
 
 // モデル構築

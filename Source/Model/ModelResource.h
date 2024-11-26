@@ -5,11 +5,12 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include <DirectXCollision.h>
 
 class ModelResource
 {
 public:
-	ModelResource() {}
+	ModelResource() {};
 	virtual ~ModelResource() {}
 
 #pragma region ModelParam
@@ -119,10 +120,11 @@ public:
 #pragma endregion ModelParam
 
 	// 各種データ取得
-	const std::vector<Mesh>& GetMeshes() const { return meshe_vec; }
-	const std::vector<Node>& GetNodes() const { return node_vec; }
-	const std::vector<Animation>& GetAnimations() const { return animation_vec; }
-	const std::vector<Material>& GetMaterials() const { return material_vec; }
+	const std::vector<Mesh>& GetMeshes() const { return this->meshe_vec; }
+	const std::vector<Node>& GetNodes() const { return this->node_vec; }
+	const std::vector<Animation>& GetAnimations() const { return this->animation_vec; }
+	const std::vector<Material>& GetMaterials() const { return this->material_vec; }
+	DirectX::BoundingBox GetBoundingBox()const { return this->bounding_box; }
 
 	// 読み込み
 	void Load(ID3D11Device* device, const char* filename);
@@ -145,4 +147,6 @@ protected:
 	std::vector<Material>	material_vec;
 	std::vector<Mesh>		meshe_vec;
 	std::vector<Animation>	animation_vec;
+
+	DirectX::BoundingBox bounding_box;      // バンディングボックス 
 };
