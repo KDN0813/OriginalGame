@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <DirectXCollision.h>
 #include "Camera/CameraParam.h"
 #include "System/ClassBase/Singleton.h"
 #include "System/MyMath/MYMATRIX.h"
@@ -38,6 +39,8 @@ public:
     DirectX::XMFLOAT4X4 GetViewProjection();
     // ビュープロジェクション行列(MYMATRIX)を取得
     MYMATRIX GetViewProjectionMatrix();
+    // 視錐台取得
+    DirectX::BoundingFrustum GetBoundingFrustum();
 private:
     std::vector<std::shared_ptr<CameraComponent>> camera_pool;  // カメラ一覧
     std::shared_ptr<CameraComponent> current_camera;            // 現在使用しているカメラ
