@@ -24,7 +24,7 @@ public:
 	ModelAnimationControlComponent(const char* filename);
 
 	// 開始関数
-	void Start() override {};
+	void Start() override;
 	// リスタート処理
 	void ReStart() override;      // パラメータの初期化
 	// 更新関数
@@ -48,8 +48,7 @@ private:
 
 private:
 	std::weak_ptr<ModelComponent> model_Wptr;
-	std::weak_ptr<ModelResource> model_resource_Wptr;
-	size_t animation_size;
+	size_t animation_size = 0;
 
 #ifdef _DEBUG
 public:

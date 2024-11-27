@@ -104,7 +104,7 @@ void SceneGame::Initialize()
 
 			// モデル設定
 			{
-				auto model = player->AddComponent<ModelComponent>("Data/Model/Player/Player.mdl");
+				auto model = player->AddComponent<ModelComponent>("Data/Debug/Model/Jammo/Jammo.mdl");
 			}
 			// アニメーション設定
 			{
@@ -125,7 +125,7 @@ void SceneGame::Initialize()
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(0.018f, 0.018f, 0.018f);
+				param.local_scale = DirectX::XMFLOAT3(0.2f, 0.2, 0.2f);
 				param.local_position = DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f);
 				auto transform = player->AddComponent<Transform3DComponent>(param);
 			}

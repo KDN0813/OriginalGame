@@ -12,20 +12,23 @@ ModelAnimationControlComponent::ModelAnimationControlComponent(const char* filen
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
+}
 
-	// ƒŠƒ\[ƒX“Ç‚Ýž‚Ý
-	ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance();
-	if (!model_resource_manager.Get()) return;
-	auto model_resource = model_resource_manager->LoadModelResource(device, filename);
-	this->model_resource_Wptr = model_resource;
-
-	this->animation_size = static_cast<int>(model_resource->GetAnimations().size());
-#ifdef _DEBUG
-	for (size_t i = 0; i < this->animation_size; ++i)
+void ModelAnimationControlComponent::Start()
+{
+	if (const auto& onwer = GetOwner())
 	{
-		this->animation_name_pool.emplace_back(model_resource->GetAnimations()[i].name);
-	}
+		if (const auto& model = onwer->EnsureComponentValid(this->model_Wptr))
+		{
+			this->animation_size = static_cast<int>(model->GetResource()->GetAnimations().size());
+#ifdef _DEBUG
+			for (size_t i = 0; i < this->animation_size; ++i)
+			{
+				this->animation_name_pool.emplace_back(model->GetResource()->GetAnimations()[i].name);
+			}
 #endif // DEBUG
+		}
+	}
 }
 
 void ModelAnimationControlComponent::ReStart()
@@ -196,27 +199,33 @@ bool ModelAnimationControlComponent::IsPlayAnimation() const
 
 void ModelAnimationControlComponent::DrawDebugGUI()
 {
-	auto model_resource = model_resource_Wptr.lock();
-	if (!model_resource) return;
-
-	int& anime_index = this->param.current_animation_index;
-	if (anime_index < 0) return;
-
-	if (model_resource->GetAnimations().size())
+	if (const auto& onwer = GetOwner())
 	{
-		const auto& animation = model_resource->GetAnimations()[anime_index];
-
-		std::string play_anime_name = this->animation_name_pool[anime_index];
-		ImGui::SliderFloat("Current Animation Seconds", &this->param.current_animation_seconds, 0.0f, animation.seconds_length);
-		if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
+		if (const auto& model = onwer->EnsureComponentValid(this->model_Wptr))
 		{
-			PlayAnimation(anime_index, 0.0f, 0.0f);
-		}
-		ImGui::Checkbox("Animation Loop Flag", &this->param.animation_loop_flag);
+			auto model_resource = model->GetResource();
+			if (!model_resource) return;
 
-		ImGui::InputFloat("Animation Blend Seconds", &this->param.animation_blend_seconds);
-		ImGui::SliderFloat("Animation Blend Time", &this->param.animation_blend_time, 0.0f, this->param.animation_blend_seconds);
-		ImGui::Checkbox("Animation End Flag", &this->param.animation_end_flag);
+			int& anime_index = this->param.current_animation_index;
+			if (anime_index < 0) return;
+
+			if (model_resource->GetAnimations().size())
+			{
+				const auto& animation = model_resource->GetAnimations()[anime_index];
+
+				std::string play_anime_name = this->animation_name_pool[anime_index];
+				ImGui::SliderFloat("Current Animation Seconds", &this->param.current_animation_seconds, 0.0f, animation.seconds_length);
+				if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
+				{
+					PlayAnimation(anime_index, 0.0f, 0.0f);
+				}
+				ImGui::Checkbox("Animation Loop Flag", &this->param.animation_loop_flag);
+
+				ImGui::InputFloat("Animation Blend Seconds", &this->param.animation_blend_seconds);
+				ImGui::SliderFloat("Animation Blend Time", &this->param.animation_blend_time, 0.0f, this->param.animation_blend_seconds);
+				ImGui::Checkbox("Animation End Flag", &this->param.animation_end_flag);
+			}
+		}
 	}
 }
 
