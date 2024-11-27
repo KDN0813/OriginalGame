@@ -1,4 +1,5 @@
-#include <imgui.h>
+#include <DirectXCollision.h>
+
 #include "SceneGame.h"
 #include "Graphics/Graphics.h"
 #include "System/Misc.h"
@@ -11,6 +12,7 @@
 #include "Scene/SceneLoading.h"
 
 #ifdef _DEBUG
+#include <imgui.h>
 #include "Debug/DebugManager.h"
 #include "Debug/DebugComponent.h"
 #include "Input/Input.h"
@@ -415,32 +417,54 @@ void SceneGame::Update(float elapsed_time)
 
 	object_manager.Update(elapsed_time);
 
-	// プレイヤーの移動範囲制限
-	// TODO ステージを変更したらステージに合わせた移動範囲の制限をかける
+
 	if(GameObject::Instance game_object = GameObject::GetInstance() ; game_object.Get())
 	{
-		const auto& player = game_object->GetPlayer();
-		if (const auto& player_transform = player->GetComponent<Transform3DComponent>())
+		// カメラ外の敵オブジェクトを非アクティブにする
+		// カメラ範囲とキャラのボックスで判定をとる
+		if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 		{
-			DirectX::XMFLOAT3 player_pos = player_transform->GetWorldPosition();
+			for (const auto& enemy_Wprt : game_object->GetEnemyWptPool())
+			{
+				if (const auto& enemy = enemy_Wprt.lock())
+				{
+					if (const auto& instancing_model = enemy->GetComponent<InstancedModelWithAnimationComponent>())
+					{
+						const auto bounding_frustum = camera_manager->GetBoundingFrustum();
+						const auto bounding_box = instancing_model->GetBoundingBox();
 
-			// TODO 仮配置(マジックナンバー)をやめる
-			float territory_range = 220.0f;
-			if (territory_range < player_pos.x)
-			{
-				player_transform->AddLocalPosition({ territory_range - player_pos.x,0.0f,0.0f });
+						enemy->SetIsActive(bounding_frustum.Intersects(bounding_box));
+					}
+				}
 			}
-			if (player_pos.x < -territory_range)
+		}
+
+		// プレイヤーの移動範囲制限
+		// TODO ステージを変更したらステージに合わせた移動範囲の制限をかける
+		{
+			const auto& player = game_object->GetPlayer();
+			if (const auto& player_transform = player->GetComponent<Transform3DComponent>())
 			{
-				player_transform->AddLocalPosition({ - territory_range - player_pos.x,0.0f,0.0f });
-			}
-			if (territory_range < player_pos.z)
-			{
-				player_transform->AddLocalPosition({ 0.0f,0.0f,territory_range - player_pos.z });
-			}
-			if (player_pos.z < -territory_range)
-			{
-				player_transform->AddLocalPosition({ 0.0f,0.0f,-territory_range - player_pos.z });
+				DirectX::XMFLOAT3 player_pos = player_transform->GetWorldPosition();
+
+				// TODO 仮配置(マジックナンバー)をやめる
+				float territory_range = 220.0f;
+				if (territory_range < player_pos.x)
+				{
+					player_transform->AddLocalPosition({ territory_range - player_pos.x,0.0f,0.0f });
+				}
+				if (player_pos.x < -territory_range)
+				{
+					player_transform->AddLocalPosition({ -territory_range - player_pos.x,0.0f,0.0f });
+				}
+				if (territory_range < player_pos.z)
+				{
+					player_transform->AddLocalPosition({ 0.0f,0.0f,territory_range - player_pos.z });
+				}
+				if (player_pos.z < -territory_range)
+				{
+					player_transform->AddLocalPosition({ 0.0f,0.0f,-territory_range - player_pos.z });
+				}
 			}
 		}
 	}

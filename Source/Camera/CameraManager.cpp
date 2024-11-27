@@ -143,7 +143,12 @@ MYMATRIX CameraManager::GetViewProjectionMatrix()
 
 DirectX::BoundingFrustum CameraManager::GetBoundingFrustum()
 {
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
+    const auto& camera = this->GetCamera(CAMERA_TYPE::MAIN);
+#else
     const auto& camera = this->GetCurrentCamera();
+#endif // DEBUG
+
     if (camera == nullptr) return DirectX::BoundingFrustum();
     return camera->GetBoundingFrustum();
 }
