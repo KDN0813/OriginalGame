@@ -6,6 +6,7 @@
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <WICTextureLoader.h>
+#include "System\MyMath\MYMATRIX.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -203,6 +204,12 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 		}
 		if (vertices.size() == 0) return;
 		DirectX::BoundingBox::CreateFromPoints(this->default_bounding_box, static_cast<UINT>(vertices.size()), vertices.data(), sizeof(DirectX::XMFLOAT3));
+
+		MYMATRIX World_transform;
+		const auto& node = node_vec[meshe_vec[0].node_index];
+		World_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
+
+		this->default_bounding_box.Transform(this->default_bounding_box, World_transform.GetMatrix());
 	}
 }
 
