@@ -158,6 +158,7 @@
     <ClInclude Include="Source\Debug\ImGuiHelper.h" />
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
     <ClInclude Include="Source\Debug\DebugCereal.h" />
+    <ClInclude Include="Source\Debug\LineRenderer.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\RenderContext.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="Source\Debug\DebugPrimitiveRenderer.cpp" />
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
     <ClCompile Include="Source\Debug\DebugCereal.cpp" />
+    <ClCompile Include="Source\Debug\LineRenderer.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\Input\GamePad.cpp" />
@@ -293,6 +295,7 @@
     <None Include="Hlsl\GeometryParticle.hlsli" />
     <None Include="Hlsl\ImGui.hlsli" />
     <None Include="Hlsl\Instance.hlsli" />
+    <None Include="Hlsl\Line.hlsli" />
     <None Include="Hlsl\MatrixDecompose.hlsli" />
     <None Include="Hlsl\SkyBox.hlsli" />
     <None Include="Hlsl\Sprite.hlsli" />
@@ -340,6 +343,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Hlsl\InstanceVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\LinePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\LineVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>

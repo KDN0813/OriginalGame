@@ -124,9 +124,6 @@
     <Filter Include="HLSL\GeometryParticle">
       <UniqueIdentifier>{a3013234-736f-4305-aeb3-469b80e131ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HLSL\ImGui">
-      <UniqueIdentifier>{8e363695-7ee0-4d1b-846d-5969427be6c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HLSL\Instance">
       <UniqueIdentifier>{5a90b2b6-9c68-44aa-9e98-24cf6c228845}</UniqueIdentifier>
     </Filter>
@@ -153,6 +150,12 @@
     </Filter>
     <Filter Include="Source\Shader\SkyBox">
       <UniqueIdentifier>{65de1dea-6f3e-4110-a68f-ea942ad5f602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\Debug\ImGui">
+      <UniqueIdentifier>{8e363695-7ee0-4d1b-846d-5969427be6c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL\Debug\Line">
+      <UniqueIdentifier>{74ac8e20-2760-48e4-adbe-06ad14a151b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -446,6 +449,9 @@
     <ClInclude Include="Source\Shader\SkyBox.h">
       <Filter>Source\Shader\SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Debug\LineRenderer.h">
+      <Filter>Source\Debug\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -676,6 +682,9 @@
     <ClCompile Include="Source\Shader\SkyBox.cpp">
       <Filter>Source\Shader\SkyBox</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Debug\LineRenderer.cpp">
+      <Filter>Source\Debug\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\MatrixDecompose.hlsli">
@@ -688,7 +697,7 @@
       <Filter>HLSL\GeometryParticle</Filter>
     </None>
     <None Include="Hlsl\ImGui.hlsli">
-      <Filter>HLSL\ImGui</Filter>
+      <Filter>HLSL\Debug\ImGui</Filter>
     </None>
     <None Include="Hlsl\Instance.hlsli">
       <Filter>HLSL\Instance</Filter>
@@ -704,6 +713,9 @@
     </None>
     <None Include="Hlsl\SkyBox.hlsli">
       <Filter>HLSL\SkyBox</Filter>
+    </None>
+    <None Include="Hlsl\Line.hlsli">
+      <Filter>HLSL\Debug\Line</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -723,10 +735,10 @@
       <Filter>HLSL\GeometryParticle</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\ImGuiPS.hlsl">
-      <Filter>HLSL\ImGui</Filter>
+      <Filter>HLSL\Debug\ImGui</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\ImGuiVS.hlsl">
-      <Filter>HLSL\ImGui</Filter>
+      <Filter>HLSL\Debug\ImGui</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\InstanceVS.hlsl">
       <Filter>HLSL\Instance</Filter>
@@ -754,6 +766,12 @@
     </FxCompile>
     <FxCompile Include="Hlsl\SkyBoxVS.hlsl">
       <Filter>HLSL\SkyBox</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\LinePS.hlsl">
+      <Filter>HLSL\Debug\Line</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\LineVS.hlsl">
+      <Filter>HLSL\Debug\Line</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
