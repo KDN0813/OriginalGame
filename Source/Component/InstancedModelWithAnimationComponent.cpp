@@ -15,9 +15,6 @@
 InstancedModelWithAnimationComponent::InstancedModelWithAnimationComponent(InstancedModelParam param, const char* filename)
     :param(param), default_param(param)
 {
-#ifdef _DEBUG
-    this->model_filename = filename;
-#endif // _DEBUG
     Graphics::Instance graphics = Graphics::GetInstance();
     if (!graphics.Get()) return;
     ID3D11Device* device = graphics->GetDevice();
@@ -33,6 +30,10 @@ InstancedModelWithAnimationComponent::InstancedModelWithAnimationComponent(Insta
     }
 
 #ifdef _DEBUG
+    this->model_filename = filename;
+
+    this->AABB_corners = AABBCorners({ 1.0f,1.0f ,1.0f ,1.0f }, 0.1f);
+
     // アニメーションの名前を登録   
     for (const auto& animation : this->model_resource->GetAnimations())
     {
@@ -63,10 +64,7 @@ void InstancedModelWithAnimationComponent::Update(float elapsed_time)
             model_resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
             DirectX::XMFLOAT3 corners[8];
             bounding_box.GetCorners(corners);
-            for (size_t i = 0; i < 8; ++i)
-            {
-                this->boudybox_point[i].SetCenter(corners[i]);
-            }
+            this->AABB_corners.SetCenter(corners);
         }
     }
 #endif // _DEBUG
@@ -186,18 +184,12 @@ void InstancedModelWithAnimationComponent::DrawDebugPrimitive()
     DebugManager::Instance debug_manager = DebugManager::GetInstance();
     if (!debug_manager.Get()) return;
     DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();;
-    for (size_t i = 0; i < 8; ++i)
-    {
-        debug_render->DrawSphere(this->boudybox_point[i]);
-    }
+    debug_render->DrawAABBCorners(this->AABB_corners);
 }
 
 void InstancedModelWithAnimationComponent::DrawDebugPrimitiveGUI()
 {
-    for (size_t i = 0; i < 8; ++i)
-    {
-        this->boudybox_point[i].DrawDebugGUI(("boudybox_point##" + std::to_string(i)));
-    }
+    this->AABB_corners.DrawDebugGUI(("boudybox_point"));
 }
 
 #endif // _DEBUG

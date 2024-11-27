@@ -83,7 +83,7 @@ public:
 	void DrawDebugPrimitiveGUI()  override;
 	bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveÇ™ë∂ç›Ç∑ÇÈÇ©
 protected:
-	SphereParam boudybox_point[8];
+	AABBCorners AABB_corners;
 
 	std::vector<std::string> animation_name_pool;
 	const char* model_filename;
