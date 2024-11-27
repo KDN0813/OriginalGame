@@ -296,90 +296,13 @@ void SceneGame::Initialize()
 
 		// 敵
 		{
-			// TODO 仮配置(マジックナンバー)をやめる
-			float territory_range = 220.0f;
-			float player_area_rage = 10.0f;
 #ifdef _DEBUG
 			for (int i = 0; i < 500; ++i)
 #else
 			for (int i = 0; i < 4000; ++i)
 #endif // _DEBUG
 			{
-				auto enemy = object_manager.Create();
-
-				// コリジョンに設定するコンポーネントは事前に作成しておく
-				std::shared_ptr<EnemyComponent> enemy_component;
-
-				// エネミーコンポーネント設定
-				{
-					EnemyComponent::EnemyParam param{};
-					enemy_component = enemy->AddComponent<EnemyComponent>(param);
-				}
-				// ムーブメント設定
-				{
-					auto movement = enemy->AddComponent<MovementComponent>(MovementComponent::MovementParam());
-				}
-				// モデル設定
-				{
-					InstancedModelWithAnimationComponent::InstancedModelParam param;
-					param.anime_index = EnemyCT::ANIMATION::IDLE_BATTLE;
-					param.anime_loop = true;
-					param.anime_play = true;
-
-					auto model = enemy->AddComponent<InstancedModelWithAnimationComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
-				}
-				// トランスフォーム設定
-				{
-					float offset = 2.0f;
-					float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-					float range = MyMathf::RandomRange(player_area_rage, territory_range);
-
-					Transform3DComponent::Transform3DParam param{};
-					param.local_position =
-					{
-#if 0	// 初期値固定
-						0.0f,
-						0.0f,
-						0.0f,
-#else
-						sinf(theta) * range,
-						0.5f,
-						cosf(theta) * range ,
-#endif
-					};
-					param.local_scale = DirectX::XMFLOAT3(0.015f, 0.015f, 0.015f);
-
-					auto transform = enemy->AddComponent<Transform3DComponent>(param);
-				}
-
-				// キャラクターステータス
-				{
-					CharacterComponent::CharacterParam param{};
-					param.max_hp = 10;
-					param.hp = 2;
-					enemy->AddComponent<CharacterComponent>(param);
-				}
-
-				// シェーダー設定
-				auto shader_component =
-					enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
-
-				// 円のコライダー
-				{
-					CircleCollisionComponent::CollisionParam param{};
-					param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
-					auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
-					collision->AddCollisionEntercomponent(enemy_component);
-				}
-
-				if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
-				{
-					game_object->SetEnemy(enemy);
-				}
-
-				// 子オブジェクト
-				{
-				}
+				CreateEnemy(object_manager.Create());
 			}
 		}
 
@@ -420,6 +343,10 @@ void SceneGame::Update(float elapsed_time)
 
 	if(GameObject::Instance game_object = GameObject::GetInstance() ; game_object.Get())
 	{
+		// 更新処理
+		// 主に削除されたエネミーをリストから消す処理
+		game_object->Update();
+
 		// カメラ外の敵オブジェクトを非アクティブにする
 		// カメラ範囲とキャラのボックスで判定をとる
 		if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
@@ -554,6 +481,16 @@ void SceneGame::ReStart()
 {
 	object_manager.ReStart();
 
+	// エネミーの数を追加する
+	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+	{
+		const size_t now_enemy_count = game_object->GetEnemyWptPool().size();
+		for (size_t i = 0; i < this->enemy_max - now_enemy_count; ++i)
+		{
+			CreateEnemy(object_manager.Create());
+		}
+	}
+
 	// ゲーム状態をデフォルトに設定
 	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
@@ -657,6 +594,87 @@ void SceneGame::PlayerVsEnemy()
 				player_circle->OnCollision(enemy_circle->GetOwner());
 			}
 		}
+	}
+}
+
+void SceneGame::CreateEnemy(const std::shared_ptr<Object>& enemy)
+{
+	// TODO 仮配置(マジックナンバー)をやめる
+	float territory_range = 220.0f;
+	float player_area_rage = 10.0f;
+
+	// コリジョンに設定するコンポーネントは事前に作成しておく
+	std::shared_ptr<EnemyComponent> enemy_component;
+
+	// エネミーコンポーネント設定
+	{
+		EnemyComponent::EnemyParam param{};
+		enemy_component = enemy->AddComponent<EnemyComponent>(param);
+	}
+	// ムーブメント設定
+	{
+		auto movement = enemy->AddComponent<MovementComponent>(MovementComponent::MovementParam());
+	}
+	// モデル設定
+	{
+		InstancedModelWithAnimationComponent::InstancedModelParam param;
+		param.anime_index = EnemyCT::ANIMATION::IDLE_BATTLE;
+		param.anime_loop = true;
+		param.anime_play = true;
+
+		auto model = enemy->AddComponent<InstancedModelWithAnimationComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
+	}
+	// トランスフォーム設定
+	{
+		float offset = 2.0f;
+		float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
+		float range = MyMathf::RandomRange(player_area_rage, territory_range);
+
+		Transform3DComponent::Transform3DParam param{};
+		param.local_position =
+		{
+#if 0	// 初期値固定
+						0.0f,
+						0.0f,
+						0.0f,
+#else
+						sinf(theta) * range,
+						0.5f,
+						cosf(theta) * range ,
+#endif
+		};
+		param.local_scale = DirectX::XMFLOAT3(0.015f, 0.015f, 0.015f);
+
+		auto transform = enemy->AddComponent<Transform3DComponent>(param);
+	}
+
+	// キャラクターステータス
+	{
+		CharacterComponent::CharacterParam param{};
+		param.max_hp = 10;
+		param.hp = 2;
+		enemy->AddComponent<CharacterComponent>(param);
+	}
+
+	// シェーダー設定
+	auto shader_component =
+		enemy->AddComponent<InstancingModelShaderComponent>(this->instancing_model_shader.get());
+
+	// 円のコライダー
+	{
+		CircleCollisionComponent::CollisionParam param{};
+		param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
+		auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
+		collision->AddCollisionEntercomponent(enemy_component);
+	}
+
+	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+	{
+		game_object->SetEnemy(enemy);
+	}
+
+	// 子オブジェクト
+	{
 	}
 }
 

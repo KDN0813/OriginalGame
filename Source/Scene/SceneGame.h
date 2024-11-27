@@ -32,6 +32,9 @@ private:
 
     // プレイヤーとエネミーの当たり判定
     void PlayerVsEnemy();
+
+    // エネミーオブジェクトを作成する
+    void CreateEnemy(const std::shared_ptr<Object>& enemy);
 private:
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
@@ -43,6 +46,12 @@ private:
     CircleCollisionManager circle_collision_manager;
     ParticleSystem particle_system;
     LightManager light_manager;
+
+#ifdef _DEBUG
+    const size_t enemy_max = 500;
+#else
+    const size_t enemy_max = 4000;
+#endif // _DEBUG
 #ifdef _DEBUG
     void DebugDrawGUI();
 

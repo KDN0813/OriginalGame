@@ -8,6 +8,18 @@ GameObject::GameObject()
 {
 }
 
+void GameObject::Update()
+{
+    // 有効でないweak_ptrを除去する
+    this->enemy_Wptr_pool.erase(
+        std::remove_if(this->enemy_Wptr_pool.begin(), this->enemy_Wptr_pool.end(),
+            [](const std::weak_ptr<Object>& weakPtr)
+            {
+                return weakPtr.expired();  // 無効なweak_ptrかどうかを確認
+            }),
+        this->enemy_Wptr_pool.end());
+}
+
 #ifdef _DEBUG
 
 void GameObject::DebugDrawGUI()
@@ -36,6 +48,9 @@ void GameObject::DebugDrawGUI()
 
         if (ImGui::CollapsingHeader("Enemy##GameObject"))
         {
+            size_t enemy_count = this->enemy_Wptr_pool.size();
+            ImGui::InputSize_t("Enemy Count", enemy_count);
+
             int enemy_id = 0;   // エネミーのID(ImGuiで別データとして扱う用)
             for (const std::weak_ptr<Object>& enemy_Wptr : this->enemy_Wptr_pool)
             {

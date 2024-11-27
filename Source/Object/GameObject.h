@@ -8,6 +8,10 @@ public:
     GameObject();
     ~GameObject() {};
 
+    // 更新処理
+    // 主に削除されたエネミーをリストから消す処理
+    void Update();
+
     // 各種設定・取得関数
     void SetPlayer(std::shared_ptr<Object> player) { this->player_Wptr = player; };
     void SetStage(std::shared_ptr<Object> stage) { this->stage_Wptr = stage; };
