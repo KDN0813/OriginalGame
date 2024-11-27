@@ -24,6 +24,7 @@ VsOut main(VsIn vs_in)
         p += (vs_in.bone_weights[i] * mul(vs_in.position, bone_transform)).xyz;
         n += (vs_in.bone_weights[i] * mul(float4(vs_in.normal.xyz, 0), bone_transform)).xyz;
     }
+    //p = vs_in.position;
     float4x4 world_transform = instance_data[vs_in.instance_id].world_transform;
     
     VsOut vout;

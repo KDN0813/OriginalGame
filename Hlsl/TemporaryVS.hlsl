@@ -12,6 +12,7 @@ VsOut main(VsIn vs_in)
         n += (vs_in.bone_weights[i] * mul(float4(vs_in.normal.xyz, 0), bone_transforms[vs_in.bone_indices[i]])).xyz;
     }
 
+    //p = mul(vs_in.position, bone_transforms[0];
     VsOut vout;
 	vout.position = mul(float4(p, 1.0f), view_projection);
 	

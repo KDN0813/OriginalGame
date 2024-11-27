@@ -151,6 +151,9 @@
     <Filter Include="HLSL\SkyBox">
       <UniqueIdentifier>{59a9c379-17cf-4ece-98c8-928c26843b8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Shader\SkyBox">
+      <UniqueIdentifier>{65de1dea-6f3e-4110-a68f-ea942ad5f602}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -440,6 +443,9 @@
     </ClInclude>
     <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Shader\LightManager.h" />
+    <ClInclude Include="Source\Shader\SkyBox.h">
+      <Filter>Source\Shader\SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -666,6 +672,9 @@
     </ClCompile>
     <ClCompile Include="Source\Shader\LightManager.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\SkyBox.cpp">
+      <Filter>Source\Shader\SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
