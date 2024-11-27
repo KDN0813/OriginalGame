@@ -56,6 +56,44 @@ void CylinderParam::DrawDebugGUI(std::string header_name)
 	ImGui::Unindent(30.0f);
 }
 
+void AABBCorners::SetCenter(DirectX::XMFLOAT3 c[8])
+{
+	for (size_t i = 0; i < sizeof(c); ++i)
+	{
+		this->center[i] = c[i];
+	}
+}
+
+void AABBCorners::DrawDebugGUI(std::string header_name)
+{
+	header_name += std::to_string(id);
+
+	ImGui::Indent(30.0f);
+	std::string label;
+	label = "##AABBCorners" + std::to_string(id);
+	ImGui::Checkbox(label.c_str(), &is_draw);
+	ImGui::SameLine();
+	if (!this->is_draw) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+	if (ImGui::CollapsingHeader(header_name.c_str()))
+	{
+		label = "Color##AABBCorners" + std::to_string(id);
+		ImGui::ColorEdit4(label.c_str(), &this->color.x);
+		ImGui::DragFloat(label.c_str(), &this->radius, 0.01f);
+		label = "Radius##AABBCorners" + std::to_string(id);
+		ImGui::DragFloat(label.c_str(), &this->radius, 0.01f);
+
+		for (size_t i = 0; i < 8; ++i)
+		{
+			label = "Position##AABBCorners" + std::to_string(id) + std::to_string(i);
+			ImGui::InputFloat3(label.c_str(), &center[i].x);
+		}
+	}
+	if (!this->is_draw) ImGui::PopStyleColor();
+	ImGui::Unindent(30.0f);
+
+}
+
+
 DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 {
 	// 頂点シェーダー
@@ -306,6 +344,14 @@ void DebugPrimitiveRenderer::DrawCylinder(CylinderParam cylinder_param)
 	cylinder.height = cylinder_param.GetHeight();
 	cylinder.color = cylinder_param.GetColor();
 	cylinders.emplace_back(cylinder);
+}
+
+void DebugPrimitiveRenderer::DrawAABBCorners(AABBCorners AABB_corners)
+{
+	for (size_t i = 0; i < 8; ++i)
+	{
+		DrawSphere(AABB_corners.GetCenter(i), AABB_corners.GetRadius(), AABB_corners.GetColor());
+	}
 }
 
 // 球メッシュ作成

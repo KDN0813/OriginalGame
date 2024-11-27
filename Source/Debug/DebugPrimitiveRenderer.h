@@ -65,6 +65,30 @@ private:
 	bool is_draw = true;
 };
 
+class AABBCorners
+{
+public:
+	AABBCorners(DirectX::XMFLOAT4 color, float radius) : color(color), center(), radius(radius), id(DebugPrimitiveAllocate()) {}
+	AABBCorners() : AABBCorners(DirectX::XMFLOAT4(), 0.1f) {}
+
+	DirectX::XMFLOAT4 GetColor() { return this->color; }
+	DirectX::XMFLOAT3 GetCenter(size_t i) { return this->center[i]; }
+	float GetRadius() { return this->radius; }
+	float GetColor(float radius) { this->radius = radius; }
+	void SetColor(DirectX::XMFLOAT4 color) { this->color = color; }
+	bool GetIsDraw() { return this->is_draw; }
+	void SetCenter(DirectX::XMFLOAT3 c[8]);
+	void SetRadius(float radius) { this->radius = radius; }
+	void SetIsDraw(bool is_draw) { this->is_draw = is_draw; }
+	void DrawDebugGUI(std::string header_name);
+private:
+	DirectX::XMFLOAT4	color;
+	float				radius;
+	DebugPrimitiveId	id;
+	DirectX::XMFLOAT3	center[8];
+	bool is_draw = true;
+};
+
 class DebugPrimitiveRenderer
 {
 public:
@@ -84,6 +108,9 @@ public:
 	void DrawCylinder(const DirectX::XMFLOAT3& position, float radius, float height, const DirectX::XMFLOAT4& color);
 	// ‰~’Œ•`‰æ
 	void DrawCylinder(CylinderParam cylinder_param);
+
+	// AABB‚Ì’¸“_•`‰æ
+	void DrawAABBCorners(AABBCorners AABB_corners);
 
 private:
 	// ‹…ƒƒbƒVƒ…ì¬
