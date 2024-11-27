@@ -292,6 +292,7 @@
     <None Include="Hlsl\ImGui.hlsli" />
     <None Include="Hlsl\Instance.hlsli" />
     <None Include="Hlsl\MatrixDecompose.hlsli" />
+    <None Include="Hlsl\SkyBox.hlsli" />
     <None Include="Hlsl\Sprite.hlsli" />
     <None Include="Hlsl\Temporary.hlsli" />
   </ItemGroup>
@@ -339,6 +340,14 @@
     <FxCompile Include="Hlsl\InstanceVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\SkyBoxPs.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Hlsl\SkyBoxVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Hlsl\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
