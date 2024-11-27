@@ -357,10 +357,7 @@ void SceneGame::Update(float elapsed_time)
 				{
 					if (const auto& instancing_model = enemy->GetComponent<InstancedModelWithAnimationComponent>())
 					{
-						const auto bounding_frustum = camera_manager->GetBoundingFrustum();
-						const auto bounding_box = instancing_model->GetBoundingBox();
-
-						enemy->SetIsActive(bounding_frustum.Intersects(bounding_box));
+						enemy->SetIsActive(camera_manager->IsAnyMeshAABBVisible(instancing_model->GetBoundingBoxs()));
 					}
 				}
 			}

@@ -60,11 +60,11 @@ void InstancedModelWithAnimationComponent::Update(float elapsed_time)
         {
             MYMATRIX World_transform = transform->GetWolrdTransform();
 
-            DirectX::BoundingBox bounding_box;
-            model_resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
-            DirectX::XMFLOAT3 corners[8];
-            bounding_box.GetCorners(corners);
-            this->AABB_corners.SetCenter(corners);
+            //DirectX::BoundingBox bounding_box;
+            //model_resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
+            //DirectX::XMFLOAT3 corners[8];
+            //bounding_box.GetCorners(corners);
+            //this->AABB_corners.SetCenter(corners);
         }
     }
 #endif // _DEBUG
@@ -130,20 +130,25 @@ int InstancedModelWithAnimationComponent::GetModelId()
     return this->instancing_model_resource->GetModelId();
 }
 
-DirectX::BoundingBox InstancedModelWithAnimationComponent::GetBoundingBox()
+std::vector<DirectX::BoundingBox> InstancedModelWithAnimationComponent::GetBoundingBoxs()
 {
+    std::vector<DirectX::BoundingBox> bounding_box_vec;
+
     if (const auto& owner = GetOwner())
     {
         if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
         {
             MYMATRIX World_transform = transform->GetWolrdTransform();
 
-            DirectX::BoundingBox bounding_box;
-            model_resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
-            return bounding_box;
+            for (const auto& bounding_box : model_resource->GetDefaultBoundingBoxs())
+            {
+                DirectX::BoundingBox box;
+                bounding_box.Transform(box, World_transform.GetMatrix());
+                bounding_box_vec.emplace_back(box);
+            }
         }
     }
-    return DirectX::BoundingBox();
+    return bounding_box_vec;
 }
 
 #ifdef _DEBUG

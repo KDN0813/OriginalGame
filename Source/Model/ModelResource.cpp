@@ -193,23 +193,25 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 
 	// バンディングボックス作成
 	{
-		std::vector<DirectX::XMFLOAT3> vertices;
-		DirectX::XMFLOAT3 test[] = { {},{},{},{} };
-		for (const auto& mesh : this->meshe_vec)
+		this->default_bounding_box_vec.resize(this->meshe_vec.size());
+
+		for (size_t i = 0; i < this->meshe_vec.size(); ++i)
 		{
-			for (const auto& vec : mesh.vertices)
-			{
-				vertices.emplace_back(vec.position);
-			}
+			const auto& mesh = this->meshe_vec[i];
+
+			MYVECTOR3 Center = (MYVECTOR3(mesh.bounds_min) + MYVECTOR3(mesh.bounds_max)) * 0.5f;
+			MYVECTOR3 Extents = (MYVECTOR3(mesh.bounds_max) - MYVECTOR3(mesh.bounds_min)) * 0.5f;
+			DirectX::XMFLOAT3 center;
+			DirectX::XMFLOAT3 extents;
+			Center.GetFlaot3(center);
+			Extents.GetFlaot3(extents);
+			this->default_bounding_box_vec[i] = { center,extents };
+
+			MYMATRIX World_transform;
+			const auto& node = node_vec[meshe_vec[0].node_index];
+			World_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
+			this->default_bounding_box_vec[i].Transform(this->default_bounding_box_vec[i], World_transform.GetMatrix());
 		}
-		if (vertices.size() == 0) return;
-		DirectX::BoundingBox::CreateFromPoints(this->default_bounding_box, static_cast<UINT>(vertices.size()), vertices.data(), sizeof(DirectX::XMFLOAT3));
-
-		MYMATRIX World_transform;
-		const auto& node = node_vec[meshe_vec[0].node_index];
-		World_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
-
-		this->default_bounding_box.Transform(this->default_bounding_box, World_transform.GetMatrix());
 	}
 }
 

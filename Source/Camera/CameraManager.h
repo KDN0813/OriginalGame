@@ -41,6 +41,11 @@ public:
     MYMATRIX GetViewProjectionMatrix();
     // 視錐台取得
     DirectX::BoundingFrustum GetBoundingFrustum();
+
+    // ボックスが1つでも画面内にあればtruerを返す
+    bool IsAnyMeshAABBVisible(const std::vector<DirectX::BoundingBox>& box_vec);
+    // ボックスが画面内にあればtrueを返す
+    bool IsMeshVisible(DirectX::BoundingBox);
 private:
     std::vector<std::shared_ptr<CameraComponent>> camera_pool;  // カメラ一覧
     std::shared_ptr<CameraComponent> current_camera;            // 現在使用しているカメラ

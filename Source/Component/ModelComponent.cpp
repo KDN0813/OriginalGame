@@ -72,12 +72,12 @@ void ModelComponent::Update(float elapsed_time)
 			World_transform = transform->GetWolrdTransform();
 			
 #ifdef _DEBUG	// バウンディングボックス位置更新
-			DirectX::BoundingBox bounding_box;
-			resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
-			DirectX::XMFLOAT3 corners[8];
-			bounding_box.GetCorners(corners);
+			//DirectX::BoundingBox bounding_box;
+			//resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
+			//DirectX::XMFLOAT3 corners[8];
+			//bounding_box.GetCorners(corners);
 
-			this->AABB_corners.SetCenter(corners);
+			//this->AABB_corners.SetCenter(corners);
 #endif // _DEBUG
 		}
 	}
