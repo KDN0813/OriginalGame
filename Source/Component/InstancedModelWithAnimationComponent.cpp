@@ -30,6 +30,8 @@ InstancedModelWithAnimationComponent::InstancedModelWithAnimationComponent(Insta
     }
 
 #ifdef _DEBUG
+    this->is_draw_debug_primitive = false;
+
     this->model_filename = filename;
     
     // AABBの頂点描画用クラス初期化

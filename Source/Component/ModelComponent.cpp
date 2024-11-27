@@ -26,6 +26,8 @@ ModelComponent::ModelComponent( const char* filename)
 	}
 
 #ifdef _DEBUG
+	this->is_draw_debug_primitive = false;
+
 	this->model_filename = filename;
 	// AABBの頂点描画用クラス初期化
 	this->AABB_corners_vec.resize(this->resource->GetMeshes().size(), AABBCorners({ 1.0f,1.0f ,1.0f ,1.0f }, 0.1f));
