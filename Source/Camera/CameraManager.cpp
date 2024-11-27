@@ -158,10 +158,10 @@ bool CameraManager::IsAnyMeshAABBVisible(const std::vector<DirectX::BoundingBox>
     const auto bounding_frustum = this->GetBoundingFrustum();
     for (const auto& bounding_box : box_vec)
     {
-        if (!bounding_frustum.Intersects(bounding_box)) return false;
+        if (bounding_frustum.Intersects(bounding_box)) return true;
     }
 
-    return true;
+    return false;
 }
 
 bool CameraManager::IsMeshVisible(DirectX::BoundingBox bounding_box)

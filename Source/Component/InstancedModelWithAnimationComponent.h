@@ -84,7 +84,7 @@ public:
 	void DrawDebugPrimitiveGUI()  override;
 	bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveÇ™ë∂ç›Ç∑ÇÈÇ©
 protected:
-	AABBCorners AABB_corners;
+	std::vector<AABBCorners> AABB_corners_vec;
 
 	std::vector<std::string> animation_name_pool;
 	const char* model_filename;

@@ -27,7 +27,8 @@ ModelComponent::ModelComponent( const char* filename)
 
 #ifdef _DEBUG
 	this->model_filename = filename;
-	this->AABB_corners = AABBCorners(DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f), 0.1f);
+	// AABBの頂点描画用クラス初期化
+	this->AABB_corners_vec.resize(this->resource->GetMeshes().size(), AABBCorners({ 1.0f,1.0f ,1.0f ,1.0f }, 0.1f));
 #endif // _DEBUG
 }
 
@@ -72,12 +73,14 @@ void ModelComponent::Update(float elapsed_time)
 			World_transform = transform->GetWolrdTransform();
 			
 #ifdef _DEBUG	// バウンディングボックス位置更新
-			//DirectX::BoundingBox bounding_box;
-			//resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
-			//DirectX::XMFLOAT3 corners[8];
-			//bounding_box.GetCorners(corners);
-
-			//this->AABB_corners.SetCenter(corners);
+			for (size_t i = 0; i < this->AABB_corners_vec.size(); ++i)
+			{
+				DirectX::BoundingBox bounding_box;
+				resource->GetDefaultBoundingBox(i).Transform(bounding_box, World_transform.GetMatrix());
+				DirectX::XMFLOAT3 corners[8];
+				bounding_box.GetCorners(corners);
+				this->AABB_corners_vec[i].SetCenter(corners);
+			}
 #endif // _DEBUG
 		}
 	}
@@ -139,15 +142,20 @@ void ModelComponent::DrawDebugPrimitive()
 	DebugManager::Instance debug_manager = DebugManager::GetInstance();
 	if (!debug_manager.Get()) return;
 	DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();;
-	for (size_t i = 0; i < 8; ++i)
+	for (auto& AABB_corners : AABB_corners_vec)
 	{
-		debug_render->DrawAABBCorners(this->AABB_corners);
+		debug_render->DrawAABBCorners(AABB_corners);
 	}
 }
 
 void ModelComponent::DrawDebugPrimitiveGUI()
 {
-	this->AABB_corners.DrawDebugGUI("boudybox_point");
+	size_t i = 0;
+	for (auto& AABB_corners : AABB_corners_vec)
+	{
+		AABB_corners.DrawDebugGUI(("boudybox_point" + std::to_string(i)));
+		++i;
+	}
 }
 
 #endif // _DEBUG

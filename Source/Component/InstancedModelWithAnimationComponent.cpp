@@ -31,8 +31,9 @@ InstancedModelWithAnimationComponent::InstancedModelWithAnimationComponent(Insta
 
 #ifdef _DEBUG
     this->model_filename = filename;
-
-    this->AABB_corners = AABBCorners({ 1.0f,1.0f ,1.0f ,1.0f }, 0.1f);
+    
+    // AABBの頂点描画用クラス初期化
+    this->AABB_corners_vec.resize(this->model_resource->GetMeshes().size(), AABBCorners({ 1.0f,1.0f ,1.0f ,1.0f }, 0.1f));
 
     // アニメーションの名前を登録   
     for (const auto& animation : this->model_resource->GetAnimations())
@@ -60,11 +61,14 @@ void InstancedModelWithAnimationComponent::Update(float elapsed_time)
         {
             MYMATRIX World_transform = transform->GetWolrdTransform();
 
-            //DirectX::BoundingBox bounding_box;
-            //model_resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
-            //DirectX::XMFLOAT3 corners[8];
-            //bounding_box.GetCorners(corners);
-            //this->AABB_corners.SetCenter(corners);
+            for (size_t i = 0; i < this->AABB_corners_vec.size(); ++i)
+            {
+                DirectX::BoundingBox bounding_box;
+                model_resource->GetDefaultBoundingBox(i).Transform(bounding_box, World_transform.GetMatrix());
+                DirectX::XMFLOAT3 corners[8];
+                bounding_box.GetCorners(corners);
+                this->AABB_corners_vec[i].SetCenter(corners);
+            }
         }
     }
 #endif // _DEBUG
@@ -189,12 +193,21 @@ void InstancedModelWithAnimationComponent::DrawDebugPrimitive()
     DebugManager::Instance debug_manager = DebugManager::GetInstance();
     if (!debug_manager.Get()) return;
     DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();;
-    debug_render->DrawAABBCorners(this->AABB_corners);
+    
+    for (auto& AABB_corners : AABB_corners_vec)
+    {
+        debug_render->DrawAABBCorners(AABB_corners);
+    }
 }
 
 void InstancedModelWithAnimationComponent::DrawDebugPrimitiveGUI()
 {
-    this->AABB_corners.DrawDebugGUI(("boudybox_point"));
+    size_t i = 0;
+    for (auto& AABB_corners : AABB_corners_vec)
+    {
+        AABB_corners.DrawDebugGUI(("boudybox_point" + std::to_string(i)));
+        ++i;
+    }
 }
 
 #endif // _DEBUG

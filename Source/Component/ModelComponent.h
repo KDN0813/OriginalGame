@@ -78,7 +78,7 @@ public:
 private:
 	const char* model_filename = nullptr;
 	
-	AABBCorners AABB_corners;
+	std::vector<AABBCorners> AABB_corners_vec;
 #endif // _DEBUG
 };
 
