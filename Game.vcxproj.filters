@@ -157,6 +157,12 @@
     <Filter Include="HLSL\Debug\Line">
       <UniqueIdentifier>{74ac8e20-2760-48e4-adbe-06ad14a151b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\Debug">
+      <UniqueIdentifier>{6b45700f-3237-48b6-8480-ae26a133b1da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shader\Light">
+      <UniqueIdentifier>{8f40ade9-b854-4d75-ae59-d5532c0b687a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -444,13 +450,17 @@
     <ClInclude Include="Hlsl\ParticleDisp.h">
       <Filter>HLSL\GeometryParticle</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\DebugParticle.h" />
-    <ClInclude Include="Source\Shader\LightManager.h" />
     <ClInclude Include="Source\Shader\SkyBox.h">
       <Filter>Source\Shader\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="Source\Debug\LineRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\DebugParticle.h">
+      <Filter>Source\Component\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\LightManager.h">
+      <Filter>Source\Shader\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -673,17 +683,17 @@
     <ClCompile Include="Source\Shader\SpriteShader.cpp">
       <Filter>Source\Shader\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\DebugParticle.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Shader\LightManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Shader\SkyBox.cpp">
       <Filter>Source\Shader\SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="Source\Debug\LineRenderer.cpp">
       <Filter>Source\Debug\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\DebugParticle.cpp">
+      <Filter>Source\Component\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\LightManager.cpp">
+      <Filter>Source\Shader\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
