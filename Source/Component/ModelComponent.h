@@ -78,7 +78,7 @@ public:
 private:
 	const char* model_filename = nullptr;
 	
-	SphereParam boudybox_point[8];
+	AABBCorners AABB_corners;
 #endif // _DEBUG
 };
 

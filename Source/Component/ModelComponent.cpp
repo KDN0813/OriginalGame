@@ -27,10 +27,7 @@ ModelComponent::ModelComponent( const char* filename)
 
 #ifdef _DEBUG
 	this->model_filename = filename;
-	for (size_t i = 0; i < 8;++i)
-	{
-		this->boudybox_point[i] = SphereParam(DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f), 0.1f);	
-	}
+	this->AABB_corners = AABBCorners(DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f), 0.1f);
 #endif // _DEBUG
 }
 
@@ -79,10 +76,8 @@ void ModelComponent::Update(float elapsed_time)
 			resource->GetDefaultBoundingBox().Transform(bounding_box, World_transform.GetMatrix());
 			DirectX::XMFLOAT3 corners[8];
 			bounding_box.GetCorners(corners);
-			for (size_t i = 0; i < 8; ++i)
-			{
-				this->boudybox_point[i].SetCenter(corners[i]);
-			}
+
+			this->AABB_corners.SetCenter(corners);
 #endif // _DEBUG
 		}
 	}
@@ -146,16 +141,13 @@ void ModelComponent::DrawDebugPrimitive()
 	DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();;
 	for (size_t i = 0; i < 8; ++i)
 	{
-		debug_render->DrawSphere(this->boudybox_point[i]);
+		debug_render->DrawAABBCorners(this->AABB_corners);
 	}
 }
 
 void ModelComponent::DrawDebugPrimitiveGUI()
 {
-	for (size_t i = 0; i < 8; ++i)
-	{
-		this->boudybox_point[i].DrawDebugGUI(("boudybox_point##" + std::to_string(i)));
-	}
+	this->AABB_corners.DrawDebugGUI("boudybox_point");
 }
 
 #endif // _DEBUG

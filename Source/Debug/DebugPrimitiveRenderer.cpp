@@ -33,7 +33,7 @@ void SphereParam::DrawDebugGUI(std::string header_name)
 
 void CylinderParam::DrawDebugGUI(std::string header_name)
 {
-	header_name += std::to_string(id);
+	header_name += "##" + std::to_string(id);
 
 	ImGui::Indent(30.0f);
 	std::string label;
@@ -66,7 +66,7 @@ void AABBCorners::SetCenter(DirectX::XMFLOAT3 c[8])
 
 void AABBCorners::DrawDebugGUI(std::string header_name)
 {
-	header_name += std::to_string(id);
+	header_name += "##" + std::to_string(id);
 
 	ImGui::Indent(30.0f);
 	std::string label;
@@ -79,18 +79,15 @@ void AABBCorners::DrawDebugGUI(std::string header_name)
 		label = "Color##AABBCorners" + std::to_string(id);
 		ImGui::ColorEdit4(label.c_str(), &this->color.x);
 		ImGui::DragFloat(label.c_str(), &this->radius, 0.01f);
-		label = "Radius##AABBCorners" + std::to_string(id);
-		ImGui::DragFloat(label.c_str(), &this->radius, 0.01f);
 
 		for (size_t i = 0; i < 8; ++i)
 		{
-			label = "Position##AABBCorners" + std::to_string(id) + std::to_string(i);
+			label = "Position" + std::to_string(i) + "##AABBCorners" + std::to_string(id);
 			ImGui::InputFloat3(label.c_str(), &center[i].x);
 		}
 	}
 	if (!this->is_draw) ImGui::PopStyleColor();
 	ImGui::Unindent(30.0f);
-
 }
 
 
