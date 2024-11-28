@@ -462,6 +462,9 @@
     <ClInclude Include="Source\Shader\LightManager.h">
       <Filter>Source\Shader\Light</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Shader\InstanceModelToonShader.h">
+      <Filter>Source\Shader\InstanceModel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -694,6 +697,9 @@
     </ClCompile>
     <ClCompile Include="Source\Shader\LightManager.cpp">
       <Filter>Source\Shader\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\InstanceModelToonShader.cpp">
+      <Filter>Source\Shader\InstanceModel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

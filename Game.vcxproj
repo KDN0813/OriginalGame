@@ -179,6 +179,7 @@
     <ClInclude Include="Source\Scene\SceneManager.h" />
     <ClInclude Include="Source\Scene\SceneDebug.h" />
     <ClInclude Include="Source\Scene\SceneTitle.h" />
+    <ClInclude Include="Source\Shader\InstanceModelToonShader.h" />
     <ClInclude Include="Source\Shader\LightManager.h" />
     <ClInclude Include="Source\Shader\ModelShader.h" />
     <ClInclude Include="Source\Shader\ParticleSystem.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="Source\Scene\SceneDebug.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
+    <ClCompile Include="Source\Shader\InstanceModelToonShader.cpp" />
     <ClCompile Include="Source\Shader\LightManager.cpp" />
     <ClCompile Include="Source\Shader\ModelShader.cpp" />
     <ClCompile Include="Source\Shader\ParticleSystem.cpp" />

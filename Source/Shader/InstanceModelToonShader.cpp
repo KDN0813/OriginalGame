@@ -3,7 +3,7 @@
 #include "Graphics/Graphics.h"
 #include "Camera/CameraManager.h"
 #include "System/MyMath/MYMATRIX.h"
-#include "InstanceModelShader.h"
+#include "InstanceModelToonShader.h"
 #include "System/Misc.h"
 #include "Component/InstancingModelShaderComponent.h"
 #include "Model/InstancingModelResource.h"
@@ -14,7 +14,7 @@
 #include "Component/TransformComponent.h"
 #include "Component/CameraComponent.h"
 
-InstancingModelShader::InstancingModelShader()
+InstanceModelToonShader::InstanceModelToonShader()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (!graphics.Get()) return;
@@ -177,7 +177,7 @@ InstancingModelShader::InstancingModelShader()
 	}
 }
 
-void InstancingModelShader::Render()
+void InstanceModelToonShader::Render()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (!graphics.Get()) return;
@@ -273,13 +273,13 @@ void InstancingModelShader::Render()
 	}
 }
 
-void InstancingModelShader::InstancingStart()
+void InstanceModelToonShader::InstancingStart()
 {
 	// カウントリセット
 	this->instance_count = 0;
 }
 
-void InstancingModelShader::InstancingAdd(
+void InstanceModelToonShader::InstancingAdd(
 	InstancedModelWithAnimationComponent* model,
 	Transform3DComponent* transform
 )
@@ -293,12 +293,12 @@ void InstancingModelShader::InstancingAdd(
 	++this->instance_count;
 }
 
-void InstancingModelShader::InstancingEnd(ID3D11DeviceContext* dc, InstancedModelWithAnimationComponent* model)
+void InstanceModelToonShader::InstancingEnd(ID3D11DeviceContext* dc, InstancedModelWithAnimationComponent* model)
 {
 	InstancingRender(dc, model);
 }
 
-void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* shader_component)
+void InstanceModelToonShader::AddShaderComponent(InstancingModelShaderComponent* shader_component)
 {
 	if (shader_component == nullptr) return;
 
@@ -307,7 +307,7 @@ void InstancingModelShader::AddShaderComponent(InstancingModelShaderComponent* s
 	shader_component_vec_map[modelId].emplace_back(shader_component);
 }
 
-void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent* shader_component)
+void InstanceModelToonShader::RemoveShaderComponent(InstancingModelShaderComponent* shader_component)
 {
 	if (shader_component == nullptr) return;
 
@@ -321,12 +321,12 @@ void InstancingModelShader::RemoveShaderComponent(InstancingModelShaderComponent
 	}
 }
 
-InstancingModelShaderComponent* InstancingModelShader::IsShaderValid(InstancingModelShaderComponent* shader_component)
+InstancingModelShaderComponent* InstanceModelToonShader::IsShaderValid(InstancingModelShaderComponent* shader_component)
 {
 	return (shader_component->IsShaderValid()) ? shader_component : nullptr;
 }
 
-void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, InstancedModelWithAnimationComponent* model)
+void InstanceModelToonShader::InstancingRender(ID3D11DeviceContext* dc, InstancedModelWithAnimationComponent* model)
 {
 	// インスタンシングバッファの更新
 	D3D11_MAPPED_SUBRESOURCE mappedResource{};
@@ -379,7 +379,7 @@ void InstancingModelShader::InstancingRender(ID3D11DeviceContext* dc, InstancedM
 	}
 }
 
-void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset)
+void InstanceModelToonShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResource::Subset& subset)
 {
 	SubsetConstantBuffer cbSubset;
 	cbSubset.materialColor = subset.material->color;
@@ -392,7 +392,7 @@ void InstancingModelShader::DrawSubset(ID3D11DeviceContext* dc, const ModelResou
 
 #ifdef _DEBUG
 
-void InstancingModelShader::DrawDebugGUI()
+void InstanceModelToonShader::DrawDebugGUI()
 {
 	std::string text = "shader_component_vector.size" + std::to_string(this->shader_component_vec_map.size());
 	ImGui::Text(text.c_str());
