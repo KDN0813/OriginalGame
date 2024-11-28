@@ -4,6 +4,7 @@
 #include "Shader/Shader.h"
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
+#include "Model\InstancingConstants.h"
 
 class InstancingModelShaderComponent;
 class InstancedModelWithAnimationComponent;
@@ -11,9 +12,6 @@ class Transform3DComponent;
 
 class InstancingModelShader : public Shader
 {
-public:
-	static const int MaxBones = 128;
-	static const int MAX_INSTANCES = 5100;
 private:
 	struct SceneConstantBuffer
 	{

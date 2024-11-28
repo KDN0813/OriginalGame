@@ -4,6 +4,7 @@
 #include <wrl.h>
 #include <memory>
 #include <vector>
+#include "Model\InstancingConstants.h"
 
 using BoneTransform = DirectX::XMFLOAT4X4;
 using BoneTransformTextureData = std::vector<BoneTransform>;
@@ -12,8 +13,6 @@ class ModelResource;
 
 class InstancingModelResource
 {
-public:
-    static const int MAX_INSTANCES = 5100;
 public:
     /**
      * @fn InstancingModelResource

@@ -471,6 +471,9 @@
     <ClInclude Include="Source\Shader\InstanceModelToonShader.h">
       <Filter>Source\Shader\InstanceModel\Toon</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Model\InstancingConstants.h">
+      <Filter>Source\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">

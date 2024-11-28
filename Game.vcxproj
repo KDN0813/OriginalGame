@@ -165,6 +165,7 @@
     <ClInclude Include="Source\Input\GamePad.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Input\Mouse.h" />
+    <ClInclude Include="Source\Model\InstancingConstants.h" />
     <ClInclude Include="Source\Model\InstancingModelResource.h" />
     <ClInclude Include="Source\Model\InstancingModelResourceManager.h" />
     <ClInclude Include="Source\Model\ModelCommonData.h" />

@@ -332,7 +332,7 @@ void InstanceModelToonShader::InstancingRender(ID3D11DeviceContext* dc, Instance
 	D3D11_MAPPED_SUBRESOURCE mappedResource{};
 	HRESULT hr = dc->Map(instance_data_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
-	memcpy_s(mappedResource.pData, sizeof(InstanceData) * this->MAX_INSTANCES,
+	memcpy_s(mappedResource.pData, sizeof(InstanceData) * MAX_INSTANCES,
 		this->instance_datas, sizeof(InstanceData) * this->instance_count);
 	dc->Unmap(instance_data_buffer.Get(), 0);
 
