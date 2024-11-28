@@ -1,3 +1,5 @@
+#include "Lights.hlsli"
+
 // 【入力データ】
 struct VsIn
 {
@@ -24,7 +26,6 @@ struct VsOut
 cbuffer SceneConstantBuffer : register(b0)
 {
     row_major float4x4 view_projection;
-    float4 light_direction;
 };
 
 struct InstanceData
@@ -56,3 +57,11 @@ cbuffer MeshConstantBuffer : register(b3)
     uint mesh_offset; // バッファ内でメッシュの開始位置を示すオフセット値
     uint3 mesh_dummy;
 }
+
+// ライト用定数
+cbuffer LightConstantBuffer : register(b4)
+{
+    float4 ambient_color;
+    DirectionalLights directional_lights;
+    float4 light_dummy;
+};

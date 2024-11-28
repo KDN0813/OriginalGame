@@ -212,10 +212,10 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 		light_CB.ambient_color = light_manager->GetAmbientColor();
 		light_CB.directional_lights = light_manager->GetLightDirection();
 
-		dc->UpdateSubresource(this->light_constant_buffer.Get(), 0, 0, &light_CB, 0, 0);
 	}
 
-	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
+	dc->UpdateSubresource(this->light_constant_buffer.Get(), 0, 0, &light_CB, 0, 0);
+	dc->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
 }
 
 void ModelShader::Draw(ID3D11DeviceContext* dc, const ModelComponent* model)

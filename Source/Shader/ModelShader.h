@@ -17,7 +17,6 @@ private:
 	struct SceneConstantBuffer
 	{
 		DirectX::XMFLOAT4X4 view_projection;
-		DirectX::XMFLOAT4 light_direction;
 	};
 
 	struct MeshConstantBuffer

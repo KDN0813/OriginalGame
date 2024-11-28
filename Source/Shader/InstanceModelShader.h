@@ -5,6 +5,7 @@
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
 #include "Model\InstancingConstants.h"
+#include "Shader\LightParam.h"
 
 class InstancingModelShaderComponent;
 class InstancedModelWithAnimationComponent;
@@ -16,7 +17,6 @@ private:
 	struct SceneConstantBuffer
 	{
 		DirectX::XMFLOAT4X4 viewProjection;
-		DirectX::XMFLOAT4 light_direction;
 	};
 	struct SubsetConstantBuffer
 	{
@@ -33,6 +33,14 @@ private:
 		UINT offset;				// バッファ内でメッシュの開始位置を示すオフセット値
 		DirectX::XMUINT3 dummy;
 	};
+	// ライト用定数
+	struct LightConstantBuffer
+	{
+		DirectX::XMFLOAT4 ambient_color;
+		DirectionalLights directional_lights;
+		DirectX::XMFLOAT4 dummy;
+	};
+
 	/**
 	* \brief GPUに送るデータ
 	*
@@ -87,6 +95,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subset_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			common_data_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			mesh_constant_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			light_constant_buffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertex_shader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>		pixel_shader;
