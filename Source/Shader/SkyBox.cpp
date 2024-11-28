@@ -17,18 +17,18 @@ SkyBox::SkyBox()
 	HRESULT hr{};
 
 	// 入力レイアウト
-	D3D11_INPUT_ELEMENT_DESC input_element_desc[] =
+	D3D11_INPUT_ELEMENT_DESC input_element_desc[]
 	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "WORLD_POSITION",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	// 頂点シェーダー
-	hr = CreateShader::VsFromCso(device, "Shader\\SkyBoxVs.cso", this->vertex_shader.GetAddressOf(), this->input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
+	hr = CreateShader::VsFromCso(device, "Shader\\SkyBoxVS.cso", this->vertex_shader.GetAddressOf(), this->input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// ピクセルシェーダー
-	hr = CreateShader::PsFromCso(device, "Shader\\SkyBoxPs.cso", this->pixel_shader.ReleaseAndGetAddressOf());
+	hr = CreateShader::PsFromCso(device, "Shader\\SkyBoxPS.cso", this->pixel_shader.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// 定数バッファ
@@ -148,8 +148,6 @@ void SkyBox::Render()
 
 	// シーン用定数バッファ更新
 	SceneConstantBuffer scene_CB{};
-
-	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 	RenderContext rc{};
 
 	// RenderContext設定

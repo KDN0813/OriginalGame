@@ -33,11 +33,11 @@ InstanceModelToonShader::InstanceModelToonShader()
 		{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	// 頂点シェーダー
-	hr = CreateShader::VsFromCso(device, "Shader\\InstanceVS.cso", this->vertex_shader.GetAddressOf(), this->input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
+	hr = CreateShader::VsFromCso(device, "Shader\\InstanceToonVS.cso", this->vertex_shader.GetAddressOf(), this->input_layout.GetAddressOf(), input_element_desc, _countof(input_element_desc));
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// ピクセルシェーダー
-	hr = CreateShader::PsFromCso(device, "Shader\\InstancePS.cso", this->pixel_shader.ReleaseAndGetAddressOf());
+	hr = CreateShader::PsFromCso(device, "Shader\\InstanceToonPS.cso", this->pixel_shader.ReleaseAndGetAddressOf());
 	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 
 	// 定数バッファ

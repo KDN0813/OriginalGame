@@ -102,12 +102,12 @@ void SceneGame::Initialize()
 			auto sky_box = object_manager.Create("Sky Box");
 
 			// テクスチャ
-			{
-				SpriteComponent::SpriteParam param{};
-				param.filename = "";
+			//{
+			//	SpriteComponent::SpriteParam param{};
+			//	param.filename = "";
 
-				auto sprite = sky_box->AddComponent<SpriteComponent>(param);
-			}
+			//	auto sprite = sky_box->AddComponent<SpriteComponent>(param);
+			//}
 		}
 
 		// プレイヤー

@@ -166,6 +166,9 @@
     <Filter Include="HLSL\Instance\Toon">
       <UniqueIdentifier>{6a496320-f32a-4b8f-9e87-9141f750f854}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Shader\InstanceModel\Toon">
+      <UniqueIdentifier>{ff2d8e65-d027-470a-b2ba-4f3184a2b1f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -466,7 +469,7 @@
       <Filter>Source\Shader\Light</Filter>
     </ClInclude>
     <ClInclude Include="Source\Shader\InstanceModelToonShader.h">
-      <Filter>Source\Shader\InstanceModel</Filter>
+      <Filter>Source\Shader\InstanceModel\Toon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -702,7 +705,7 @@
       <Filter>Source\Shader\Light</Filter>
     </ClCompile>
     <ClCompile Include="Source\Shader\InstanceModelToonShader.cpp">
-      <Filter>Source\Shader\InstanceModel</Filter>
+      <Filter>Source\Shader\InstanceModel\Toon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -783,7 +786,7 @@
     <FxCompile Include="Hlsl\GeometryParticle_cs.hlsl">
       <Filter>HLSL\GeometryParticle</Filter>
     </FxCompile>
-    <FxCompile Include="Hlsl\SkyBoxPs.hlsl">
+    <FxCompile Include="Hlsl\SkyBoxPS.hlsl">
       <Filter>HLSL\SkyBox</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\SkyBoxVS.hlsl">
