@@ -172,6 +172,12 @@
     <Filter Include="HLSL\Light">
       <UniqueIdentifier>{8961a7c9-eb0c-45fa-94fb-3453748b1c7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\Shader\Instancing">
+      <UniqueIdentifier>{79c9094f-f977-434b-98f8-e8bda4b372be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Shader\Model">
+      <UniqueIdentifier>{5f8179b1-de76-4b95-b7fd-dcc2b8f25ca8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -378,17 +384,11 @@
     <ClInclude Include="Source\Component\InstancedModelWithStateAnimationComponent.h">
       <Filter>Source\Component\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\InstancingModelShaderComponent.h">
-      <Filter>Source\Component\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\ModelAnimationComponent.h">
       <Filter>Source\Component\Model\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\ModelComponent.h">
       <Filter>Source\Component\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\ModelShaderComponent.h">
-      <Filter>Source\Component\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\MovementComponent.h">
       <Filter>Source\Component\Movement</Filter>
@@ -480,6 +480,13 @@
     <ClInclude Include="Source\Shader\LightParam.h">
       <Filter>Source\Shader\Light</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\InstancingModelShaderComponent.h">
+      <Filter>Source\Component\Shader\Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ModelShaderComponent.h">
+      <Filter>Source\Component\Shader\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\InstancingModelToonShaderComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -629,17 +636,11 @@
     <ClCompile Include="Source\Component\InstancedModelWithStateAnimationComponent.cpp">
       <Filter>Source\Component\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp">
-      <Filter>Source\Component\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\ModelAnimationComponent.cpp">
       <Filter>Source\Component\Model\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\ModelComponent.cpp">
       <Filter>Source\Component\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\ModelShaderComponent.cpp">
-      <Filter>Source\Component\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\MovementComponent.cpp">
       <Filter>Source\Component\Movement</Filter>
@@ -715,6 +716,15 @@
     </ClCompile>
     <ClCompile Include="Source\Shader\InstanceModelToonShader.cpp">
       <Filter>Source\Shader\InstanceModel\Toon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp">
+      <Filter>Source\Component\Shader\Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ModelShaderComponent.cpp">
+      <Filter>Source\Component\Shader\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\InstancingModelToonShaderComponent.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

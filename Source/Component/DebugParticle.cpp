@@ -40,7 +40,10 @@ void DebugParticle::Update(float elapsed_time)
     if (this->effect_looping)
     {
         // エフェクトを連続再生させる
-        PlayEffect(this->draw_effect_type);
+        for (int i = 0; i < loop_count; ++i)
+        {
+            PlayEffect(this->draw_effect_type);
+        }
     }
 }
 
@@ -87,6 +90,10 @@ void DebugParticle::DrawDebugGUI()
 
     ImGui::SliderInt("Effect Type", &this->draw_effect_type, 0, 1);
     ImGui::Checkbox("Effect Looping", &this->effect_looping);
+    if (this->effect_looping)
+    {
+        ImGui::DragInt("Loop Count", &this->loop_count, 0, 300);
+    }
 
     if(ImGui::Button("Effect Play"))
     {

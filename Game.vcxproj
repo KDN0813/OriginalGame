@@ -140,6 +140,7 @@
     <ClInclude Include="Source\Component\EnemyComponent.h" />
     <ClInclude Include="Source\Component\GravityComponent.h" />
     <ClInclude Include="Source\Component\InstancedModelWithStateAnimationComponent.h" />
+    <ClInclude Include="Source\Component\InstancingModelToonShaderComponent.h" />
     <ClInclude Include="Source\Component\ModelAnimationComponent.h" />
     <ClInclude Include="Source\Component\ModelAnimationControlComponent.h" />
     <ClInclude Include="Source\Component\ModelComponent.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="Source\Component\EnemyComponent.cpp" />
     <ClCompile Include="Source\Component\GravityComponent.cpp" />
     <ClCompile Include="Source\Component\InstancedModelWithStateAnimationComponent.cpp" />
+    <ClCompile Include="Source\Component\InstancingModelToonShaderComponent.cpp" />
     <ClCompile Include="Source\Component\ModelAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\ModelAnimationControlComponent.cpp" />
     <ClCompile Include="Source\Component\ModelComponent.cpp" />

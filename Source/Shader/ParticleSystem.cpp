@@ -614,7 +614,13 @@ void ParticleSystem::DebugDrawGUI()
 {
 	if(ImGui::Begin("ParticleSystem"))
 	{
-		ImGui::InputSize_t("Free Particle Count", this->free_particle_count);
+		// 空いてるパーティクル数表示
+		std::string text = "Free Particle Count: " + std::to_string(this->free_particle_count);
+		ImGui::Text(text.c_str());
+
+		// 稼働中のパーティクル数表示
+		text = "Working Particle Count: " + std::to_string(PERTICLES_PIECE_NO  - this->free_particle_count);
+		ImGui::Text(text.c_str());
 
 		// パーティクル定数
 		if (ImGui::TreeNodeEx("ParticleCommonConstant", ImGuiTreeNodeFlags_DefaultOpen))

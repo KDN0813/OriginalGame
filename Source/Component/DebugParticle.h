@@ -60,7 +60,7 @@ public:
     bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveが存在するか
 private:
     CylinderParam debug_cylinder_effect_area;
-    size_t group_count = 100;       // 再生するグループエフェクトの数
+    int loop_count = 100;   // エフェクトをループ再生する時の1フレームで実行するエフェクト数
 #endif // DEBUG
 };
 
