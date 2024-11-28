@@ -70,6 +70,11 @@ InstanceModelToonShader::InstanceModelToonShader()
 		desc.ByteWidth = sizeof(MeshConstantBuffer);
 		hr = device->CreateBuffer(&desc, 0, this->mesh_constant_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// ライト用定数バッファ作成
+		desc.ByteWidth = sizeof(LightConstantBuffer);
+		hr = device->CreateBuffer(&desc, 0, this->light_constant_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
 	// ブレンドステート
@@ -217,6 +222,7 @@ void InstanceModelToonShader::Render()
 			this->subset_constant_buffer.Get(),
 			this->common_data_constant_buffer.Get(),
 			this->mesh_constant_buffer.Get(),
+			this->light_constant_buffer.Get(),
 		};
 		dc->VSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
 		dc->PSSetConstantBuffers(0, ARRAYSIZE(constantBuffers), constantBuffers);
@@ -228,15 +234,18 @@ void InstanceModelToonShader::Render()
 		MYMATRIX Projection = rc.projection;
 		MYMATRIX View_projection = View * Projection;
 
-		// ライトの方向取得
+		// ライト用定数バッファ更新
+		LightConstantBuffer light_cb{};
 		if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
 		{
-			cb_scene.light_direction = light_manager->GetLightDirection();
+			light_cb.ambient_color = light_manager->GetAmbientColor();
+			light_cb.directional_lights = light_manager->GetLightDirection();
 		}
 
 		View_projection.GetFlaot4x4(cb_scene.viewProjection);
 
 		dc->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cb_scene, 0, 0);
+		dc->UpdateSubresource(this->light_constant_buffer.Get(), 0, 0, &light_cb, 0, 0);
 
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
