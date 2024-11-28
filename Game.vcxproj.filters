@@ -163,6 +163,9 @@
     <Filter Include="Source\Shader\Light">
       <UniqueIdentifier>{8f40ade9-b854-4d75-ae59-d5532c0b687a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL\Instance\Toon">
+      <UniqueIdentifier>{6a496320-f32a-4b8f-9e87-9141f750f854}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -733,6 +736,9 @@
     <None Include="Hlsl\Line.hlsli">
       <Filter>HLSL\Debug\Line</Filter>
     </None>
+    <None Include="Hlsl\InstanceToon.hlsli">
+      <Filter>HLSL\Instance\Toon</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Hlsl\DebugVS.hlsl">
@@ -788,6 +794,12 @@
     </FxCompile>
     <FxCompile Include="Hlsl\LineVS.hlsl">
       <Filter>HLSL\Debug\Line</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\InstanceToonPS.hlsl">
+      <Filter>HLSL\Instance\Toon</Filter>
+    </FxCompile>
+    <FxCompile Include="Hlsl\InstanceToonVS.hlsl">
+      <Filter>HLSL\Instance\Toon</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

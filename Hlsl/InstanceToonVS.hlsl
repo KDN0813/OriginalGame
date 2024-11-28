@@ -5,7 +5,7 @@ StructuredBuffer<BoneTransform> bone_transform_texture : register(t1);
 StructuredBuffer<InstanceData> instance_data : register(t2);
 
 VsOut main(VsIn vs_in)
-{        
+{
     const uint frame = instance_data[vs_in.instance_id].frame;
     const uint start_offset = (bone_transform_count * frame) + mesh_offset + instance_data[vs_in.instance_id].animation_start_offset;
     const uint transform_index[4] =
