@@ -1,3 +1,5 @@
+#include "Lights.hlsli"
+
 struct VsIn
 {
     float4 position : POSITION;
@@ -25,7 +27,6 @@ cbuffer MeshConstantBuffer : register(b1)
 cbuffer SceneConstantBuffer : register(b0)
 {
     row_major float4x4 view_projection;
-    float4 light_direction;
 };
 
 cbuffer SubsetConstantBuffer : register(b2)
@@ -33,4 +34,11 @@ cbuffer SubsetConstantBuffer : register(b2)
     float4 material_color;
     float tile_count;
     float3 dummy;
+};
+
+cbuffer LightConstantBuffer : register(b3)
+{
+    float4 ambient_color;
+    DirectionalLights directional_lights;
+    float4 light_dummy;
 };

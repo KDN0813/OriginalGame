@@ -1,3 +1,5 @@
+#include "Lights.hlsli"
+
 // y“ü—Íƒf[ƒ^z
 struct VsIn
 {
@@ -24,7 +26,6 @@ struct VsOut
 cbuffer SceneConstantBuffer : register(b0)
 {
     row_major float4x4 view_projection;
-    float4 light_direction;
 };
 
 struct InstanceData

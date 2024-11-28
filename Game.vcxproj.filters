@@ -169,6 +169,9 @@
     <Filter Include="Source\Shader\InstanceModel\Toon">
       <UniqueIdentifier>{ff2d8e65-d027-470a-b2ba-4f3184a2b1f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL\Light">
+      <UniqueIdentifier>{8961a7c9-eb0c-45fa-94fb-3453748b1c7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -474,6 +477,9 @@
     <ClInclude Include="Source\Model\InstancingConstants.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Shader\LightParam.h">
+      <Filter>Source\Shader\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -744,6 +750,9 @@
     </None>
     <None Include="Hlsl\InstanceToon.hlsli">
       <Filter>HLSL\Instance\Toon</Filter>
+    </None>
+    <None Include="Hlsl\Lights.hlsli">
+      <Filter>HLSL\Light</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include <vector>
 #include "Shader.h"
 #include "Graphics/RenderContext.h"
+#include "Shader\LightParam.h"
 
 class ModelComponent;
 class ModelShaderComponent;
@@ -32,6 +33,14 @@ private:
 		float tile_count = 1.0f;
 		DirectX::XMFLOAT3 dummy;
 	};
+
+	// ÉâÉCÉgópíËêî
+	struct LightConstantBuffer
+	{
+		DirectX::XMFLOAT4 ambient_color;
+		DirectionalLights directional_lights;
+		DirectX::XMFLOAT4 dummy;
+	};
 public:
     ModelShader();
 
@@ -51,6 +60,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			scene_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			mesh_constant_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			subset_constant_buffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			light_constant_buffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertex_shader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>		pixel_shader;

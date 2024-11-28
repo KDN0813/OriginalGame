@@ -17,10 +17,10 @@ VsOut main(VsIn vs_in)
 	vout.position = mul(float4(p, 1.0f), view_projection);
 	
     float3 N = normalize(n);
-    float3 L = normalize(-light_direction.xyz);
+    float3 L = normalize(-directional_lights.direction.xyz);
     float d = dot(L, N);
     float power = max(0, d) * 0.5f + 0.5f;
-    vout.color.rgb = vs_in.color.rgb * material_color.rgb * power;
+    vout.color.rgb = vs_in.color.rgb * material_color.rgb * power * ambient_color.rgb;
     vout.color.a = vs_in.color.a * material_color.a * 2.0f;
     vout.texcoord = vs_in.texcoord * tile_count;
     return vout;

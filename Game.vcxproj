@@ -182,6 +182,7 @@
     <ClInclude Include="Source\Scene\SceneTitle.h" />
     <ClInclude Include="Source\Shader\InstanceModelToonShader.h" />
     <ClInclude Include="Source\Shader\LightManager.h" />
+    <ClInclude Include="Source\Shader\LightParam.h" />
     <ClInclude Include="Source\Shader\ModelShader.h" />
     <ClInclude Include="Source\Shader\ParticleSystem.h" />
     <ClInclude Include="Source\Shader\Shader.h" />
@@ -299,6 +300,7 @@
     <None Include="Hlsl\ImGui.hlsli" />
     <None Include="Hlsl\Instance.hlsli" />
     <None Include="Hlsl\InstanceToon.hlsli" />
+    <None Include="Hlsl\Lights.hlsli" />
     <None Include="Hlsl\Line.hlsli" />
     <None Include="Hlsl\MatrixDecompose.hlsli" />
     <None Include="Hlsl\SkyBox.hlsli" />
