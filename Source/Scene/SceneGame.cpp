@@ -43,6 +43,7 @@
 #include "Component/SpriteComponent.h"
 #include "Component/CharacterComponent.h"
 #include "Component/StateMachineComponent.h"
+#include "Component\SpriteComponent.h"
 #ifdef _DEBUG
 #include "Component\DebugParticle.h"
 #endif // DEBUG
@@ -64,6 +65,7 @@ void SceneGame::Initialize()
 		instancing_model_shader = std::make_unique<InstancingModelShader>();
 		model_shader = std::make_unique<ModelShader>();
 		sprite_shader = std::make_unique<SpriteShader>();
+		sky_box = std::make_unique<SkyBox>();
 	}
 
 	// パーティクルシステムのテクスチャロード
@@ -92,6 +94,19 @@ void SceneGame::Initialize()
 			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
 				game_object->SetStage(stage);
+			}
+		}
+
+		// スカイボックス
+		{
+			auto sky_box = object_manager.Create("Sky Box");
+
+			// テクスチャ
+			{
+				SpriteComponent::SpriteParam param{};
+				param.filename = "";
+
+				auto sprite = sky_box->AddComponent<SpriteComponent>(param);
 			}
 		}
 

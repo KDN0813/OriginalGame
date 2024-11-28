@@ -2,6 +2,11 @@
 #include "System\Misc.h"
 #include "Graphics\Graphics.h"
 #include "Shader\ShaderLoader.h"
+#include "System\MyMath\MYMATRIX.h"
+#include "Camera\CameraManager.h"
+
+#include "Component\SpriteComponent.h"
+#include "Component\CameraComponent.h"
 
 SkyBox::SkyBox()
 {
@@ -117,6 +122,57 @@ SkyBox::SkyBox()
 
 void SkyBox::Render()
 {
+	const auto& texture = texture_Wptr.lock();
+	if (!texture) return;
+
+	Graphics::Instance graphics = Graphics::GetInstance();
+	if (!graphics.Get()) return;
+	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
+
+	dc->VSSetShader(this->vertex_shader.Get(), nullptr, 0);
+	dc->PSSetShader(this->pixel_shader.Get(), nullptr, 0);
+	dc->IASetInputLayout(this->input_layout.Get());
+
+	ID3D11Buffer* constant_buffers[] =
+	{
+		this->scene_constant_buffer.Get(),
+	};
+	dc->VSSetConstantBuffers(0, ARRAYSIZE(constant_buffers), constant_buffers);
+	dc->PSSetConstantBuffers(0, ARRAYSIZE(constant_buffers), constant_buffers);
+
+	const float blend_factor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	dc->OMSetBlendState(this->blend_state.Get(), blend_factor, 0xFFFFFFFF);
+	dc->OMSetDepthStencilState(this->depth_stencil_state.Get(), 0);
+	dc->RSSetState(this->rasterizer_state.Get());
+	dc->PSSetSamplers(0, 1, this->sampler_state.GetAddressOf());
+
+	// シーン用定数バッファ更新
+	SceneConstantBuffer scene_CB{};
+
+	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
+	RenderContext rc{};
+
+	// RenderContext設定
+	{
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
+		if (!camera_manager.Get()) return;
+		std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
+		if (camera)
+		{
+			rc.view = camera->GetViewTransform();
+			rc.projection = camera->GetProjectionTransform();
+		}
+	}
+
+	MYMATRIX View = rc.view;
+	MYMATRIX Projection = rc.projection;
+	MYMATRIX View_projection = View * Projection;
+
+	View_projection.GetFlaot4x4(scene_CB.view_projection);
+
+	dc->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
+
+	texture->Render(dc);
 }
 
 #ifdef _DEBUG

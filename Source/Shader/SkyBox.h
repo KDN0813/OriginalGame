@@ -3,6 +3,8 @@
 #include <wrl.h>
 #include "Shader\Shader.h"
 
+class SpriteComponent;
+
 class SkyBox : public Shader
 {
 public:
@@ -20,10 +22,9 @@ public:
 
 	const char* GetName() { return "SkyBox"; };
 
+	void SetTexture(std::shared_ptr<SpriteComponent> texture) { this->texture_Wptr = texture; }
 private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			scene_constant_buffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>			mesh_constant_buffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>			subset_constant_buffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertex_shader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>		pixel_shader;
@@ -35,7 +36,7 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>		sampler_state;
 
-	//Microsoft::WRL::ComPtr<ID3D11Buffer>			scene_constant_buffer;
+	std::weak_ptr<SpriteComponent>					texture_Wptr;
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI();
