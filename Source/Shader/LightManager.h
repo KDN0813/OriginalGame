@@ -1,21 +1,23 @@
 #pragma once
 #include "System\ClassBase\Singleton.h"
 #include <DirectXMath.h>
+#include "Shader\LightParam.h"
 
 class LightManager : public Singleton<LightManager>
 {
 public:
-    LightManager() :Singleton(this), light_direction({ 0.0f, -1.0f, 0.0f, 0.0f }) {};
+    LightManager() :Singleton(this), direction_light({ { 0.0f, -1.0f, 0.0f, 0.0f } ,{1.0f,1.0f,1.0f,1.0f} }) ,ambient_color({ 1.0f, 1.0f, 1.0f, 1.0f }){};
     ~LightManager() {};
 
     // 各種取得関数
-    DirectX::XMFLOAT4 GetlightDirection() { return this->light_direction; }
+    DirectionalLights GetLightDirection() { return this->direction_light; }
+    DirectX::XMFLOAT4 GetAmbientColor() { return this->ambient_color; }
 private:
-    DirectX::XMFLOAT4 light_direction;      // ライトの方向
+    DirectionalLights direction_light;      // ライトの方向
+    DirectX::XMFLOAT4 ambient_color;
 #ifdef _DEBUG
 public:
     void DrawDebugGUI();
 
 #endif // _DEBUG
 };
-

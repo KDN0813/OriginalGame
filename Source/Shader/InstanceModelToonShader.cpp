@@ -231,7 +231,7 @@ void InstanceModelToonShader::Render()
 		// ƒ‰ƒCƒg‚Ì•ûŒüŽæ“¾
 		if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
 		{
-			cb_scene.light_direction = light_manager->GetlightDirection();
+			cb_scene.light_direction = light_manager->GetLightDirection();
 		}
 
 		View_projection.GetFlaot4x4(cb_scene.viewProjection);

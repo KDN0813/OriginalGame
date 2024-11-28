@@ -64,6 +64,12 @@ ModelShader::ModelShader()
 
 		hr = device->CreateBuffer(&desc, 0, this->subset_constant_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+		// ライト用バッファ
+		desc.ByteWidth = sizeof(LightConstantBuffer);
+
+		hr = device->CreateBuffer(&desc, 0, this->light_constant_buffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 
 	// ブレンドステート
@@ -176,9 +182,10 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 
 	ID3D11Buffer* constant_buffers[] =
 	{
-		scene_constant_buffer.Get(),
-		mesh_constant_buffer.Get(),
-		subset_constant_buffer.Get()
+		this->scene_constant_buffer.Get(),
+		this->mesh_constant_buffer.Get(),
+		this->subset_constant_buffer.Get(),
+		this->light_constant_buffer.Get()
 	};
 	dc->VSSetConstantBuffers(0, ARRAYSIZE(constant_buffers), constant_buffers);
 	dc->PSSetConstantBuffers(0, ARRAYSIZE(constant_buffers), constant_buffers);
@@ -198,10 +205,14 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 
 	View_projection.GetFlaot4x4(scene_CB.view_projection);
 
-	// ライトの方向取得
+	// ライト用定数バッファ更新
+	LightConstantBuffer light_CB{};
 	if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
 	{
-		scene_CB.light_direction = light_manager->GetlightDirection();
+		light_CB.ambient_color = light_manager->GetAmbientColor();
+		light_CB.directional_lights = light_manager->GetLightDirection();
+
+		dc->UpdateSubresource(this->light_constant_buffer.Get(), 0, 0, &light_CB, 0, 0);
 	}
 
 	dc->UpdateSubresource(scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
