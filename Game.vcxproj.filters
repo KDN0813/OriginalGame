@@ -181,6 +181,9 @@
     <Filter Include="Source\Component\Shader\Instancing\Toon">
       <UniqueIdentifier>{2aded7fe-d01c-419c-ab20-8d51c2b649c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\StateMachine\Player">
+      <UniqueIdentifier>{3a2c35c7-f681-4f27-aa4f-8e9957b369e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -426,9 +429,6 @@
     <ClInclude Include="Source\StateMachine\StateBase.h">
       <Filter>Source\StateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StateMachine\StateDerived.h">
-      <Filter>Source\StateMachine</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\ModelAnimationControlComponent.h">
       <Filter>Source\Component\Model\Animation</Filter>
     </ClInclude>
@@ -494,6 +494,9 @@
     </ClInclude>
     <ClInclude Include="Source\Component\Transform2DComponent.h">
       <Filter>Source\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateMachine\PlayerStateDerived.h">
+      <Filter>Source\StateMachine\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -680,9 +683,6 @@
     <ClCompile Include="Source\Component\StateMachineComponent.cpp">
       <Filter>Source\Component\StateMachine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StateMachine\StateDerived.cpp">
-      <Filter>Source\StateMachine</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\ModelAnimationControlComponent.cpp">
       <Filter>Source\Component\Model\Animation</Filter>
     </ClCompile>
@@ -736,6 +736,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Transform2DComponent.cpp">
       <Filter>Source\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\PlayerStateDerived.cpp">
+      <Filter>Source\StateMachine\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,10 @@
 #include "Graphics/Graphics.h"
 #include "SceneManager.h"
 
+#include "StateMachine\PlayerStateDerived.h"
+
 #include "Component/SpriteComponent.h"
+#include "Component/StateMachineComponent.h"
 
 void SceneLoading::Initialize()
 {
@@ -43,6 +46,12 @@ void SceneLoading::Initialize()
                 param.color = { 1.5f,1.5f, 1.5f, 1.0f };
                 auto sprite = load_idle_sprite->AddComponent<SpriteComponent>(param);
                 this->sprite_shader->AddSprite(sprite);
+            }
+            // 更新用ステートマシン読み込み
+            {
+                auto state_machine = load_idle_sprite->AddComponent<StateMachineComponent>();
+
+                //state_machine.RegisterState();
             }
         }
     }
