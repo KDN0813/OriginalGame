@@ -3,6 +3,7 @@
 #include "Scene/SceneGame.h"
 #include "Scene/SceneManager.h"
 #include "Graphics/Graphics.h"
+#include "Input\Input.h"
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #endif // DEBUG
@@ -64,11 +65,17 @@ void SceneTitle::Update(float elapsed_time)
 	object_manager.Update(elapsed_time);
 
 	// スペースキーでゲーム画面に遷移(仮)
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
-		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
+		const auto& game_pad = input->GetGamePad();
+
+		// ボタンが押されたら
+		if ((GamePad::BTN_A | GamePad::BTN_B | GamePad::BTN_X | GamePad::BTN_Y) & game_pad.GetButton())
 		{
-			scene_manager->ChangeScene(new SceneLoading(new SceneGame()));
+			if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
+			{
+				scene_manager->ChangeScene(new SceneLoading(new SceneGame()));
+			}
 		}
 	}
 }
