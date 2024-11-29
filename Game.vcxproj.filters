@@ -178,6 +178,9 @@
     <Filter Include="Source\Component\Shader\Model">
       <UniqueIdentifier>{5f8179b1-de76-4b95-b7fd-dcc2b8f25ca8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\Shader\Instancing\Toon">
+      <UniqueIdentifier>{2aded7fe-d01c-419c-ab20-8d51c2b649c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -486,7 +489,9 @@
     <ClInclude Include="Source\Component\ModelShaderComponent.h">
       <Filter>Source\Component\Shader\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\InstancingModelToonShaderComponent.h" />
+    <ClInclude Include="Source\Component\InstancingModelToonShaderComponent.h">
+      <Filter>Source\Component\Shader\Instancing\Toon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -724,7 +729,7 @@
       <Filter>Source\Component\Shader\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\InstancingModelToonShaderComponent.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Component\Shader\Instancing\Toon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
