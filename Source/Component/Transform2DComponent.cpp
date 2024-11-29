@@ -226,12 +226,12 @@ void Transform2DComponent::DrawDebugGUI()
 	// local_positionÝ’è
 	{
 		DirectX::XMFLOAT2 local_position = this->param.local_position;
-		if (ImGui::DragFloat3("Local Position", &local_position.x, 0.1f))
+		if (ImGui::DragFloat2("Local Position", &local_position.x, 0.1f))
 		{
 			SetLocalPosition(local_position);
 		}
 	}
-	if (ImGui::DragFloat3("Local Scale", &this->param.local_scale.x, 0.1f))
+	if (ImGui::DragFloat2("Local Scale", &this->param.local_scale.x, 0.1f))
 	{
 		this->local_dirty_flag = true;
 		this->world_dirty_flag = true;
@@ -241,7 +241,7 @@ void Transform2DComponent::DrawDebugGUI()
 	{
 		DirectX::XMConvertToDegrees(this->param.local_angle)
 	};
-	if (ImGui::SliderFloat3("Local Angle", &angle_degrees, 0, 360.0f))
+	if (ImGui::SliderFloat("Local Angle", &angle_degrees, 0, 360.0f))
 	{
 		this->param.local_angle =
 		{
@@ -251,8 +251,8 @@ void Transform2DComponent::DrawDebugGUI()
 		this->local_dirty_flag = true;
 	}
 
-	DirectX::XMFLOAT2 dummy_float3 = this->world_position;
-	ImGui::InputFloat3("World Position", &dummy_float3.x);
+	DirectX::XMFLOAT2 dummy_float2 = this->world_position;
+	ImGui::InputFloat2("World Position", &dummy_float2.x);
 }
 
 void Transform2DComponent::DrawDebugPrimitive()

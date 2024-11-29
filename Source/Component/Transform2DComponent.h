@@ -13,7 +13,7 @@ public:
     {
         DirectX::XMFLOAT2 local_position{};
         float local_angle{};
-        DirectX::XMFLOAT2 local_scale{};
+        DirectX::XMFLOAT2 local_scale{ 1.0f,1.0f };
     };
 public:
     Transform2DComponent(Transform2DParam param);

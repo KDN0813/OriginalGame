@@ -9,6 +9,7 @@
 #endif // DEBUG
 
 #include "Component/SpriteComponent.h"
+#include "Component\Transform2DComponent.h"
 
 void SceneTitle::Initialize()
 {
@@ -22,25 +23,35 @@ void SceneTitle::Initialize()
 		// タイトル背景
 		{
 			auto sprite_bg = object_manager.Create("Title Back");
-			SpriteComponent::SpriteParam param{};
-			param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-			param.filename = "Data/Sprite/TitleBack.png";
-			auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
 
-			this->sprite_shader->AddSprite(sprite);
+			// スプライト読み込み
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.filename = "Data/Sprite/TitleBack.png";
+				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+				this->sprite_shader->AddSprite(sprite);
+			}
 		}
+
 		// タイトルロゴ
 		{
-			auto sprite_logo = object_manager.Create("Title Logo");
-			SpriteComponent::SpriteParam param{};
-			param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-			param.display_pos = { 0.223f,0.1f };
-			param.display_size = { 0.55f,0.35f };
-			param.filename = "Data/Sprite/TitleLogo.png";
-			auto sprite = sprite_logo->AddComponent<SpriteComponent>(param);
+			auto sprite_logo = object_manager.Create();
+			sprite_logo->SetName("Title Logo");
 
-			this->sprite_shader->AddSprite(sprite);
+			// スプライト読み込み
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.display_pos = { 0.223f,0.1f };
+				param.display_size = { 0.55f,0.35f };
+				param.filename = "Data/Sprite/TitleLogo.png";
+				auto sprite = sprite_logo->AddComponent<SpriteComponent>(param);
+
+				this->sprite_shader->AddSprite(sprite);
+			}
 		}
+
 		// タイトルロゴ
 		{
 			auto sprite_bg = object_manager.Create("Game Staet Text");
