@@ -33,8 +33,8 @@ void SceneTitle::Initialize()
 			auto sprite_logo = object_manager.Create("Title Logo");
 			SpriteComponent::SpriteParam param{};
 			param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-			param.display_pos = { 0.235f,0.005f };
-			param.display_size = { 0.5f,0.3f };
+			param.display_pos = { 0.223f,0.1f };
+			param.display_size = { 0.55f,0.35f };
 			param.filename = "Data/Sprite/TitleLogo.png";
 			auto sprite = sprite_logo->AddComponent<SpriteComponent>(param);
 
