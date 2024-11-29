@@ -70,6 +70,10 @@ public:
     {
         SetRotationRollPitchYaw(f3.x, f3.y, f3.z);
     }
+    void RotationZ(float angle)
+    {
+        this->matrix = DirectX::XMMatrixRotationZ(angle);
+    }
     // 回転行列(クォータニオン)の設定
     void SetRotationQuaternion(DirectX::XMFLOAT4 f4)
     {
@@ -90,6 +94,14 @@ public:
         S.SetScalingMatrix(scale);
         R.SetRotationRollPitchYaw(rooll_pitch_yaw);
         T.SetTranslationMatrix(translation);
+        this->matrix = (S * R * T).GetMatrix();
+    }
+    void SetLocalMatrix(DirectX::XMFLOAT2 scale, float angle, DirectX::XMFLOAT2 translation)
+    {
+        MYMATRIX S, R, T, W;
+        S.SetScalingMatrix({ scale.x,scale.y,1.0f });
+        R.RotationZ(angle);
+        T.SetTranslationMatrix({ translation.x,translation.y ,0.0f });
         this->matrix = (S * R * T).GetMatrix();
     }
 
@@ -122,10 +134,19 @@ public:
     {
         return DirectX::XMVector3TransformCoord(mVec3.GetVector(), this->matrix);
     }
+    MYVECTOR2 Vector2TransformCoord(MYVECTOR2 mVec2) const
+    {
+        return DirectX::XMVector2TransformCoord(mVec2.GetVector(), this->matrix);
+    }
     // 行列とベクトルの乗算(行列の座標情報を加味しない)
     MYVECTOR3 Vector3TransformNormal(MYVECTOR3 mVec3) const
     {
         return DirectX::XMVector3TransformNormal(mVec3.GetVector(), this->matrix);
+    }
+    // 行列とベクトルの乗算(行列の座標情報を加味しない)
+    MYVECTOR2 Vector2TransformNormal(MYVECTOR2 mVec2) const
+    {
+        return DirectX::XMVector2TransformNormal(mVec2.GetVector(), this->matrix);
     }
 
     // 乗算演算子のオーバーロード

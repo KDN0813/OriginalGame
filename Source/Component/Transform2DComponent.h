@@ -1,0 +1,96 @@
+#pragma once
+#include "Component.h"
+#include <DirectXMath.h>
+#ifdef _DEBUG
+#include "Debug/DebugPrimitiveRenderer.h"
+#endif // _DEBUG
+#include "System\MyMath\MYMATRIX.h"
+
+class Transform2DComponent : public Component
+{
+public:
+    struct Transform2DParam
+    {
+        DirectX::XMFLOAT2 local_position{};
+        float local_angle{};
+        DirectX::XMFLOAT2 local_scale{};
+    };
+public:
+    Transform2DComponent(Transform2DParam param);
+    ~Transform2DComponent() {};
+
+    // リスタート処理
+    void ReStart() override { this->world_dirty_flag = true; this->local_dirty_flag = true;  this->param = this->default_param; };      // パラメータの初期化
+    void Update(float elapsed_time)override;
+    const char* GetName()const override { return "Transform2DComponent"; }
+    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
+
+    /**
+     * ローカルパラメータの更新
+     * [更新内容]
+     * ・ローカルトランスフォーム
+     */
+    void UpdateLocalParam();
+    /**
+     * ワールドパラメータの更新
+     * [更新内容]
+     * ・ワールドトランスフォーム
+     * ・ワールドポジション
+     */
+    void UpdateWorldParam();
+    // ワールドポジションの更新
+    void UpdateWorldPosition();
+    void UpdateWorldPosition(MYMATRIX Parent_transform);
+
+
+#pragma region set・get parame
+    // ワールドパラメータの取得
+    const DirectX::XMFLOAT4X4& GetWolrdTransform();
+    DirectX::XMFLOAT2 GetWorldPosition();
+
+    // ローカルパラメータの取得
+    const DirectX::XMFLOAT4X4& GetLocalTransform();
+
+    DirectX::XMFLOAT2 GetLocalPosition()const noexcept { return this->param.local_position; }
+    void SetLocalPosition(DirectX::XMFLOAT2 pos)noexcept;
+    DirectX::XMFLOAT2 AddLocalPosition(DirectX::XMFLOAT2 vec);
+
+    float GetLocalAngle()const noexcept { return this->param.local_angle; }
+    void SetLocalAngle(float angle)noexcept;
+
+    DirectX::XMFLOAT2 GetLocalScale()const noexcept { return this->param.local_scale; }
+    void SetLocalScale(DirectX::XMFLOAT2 scale)noexcept;
+
+    // ワールドパラメータの更新が必要なことを示すフラグを設定する
+    void SetWorldDirtyFlag() { this->world_dirty_flag = true; }
+#pragma endregion set parame
+private:
+    Transform2DParam param;
+    Transform2DParam default_param;
+    DirectX::XMFLOAT4X4 local_transform{};
+    DirectX::XMFLOAT4X4 world_transform{};
+    DirectX::XMFLOAT2 world_position{};
+    bool world_dirty_flag = true;  // ワールドパラメータの更新が必要かを示すフラグ
+    bool local_dirty_flag = true;  // ローカルパラメータの更新が必要かを示すフラグ
+private:
+    std::weak_ptr<Transform2DComponent> parent_ransform_Wptr;
+
+#ifdef _DEBUG
+    /**
+     * デバックの情報を2D画面に出力する関数
+     */
+    void DrawDebugGUI()override;
+    /**
+    * デバックの情報を3D画面上に出力する関数
+    */
+    void DrawDebugPrimitive() override;
+    /**
+    * デバッグプリミティブ表示用ImGui
+    */
+    void DrawDebugPrimitiveGUI() override;
+    // デバッグプリミティブを表示する
+    bool IsDebugPrimitive()override { return true; }
+private:
+    SphereParam sphere_world_position;
+#endif // _DEBUG
+};

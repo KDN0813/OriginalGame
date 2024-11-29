@@ -492,6 +492,9 @@
     <ClInclude Include="Source\Component\InstancingModelToonShaderComponent.h">
       <Filter>Source\Component\Shader\Instancing\Toon</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Transform2DComponent.h">
+      <Filter>Source\Component\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -730,6 +733,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\InstancingModelToonShaderComponent.cpp">
       <Filter>Source\Component\Shader\Instancing\Toon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Transform2DComponent.cpp">
+      <Filter>Source\Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
