@@ -626,7 +626,9 @@ void SceneGame::CreateEnemy(const std::shared_ptr<Object>& enemy)
 	}
 	// ムーブメント設定
 	{
-		auto movement = enemy->AddComponent<MovementComponent>(MovementComponent::MovementParam());
+		MovementComponent::MovementParam param{};
+		param.turn_speed = 100.0f;
+		auto movement = enemy->AddComponent<MovementComponent>(param);
 	}
 	// モデル設定
 	{
