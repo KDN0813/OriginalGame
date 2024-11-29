@@ -321,6 +321,9 @@ void SceneGame::Initialize()
 			}
 		}
 
+		// オブジェクトの開始処理を実行
+		object_manager.Start();
+
 		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 		{
 			AudioParam param{};

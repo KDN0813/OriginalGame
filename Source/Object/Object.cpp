@@ -238,7 +238,7 @@ std::shared_ptr<Object> ObjectManager::Create(const char* name)
     return object;
 }
 
-void ObjectManager::Update(float elapsedTime)
+void ObjectManager::Start()
 {
     for (std::shared_ptr<Object>& object : this->start_object_vec)
     {
@@ -246,6 +246,11 @@ void ObjectManager::Update(float elapsedTime)
         this->update_object_vec.emplace_back(object);
     }
     this->start_object_vec.clear();
+}
+
+void ObjectManager::Update(float elapsedTime)
+{
+    Start();
 
     for (std::shared_ptr<Object>& object : this->update_object_vec)
     {

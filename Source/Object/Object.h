@@ -207,6 +207,8 @@ public:
 	std::shared_ptr<Object> Create();
 	std::shared_ptr<Object> Create(const char* name);
 
+	void Start();
+
 	void Update(float elapsedTime);
 
 	void Remove(std::shared_ptr<Object> object);
