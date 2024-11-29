@@ -22,6 +22,10 @@ public:
 	static const GamePadButton BTN_RIGHT_SHOULDER	= (1 << 13);
 	static const GamePadButton BTN_LEFT_TRIGGER		= (1 << 14);
 	static const GamePadButton BTN_RIGHT_TRIGGER	= (1 << 15);
+#ifdef _DEBUG
+	static const GamePadButton BTN_IMGUI			= (1 << 16);	// IMGUIの表示・非表示に使うボタン
+	static const GamePadButton BTN_DEBUG_PRIMITIVE	= (1 << 17);	// デバッグプリミティブの表示・非表示に使うボタン
+#endif // _DEBUG
 
 public:
 	GamePad() {}

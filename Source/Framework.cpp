@@ -47,12 +47,26 @@ void Framework::Update(float elapsed_time)
 	input.Update();
 
 #ifdef _DEBUG
-	if (GetAsyncKeyState('P') & 0x8000)
+	// デバッグ機能のOnOff処理
+	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
-		this->stop_delta = !this->stop_delta;
+		if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+		{
+			const auto& game_pad = input->GetGamePad();
+
+			// ImGui表示・非表示ボタン制御
+			if (GamePad::BTN_IMGUI & game_pad.GetButtonDown())
+			{
+				game_data->SetDrawImguiFlag(!game_data->GetDrawImguiFlag());
+			}
+			// デバッグプリミティブ表示・非表示ボタン制御
+			if (GamePad::BTN_DEBUG_PRIMITIVE & game_pad.GetButtonDown())
+			{
+				game_data->SetDrawDebugPrimitiveFlag(!game_data->GetDrawDebugPrimitiveFlag());
+			}
+		}
 	}
 
-	elapsed_time = this->stop_delta ? 0.0f : elapsed_time;
 #endif // _DEBUG
 
 	// フレームレート計算

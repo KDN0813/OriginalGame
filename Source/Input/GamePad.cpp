@@ -152,6 +152,10 @@ void GamePad::Update()
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000)	new_button_state |= BTN_DOWN;
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)	new_button_state |= BTN_LEFT;
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)	new_button_state |= BTN_START;
+#ifdef _DEBUG
+		if (GetAsyncKeyState(VK_LSHIFT) & 0x8000 && GetAsyncKeyState(VK_F1) & 0x8000)	new_button_state |= BTN_IMGUI;
+		if (GetAsyncKeyState(VK_LSHIFT) & 0x8000 && GetAsyncKeyState(VK_F2) & 0x8000)	new_button_state |= BTN_DEBUG_PRIMITIVE;
+#endif // _DEBUG
 
 #if 1
 		if (new_button_state & BTN_UP)    ly = 1.0f;
