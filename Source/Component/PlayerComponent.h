@@ -52,7 +52,7 @@ public:
 
 #ifdef RELEASE_DEBUG
 public:
-    void DebugCheat()override;
+    void DebugCheat()override {};
 #endif
 };
 

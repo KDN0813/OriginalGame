@@ -424,18 +424,12 @@ void SceneGame::Update(float elapsed_time)
 	}
 
 #ifdef _DEBUG
-	// スペースキーでSE再生
 	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
 		GamePad& game_pad = input->GetGamePad();
-		if (GamePad::BTN_Y & game_pad.GetButtonDown())
+		if (GamePad::BTN_DEBUG_GAME_RESET & game_pad.GetButtonDown())
 		{
-			//if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
-			//{
-			//	AudioParam param{};
-			//	param.filename = "Data/Debug/Audio/SE.wav";
-			//	audio->Play(param);
-			//}
+			ReStart();
 		}
 	}
 #endif // DEBUG

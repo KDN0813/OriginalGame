@@ -139,17 +139,4 @@ void PlayerComponent::DrawDebugGUI()
 
 #ifdef RELEASE_DEBUG
 
-void PlayerComponent::DebugCheat()
-{
-    if (GetAsyncKeyState(VK_F2) & 0x8000)
-    {
-        auto owner = GetOwner();
-        if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
-        {
-            // Œ´“_‚É–ß‚·
-            transform->SetLocalPosition(DirectX::XMFLOAT3());
-        }
-    }
-}
-
 #endif

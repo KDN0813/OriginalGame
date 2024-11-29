@@ -39,6 +39,7 @@ private:
     bool effect_looping = false;    // エフェクトをループ再生させるフラグ
     bool is_random_spawn_position = false;	// パーティクルの生成位置をランダムにするかのフラグ
     int draw_effect_type = 0;   // デバッグで描画するエフェクトのタイプ
+    int loop_count = 10;   // エフェクトをループ再生する時の1フレームで実行するエフェクト数
 
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
@@ -60,7 +61,6 @@ public:
     bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveが存在するか
 private:
     CylinderParam debug_cylinder_effect_area;
-    int loop_count = 100;   // エフェクトをループ再生する時の1フレームで実行するエフェクト数
 #endif // DEBUG
 };
 
