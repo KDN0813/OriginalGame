@@ -23,8 +23,10 @@ public:
 	static const GamePadButton BTN_LEFT_TRIGGER		= (1 << 14);
 	static const GamePadButton BTN_RIGHT_TRIGGER	= (1 << 15);
 #ifdef _DEBUG
-	static const GamePadButton BTN_IMGUI			= (1 << 16);	// IMGUIの表示・非表示に使うボタン
-	static const GamePadButton BTN_DEBUG_PRIMITIVE	= (1 << 17);	// デバッグプリミティブの表示・非表示に使うボタン
+	static const GamePadButton BTN_DEBUG_IMGUI				= (1 << 16);	// IMGUIの表示・非表示に使うボタン
+	static const GamePadButton BTN_DEBUG_PRIMITIVE			= (1 << 17);	// デバッグプリミティブの表示・非表示に使うボタン
+	static const GamePadButton BTN_DEBUG_RETURN_TO_TITLE	= (1 << 18);	// デバッグ用のタイトルに戻るボタン
+	static const GamePadButton BTN_DEBUG_GAME_RESET			= (1 << 19);	// デバッグ用のタイトルに戻るボタン
 #endif // _DEBUG
 
 public:

@@ -47,7 +47,7 @@ void Framework::Update(float elapsed_time)
 	input.Update();
 
 #ifdef _DEBUG
-	// デバッグ機能のOnOff処理
+	// キー入力によるデバッグ用機能
 	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
 		if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
@@ -55,7 +55,7 @@ void Framework::Update(float elapsed_time)
 			const auto& game_pad = input->GetGamePad();
 
 			// ImGui表示・非表示ボタン制御
-			if (GamePad::BTN_IMGUI & game_pad.GetButtonDown())
+			if (GamePad::BTN_DEBUG_IMGUI & game_pad.GetButtonDown())
 			{
 				game_data->SetDrawImguiFlag(!game_data->GetDrawImguiFlag());
 			}
@@ -63,6 +63,15 @@ void Framework::Update(float elapsed_time)
 			if (GamePad::BTN_DEBUG_PRIMITIVE & game_pad.GetButtonDown())
 			{
 				game_data->SetDrawDebugPrimitiveFlag(!game_data->GetDrawDebugPrimitiveFlag());
+			}
+			// タイトルに戻るボタン制御
+			if (GamePad::BTN_DEBUG_RETURN_TO_TITLE & game_pad.GetButtonDown())
+			{
+				// ただじ、ロード画面なら遷移しない
+				if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); (scene_manager.Get()&& !game_data->GetIsLoading()))
+				{
+					scene_manager->ChangeScene(new SceneTitle);
+				}
 			}
 		}
 	}
