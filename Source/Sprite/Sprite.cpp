@@ -159,7 +159,7 @@ Sprite::Sprite(const char* filename)
 		desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
 		desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
-		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 
 		HRESULT hr = device->CreateSamplerState(&desc, sampler_state.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
