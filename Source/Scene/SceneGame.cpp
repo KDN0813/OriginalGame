@@ -55,7 +55,7 @@
 
 #include "StateMachine/LegacyTransitionJudgementDerived.h"
 #include "StateMachine/LegacyStateDerived.h"
-#include "StateMachine/StateDerived.h"
+#include "StateMachine/PlayerStateDerived.h"
 
 
 void SceneGame::Initialize()

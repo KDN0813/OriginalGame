@@ -184,6 +184,9 @@
     <Filter Include="Source\StateMachine\Player">
       <UniqueIdentifier>{3a2c35c7-f681-4f27-aa4f-8e9957b369e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\StateMachine\LoadingIcon">
+      <UniqueIdentifier>{812fa681-36aa-4795-a8b1-321316cd4751}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -498,6 +501,9 @@
     <ClInclude Include="Source\StateMachine\PlayerStateDerived.h">
       <Filter>Source\StateMachine\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StateMachine\LoadingIconStateDerived.h">
+      <Filter>Source\StateMachine\LoadingIcon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -739,6 +745,9 @@
     </ClCompile>
     <ClCompile Include="Source\StateMachine\PlayerStateDerived.cpp">
       <Filter>Source\StateMachine\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\LoadingIconStateDerived.cpp">
+      <Filter>Source\StateMachine\LoadingIcon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

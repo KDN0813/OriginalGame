@@ -197,6 +197,7 @@
     <ClInclude Include="Source\StateMachine\LegacyStateDerived.h" />
     <ClInclude Include="Source\StateMachine\LegacyTransitionJudgement.h" />
     <ClInclude Include="Source\StateMachine\LegacyTransitionJudgementDerived.h" />
+    <ClInclude Include="Source\StateMachine\LoadingIconStateDerived.h" />
     <ClInclude Include="Source\StateMachine\StateBase.h" />
     <ClInclude Include="Source\StateMachine\PlayerStateDerived.h" />
     <ClInclude Include="Source\System\Alias\OwnerAlias.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="Source\StateMachine\LegacyStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyTransitionJudgement.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyTransitionJudgementDerived.cpp" />
+    <ClCompile Include="Source\StateMachine\LoadingIconStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\PlayerStateDerived.cpp" />
     <ClCompile Include="Source\System\GameData.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />

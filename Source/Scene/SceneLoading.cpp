@@ -5,7 +5,7 @@
 #include "Graphics/Graphics.h"
 #include "SceneManager.h"
 
-#include "StateMachine\PlayerStateDerived.h"
+#include "StateMachine\LoadingIconStateDerived.h"
 
 #include "Component/SpriteComponent.h"
 #include "Component/StateMachineComponent.h"
@@ -51,7 +51,8 @@ void SceneLoading::Initialize()
             {
                 auto state_machine = load_idle_sprite->AddComponent<StateMachineComponent>();
 
-                //state_machine.RegisterState();
+                state_machine->RegisterState<LoadingIconAnimationState>();
+                state_machine->SetDefaultState("LoadingIconAnimationState");
             }
         }
     }
