@@ -6,8 +6,8 @@
 
 #include "Component/ModelComponent.h"
 
-ModelAnimationControlComponent::ModelAnimationControlComponent(const char* filename)
-	:param()
+ModelAnimationControlComponent::ModelAnimationControlComponent(InitAnimeParam init_param)
+	:init_param(init_param),param()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (!graphics.Get()) return;
@@ -29,10 +29,20 @@ void ModelAnimationControlComponent::Start()
 #endif // DEBUG
 		}
 	}
+
+	if (0 <= this->init_param.init_anime_index)
+	{
+		PlayAnimation(this->init_param.init_anime_index, this->init_param.init_anime_loop, 0.0f);
+		UpdateAnimation(0.0f);
+	}
 }
 
 void ModelAnimationControlComponent::ReStart()
 {
+	if (0 <= this->init_param.init_anime_index)
+	{
+		PlayAnimation(this->init_param.init_anime_index, this->init_param.init_anime_loop, 0.0f);
+	}
 }
 
 void ModelAnimationControlComponent::Update(float elapsed_time)

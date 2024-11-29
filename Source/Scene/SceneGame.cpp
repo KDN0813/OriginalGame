@@ -123,7 +123,10 @@ void SceneGame::Initialize()
 			}
 			// アニメーション設定
 			{
-				auto model_animation = player->AddComponent<ModelAnimationControlComponent>("Data/Model/Player/Player.mdl");
+				ModelAnimationControlComponent::InitAnimeParam param{};
+				param.init_anime_index = PlayerCT::IDLE;
+				param.init_anime_loop = true;
+				auto model_animation = player->AddComponent<ModelAnimationControlComponent>(param);
 			}
 			// ステートマシン設定
 			auto state_machine = player->AddComponent<StateMachineComponent>();

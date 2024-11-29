@@ -10,6 +10,11 @@ class ModelResource;
 class ModelAnimationControlComponent : public Component
 {
 public:
+	struct InitAnimeParam
+	{
+		int init_anime_index = -1;				// 最初に再生するアニメーションインデックス
+		bool init_anime_loop = -1;				// 最初に再生するアニメーションのループフラグ
+	};
 	struct AnimationParam
 	{
 		int current_animation_index = -1;		// 再生中のアニメーションのインデックス
@@ -21,7 +26,7 @@ public:
 		bool dummy[2]{};
 	};
 public:
-	ModelAnimationControlComponent(const char* filename);
+	ModelAnimationControlComponent(InitAnimeParam init_param);
 
 	// 開始関数
 	void Start() override;
@@ -44,6 +49,7 @@ public:
 	// 各種データ取得
 	float GetCurrentAnimationSeconds()const { return this->param.current_animation_seconds; }
 private:
+	InitAnimeParam init_param;
 	AnimationParam param;
 
 private:
