@@ -468,13 +468,14 @@ void SceneGame::Render()
 
 #ifdef _DEBUG
 	// 3Dデバッグ描画
+	if (GameData::Instance game_data = GameData::GetInstance(); (game_data.Get() && game_data->GetDrawDebugPrimitiveFlag()))
 	{
 		object_manager.DrawDebugPrimitive();
-
 		if (DebugManager::Instance debug_manager = DebugManager::GetInstance(); debug_manager.Get())
 		{
 			debug_manager->GetDebugPrimitiveRenderer()->Render();
 		}
+
 	}
 #endif // _DEBUG
 

@@ -60,9 +60,15 @@ private:
 #ifdef _DEBUG
 public:
     void DebugDrawGUI();
+    bool GetDrawImguiFlag() const { return this->draw_imgui_flag; }
+    void SetDrawImguiFlag(bool flag) { this->draw_imgui_flag = flag; }
+    bool GetDrawDebugPrimitiveFlag() const { return this->draw_debug_primitive_flag; }
+    void SetDrawDebugPrimitiveFlag(bool flag) { this->draw_debug_primitive_flag = flag; }
 private:
     std::vector<std::string> game_status_name_pool;
     int select_game_status_index = 0;
+    bool draw_imgui_flag = true; // ImGuiの表示フラグ
+    bool draw_debug_primitive_flag = true; // デバッグプリミティブの表示フラグ
 
 #endif // _DEBUG
 };

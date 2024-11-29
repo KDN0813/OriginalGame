@@ -64,14 +64,20 @@ void Framework::Update(float elapsed_time)
 void Framework::Render(float elapsed_time)
 {
 #ifdef _DEBUG
-	debug_manager.GetImGuiRenderer()->NewFrame();
+	if (GameData::Instance game_data = GameData::GetInstance(); (game_data.Get() && game_data->GetDrawImguiFlag()))
+	{
+		debug_manager.GetImGuiRenderer()->NewFrame();
+	}
 #endif // _DEBUG
 
 	scene_manager.Render();
 
 #ifdef _DEBUG
-	DrawDebugGUI();
-	debug_manager.GetImGuiRenderer()->Render();
+	if (GameData::Instance game_data = GameData::GetInstance(); (game_data.Get() && game_data->GetDrawImguiFlag()))
+	{
+		DrawDebugGUI();
+		debug_manager.GetImGuiRenderer()->Render();
+	}
 #endif // _DEBUG
 
 	UINT flags = (graphics.GetTearingSupported() && !this->fullscreen_mode && !this->sync_interval) ? DXGI_PRESENT_ALLOW_TEARING : 0;

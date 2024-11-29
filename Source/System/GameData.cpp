@@ -27,6 +27,9 @@ void GameData::DebugDrawGUI()
         ImGui::Checkbox("Is Loading##GameData", &this->param.is_loading);
         ImGui::SameLine();
         ImGui::Checkbox("Is Pause##GameData", &this->param.is_pause);
+        
+        ImGui::Checkbox("Draw ImGui", &this->draw_imgui_flag);
+        ImGui::Checkbox("Draw Debug Primitive", &this->draw_debug_primitive_flag);
 
         // ƒQ[ƒ€ó‘Ô‚Ì•\¦
         {
