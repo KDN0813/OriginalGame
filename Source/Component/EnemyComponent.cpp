@@ -206,8 +206,7 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 			}
 
 			// Ä¶ˆÊ’uŒvŽZ
-			const float up_offset = 0.5f;
-			Pos += (Up * up_offset);
+			Pos += (Up * this->param.damage_effect_offset_up);
 			Pos.GetFlaot3(pos);
 		}
 
@@ -282,6 +281,7 @@ void EnemyComponent::DrawDebugGUI()
 	ImGui::InputFloat("Idle Max Timer", &this->param.max_idle_time);
 	ImGui::InputFloat("Idle Min Timer", &this->param.min_idle_time);
 	ImGui::InputFloat("Remove Timer", &this->param.remove_timer);
+	ImGui::InputFloat("Damage Effect Offset Up", &this->param.damage_effect_offset_up);
 	ImGui::Checkbox("Move Validity Flag", &this->param.move_validity_flag);
 	ImGui::Checkbox("Pending Removal Flag", &this->param.pending_removal_flag);
 }

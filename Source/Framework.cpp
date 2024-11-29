@@ -74,7 +74,7 @@ void Framework::Render(float elapsed_time)
 	debug_manager.GetImGuiRenderer()->Render();
 #endif // _DEBUG
 
-	UINT flags = (graphics.GetTearingSupported() && !fullscreen_mode && !this->sync_interval) ? DXGI_PRESENT_ALLOW_TEARING : 0;
+	UINT flags = (graphics.GetTearingSupported() && !this->fullscreen_mode && !this->sync_interval) ? DXGI_PRESENT_ALLOW_TEARING : 0;
 	graphics.GetSwapChain()->Present(this->sync_interval, flags);
 }
 
@@ -128,9 +128,9 @@ int Framework::Run()
 		}
 		else
 		{
+			timer.Tick();
 			if (!IsWindowActive(hWnd)) continue;
 
-			timer.Tick();
 
 			// ポーズキーが押されたらポーズ設定(解除)する
 			// TODO ポーズ画面が完成したらコメントアウトを外す
