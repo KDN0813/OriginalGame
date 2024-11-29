@@ -19,14 +19,31 @@ void SceneLoading::Initialize()
 
     // オブジェクト作成
     {
-        auto object = this->object_manager.Create();
-        // スプライト作成
+        // 背景スプライト
         {
-            SpriteComponent::SpriteParam param{};
-            param.filename = "Data/Debug/Sprite/Title.png";
-            param.color = { 0.0f,0.8f, 0.0f, 1.0f };
-            auto sprite = object->AddComponent<SpriteComponent>(param);
-            this->sprite_shader->AddSprite(sprite);
+            auto back_sprite = this->object_manager.Create("Back Sprite");
+            // スプライト読み込み
+            {
+                SpriteComponent::SpriteParam param{};
+                param.filename = "Data/Sprite/TitleBack.png";
+                param.color = { 0.3f,0.3f, 0.3f, 1.0f };
+                auto sprite = back_sprite->AddComponent<SpriteComponent>(param);
+                this->sprite_shader->AddSprite(sprite);
+            }
+        }
+
+        // ロード演出用スプライト
+        {
+            auto load_idle_sprite = this->object_manager.Create("Load Idle Sprite");
+            // スプライト読み込み
+            {
+                SpriteComponent::SpriteParam param{};
+                param.filename = "Data/Sprite/TitleBack.png";
+                param.display_size = { 0.5f,0.5f };
+                param.color = { 1.5f,1.5f, 1.5f, 1.0f };
+                auto sprite = load_idle_sprite->AddComponent<SpriteComponent>(param);
+                this->sprite_shader->AddSprite(sprite);
+            }
         }
     }
 
