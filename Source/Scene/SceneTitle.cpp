@@ -20,11 +20,34 @@ void SceneTitle::Initialize()
 	{
 		// タイトル背景
 		{
-			auto sprite_bg = object_manager.Create();
-			sprite_bg->SetName("Title Back Sprite");
+			auto sprite_bg = object_manager.Create("Title Back");
 			SpriteComponent::SpriteParam param{};
 			param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-			param.filename = "Data/Sprite/Title.png";
+			param.filename = "Data/Sprite/TitleBack.png";
+			auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+
+			this->sprite_shader->AddSprite(sprite);
+		}
+		// タイトルロゴ
+		{
+			auto sprite_logo = object_manager.Create("Title Logo");
+			SpriteComponent::SpriteParam param{};
+			param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+			param.display_pos = { 0.235f,0.005f };
+			param.display_size = { 0.5f,0.3f };
+			param.filename = "Data/Sprite/TitleLogo.png";
+			auto sprite = sprite_logo->AddComponent<SpriteComponent>(param);
+
+			this->sprite_shader->AddSprite(sprite);
+		}
+		// タイトルロゴ
+		{
+			auto sprite_bg = object_manager.Create("Game Staet Text");
+			SpriteComponent::SpriteParam param{};
+			param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+			param.display_pos = { 0.254f,0.792f };
+			param.display_size = { 0.5f,0.1f };
+			param.filename = "Data/Sprite/TitleGameStartText.png";
 			auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
 
 			this->sprite_shader->AddSprite(sprite);

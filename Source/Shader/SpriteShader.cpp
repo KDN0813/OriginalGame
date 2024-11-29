@@ -5,6 +5,7 @@
 #include "SpriteShader.h"
 #include "Graphics/Graphics.h"
 
+#include "Object\Object.h"
 #include "Component/SpriteComponent.h"
 
 void SpriteShader::Render()
@@ -27,6 +28,7 @@ void SpriteShader::Render()
         auto sprite = sprite_Wptr.lock();
         if (!sprite) continue;
         if (!sprite->GetIsActive())continue;
+        if (sprite->GetOwner() && !sprite->GetOwner()->GetIsActive())continue;
 
         sprite->Render(dc);
     }
