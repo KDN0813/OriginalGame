@@ -509,7 +509,6 @@ void ParticleSystem::LoadTexture(const char* filename)
 	_ASSERT_EXPR_W(!this->texture.get(), L"テクスチャは既に読み込まれています");
 	if (this->texture.get()) return;
 	this->texture = std::make_unique<Texture>(filename);
-
 }
 
 int ParticleSystem::CalculateFreeParticleCount()

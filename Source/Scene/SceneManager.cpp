@@ -9,6 +9,8 @@
 #include "Scene/SceneLoading.h"
 #endif // DEBUG
 
+#include "Component\SpriteComponent.h"
+
 void SceneManager::Update(float elpsed_time)
 {
     // ƒ|[ƒYˆ—

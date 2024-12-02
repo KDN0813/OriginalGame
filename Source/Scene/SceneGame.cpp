@@ -75,6 +75,20 @@ void SceneGame::Initialize()
 
 	// オブジェクト作成
 	{
+		// ポーズ画面用オブジェクト作成
+		{
+			this->pause_object = object_manager.Create("pause_object");
+
+			// スプライト読み込み
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.filename = "Data/Sprite/Pause.png";
+				auto sprite = pause_object->AddComponent<SpriteComponent>(param);
+				this->sprite_shader->AddSprite(sprite);
+			}
+		}
+
 		// ステージ
 		{
 			auto stage = object_manager.Create("Stage");
@@ -481,6 +495,14 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
+		// ポーズ処理
+		{
+			if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+			{
+				this->pause_object->SetIsActive(game_data->GetIsPause());
+			}
+		}
+
 		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 		{
 			particle_system->Update();

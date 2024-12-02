@@ -13,7 +13,7 @@ public:
 	struct InitAnimeParam
 	{
 		int init_anime_index = -1;				// 最初に再生するアニメーションインデックス
-		bool init_anime_loop = -1;				// 最初に再生するアニメーションのループフラグ
+		bool init_anime_loop = false;			// 最初に再生するアニメーションのループフラグ
 	};
 	struct AnimationParam
 	{

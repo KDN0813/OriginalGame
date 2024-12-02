@@ -49,6 +49,7 @@ private:
     ParticleSystem particle_system;
     LightManager light_manager;
 
+    std::shared_ptr<Object> pause_object;
 #ifdef _DEBUG
     const size_t enemy_max = 500;
 #else
