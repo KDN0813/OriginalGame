@@ -81,7 +81,7 @@ void SceneTitle::Update(float elapsed_time)
 		const auto& game_pad = input->GetGamePad();
 
 		// ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ç
-		if ((GamePad::BTN_A | GamePad::BTN_B | GamePad::BTN_X | GamePad::BTN_Y) & game_pad.GetButton())
+		if ((GamePad::BTN_A | GamePad::BTN_B | GamePad::BTN_X | GamePad::BTN_Y) & game_pad.GetButtonDown())
 		{
 			if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
 			{

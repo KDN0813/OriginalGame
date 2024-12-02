@@ -13,14 +13,6 @@
 
 void SceneManager::Update(float elpsed_time)
 {
-    // ƒ|[ƒYˆ—
-    {
-        if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-        {
-            if (game_data->GetIsPause()) return;
-        }
-    }
-
     if (this->next_scene != nullptr)
     {
         Clear();

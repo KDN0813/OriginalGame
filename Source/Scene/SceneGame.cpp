@@ -363,6 +363,45 @@ void SceneGame::Finalize()
 
 void SceneGame::Update(float elapsed_time)
 {
+	// ポーズ処理
+	{
+		if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+		{
+			if (game_data->GetIsPause())
+			{
+				if (Input::Instance input = Input::GetInstance(); input.Get())
+				{
+					const auto& game_pad = input->GetGamePad();
+
+					// (X)ゲームに戻る
+					if (GamePad::BTN_X & game_pad.GetButtonDown())
+					{
+						game_data->SetIsPause(false);
+						game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
+						return;
+					}
+					// (Y)リトライ
+					else if (GamePad::BTN_Y & game_pad.GetButtonDown())
+					{
+						game_data->SetIsPause(false);
+						game_data->SetGameStatus(GameData::GameStatus::RESTART);
+						return;
+					}
+					// (B)タイトルに戻る
+					else if (GamePad::BTN_B & game_pad.GetButtonDown())
+					{
+						game_data->SetIsPause(false);
+						game_data->SetGameStatus(GameData::GameStatus::RETURN_TO_TITLE);
+						return;
+					}
+
+				}
+				return;
+			}
+		}
+	}
+
+
 	if (GameData::Instance game_data = GameData::GetInstance() ; game_data.Get())
 	{
 		//game_data->UpdateGameEndTimer(elapsed_time);
