@@ -11,6 +11,14 @@ class InstancedModelWithAnimationComponent;
 class EnemyComponent : public Component
 {
 public:
+#ifdef _DEBUG
+    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;
+#else
+    static constexpr float DEFAULT_TERRITORY_RENGR = 220.0f;
+#endif // _DEBUG
+
+
+public:
     enum class STATE
     {
         IDLE = 0,
@@ -22,7 +30,7 @@ public:
     struct EnemyParam
     {
         DirectX::XMFLOAT3 target_position{};
-        float territory_range = 220.0f;
+        float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
         float radius = 0.1f;
         float move_speed = 3.0f;
         float speed_rate = 0.5f;

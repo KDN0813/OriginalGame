@@ -144,7 +144,11 @@ MYMATRIX CameraManager::GetViewProjectionMatrix()
 DirectX::BoundingFrustum CameraManager::GetBoundingFrustum()
 {
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)
+#if 0   // メインカメラでカリングを行うか
     const auto& camera = this->GetCamera(CAMERA_TYPE::MAIN);
+#else
+    const auto& camera = this->GetCurrentCamera();
+#endif
 #else
     const auto& camera = this->GetCurrentCamera();
 #endif // DEBUG

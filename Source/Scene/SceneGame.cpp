@@ -337,7 +337,7 @@ void SceneGame::Initialize()
 #ifdef _DEBUG
 			for (int i = 0; i < 500; ++i)
 #else
-			for (int i = 0; i < 4000; ++i)
+			for (int i = 0; i < 5000; ++i)
 #endif // _DEBUG
 			{
 				CreateEnemy(object_manager.Create());
@@ -686,7 +686,7 @@ void SceneGame::PlayerVsEnemy()
 void SceneGame::CreateEnemy(const std::shared_ptr<Object>& enemy)
 {
 	// TODO 仮配置(マジックナンバー)をやめる
-	float territory_range = 220.0f;
+	float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
 	float player_area_rage = 10.0f;
 
 	// コリジョンに設定するコンポーネントは事前に作成しておく
