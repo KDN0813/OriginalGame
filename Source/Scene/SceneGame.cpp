@@ -60,6 +60,12 @@
 
 void SceneGame::Initialize()
 {
+	// ゲーム状態を設定
+	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+	{
+		game_data->SetGameStatus(GameData::GameStatus::GAME);
+	}
+
 	// シェーダーの作成
 	{
 		instancing_model_shader = std::make_unique<InstancingModelShader>();
@@ -383,7 +389,7 @@ void SceneGame::Update(float elapsed_time)
 					if (GamePad::BTN_X & game_pad.GetButtonDown())
 					{
 						game_data->SetIsPause(false);
-						game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
+						game_data->SetGameStatus(GameData::GameStatus::GAME);
 						return;
 					}
 					// (Y)リトライ
@@ -574,7 +580,7 @@ void SceneGame::ReStart()
 	// ゲーム状態をデフォルトに設定
 	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
-		game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
+		game_data->SetGameStatus(GameData::GameStatus::GAME);
 	}
 
 	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())

@@ -27,7 +27,7 @@ public:
     const char* GetName()const  override { return "DebugParticle"; };
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::GAME; };
 private:
     // 範囲内のランダムな位置にエフェクトを再生させる
     void PlayEffect(int type);

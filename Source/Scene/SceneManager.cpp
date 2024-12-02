@@ -22,12 +22,6 @@ void SceneManager::Update(float elpsed_time)
 
         if (!this->current_scene->IsReady())
         {
-            // ゲーム状態をデフォルトに設定
-            if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-            {
-                game_data->SetGameStatus(GameData::GameStatus::DEFAULT);
-            }
-
             this->current_scene->Initialize();
         }
     }

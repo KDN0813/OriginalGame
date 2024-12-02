@@ -4,6 +4,7 @@
 #include "Scene/SceneManager.h"
 #include "Graphics/Graphics.h"
 #include "Input\Input.h"
+#include "System\GameData.h"
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #endif // DEBUG
@@ -13,6 +14,12 @@
 
 void SceneTitle::Initialize()
 {
+	// ゲーム状態を設定
+	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+	{
+		game_data->SetGameStatus(GameData::GameStatus::TITLE);
+	}
+
     // シェーダー作成
     {
         this->sprite_shader = std::make_unique<SpriteShader>();

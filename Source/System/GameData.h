@@ -11,12 +11,13 @@ public:
     // ゲームの状態
     enum class GameStatus
     {
-        DEFAULT,            // 通常状態(ゲーム中)
+        GAME,               // ゲーム状態
+        TITLE,              // タイトル状態
         DEFEAT,             // 自機が死亡したとき（敗北）
         VICTORY,            // 制限時間まで生存した(勝利)
         RETURN_TO_TITLE,    // タイトルに戻るとき
         RESTART,            // ゲームをリスタートするとき
-
+        
         MAX,
     };
 public:
@@ -26,7 +27,7 @@ public:
         float game_end_timer = 600.0f;                   // ゲーム終了までの時間
         bool is_loading = false;                        // ロード中であるか
         bool is_pause = false;                          // ポーズ中であるか
-        GameStatus game_status = GameStatus::DEFAULT;   // ゲームの状態
+        GameStatus game_status = GameStatus::GAME;   // ゲームの状態
     };
 public:
     GameData();

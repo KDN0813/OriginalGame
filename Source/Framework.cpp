@@ -164,7 +164,10 @@ int Framework::Run()
 			{
 				if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 				{
-					game_data->SetIsPause(!game_data->GetIsPause());
+					if (game_data->GetGameStatus() == GameData::GameStatus::GAME)
+					{
+						game_data->SetIsPause(!game_data->GetIsPause());
+					}
 				}
 			}
 

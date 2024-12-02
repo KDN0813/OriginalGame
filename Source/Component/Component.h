@@ -14,7 +14,7 @@ enum COMPONENT_PRIORITY : unsigned int
     HIGH,               // 高い優先度
     VERY_HIGH,          // 非常に高い優先度
     CRITICAL,           // 最高の優先度（重要）
-    DEFAULT = MEDIUM    // デフォルト優先度を中程度に設定
+    GAME = MEDIUM    // デフォルト優先度を中程度に設定
 };
 
 class Component
@@ -37,7 +37,7 @@ public:
     virtual const char* GetName()const = 0;
 
     // 優先度
-    virtual const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::DEFAULT; };
+    virtual const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::GAME; };
     
     // 他オブジェクトに接触した時の処理
     virtual void OnCollision(const std::shared_ptr<Object>& hit_object) {};
@@ -110,7 +110,7 @@ public:
     const char* GetName()const  override {};
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::GAME; };
 
 #ifdef _DEBUG
 public:

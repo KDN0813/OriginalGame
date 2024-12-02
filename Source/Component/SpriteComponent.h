@@ -35,7 +35,7 @@ public:
     const char* GetName()const  override { return "SpriteComponent"; };
 
     // óDêÊìx
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::GAME; };
     
     // ï`âÊèàóù
     void Render(ID3D11DeviceContext* dc);
