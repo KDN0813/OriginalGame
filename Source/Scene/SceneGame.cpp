@@ -279,12 +279,12 @@ void SceneGame::Initialize()
 #ifdef _DEBUG
 				// パーティクル再生用オブジェクト
 				{
-					auto debug_Particle = player->CreateChildObject();
+					const auto& debug_Particle = player->CreateChildObject();
 					debug_Particle->SetName("Debug Particle");
 					// transform
 					{
 						Transform3DComponent::Transform3DParam param{};
-						param.local_position = DirectX::XMFLOAT3(0.0f, 50.0f, 0.0f);
+						param.local_position = DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f);
 						debug_Particle->AddComponent<Transform3DComponent>(param);
 					}
 					// DebugParticle
@@ -316,17 +316,17 @@ void SceneGame::Initialize()
 		{
 			// パーティクル再生用オブジェクト
 			{
-				auto debug_Particle = object_manager.Create("Debug Particle");
+				this->debug_Particle = object_manager.Create("Debug Particle");
 
 				// transform
 				{
 					Transform3DComponent::Transform3DParam param{};
-					param.local_position = DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f);
-					debug_Particle->AddComponent<Transform3DComponent>(param);
+					param.local_position = DirectX::XMFLOAT3(0.0f, 0.5f, -20.0f);
+					this->debug_Particle->AddComponent<Transform3DComponent>(param);
 				}
 				// DebugParticle
 				{
-					debug_Particle->AddComponent<DebugParticle>();
+					this->debug_Particle->AddComponent<DebugParticle>();
 				}
 			}
 		}
@@ -412,6 +412,23 @@ void SceneGame::Update(float elapsed_time)
 			}
 		}
 	}
+
+#ifdef _DEBUG
+	if (Input::Instance input = Input::GetInstance(); input.Get())
+	{
+		const auto& game_pad = input->GetGamePad();
+
+		// デモ状態の設定・解除
+		if (GamePad::BTN_DEBUG_DEMO & game_pad.GetButtonDown())
+		{
+			if (const auto& particle = this->debug_Particle->GetComponent<DebugParticle>())
+			{
+				particle->ReverseEffectLooping();
+			}
+		}
+	}
+
+#endif // _DEBUG
 
 
 	if (GameData::Instance game_data = GameData::GetInstance() ; game_data.Get())

@@ -27,6 +27,7 @@ public:
 	static const GamePadButton BTN_DEBUG_PRIMITIVE			= (1 << 17);	// デバッグプリミティブの表示・非表示に使うボタン
 	static const GamePadButton BTN_DEBUG_RETURN_TO_TITLE	= (1 << 18);	// デバッグ用のタイトルに戻るボタン
 	static const GamePadButton BTN_DEBUG_GAME_RESET			= (1 << 19);	// デバッグ用のタイトルに戻るボタン
+	static const GamePadButton BTN_DEBUG_DEMO				= (1 << 20);	// デバッグ用のデモ状態を変更するフラグ
 #endif // _DEBUG
 
 public:

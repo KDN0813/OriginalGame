@@ -52,6 +52,7 @@ private:
     std::shared_ptr<Object> pause_object;
 #ifdef _DEBUG
     const size_t enemy_max = 500;
+    std::shared_ptr<Object> debug_Particle;
 #else
     const int enemy_max = 5000;
 #endif // _DEBUG

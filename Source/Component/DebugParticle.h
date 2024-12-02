@@ -28,17 +28,22 @@ public:
 
     // 優先度
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::GAME; };
+    
+    // 各種設定関数
+    // エフェクトループフラグの反転させる
+    void ReverseEffectLooping() { this->effect_looping = !this->effect_looping; }
+
 private:
     // 範囲内のランダムな位置にエフェクトを再生させる
     void PlayEffect(int type);
 
 private:
-    float effect_area_radius = 2.0f;    // エフェクトを再生するエリア(円柱)の半径
-    float effect_area_height = 2.0f;    // エフェクトを再生するエリア(円柱)の高さ
+    float effect_area_radius = 13.0f;    // エフェクトを再生するエリア(円柱)の半径
+    float effect_area_height = 5.0f;    // エフェクトを再生するエリア(円柱)の高さ
     DirectX::XMFLOAT3 area_pos = {};    // エフェクトを再生するエリアの中心
     bool effect_looping = false;    // エフェクトをループ再生させるフラグ
-    bool is_random_spawn_position = false;	// パーティクルの生成位置をランダムにするかのフラグ
-    int draw_effect_type = 0;   // デバッグで描画するエフェクトのタイプ
+    bool is_random_spawn_position = true;	// パーティクルの生成位置をランダムにするかのフラグ
+    int draw_effect_type = 1;   // デバッグで描画するエフェクトのタイプ
     int loop_count = 10;   // エフェクトをループ再生する時の1フレームで実行するエフェクト数
 
 private:
