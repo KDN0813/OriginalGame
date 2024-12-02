@@ -359,6 +359,12 @@ void SceneGame::Finalize()
 	{
 		audio->AllClear();
 	}
+
+	// カメラのリセット
+	if(CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+	{
+		camera_manager->Reset();
+	}
 }
 
 void SceneGame::Update(float elapsed_time)
