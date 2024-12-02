@@ -1,5 +1,6 @@
 #pragma once
 #include <d3d11.h>
+#include <wrl.h>
 #include <vector>
 #include <memory>
 #include "Shader/Shader.h"
@@ -9,7 +10,7 @@ class SpriteComponent;
 class SpriteShader : public Shader
 {
 public:
-    SpriteShader() {};
+    SpriteShader();
     ~SpriteShader() {};
 
     // ï`âÊä÷êî
@@ -20,6 +21,11 @@ public:
     void AddSprite(std::shared_ptr<SpriteComponent>& sprite);
 private:
     std::vector<std::weak_ptr<SpriteComponent>> sprite_pool;
+
+    Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
+    Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
+    Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state;
+    Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler_state;
 
 #ifdef _DEBUG
 public:
