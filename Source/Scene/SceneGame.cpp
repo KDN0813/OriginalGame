@@ -15,9 +15,9 @@
 #include <imgui.h>
 #include "Debug/DebugManager.h"
 #include "Debug/DebugComponent.h"
-#include "Input/Input.h"
 #endif // _DEBUG
 
+#include "Input/Input.h"
 #include "ConstantManager.h"
 #include "Input/GamePad.h"
 #include "System/GameData.h"
@@ -337,7 +337,7 @@ void SceneGame::Initialize()
 #ifdef _DEBUG
 			for (int i = 0; i < 500; ++i)
 #else
-			for (int i = 0; i < 5000; ++i)
+			for (int i = 0; i < this->enemy_max; ++i)
 #endif // _DEBUG
 			{
 				CreateEnemy(object_manager.Create());
@@ -571,7 +571,7 @@ void SceneGame::ReStart()
 	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
 		const size_t now_enemy_count = game_object->GetEnemyWptPool().size();
-		for (size_t i = 0; i < this->enemy_max - now_enemy_count; ++i)
+		for (int i = 0; i < this->enemy_max - now_enemy_count; ++i)
 		{
 			CreateEnemy(object_manager.Create());
 		}

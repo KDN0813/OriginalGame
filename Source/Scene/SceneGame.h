@@ -53,7 +53,7 @@ private:
 #ifdef _DEBUG
     const size_t enemy_max = 500;
 #else
-    const size_t enemy_max = 4000;
+    const int enemy_max = 5000;
 #endif // _DEBUG
 #ifdef _DEBUG
     void DebugDrawGUI();
