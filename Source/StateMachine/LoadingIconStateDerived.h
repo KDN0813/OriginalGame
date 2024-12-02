@@ -18,6 +18,7 @@ public:
 
 private:
 	float timer = 0.0f;
+	const float ROTATION_SPEED = 10.0f;
 
 private:
 	std::weak_ptr<SpriteComponent> sprite_Wprt;

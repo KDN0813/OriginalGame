@@ -34,27 +34,6 @@ void SceneLoading::Initialize()
                 this->sprite_shader->AddSprite(sprite);
             }
         }
-
-        // ロード演出用スプライト
-        {
-            auto load_idle_sprite = this->object_manager.Create("Load Idle Sprite");
-            // スプライト読み込み
-            {
-                SpriteComponent::SpriteParam param{};
-                param.filename = "Data/Sprite/TitleBack.png";
-                param.display_size = { 0.5f,0.5f };
-                param.color = { 1.5f,1.5f, 1.5f, 1.0f };
-                auto sprite = load_idle_sprite->AddComponent<SpriteComponent>(param);
-                this->sprite_shader->AddSprite(sprite);
-            }
-            // 更新用ステートマシン読み込み
-            {
-                auto state_machine = load_idle_sprite->AddComponent<StateMachineComponent>();
-
-                state_machine->RegisterState<LoadingIconAnimationState>();
-                state_machine->SetDefaultState("LoadingIconAnimationState");
-            }
-        }
     }
 
     if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get() != nullptr)

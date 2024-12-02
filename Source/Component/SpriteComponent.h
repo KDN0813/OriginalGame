@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include "Component.h"
 #include "Sprite/Sprite.h"
+#include "System\MyMath\MyMathf.h"
 
 class SpriteComponent : public Component
 {
@@ -38,6 +39,11 @@ public:
     
     // •`‰æˆ—
     void Render(ID3D11DeviceContext* dc);
+
+    // ŠeŽíŽæ“¾EÝ’è
+    void SetAngle(float angle) { this->param.angle = MyMathf::ClampDegree(angle); };
+    float GetAngle() const { return this->param.angle; };
+
 private:
     std::unique_ptr<Sprite> sprite;
     SpriteParam param;
