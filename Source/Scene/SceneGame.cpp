@@ -98,7 +98,7 @@ void SceneGame::Initialize()
 		// ステージ
 		{
 			auto stage = object_manager.Create("Stage");
-			auto model = stage->AddComponent<ModelComponent>("Data/Model/Stage/box.mdl");
+			auto model = stage->AddComponent<ModelComponent>("Data/Model/Stage/testStage.mdl");
 			//model->SetTileCount(150.0f);
 			// トランスフォーム設定
 			{
@@ -334,7 +334,7 @@ void SceneGame::Initialize()
 		// 敵
 		{
 #ifdef _DEBUG
-			for (int i = 0; i < 500; ++i)
+			for (int i = 0; i < 0; ++i)
 #else
 			for (int i = 0; i < this->enemy_max; ++i)
 #endif // _DEBUG

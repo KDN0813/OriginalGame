@@ -47,7 +47,7 @@ public:
     const char* GetName() override { return "ModelShader"; };
 
 	void Begin(ID3D11DeviceContext* dc, const RenderContext& rc);
-	void Draw(ID3D11DeviceContext* dc, const ModelComponent* model);
+	void Draw(ID3D11DeviceContext* dc, ModelComponent* model);
 	void End(ID3D11DeviceContext* dc);
 
 	// 描画するobjectのシェーダーを追加

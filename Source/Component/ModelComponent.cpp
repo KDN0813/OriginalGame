@@ -73,18 +73,17 @@ void ModelComponent::Update(float elapsed_time)
 		if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
 		{
 			World_transform = transform->GetWolrdTransform();
-			
-#ifdef _DEBUG	// バウンディングボックス位置更新
-			for (size_t i = 0; i < this->AABB_corners_vec.size(); ++i)
-			{
-				DirectX::BoundingBox bounding_box;
-				resource->GetDefaultBoundingBox(i).Transform(bounding_box, World_transform.GetMatrix());
-				DirectX::XMFLOAT3 corners[8];
-				bounding_box.GetCorners(corners);
-				this->AABB_corners_vec[i].SetCenter(corners);
-			}
-#endif // _DEBUG
 		}
+	}
+
+	for (size_t i = 0; i < this->AABB_corners_vec.size(); ++i)
+	{
+		DirectX::BoundingBox bounding_box;
+		MYMATRIX World_transform = this->node_vec[resource->GetMeshes()[i].node_index].world_transform;
+		resource->GetDefaultBoundingBox(i).Transform(bounding_box, World_transform.GetMatrix());
+		DirectX::XMFLOAT3 corners[8];
+		bounding_box.GetCorners(corners);
+		this->AABB_corners_vec[i].SetCenter(corners);
 	}
 
 	UpdateTransform(World_transform);
@@ -133,14 +132,7 @@ DirectX::BoundingBox ModelComponent::GetBoundingBox(size_t index)
 	DirectX::BoundingBox box{};
 	MYMATRIX World_transform{};
 
-	if (const auto& owner = GetOwner())
-	{
-		if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
-		{
-			World_transform = transform->GetWolrdTransform();
-		}
-	}
-
+	World_transform = this->node_vec[resource->GetMeshes()[index].node_index].world_transform;
 	resource->GetDefaultBoundingBox(index).Transform(box, World_transform.GetMatrix());
 
 	return box;

@@ -217,6 +217,7 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 			MYMATRIX World_transform;
 			const auto& node = node_vec[meshe_vec[i].node_index];
 			World_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
+
 			this->default_bounding_box_vec[i].Transform(this->default_bounding_box_vec[i], World_transform.GetMatrix());
 		}
 	}

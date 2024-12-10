@@ -218,13 +218,25 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 	dc->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &scene_CB, 0, 0);
 }
 
-void ModelShader::Draw(ID3D11DeviceContext* dc, const ModelComponent* model)
+void ModelShader::Draw(ID3D11DeviceContext* dc, ModelComponent* model)
 {
 	const ModelResource* resource = model->GetResource();
 	const std::vector<ModelComponent::Node>& node_vec = model->GetNodes();
 
-	for (const ModelResource::Mesh& mesh : resource->GetMeshes())
+	for (size_t mesh_index = 0; mesh_index < resource->GetMeshes().size(); ++mesh_index)
 	{
+		const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
+
+		// フラスタムカリングを行う
+		if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+		{
+			if (!camera_manager->IsMeshVisible(model->GetBoundingBox(mesh_index)))
+			{
+				// 画面外ならスキップする
+				continue;
+			}
+		}
+
 		// メッシュ用定数バッファ更新
 		MeshConstantBuffer mesh_CB;
 		::memset(&mesh_CB, 0, sizeof(mesh_CB));
@@ -251,20 +263,8 @@ void ModelShader::Draw(ID3D11DeviceContext* dc, const ModelComponent* model)
 		dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		for (size_t i = 0; i < mesh.subsets.size(); ++i)
+		for (const ModelResource::Subset& subset : mesh.subsets)
 		{
-			const ModelResource::Subset& subset = mesh.subsets[i];
-
-			// フラスタムカリングを行う
-			if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
-			{
-				if (!camera_manager->IsMeshVisible(resource->GetDefaultBoundingBox(i)))
-				{
-					// 画面外ならスキップする
-					continue;
-				}
-			}
-
 			SubsetConstantBuffer cbSubset;
 			cbSubset.material_color = subset.material->color;
 			cbSubset.tile_count = model->GetTileCount();
