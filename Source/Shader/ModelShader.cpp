@@ -223,18 +223,21 @@ void ModelShader::Draw(ID3D11DeviceContext* dc, ModelComponent* model)
 	const ModelResource* resource = model->GetResource();
 	const std::vector<ModelComponent::Node>& node_vec = model->GetNodes();
 
+	DirectX::BoundingFrustum BoundingFrustum{};
+	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+	{
+		BoundingFrustum = camera_manager->GetBoundingFrustum();
+	}
+
 	for (size_t mesh_index = 0; mesh_index < resource->GetMeshes().size(); ++mesh_index)
 	{
 		const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
 
 		// フラスタムカリングを行う
-		if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+		if (!BoundingFrustum.Intersects(model->GetBoundingBox(mesh_index)))
 		{
-			if (!camera_manager->IsMeshVisible(model->GetBoundingBox(mesh_index)))
-			{
-				// 画面外ならスキップする
-				continue;
-			}
+			// 画面外ならスキップする
+			continue;
 		}
 
 		// メッシュ用定数バッファ更新
