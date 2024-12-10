@@ -173,7 +173,8 @@ void Sprite::Render(
 	float sx, float sy,
 	float sw, float sh,
 	float angle,
-	float r, float g, float b, float a
+	float r, float g, float b, float a,
+	CENTER_TYPE center_type
 ) const
 {
 	{
@@ -200,38 +201,58 @@ void Sprite::Render(
 			DirectX::XMFLOAT2(sx + sw, sy + sh),	// 右下
 		};
 
-		// スプライトの中心で回転させるために４頂点の中心位置が
-		// 原点(0, 0)になるように一旦頂点を移動させる。
-		float mx = dx + dw * 0.5f;
-		float my = dy + dh * 0.5f;
-		for (auto& p : positions)
+		// 中心位置のオフセットを計算
+		float rateX = 0.0f;
+		float rateY = 0.0f;
+		switch (center_type)
 		{
-			p.x -= mx;
-			p.y -= my;
+		case Sprite::CENTER_TYPE::TOP_RIGHT:
+			rateX = 1.0f;
+			break;
+		case Sprite::CENTER_TYPE::CENTER:
+			rateX = 0.5f;
+			rateY = 0.5f;
+			break;
+		case Sprite::CENTER_TYPE::BOTTOM_LEFT:
+			rateY = 1.0f;
+			break;
+		case Sprite::CENTER_TYPE::BOTTOM_RIGHT:
+			rateX = 1.0f;
+			rateY = 1.0f;
+			break;
+		default:break;
 		}
+		float offsetX = dw * rateX;
+		float offsetY = dh * rateY;
 
-		// 頂点を回転させる
+		// 回転の準備
 		const float PI = 3.141592653589793f;
 		float theta = angle * (PI / 180.0f);	// 角度をラジアン(θ)に変換
 		float c = cosf(theta);
 		float s = sinf(theta);
-		for (auto& p : positions)
-		{
-			DirectX::XMFLOAT2 r = p;
-			p.x = c * r.x + -s * r.y;
-			p.y = s * r.x + c * r.y;
-		}
 
-		// 回転のために移動させた頂点を元の位置に戻す
-		for (auto& p : positions)
+		// 頂点の位置を計算
+		for (auto& p : positions) 
 		{
-			p.x += mx;
-			p.y += my;
-		}
+			// 中心基準に移動
+			p.x -= (dx + offsetX);
+			p.y -= (dy + offsetY);
 
-		// スクリーン座標系からNDC座標系へ変換する。
-		for (auto& p : positions)
-		{
+			// 回転処理
+			float rotatedX = c * p.x - s * p.y;
+			float rotatedY = s * p.x + c * p.y;
+			p.x = rotatedX;
+			p.y = rotatedY;
+
+			// 元の位置に戻す
+			p.x += (dx + offsetX);
+			p.y += (dy + offsetY);
+
+			// 中心位置に移動
+			p.x += offsetX;
+			p.y += offsetY;
+
+			// スクリーン座標系からNDC座標系へ変換
 			p.x = 2.0f * p.x - 1.0f;
 			p.y = 1.0f - 2.0f * p.y;
 		}
@@ -290,7 +311,8 @@ void Sprite::Render(
 	DirectX::XMFLOAT2 clip_pos,
 	DirectX::XMFLOAT2 clip_size,
 	float angle,
-	DirectX::XMFLOAT4 color
+	DirectX::XMFLOAT4 color,
+	CENTER_TYPE center_type
 ) const
 {
 	Render(dc,
@@ -299,6 +321,7 @@ void Sprite::Render(
 		clip_pos.x, clip_pos.y,
 		clip_size.x, clip_size.y,
 		angle,
-		color.x, color.y, color.z, color.w
+		color.x, color.y, color.z, color.w,
+		center_type
 	);
 }

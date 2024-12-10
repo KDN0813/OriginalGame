@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <DirectXMath.h>
+#include <vector>
 #include "Component.h"
 #include "Sprite/Sprite.h"
 #include "System\MyMath\MyMathf.h"
@@ -17,6 +18,7 @@ public:
         DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
         float angle = 0.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
+        Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
 public:
     SpriteComponent(const SpriteParam&);
@@ -64,6 +66,9 @@ public:
      */
     void DrawDebugPrimitiveGUI()  override {};
     bool IsDebugPrimitive() { return false; }   // DebugPrimitiveÇ™ë∂ç›Ç∑ÇÈÇ©
+
+private:
+    std::vector<std::string> center_type_name_pool;
 #endif // DEBUG
 };
 

@@ -10,6 +10,19 @@
 class Sprite
 {
 public:
+	// íÜêSà íuÇÃê›íË
+	enum class CENTER_TYPE
+	{
+		TOP_LEFT = 0,
+		TOP_RIGHT,
+		CENTER,
+		BOTTOM_LEFT,
+		BOTTOM_RIGHT,
+
+		MAX,
+	};
+
+public:
 	Sprite() = delete;
 	Sprite(const char* filename);
 	~Sprite() {}
@@ -28,7 +41,9 @@ public:
 		float sx, float sy,	// 0.0fÅ`1.0f
 		float sw, float sh,	// 0.0fÅ`1.0f
 		float angle,
-		float r, float g, float b, float a) const;
+		float r, float g, float b, float a,
+		CENTER_TYPE center_type
+	) const;
 	// ï`âÊé¿çs
 	void Render(ID3D11DeviceContext* dc,
 		DirectX::XMFLOAT2 display_pos,
@@ -36,7 +51,9 @@ public:
 		DirectX::XMFLOAT2 clip_pos,
 		DirectX::XMFLOAT2 clip_size,
 		float angle,
-		DirectX::XMFLOAT4 color) const;
+		DirectX::XMFLOAT4 color,
+		CENTER_TYPE center_type
+		) const;
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertex_shader;
