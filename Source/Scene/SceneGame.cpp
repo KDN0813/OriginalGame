@@ -180,7 +180,7 @@ void SceneGame::Initialize()
 			}
 			// シェーダー設定
 			{
-				//auto shader_component = player->AddComponent<ModelShaderComponent>(model_shader.get());
+				auto shader_component = player->AddComponent<ModelShaderComponent>(model_shader.get());
 			}
 			// 重力
 			{
