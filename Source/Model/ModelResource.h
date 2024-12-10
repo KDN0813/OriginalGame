@@ -6,6 +6,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
+#include "System\Misc.h"
 
 class ModelResource
 {
@@ -125,7 +126,7 @@ public:
 	const std::vector<Animation>& GetAnimations() const { return this->animation_vec; }
 	const std::vector<Material>& GetMaterials() const { return this->material_vec; }
 	std::vector<DirectX::BoundingBox> GetDefaultBoundingBoxs()const { return this->default_bounding_box_vec; }
-	DirectX::BoundingBox GetDefaultBoundingBox(size_t i)const { return this->default_bounding_box_vec[i]; }
+	DirectX::BoundingBox GetDefaultBoundingBox(size_t i)const;
 
 	// ì«Ç›çûÇ›
 	void Load(ID3D11Device* device, const char* filename);

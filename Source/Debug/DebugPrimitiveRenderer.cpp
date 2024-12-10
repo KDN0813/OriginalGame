@@ -70,19 +70,20 @@ void AABBCorners::DrawDebugGUI(std::string header_name)
 
 	ImGui::Indent(30.0f);
 	std::string label;
-	label = "##AABBCorners" + std::to_string(id);
+	label = "##AABBCorners" + header_name + std::to_string(id);
 	ImGui::Checkbox(label.c_str(), &is_draw);
 	ImGui::SameLine();
 	if (!this->is_draw) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// ŠDF
 	if (ImGui::CollapsingHeader(header_name.c_str()))
 	{
-		label = "Color##AABBCorners" + std::to_string(id);
+		label = "Color##AABBCorners" + header_name + std::to_string(id);
 		ImGui::ColorEdit4(label.c_str(), &this->color.x);
+		label = "Radius##AABBCorners" + header_name + std::to_string(id);
 		ImGui::DragFloat(label.c_str(), &this->radius, 0.01f);
 
 		for (size_t i = 0; i < 8; ++i)
 		{
-			label = "Position" + std::to_string(i) + "##AABBCorners" + std::to_string(id);
+			label = "Position" + header_name + std::to_string(i) + "##AABBCorners" + std::to_string(id);
 			ImGui::InputFloat3(label.c_str(), &center[i].x);
 		}
 	}
@@ -345,6 +346,7 @@ void DebugPrimitiveRenderer::DrawCylinder(CylinderParam cylinder_param)
 
 void DebugPrimitiveRenderer::DrawAABBCorners(AABBCorners AABB_corners)
 {
+	if (!AABB_corners.GetIsDraw()) return;
 	for (size_t i = 0; i < 8; ++i)
 	{
 		DrawSphere(AABB_corners.GetCenter(i), AABB_corners.GetRadius(), AABB_corners.GetColor());

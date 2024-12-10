@@ -128,6 +128,24 @@ ModelComponent::Node* ModelComponent::FindNode(const char* name)
 	return nullptr;
 }
 
+DirectX::BoundingBox ModelComponent::GetBoundingBox(size_t index)
+{
+	DirectX::BoundingBox box{};
+	MYMATRIX World_transform{};
+
+	if (const auto& owner = GetOwner())
+	{
+		if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+		{
+			World_transform = transform->GetWolrdTransform();
+		}
+	}
+
+	resource->GetDefaultBoundingBox(index).Transform(box, World_transform.GetMatrix());
+
+	return box;
+}
+
 #ifdef _DEBUG
 
 void ModelComponent::DrawDebugGUI()

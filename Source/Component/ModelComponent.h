@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <DirectXCollision.h>
 #include "System/MyMath/MYMATRIX.h"
 #include "Component.h"
 #include "Model/ModelCommonData.h"
@@ -56,6 +57,7 @@ public:
 	std::shared_ptr<ModelResource>& GetResourceSptr() { return resource; }
 	float GetTileCount() const { return this->tile_count; }
 	void SetTileCount(float tile_count) { this->tile_count = tile_count; }
+	DirectX::BoundingBox GetBoundingBox(size_t index);
 
 private:
 	std::shared_ptr<ModelResource>	resource;	// モデルリソース

@@ -98,12 +98,12 @@ void SceneGame::Initialize()
 		// ステージ
 		{
 			auto stage = object_manager.Create("Stage");
-			auto model = stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube3.mdl");
-			model->SetTileCount(150.0f);
+			auto model = stage->AddComponent<ModelComponent>("Data/Model/Stage/box.mdl");
+			//model->SetTileCount(150.0f);
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_scale = DirectX::XMFLOAT3(700.0f, 1.0f, 700.0f);
+				param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
 				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
@@ -180,8 +180,7 @@ void SceneGame::Initialize()
 			}
 			// シェーダー設定
 			{
-				auto shader_component =
-					player->AddComponent<ModelShaderComponent>(model_shader.get());
+				//auto shader_component = player->AddComponent<ModelShaderComponent>(model_shader.get());
 			}
 			// 重力
 			{
@@ -744,7 +743,7 @@ void SceneGame::CreateEnemy(const std::shared_ptr<Object>& enemy)
 						0.0f,
 #else
 						sinf(theta) * range,
-						0.5f,
+						1.0f,
 						cosf(theta) * range ,
 #endif
 		};

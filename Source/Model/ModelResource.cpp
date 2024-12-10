@@ -177,6 +177,13 @@ void ModelResource::Animation::serialize(Archive& archive, int version)
 
 #pragma endregion // シリアライズ
 
+DirectX::BoundingBox ModelResource::GetDefaultBoundingBox(size_t i) const
+{
+	_ASSERT_EXPR_W(i < this->default_bounding_box_vec.size(), L"indexがボックスの最大値を超えています"); 
+	i = (i < this->default_bounding_box_vec.size()) ? i : 0;
+	return this->default_bounding_box_vec[i];
+}
+
 // 読み込み
 void ModelResource::Load(ID3D11Device* device, const char* filename)
 {

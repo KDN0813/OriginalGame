@@ -251,8 +251,20 @@ void ModelShader::Draw(ID3D11DeviceContext* dc, const ModelComponent* model)
 		dc->IASetIndexBuffer(mesh.index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		for (const ModelResource::Subset& subset : mesh.subsets)
+		for (size_t i = 0; i < mesh.subsets.size(); ++i)
 		{
+			const ModelResource::Subset& subset = mesh.subsets[i];
+
+			// フラスタムカリングを行う
+			if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+			{
+				if (!camera_manager->IsMeshVisible(resource->GetDefaultBoundingBox(i)))
+				{
+					// 画面外ならスキップする
+					continue;
+				}
+			}
+
 			SubsetConstantBuffer cbSubset;
 			cbSubset.material_color = subset.material->color;
 			cbSubset.tile_count = model->GetTileCount();
