@@ -202,6 +202,7 @@
     <ClInclude Include="Source\StateMachine\LoadingIconStateDerived.h" />
     <ClInclude Include="Source\StateMachine\StateBase.h" />
     <ClInclude Include="Source\StateMachine\PlayerStateDerived.h" />
+    <ClInclude Include="Source\StateMachine\UIStateDerived.h" />
     <ClInclude Include="Source\System\Alias\OwnerAlias.h" />
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h" />
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
@@ -297,6 +298,7 @@
     <ClCompile Include="Source\StateMachine\LegacyTransitionJudgementDerived.cpp" />
     <ClCompile Include="Source\StateMachine\LoadingIconStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\PlayerStateDerived.cpp" />
+    <ClCompile Include="Source\StateMachine\UIStateDerived.cpp" />
     <ClCompile Include="Source\System\GameData.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp" />

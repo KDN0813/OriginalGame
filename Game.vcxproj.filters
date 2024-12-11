@@ -187,6 +187,9 @@
     <Filter Include="Source\Debug\Graphics">
       <UniqueIdentifier>{2ac7cb79-cb10-43d1-856f-e51f0f698e73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\StateMachine\UI">
+      <UniqueIdentifier>{b0abbb1b-b0b6-4055-a1bc-2457b22e4998}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -510,6 +513,9 @@
     <ClInclude Include="Source\Component\BaseSpriteComponent.h">
       <Filter>Source\Component\Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StateMachine\UIStateDerived.h">
+      <Filter>Source\StateMachine\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -757,6 +763,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\TextNumberComponent.cpp">
       <Filter>Source\Component\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\UIStateDerived.cpp">
+      <Filter>Source\StateMachine\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

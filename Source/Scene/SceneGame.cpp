@@ -57,6 +57,7 @@
 #include "StateMachine/LegacyTransitionJudgementDerived.h"
 #include "StateMachine/LegacyStateDerived.h"
 #include "StateMachine/PlayerStateDerived.h"
+#include "StateMachine/UIStateDerived.h"
 
 
 void SceneGame::Initialize()
@@ -89,11 +90,23 @@ void SceneGame::Initialize()
 			// テキスト表示
 			{
 				TextNumberComponent::TextParam param{};
+				param.pos = { 0.45f,-0.03f };
+				param.color = { 1.0f,0.0f,0.0f ,1.0f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				// ファイルパス設定する
 				param.font_name = "Data/Sprite/Numbers.png";
 				auto text_number = score_object->AddComponent<TextNumberComponent>(param);
 
 				sprite_shader->AddSprite(text_number);
+			}
+
+			// 更新処理
+			{
+				auto state_machine = score_object->AddComponent<StateMachineComponent>();
+
+				state_machine->RegisterState<ScoreUIDefaultState>();
+
+				state_machine->SetDefaultState("ScoreUIDefaultState");
 			}
 		}
 
