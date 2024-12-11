@@ -78,7 +78,11 @@ void TextNumberComponent::DrawDebugGUI()
     ImGui::InputTextString("Font Name", this->param.font_name);
     ImGui::SliderFloat2("Pos", &this->param.pos.x, -1.0f, 2.0f);
     ImGui::DragFloat("Scale", &this->param.scale, 0.05f, 0.0f, 100.0f);
-    ImGui::InputInt("Value", &this->param.value);
+    int value = this->param.value;
+    if (ImGui::InputInt("Value", &value))
+    {
+        SetDrawValue(value);
+    }
     ImGui::SliderFloat("Angle", &this->param.angle, 0.0f, 360.0f);
     ImGui::ColorEdit4("Sprite Color", &this->param.color.x);
 

@@ -14,7 +14,7 @@ public:
     {
         std::string font_name = {};
         DirectX::XMFLOAT2 pos = { 0.0f,0.0f };
-        int value = 15;  // 表示する値
+        int value = 0;  // 表示する値
         float angle = 0.0f;
         float scale = 1.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
@@ -44,7 +44,7 @@ public:
 
     // 取得・設定関数
     int GetDrawValue()const { return this->param.value; }
-    void SetDrawValue(const int v) { this->param.value = v; }
+    void SetDrawValue(const int v) { this->param.value = (std::max)(v, 0); }
 
 private:
     std::unique_ptr<Sprite> sprite;
