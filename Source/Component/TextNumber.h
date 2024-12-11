@@ -20,7 +20,7 @@ public:
     const char* GetName()const  override {};
 
     // óDêÊìx
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::GAME; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
 
 #ifdef _DEBUG
 public:

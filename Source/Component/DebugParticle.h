@@ -27,7 +27,7 @@ public:
     const char* GetName()const  override { return "DebugParticle"; };
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::GAME; };
+    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
     
     // 各種設定関数
     // エフェクトループフラグの反転させる
