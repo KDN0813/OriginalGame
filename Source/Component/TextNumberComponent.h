@@ -9,23 +9,16 @@ class TextNumberComponent : public BaseSpriteComponent
 public:
     const float NUMBER_COUNT = 10;                  // 数字の数(0～9までの整数)
     const float FONT_WIGTH = 1.0f / NUMBER_COUNT;   // フォントの幅
-
-    enum class TEXT_ALIGEMENT
-    {
-        LEFT,    // 左揃え
-        CENTER,  // 中央揃え
-        RIGHT    // 右揃え
-    };
 public:
     struct TextParam
     {
         std::string font_name = {};
-        DirectX::XMFLOAT2 pos = { 0.0f,0.0f };
-        int value = 0;  // 表示する値
+        DirectX::XMFLOAT2 pos = { 0.5f,0.0f };
+        int value = 1000;  // 表示する値
         float angle = 0.0f;
         float scale = 1.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
-        Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
+        Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::CENTER;
     };
 public:
     TextNumberComponent(TextParam param) : param(param), default_param(param) {};

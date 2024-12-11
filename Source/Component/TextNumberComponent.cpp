@@ -56,8 +56,8 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 
     DirectX::XMFLOAT2 pos =
     {
-        this->param.pos.x - this->display_size.x * static_cast<float>(static_cast<int>(Digits * 0.5f)) * rateX,
-        this->param.pos.y
+        this->param.pos.x - this->display_size.x * static_cast<float>(static_cast<int>((Digits - 1) * rateX)),
+        this->param.pos.y - this->display_size.x * rateY
     };
 
     // 桁数分描画を行う
@@ -74,7 +74,7 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
             this->clip_size,
             this->param.angle,
             this->param.color,
-            Sprite::CENTER_TYPE::TOP_LEFT
+            this->param.center_type
         );
 
         // 描画位置更新
