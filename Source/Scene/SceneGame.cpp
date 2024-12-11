@@ -85,7 +85,7 @@ void SceneGame::Initialize()
 	{
 		// スコア表示用オブジェクト
 		{
-			auto score_object = object_manager.Create("score");
+			auto score_object = object_manager.Create("Score");
 
 			// テキスト表示
 			{
@@ -107,6 +107,33 @@ void SceneGame::Initialize()
 				state_machine->RegisterState<ScoreUIDefaultState>();
 
 				state_machine->SetDefaultState("ScoreUIDefaultState");
+			}
+		}
+
+		// ゲーム時間表示オブジェクト
+		{
+			auto score_object = object_manager.Create("GameTimer");
+
+			// テキスト表示
+			{
+				TextNumberComponent::TextParam param{};
+				param.pos = { 0.45f,0.1f };
+				param.color = { 1.0f,0.0f,0.0f ,1.0f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
+				// ファイルパス設定する
+				param.font_name = "Data/Sprite/Numbers.png";
+				auto text_number = score_object->AddComponent<TextNumberComponent>(param);
+
+				sprite_shader->AddSprite(text_number);
+			}
+
+			// 更新処理
+			{
+				auto state_machine = score_object->AddComponent<StateMachineComponent>();
+
+				state_machine->RegisterState<EndTimerUIDefaultState>();
+
+				state_machine->SetDefaultState("EndTimerUIDefaultState");
 			}
 		}
 
@@ -462,7 +489,7 @@ void SceneGame::Update(float elapsed_time)
 
 	if (GameData::Instance game_data = GameData::GetInstance() ; game_data.Get())
 	{
-		//game_data->UpdateGameEndTimer(elapsed_time);
+		game_data->UpdateGameEndTimer(elapsed_time);
 		if (game_data->IsTimeUp())
 		{
 			// 制限時間を過ぎていたらゲーム状態を変更
