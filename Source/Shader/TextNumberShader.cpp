@@ -7,6 +7,7 @@ void TextNumberShader::Render()
 
 void TextNumberShader::AddSprite(std::shared_ptr<TextNumberComponent>& sprite)
 {
+    this->sprite_pool.push_back(sprite);
 }
 
 #ifdef _DEBUG

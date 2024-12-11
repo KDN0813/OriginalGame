@@ -504,7 +504,7 @@
     <ClInclude Include="Source\StateMachine\LoadingIconStateDerived.h">
       <Filter>Source\StateMachine\LoadingIcon</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\ヘッダー.h">
+    <ClInclude Include="Source\Component\TextNumberComponent.h">
       <Filter>Source\Component\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Source\Shader\TextNumberShader.h">

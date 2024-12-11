@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "Sprite\Sprite.h"
 
-class SpriteComponent : public Component
+class TextNumberComponent : public Component
 {
 public:
     struct TextParam
@@ -17,8 +17,8 @@ public:
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::CENTER;
     };
 public:
-    SpriteComponent(TextParam param) : param(param), default_param(param) {};
-    ~SpriteComponent() {};
+    TextNumberComponent(TextParam param) : param(param), default_param(param) {};
+    ~TextNumberComponent() {};
 
     // äJénä÷êî
     void Start()  override;

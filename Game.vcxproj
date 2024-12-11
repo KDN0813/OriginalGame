@@ -153,7 +153,7 @@
     <ClInclude Include="Source\Component\StateMachineComponent.h" />
     <ClInclude Include="Source\Component\Transform2DComponent.h" />
     <ClInclude Include="Source\Component\TransformComponent.h" />
-    <ClInclude Include="Source\Component\ヘッダー.h" />
+    <ClInclude Include="Source\Component\TextNumberComponent.h" />
     <ClInclude Include="Source\ConstantManager.h" />
     <ClInclude Include="Source\Debug\DebugComponent.h" />
     <ClInclude Include="Source\Debug\DebugManager.h" />

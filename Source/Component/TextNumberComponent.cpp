@@ -1,6 +1,6 @@
-#include "TextNumberComponent.h.h"
+#include "Component\TextNumberComponent.h"
 
-void TextNumber::Start()
+void TextNumberComponent::Start()
 {
     // フォント用スプライト読み込み
     this->sprite = std::make_unique<Sprite>(this->param.font_name);
