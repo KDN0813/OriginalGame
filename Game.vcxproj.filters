@@ -19,9 +19,6 @@
     <Filter Include="External\DirectXTex">
       <UniqueIdentifier>{8dd0c8ba-1f1c-4648-8a04-c28bb5a1c75a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Graphics">
-      <UniqueIdentifier>{2ac7cb79-cb10-43d1-856f-e51f0f698e73}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\System">
       <UniqueIdentifier>{9dcb018c-170d-45ca-92b7-446961fd5e1b}</UniqueIdentifier>
     </Filter>
@@ -187,6 +184,9 @@
     <Filter Include="Source\StateMachine\LoadingIcon">
       <UniqueIdentifier>{812fa681-36aa-4795-a8b1-321316cd4751}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Debug\Graphics">
+      <UniqueIdentifier>{2ac7cb79-cb10-43d1-856f-e51f0f698e73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -229,10 +229,10 @@
       <Filter>Source\Model</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\RenderContext.h">
-      <Filter>Source\Graphics</Filter>
+      <Filter>Source\Debug\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Graphics.h">
-      <Filter>Source\Graphics</Filter>
+      <Filter>Source\Debug\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Debug\ImGuiRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
@@ -504,8 +504,11 @@
     <ClInclude Include="Source\StateMachine\LoadingIconStateDerived.h">
       <Filter>Source\StateMachine\LoadingIcon</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\TextNumber.h">
+    <ClInclude Include="Source\Component\ヘッダー.h">
       <Filter>Source\Component\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader\TextNumberShader.h">
+      <Filter>Source\Shader\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -534,7 +537,7 @@
       <Filter>Source\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\Graphics.cpp">
-      <Filter>Source\Graphics</Filter>
+      <Filter>Source\Debug\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp">
       <Filter>Source\Debug\Renderer</Filter>
@@ -752,8 +755,11 @@
     <ClCompile Include="Source\StateMachine\LoadingIconStateDerived.cpp">
       <Filter>Source\StateMachine\LoadingIcon</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\TextNumber.cpp">
+    <ClCompile Include="Source\Component\TextNumberComponent.cpp">
       <Filter>Source\Component\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader\TextNumberShader.cpp">
+      <Filter>Source\Shader\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

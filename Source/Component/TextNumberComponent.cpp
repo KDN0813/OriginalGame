@@ -1,4 +1,4 @@
-#include "TextNumber.h"
+#include "TextNumberComponent.h.h"
 
 void TextNumber::Start()
 {
