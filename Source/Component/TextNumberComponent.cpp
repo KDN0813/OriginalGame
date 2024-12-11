@@ -47,18 +47,19 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     int Digits; // 桁数
     Digits = static_cast<int>(numeral_str.size());
 
+    DirectX::XMFLOAT2 pos = this->param.pos;
+
     // 桁数分描画を行う
-    for (int i = Digits - 1; 0 <= i; --i)
-    {
+    for (int i = 0; i < Digits; ++i)
+    {        
         // 描画サイズ更新
-        display_size = { this->font_draw_size.x * this->param.scale,this->font_draw_size.y * this->param.scale };
-        
-        // 切り抜き位置更新
-        int n = this->param.value >> i;
+        this->display_size = { this->font_draw_size.x * this->param.scale,this->font_draw_size.y * this->param.scale };
+
+        int n = std::stoi(numeral_str.substr(i, 1));
         this->clip_pos = { FONT_WIGTH * static_cast<float>(n),0.0f};
 
         this->sprite->Render(dc,
-            this->param.pos,
+            pos,
             this->display_size,
             this->clip_pos,
             this->clip_size,
@@ -66,6 +67,9 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
             this->param.color,
             this->param.center_type
         );
+
+        // 描画位置更新
+        pos.x += this->display_size.x;
     }
 }
 
