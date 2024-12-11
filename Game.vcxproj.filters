@@ -504,6 +504,9 @@
     <ClInclude Include="Source\StateMachine\LoadingIconStateDerived.h">
       <Filter>Source\StateMachine\LoadingIcon</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\TextNumber.h">
+      <Filter>Source\Component\Sprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -748,6 +751,9 @@
     </ClCompile>
     <ClCompile Include="Source\StateMachine\LoadingIconStateDerived.cpp">
       <Filter>Source\StateMachine\LoadingIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\TextNumber.cpp">
+      <Filter>Source\Component\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

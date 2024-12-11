@@ -14,7 +14,7 @@ enum COMPONENT_PRIORITY : unsigned int
     HIGH,               // 高い優先度
     VERY_HIGH,          // 非常に高い優先度
     CRITICAL,           // 最高の優先度（重要）
-    GAME = MEDIUM    // デフォルト優先度を中程度に設定
+    GAME = MEDIUM       // デフォルト優先度を中程度に設定
 };
 
 class Component
