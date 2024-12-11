@@ -2,6 +2,37 @@
 #include "System/Misc.h"
 #include "Graphics/Graphics.h"
 
+void Sprite::GetCenterTypeRate(float& rateX, float& rateY, CENTER_TYPE type)
+{
+	switch (type)
+	{
+	case Sprite::CENTER_TYPE::TOP_LEFT:
+		rateX = 0.0f;
+		rateY = 0.0f;
+		break;
+	case Sprite::CENTER_TYPE::TOP_RIGHT:
+		rateX = 1.0f;
+		rateY = 0.0f;
+		break;
+	case Sprite::CENTER_TYPE::CENTER:
+		rateX = 0.5f;
+		rateY = 0.5f;
+		break;
+	case Sprite::CENTER_TYPE::BOTTOM_LEFT:
+		rateX = 0.0f;
+		rateY = 1.0f;
+		break;
+	case Sprite::CENTER_TYPE::BOTTOM_RIGHT:
+		rateX = 1.0f;
+		rateY = 1.0f;
+		break;
+	default:
+		rateX = 0.0f;
+		rateY = 0.0f;
+		break;
+	}
+}
+
 // コンストラクタ
 Sprite::Sprite(const char* filename)
 	:texture(std::make_unique<Texture>(filename))
@@ -201,27 +232,11 @@ void Sprite::Render(
 			DirectX::XMFLOAT2(sx + sw, sy + sh),	// 右下
 		};
 
-		// 中心位置のオフセットを計算
+		// 中心位置のオフセットを取得
 		float rateX = 0.0f;
 		float rateY = 0.0f;
-		switch (center_type)
-		{
-		case Sprite::CENTER_TYPE::TOP_RIGHT:
-			rateX = 1.0f;
-			break;
-		case Sprite::CENTER_TYPE::CENTER:
-			rateX = 0.5f;
-			rateY = 0.5f;
-			break;
-		case Sprite::CENTER_TYPE::BOTTOM_LEFT:
-			rateY = 1.0f;
-			break;
-		case Sprite::CENTER_TYPE::BOTTOM_RIGHT:
-			rateX = 1.0f;
-			rateY = 1.0f;
-			break;
-		default:break;
-		}
+		GetCenterTypeRate(rateX, rateY, center_type);
+
 		float offsetX = dw * rateX;
 		float offsetY = dh * rateY;
 

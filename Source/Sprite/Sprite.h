@@ -22,6 +22,9 @@ public:
 		MAX,
 	};
 
+	// 中心位置のオフセット値取得
+	static void GetCenterTypeRate(float& rateX, float& rateY, CENTER_TYPE type);
+
 public:
 	Sprite() = delete;
 	Sprite(const char* filename);

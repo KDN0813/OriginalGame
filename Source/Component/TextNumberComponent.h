@@ -9,6 +9,13 @@ class TextNumberComponent : public BaseSpriteComponent
 public:
     const float NUMBER_COUNT = 10;                  // 数字の数(0～9までの整数)
     const float FONT_WIGTH = 1.0f / NUMBER_COUNT;   // フォントの幅
+
+    enum class TEXT_ALIGEMENT
+    {
+        LEFT,    // 左揃え
+        CENTER,  // 中央揃え
+        RIGHT    // 右揃え
+    };
 public:
     struct TextParam
     {
