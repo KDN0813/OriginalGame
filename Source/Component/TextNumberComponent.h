@@ -11,7 +11,6 @@ public:
         std::string font_name = {};
         DirectX::XMFLOAT2 pos = { 0.0f,0.0f };
         int value = 0;  // 表示する値
-        float font_size = 0.0f; // １文字あたりのサイズ
         float angle = 0.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::CENTER;
@@ -47,6 +46,7 @@ private:
     TextParam param;
     TextParam default_param;
 
+    DirectX::XMFLOAT2 font_size = {}; // １文字あたりのサイズ
     DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
     DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
     DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };

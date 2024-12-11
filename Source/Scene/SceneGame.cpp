@@ -88,12 +88,12 @@ void SceneGame::Initialize()
 
 			// テキスト表示
 			{
-				//TextNumberComponent::TextParam param{};
-				//// ファイルパス設定する
-				//param.font_name = {};
-				//auto text_number = score_object->AddComponent<TextNumberComponent>(param);
+				TextNumberComponent::TextParam param{};
+				// ファイルパス設定する
+				param.font_name = "Data/Sprite/Numbers.png";
+				auto text_number = score_object->AddComponent<TextNumberComponent>(param);
 
-				//sprite_shader->AddSprite(text_number);
+				sprite_shader->AddSprite(text_number);
 			}
 		}
 
