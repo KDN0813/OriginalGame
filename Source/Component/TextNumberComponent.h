@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
-#include "Component.h"
+#include "Component/BaseSpriteComponent.h"
 #include "Sprite\Sprite.h"
 
-class TextNumberComponent : public Component
+class TextNumberComponent : public BaseSpriteComponent
 {
 public:
     struct TextParam
@@ -30,10 +30,13 @@ public:
     void Update(float elapsed_time) override {};
 
     // –¼‘OŽæ“¾
-    const char* GetName()const  override {};
+    const char* GetName()const  override { return "TextNumberComponent"; };
 
     // —Dæ“x
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+
+    // •`‰æŠÖ”
+    void Render(ID3D11DeviceContext* dc) override;
 
     // Žæ“¾EÝ’èŠÖ”
     int GetDrawValue()const { return this->param.value; }

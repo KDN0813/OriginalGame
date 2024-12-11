@@ -44,6 +44,7 @@
 #include "Component/CharacterComponent.h"
 #include "Component/StateMachineComponent.h"
 #include "Component\SpriteComponent.h"
+#include "Component\TextNumberComponent.h"
 #ifdef _DEBUG
 #include "Component\DebugParticle.h"
 #endif // DEBUG
@@ -81,6 +82,21 @@ void SceneGame::Initialize()
 
 	// オブジェクト作成
 	{
+		// スコア表示用オブジェクト
+		{
+			auto score_object = object_manager.Create("score");
+
+			// テキスト表示
+			{
+				//TextNumberComponent::TextParam param{};
+				//// ファイルパス設定する
+				//param.font_name = {};
+				//auto text_number = score_object->AddComponent<TextNumberComponent>(param);
+
+				//sprite_shader->AddSprite(text_number);
+			}
+		}
+
 		// ポーズ画面用オブジェクト作成
 		{
 			this->pause_object = object_manager.Create("pause_object");
@@ -576,6 +592,7 @@ void SceneGame::Render()
 			particle_system->Update();
 			particle_system->Render();
 		}
+
 		sprite_shader->Render();
 	}
 }

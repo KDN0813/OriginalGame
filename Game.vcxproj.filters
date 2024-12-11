@@ -507,8 +507,8 @@
     <ClInclude Include="Source\Component\TextNumberComponent.h">
       <Filter>Source\Component\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shader\TextNumberShader.h">
-      <Filter>Source\Shader\Sprite</Filter>
+    <ClInclude Include="Source\Component\BaseSpriteComponent.h">
+      <Filter>Source\Component\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -757,9 +757,6 @@
     </ClCompile>
     <ClCompile Include="Source\Component\TextNumberComponent.cpp">
       <Filter>Source\Component\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Shader\TextNumberShader.cpp">
-      <Filter>Source\Shader\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

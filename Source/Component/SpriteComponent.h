@@ -2,11 +2,11 @@
 #include <string>
 #include <DirectXMath.h>
 #include <vector>
-#include "Component.h"
+#include "Component/BaseSpriteComponent.h"
 #include "Sprite/Sprite.h"
 #include "System\MyMath\MyMathf.h"
 
-class SpriteComponent : public Component
+class SpriteComponent : public BaseSpriteComponent
 {
 public:
     struct SpriteParam
@@ -40,7 +40,7 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
     
     // •`‰æˆ—
-    void Render(ID3D11DeviceContext* dc);
+    void Render(ID3D11DeviceContext* dc) override;
 
     // ŠeŽíŽæ“¾EÝ’è
     void SetAngle(float angle) { this->param.angle = MyMathf::ClampDegree(angle); };

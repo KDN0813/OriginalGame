@@ -6,7 +6,7 @@
 #include "Graphics/Graphics.h"
 
 #include "Object\Object.h"
-#include "Component/SpriteComponent.h"
+#include "Component/BaseSpriteComponent.h"
 
 SpriteShader::SpriteShader()
 {
@@ -102,7 +102,7 @@ void SpriteShader::Render()
     // —LŒø‚Å‚È‚¢weak_ptr‚ðœ‹Ž‚·‚é
     this->sprite_pool.erase(
         std::remove_if(this->sprite_pool.begin(), this->sprite_pool.end(),
-            [](const std::weak_ptr<SpriteComponent>& weakPtr)
+            [](const std::weak_ptr<BaseSpriteComponent>& weakPtr)
             {
                 return weakPtr.expired();  // –³Œø‚Èweak_ptr‚©‚Ç‚¤‚©‚ðŠm”F
             }),
@@ -119,7 +119,7 @@ void SpriteShader::Render()
     }
 }
 
-void SpriteShader::AddSprite(std::shared_ptr<SpriteComponent>& sprite)
+void SpriteShader::AddSprite(std::shared_ptr<BaseSpriteComponent> sprite)
 {
     this->sprite_pool.emplace_back(sprite);
 }

@@ -130,6 +130,7 @@
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Collision\CircleCollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionParam.h" />
+    <ClInclude Include="Source\Component\BaseSpriteComponent.h" />
     <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Component\InstancedModelWithAnimationComponent.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
@@ -193,7 +194,6 @@
     <ClInclude Include="Source\Shader\ShaderLoader.h" />
     <ClInclude Include="Source\Shader\SkyBox.h" />
     <ClInclude Include="Source\Shader\SpriteShader.h" />
-    <ClInclude Include="Source\Shader\TextNumberShader.h" />
     <ClInclude Include="Source\Sprite\Sprite.h" />
     <ClInclude Include="Source\StateMachine\LegacyState.h" />
     <ClInclude Include="Source\StateMachine\LegacyStateDerived.h" />
@@ -290,7 +290,6 @@
     <ClCompile Include="Source\Shader\ShaderLoader.cpp" />
     <ClCompile Include="Source\Shader\SkyBox.cpp" />
     <ClCompile Include="Source\Shader\SpriteShader.cpp" />
-    <ClCompile Include="Source\Shader\TextNumberShader.cpp" />
     <ClCompile Include="Source\Sprite\Sprite.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyState.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyStateDerived.cpp" />

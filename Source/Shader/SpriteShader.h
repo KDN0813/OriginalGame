@@ -5,7 +5,7 @@
 #include <memory>
 #include "Shader/Shader.h"
 
-class SpriteComponent;
+class BaseSpriteComponent;
 
 class SpriteShader : public Shader
 {
@@ -18,9 +18,9 @@ public:
     const char* GetName() { return "SpriteShader"; }
 
     // スプライトの追加
-    void AddSprite(std::shared_ptr<SpriteComponent>& sprite);
+    void AddSprite(std::shared_ptr<BaseSpriteComponent> sprite);
 private:
-    std::vector<std::weak_ptr<SpriteComponent>> sprite_pool;
+    std::vector<std::weak_ptr<BaseSpriteComponent>> sprite_pool;
 
     Microsoft::WRL::ComPtr<ID3D11BlendState> blend_state;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stencil_state;
