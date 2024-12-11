@@ -55,6 +55,8 @@ public:
 		CENTER_TYPE center_type
 		) const;
 
+	float GetTextureWidth() { return (this->texture) ? this->texture->GetTextureWidth() : 0.0f; }
+	float GetTextureHeight() { return (this->texture) ? this->texture->GetTextureHeight() : 0.0f; }
 private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertex_shader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>			pixel_shader;

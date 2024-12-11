@@ -28,6 +28,12 @@ Texture::Texture(const char* filename)
 		hr = resource->QueryInterface<ID3D11Texture2D>(texture2d.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 		texture2d->GetDesc(&desc);
+
+		// ‰æ‘œƒTƒCƒYŽæ“¾
+		{
+			this->texture_width = static_cast<float>(desc.Width);
+			this->texture_height = static_cast<float>(desc.Height);
+		}
 	}
 	else
 	{

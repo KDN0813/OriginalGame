@@ -18,7 +18,12 @@ public:
     {
         return shader_resource_view.Get();
     }
+
+    float GetTextureWidth() const { return this->texture_width; }
+    float GetTextureHeight() const { return this->texture_height; }
 private:
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shader_resource_view;
+    float texture_width = 0;        // ダミーテクスチャを使用した場合0のまま
+    float texture_height = 0;       // ダミーテクスチャを使用した場合0のまま
 };
 

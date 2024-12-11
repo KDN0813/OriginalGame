@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "Component/BaseSpriteComponent.h"
 #include "Sprite\Sprite.h"
 
@@ -56,7 +57,7 @@ public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI()  override {};
+    void DrawDebugGUI()  override;
     /**
      * デバックの情報を3D画面上に出力する関数
      */
@@ -66,6 +67,9 @@ public:
      */
     void DrawDebugPrimitiveGUI()  override {};
     bool IsDebugPrimitive() override { return false; }   // DebugPrimitiveが存在するか
+
+private:
+    std::vector<std::string> center_type_name_pool;
 #endif // DEBUG
 };
 
