@@ -14,7 +14,7 @@ public:
     {
         std::string font_name = {};
         DirectX::XMFLOAT2 pos = { 0.5f,0.0f };
-        int value = 1000;  // 表示する値
+        int value = 0;  // 表示する値
         float angle = 0.0f;
         float scale = 1.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
