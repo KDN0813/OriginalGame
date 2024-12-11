@@ -7,11 +7,14 @@
 class TextNumberComponent : public BaseSpriteComponent
 {
 public:
+    const float NUMBER_COUNT = 10;                  // 数字の数(0～9までの整数)
+    const float FONT_WIGTH = 1.0f / NUMBER_COUNT;   // フォントの幅
+public:
     struct TextParam
     {
         std::string font_name = {};
         DirectX::XMFLOAT2 pos = { 0.0f,0.0f };
-        int value = 0;  // 表示する値
+        int value = 5;  // 表示する値
         float angle = 0.0f;
         float scale = 1.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
@@ -49,7 +52,6 @@ private:
     TextParam default_param;
 
     DirectX::XMFLOAT2 font_draw_size = {};  // １文字あたりの描画サイズ
-    DirectX::XMFLOAT2 font_size = {};       // １文字あたりの切り抜きサイズ
     DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
     DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
     DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };

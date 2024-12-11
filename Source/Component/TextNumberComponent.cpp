@@ -15,7 +15,6 @@ void TextNumberComponent::Start()
     {
         const float texture_width = this->sprite->GetTextureWidth();
         const float texture_height = this->sprite->GetTextureHeight();
-        const float number_count = 10;// 数字の数(0～9までの整数)
         
         float screen_width = {};
         float screen_height = {};
@@ -25,12 +24,12 @@ void TextNumberComponent::Start()
             screen_height = graphics->GetScreenHeight();
         }
 
-        // 切り抜きサイズ設定
-        this->font_size = { (texture_width / screen_width) / number_count ,1.0f };
-
         // 描画用サイズ設定
-        this->font_draw_size = { (texture_width / screen_width) / number_count ,(texture_height / screen_height) };
+        this->font_draw_size = { (texture_width / screen_width) / NUMBER_COUNT ,(texture_height / screen_height) };
     }
+
+    // 切り抜きサイズ設定
+    this->clip_size = { FONT_WIGTH,1.0f };
 
 #ifdef _DEBUG
     // CENTER_TYPE 列挙型の各値に対応する名前を取得して格納する
@@ -48,22 +47,26 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     int Digits; // 桁数
     Digits = static_cast<int>(numeral_str.size());
 
-    // 描画サイズ
-    const DirectX::XMFLOAT2 size = 
+    // 桁数分描画を行う
+    for (int i = Digits - 1; 0 <= i; --i)
     {
-        this->font_draw_size.x * static_cast<float>(Digits) * this->param.scale,
-        this->font_draw_size.y * static_cast<float>(Digits) * this->param.scale
-    };
+        // 描画サイズ更新
+        display_size = { this->font_draw_size.x * this->param.scale,this->font_draw_size.y * this->param.scale };
+        
+        // 切り抜き位置更新
+        int n = this->param.value >> i;
+        this->clip_pos = { FONT_WIGTH * static_cast<float>(n),0.0f};
 
-    this->sprite->Render(dc,
-        this->param.pos,
-        size,
-        this->clip_pos,
-        {0.1f,1.0f},
-        this->param.angle,
-        this->param.color,
-        this->param.center_type
-    );
+        this->sprite->Render(dc,
+            this->param.pos,
+            this->display_size,
+            this->clip_pos,
+            this->clip_size,
+            this->param.angle,
+            this->param.color,
+            this->param.center_type
+        );
+    }
 }
 
 void TextNumberComponent::DrawDebugGUI()
