@@ -48,7 +48,8 @@ private:
     TextParam param;
     TextParam default_param;
 
-    DirectX::XMFLOAT2 font_size = {}; // １文字あたりのサイズ
+    DirectX::XMFLOAT2 font_draw_size = {};  // １文字あたりの描画サイズ
+    DirectX::XMFLOAT2 font_size = {};       // １文字あたりの切り抜きサイズ
     DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
     DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
     DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };

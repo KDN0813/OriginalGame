@@ -6,7 +6,6 @@
 #include <magic_enum.hpp>
 #endif // DEBUG
 
-
 void TextNumberComponent::Start()
 {
     // フォント用スプライト読み込み
@@ -26,7 +25,11 @@ void TextNumberComponent::Start()
             screen_height = graphics->GetScreenHeight();
         }
 
-        this->font_size = { (texture_width / screen_width) / number_count,(texture_height / screen_width) };
+        // 切り抜きサイズ設定
+        this->font_size = { (texture_width / screen_width) / number_count ,1.0f };
+
+        // 描画用サイズ設定
+        this->font_draw_size = { (texture_width / screen_width) / number_count ,(texture_height / screen_height) };
     }
 
 #ifdef _DEBUG
@@ -48,15 +51,15 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     // 描画サイズ
     const DirectX::XMFLOAT2 size = 
     {
-        this->font_size.x * static_cast<float>(Digits) * this->param.scale,
-        this->font_size.y * static_cast<float>(Digits) * this->param.scale
+        this->font_draw_size.x * static_cast<float>(Digits) * this->param.scale,
+        this->font_draw_size.y * static_cast<float>(Digits) * this->param.scale
     };
 
     this->sprite->Render(dc,
         this->param.pos,
         size,
         this->clip_pos,
-        this->font_size,
+        {0.1f,1.0f},
         this->param.angle,
         this->param.color,
         this->param.center_type
