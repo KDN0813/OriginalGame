@@ -153,11 +153,11 @@ void GamePad::Update()
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)	new_button_state |= BTN_LEFT;
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)	new_button_state |= BTN_START;
 #ifdef _DEBUG
-		if (GetAsyncKeyState(VK_LSHIFT) & 0x8000 && GetAsyncKeyState(VK_F1) & 0x8000)	new_button_state |= BTN_DEBUG_IMGUI;
-		if (GetAsyncKeyState(VK_LSHIFT) & 0x8000 && GetAsyncKeyState(VK_F2) & 0x8000)	new_button_state |= BTN_DEBUG_PRIMITIVE;
-		if (GetAsyncKeyState(VK_LSHIFT) & 0x8000 && GetAsyncKeyState(VK_F3) & 0x8000)	new_button_state |= BTN_DEBUG_RETURN_TO_TITLE;
-		if (GetAsyncKeyState(VK_LSHIFT) & 0x8000 && GetAsyncKeyState(VK_F4) & 0x8000)	new_button_state |= BTN_DEBUG_GAME_RESET;
-		if (GetAsyncKeyState(VK_LSHIFT) & 0x8000 && GetAsyncKeyState(VK_F5) & 0x8000)	new_button_state |= BTN_DEBUG_DEMO;
+		if (GetAsyncKeyState(VK_F1) & 0x8000)	new_button_state |= BTN_DEBUG_IMGUI;
+		if (GetAsyncKeyState(VK_F2) & 0x8000)	new_button_state |= BTN_DEBUG_PRIMITIVE;
+		if (GetAsyncKeyState(VK_F3) & 0x8000)	new_button_state |= BTN_DEBUG_RETURN_TO_TITLE;
+		if (GetAsyncKeyState(VK_F4) & 0x8000)	new_button_state |= BTN_DEBUG_GAME_RESET;
+		if (GetAsyncKeyState(VK_F5) & 0x8000)	new_button_state |= BTN_DEBUG_DEMO;
 #endif // _DEBUG
 
 #if 1

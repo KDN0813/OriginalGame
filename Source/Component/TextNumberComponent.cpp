@@ -1,4 +1,5 @@
 #include "Component\TextNumberComponent.h"
+#include "Graphics\Graphics.h"
 
 #ifdef _DEBUG
 #include "Debug\ImGuiHelper.h"
@@ -16,7 +17,16 @@ void TextNumberComponent::Start()
         const float texture_width = this->sprite->GetTextureWidth();
         const float texture_height = this->sprite->GetTextureHeight();
         const float number_count = 10;// ”š‚Ì”(0`9‚Ü‚Å‚Ì®”)
-        this->font_size = { texture_width / number_count,texture_height };
+        
+        float screen_width = {};
+        float screen_height = {};
+        if (Graphics::Instance graphics = Graphics::GetInstance(); graphics.Get())
+        {
+            screen_width = graphics->GetScreenWidth();
+            screen_height = graphics->GetScreenHeight();
+        }
+
+        this->font_size = { (texture_width / screen_width) / number_count,(texture_height / screen_width) };
     }
 
 #ifdef _DEBUG
@@ -30,9 +40,21 @@ void TextNumberComponent::Start()
 
 void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 {
+    // Œ…”æ“¾
+    std::string numeral_str = std::to_string(this->param.value);
+    int Digits; // Œ…”
+    Digits = static_cast<int>(numeral_str.size());
+
+    // •`‰æƒTƒCƒY
+    const DirectX::XMFLOAT2 size = 
+    {
+        this->font_size.x * static_cast<float>(Digits) * this->param.scale,
+        this->font_size.y * static_cast<float>(Digits) * this->param.scale
+    };
+
     this->sprite->Render(dc,
         this->param.pos,
-        this->display_size,
+        size,
         this->clip_pos,
         this->font_size,
         this->param.angle,
@@ -45,6 +67,7 @@ void TextNumberComponent::DrawDebugGUI()
 {
     ImGui::InputTextString("Font Name", this->param.font_name);
     ImGui::SliderFloat2("Pos", &this->param.pos.x, -1.0f, 2.0f);
+    ImGui::DragFloat("Scale", &this->param.scale, 0.05f, 0.0f, 100.0f);
     ImGui::InputInt("Value", &this->param.value);
     ImGui::SliderFloat("Angle", &this->param.angle, 0.0f, 360.0f);
     ImGui::ColorEdit4("Sprite Color", &this->param.color.x);

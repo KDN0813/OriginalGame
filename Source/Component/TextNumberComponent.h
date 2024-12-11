@@ -13,8 +13,9 @@ public:
         DirectX::XMFLOAT2 pos = { 0.0f,0.0f };
         int value = 0;  // •\Ž¦‚·‚é’l
         float angle = 0.0f;
+        float scale = 1.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
-        Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::CENTER;
+        Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
 public:
     TextNumberComponent(TextParam param) : param(param), default_param(param) {};
