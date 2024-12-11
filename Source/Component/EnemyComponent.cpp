@@ -10,6 +10,7 @@
 #include "ConstantManager.h"
 #include "Shader\ParticleSystem.h"
 #include "Camera\CameraManager.h"
+#include "System\GameData.h"
 
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
@@ -46,6 +47,12 @@ void EnemyComponent::Update(float elapsed_time)
 		// Ž€–Só‘Ô‚Ö‚Ì€”õ
 		{
 			model_component->PlayAnimation(EnemyCT::ANIMATION::DIE, false);
+		}
+
+		if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+		{
+			// ƒXƒRƒA‰ÁŽZ
+			game_data->AddScore(1);
 		}
 	}
 

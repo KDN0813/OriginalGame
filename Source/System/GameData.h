@@ -51,6 +51,7 @@ public:
     bool GetIsPause()const { return this->param.is_pause; }
     GameStatus GetGameStatus()const { return this->param.game_status; }
     void SetScore(int score) { this->param.score = score; }
+    void AddScore(int score) { this->param.score += score; }
     void SetGameElapsedTime(float game_elapsed_time) { this->param.game_end_timer = game_elapsed_time; }
     void SetIsLoading(bool is_loading) { this->param.is_loading = is_loading; }
     void SetIsPause(bool is_pause) { this->param.is_pause = is_pause; }
