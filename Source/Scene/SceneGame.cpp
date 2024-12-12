@@ -109,7 +109,7 @@ void SceneGame::Initialize()
 			auto death_camera = object_manager.Create("Death Camera");
 			if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 			{
-				auto camera = death_camera->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
+				death_camera->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
 			}
 		}
 
@@ -150,7 +150,6 @@ void SceneGame::Initialize()
 
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);
-				game_object->SetStage(stage);
 				game_object->SetStage(stage);
 			}
 		}
