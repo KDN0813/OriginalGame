@@ -199,6 +199,9 @@
     <Filter Include="Source\Object\Constant\Enemy">
       <UniqueIdentifier>{a22b5090-e3eb-4c64-a0b3-639e8e8393d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Object\Constant\Stage">
+      <UniqueIdentifier>{5d9820b5-b748-48a1-9156-6f76bedf40dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -531,6 +534,9 @@
     <ClInclude Include="Source\Object\Constant\EnemyConstant.h">
       <Filter>Source\Object\Constant\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Object\Constant\StageConstant.h">
+      <Filter>Source\Object\Constant\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -787,6 +793,9 @@
     </ClCompile>
     <ClCompile Include="Source\Object\Constant\EnemyConstant.cpp">
       <Filter>Source\Object\Constant\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Constant\StageConstant.cpp">
+      <Filter>Source\Object\Constant\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

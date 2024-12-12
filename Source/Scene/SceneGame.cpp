@@ -25,6 +25,7 @@
 // object定数
 #include "Object\Constant\PlayerConstant.h"
 #include "Object\Constant\EnemyConstant.h"
+#include "Object\Constant\StageConstant.h"
 
 #include "System/MyMath/MyMathf.h"
 #include "Collision/Collision.h"
@@ -156,27 +157,7 @@ void SceneGame::Initialize()
 		}
 
 		// ステージ
-		{
-			auto stage = object_manager.Create("Stage");
-			auto model = stage->AddComponent<ModelComponent>("Data/Model/Stage/Stage_3.mdl");
-			//model->SetTileCount(150.0f);
-			// トランスフォーム設定
-			{
-				Transform3DComponent::Transform3DParam param{};
-				const float scale = 1.0f;
-				param.local_scale = DirectX::XMFLOAT3(scale, scale, scale);
-				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-				auto transform = stage->AddComponent<Transform3DComponent>(param);
-			}
-			// シェーダー設定
-			auto shader_component =
-				stage->AddComponent<ModelShaderComponent>(model_shader.get());
-
-			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
-			{
-				game_object->SetStage(stage);
-			}
-		}
+		const auto& stage = StageConstant::CreateStage(object_manager.Create("Stage"));
 
 		// スカイボックス
 		{
@@ -240,6 +221,7 @@ void SceneGame::Initialize()
 
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);
+				game_object->SetStage(stage);
 			}
 		}
 
