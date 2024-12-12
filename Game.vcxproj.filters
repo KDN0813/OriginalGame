@@ -193,6 +193,12 @@
     <Filter Include="Source\Object\Constant">
       <UniqueIdentifier>{cf47183a-e14f-41f7-ae39-329f44eef547}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Object\Constant\Player">
+      <UniqueIdentifier>{097c5bcc-1c75-4254-ad56-35fdabb47596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Constant\Enemy">
+      <UniqueIdentifier>{a22b5090-e3eb-4c64-a0b3-639e8e8393d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -520,7 +526,10 @@
       <Filter>Source\StateMachine\UI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Object\Constant\PlayerConstant.h">
-      <Filter>Source\Object\Constant</Filter>
+      <Filter>Source\Object\Constant\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\Constant\EnemyConstant.h">
+      <Filter>Source\Object\Constant\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -774,7 +783,10 @@
       <Filter>Source\StateMachine\UI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Object\Constant\PlayerConstant.cpp">
-      <Filter>Source\Object\Constant</Filter>
+      <Filter>Source\Object\Constant\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Constant\EnemyConstant.cpp">
+      <Filter>Source\Object\Constant\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

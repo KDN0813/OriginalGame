@@ -33,9 +33,6 @@ private:
 
     // プレイヤーとエネミーの当たり判定
     void PlayerVsEnemy();
-
-    // エネミーオブジェクトを作成する
-    void CreateEnemy(const std::shared_ptr<Object>& enemy);
 private:
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
