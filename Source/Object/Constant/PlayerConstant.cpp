@@ -3,7 +3,6 @@
 
 #include "Camera\CameraManager.h"
 #include "Shader\ModelShader.h"
-#include "Object\GameObject.h"
 
 #include "Component/PlayerComponent.h"
 #include "Component/ModelComponent.h"
@@ -20,7 +19,7 @@
 
 #include "StateMachine\PlayerStateDerived.h"
 
-void PlayerConstant::CreatePlayer(const std::shared_ptr<Object>& player)
+const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_ptr<Object>& player)
 {
 	// コリジョンに設定するコンポーネントは事前に作成しておく
 	std::shared_ptr<PlayerComponent> player_component;// プレイヤーコンポーネント
@@ -166,8 +165,5 @@ void PlayerConstant::CreatePlayer(const std::shared_ptr<Object>& player)
 		}
 	}
 
-	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
-	{
-		game_object->SetPlayer(player);
-	}
+	return player;
 }

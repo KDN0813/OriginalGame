@@ -24,5 +24,5 @@ public:
     };
 
 public:
-    static void CreatePlayer(const std::shared_ptr<Object>& object);
+    static const std::shared_ptr<Object>& CreatePlayer(const std::shared_ptr<Object>& object);
 };

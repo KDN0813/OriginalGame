@@ -191,7 +191,7 @@ void SceneGame::Initialize()
 		}
 
 		// プレイヤー
-		PlayerConstant::CreatePlayer(object_manager.Create("Player"));
+		const auto& player = PlayerConstant::CreatePlayer(object_manager.Create("Player"));
 
 		// デスカメラ
 		{
@@ -244,6 +244,12 @@ void SceneGame::Initialize()
 			param.loop = true;
 			param.filename = "Data/Audio/BGM.wav";
 			audio->Play(param);
+		}
+
+		// ゲームオブジェクト設定
+		if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+		{
+			game_object->SetPlayer(player);
 		}
 	}
 }
