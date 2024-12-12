@@ -2,6 +2,8 @@
 #include "Object\Object.h"
 
 #include "Camera\CameraManager.h"
+#include "Shader\ModelShader.h"
+#include "Object\GameObject.h"
 
 #include "Component/PlayerComponent.h"
 #include "Component/ModelComponent.h"
@@ -13,6 +15,7 @@
 #include "Component/GravityComponent.h"
 #include "Component/ModelShaderComponent.h"
 #include "Component/CameraControllerComponent.h"
+#include "Component\CameraComponent.h"
 #include "Component/CircleCollisionComponent.h"
 
 #include "StateMachine\PlayerStateDerived.h"
@@ -64,8 +67,9 @@ void PlayerConstant::CreatePlayer(const std::shared_ptr<Object>& player)
 		player_component = player->AddComponent<PlayerComponent>(PlayerComponent::PlayerParam());
 	}
 	// シェーダー設定
+	if (ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())
 	{
-		auto shader_component = player->AddComponent<ModelShaderComponent>(model_shader.get());
+			auto shader_component = player->AddComponent<ModelShaderComponent>(model_shader.Get());
 	}
 	// 重力
 	{
@@ -160,5 +164,10 @@ void PlayerConstant::CreatePlayer(const std::shared_ptr<Object>& player)
 				}
 			}
 		}
+	}
+
+	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+	{
+		game_object->SetPlayer(player);
 	}
 }

@@ -15,6 +15,7 @@
 #include "Component/CameraComponent.h"
 
 InstancingModelShader::InstancingModelShader()
+	:Singleton(this)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (!graphics.Get()) return;

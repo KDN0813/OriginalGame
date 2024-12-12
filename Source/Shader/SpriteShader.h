@@ -3,11 +3,12 @@
 #include <wrl.h>
 #include <vector>
 #include <memory>
+#include "System\ClassBase\Singleton.h"
 #include "Shader/Shader.h"
 
 class BaseSpriteComponent;
 
-class SpriteShader : public Shader
+class SpriteShader : public Shader, public Singleton<SpriteShader>
 {
 public:
     SpriteShader();

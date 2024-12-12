@@ -12,6 +12,7 @@
 #include "Component/CameraComponent.h"
 
 ModelShader::ModelShader()
+	:Singleton(this)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (!graphics.Get()) return;

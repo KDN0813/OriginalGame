@@ -2,6 +2,7 @@
 #include <memory>
 #include <wrl.h>
 #include <vector>
+#include "System\ClassBase\Singleton.h"
 #include "Shader.h"
 #include "Graphics/RenderContext.h"
 #include "Shader\LightParam.h"
@@ -9,7 +10,7 @@
 class ModelComponent;
 class ModelShaderComponent;
 
-class ModelShader : public Shader
+class ModelShader : public Shader, public Singleton<ModelShader>
 {
 private:
 	static const int MaxBones = 128;

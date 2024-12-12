@@ -1,7 +1,7 @@
 #include "PlayerStateDerived.h"
 #include "Input/Input.h"
 #include "Object/Object.h"
-#include "ConstantManager.h"
+#include "Object\Constant\PlayerConstant.h"
 #include "Audio\Audio.h"
 
 #include "Component/StateMachineComponent.h"
@@ -24,7 +24,7 @@ void PlayerIdleState::Staet()
     if (!owner) return;
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
-    animation->PlayAnimation(PlayerCT::ANIMATION::IDLE, true, 0.2f);
+    animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.2f);
 }
 
 void PlayerIdleState::Update(float elapsed_time)
@@ -73,7 +73,7 @@ void PlayerMoveState::Staet()
     if (!owner) return;
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
-    animation->PlayAnimation(PlayerCT::ANIMATION::MOVE_FWD, true, 0.2f);
+    animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.2f);
 }
 
 void PlayerMoveState::Update(float elapsed_time)
@@ -122,7 +122,7 @@ void PlayerAttackState::Staet()
     // アニメーションの再生
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
-        animation->PlayAnimation(PlayerCT::ANIMATION::ATTACK01, false, 0.2f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, false, 0.2f);
 
     // SE再生
     if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
@@ -197,7 +197,7 @@ void PlayerSpinAttackState::Staet()
     // アニメーションの再生
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
-        animation->PlayAnimation(PlayerCT::ANIMATION::SPIN_ATTACK, false, 0.2f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK, false, 0.2f);
 
     // SE再生
     if (Audio::Instance audio = Audio::GetInstance(); audio.Get())

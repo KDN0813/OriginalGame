@@ -1,6 +1,7 @@
 #pragma once
 #include <d3d11.h>
 #include <map>
+#include "System\ClassBase\Singleton.h"
 #include "Shader/Shader.h"
 #include "Model/InstancingModelResource.h"
 #include "Model/ModelResource.h"
@@ -11,7 +12,7 @@ class InstancingModelShaderComponent;
 class InstancedModelWithAnimationComponent;
 class Transform3DComponent;
 
-class InstancingModelShader : public Shader
+class InstancingModelShader : public Shader , public Singleton<InstancingModelShader>
 {
 private:
 	struct SceneConstantBuffer

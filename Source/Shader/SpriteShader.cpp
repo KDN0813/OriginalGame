@@ -9,6 +9,7 @@
 #include "Component/BaseSpriteComponent.h"
 
 SpriteShader::SpriteShader()
+	:Singleton(this)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
 	if (graphics.Get() == nullptr)return;
