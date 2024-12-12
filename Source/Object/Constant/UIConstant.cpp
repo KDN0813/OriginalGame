@@ -3,6 +3,7 @@
 #include "Shader\SpriteShader.h"
 
 #include "Component\TextNumberComponent.h"
+#include "Component\SpriteComponent.h"
 #include "Component\StateMachineComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
@@ -65,4 +66,22 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 	}
 
 	return sprite_shader;
+}
+
+const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Object>& pause_object)
+{
+	// スプライト読み込み
+	{
+		SpriteComponent::SpriteParam param{};
+		param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+		param.filename = "Data/Sprite/Pause.png";
+		auto sprite = pause_object->AddComponent<SpriteComponent>(param);
+
+		if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
+		{
+			sprite_shader->AddSprite(sprite);
+		}
+	}
+
+	return pause_object;
 }

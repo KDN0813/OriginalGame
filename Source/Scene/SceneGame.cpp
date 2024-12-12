@@ -96,34 +96,10 @@ void SceneGame::Initialize()
 		UIConstant::CreateGameTimerUI(object_manager.Create("GameTimer"));
 
 		// ポーズ画面用オブジェクト作成
-		{
-			this->pause_object = object_manager.Create("pause_object");
-
-			// スプライト読み込み
-			{
-				SpriteComponent::SpriteParam param{};
-				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-				param.filename = "Data/Sprite/Pause.png";
-				auto sprite = pause_object->AddComponent<SpriteComponent>(param);
-				this->sprite_shader->AddSprite(sprite);
-			}
-		}
+		this->pause_object = UIConstant::CreatePause(object_manager.Create("pause_object"));
 
 		// ステージ
 		const auto& stage = StageConstant::CreateStage(object_manager.Create("Stage"));
-
-		// スカイボックス
-		{
-			auto sky_box = object_manager.Create("Sky Box");
-
-			// テクスチャ
-			//{
-			//	SpriteComponent::SpriteParam param{};
-			//	param.filename = "";
-
-			//	auto sprite = sky_box->AddComponent<SpriteComponent>(param);
-			//}
-		}
 
 		// プレイヤー
 		const auto& player = PlayerConstant::CreatePlayer(object_manager.Create("Player"));
@@ -174,6 +150,7 @@ void SceneGame::Initialize()
 
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);
+				game_object->SetStage(stage);
 				game_object->SetStage(stage);
 			}
 		}
