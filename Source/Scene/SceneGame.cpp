@@ -93,31 +93,7 @@ void SceneGame::Initialize()
 		UIConstant::CreateScoreUI(object_manager.Create("Score"));
 
 		// ゲーム時間表示オブジェクト
-		{
-			auto score_object = object_manager.Create("GameTimer");
-
-			// テキスト表示
-			{
-				TextNumberComponent::TextParam param{};
-				param.pos = { 0.45f,0.1f };
-				param.color = { 1.0f,0.0f,0.0f ,1.0f };
-				param.center_type = Sprite::CENTER_TYPE::CENTER;
-				// ファイルパス設定する
-				param.font_name = "Data/Sprite/Numbers.png";
-				auto text_number = score_object->AddComponent<TextNumberComponent>(param);
-
-				sprite_shader->AddSprite(text_number);
-			}
-
-			// 更新処理
-			{
-				auto state_machine = score_object->AddComponent<StateMachineComponent>();
-
-				state_machine->RegisterState<EndTimerUIDefaultState>();
-
-				state_machine->SetDefaultState("EndTimerUIDefaultState");
-			}
-		}
+		UIConstant::CreateGameTimerUI(object_manager.Create("GameTimer"));
 
 		// ポーズ画面用オブジェクト作成
 		{
@@ -183,9 +159,9 @@ void SceneGame::Initialize()
 
 		// 敵
 		{
-#ifdef _DEBUG
 			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
+#ifdef _DEBUG
 				for (int i = 0; i < 100; ++i)
 #else
 				for (int i = 0; i < this->enemy_max; ++i)

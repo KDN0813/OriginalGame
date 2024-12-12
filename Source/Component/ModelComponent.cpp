@@ -76,6 +76,7 @@ void ModelComponent::Update(float elapsed_time)
 		}
 	}
 
+#ifdef _DEBUG
 	for (size_t i = 0; i < this->AABB_corners_vec.size(); ++i)
 	{
 		DirectX::BoundingBox bounding_box;
@@ -85,6 +86,7 @@ void ModelComponent::Update(float elapsed_time)
 		bounding_box.GetCorners(corners);
 		this->AABB_corners_vec[i].SetCenter(corners);
 	}
+#endif // _DEBUG
 
 	UpdateTransform(World_transform);
 }

@@ -82,6 +82,8 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     }
 }
 
+#ifdef _DEBUG
+
 void TextNumberComponent::DrawDebugGUI()
 {
     ImGui::InputTextString("Font Name", this->param.font_name);
@@ -105,3 +107,5 @@ void TextNumberComponent::DrawDebugGUI()
         this->param.center_type = static_cast<Sprite::CENTER_TYPE>(center_type_index);
     }
 }
+
+#endif // DEBUG
