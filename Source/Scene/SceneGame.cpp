@@ -26,6 +26,7 @@
 #include "Object\Constant\PlayerConstant.h"
 #include "Object\Constant\EnemyConstant.h"
 #include "Object\Constant\StageConstant.h"
+#include "Object\Constant\UIConstant.h"
 
 #include "System/MyMath/MyMathf.h"
 #include "Collision/Collision.h"
@@ -89,31 +90,7 @@ void SceneGame::Initialize()
 	// オブジェクト作成
 	{
 		// スコア表示用オブジェクト
-		{
-			auto score_object = object_manager.Create("Score");
-
-			// テキスト表示
-			{
-				TextNumberComponent::TextParam param{};
-				param.pos = { 0.45f,-0.03f };
-				param.color = { 1.0f,0.0f,0.0f ,1.0f };
-				param.center_type = Sprite::CENTER_TYPE::CENTER;
-				// ファイルパス設定する
-				param.font_name = "Data/Sprite/Numbers.png";
-				auto text_number = score_object->AddComponent<TextNumberComponent>(param);
-
-				sprite_shader->AddSprite(text_number);
-			}
-
-			// 更新処理
-			{
-				auto state_machine = score_object->AddComponent<StateMachineComponent>();
-
-				state_machine->RegisterState<ScoreUIDefaultState>();
-
-				state_machine->SetDefaultState("ScoreUIDefaultState");
-			}
-		}
+		UIConstant::CreateScoreUI(object_manager.Create("Score"));
 
 		// ゲーム時間表示オブジェクト
 		{

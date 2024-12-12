@@ -202,6 +202,9 @@
     <Filter Include="Source\Object\Constant\Stage">
       <UniqueIdentifier>{5d9820b5-b748-48a1-9156-6f76bedf40dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Object\Constant\UIConstat">
+      <UniqueIdentifier>{938c8ce1-00a3-4c6d-9125-0501f6e1772c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -537,6 +540,9 @@
     <ClInclude Include="Source\Object\Constant\StageConstant.h">
       <Filter>Source\Object\Constant\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Object\Constant\UIConstant.h">
+      <Filter>Source\Object\Constant\UIConstat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -796,6 +802,9 @@
     </ClCompile>
     <ClCompile Include="Source\Object\Constant\StageConstant.cpp">
       <Filter>Source\Object\Constant\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Constant\UIConstant.cpp">
+      <Filter>Source\Object\Constant\UIConstat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
