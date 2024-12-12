@@ -4,6 +4,8 @@
 #include "Object\Constant\PlayerConstant.h"
 #include "Audio\Audio.h"
 
+#include "Object\Constant\PlayerConstant.h"
+
 #include "Component/StateMachineComponent.h"
 #include "Component/ModelAnimationControlComponent.h"
 #include "Component/MovementComponent.h"
@@ -140,7 +142,7 @@ void PlayerAttackState::Staet()
         player->SetInputMoveValidityFlag(false);
 
     // 攻撃判定オブジェクトを有効にする
-    const auto& attack_object = owner->FindChildObject(MyHash("AttackObject"));  // 子オブジェクト(攻撃用オブジェクト)取得
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
@@ -176,7 +178,7 @@ void PlayerAttackState::End()
         player->SetInputMoveValidityFlag(true);
 
     // 攻撃判定オブジェクトを無効にする
-    const auto& attack_object = owner->FindChildObject(MyHash("AttackObject"));  // 子オブジェクト(攻撃用オブジェクト)取得
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto child_collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
@@ -215,7 +217,7 @@ void PlayerSpinAttackState::Staet()
         player->SetInputMoveValidityFlag(false);
 
     // 攻撃判定オブジェクトを有効にする
-    const auto& attack_object = owner->FindChildObject(MyHash("SpinAttackObject"));  // 子オブジェクト(攻撃用オブジェクト)取得
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
@@ -251,7 +253,7 @@ void PlayerSpinAttackState::End()
         player->SetInputMoveValidityFlag(true);
 
     // 攻撃判定オブジェクトを無効にする
-    const auto& attack_object = owner->FindChildObject(MyHash("SpinAttackObject"));  // 子オブジェクト(攻撃用オブジェクト)取得
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto child_collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)

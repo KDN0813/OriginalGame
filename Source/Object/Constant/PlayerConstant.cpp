@@ -19,6 +19,11 @@
 
 #include "StateMachine\PlayerStateDerived.h"
 
+const MyHash PlayerConstant::MODEL_FILENAME = MyHash("Data/Debug/Model/Player/Player.mdl");
+const MyHash PlayerConstant::PLAYER_CAMERA_NAME = MyHash("PlayerCamera");
+const MyHash PlayerConstant::ATTACK_OBJECT_NAME = MyHash("AttackObject");
+const MyHash PlayerConstant::SPIN_ATTACK_OBJECT_NAME = MyHash("SpinAttackObject");
+
 const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_ptr<Object>& player)
 {
 	// コリジョンに設定するコンポーネントは事前に作成しておく
@@ -26,7 +31,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 
 	// モデル設定
 	{
-		auto model = player->AddComponent<ModelComponent>("Data/Debug/Model/Player/Player.mdl");
+		auto model = player->AddComponent<ModelComponent>(MODEL_FILENAME.GetString().c_str());
 	}
 	// アニメーション設定
 	{
@@ -88,7 +93,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		// プレイヤーカメラ
 		{
 			std::shared_ptr<Object> player_camera_object = player->CreateChildObject();
-			player_camera_object->SetName("PlayerCamera");
+			player_camera_object->SetName(PLAYER_CAMERA_NAME.GetString().c_str());
 			// カメラ設定
 			{
 				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
@@ -110,7 +115,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		// プレイヤーの攻撃判定用オブジェクト
 		{
 			std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
-			player_attack_object->SetName("AttackObject");
+			player_attack_object->SetName(ATTACK_OBJECT_NAME.GetString().c_str());
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
@@ -140,7 +145,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		// 回転攻撃用当たり判定オブジェクト
 		{
 			std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
-			player_attack_object->SetName("SpinAttackObject");
+			player_attack_object->SetName(SPIN_ATTACK_OBJECT_NAME.GetString().c_str());
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};

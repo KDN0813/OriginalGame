@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include <string>
+#include "System\MyHash.h"
 #include "Model/ModelCommonData.h"
 
 class Object;
@@ -23,6 +25,10 @@ public:
         SPIN_ATTACK,
     };
 
+    static const MyHash MODEL_FILENAME;
+    static const MyHash PLAYER_CAMERA_NAME;
+    static const MyHash ATTACK_OBJECT_NAME;
+    static const MyHash SPIN_ATTACK_OBJECT_NAME;
 public:
     static const std::shared_ptr<Object>& CreatePlayer(const std::shared_ptr<Object>& object);
 };
