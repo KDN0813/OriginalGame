@@ -175,6 +175,7 @@
     <ClInclude Include="Source\Model\ModelCommonData.h" />
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Model\ModelResourceManager.h" />
+    <ClInclude Include="Source\Object\Constant\PlayerConstant.h" />
     <ClInclude Include="Source\Object\GameObject.h" />
     <ClInclude Include="Source\Object\Object.h" />
     <ClInclude Include="Source\Scene\SceneResult.h" />
@@ -275,6 +276,7 @@
     <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp" />
     <ClCompile Include="Source\Model\ModelResource.cpp" />
     <ClCompile Include="Source\Model\ModelResourceManager.cpp" />
+    <ClCompile Include="Source\Object\Constant\PlayerConstant.cpp" />
     <ClCompile Include="Source\Object\GameObject.cpp" />
     <ClCompile Include="Source\Object\Object.cpp" />
     <ClCompile Include="Source\Scene\SceneResult.cpp" />

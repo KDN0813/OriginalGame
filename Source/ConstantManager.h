@@ -2,25 +2,6 @@
 #include "System/ClassBase/Singleton.h"
 #include "Model/ModelCommonData.h"
 
-class PlayerCT
-{
-public:
-    enum ANIMATION : AnimeIndex
-    {
-        IDLE = 0,
-        MOVE_FWD,
-        MOVE_BWD,
-        MOVE_LFT,
-        MOVE_RGT,
-        DAMAGE,
-        DEAD,
-        DEAD_STAY,
-        ATTACK01,
-        ATTACK02,
-        SPIN_ATTACK,
-    };
-};
-
 class EnemyCT
 {
 public:

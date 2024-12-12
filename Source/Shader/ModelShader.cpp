@@ -234,11 +234,11 @@ void ModelShader::Draw(ID3D11DeviceContext* dc, ModelComponent* model)
 		const ModelResource::Mesh& mesh = resource->GetMeshes()[mesh_index];
 
 		// フラスタムカリングを行う
-		if (!BoundingFrustum.Intersects(model->GetBoundingBox(mesh_index)))
-		{
-			// 画面外ならスキップする
-			continue;
-		}
+		//if (!BoundingFrustum.Intersects(model->GetBoundingBox(mesh_index)))
+		//{
+		//	// 画面外ならスキップする
+		//	continue;
+		//}
 
 		// メッシュ用定数バッファ更新
 		MeshConstantBuffer mesh_CB;

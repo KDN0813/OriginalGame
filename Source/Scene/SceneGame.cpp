@@ -18,9 +18,12 @@
 #endif // _DEBUG
 
 #include "Input/Input.h"
-#include "ConstantManager.h"
 #include "Input/GamePad.h"
 #include "System/GameData.h"
+#include "ConstantManager.h"
+
+// object定数
+#include "Object\Constant\PlayerConstant.h"
 
 #include "System/MyMath/MyMathf.h"
 #include "Collision/Collision.h"
@@ -154,13 +157,13 @@ void SceneGame::Initialize()
 		// ステージ
 		{
 			auto stage = object_manager.Create("Stage");
-			auto model = stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
-			model->SetTileCount(150.0f);
+			auto model = stage->AddComponent<ModelComponent>("Data/Model/Stage/Stage_3.mdl");
+			//model->SetTileCount(150.0f);
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				const float scale = 600.0f;
-				param.local_scale = DirectX::XMFLOAT3(scale, 1.0f, scale);
+				const float scale = 1.0f;
+				param.local_scale = DirectX::XMFLOAT3(scale, scale, scale);
 				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 				auto transform = stage->AddComponent<Transform3DComponent>(param);
 			}
@@ -201,7 +204,7 @@ void SceneGame::Initialize()
 			// アニメーション設定
 			{
 				ModelAnimationControlComponent::InitAnimeParam param{};
-				param.init_anime_index = PlayerCT::IDLE;
+				param.init_anime_index = PlayerConstant::IDLE;
 				param.init_anime_loop = true;
 				auto model_animation = player->AddComponent<ModelAnimationControlComponent>(param);
 			}
@@ -391,7 +394,7 @@ void SceneGame::Initialize()
 		// 敵
 		{
 #ifdef _DEBUG
-			for (int i = 0; i < 500; ++i)
+			for (int i = 0; i < 100; ++i)
 #else
 			for (int i = 0; i < this->enemy_max; ++i)
 #endif // _DEBUG

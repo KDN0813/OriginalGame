@@ -158,7 +158,7 @@ int Framework::Run()
 		else
 		{
 			timer.Tick();
-			if (!IsWindowActive(hWnd)) continue;
+			//if (!IsWindowActive(hWnd)) continue;
 
 			if (IsPressedPauseKey())
 			{

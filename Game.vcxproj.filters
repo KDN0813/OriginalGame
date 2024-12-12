@@ -190,6 +190,9 @@
     <Filter Include="Source\StateMachine\UI">
       <UniqueIdentifier>{b0abbb1b-b0b6-4055-a1bc-2457b22e4998}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Object\Constant">
+      <UniqueIdentifier>{cf47183a-e14f-41f7-ae39-329f44eef547}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -516,6 +519,9 @@
     <ClInclude Include="Source\StateMachine\UIStateDerived.h">
       <Filter>Source\StateMachine\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Object\Constant\PlayerConstant.h">
+      <Filter>Source\Object\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -766,6 +772,9 @@
     </ClCompile>
     <ClCompile Include="Source\StateMachine\UIStateDerived.cpp">
       <Filter>Source\StateMachine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Constant\PlayerConstant.cpp">
+      <Filter>Source\Object\Constant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
