@@ -19,7 +19,6 @@
 
 #include "StateMachine\PlayerStateDerived.h"
 
-const MyHash PlayerConstant::MODEL_FILENAME = MyHash("Data/Debug/Model/Player/Player.mdl");
 const MyHash PlayerConstant::PLAYER_CAMERA_NAME = MyHash("PlayerCamera");
 const MyHash PlayerConstant::ATTACK_OBJECT_NAME = MyHash("AttackObject");
 const MyHash PlayerConstant::SPIN_ATTACK_OBJECT_NAME = MyHash("SpinAttackObject");
@@ -31,7 +30,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 
 	// モデル設定
 	{
-		auto model = player->AddComponent<ModelComponent>(MODEL_FILENAME.GetString().c_str());
+		auto model = player->AddComponent<ModelComponent>("Data/Debug/Model/Player/Player.mdl");
 	}
 	// アニメーション設定
 	{
