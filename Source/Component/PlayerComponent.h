@@ -48,6 +48,7 @@ private:
 #ifdef _DEBUG
 public:
     void DrawDebugGUI() override;
+    static float debug_move_speed;    // DebugŽž‚ÌˆÚ“®‘¬“x
 #endif // _DEBUG
 
 #ifdef RELEASE_DEBUG

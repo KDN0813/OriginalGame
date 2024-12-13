@@ -67,7 +67,9 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	}
 	// プレイヤーコンポーネント作成
 	{
-		player_component = player->AddComponent<PlayerComponent>(PlayerComponent::PlayerParam());
+		PlayerComponent::PlayerParam param{};
+		param.move_speed = 15.0f;
+		player_component = player->AddComponent<PlayerComponent>(param);
 	}
 	// シェーダー設定
 	if (ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())

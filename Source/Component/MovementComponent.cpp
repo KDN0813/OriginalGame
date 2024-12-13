@@ -5,7 +5,8 @@
 #include "Collision/Collision.h"
 #ifdef _DEBUG
 #include "Debug/DebugManager.h"
-
+#include "Input\Input.h"
+#include "Component/PlayerComponent.h"
 #endif // _DEBUG
 
 #include "Component/TransformComponent.h"
@@ -34,7 +35,17 @@ void MovementComponent::Update(float elapsed_time)
 	MYVECTOR3 Acceleration = this->param.acceleration;
 	float lengthXZ_sq = Acceleration.LengthXZSq();
 	float max_accelerationXZ_sq = this->param.max_accelerationXZ * this->param.max_accelerationXZ;
-	
+#ifdef _DEBUG
+	if (Input::Instance input = Input::GetInstance(); input.Get())
+	{
+		if (input->GetGamePad().GetTriggerL())
+		{
+			max_accelerationXZ_sq = PlayerComponent::debug_move_speed * PlayerComponent::debug_move_speed;
+		}
+	}
+#endif // _DEBUG
+
+
 	// ë¨ìxåvéZ
 	if (max_accelerationXZ_sq < lengthXZ_sq)
 	{

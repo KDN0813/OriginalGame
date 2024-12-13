@@ -14,6 +14,10 @@
 #include "Shader\ParticleSystem.h"
 #endif // DEBUG
 
+#ifdef _DEBUG
+float PlayerComponent::debug_move_speed = 100.0f;
+#endif // DEBUG
+
 PlayerComponent::~PlayerComponent()
 {
     // ‘Ì—Í‚ªŽÀ‘•‚Å‚«‚½‚çíœ‚·‚é
@@ -65,7 +69,17 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 
     if (auto movement = owner->EnsureComponentValid<MovementComponent>(movement_Wptr))
     {
-        movement->AddAccelerationXZ(vx * movement->GetMaxAccelerationXZ(), vz * movement->GetMaxAccelerationXZ());
+#ifdef _DEBUG
+        if (Input::Instance input = Input::GetInstance(); input.Get())
+        {
+            if (input->GetGamePad().GetTriggerL())
+            {
+                speed = debug_move_speed;
+            }
+        }
+#endif // DEBUG
+
+        movement->AddAccelerationXZ(vx * speed, vz * speed);
     }
 }
 
@@ -133,6 +147,7 @@ void PlayerComponent::DrawDebugGUI()
 {
     ImGui::InputFloat("move_speed", &this->param.move_speed);
     ImGui::Checkbox("Input Move Validity Flag", &this->param.input_move_validity_flag);
+    ImGui::InputFloat("Debug Move Speed", &this->debug_move_speed);
 }
 
 #endif // DEBUG
