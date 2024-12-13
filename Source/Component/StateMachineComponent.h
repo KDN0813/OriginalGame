@@ -30,7 +30,7 @@ public:
     // ステート変更
     void ChangeState(State::ChangeState& chage_state);
     // デフォルトステートの設定
-    void SetDefaultState(std::string default_name);
+    void SetDefaultState(MyHash default_name);
 
     // ステートを名前検索する
     State* FindState(MyHash name);

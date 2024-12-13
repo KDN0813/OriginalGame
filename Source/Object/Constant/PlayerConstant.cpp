@@ -49,7 +49,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		state_machine->RegisterState<PlayerAttackState>();
 		state_machine->RegisterState<PlayerSpinAttackState>();
 
-		state_machine->SetDefaultState("PlayerIdleState");	// デフォルトステートの設定
+		state_machine->SetDefaultState(PlayerIdleState::STATE_NAME);	// デフォルトステートの設定
 	}
 
 	// トランスフォーム設定

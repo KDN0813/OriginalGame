@@ -16,9 +16,9 @@ const MyHash PlayerIdleState::STATE_NAME = MyHash("PlayerIdleState");
 PlayerIdleState::PlayerIdleState()
     : State(PlayerIdleState::STATE_NAME)
 {
-    this->change_move_state.change_state_name = MyHash("PlayerMoveState");
-    this->change_attack_state.change_state_name = MyHash("PlayerAttackState");
-    this->change_spin_attack_state.change_state_name = MyHash("SpinAttackState");
+    this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
+    this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
 }
 
 void PlayerIdleState::Staet()
@@ -66,9 +66,9 @@ const MyHash PlayerMoveState::STATE_NAME = MyHash("PlayerMoveState");
 PlayerMoveState::PlayerMoveState()
     : State(PlayerMoveState::STATE_NAME)
 {
-    this->change_idle_state.change_state_name = MyHash("PlayerIdleState");
-    this->change_attack_state.change_state_name = MyHash("PlayerAttackState");
-    this->change_spin_attack_state.change_state_name = MyHash("SpinAttackState");
+    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
+    this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
 }
 
 void PlayerMoveState::Staet()
@@ -116,7 +116,7 @@ const MyHash PlayerAttackState::STATE_NAME = MyHash("PlayerAttackState");
 PlayerAttackState::PlayerAttackState()
     : State(PlayerAttackState::STATE_NAME)
 {
-    this->change_idle_state.change_state_name = MyHash("PlayerIdleState");
+    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
 }
 
 void PlayerAttackState::Staet()
@@ -188,11 +188,11 @@ void PlayerAttackState::End()
         child_collision->SetIsActive(false);  // ƒRƒŠƒWƒ‡ƒ“‚ð–³Œø‚É‚·‚é
 }
 
-const MyHash PlayerSpinAttackState::STATE_NAME = MyHash("SpinAttackState");
+const MyHash PlayerSpinAttackState::STATE_NAME = MyHash("PlayerSpinAttackState");
 PlayerSpinAttackState::PlayerSpinAttackState()
     :State(PlayerSpinAttackState::STATE_NAME)
 {
-    this->change_idle_state.change_state_name = MyHash("PlayerIdleState");
+    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
 }
 
 void PlayerSpinAttackState::Staet()

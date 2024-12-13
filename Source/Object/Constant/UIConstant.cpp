@@ -32,7 +32,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 
 		state_machine->RegisterState<ScoreUIDefaultState>();
 
-		state_machine->SetDefaultState("ScoreUIDefaultState");
+		state_machine->SetDefaultState(ScoreUIDefaultState::STATE_NAME);
 	}
 
 	return score_object;
@@ -62,7 +62,7 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 
 		state_machine->RegisterState<EndTimerUIDefaultState>();
 
-		state_machine->SetDefaultState("EndTimerUIDefaultState");
+		state_machine->SetDefaultState(EndTimerUIDefaultState::STATE_NAME);
 	}
 
 	return sprite_shader;

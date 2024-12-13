@@ -45,9 +45,9 @@ void StateMachineComponent::ChangeState(State::ChangeState& chage_state)
 	this->current_state->Staet();
 }
 
-void StateMachineComponent::SetDefaultState(std::string default_name)
+void StateMachineComponent::SetDefaultState(MyHash default_name)
 {
-	this->default_state.change_state_name = MyHash(default_name);
+	this->default_state.change_state_name = default_name;
 }
 
 State* StateMachineComponent::FindState(MyHash name)
