@@ -39,11 +39,18 @@ void GameObject::DebugDrawGUI()
         if (ImGui::CollapsingHeader("Stage##GameObject"))
         {
             std::string object_name = "Not Object";
-            if (std::shared_ptr<Object> stage = this->stage_Wptr.lock())
+            if (std::shared_ptr<Object> stage = this->stage_foor_Wptr.lock())
             {
                 object_name = stage->GetName();
             }
-            ImGui::InputTextString("Object Name##GameObjectStage", object_name);
+            ImGui::InputTextString("Object Name##GameObjectStageFoor", object_name);
+
+            object_name = "Not Object";
+            if (std::shared_ptr<Object> stage = this->stage_wall_Wptr.lock())
+            {
+                object_name = stage->GetName();
+            }
+            ImGui::InputTextString("Object Name##GameObjectStageWall", object_name);
         }
 
         if (ImGui::CollapsingHeader("Enemy##GameObject"))

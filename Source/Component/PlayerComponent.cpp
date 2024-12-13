@@ -65,7 +65,7 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 
     if (auto movement = owner->EnsureComponentValid<MovementComponent>(movement_Wptr))
     {
-        movement->AddAccelerationXZ(vx * speed, vz * speed);
+        movement->AddAccelerationXZ(vx * movement->GetMaxAccelerationXZ(), vz * movement->GetMaxAccelerationXZ());
     }
 }
 

@@ -159,22 +159,22 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 	GameObject::Instance game_object = GameObject::GetInstance();
 	if (!game_object.Get()) return;
 
-	auto stage_object = game_object->GetStage();
-	if (!stage_object)
+	
+	std::shared_ptr<ModelComponent> stage_foor_model = nullptr;
+	if (auto stage_foor_object = game_object->GetStageFoor())
 	{
-		transform->AddLocalPosition(this->param.velocity);
-		return;
-	}
-	auto stage_model = stage_object->EnsureComponentValid<ModelComponent>(this->stage_model_Wptr);
-	if (!stage_model)
-	{
-		transform->AddLocalPosition(this->param.velocity);
-		return;
+		stage_foor_model = stage_foor_object->EnsureComponentValid<ModelComponent>(this->stage_foor_model_Wptr);
 	}
 
+	std::shared_ptr<ModelComponent> stage_wall_model = nullptr;
+	if (auto stage_wall_object = game_object->GetStageWall())
+	{
+		stage_wall_model = stage_wall_object->EnsureComponentValid<ModelComponent>(this->stage_wall_model_Wptr);
+	}
+	
 	auto gravity = owner->EnsureComponentValid<GravityComponent>(this->gravity_Wptr);
 	// 地面方向にレイキャストを行う
-	if (gravity)
+	if (gravity && stage_foor_model)
 	{
 		// Y軸の下方向に向けてレイキャストを行う
 		{
@@ -203,7 +203,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 				// レイキャストによる地面判定
 				RayHitResult hit;
-				if (Collision::IntersectRayVsModel(Start, End, stage_model.get(), hit))
+				if (Collision::IntersectRayVsModel(Start, End, stage_foor_model.get(), hit))
 				{
 					transform->SetLocalPosition(hit.position);
 					gravity->SetIsGrounded(true);
@@ -222,6 +222,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 	}
 
 	// 前方方向にレイキャストを行う
+	if(stage_wall_model)
 	{
 		// 現在の位置
 		const DirectX::XMFLOAT3& current_pos = transform->GetWorldPosition();
@@ -262,7 +263,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 
 			// レイキャスト壁判定
 			RayHitResult hit;
-			if (Collision::IntersectRayVsModel(Start, End, stage_model.get(), hit))
+			if (Collision::IntersectRayVsModel(Start, End, stage_wall_model.get(), hit))
 			{
 				// 壁からレイの終点までのベクトル
 				MYVECTOR3 S = hit.position;
@@ -279,7 +280,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				
 				// 壁ずり方向へのレイキャスト
 				RayHitResult hit2;
-				if (!Collision::IntersectRayVsModel(Start, Correction_positon, stage_model.get(), hit2))
+				if (!Collision::IntersectRayVsModel(Start, Correction_positon, stage_wall_model.get(), hit2))
 				{
 					DirectX::XMFLOAT3 pos = {};
 					Correction_positon.GetFlaot3(pos);

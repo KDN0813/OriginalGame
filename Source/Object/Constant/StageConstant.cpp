@@ -7,7 +7,7 @@
 #include "Component\TransformComponent.h"
 #include "Component\ModelShaderComponent.h"
 
-const std::shared_ptr<Object>& StageConstant::CreateStage(const std::shared_ptr<Object>& stage)
+const std::shared_ptr<Object>& StageConstant::CreateStageFloor(const std::shared_ptr<Object>& stage)
 {
 	auto model = stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube2.mdl");
 	model->SetTileCount(150.0f);
@@ -27,4 +27,25 @@ const std::shared_ptr<Object>& StageConstant::CreateStage(const std::shared_ptr<
 	}
 
 	return stage;
+}
+
+const std::shared_ptr<Object>& StageConstant::CreateStageWall(const std::shared_ptr<Object>& object)
+{
+	auto model = object->AddComponent<ModelComponent>("Data/Model/Stage/Wall.mdl");
+	// トランスフォーム設定
+	{
+		Transform3DComponent::Transform3DParam param{};
+		const float scale = 1.0f;
+		param.local_scale = DirectX::XMFLOAT3(scale, scale, scale);
+		param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+		auto transform = object->AddComponent<Transform3DComponent>(param);
+	}
+	// シェーダー設定
+	if (ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())
+	{
+		auto shader_component =
+			object->AddComponent<ModelShaderComponent>(model_shader.Get());
+	}
+
+	return object;
 }

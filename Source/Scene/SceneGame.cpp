@@ -84,31 +84,11 @@ void SceneGame::Initialize()
 		// ポーズ画面用オブジェクト作成
 		this->pause_object = UIConstant::CreatePause(object_manager.Create("pause_object"));
 
-		// ステージ
-		const auto& stage = StageConstant::CreateStage(object_manager.Create("Stage"));
+		// ステージ(床)
+		const auto& stage_foor = StageConstant::CreateStageFloor(object_manager.Create("StageFloor"));
 
-		// 壁
-#ifdef _DEBUG
-		{
-			const auto& wall = object_manager.Create("Wall");
-			auto model = wall->AddComponent<ModelComponent>("Data/Model/Stage/Wall.mdl");
-			//model->SetTileCount(150.0f);
-			// トランスフォーム設定
-			{
-				Transform3DComponent::Transform3DParam param{};
-				const float scale = 1.0f;
-				param.local_scale = DirectX::XMFLOAT3(scale, scale, scale);
-				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-				auto transform = wall->AddComponent<Transform3DComponent>(param);
-			}
-			// シェーダー設定
-			if (ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())
-			{
-				auto shader_component =
-					wall->AddComponent<ModelShaderComponent>(model_shader.Get());
-			}
-		}
-#endif // _DEBUG
+		// ステージ(壁)
+		const auto& stage_wall = StageConstant::CreateStageWall(object_manager.Create("StageWall"));
 
 		// プレイヤー
 		const auto& player = PlayerConstant::CreatePlayer(object_manager.Create("Player"));
@@ -159,7 +139,8 @@ void SceneGame::Initialize()
 
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);
-				game_object->SetStage(stage);
+				game_object->SetStageFoor(stage_foor);
+				game_object->SetStageWall(stage_wall);
 			}
 		}
 
@@ -294,7 +275,7 @@ void SceneGame::Update(float elapsed_time)
 				DirectX::XMFLOAT3 player_pos = player_transform->GetWorldPosition();
 
 				// TODO 仮配置(マジックナンバー)をやめる
-				float territory_range = 220.0f;
+				float territory_range = 185.0f;
 				if (territory_range < player_pos.x)
 				{
 					player_transform->AddLocalPosition({ territory_range - player_pos.x,0.0f,0.0f });

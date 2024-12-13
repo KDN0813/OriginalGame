@@ -49,8 +49,9 @@ public:
     void AddAccelerationX(float x);
     void AddAccelerationY(float y);
     void AddAccelerationZ(float z);
-    DirectX::XMFLOAT3 GetAcceleration() { return this->param.acceleration; }
-    DirectX::XMFLOAT3 GetVelocity() { return this->param.velocity; }
+    DirectX::XMFLOAT3 GetAcceleration() const { return this->param.acceleration; }
+    DirectX::XMFLOAT3 GetVelocity() const { return this->param.velocity; }
+    float GetMaxAccelerationXZ() const { return this->param.max_accelerationXZ; }
 
     // ステージとのレイキャスト
     void RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform);
@@ -63,7 +64,8 @@ private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
     std::weak_ptr<GravityComponent> gravity_Wptr;
 
-    std::weak_ptr<ModelComponent> stage_model_Wptr;     // ステージのモデル
+    std::weak_ptr<ModelComponent> stage_foor_model_Wptr;     // ステージのモデル
+    std::weak_ptr<ModelComponent> stage_wall_model_Wptr;     // ステージのモデル
 #ifdef _DEBUG
 public:
     /**
