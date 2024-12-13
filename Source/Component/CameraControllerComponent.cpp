@@ -1,5 +1,7 @@
 #include "System/MyMath/MYMATRIX.h"
-#include <imgui.h>
+#ifdef _DEBUG
+#include "Debug\ImGuiHelper.h"
+#endif // _DEBUG
 #include "Input/Input.h"
 #include "CameraControllerComponent.h"
 #include "Object/Object.h"
@@ -51,7 +53,10 @@ void CameraControllerGamepad::Update(float elapsed_time)
 
 	// スティック入力値に合わせてX軸とY軸を回転
 	rotateY += ax * speed;
+	rotateX += ay * speed;
 
+	if (rotateX < this->param.min_angleX) rotateX = this->param.min_angleX;
+	if (rotateX > this->param.max_angleX) rotateX = this->param.max_angleX;
 	if (rotateY < -DirectX::XM_PI) rotateY += DirectX::XM_2PI;
 	if (rotateY > DirectX::XM_PI) rotateY -= DirectX::XM_2PI;
 
@@ -73,6 +78,7 @@ void CameraControllerGamepad::Update(float elapsed_time)
 	// カメラの視点と注視点を設定
 	camera->SetFocus(focus);
 	camera->SetEye(eye);
+	camera->SetRotateX(rotateX);
 	camera->SetRotateY(rotateY);
 }
 
@@ -206,6 +212,9 @@ void CameraControllerGamepad::DrawDebugGUI()
 	{
 		this->param.roll_speed = DirectX::XMConvertToRadians(roll_speed_deg);
 	}
+	ImGui::DragAngleSlider("Max AngleX", this->param.max_angleX);
+	ImGui::DragAngleSlider("Min AngleX", this->param.min_angleX);
+	
 }
 #endif // DEBUG
 

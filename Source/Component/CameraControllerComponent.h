@@ -11,6 +11,8 @@ public:
     struct CameraControllerParam
     {
         float roll_speed = DirectX::XMConvertToRadians(90.0f);
+        float max_angleX = DirectX::XMConvertToRadians(45.0f);
+        float min_angleX = DirectX::XMConvertToRadians(-45.0f);
     };
 
 public:
