@@ -22,7 +22,7 @@ public:
 public:
 	// コンストラクタ
 	State() = delete;
-	State(std::string name) : state_name(name) {}
+	State(MyHash name) : state_name(name) {}
 	virtual ~State() {}
 	// ステートに入った時のメソッド
 	virtual void Staet() = 0;
@@ -53,7 +53,7 @@ class DefaultState : public State
 {
 public:
 	// コンストラクタ
-	DefaultState() :State("DefaultState") {};
+	DefaultState() :State(MyHash("DefaultState")) {};
 	~DefaultState() {}
 	// ステートに入った時のメソッド
 	void Staet() override{};

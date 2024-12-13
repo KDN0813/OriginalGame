@@ -12,8 +12,9 @@
 #include "Component/PlayerComponent.h"
 #include "Component/CircleCollisionComponent.h"
 
+const MyHash PlayerIdleState::STATE_NAME = MyHash("PlayerIdleState");
 PlayerIdleState::PlayerIdleState()
-    : State("PlayerIdleState")
+    : State(PlayerIdleState::STATE_NAME)
 {
     this->change_move_state.change_state_name = MyHash("PlayerMoveState");
     this->change_attack_state.change_state_name = MyHash("PlayerAttackState");
@@ -61,8 +62,9 @@ void PlayerIdleState::Update(float elapsed_time)
     }
 }
 
+const MyHash PlayerMoveState::STATE_NAME = MyHash("PlayerMoveState");
 PlayerMoveState::PlayerMoveState()
-    : State("PlayerMoveState")
+    : State(PlayerMoveState::STATE_NAME)
 {
     this->change_idle_state.change_state_name = MyHash("PlayerIdleState");
     this->change_attack_state.change_state_name = MyHash("PlayerAttackState");
@@ -110,8 +112,9 @@ void PlayerMoveState::Update(float elapsed_time)
     }
 }
 
+const MyHash PlayerAttackState::STATE_NAME = MyHash("PlayerAttackState");
 PlayerAttackState::PlayerAttackState()
-    : State("PlayerAttackState")
+    : State(PlayerAttackState::STATE_NAME)
 {
     this->change_idle_state.change_state_name = MyHash("PlayerIdleState");
 }
@@ -185,8 +188,9 @@ void PlayerAttackState::End()
         child_collision->SetIsActive(false);  // ƒRƒŠƒWƒ‡ƒ“‚ð–³Œø‚É‚·‚é
 }
 
+const MyHash PlayerSpinAttackState::STATE_NAME = MyHash("SpinAttackState");
 PlayerSpinAttackState::PlayerSpinAttackState()
-    :State("SpinAttackState")
+    :State(PlayerSpinAttackState::STATE_NAME)
 {
     this->change_idle_state.change_state_name = MyHash("PlayerIdleState");
 }

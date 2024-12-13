@@ -6,6 +6,8 @@ class SpriteComponent;
 class LoadingIconAnimationState : public State
 {
 public:
+	static const MyHash STATE_NAME;
+public:
 	// コンストラクタ
 	LoadingIconAnimationState();
 	~LoadingIconAnimationState() {}

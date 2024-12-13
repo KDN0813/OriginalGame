@@ -3,8 +3,9 @@
 
 #include "Component\SpriteComponent.h"
 
+const MyHash LoadingIconAnimationState::STATE_NAME = MyHash("LoadingIconAnimationState");
 LoadingIconAnimationState::LoadingIconAnimationState()
-    :State("LoadingIconAnimationState")
+    :State(LoadingIconAnimationState::STATE_NAME)
 {
 }
 

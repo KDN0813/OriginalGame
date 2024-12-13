@@ -9,13 +9,13 @@
 
 const std::shared_ptr<Object>& StageConstant::CreateStage(const std::shared_ptr<Object>& stage)
 {
-	auto model = stage->AddComponent<ModelComponent>("Data/Model/Stage/Stage_3.mdl");
+	auto model = stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
 	//model->SetTileCount(150.0f);
 	// トランスフォーム設定
 	{
 		Transform3DComponent::Transform3DParam param{};
-		const float scale = 1.0f;
-		param.local_scale = DirectX::XMFLOAT3(scale, scale, scale);
+		const float scale = 600.0f;
+		param.local_scale = DirectX::XMFLOAT3(scale, 1.0f, scale);
 		param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 		auto transform = stage->AddComponent<Transform3DComponent>(param);
 	}

@@ -7,8 +7,10 @@ class TextNumberComponent;
 class ScoreUIDefaultState : public State
 {
 public:
+	static const MyHash STATE_NAME;
+public:
 	// コンストラクタ
-	ScoreUIDefaultState() :State("ScoreUIDefaultState") {};
+	ScoreUIDefaultState();
 	~ScoreUIDefaultState() {}
 	// ステートに入った時のメソッド
 	void Staet() override {};
@@ -24,8 +26,10 @@ private:
 class EndTimerUIDefaultState : public State
 {
 public:
+	static const MyHash STATE_NAME;
+public:
 	// コンストラクタ
-	EndTimerUIDefaultState() :State("EndTimerUIDefaultState") {};
+	EndTimerUIDefaultState();
 	~EndTimerUIDefaultState() {}
 	// ステートに入った時のメソッド
 	void Staet() override {};

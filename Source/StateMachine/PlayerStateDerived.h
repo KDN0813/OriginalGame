@@ -10,6 +10,8 @@ class CircleCollisionComponent;
 class PlayerIdleState : public State
 {
 public:
+	static const MyHash STATE_NAME;
+public:
 	// コンストラクタ
 	PlayerIdleState();
 	~PlayerIdleState() {}
@@ -30,6 +32,8 @@ private:
 
 class PlayerMoveState : public State
 {
+public:
+	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerMoveState();
@@ -52,6 +56,8 @@ private:
 class PlayerAttackState : public State
 {
 public:
+	static const MyHash STATE_NAME;
+public:
 	// コンストラクタ
 	PlayerAttackState();
 	~PlayerAttackState() {}
@@ -72,6 +78,8 @@ private:
 // 回転攻撃
 class PlayerSpinAttackState : public State
 {
+public:
+	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerSpinAttackState();

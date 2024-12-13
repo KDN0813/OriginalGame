@@ -4,6 +4,12 @@
 
 #include "Component\TextNumberComponent.h"
 
+const MyHash ScoreUIDefaultState::STATE_NAME = MyHash("ScoreUIDefaultState");
+ScoreUIDefaultState::ScoreUIDefaultState()
+    :State(ScoreUIDefaultState::STATE_NAME)
+{
+}
+
 void ScoreUIDefaultState::Update(float elapsed_time)
 {
     if (const auto onwer = GetOwner())
@@ -17,6 +23,12 @@ void ScoreUIDefaultState::Update(float elapsed_time)
             }
         }
     }
+}
+
+const MyHash EndTimerUIDefaultState::STATE_NAME = MyHash("EndTimerUIDefaultState");
+EndTimerUIDefaultState::EndTimerUIDefaultState()
+    :State(EndTimerUIDefaultState::STATE_NAME)
+{
 }
 
 void EndTimerUIDefaultState::Update(float elapsed_time)
