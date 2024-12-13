@@ -10,9 +10,10 @@ class CameraControllerGamepad : public Component
 public:
     struct CameraControllerParam
     {
-        float roll_speed = DirectX::XMConvertToRadians(90.0f);
-        float max_angleX = DirectX::XMConvertToRadians(45.0f);
-        float min_angleX = DirectX::XMConvertToRadians(-45.0f);
+        float roll_speedY = DirectX::XMConvertToRadians(90.0f);
+        float roll_speedX = DirectX::XMConvertToRadians(90.0f);
+        float max_angleX = DirectX::XMConvertToRadians(30.0f);
+        float min_angleX = DirectX::XMConvertToRadians(15.0f);
     };
 
 public:
@@ -34,8 +35,8 @@ public:
     const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
 
     // ŠeŽíŽæ“¾EÝ’èŠÖ”
-    float GetRollSpeed()const { return this->param.roll_speed; }
-    void SetRollSpeed(float speed) { this->param.roll_speed = speed; }
+    float GetRollSpeed()const { return this->param.roll_speedY; }
+    void SetRollSpeed(float speed) { this->param.roll_speedY = speed; }
 
 private:
     CameraControllerParam param;

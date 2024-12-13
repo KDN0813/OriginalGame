@@ -49,11 +49,12 @@ void CameraControllerGamepad::Update(float elapsed_time)
 		ay = gamePad.GetAxisRY();
 	}
 	// カメラの回転速度
-	float speed = this->param.roll_speed * elapsed_time;
+	float speedY = this->param.roll_speedY * elapsed_time;
+	float speedX = this->param.roll_speedX * elapsed_time;
 
 	// スティック入力値に合わせてX軸とY軸を回転
-	rotateY += ax * speed;
-	rotateX += ay * speed;
+	rotateY += ax * speedY;
+	rotateX += ay * speedX;
 
 	if (rotateX < this->param.min_angleX) rotateX = this->param.min_angleX;
 	if (rotateX > this->param.max_angleX) rotateX = this->param.max_angleX;
@@ -207,11 +208,8 @@ void CameraControllerDebug::Update(float elapsed_time)
 
 void CameraControllerGamepad::DrawDebugGUI()
 {
-	float roll_speed_deg = DirectX::XMConvertToDegrees(this->param.roll_speed);
-	if (ImGui::SliderFloat("RollSpeed", &roll_speed_deg, 0.0f, 180.0f))
-	{
-		this->param.roll_speed = DirectX::XMConvertToRadians(roll_speed_deg);
-	}
+	ImGui::DragAngleSlider("RollSpeedX", this->param.roll_speedX);
+	ImGui::DragAngleSlider("RollSpeedY", this->param.roll_speedY);
 	ImGui::DragAngleSlider("Max AngleX", this->param.max_angleX);
 	ImGui::DragAngleSlider("Min AngleX", this->param.min_angleX);
 	
