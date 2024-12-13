@@ -410,7 +410,8 @@ void SceneGame::ReStart()
 		const size_t now_enemy_count = game_object->GetEnemyWptPool().size();
 		for (int i = 0; i < this->enemy_max - now_enemy_count; ++i)
 		{
-			EnemyConstant::CreateEnemy(object_manager.Create());
+			const auto& enemy = EnemyConstant::CreateEnemy(object_manager.Create());
+			game_object->SetEnemy(enemy);
 		}
 	}
 
