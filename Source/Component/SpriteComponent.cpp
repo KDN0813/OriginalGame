@@ -1,10 +1,13 @@
 #include "SpriteComponent.h"
 #include "System/MyMath/MYVECTOR2.h"
+#include "Object\Object.h"
+
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #include <magic_enum.hpp>
 #endif // _DEBUG
 
+#include "Component\Transform2DComponent.h"
 
 SpriteComponent::SpriteComponent(const SpriteParam& param)
     :param(param),default_param(param)
@@ -22,8 +25,17 @@ SpriteComponent::SpriteComponent(const SpriteParam& param)
 
 void SpriteComponent::Render(ID3D11DeviceContext* dc)
 {
+    DirectX::XMFLOAT2 display_pos{};
+    if (const auto& owner = GetOwner())
+    {
+        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        {
+            display_pos = transform->GetWorldPosition();
+        }
+    }
+
     this->sprite->Render(dc,
-        this->param.display_pos,
+        display_pos,
         this->param.display_size,
         this->param.clip_pos,
         this->param.clip_size,
@@ -38,7 +50,6 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
 void SpriteComponent::DrawDebugGUI()
 {
     ImGui::InputTextString("Sprite Name", this->param.filename);
-    ImGui::SliderFloat2("Display Pos", &this->param.display_pos.x, -1.0f, 2.0f);
     ImGui::SliderFloat2("Display Size", &this->param.display_size.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Pos", &this->param.clip_pos.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Size", &this->param.clip_size.x, 0.0f, 1.0f);

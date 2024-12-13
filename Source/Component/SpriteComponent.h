@@ -6,13 +6,14 @@
 #include "Sprite/Sprite.h"
 #include "System\MyMath\MyMathf.h"
 
+class Transform2DComponent;
+
 class SpriteComponent : public BaseSpriteComponent
 {
 public:
     struct SpriteParam
     {
         std::string filename = {};
-        DirectX::XMFLOAT2 display_pos = { 0.0f,0.0f };
         DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
         DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
         DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
@@ -50,6 +51,8 @@ private:
     std::unique_ptr<Sprite> sprite;
     SpriteParam param;
     SpriteParam default_param;
+private:
+    std::weak_ptr<Transform2DComponent> transform_Wptr;
 
 #ifdef _DEBUG
 public:

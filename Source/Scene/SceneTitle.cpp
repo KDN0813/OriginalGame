@@ -39,6 +39,12 @@ void SceneTitle::Initialize()
 				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
 				this->sprite_shader->AddSprite(sprite);
 			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam paam{};
+				sprite_bg->AddComponent<Transform2DComponent>(paam);
+			}
 		}
 
 		// ƒ^ƒCƒgƒ‹ƒƒS
@@ -50,12 +56,18 @@ void SceneTitle::Initialize()
 			{
 				SpriteComponent::SpriteParam param{};
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-				param.display_pos = { 0.223f,0.1f };
 				param.display_size = { 0.55f,0.35f };
 				param.filename = "Data/Sprite/TitleLogo.png";
 				auto sprite = sprite_logo->AddComponent<SpriteComponent>(param);
 
 				this->sprite_shader->AddSprite(sprite);
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam paam{};
+				paam.local_position = { 0.223f,0.1f };
+				sprite_logo->AddComponent<Transform2DComponent>(paam);
 			}
 		}
 
@@ -64,12 +76,18 @@ void SceneTitle::Initialize()
 			auto sprite_bg = object_manager.Create("Game Staet Text");
 			SpriteComponent::SpriteParam param{};
 			param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-			param.display_pos = { 0.254f,0.792f };
 			param.display_size = { 0.5f,0.1f };
 			param.filename = "Data/Sprite/TitleGameStartText.png";
 			auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
 
 			this->sprite_shader->AddSprite(sprite);
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam paam{};
+				paam.local_position = { 0.254f,0.792f };
+				sprite_bg->AddComponent<Transform2DComponent>(paam);
+			}
 		}
 	}
 }

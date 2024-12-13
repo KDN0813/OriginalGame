@@ -5,6 +5,7 @@
 #include "Component\TextNumberComponent.h"
 #include "Component\SpriteComponent.h"
 #include "Component\StateMachineComponent.h"
+#include "Component\Transform2DComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -13,7 +14,6 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 	// テキスト表示
 	{
 		TextNumberComponent::TextParam param{};
-		param.pos = { 0.45f,-0.03f };
 		param.color = { 1.0f,0.0f,0.0f ,1.0f };
 		param.center_type = Sprite::CENTER_TYPE::CENTER;
 		// ファイルパス設定する
@@ -24,6 +24,13 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 		{
 			sprite_shader->AddSprite(text_number);
 		}
+	}
+
+	// transform
+	{
+		Transform2DComponent::Transform2DParam paam{};
+		paam.local_position = { 0.45f,-0.03f };
+		score_object->AddComponent<Transform2DComponent>(paam);
 	}
 
 	// 更新処理
@@ -43,7 +50,6 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 	// テキスト表示
 	{
 		TextNumberComponent::TextParam param{};
-		param.pos = { 0.45f,0.1f };
 		param.color = { 1.0f,0.0f,0.0f ,1.0f };
 		param.center_type = Sprite::CENTER_TYPE::CENTER;
 		// ファイルパス設定する
@@ -54,6 +60,13 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 		{
 			sprite_shader->AddSprite(text_number);
 		}
+	}
+
+	// transform
+	{
+		Transform2DComponent::Transform2DParam paam{};
+		paam.local_position = { 0.45f,0.1f };
+		sprite_shader->AddComponent<Transform2DComponent>(paam);
 	}
 
 	// 更新処理
