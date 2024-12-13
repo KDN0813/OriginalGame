@@ -103,6 +103,9 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			// カメラコントローラー設定
 			{
 				CameraControllerGamepad::CameraControllerParam param{};
+				param.max_angleX = DirectX::XMConvertToRadians(70.0f);
+				param.min_angleX = DirectX::XMConvertToRadians(15.0f);
+				param.roll_speedX = DirectX::XMConvertToRadians(60.0f);
 				player_camera_object->AddComponent<CameraControllerGamepad>(param);
 			}
 			// トランスフォーム設定

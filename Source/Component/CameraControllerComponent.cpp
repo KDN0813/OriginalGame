@@ -46,7 +46,10 @@ void CameraControllerGamepad::Update(float elapsed_time)
 	{
 		GamePad& gamePad = input->GetGamePad();
 		ax = gamePad.GetAxisRX();
-		ay = gamePad.GetAxisRY();
+		if (gamePad.GetTriggerR())
+		{
+			ay = gamePad.GetAxisRY();
+		}
 	}
 	// ƒJƒƒ‰‚Ì‰ñ“]‘¬“x
 	float speedY = this->param.roll_speedY * elapsed_time;

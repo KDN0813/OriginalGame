@@ -12,8 +12,8 @@ public:
     {
         float roll_speedY = DirectX::XMConvertToRadians(90.0f);
         float roll_speedX = DirectX::XMConvertToRadians(90.0f);
-        float max_angleX = DirectX::XMConvertToRadians(30.0f);
-        float min_angleX = DirectX::XMConvertToRadians(15.0f);
+        float max_angleX = DirectX::XMConvertToRadians(45.0f);
+        float min_angleX = DirectX::XMConvertToRadians(45.0f);
     };
 
 public:
