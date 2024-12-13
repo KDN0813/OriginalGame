@@ -14,7 +14,7 @@ public:
 #ifdef _DEBUG
     static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;
 #else
-    static constexpr float DEFAULT_TERRITORY_RENGR = 220.0f;
+    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;
 #endif // _DEBUG
 
 

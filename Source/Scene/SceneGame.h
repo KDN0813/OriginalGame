@@ -51,7 +51,7 @@ private:
     const size_t enemy_max = 500;
     std::shared_ptr<Object> debug_Particle;
 #else
-    const int enemy_max = 5000;
+    const int enemy_max = 1000;
 #endif // _DEBUG
 #ifdef _DEBUG
     void DebugDrawGUI();

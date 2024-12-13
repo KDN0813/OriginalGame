@@ -9,8 +9,8 @@
 
 const std::shared_ptr<Object>& StageConstant::CreateStage(const std::shared_ptr<Object>& stage)
 {
-	auto model = stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
-	//model->SetTileCount(150.0f);
+	auto model = stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube2.mdl");
+	model->SetTileCount(150.0f);
 	// トランスフォーム設定
 	{
 		Transform3DComponent::Transform3DParam param{};

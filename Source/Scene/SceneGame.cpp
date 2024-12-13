@@ -37,6 +37,7 @@
 #include "Component\CircleCollisionComponent.h"
 #include "Component\CameraComponent.h"
 #ifdef _DEBUG
+#include "Component\ModelShaderComponent.h"
 #include "Component\DebugParticle.h"
 #endif // DEBUG
 
@@ -85,6 +86,29 @@ void SceneGame::Initialize()
 
 		// ステージ
 		const auto& stage = StageConstant::CreateStage(object_manager.Create("Stage"));
+
+		// 壁
+#ifdef _DEBUG
+		{
+			const auto& wall = object_manager.Create("Wall");
+			auto model = wall->AddComponent<ModelComponent>("Data/Model/Stage/Wall.mdl");
+			//model->SetTileCount(150.0f);
+			// トランスフォーム設定
+			{
+				Transform3DComponent::Transform3DParam param{};
+				const float scale = 1.0f;
+				param.local_scale = DirectX::XMFLOAT3(scale, scale, scale);
+				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+				auto transform = wall->AddComponent<Transform3DComponent>(param);
+			}
+			// シェーダー設定
+			if (ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())
+			{
+				auto shader_component =
+					wall->AddComponent<ModelShaderComponent>(model_shader.Get());
+			}
+		}
+#endif // _DEBUG
 
 		// プレイヤー
 		const auto& player = PlayerConstant::CreatePlayer(object_manager.Create("Player"));
@@ -247,19 +271,19 @@ void SceneGame::Update(float elapsed_time)
 
 		// カメラ外の敵オブジェクトを非アクティブにする
 		// カメラ範囲とキャラのボックスで判定をとる
-		if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
-		{
-			for (const auto& enemy_Wprt : game_object->GetEnemyWptPool())
-			{
-				if (const auto& enemy = enemy_Wprt.lock())
-				{
-					if (const auto& instancing_model = enemy->GetComponent<InstancedModelWithAnimationComponent>())
-					{
-						enemy->SetIsActive(camera_manager->IsAnyMeshAABBVisible(instancing_model->GetBoundingBoxs()));
-					}
-				}
-			}
-		}
+		//if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+		//{
+		//	for (const auto& enemy_Wprt : game_object->GetEnemyWptPool())
+		//	{
+		//		if (const auto& enemy = enemy_Wprt.lock())
+		//		{
+		//			if (const auto& instancing_model = enemy->GetComponent<InstancedModelWithAnimationComponent>())
+		//			{
+		//				enemy->SetIsActive(camera_manager->IsAnyMeshAABBVisible(instancing_model->GetBoundingBoxs()));
+		//			}
+		//		}
+		//	}
+		//}
 
 		// プレイヤーの移動範囲制限
 		// TODO ステージを変更したらステージに合わせた移動範囲の制限をかける
