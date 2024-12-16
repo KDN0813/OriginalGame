@@ -43,7 +43,7 @@ public:
 		float dw, float dh,	// 0.0fÅ`1.0f
 		float sx, float sy,	// 0.0fÅ`1.0f
 		float sw, float sh,	// 0.0fÅ`1.0f
-		float angle,
+		float radian,
 		float r, float g, float b, float a,
 		CENTER_TYPE center_type
 	) const;
@@ -53,7 +53,7 @@ public:
 		DirectX::XMFLOAT2 display_size,
 		DirectX::XMFLOAT2 clip_pos,
 		DirectX::XMFLOAT2 clip_size,
-		float angle,
+		float radian,
 		DirectX::XMFLOAT4 color,
 		CENTER_TYPE center_type
 		) const;

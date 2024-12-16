@@ -203,7 +203,7 @@ void Sprite::Render(
 	float dw, float dh,
 	float sx, float sy,
 	float sw, float sh,
-	float angle,
+	float radian,
 	float r, float g, float b, float a,
 	CENTER_TYPE center_type
 ) const
@@ -241,10 +241,8 @@ void Sprite::Render(
 		float offsetY = dh * rateY;
 
 		// 回転の準備
-		const float PI = 3.141592653589793f;
-		float theta = angle * (PI / 180.0f);	// 角度をラジアン(θ)に変換
-		float c = cosf(theta);
-		float s = sinf(theta);
+		float c = cosf(radian);
+		float s = sinf(radian);
 
 		// 頂点の位置を計算
 		for (auto& p : positions) 
@@ -325,7 +323,7 @@ void Sprite::Render(
 	DirectX::XMFLOAT2 display_size,
 	DirectX::XMFLOAT2 clip_pos,
 	DirectX::XMFLOAT2 clip_size,
-	float angle,
+	float radian,
 	DirectX::XMFLOAT4 color,
 	CENTER_TYPE center_type
 ) const
@@ -335,7 +333,7 @@ void Sprite::Render(
 		display_size.x, display_size.y,
 		clip_pos.x, clip_pos.y,
 		clip_size.x, clip_size.y,
-		angle,
+		radian,
 		color.x, color.y, color.z, color.w,
 		center_type
 	);
