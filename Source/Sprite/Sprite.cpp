@@ -262,8 +262,8 @@ void Sprite::Render(
 			p.y += (dy + offsetY);
 
 			// 中心位置に移動
-			p.x += offsetX;
-			p.y += offsetY;
+			p.x -= offsetX;
+			p.y -= offsetY;
 
 			// スクリーン座標系からNDC座標系へ変換
 			p.x = 2.0f * p.x - 1.0f;
