@@ -226,6 +226,20 @@ void Transform2DComponent::DrawDebugGUI()
 		{
 			this->local_dirty_flag = true;
 			this->world_dirty_flag = true;
+
+			// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+			{
+				if (const auto& owner = GetOwner())
+				{
+					for (const auto& chilled : owner->GetChildren())
+					{
+						if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
+						{
+							chilled_transform->SetWorldDirtyFlag();
+						}
+					}
+				}
+			}
 		}
 	}
 	else
@@ -239,6 +253,20 @@ void Transform2DComponent::DrawDebugGUI()
 		{
 			this->local_dirty_flag = true;
 			this->world_dirty_flag = true;
+
+			// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+			{
+				if (const auto& owner = GetOwner())
+				{
+					for (const auto& chilled : owner->GetChildren())
+					{
+						if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
+						{
+							chilled_transform->SetWorldDirtyFlag();
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -254,6 +282,20 @@ void Transform2DComponent::DrawDebugGUI()
 		};
 		this->world_dirty_flag = true;
 		this->local_dirty_flag = true;
+
+		// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+		{
+			if (const auto& owner = GetOwner())
+			{
+				for (const auto& chilled : owner->GetChildren())
+				{
+					if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
+					{
+						chilled_transform->SetWorldDirtyFlag();
+					}
+				}
+			}
+		}
 	}
 
 	DirectX::XMFLOAT2 dummy_float2 = this->world_position;
