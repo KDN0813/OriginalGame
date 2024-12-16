@@ -72,7 +72,6 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 
     // ˆÊ’uİ’è
     pos.x -= this->display_size.x * static_cast<float>(static_cast<int>((Digits - 1) * rateX));
-    pos.y -= this->display_size.x * rateY;
 
     // Œ…”•ª•`‰æ‚ğs‚¤
     for (int i = 0; i < Digits; ++i)

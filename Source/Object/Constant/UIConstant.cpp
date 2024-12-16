@@ -17,7 +17,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 	// transform
 	{
 		Transform2DComponent::Transform2DParam param{};
-		param.local_position = { 0.45f,-0.03f };
+		param.local_position = { 0.45f,0.5f };
 		score_object->AddComponent<Transform2DComponent>(param);
 	}
 
@@ -30,7 +30,9 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			// transform
 			{
 				SpriteComponent::SpriteParam param{};
+				param.display_size = { 0.1f,0.1f };
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
 				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
 				{
