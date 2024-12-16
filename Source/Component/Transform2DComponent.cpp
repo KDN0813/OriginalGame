@@ -221,6 +221,11 @@ void Transform2DComponent::DrawDebugGUI()
 		{
 			SetLocalPosition(local_position);
 		}
+		if (ImGui::DragFloat2("Local Scale", &this->param.local_scale.x, 0.1f, 0.0f, 1000.0f))
+		{
+			this->local_dirty_flag = true;
+			this->world_dirty_flag = true;
+		}
 	}
 	else
 	{
@@ -229,12 +234,11 @@ void Transform2DComponent::DrawDebugGUI()
 		{
 			SetLocalPosition(local_position);
 		}
-	}
-
-	if (ImGui::DragFloat2("Local Scale", &this->param.local_scale.x, 0.1f))
-	{
-		this->local_dirty_flag = true;
-		this->world_dirty_flag = true;
+		if (ImGui::DragFloat2("Local Scale", &this->param.local_scale.x, 0.1f))
+		{
+			this->local_dirty_flag = true;
+			this->world_dirty_flag = true;
+		}
 	}
 
 	float angle_degrees

@@ -26,19 +26,24 @@ SpriteComponent::SpriteComponent(const SpriteParam& param)
 void SpriteComponent::Render(ID3D11DeviceContext* dc)
 {
     DirectX::XMFLOAT2 display_pos{};
+    DirectX::XMFLOAT2 display_size{};
     float angle{};
+    DirectX::XMFLOAT2 scale{};
     if (const auto& owner = GetOwner())
     {
         if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
         {
             display_pos = transform->GetWorldPosition();
-            angle = transform->GetLocalAngle();
+            angle = transform->GetWorldAngle();
+            scale = transform->GetWorldScale();
         }
     }
 
+    display_size = { this->param.display_size.x * scale.x ,this->param.display_size.y * scale.y };
+
     this->sprite->Render(dc,
         display_pos,
-        this->param.display_size,
+        display_size,
         this->param.clip_pos,
         this->param.clip_size,
         angle,
