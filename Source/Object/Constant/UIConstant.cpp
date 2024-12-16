@@ -2,10 +2,13 @@
 #include "Object\Object.h"
 #include "Shader\SpriteShader.h"
 
+#include "Shader\SpriteShader.h"
+
 #include "Component\TextNumberComponent.h"
 #include "Component\SpriteComponent.h"
 #include "Component\StateMachineComponent.h"
 #include "Component\Transform2DComponent.h"
+#include "Component\SpriteComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -50,9 +53,21 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 
 			// transform
 			{
-				Transform2DComponent::Transform2DParam paam{};
-				paam.local_position = { 0.45f,-0.03f };
-				bg_sprite->AddComponent<Transform2DComponent>(paam);
+				SpriteComponent::SpriteParam param{};
+				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.filename = "Data/Sprite/TitleBack.png";
+				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
+				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
+				{
+					sprite_shader->AddSprite(sprite);
+				}
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam param{};
+				param.local_position = { 0.45f,-0.03f };
+				bg_sprite->AddComponent<Transform2DComponent>(param);
 			}
 		}
 	}

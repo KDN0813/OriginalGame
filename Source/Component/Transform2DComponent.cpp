@@ -257,6 +257,10 @@ void Transform2DComponent::DrawDebugGUI()
 
 	DirectX::XMFLOAT2 dummy_float2 = this->world_position;
 	ImGui::InputFloat2("World Position", &dummy_float2.x);
+	dummy_float2 = this->world_scale;
+	ImGui::InputFloat2("World Scale", &dummy_float2.x);
+	float dummy_float= this->world_angle;
+	ImGui::InputFloat("World Angle", &dummy_float);
 }
 
 void Transform2DComponent::DrawDebugPrimitive()
