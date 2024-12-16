@@ -1,7 +1,7 @@
 #pragma once
 #include "StateMachine\StateBase.h"
 
-class SpriteComponent;
+class Transform2DComponent;
 
 class LoadingIconAnimationState : public State
 {
@@ -23,5 +23,5 @@ private:
 	const float ROTATION_SPEED = 10.0f;
 
 private:
-	std::weak_ptr<SpriteComponent> sprite_Wprt;
+	std::weak_ptr<Transform2DComponent> transform_Wprt;
 };

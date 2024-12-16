@@ -1,7 +1,7 @@
 #include "LoadingIconStateDerived.h"
 #include "Object\Object.h"
 
-#include "Component\SpriteComponent.h"
+#include "Component\Transform2DComponent.h"
 
 const MyHash LoadingIconAnimationState::STATE_NAME = MyHash("LoadingIconAnimationState");
 LoadingIconAnimationState::LoadingIconAnimationState()
@@ -18,9 +18,9 @@ void LoadingIconAnimationState::Update(float elapsed_time)
 {
     if (const auto& onwer = GetOwner())
     {
-        if (const auto& sprite = onwer->EnsureComponentValid(this->sprite_Wprt))
+        if (const auto& transform = onwer->EnsureComponentValid(this->transform_Wprt))
         {
-            sprite->SetAngle(sprite->GetAngle() + ROTATION_SPEED);
+            transform->SetLocalAngle(transform->GetLocalAngle() + ROTATION_SPEED);
         }
     }
 }

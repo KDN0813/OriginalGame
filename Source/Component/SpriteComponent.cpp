@@ -60,7 +60,6 @@ void SpriteComponent::DrawDebugGUI()
     ImGui::SliderFloat2("Display Size", &this->param.display_size.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Pos", &this->param.clip_pos.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Size", &this->param.clip_size.x, 0.0f, 1.0f);
-    ImGui::SliderFloat("Angle", &this->param.angle, 0.0f, 360.0f);
     ImGui::ColorEdit4("Sprite Color", &this->param.color.x);
 
     // ’†SˆÊ’u‚Ìİ’è

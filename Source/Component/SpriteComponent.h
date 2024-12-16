@@ -17,7 +17,6 @@ public:
         DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
         DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
         DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
-        float angle = 0.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
@@ -42,10 +41,6 @@ public:
     
     // •`‰æˆ—
     void Render(ID3D11DeviceContext* dc) override;
-
-    // ŠeŽíŽæ“¾EÝ’è
-    void SetAngle(float angle) { this->param.angle = MyMathf::ClampDegree(angle); };
-    float GetAngle() const { return this->param.angle; };
 
 private:
     std::unique_ptr<Sprite> sprite;
