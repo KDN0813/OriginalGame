@@ -62,6 +62,7 @@ void Transform2DComponent::UpdateWorldParam()
 		this->world_scale = DirectX::XMFLOAT2(scaleX, scaleY);
 
 		// ‰ñ“]Šp“x‚ÌŽæ“¾
+		// TODO eŽqŠÖŒW‚ª‚Å‚«‚Ä‚¢‚È‚¢‚Ì‚ÅC³‚·‚é
 		this->world_angle = std::atan2(this->world_transform._12 / scaleX, this->world_transform._11 / scaleX);
 	}
 
