@@ -52,7 +52,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			{
 				Transform2DComponent::Transform2DParam paam{};
 				paam.local_position = { 0.45f,-0.03f };
-				score_object->AddComponent<Transform2DComponent>(paam);
+				bg_sprite->AddComponent<Transform2DComponent>(paam);
 			}
 		}
 	}

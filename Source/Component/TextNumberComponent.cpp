@@ -1,10 +1,13 @@
 #include "Component\TextNumberComponent.h"
 #include "Graphics\Graphics.h"
+#include "Object\Object.h"
 
 #ifdef _DEBUG
 #include "Debug\ImGuiHelper.h"
 #include <magic_enum.hpp>
 #endif // DEBUG
+
+#include "Component\Transform2DComponent.h"
 
 void TextNumberComponent::Start()
 {
@@ -42,23 +45,34 @@ void TextNumberComponent::Start()
 
 void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 {
+    DirectX::XMFLOAT2 pos{};
+    DirectX::XMFLOAT2 scale{};
+    float angle{};
+    if (const auto& owner = GetOwner())
+    {
+        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        {
+            pos = transform->GetWorldPosition();
+            scale = transform->GetWorldScale();
+            angle = transform->GetWorldAngle();
+        }
+    }
+
     // 桁数取得
     std::string numeral_str = std::to_string(this->param.value);
     int Digits; // 桁数
     Digits = static_cast<int>(numeral_str.size());
 
     // 描画サイズ更新
-    this->display_size = { this->font_draw_size.x * this->param.scale,this->font_draw_size.y * this->param.scale };
+    this->display_size = { this->font_draw_size.x * scale.x,this->font_draw_size.y * scale.y };
 
     // 中心位置へのオフセット値取得
     float rateX, rateY;
     Sprite::GetCenterTypeRate(rateX, rateY, this->param.center_type);
 
-    DirectX::XMFLOAT2 pos =
-    {
-        this->param.pos.x - this->display_size.x * static_cast<float>(static_cast<int>((Digits - 1) * rateX)),
-        this->param.pos.y - this->display_size.x * rateY
-    };
+    // 位置設定
+    pos.x -= this->display_size.x * static_cast<float>(static_cast<int>((Digits - 1) * rateX));
+    pos.y -= this->display_size.x * rateY;
 
     // 桁数分描画を行う
     for (int i = 0; i < Digits; ++i)
@@ -72,7 +86,7 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
             this->display_size,
             this->clip_pos,
             this->clip_size,
-            this->param.angle,
+            angle,
             this->param.color,
             this->param.center_type
         );
@@ -87,14 +101,11 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 void TextNumberComponent::DrawDebugGUI()
 {
     ImGui::InputTextString("Font Name", this->param.font_name);
-    ImGui::SliderFloat2("Pos", &this->param.pos.x, -1.0f, 2.0f);
-    ImGui::DragFloat("Scale", &this->param.scale, 0.05f, 0.0f, 100.0f);
     int value = this->param.value;
     if (ImGui::InputInt("Value", &value))
     {
         SetDrawValue(value);
     }
-    ImGui::SliderFloat("Angle", &this->param.angle, 0.0f, 360.0f);
     ImGui::ColorEdit4("Sprite Color", &this->param.color.x);
 
     // 中心位置の設定

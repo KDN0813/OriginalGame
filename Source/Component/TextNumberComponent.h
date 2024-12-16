@@ -4,6 +4,8 @@
 #include "Component/BaseSpriteComponent.h"
 #include "Sprite\Sprite.h"
 
+class Transform2DComponent;
+
 class TextNumberComponent : public BaseSpriteComponent
 {
 public:
@@ -13,10 +15,7 @@ public:
     struct TextParam
     {
         std::string font_name = {};
-        DirectX::XMFLOAT2 pos = { 0.5f,0.0f };
         int value = 0;  // •\Ž¦‚·‚é’l
-        float angle = 0.0f;
-        float scale = 1.0f;
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
@@ -55,6 +54,9 @@ private:
     DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
     DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
     DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
+
+private:
+    std::weak_ptr<Transform2DComponent> transform_Wptr;
 
 #ifdef _DEBUG
 public:
