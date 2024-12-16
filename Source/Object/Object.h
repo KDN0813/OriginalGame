@@ -128,6 +128,7 @@ public:
 
 	// 子オブジェクトの作成
 	std::shared_ptr<Object> CreateChildObject();
+	std::shared_ptr<Object> CreateChildObject(const char* name);
 	// 子オブジェクトの取得
 	std::shared_ptr<Object> FindChildObject(MyHash name);
 

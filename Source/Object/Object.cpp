@@ -11,8 +11,15 @@
 
 std::shared_ptr<Object> Object::CreateChildObject()
 {
+    std::string name = GetName() + "_chilled" + std::to_string(this->children.size());
+    return CreateChildObject(name.c_str());
+}
+
+std::shared_ptr<Object> Object::CreateChildObject(const char* name)
+{
     std::shared_ptr<Object> object = std::make_unique<Object>();
     object->SetParent(shared_from_this());
+    object->SetName(name);
     this->children.emplace_back(object);
     return object;
 }

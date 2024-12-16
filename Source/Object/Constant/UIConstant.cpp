@@ -42,6 +42,21 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 		state_machine->SetDefaultState(ScoreUIDefaultState::STATE_NAME);
 	}
 
+	// 子オブジェクト
+	{
+		// 背景
+		{
+			const auto bg_sprite = score_object->CreateChildObject("BG_Sprite");
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam paam{};
+				paam.local_position = { 0.45f,-0.03f };
+				score_object->AddComponent<Transform2DComponent>(paam);
+			}
+		}
+	}
+
 	return score_object;
 }
 
