@@ -14,6 +14,9 @@ public:
         DirectX::XMFLOAT2 local_position{};
         float local_angle{};
         DirectX::XMFLOAT2 local_scale{ 1.0f,1.0f };
+#ifdef _DEBUG
+        bool enable_ndc_debug = true;
+#endif // _DEBUG
     };
 public:
     Transform2DComponent(Transform2DParam param);
@@ -38,15 +41,13 @@ public:
      * ・ワールドポジション
      */
     void UpdateWorldParam();
-    // ワールドポジションの更新
-    void UpdateWorldPosition();
-    void UpdateWorldPosition(MYMATRIX Parent_transform);
-
 
 #pragma region set・get parame
     // ワールドパラメータの取得
     const DirectX::XMFLOAT4X4& GetWolrdTransform();
     DirectX::XMFLOAT2 GetWorldPosition();
+    DirectX::XMFLOAT2 GetWorldScale();
+    float GetWorldAngle();
 
     // ローカルパラメータの取得
     const DirectX::XMFLOAT4X4& GetLocalTransform();
@@ -70,6 +71,8 @@ private:
     DirectX::XMFLOAT4X4 local_transform{};
     DirectX::XMFLOAT4X4 world_transform{};
     DirectX::XMFLOAT2 world_position{};
+    DirectX::XMFLOAT2 world_scale{};
+    float world_angle{};
     bool world_dirty_flag = true;  // ワールドパラメータの更新が必要かを示すフラグ
     bool local_dirty_flag = true;  // ローカルパラメータの更新が必要かを示すフラグ
 private:

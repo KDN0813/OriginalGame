@@ -1,6 +1,7 @@
 #include "Transform2DComponent.h"
 #include <imgui.h>
 #include "Object/Object.h"
+#include <cmath>
 
 #include "Debug/DebugManager.h"
 
@@ -50,8 +51,18 @@ void Transform2DComponent::UpdateWorldParam()
 
 	// ワールドパラメータの更新
 	{
-		// ワールドポジションの設定
-		UpdateWorldPosition(Parent_transform);
+		// 位置の取得
+		MYVECTOR2 Local_position = this->param.local_position;
+		MYVECTOR2 Worldl_position = Parent_transform.Vector2TransformCoord(Local_position);
+		Worldl_position.GetFlaot2(this->world_position);
+
+		// スケールの取得
+		float scaleX = std::sqrt(this->world_transform._11 * this->world_transform._11 + this->world_transform._12 * this->world_transform._12);
+		float scaleY = std::sqrt(this->world_transform._21 * this->world_transform._21 + this->world_transform._22 * this->world_transform._22);
+		this->world_scale = DirectX::XMFLOAT2(scaleX, scaleY);
+
+		// 回転角度の取得
+		this->world_angle = std::atan2(this->world_transform._12 / scaleX, this->world_transform._11 / scaleX);
 	}
 
 	this->world_dirty_flag = false;	// フラグを解除
@@ -186,37 +197,16 @@ DirectX::XMFLOAT2 Transform2DComponent::GetWorldPosition()
 	return this->world_position;
 }
 
-void Transform2DComponent::UpdateWorldPosition()
+DirectX::XMFLOAT2 Transform2DComponent::GetWorldScale()
 {
-	MYMATRIX Parent_transform = DirectX::XMMatrixIdentity();
-	const auto& owner = GetOwner();
-	if (!owner)
-	{
-		this->world_position = this->param.local_position;;
-		return;
-	};
-	const auto& parent = owner->GetParent();
-	if (!parent)
-	{
-		this->world_position = this->param.local_position;;
-		return;
-	};
-	auto parent_ransform = parent->EnsureComponentValid(this->parent_ransform_Wptr);
-	if (!parent_ransform)
-	{
-		this->world_position = this->param.local_position;;
-		return;
-	}
-	Parent_transform = parent_ransform->GetWolrdTransform();
-	UpdateWorldPosition(Parent_transform);
+	if (this->world_dirty_flag) UpdateWorldParam();
+	return this->world_scale;
 }
 
-void Transform2DComponent::UpdateWorldPosition(MYMATRIX Parent_transform)
+float Transform2DComponent::GetWorldAngle()
 {
-	MYVECTOR2 Local_position = this->param.local_position;
-
-	MYVECTOR2 Worldl_position = Parent_transform.Vector2TransformCoord(Local_position);
-	Worldl_position.GetFlaot2(this->world_position);
+	if (this->world_dirty_flag) UpdateWorldParam();
+	return world_angle;
 }
 
 #ifdef _DEBUG
@@ -224,6 +214,15 @@ void Transform2DComponent::UpdateWorldPosition(MYMATRIX Parent_transform)
 void Transform2DComponent::DrawDebugGUI()
 {
 	// local_position設定
+	if (this->param.enable_ndc_debug)
+	{
+		DirectX::XMFLOAT2 local_position = this->param.local_position;
+		if (ImGui::DragFloat2("Local Position", &local_position.x, 0.005f))
+		{
+			SetLocalPosition(local_position);
+		}
+	}
+	else
 	{
 		DirectX::XMFLOAT2 local_position = this->param.local_position;
 		if (ImGui::DragFloat2("Local Position", &local_position.x, 0.1f))
@@ -231,6 +230,7 @@ void Transform2DComponent::DrawDebugGUI()
 			SetLocalPosition(local_position);
 		}
 	}
+
 	if (ImGui::DragFloat2("Local Scale", &this->param.local_scale.x, 0.1f))
 	{
 		this->local_dirty_flag = true;

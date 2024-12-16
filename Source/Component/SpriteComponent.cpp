@@ -26,11 +26,13 @@ SpriteComponent::SpriteComponent(const SpriteParam& param)
 void SpriteComponent::Render(ID3D11DeviceContext* dc)
 {
     DirectX::XMFLOAT2 display_pos{};
+    float angle{};
     if (const auto& owner = GetOwner())
     {
         if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
         {
             display_pos = transform->GetWorldPosition();
+            angle = transform->GetLocalAngle();
         }
     }
 
@@ -39,7 +41,7 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
         this->param.display_size,
         this->param.clip_pos,
         this->param.clip_size,
-        this->param.angle,
+        angle,
         this->param.color,
         this->param.center_type
     );
