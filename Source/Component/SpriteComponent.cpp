@@ -12,7 +12,7 @@
 SpriteComponent::SpriteComponent(const SpriteParam& param)
     :param(param),default_param(param)
 {
-    this->sprite = std::make_unique<Sprite>(this->param.filename.c_str());
+    this->sprite = std::make_unique<Sprite>(param.filename.size() ? this->param.filename.c_str() : nullptr);
 
 #ifdef _DEBUG
     // CENTER_TYPE —ñ‹“Œ^‚ÌŠe’l‚É‘Î‰ž‚·‚é–¼‘O‚ðŽæ“¾‚µ‚ÄŠi”[‚·‚é

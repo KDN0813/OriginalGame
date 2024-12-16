@@ -31,7 +31,6 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			{
 				SpriteComponent::SpriteParam param{};
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-				param.filename = "Data/Sprite/TitleBack.png";
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
 				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
 				{
