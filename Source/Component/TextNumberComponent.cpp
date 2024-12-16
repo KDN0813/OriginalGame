@@ -71,7 +71,7 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     Sprite::GetCenterTypeRate(rateX, rateY, this->param.center_type);
 
     // ˆÊ’uİ’è
-    pos.x -= this->display_size.x * static_cast<float>(static_cast<int>((Digits - 1) * rateX));
+    pos.x -= this->display_size.x * static_cast<float>(Digits - 1) * rateX;
 
     // Œ…”•ª•`‰æ‚ğs‚¤
     for (int i = 0; i < Digits; ++i)
