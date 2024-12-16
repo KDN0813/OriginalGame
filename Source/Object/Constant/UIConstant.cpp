@@ -14,35 +14,11 @@
 
 const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<Object>& score_object)
 {
-	// テキスト表示
-	{
-		TextNumberComponent::TextParam param{};
-		param.color = { 1.0f,0.0f,0.0f ,1.0f };
-		param.center_type = Sprite::CENTER_TYPE::CENTER;
-		// ファイルパス設定する
-		param.font_name = "Data/Sprite/Numbers.png";
-		auto text_number = score_object->AddComponent<TextNumberComponent>(param);
-
-		if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-		{
-			sprite_shader->AddSprite(text_number);
-		}
-	}
-
 	// transform
 	{
-		Transform2DComponent::Transform2DParam paam{};
-		paam.local_position = { 0.45f,-0.03f };
-		score_object->AddComponent<Transform2DComponent>(paam);
-	}
-
-	// 更新処理
-	{
-		auto state_machine = score_object->AddComponent<StateMachineComponent>();
-
-		state_machine->RegisterState<ScoreUIDefaultState>();
-
-		state_machine->SetDefaultState(ScoreUIDefaultState::STATE_NAME);
+		Transform2DComponent::Transform2DParam param{};
+		param.local_position = { 0.45f,-0.03f };
+		score_object->AddComponent<Transform2DComponent>(param);
 	}
 
 	// 子オブジェクト
@@ -66,8 +42,42 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			// transform
 			{
 				Transform2DComponent::Transform2DParam param{};
-				param.local_position = { 0.45f,-0.03f };
 				bg_sprite->AddComponent<Transform2DComponent>(param);
+			}
+		}
+
+		// テキスト
+		{
+			const auto text_sprite = score_object->CreateChildObject("Text");
+
+			// TextNumberComponent
+			{
+				TextNumberComponent::TextParam param{};
+				param.color = { 1.0f,0.0f,0.0f ,1.0f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
+				// ファイルパス設定する
+				param.font_name = "Data/Sprite/Numbers.png";
+				auto text_number = text_sprite->AddComponent<TextNumberComponent>(param);
+
+				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
+				{
+					sprite_shader->AddSprite(text_number);
+				}
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam param{};
+				text_sprite->AddComponent<Transform2DComponent>(param);
+			}
+
+			// 更新処理
+			{
+				auto state_machine = text_sprite->AddComponent<StateMachineComponent>();
+
+				state_machine->RegisterState<ScoreUIDefaultState>();
+
+				state_machine->SetDefaultState(ScoreUIDefaultState::STATE_NAME);
 			}
 		}
 	}
