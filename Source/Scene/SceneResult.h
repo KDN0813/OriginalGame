@@ -3,9 +3,6 @@
 #include "Scene.h"
 #include "Object/Object.h"
 
-// シェーダー
-#include "Shader/SpriteShader.h"
-
 class SceneResult : public Scene
 {
 public:
@@ -18,7 +15,6 @@ public:
     void Render() override;
 
 private:
-    std::unique_ptr<SpriteShader> sprite_shader;
     ObjectManager object_manager;
 
 #ifdef _DEBUG

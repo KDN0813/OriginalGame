@@ -1,30 +1,39 @@
 #include "SceneResult.h"
 #include "Graphics/Graphics.h"
 
+// シェーダー
+#include "Shader/SpriteShader.h"
+
 #include "Scene/SceneManager.h"
 #include "Scene/SceneTitle.h"
 
 #include "Component/SpriteComponent.h"
+#include "Component/Transform2DComponent.h"
+
 
 void SceneResult::Initialize()
 {
-	// シェーダー作成
-	{
-		this->sprite_shader = std::make_unique<SpriteShader>();
-	}
-
 	// オブジェクト作成
 	{
 		// タイトル背景
 		{
-			auto sprite_bg = object_manager.Create();
-			sprite_bg->SetName("Title Back Sprite");
-			SpriteComponent::SpriteParam param{};
-			param.filename = "Data/Debug/Sprite/Title.png";
-			param.color = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
-			auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
-
-			this->sprite_shader->AddSprite(sprite);
+			auto sprite_bg = object_manager.Create("Title Back Sprite");
+			// スプライト
+			{
+				SpriteComponent::SpriteParam param{};
+				param.filename = "Data/Debug/Sprite/Title.png";
+				param.color = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
+				{
+					sprite_shader->AddSprite(sprite);
+				}
+			}
+			// transform
+			{
+				Transform2DComponent::Transform2DParam param{};
+				sprite_bg->AddComponent<Transform2DComponent>(param);
+			}
 		}
 	}
 }
@@ -54,7 +63,8 @@ void SceneResult::Render()
 	graphics->PrepareRenderTargets();
 
 	// 2Dスプライト描画
+	if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
 	{
-		this->sprite_shader->Render();
+		sprite_shader->Render();
 	}
 }

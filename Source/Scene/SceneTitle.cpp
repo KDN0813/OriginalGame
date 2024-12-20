@@ -34,6 +34,10 @@ void SceneTitle::Initialize()
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				param.filename = "Data/Sprite/TitleBack.png";
 				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
+				{
+					sprite_shader->AddSprite(sprite);
+				}
 			}
 
 			// transform
@@ -55,6 +59,10 @@ void SceneTitle::Initialize()
 				param.display_size = { 0.55f,0.35f };
 				param.filename = "Data/Sprite/TitleLogo.png";
 				auto sprite = sprite_logo->AddComponent<SpriteComponent>(param);
+				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
+				{
+					sprite_shader->AddSprite(sprite);
+				}
 			}
 
 			// transform
