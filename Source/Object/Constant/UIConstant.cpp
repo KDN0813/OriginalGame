@@ -28,7 +28,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 		{
 			const auto bg_sprite = score_object->CreateChildObject("BG_Sprite");
 
-			// transform
+			// 背景画像
 			{
 				SpriteComponent::SpriteParam param{};
 				param.display_size = { 0.144f,0.015f };
@@ -71,7 +71,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			// transform
 			{
 				Transform2DComponent::Transform2DParam param{};
-				param.local_position = { 0.005f,0.0f };
+				param.local_position = { 0.055f,0.0f };
 				text_sprite->AddComponent<Transform2DComponent>(param);
 			}
 
@@ -94,8 +94,8 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 	// transform
 	{
 		Transform2DComponent::Transform2DParam param{};
-		param.local_position = { 0.5f,0.065f };
-		param.local_scale = { 1.3f,1.3f };
+		param.local_position = { 0.1f,0.09f };
+		param.local_scale = { 2.0f,2.0f };
 		sprite_shader->AddComponent<Transform2DComponent>(param);
 	}
 
@@ -109,7 +109,7 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 			{
 				SpriteComponent::SpriteParam param{};
 				param.display_size = { 0.1f,0.1f };
-				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.color = { 1.0f,1.0f, 1.0f, 0.7f };
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
 				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
@@ -132,7 +132,7 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 			// TextNumberComponent
 			{
 				TextNumberComponent::TextParam param{};
-				param.color = { 1.0f,0.0f,0.0f ,1.0f };
+				param.color = { 1.0f,0.0f,0.0f ,0.7f };
 				param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
 				// ファイルパス設定する
 				param.font_name = "Data/Sprite/Numbers.png";
