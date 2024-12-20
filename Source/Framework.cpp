@@ -135,7 +135,7 @@ void Framework::CalculateFrameStats()
 
 bool Framework::IsPressedWindowCloseKey()
 {
-	return (GetAsyncKeyState('Q') & 0x8000 && GetAsyncKeyState(VK_CONTROL) & 0x8000);
+	return (GetAsyncKeyState(VK_ESCAPE) & 0x8000 && GetAsyncKeyState(VK_SHIFT) & 0x8000);
 }
 
 bool Framework::IsPressedPauseKey()
