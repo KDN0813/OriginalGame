@@ -9,6 +9,7 @@
 
 #include "Component/SpriteComponent.h"
 #include "Component/StateMachineComponent.h"
+#include "Component/Transform2DComponent.h"
 
 void SceneLoading::Initialize()
 {
@@ -32,6 +33,12 @@ void SceneLoading::Initialize()
                 param.color = { 0.3f,0.3f, 0.3f, 1.0f };
                 auto sprite = back_sprite->AddComponent<SpriteComponent>(param);
                 this->sprite_shader->AddSprite(sprite);
+            }
+
+            // transform
+            {
+                Transform2DComponent::Transform2DParam paam{};
+                back_sprite->AddComponent<Transform2DComponent>(paam);
             }
         }
     }

@@ -180,5 +180,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 		}
 	}
 
+	// transform
+	{
+		Transform2DComponent::Transform2DParam paam{};
+		pause_object->AddComponent<Transform2DComponent>(paam);
+	}
+
 	return pause_object;
 }
