@@ -11,6 +11,8 @@
 #include "Scene/SceneResult.h"
 #include "Scene/SceneLoading.h"
 
+#include "Shader/SpriteShader.h"
+
 #ifdef _DEBUG
 #include <imgui.h>
 #include "Debug/DebugManager.h"
@@ -64,7 +66,6 @@ void SceneGame::Initialize()
 	{
 		instancing_model_shader = std::make_unique<InstancingModelShader>();
 		model_shader = std::make_unique<ModelShader>();
-		sprite_shader = std::make_unique<SpriteShader>();
 		sky_box = std::make_unique<SkyBox>();
 	}
 
@@ -377,7 +378,11 @@ void SceneGame::Render()
 			particle_system->Render();
 		}
 
-		sprite_shader->Render();
+		// 2Dスプライト描画
+		if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
+		{
+			sprite_shader->Render();
+		}
 	}
 }
 
@@ -536,9 +541,12 @@ void SceneGame::DrawShaderImGui()
 		{
 			instancing_model_shader->DrawDebugGUI();
 		}
-		if (ImGui::CollapsingHeader(sprite_shader->GetName()))
+		if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
 		{
-			sprite_shader->DrawDebugGUI();
+			if (ImGui::CollapsingHeader(sprite_shader->GetName()))
+			{
+				sprite_shader->DrawDebugGUI();
+			}
 		}
 	}
 	ImGui::End();

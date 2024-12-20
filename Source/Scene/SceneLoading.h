@@ -5,8 +5,6 @@
 #include <thread>
 
 #include "Object/Object.h"
-// シェーダー
-#include "Shader/SpriteShader.h"
 
 class SceneLoading : public Scene
 {
@@ -23,7 +21,6 @@ private:
     static void LoadingThred(SceneLoading* scene);
 
 private:
-    std::unique_ptr<SpriteShader> sprite_shader;
     ObjectManager object_manager;
 
 private:

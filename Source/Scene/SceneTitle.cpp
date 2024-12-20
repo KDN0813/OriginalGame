@@ -9,6 +9,8 @@
 #include "Debug/ImGuiHelper.h"
 #endif // DEBUG
 
+#include "Shader/SpriteShader.h"
+
 #include "Component/SpriteComponent.h"
 #include "Component\Transform2DComponent.h"
 
@@ -19,11 +21,6 @@ void SceneTitle::Initialize()
 	{
 		game_data->SetGameStatus(GameData::GameStatus::TITLE);
 	}
-
-    // シェーダー作成
-    {
-        this->sprite_shader = std::make_unique<SpriteShader>();
-    }
 
 	// オブジェクト作成
 	{
@@ -37,7 +34,6 @@ void SceneTitle::Initialize()
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				param.filename = "Data/Sprite/TitleBack.png";
 				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
-				this->sprite_shader->AddSprite(sprite);
 			}
 
 			// transform
@@ -59,8 +55,6 @@ void SceneTitle::Initialize()
 				param.display_size = { 0.55f,0.35f };
 				param.filename = "Data/Sprite/TitleLogo.png";
 				auto sprite = sprite_logo->AddComponent<SpriteComponent>(param);
-
-				this->sprite_shader->AddSprite(sprite);
 			}
 
 			// transform
@@ -79,8 +73,6 @@ void SceneTitle::Initialize()
 			param.display_size = { 0.5f,0.1f };
 			param.filename = "Data/Sprite/TitleGameStartText.png";
 			auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
-
-			this->sprite_shader->AddSprite(sprite);
 
 			// transform
 			{
@@ -124,8 +116,9 @@ void SceneTitle::Render()
 	graphics->PrepareRenderTargets();
 
 	// 2Dスプライト描画
+	if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
 	{
-		this->sprite_shader->Render();
+		sprite_shader->Render();
 	}
 }
 
@@ -145,7 +138,10 @@ void SceneTitle::DebugDrawGUI()
 	{
 		if (ImGui::Begin("Sahder"))
 		{
-			this->sprite_shader->DrawDebugGUI();
+			if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
+			{
+				sprite_shader->DrawDebugGUI();
+			}
 		}
 		ImGui::End();
 	}

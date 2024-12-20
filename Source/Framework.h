@@ -13,6 +13,7 @@
 #include "System/GameData.h"
 #include "Audio/Audio.h"
 #include "Audio/AudioResourceManager.h"
+#include "Shader\SpriteShader.h"
 
 class Framework
 {
@@ -48,6 +49,7 @@ private:
 	CameraManager					camera_manager;
 	GameData						game_data;
 	Audio							audio;
+	SpriteShader					sprite_shader;
 
 	BOOL fullscreen_mode{ FALSE };
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)

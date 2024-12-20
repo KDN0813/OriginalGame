@@ -7,6 +7,9 @@
 
 #include "StateMachine\LoadingIconStateDerived.h"
 
+// シェーダー
+#include "Shader/SpriteShader.h"
+
 #include "Component/SpriteComponent.h"
 #include "Component/StateMachineComponent.h"
 #include "Component/Transform2DComponent.h"
@@ -15,11 +18,6 @@ void SceneLoading::Initialize()
 {
     // スレッド作成
     this->thread = std::make_unique<std::thread>(LoadingThred, this);
-
-    // シェーダー作成
-    {
-        this->sprite_shader = std::make_unique<SpriteShader>();
-    }
 
     // オブジェクト作成
     {
@@ -32,7 +30,6 @@ void SceneLoading::Initialize()
                 param.filename = "Data/Sprite/TitleBack.png";
                 param.color = { 0.3f,0.3f, 0.3f, 1.0f };
                 auto sprite = back_sprite->AddComponent<SpriteComponent>(param);
-                this->sprite_shader->AddSprite(sprite);
             }
 
             // transform
@@ -82,8 +79,9 @@ void SceneLoading::Render()
     graphics->PrepareRenderTargets();
 
     // 2Dスプライト描画
+    if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
     {
-        this->sprite_shader->Render();
+        sprite_shader->Render();
     }
 }
 
