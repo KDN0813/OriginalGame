@@ -806,6 +806,9 @@
     <ClCompile Include="Source\Object\Constant\UIConstant.cpp">
       <Filter>Source\Object\Constant\UIConstat</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Component\BaseSpriteComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Hlsl\MatrixDecompose.hlsli">

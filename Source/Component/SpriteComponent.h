@@ -24,8 +24,6 @@ public:
     SpriteComponent(const SpriteParam&);
     virtual ~SpriteComponent() {};
 
-    // 開始関数
-    void Start() override {};
     // 終了関数
     void End()  override {};
     // リスタート処理

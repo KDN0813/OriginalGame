@@ -239,6 +239,7 @@
     <ClCompile Include="Source\Camera\CameraManager.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Collision\CircleCollisionManager.cpp" />
+    <ClCompile Include="Source\Component\BaseSpriteComponent.cpp" />
     <ClCompile Include="Source\Component\DebugParticle.cpp" />
     <ClCompile Include="Source\Component\InstancedModelWithAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
