@@ -10,7 +10,7 @@
 #include "Component\Transform2DComponent.h"
 
 SpriteComponent::SpriteComponent(const SpriteParam& param)
-    :param(param),default_param(param)
+    :BaseSpriteComponent(param.draw_priority), param(param), default_param(param)
 {
     this->sprite = std::make_unique<Sprite>(param.filename.size() ? this->param.filename.c_str() : nullptr);
 
@@ -57,6 +57,13 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
 void SpriteComponent::DrawDebugGUI()
 {
     ImGui::InputTextString("Sprite Name", this->param.filename);
+
+    int priority = static_cast<int>(this->draw_priority);
+    if (ImGui::InputInt("Draw Priority", &priority))
+    {
+        this->draw_priority = static_cast<PRIORITY>(priority);
+    }
+
     ImGui::SliderFloat2("Display Size", &this->param.display_size.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Pos", &this->param.clip_pos.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Size", &this->param.clip_size.x, 0.0f, 1.0f);

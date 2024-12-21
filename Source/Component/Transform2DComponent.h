@@ -26,7 +26,7 @@ public:
     void ReStart() override { this->world_dirty_flag = true; this->local_dirty_flag = true;  this->param = this->default_param; };      // パラメータの初期化
     void Update(float elapsed_time)override;
     const char* GetName()const override { return "Transform2DComponent"; }
-    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::MEDIUM; };
+    const PRIORITY GetPriority()const noexcept { return PRIORITY::MEDIUM; };
 
     /**
      * ローカルパラメータの更新

@@ -33,7 +33,7 @@ public:
     // –¼‘Oæ“¾
     const char* GetName()const override { return "MovementComponent"; };
     // —Dæ“x
-    const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::HIGH; }
+    const PRIORITY GetPriority()const noexcept override { return PRIORITY::HIGH; }
 
     // ˆÚ“®•ûŒü‚ÉŒü‚­
     void FaceMovementDirection(float elapsed_timed);

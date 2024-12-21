@@ -30,7 +30,7 @@ public:
 
 	const char* GetName()const override { return "AnimatedInstancedModelComponent"; }
 	// óDêÊìx
-	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
+	const PRIORITY GetPriority()const noexcept override { return PRIORITY::LOW; }
 	
 	void PlayAnimation(const AnimeState& animation_info);
 

@@ -21,7 +21,7 @@ public:
     // –¼‘Oæ“¾
     const char* GetName()const  override { return "LegacyStateMachineComponent"; };
     // —Dæ“x
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::CRITICAL; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::CRITICAL; };
 
     void ChangeState(StateIndex state_index);
 

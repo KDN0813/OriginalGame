@@ -4,7 +4,7 @@
 
 class Object;
 
-enum COMPONENT_PRIORITY : unsigned int
+enum PRIORITY : unsigned int
 {
     LOWEST = 0,         // 最低の優先度
     //VERY_LOW,           // 非常に低い優先度
@@ -37,7 +37,7 @@ public:
     virtual const char* GetName()const = 0;
 
     // 優先度
-    virtual const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::DEFAULT; };
+    virtual const PRIORITY GetPriority()const noexcept { return PRIORITY::DEFAULT; };
     
     // 他オブジェクトに接触した時の処理
     virtual void OnCollision(const std::shared_ptr<Object>& hit_object) {};
@@ -110,7 +110,7 @@ public:
     const char* GetName()const  override {};
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
 #ifdef _DEBUG
 public:

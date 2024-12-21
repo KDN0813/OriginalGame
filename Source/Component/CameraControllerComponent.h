@@ -32,7 +32,7 @@ public:
     const char* GetName()const  override { return "CameraControllerGamepad"; };
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
     // 各種取得・設定関数
     float GetRollSpeed()const { return this->param.roll_speedY; }
@@ -85,7 +85,7 @@ public:
     void End()  override {};
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
 private:
     std::weak_ptr<CameraComponent> camera_Wptr;

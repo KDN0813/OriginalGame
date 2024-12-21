@@ -61,7 +61,7 @@ public:
     const char* GetName()const  override { return "EnemyComponent"; };
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::VERY_HIGH; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::VERY_HIGH; };
 
     // 他オブジェクトに接触した時の処理
     void OnCollision(const std::shared_ptr<Object>& hit_object) override;

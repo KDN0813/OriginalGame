@@ -19,7 +19,7 @@ public:
     const char* GetName()const  override { return "DebugComponent"; };
 
     // óDêÊìx
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::LOW; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::LOW; };
 
 #ifdef _DEBUG
 public:

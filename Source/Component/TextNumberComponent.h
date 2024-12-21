@@ -17,10 +17,11 @@ public:
         std::string font_name = {};
         int value = 0;  // 表示する値
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
+        PRIORITY draw_priority;
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
 public:
-    TextNumberComponent(TextParam param) : param(param), default_param(param) {};
+    TextNumberComponent(TextParam param) : BaseSpriteComponent(param.draw_priority), param(param), default_param(param) {};
     ~TextNumberComponent() {};
 
     // 開始関数
@@ -36,7 +37,7 @@ public:
     const char* GetName()const  override { return "TextNumberComponent"; };
 
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
     // 描画関数
     void Render(ID3D11DeviceContext* dc) override;

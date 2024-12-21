@@ -6,9 +6,15 @@
 class BaseSpriteComponent : public Component , public std::enable_shared_from_this<BaseSpriteComponent>
 {
 public:
+    BaseSpriteComponent() :draw_priority(PRIORITY::DEFAULT) {};
+    BaseSpriteComponent(PRIORITY priority) :draw_priority(priority) {};
+public:
     // äJénä÷êî
     virtual void Start() override;
 
     // ï`âÊèàóù
     virtual void Render(ID3D11DeviceContext* dc) = 0;
+
+protected:
+    PRIORITY draw_priority;
 };

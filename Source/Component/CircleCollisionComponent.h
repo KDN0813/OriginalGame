@@ -37,7 +37,7 @@ public:
     const char* GetName()const  override { return "CircleCollisionComponent"; };
 
     // —Dæ“x
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::LOWEST; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::LOWEST; };
 
     // ÚG”»’è‚ğs‚¤
     void EvaluateCollision();

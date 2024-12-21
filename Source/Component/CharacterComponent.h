@@ -31,7 +31,7 @@ public:
     bool IsAlive();
 
     // óDêÊìx
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 private:
     CharacterParam param;
     CharacterParam default_param;

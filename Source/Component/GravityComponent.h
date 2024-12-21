@@ -22,7 +22,7 @@ public:
     // 名前取得
     const char* GetName()const { return "GravityComponent"; };
     // 優先度
-    const COMPONENT_PRIORITY GetPriority()const noexcept { return COMPONENT_PRIORITY::VERY_HIGH; };
+    const PRIORITY GetPriority()const noexcept { return PRIORITY::VERY_HIGH; };
 
 
     // 各種取得・設定関数

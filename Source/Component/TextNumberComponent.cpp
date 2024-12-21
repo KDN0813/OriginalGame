@@ -102,6 +102,13 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 void TextNumberComponent::DrawDebugGUI()
 {
     ImGui::InputTextString("Font Name", this->param.font_name);
+
+    int priority = static_cast<int>(this->draw_priority);
+    if (ImGui::InputInt("Draw Priority", &priority))
+    {
+        this->draw_priority = static_cast<PRIORITY>(priority);
+    }
+
     int value = this->param.value;
     if (ImGui::InputInt("Value", &value))
     {

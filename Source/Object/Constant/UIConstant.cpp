@@ -154,6 +154,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 		SpriteComponent::SpriteParam param{};
 		param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 		param.filename = "Data/Sprite/Pause.png";
+		param.draw_priority = PRIORITY::LOWEST;
 		auto sprite = pause_object->AddComponent<SpriteComponent>(param);
 	}
 

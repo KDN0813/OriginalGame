@@ -25,7 +25,7 @@ public:
     void Update(float elapsed_time) override;
     // –¼‘OŽæ“¾
     const char* GetName()const override { return "PlayerComponent"; };
-    const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::VERY_HIGH; };
+    const PRIORITY GetPriority()const noexcept override { return PRIORITY::VERY_HIGH; };
 
     bool GetInputMoveValidityFlag()const { return this->param.input_move_validity_flag; }
     void SetInputMoveValidityFlag(bool flag) { this->param.input_move_validity_flag = flag; }

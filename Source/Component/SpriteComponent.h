@@ -18,6 +18,7 @@ public:
         DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
         DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
+        PRIORITY draw_priority = PRIORITY::DEFAULT;
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
 public:
@@ -35,7 +36,7 @@ public:
     const char* GetName()const  override { return "SpriteComponent"; };
 
     // óDêÊìx
-    const COMPONENT_PRIORITY GetPriority()const noexcept  override { return COMPONENT_PRIORITY::DEFAULT; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
     
     // ï`âÊèàóù
     void Render(ID3D11DeviceContext* dc) override;

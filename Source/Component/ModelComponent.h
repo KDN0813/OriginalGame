@@ -42,7 +42,7 @@ public:
 	// 名前取得
 	const char* GetName()const override { return "ModelComponent"; };
 	// 優先度
-	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOW; }
+	const PRIORITY GetPriority()const noexcept override { return PRIORITY::LOW; }
 
 	// 行列計算
 	void UpdateTransform(MYMATRIX Transform);

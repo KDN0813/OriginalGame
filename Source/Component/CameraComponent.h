@@ -37,7 +37,7 @@ public:
 	// –¼‘Oæ“¾
 	const char* GetName()const { return "CameraComponent"; };
 	// —Dæ“x
-	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::LOWEST; }
+	const PRIORITY GetPriority()const noexcept override { return PRIORITY::LOWEST; }
 
 	/**
 	 * \fn SetMainCamera

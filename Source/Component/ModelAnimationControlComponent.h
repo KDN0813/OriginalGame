@@ -37,7 +37,7 @@ public:
 	// 名前取得
 	const char* GetName()const override { return "ModelAnimationControlComponent"; };
 	// 優先度
-	const COMPONENT_PRIORITY GetPriority()const noexcept override { return COMPONENT_PRIORITY::MEDIUM; }
+	const PRIORITY GetPriority()const noexcept override { return PRIORITY::MEDIUM; }
 
 	// アニメーション更新処理
 	void UpdateAnimation(float elapsed_time);
