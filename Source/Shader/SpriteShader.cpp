@@ -130,8 +130,23 @@ void SpriteShader::AddSprite(std::shared_ptr<BaseSpriteComponent> sprite)
 
 void SpriteShader::DrawDebugGUI()
 {
-    size_t size = this->sprite_pool.size();
-    ImGui::InputSize_t("Size", size);
+	std::string text{};
+	for (size_t i = 0; i < this->sprite_pool.size(); ++i)
+	{
+		const auto sprite_Wptr = this->sprite_pool[i];
+		std::string owner_name{};
+
+		// Š—LŽÒ‚Ì–¼‘OŽæ“¾
+		if (auto sprite = sprite_Wptr.lock())
+		{
+			if (const auto owner = sprite->GetOwner())
+			{
+				owner_name = owner->GetName();
+			}
+		}
+		text = "[" + std::to_string(i) + "]:" + owner_name + "#" + std::to_string(i);
+		ImGui::Text(text.c_str());
+	}
 }
 
 #endif // DEBUG

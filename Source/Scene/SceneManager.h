@@ -12,6 +12,8 @@ public:
     SceneManager() :Singleton(this) {};
     ~SceneManager(){}
 
+    void Initialize();
+
     void Update(float elpsed_time);
 
     void Render();
@@ -25,8 +27,8 @@ private:
     Scene* next_scene    = nullptr;
 
     // ポーズ画面用オブジェクト
-    std::unique_ptr<SpriteShader> sprite_shader;
-    ObjectManager object_manager;
+    std::shared_ptr<Object> pause_object;
+    ObjectManager common_object_manager;
 #ifdef _DEBUG
 public:
     void DrawDebugGUI();

@@ -9,10 +9,19 @@
 #include "Scene/SceneLoading.h"
 #endif // DEBUG
 
-#include "Component\SpriteComponent.h"
+#include "Object\Constant\UIConstant.h"
+
+void SceneManager::Initialize()
+{
+    // 共通オブジェクト作製
+    this->pause_object = UIConstant::CreatePause(this->common_object_manager.Create("TTTTTTTTTTTTTTTTest"));
+}
 
 void SceneManager::Update(float elpsed_time)
 {
+    // 共通オブジェクト更新
+    this->common_object_manager.Update(elpsed_time);
+
     if (this->next_scene != nullptr)
     {
         Clear();
@@ -62,6 +71,15 @@ void SceneManager::DrawDebugGUI()
     // シーン毎のデバッグ処理
     this->current_scene->DebugDrawGUI();
     
+    if (ImGui::Begin("Common Object"))
+    {
+        if (ImGui::CollapsingHeader(this->pause_object->GetNameCStr()))
+        {
+            this->pause_object->DrawDebugGUI();
+        }
+    }
+    ImGui::End();
+
     if (ImGui::Begin("Scene Manager"))
     {
         // ロードシーンでないなら表示する

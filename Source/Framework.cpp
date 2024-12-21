@@ -19,15 +19,16 @@
 
 Framework::Framework(HWND hWnd)
 	: hWnd(hWnd)
+	, hDC(GetDC(hWnd))
 	, graphics(hWnd)
 	, input(hWnd)
 #ifdef _DEBUG
 	, debug_manager(hWnd)
 #endif // _DEBUG
 {
-	hDC = GetDC(hWnd);
+	scene_manager.Initialize();
 #if defined(_DEBUG)
-	scene_manager.ChangeScene(new SceneTitle);
+	scene_manager.ChangeScene(new SceneGame);
 	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(0.4f, 0.4f, 0.4f, 1.00f);  // デフォルト値を再設定
 #elif defined(RELEASE_DEBUG)
 	scene_manager.ChangeScene(new SceneGame);
