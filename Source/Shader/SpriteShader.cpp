@@ -110,6 +110,19 @@ void SpriteShader::Render()
             }),
         this->sprite_pool.end());
 
+	// ソート処理
+	if (this->should_sort)
+	{
+		auto sortFunc = [](std::weak_ptr<BaseSpriteComponent> lhs_Wptr, std::weak_ptr<BaseSpriteComponent> rhs_Wptr) -> bool
+			{
+				std::shared_ptr<BaseSpriteComponent> lhs = lhs_Wptr.lock();
+				std::shared_ptr<BaseSpriteComponent> rhs = rhs_Wptr.lock();
+				return ((lhs->GetDrawPriority() > rhs->GetDrawPriority()));
+			};
+		std::sort(sprite_pool.begin(), sprite_pool.end(), sortFunc);
+		this->should_sort = false;
+	}
+
     for (auto sprite_Wptr : this->sprite_pool)
     {
         auto sprite = sprite_Wptr.lock();
@@ -124,6 +137,8 @@ void SpriteShader::Render()
 void SpriteShader::AddSprite(std::shared_ptr<BaseSpriteComponent> sprite)
 {
     this->sprite_pool.emplace_back(sprite);
+
+	this->should_sort = true;	// ソートフラグを立てる
 }
 
 #ifdef _DEBUG

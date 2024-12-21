@@ -20,6 +20,8 @@ public:
 
     // スプライトの追加
     void AddSprite(std::shared_ptr<BaseSpriteComponent> sprite);
+
+    void SetShouldSort(bool flag) { this->should_sort = flag; }
 private:
     std::vector<std::weak_ptr<BaseSpriteComponent>> sprite_pool;
 
@@ -28,6 +30,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizer_state;
     Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler_state;
 
+    bool should_sort = false;
 #ifdef _DEBUG
 public:
     void DrawDebugGUI() override;

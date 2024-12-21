@@ -17,7 +17,7 @@ public:
         std::string font_name = {};
         int value = 0;  // •\Ž¦‚·‚é’l
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
-        PRIORITY draw_priority;
+        PRIORITY draw_priority = PRIORITY::DEFAULT;
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
 public:

@@ -5,6 +5,7 @@
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #include <magic_enum.hpp>
+#include "Shader\SpriteShader.h"
 #endif // _DEBUG
 
 #include "Component\Transform2DComponent.h"
@@ -62,6 +63,10 @@ void SpriteComponent::DrawDebugGUI()
     if (ImGui::InputInt("Draw Priority", &priority))
     {
         this->draw_priority = static_cast<PRIORITY>(priority);
+        if (SpriteShader::Instance manager = SpriteShader::GetInstance(); manager.Get())
+        {
+            manager->SetShouldSort(true);
+        }
     }
 
     ImGui::SliderFloat2("Display Size", &this->param.display_size.x, 0.0f, 1.0f);

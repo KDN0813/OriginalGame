@@ -5,6 +5,7 @@
 #ifdef _DEBUG
 #include "Debug\ImGuiHelper.h"
 #include <magic_enum.hpp>
+#include "Shader\SpriteShader.h"
 #endif // DEBUG
 
 #include "Component\Transform2DComponent.h"
@@ -107,6 +108,10 @@ void TextNumberComponent::DrawDebugGUI()
     if (ImGui::InputInt("Draw Priority", &priority))
     {
         this->draw_priority = static_cast<PRIORITY>(priority);
+        if (SpriteShader::Instance manager = SpriteShader::GetInstance(); manager.Get())
+        {
+            manager->SetShouldSort(true);
+        }
     }
 
     int value = this->param.value;

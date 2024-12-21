@@ -84,9 +84,6 @@ void SceneGame::Initialize()
 		// ゲーム時間表示オブジェクト
 		UIConstant::CreateGameTimerUI(object_manager.Create("GameTimer"));
 
-		// ポーズ画面用オブジェクト作成
-		this->pause_object = UIConstant::CreatePause(object_manager.Create("pause_object"));
-
 		// ステージ(床)
 		const auto& stage_foor = StageConstant::CreateStageFloor(object_manager.Create("StageFloor"));
 
@@ -175,7 +172,7 @@ void SceneGame::Finalize()
 	// ポーズ解除
 	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
-		this->pause_object->SetIsActive(false);
+		//this->pause_object->SetIsActive(false);
 	}
 }
 
@@ -373,7 +370,7 @@ void SceneGame::Render()
 		{
 			if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 			{
-				this->pause_object->SetIsActive(game_data->GetIsPause());
+				//this->pause_object->SetIsActive(game_data->GetIsPause());
 			}
 		}
 

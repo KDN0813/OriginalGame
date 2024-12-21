@@ -15,6 +15,7 @@ public:
     // •`‰æˆ—
     virtual void Render(ID3D11DeviceContext* dc) = 0;
 
+    PRIORITY GetDrawPriority() { return this->draw_priority; }
 protected:
     PRIORITY draw_priority;
 };
