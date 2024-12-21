@@ -168,6 +168,7 @@ int Framework::Run()
 					if (game_data->GetGameStatus() == GameData::GameStatus::GAME)
 					{
 						game_data->SetIsPause(!game_data->GetIsPause());
+						this->scene_manager.GetPauseObject()->SetIsActive(game_data->GetIsPause());	// pause用オブジェクトの(非)アクティブ化
 					}
 				}
 			}

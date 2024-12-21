@@ -366,14 +366,6 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
-		// ポーズ処理
-		{
-			if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-			{
-				//this->pause_object->SetIsActive(game_data->GetIsPause());
-			}
-		}
-
 		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 		{
 			particle_system->Update();

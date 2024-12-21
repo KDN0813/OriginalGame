@@ -22,6 +22,7 @@ public:
 
     void ChangeScene(Scene* scene);
 
+    const std::shared_ptr<Object>& GetPauseObject()const { return this->pause_object; }
 private:
     Scene* current_scene = nullptr;
     Scene* next_scene    = nullptr;

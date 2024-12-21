@@ -14,7 +14,7 @@
 void SceneManager::Initialize()
 {
     // 共通オブジェクト作製
-    this->pause_object = UIConstant::CreatePause(this->common_object_manager.Create("TTTTTTTTTTTTTTTTest"));
+    this->pause_object = UIConstant::CreatePause(this->common_object_manager.Create("PauseObject"));
 }
 
 void SceneManager::Update(float elpsed_time)

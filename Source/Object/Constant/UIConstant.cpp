@@ -149,6 +149,8 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 
 const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Object>& pause_object)
 {
+	pause_object->SetIsActive(false);
+
 	// スプライト読み込み
 	{
 		SpriteComponent::SpriteParam param{};

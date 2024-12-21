@@ -62,7 +62,7 @@ void SpriteComponent::DrawDebugGUI()
     int priority = static_cast<int>(this->draw_priority);
     if (ImGui::InputInt("Draw Priority", &priority))
     {
-        this->draw_priority = static_cast<PRIORITY>(priority);
+        this->draw_priority = static_cast<PRIORITY>((priority < 0) ? 0 : priority);
         if (SpriteShader::Instance manager = SpriteShader::GetInstance(); manager.Get())
         {
             manager->SetShouldSort(true);
