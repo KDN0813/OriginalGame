@@ -23,11 +23,11 @@ public:
 public:
     struct GameParam
     {
-        int score = 0;                                  // スコア
-        float game_end_timer = 600.0f;                   // ゲーム終了までの時間
-        bool is_loading = false;                        // ロード中であるか
-        bool is_pause = false;                          // ポーズ中であるか
-        GameStatus game_status = GameStatus::GAME;   // ゲームの状態
+        int score = 0;                                   // スコア
+        float game_end_timer = 100.0f;                   // ゲーム終了までの時間
+        bool is_loading = false;                         // ロード中であるか
+        bool is_pause = false;                           // ポーズ中であるか
+        GameStatus game_status = GameStatus::GAME;       // ゲームの状態
     };
 public:
     GameData();
@@ -52,6 +52,7 @@ public:
     GameStatus GetGameStatus()const { return this->param.game_status; }
     void SetScore(int score) { this->param.score = score; }
     void AddScore(int score) { this->param.score += score; }
+    void RestGameTime() { this->param.game_end_timer = GameParam().game_end_timer; }
     void SetGameElapsedTime(float game_elapsed_time) { this->param.game_end_timer = game_elapsed_time; }
     void SetIsLoading(bool is_loading) { this->param.is_loading = is_loading; }
     void SetIsPause(bool is_pause) { this->param.is_pause = is_pause; }

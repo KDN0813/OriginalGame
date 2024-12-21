@@ -60,6 +60,8 @@ void SceneGame::Initialize()
 	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
 		game_data->SetGameStatus(GameData::GameStatus::GAME);
+		game_data->SetScore(0);
+		game_data->RestGameTime();
 	}
 
 	// シェーダーの作成
