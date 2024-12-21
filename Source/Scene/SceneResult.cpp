@@ -24,10 +24,6 @@ void SceneResult::Initialize()
 				param.filename = "Data/Debug/Sprite/Title.png";
 				param.color = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
 				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
-				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-				{
-					sprite_shader->AddSprite(sprite);
-				}
 			}
 			// transform
 			{

@@ -30,10 +30,6 @@ void SceneLoading::Initialize()
                 param.filename = "Data/Sprite/TitleBack.png";
                 param.color = { 0.3f,0.3f, 0.3f, 1.0f };
                 auto sprite = back_sprite->AddComponent<SpriteComponent>(param);
-                if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-                {
-                    sprite_shader->AddSprite(sprite);
-                }
             }
 
             // transform

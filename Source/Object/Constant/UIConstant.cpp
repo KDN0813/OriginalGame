@@ -35,10 +35,6 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
-				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-				{
-					sprite_shader->AddSprite(sprite);
-				}
 			}
 
 			// transform
@@ -61,11 +57,6 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 				// ファイルパス設定する
 				param.font_name = "Data/Sprite/Numbers.png";
 				auto text_number = text_sprite->AddComponent<TextNumberComponent>(param);
-
-				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-				{
-					sprite_shader->AddSprite(text_number);
-				}
 			}
 
 			// transform
@@ -112,10 +103,6 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 				param.color = { 1.0f,1.0f, 1.0f, 0.7f };
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
-				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-				{
-					sprite_shader->AddSprite(sprite);
-				}
 			}
 
 			// transform
@@ -137,11 +124,6 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 				// ファイルパス設定する
 				param.font_name = "Data/Sprite/Numbers.png";
 				auto text_number = text_sprite->AddComponent<TextNumberComponent>(param);
-
-				if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-				{
-					sprite_shader->AddSprite(text_number);
-				}
 			}
 
 			// transform
@@ -173,11 +155,6 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 		param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 		param.filename = "Data/Sprite/Pause.png";
 		auto sprite = pause_object->AddComponent<SpriteComponent>(param);
-
-		if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-		{
-			sprite_shader->AddSprite(sprite);
-		}
 	}
 
 	// transform

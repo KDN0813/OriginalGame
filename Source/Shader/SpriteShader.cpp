@@ -87,6 +87,7 @@ void SpriteShader::Render()
     Graphics::Instance graphics = Graphics::GetInstance();
     if (!graphics.Get()) return;
     ID3D11DeviceContext* const dc = graphics->GetDeviceContext();
+	if (!dc) return;
 
 	// ‰Šúİ’è
 	{

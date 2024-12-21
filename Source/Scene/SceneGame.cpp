@@ -145,9 +145,6 @@ void SceneGame::Initialize()
 			}
 		}
 
-		// オブジェクトの開始処理を実行
-		object_manager.Start();
-
 		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 		{
 			AudioParam param{};
@@ -171,6 +168,12 @@ void SceneGame::Finalize()
 	if(CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
 		camera_manager->Reset();
+	}
+
+	// ポーズ解除
+	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+	{
+		this->pause_object->SetIsActive(false);
 	}
 }
 
