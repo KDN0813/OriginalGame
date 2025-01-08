@@ -168,3 +168,24 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 
 	return pause_object;
 }
+
+const std::shared_ptr<Object>& UIConstant::CreateFadeObject(const std::shared_ptr<Object>& fade_object)
+{
+	//fade_object->SetIsActive(false);
+
+	// スプライト読み込み
+	{
+		SpriteComponent::SpriteParam param{};
+		param.color = { 0.0f,0.0f, 0.0f, 1.0f };
+		param.draw_priority = PRIORITY::LOWEST;
+		auto sprite = fade_object->AddComponent<SpriteComponent>(param);
+	}
+
+	// transform
+	{
+		Transform2DComponent::Transform2DParam paam{};
+		fade_object->AddComponent<Transform2DComponent>(paam);
+	}
+
+	return fade_object;
+}

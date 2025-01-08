@@ -23,12 +23,14 @@ public:
     void ChangeScene(Scene* scene);
 
     const std::shared_ptr<Object>& GetPauseObject()const { return this->pause_object; }
+    const std::shared_ptr<Object>& GetFadeObject()const { return this->fade_object; }
 private:
     Scene* current_scene = nullptr;
     Scene* next_scene    = nullptr;
 
     // ポーズ画面用オブジェクト
-    std::shared_ptr<Object> pause_object;
+    std::shared_ptr<Object> pause_object;   // ポーズ用オブジェクト
+    std::shared_ptr<Object> fade_object;    // フェード用オブジェクト
     ObjectManager common_object_manager;
 #ifdef _DEBUG
 public:
