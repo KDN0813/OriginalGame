@@ -205,6 +205,9 @@
     <Filter Include="Source\Object\Constant\UIConstat">
       <UniqueIdentifier>{938c8ce1-00a3-4c6d-9125-0501f6e1772c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\UI">
+      <UniqueIdentifier>{2b813e33-b9a1-4e0b-a52d-43bf7f416cf5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -543,6 +546,9 @@
     <ClInclude Include="Source\Object\Constant\UIConstant.h">
       <Filter>Source\Object\Constant\UIConstat</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\FadeControllerComponent.h">
+      <Filter>Source\Component\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -808,6 +814,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\BaseSpriteComponent.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\FadeControllerComponent.cpp">
+      <Filter>Source\Component\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
