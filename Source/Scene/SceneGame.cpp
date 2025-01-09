@@ -57,6 +57,9 @@
 
 void SceneGame::Initialize()
 {
+	// シーン遷移用ステート変数の初期化
+	this->change_state = CHANGE_SCENE_STATE::START;
+
 	// ゲーム状態を設定
 	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
@@ -383,6 +386,9 @@ void SceneGame::Render()
 
 void SceneGame::ReStart()
 {
+	// シーン遷移用ステート変数の初期化
+	this->change_state = CHANGE_SCENE_STATE::START;
+
 	object_manager.ReStart();
 
 	// エネミーの数を追加する
@@ -428,13 +434,11 @@ void SceneGame::ProcessGameState()
 	}
 	case GameData::GameStatus::VICTORY:	// プレイヤーの勝利
 	{
-		static int state = 0;
-
 		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
 		{
-			switch (state)
+			switch (this->change_state)
 			{
-			case 0:	// フェードイン準備
+			case CHANGE_SCENE_STATE::START:	// フェードイン準備
 			{
 				const auto& fead_object = scene_manager->GetFadeObject();
 				if (fead_object)
@@ -445,10 +449,10 @@ void SceneGame::ProcessGameState()
 						fead_ontroller->FeadStart();
 					}
 				}
-				++state;
+				this->change_state = CHANGE_SCENE_STATE::RUN;
 			}
 				break;
-			case 1:	// フェードイン待機
+			case CHANGE_SCENE_STATE::RUN:	// フェードイン待機
 			{
 				const auto& fead_object = scene_manager->GetFadeObject();
 				if (fead_object)
@@ -458,19 +462,19 @@ void SceneGame::ProcessGameState()
 						if (!fead_ontroller->GetIsActive())
 						{
 							scene_manager->ChangeScene(new SceneLoading(new SceneResult));
-							state = 0;
+							this->change_state = CHANGE_SCENE_STATE::END;
 						}
 					}
 					else
 					{
 						scene_manager->ChangeScene(new SceneLoading(new SceneResult));
-						state = 0;
+						this->change_state = CHANGE_SCENE_STATE::END;
 					}
 				}
 				else
 				{
 					scene_manager->ChangeScene(new SceneLoading(new SceneResult));
-					state = 0;
+					this->change_state = CHANGE_SCENE_STATE::END;
 				}
 			}
 				break;

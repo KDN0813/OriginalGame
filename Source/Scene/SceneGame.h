@@ -17,6 +17,13 @@
 class SceneGame : public Scene 
 {
 public:
+    enum class CHANGE_SCENE_STATE
+    {
+        START = 0,
+        RUN,
+        END,
+    };
+public:
     SceneGame() {};
     ~SceneGame() override {};
 
@@ -44,6 +51,7 @@ private:
     ParticleSystem particle_system;
     LightManager light_manager;
 
+    CHANGE_SCENE_STATE change_state;    // シーン遷移用ステート
 #ifdef _DEBUG
     const size_t enemy_max = 500;
     std::shared_ptr<Object> debug_Particle;
