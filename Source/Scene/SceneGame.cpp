@@ -459,20 +459,9 @@ void SceneGame::ProcessGameState()
 				{
 					if (const auto fead_ontroller = fead_object->GetComponent<FadeControllerComponent>())
 					{
-						if (!fead_ontroller->GetIsActive())
-						{
-							scene_manager->ChangeScene(new SceneLoading(new SceneResult));
-							this->change_state = CHANGE_SCENE_STATE::END;
-						}
+						if (fead_ontroller->GetIsActive()) return;
 					}
-					else
-					{
-						scene_manager->ChangeScene(new SceneLoading(new SceneResult));
-						this->change_state = CHANGE_SCENE_STATE::END;
-					}
-				}
-				else
-				{
+
 					scene_manager->ChangeScene(new SceneLoading(new SceneResult));
 					this->change_state = CHANGE_SCENE_STATE::END;
 				}
