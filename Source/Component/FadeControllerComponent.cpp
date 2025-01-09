@@ -1,5 +1,9 @@
 #include "FadeControllerComponent.h"
 
+#ifdef _DEBUG
+#include <imgui.h>
+#endif // _DEBUG
+
 #include <cmath>
 #include "System\MyMath\MyMathf.h"
 
@@ -78,3 +82,24 @@ void FadeControllerComponent::FeadOut()
         }
     }
 }
+
+#ifdef _DEBUG
+
+void FadeControllerComponent::DrawDebugGUI() 
+{
+    if (ImGui::Button("FeadIn"))
+    {
+        this->param.fead_type = FEAD_TYPE::FEAD_IN;
+        FeadStart();
+    }
+    if (ImGui::Button("FeadOut"))
+    {
+        this->param.fead_type = FEAD_TYPE::FEAD_OUT;
+        FeadStart();
+    }
+
+    ImGui::InputFloat("Fade Duration", &this->param.fade_duration);
+    ImGui::Text(("Fead Time:" + std::to_string(this->param.fade_time)).c_str());
+}
+
+#endif // _DEBUG

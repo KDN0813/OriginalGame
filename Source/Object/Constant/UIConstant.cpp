@@ -8,7 +8,7 @@
 #include "Component\SpriteComponent.h"
 #include "Component\StateMachineComponent.h"
 #include "Component\Transform2DComponent.h"
-#include "Component\SpriteComponent.h"
+#include "Component\FadeControllerComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -171,12 +171,10 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 
 const std::shared_ptr<Object>& UIConstant::CreateFadeObject(const std::shared_ptr<Object>& fade_object)
 {
-	//fade_object->SetIsActive(false);
-
 	// スプライト読み込み
 	{
 		SpriteComponent::SpriteParam param{};
-		param.color = { 0.0f,0.0f, 0.0f, 1.0f };
+		param.color = { 0.0f,0.0f, 0.0f, 0.0f };
 		param.draw_priority = PRIORITY::LOWEST;
 		auto sprite = fade_object->AddComponent<SpriteComponent>(param);
 	}
@@ -185,6 +183,13 @@ const std::shared_ptr<Object>& UIConstant::CreateFadeObject(const std::shared_pt
 	{
 		Transform2DComponent::Transform2DParam paam{};
 		fade_object->AddComponent<Transform2DComponent>(paam);
+	}
+
+	// FadeControllerComponent
+	{
+		FadeControllerComponent::FadeControllerParam param{};
+		const auto fade_controller = fade_object->AddComponent<FadeControllerComponent>(param);
+		fade_controller->SetIsActive(false);
 	}
 
 	return fade_object;
