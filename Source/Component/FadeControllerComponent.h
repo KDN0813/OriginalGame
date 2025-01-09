@@ -58,6 +58,10 @@ public:
      */
     void FeadStart();
 private:
+    void FeadIn();
+    void FeadOut();
+
+private:
     FadeControllerParam param;
 
 #ifdef _DEBUG
