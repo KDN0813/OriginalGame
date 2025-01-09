@@ -66,7 +66,7 @@ void FadeControllerComponent::FeadIn()
         if (const auto& sprite = owner->EnsureComponentValid(this->sprite_Wptr))
         {
             const float t = this->param.fade_time / this->param.fade_duration;
-            sprite->SetAlpha(std::lerp(0.0f, 1.0f, 1));
+            sprite->SetAlpha(std::lerp(0.0f, 1.0f, t));
         }
     }
 }
@@ -78,7 +78,7 @@ void FadeControllerComponent::FeadOut()
         if (const auto& sprite = owner->EnsureComponentValid(this->sprite_Wptr))
         {
             const float t = this->param.fade_time / this->param.fade_duration;
-            sprite->SetAlpha(std::lerp(1.0f, 0.0f, 1));
+            sprite->SetAlpha(std::lerp(1.0f, 0.0f, t));
         }
     }
 }
