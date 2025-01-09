@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 
+class SpriteComponent;
+
 enum class FEAD_TYPE
 {
     FEAD_IN = 0,
@@ -63,6 +65,9 @@ private:
 
 private:
     FadeControllerParam param;
+
+private:
+    std::weak_ptr<SpriteComponent> sprite_Wptr;
 
 #ifdef _DEBUG
 public:

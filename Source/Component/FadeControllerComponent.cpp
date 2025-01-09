@@ -1,5 +1,11 @@
 #include "FadeControllerComponent.h"
 
+#include <cmath>
+#include "System\MyMath\MyMathf.h"
+
+#include "Object\Object.h"
+#include "Component\SpriteComponent.h"
+
 void FadeControllerComponent::Start()
 {
 }
@@ -39,7 +45,7 @@ void FadeControllerComponent::Update(float elapsed_time)
 void FadeControllerComponent::SetFead(FEAD_TYPE type, float fade_duration)
 {
     this->param.fead_type = type;
-    this->param.fade_duration = fade_duration;
+    this->param.fade_duration = (std::max)(fade_duration, 0.2f);
 }
 
 void FadeControllerComponent::FeadStart()
@@ -51,9 +57,24 @@ void FadeControllerComponent::FeadStart()
 
 void FadeControllerComponent::FeadIn()
 {
-
+    if (const auto& owner = GetOwner())
+    {
+        if (const auto& sprite = owner->EnsureComponentValid(this->sprite_Wptr))
+        {
+            const float t = this->param.fade_time / this->param.fade_duration;
+            sprite->SetAlpha(std::lerp(0.0f, 1.0f, 1));
+        }
+    }
 }
 
 void FadeControllerComponent::FeadOut()
 {
+    if (const auto& owner = GetOwner())
+    {
+        if (const auto& sprite = owner->EnsureComponentValid(this->sprite_Wptr))
+        {
+            const float t = this->param.fade_time / this->param.fade_duration;
+            sprite->SetAlpha(std::lerp(1.0f, 0.0f, 1));
+        }
+    }
 }

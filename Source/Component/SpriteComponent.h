@@ -41,6 +41,8 @@ public:
     // •`‰æˆ—
     void Render(ID3D11DeviceContext* dc) override;
 
+    void SetColoer(DirectX::XMFLOAT4 color) { this->param.color = color; };
+    void SetAlpha(float a) { this->param.color.w = a; };
 private:
     std::unique_ptr<Sprite> sprite;
     SpriteParam param;
