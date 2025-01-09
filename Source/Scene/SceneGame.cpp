@@ -41,6 +41,7 @@
 #ifdef _DEBUG
 #include "Component\ModelShaderComponent.h"
 #include "Component\DebugParticle.h"
+#include "Component\FadeControllerComponent.h"
 #endif // DEBUG
 
 
@@ -427,9 +428,54 @@ void SceneGame::ProcessGameState()
 	}
 	case GameData::GameStatus::VICTORY:	// プレイヤーの勝利
 	{
+		static int state = 0;
+
 		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
 		{
-			scene_manager->ChangeScene(new SceneLoading(new SceneResult));
+			switch (state)
+			{
+			case 0:	// フェードイン準備
+			{
+				const auto& fead_object = scene_manager->GetFadeObject();
+				if (fead_object)
+				{
+					if (const auto fead_ontroller = fead_object->GetComponent<FadeControllerComponent>())
+					{
+						fead_ontroller->SetFead(FEAD_TYPE::FEAD_OUT, 2.0f);
+						fead_ontroller->FeadStart();
+					}
+				}
+				++state;
+			}
+				break;
+			case 1:	// フェードイン待機
+			{
+				const auto& fead_object = scene_manager->GetFadeObject();
+				if (fead_object)
+				{
+					if (const auto fead_ontroller = fead_object->GetComponent<FadeControllerComponent>())
+					{
+						if (!fead_ontroller->GetIsActive())
+						{
+							scene_manager->ChangeScene(new SceneLoading(new SceneResult));
+							state = 0;
+						}
+					}
+					else
+					{
+						scene_manager->ChangeScene(new SceneLoading(new SceneResult));
+						state = 0;
+					}
+				}
+				else
+				{
+					scene_manager->ChangeScene(new SceneLoading(new SceneResult));
+					state = 0;
+				}
+			}
+				break;
+			default:break;
+			}
 		}
 		break;
 	}

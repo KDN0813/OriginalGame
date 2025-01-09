@@ -40,6 +40,7 @@ void FadeControllerComponent::Update(float elapsed_time)
         if (this->param.fade_time <= 0)
         {
             this->param.state = FADE_STATE::END;
+            this->SetIsActive(false);
         }
         break;
     default:break;

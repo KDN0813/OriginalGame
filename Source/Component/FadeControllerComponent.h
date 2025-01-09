@@ -59,6 +59,8 @@ public:
      * 自身をアクティブ化させる
      */
     void FeadStart();
+
+    FADE_STATE GetFeadState() { return this->param.state; }
 private:
     void FeadIn();
     void FeadOut();
