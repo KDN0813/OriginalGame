@@ -19,7 +19,7 @@ PlayerIdleState::PlayerIdleState()
 {
     this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
-    this->change_damage_state.change_state_name = PlayerDamagekState::STATE_NAME;
+    this->change_damage_state.change_state_name = PlayerDamageState::STATE_NAME;
     this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
 }
 
@@ -80,6 +80,7 @@ PlayerMoveState::PlayerMoveState()
     : State(PlayerMoveState::STATE_NAME)
 {
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
+    this->change_damage_state.change_state_name = PlayerDamageState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
     this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
 }
@@ -105,6 +106,14 @@ void PlayerMoveState::Update(float elapsed_time)
     if (!movement->IsMoveXZAxis())
     {
         state_machine->ChangeState(this->change_idle_state);
+        return;
+    }
+
+    // 被ダメ確認
+    if (const auto& character = owner->EnsureComponentValid<CharacterComponent>(this->character_Wptr); character->IsDamage())
+    {
+        // 被ダメステートに遷移
+        state_machine->ChangeState(this->change_damage_state);
         return;
     }
 
@@ -286,8 +295,8 @@ void PlayerSpinAttackState::End()
 }
 
 
-const MyHash PlayerDamagekState::STATE_NAME = MyHash("PlayerDamagekState");
-PlayerDamagekState::PlayerDamagekState()
+const MyHash PlayerDamageState::STATE_NAME = MyHash("PlayerDamagekState");
+PlayerDamageState::PlayerDamageState()
     :State(STATE_NAME)
 {
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
@@ -296,7 +305,7 @@ PlayerDamagekState::PlayerDamagekState()
     this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
 }
 
-void PlayerDamagekState::Staet()
+void PlayerDamageState::Staet()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -305,7 +314,7 @@ void PlayerDamagekState::Staet()
     animation->PlayAnimation(PlayerConstant::ANIMATION::DAMAGE, false);
 }
 
-void PlayerDamagekState::Update(float elapsed_time)
+void PlayerDamageState::Update(float elapsed_time)
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;

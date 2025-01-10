@@ -49,11 +49,13 @@ public:
 	void End() override {};
 private:
 	State::ChangeState change_idle_state;
+	State::ChangeState change_damage_state;
 	State::ChangeState change_attack_state;
 	State::ChangeState change_spin_attack_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
 class PlayerAttackState : public State
@@ -102,14 +104,14 @@ private:
 };
 
 // ダメージステート
-class PlayerDamagekState : public State
+class PlayerDamageState : public State
 {
 public:
 	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
-	PlayerDamagekState();
-	~PlayerDamagekState() {}
+	PlayerDamageState();
+	~PlayerDamageState() {}
 	// ステートに入った時のメソッド
 	void Staet() override;
 	// ステートで実行するメソッド
