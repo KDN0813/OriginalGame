@@ -49,13 +49,17 @@ void PlayerIdleState::Update(float elapsed_time)
     if (Input::Instance input = Input::GetInstance(); input.Get())
     {
         GamePad& pad = input->GetGamePad();
+        // Xボタン
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
+            // 攻撃ステートへ遷移
             state_machine->ChangeState(this->change_attack_state);
             return;
         }
+        // Yボタン
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
+            // 回転攻撃ステートに遷移
             state_machine->ChangeState(this->change_spin_attack_state);
             return;
         }
@@ -99,13 +103,17 @@ void PlayerMoveState::Update(float elapsed_time)
     if (Input::Instance input = Input::GetInstance(); input.Get())
     {
         GamePad& pad = input->GetGamePad();
+        // Xボタン
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
+            // 攻撃ステートへ遷移
             state_machine->ChangeState(this->change_attack_state);
             return;
         }
+        // Yボタン
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
+            // 回転攻撃ステートに遷移
             state_machine->ChangeState(this->change_spin_attack_state);
             return;
         }
@@ -163,8 +171,10 @@ void PlayerAttackState::Update(float elapsed_time)
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
+    // アニメーション再生待ち
     if (!animation->IsPlayAnimation())
     {
+        // 待機ステートに遷移
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
@@ -239,8 +249,10 @@ void PlayerSpinAttackState::Update(float elapsed_time)
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
+    // アニメーション再生待ち
     if (!animation->IsPlayAnimation())
     {
+        // 待機ステートに遷移
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
@@ -293,8 +305,10 @@ void PlayerDamagekState::Update(float elapsed_time)
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
+    // アニメーション再生待ち
     if (!animation->IsPlayAnimation())
     {
+        // 待機ステートに遷移
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
