@@ -208,9 +208,6 @@
     <Filter Include="Source\Component\UI">
       <UniqueIdentifier>{2b813e33-b9a1-4e0b-a52d-43bf7f416cf5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Collision\CollisionAction">
-      <UniqueIdentifier>{64a3b85a-9a22-43a7-a083-b603218293d1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -552,12 +549,6 @@
     <ClInclude Include="Source\Component\FadeControllerComponent.h">
       <Filter>Source\Component\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision\CollisionActionBase.h">
-      <Filter>Source\Collision\CollisionAction</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\CollisionActionDerived.h">
-      <Filter>Source\Collision\CollisionAction</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -826,9 +817,6 @@
     </ClCompile>
     <ClCompile Include="Source\Component\FadeControllerComponent.cpp">
       <Filter>Source\Component\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\CollisionActionDerived.cpp">
-      <Filter>Source\Collision\CollisionAction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
