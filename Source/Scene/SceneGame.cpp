@@ -483,57 +483,6 @@ void SceneGame::ProcessGameState()
 	}
 }
 
-void SceneGame::PlayerVsEnemy()
-{
-	// 当たり判定
-	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
-	{
-		// プレイヤー取得
-		const auto& player = game_object->GetPlayer();
-		if (!player) return;
-		if (!player->GetIsActive()) return;	// プレイヤーが非アクティブなら処理しない
-
-		// プレイヤーの攻撃用オブジェクト取得
-		const auto& attack_object = player->FindChildObject(MyHash("AttackObject"));
-
-		const auto& player_circle = attack_object->GetComponent<CircleCollisionComponent>();
-		if (!player_circle) return;
-		if (!player_circle->GetIsActive()) return;
-
-		// 敵の配列取得
-		const auto& enemy_Wptr_pool = game_object->GetEnemyWptPool();
-
-		// 敵取得
-		for (const auto& enemy_Wptr : enemy_Wptr_pool)
-		{
-			auto enemy = enemy_Wptr.lock();
-			if (!enemy) continue;
-			if (!enemy->GetIsActive()) continue;
-			const auto& enemy_circle = enemy->GetComponent<CircleCollisionComponent>();
-			if (!enemy_circle) return;
-			if (!enemy_circle->GetIsActive()) return;
-
-			// プレイヤー(攻)Vs敵(受)の
-			CircleHitResult player_hit_result{};
-			CircleHitResult enemy_hit_result{};
-			if (Collision::IntersectCircleVsCircle(
-				player_circle->GetCircleParam(),
-				enemy_circle->GetCircleParam(),
-				player_hit_result,
-				enemy_hit_result
-			))
-			{
-				// ヒットリザルト設定
-				player_circle->SetHitResult(player_hit_result);
-				enemy_circle->SetHitResult(enemy_hit_result);
-
-				// 接触処理
-				player_circle->OnCollision(enemy_circle->GetOwner());
-			}
-		}
-	}
-}
-
 #ifdef _DEBUG
 
 void SceneGame::DebugDrawGUI()

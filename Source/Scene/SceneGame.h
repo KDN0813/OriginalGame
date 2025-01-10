@@ -37,8 +37,6 @@ private:
     // GameStatusに応じてシーンの遷移・リスタート処理を行う
     void ProcessGameState();
 
-    // プレイヤーとエネミーの当たり判定
-    void PlayerVsEnemy();
 private:
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
@@ -51,7 +49,7 @@ private:
     ParticleSystem particle_system;
     LightManager light_manager;
 
-    CHANGE_SCENE_STATE change_state;    // シーン遷移用ステート
+    CHANGE_SCENE_STATE change_state = CHANGE_SCENE_STATE::START;    // シーン遷移用ステート
 #ifdef _DEBUG
     const size_t enemy_max = 500;
     std::shared_ptr<Object> debug_Particle;
