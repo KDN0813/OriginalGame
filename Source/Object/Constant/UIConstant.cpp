@@ -235,6 +235,8 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 					// transform
 					{
 						Transform2DComponent::Transform2DParam paam{};
+						paam.local_position = { 0.04f,-0.49f };
+						paam.local_scale = { 0.9f,0.9f };
 						bar_object->AddComponent<Transform2DComponent>(paam);
 					}
 
@@ -243,7 +245,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 						SpriteComponent::SpriteParam param{};
 						param.color = { 0.0f,1.0f, 0.0f, 1.0f };
 						param.draw_priority = PRIORITY::DEFAULT;
-						param.center_type = Sprite::CENTER_TYPE::BOTTOM_LEFT;
+						param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
 						bar_object->AddComponent<SpriteComponent>(param);
 					}
 
