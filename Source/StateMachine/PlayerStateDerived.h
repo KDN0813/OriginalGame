@@ -6,6 +6,7 @@ class ModelAnimationControlComponent;
 class MovementComponent;
 class PlayerComponent;
 class CircleCollisionComponent;
+class CharacterComponent;
 
 class PlayerIdleState : public State
 {
@@ -24,10 +25,12 @@ public:
 private:
 	State::ChangeState change_move_state;
 	State::ChangeState change_attack_state;
+	State::ChangeState change_damage_state;
 	State::ChangeState change_spin_attack_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
 class PlayerMoveState : public State

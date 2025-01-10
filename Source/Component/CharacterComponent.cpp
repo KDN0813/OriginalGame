@@ -24,6 +24,11 @@ bool CharacterComponent::IsAlive()
     return (0 < this->param.hp);    // ‘Ì—Í‚ª0ˆÈã‚È‚ç¶‘¶
 }
 
+bool CharacterComponent::IsDamage()
+{
+    return (this->param.hp < this->param.old_hp);
+}
+
 #ifdef _DEBUG
 
 void CharacterComponent::DrawDebugGUI()

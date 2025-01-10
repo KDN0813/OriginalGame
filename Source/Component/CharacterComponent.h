@@ -7,6 +7,7 @@ public:
     struct CharacterParam
     {
         int hp = 1;     // 体力
+        int old_hp = 1; // 前フレームの体力
         int max_hp = 1; // 最大体力
     };
 public:
@@ -20,7 +21,7 @@ public:
     // リスタート処理
     void ReStart() override;      // パラメータの初期化
     // 更新関数
-    void Update(float elapsed_time) override {};
+    void Update(float elapsed_time) override { this->param.old_hp = this->param.hp; };
 
     // 名前取得
     const char* GetName()const  override { return "CharacterComponent"; };
@@ -29,6 +30,8 @@ public:
     void ApplyDamage(int damege);
     // 生存しているか
     bool IsAlive();
+    // ダメージを受けたか
+    bool IsDamage();
 
     // 各種取得関数
     int GetHP()const { return this->param.hp; }
@@ -37,7 +40,7 @@ public:
     float GetHealthPercentage() { return static_cast<float>(this->param.hp) / static_cast<float>(this->param.max_hp); };
 
     // 優先度
-    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
+    const PRIORITY GetPriority()const noexcept  override { return PRIORITY::LOWEST; };
 private:
     CharacterParam param;
     CharacterParam default_param;

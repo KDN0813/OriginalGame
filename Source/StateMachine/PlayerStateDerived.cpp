@@ -11,6 +11,7 @@
 #include "Component/MovementComponent.h"
 #include "Component/PlayerComponent.h"
 #include "Component/CircleCollisionComponent.h"
+#include "Component/CharacterComponent.h"
 
 const MyHash PlayerIdleState::STATE_NAME = MyHash("PlayerIdleState");
 PlayerIdleState::PlayerIdleState()
@@ -18,6 +19,7 @@ PlayerIdleState::PlayerIdleState()
 {
     this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
+    this->change_damage_state.change_state_name = PlayerDamagekState::STATE_NAME;
     this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
 }
 
@@ -45,6 +47,14 @@ void PlayerIdleState::Update(float elapsed_time)
         return;
     }
 
+    // 被ダメ確認
+    if (const auto& character = owner->EnsureComponentValid<CharacterComponent>(this->character_Wptr); character->IsDamage())
+    {
+        // 被ダメステートに遷移
+        state_machine->ChangeState(this->change_damage_state);
+        return;
+    }
+
     // 入力受付
     if (Input::Instance input = Input::GetInstance(); input.Get())
     {
@@ -54,7 +64,6 @@ void PlayerIdleState::Update(float elapsed_time)
         {
             // 攻撃ステートへ遷移
             state_machine->ChangeState(this->change_attack_state);
-            return;
         }
         // Yボタン
         if (pad.GetButtonDown() & GamePad::BTN_Y)
