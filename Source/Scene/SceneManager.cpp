@@ -10,12 +10,16 @@
 #endif // DEBUG
 
 #include "Object\Constant\UIConstant.h"
+#include "Component\FadeControllerComponent.h"
 
 void SceneManager::Initialize()
 {
     // 共通オブジェクト作製
     this->pause_object = UIConstant::CreatePause(this->common_object_manager.Create("PauseObject"));
     this->fade_object = UIConstant::CreateFadeObject(this->common_object_manager.Create("FadeObject"));
+
+    // フェードコントローラ取得
+    this->fade_controller_Wptr = this->fade_object->GetComponent<FadeControllerComponent>();
 }
 
 void SceneManager::Update(float elpsed_time)

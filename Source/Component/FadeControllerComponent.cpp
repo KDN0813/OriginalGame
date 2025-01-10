@@ -60,6 +60,19 @@ void FadeControllerComponent::FeadStart()
     this->param.state = FADE_STATE::START;
 }
 
+void FadeControllerComponent::ClearFade()
+{
+    this->SetIsActive(false);
+    if (const auto& owner = GetOwner())
+    {
+        if (const auto& sprite = owner->EnsureComponentValid(this->sprite_Wptr))
+        {
+            const float t = this->param.fade_time / this->param.fade_duration;
+            sprite->SetAlpha(0.0f);
+        }
+    }
+}
+
 void FadeControllerComponent::FeadIn()
 {
     if (const auto& owner = GetOwner())

@@ -440,29 +440,23 @@ void SceneGame::ProcessGameState()
 			{
 			case CHANGE_SCENE_STATE::START:	// フェードイン準備
 			{
-				const auto& fead_object = scene_manager->GetFadeObject();
-				if (fead_object)
+				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
 				{
-					if (const auto fead_ontroller = fead_object->GetComponent<FadeControllerComponent>())
-					{
-						fead_ontroller->SetFead(FEAD_TYPE::FEAD_OUT, 2.0f);
-						fead_ontroller->FeadStart();
-					}
+					fead_controlle->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::DEFAULT_FEAD_DURATION);
+					fead_controlle->FeadStart();
 				}
 				this->change_state = CHANGE_SCENE_STATE::RUN;
 			}
 				break;
 			case CHANGE_SCENE_STATE::RUN:	// フェードイン待機
 			{
-				const auto& fead_object = scene_manager->GetFadeObject();
-				if (fead_object)
+				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
 				{
-					if (const auto fead_ontroller = fead_object->GetComponent<FadeControllerComponent>())
-					{
-						if (fead_ontroller->GetIsActive()) return;
-					}
+					// フェード中ならreturn
+					if (fead_controlle->GetIsActive()) return;
 
-					scene_manager->ChangeScene(new SceneLoading(new SceneResult));
+					// シーン切り替え
+					scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
 					this->change_state = CHANGE_SCENE_STATE::END;
 				}
 			}

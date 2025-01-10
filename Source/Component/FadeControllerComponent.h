@@ -60,6 +60,13 @@ public:
      */
     void FeadStart();
 
+    /**
+     * フェードを解除する
+     * フェード用スプライトの透明度を0にする
+     * 自信を非アクティブ状態にする
+     */
+    void ClearFade();
+
     FADE_STATE GetFeadState() { return this->param.state; }
 private:
     void FeadIn();

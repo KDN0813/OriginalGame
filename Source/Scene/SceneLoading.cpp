@@ -13,6 +13,7 @@
 #include "Component/SpriteComponent.h"
 #include "Component/StateMachineComponent.h"
 #include "Component/Transform2DComponent.h"
+#include "Component\FadeControllerComponent.h"
 
 void SceneLoading::Initialize()
 {
@@ -44,6 +45,13 @@ void SceneLoading::Initialize()
     {
         // ロード中フラグ立てる
         game_data->SetIsLoading(true);
+    }
+
+    // フェードを解除する
+    if(SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
+    {
+        if (const auto fade_controlle = scene_manager->GetFadeControlle())
+            fade_controlle->ClearFade();
     }
 }
 
