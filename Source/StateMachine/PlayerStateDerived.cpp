@@ -263,3 +263,39 @@ void PlayerSpinAttackState::End()
     if (child_collision)
         child_collision->SetIsActive(false);  // ƒRƒŠƒWƒ‡ƒ“‚ğ–³Œø‚É‚·‚é
 }
+
+
+const MyHash PlayerDamagekState::STATE_NAME = MyHash("PlayerDamagekState");
+PlayerDamagekState::PlayerDamagekState()
+    :State(STATE_NAME)
+{
+    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
+    this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
+    this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+}
+
+void PlayerDamagekState::Staet()
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (!animation) return;
+    animation->PlayAnimation(PlayerConstant::ANIMATION::DAMAGE, false);
+}
+
+void PlayerDamagekState::Update(float elapsed_time)
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& state_machine = owner->EnsureComponentValid<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (!animation) return;
+
+    if (!animation->IsPlayAnimation())
+    {
+        state_machine->ChangeState(this->change_idle_state);
+        return;
+    }
+}

@@ -98,3 +98,27 @@ private:
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 };
 
+// ダメージステート
+class PlayerDamagekState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	PlayerDamagekState();
+	~PlayerDamagekState() {}
+	// ステートに入った時のメソッド
+	void Staet() override;
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override {};
+private:
+	State::ChangeState change_idle_state;
+	State::ChangeState change_move_state;
+	State::ChangeState change_attack_state;
+	State::ChangeState change_spin_attack_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<PlayerComponent> player_Wprt;
+};
