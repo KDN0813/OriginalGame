@@ -250,13 +250,13 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 					}
 
 					// XVˆ—
-					//{
-					//	auto state_machine = hp_ber->AddComponent<StateMachineComponent>();
+					{
+						auto state_machine = bar_object->AddComponent<StateMachineComponent>();
 
-					//	state_machine->RegisterState<EndTimerUIDefaultState>();
-
-					//	state_machine->SetDefaultState(EndTimerUIDefaultState::STATE_NAME);
-					//}
+						state_machine->RegisterState<PlayerHPBarUIState>();
+						
+						state_machine->SetDefaultState(PlayerHPBarUIState::STATE_NAME);
+					}
 				}
 			}
 		}

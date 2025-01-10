@@ -30,6 +30,12 @@ public:
     // ¶‘¶‚µ‚Ä‚¢‚é‚©
     bool IsAlive();
 
+    // Šeíæ“¾ŠÖ”
+    int GetHP()const { return this->param.hp; }
+    int GetMaxHP()const { return this->param.max_hp; }
+    // ‘Ì—Í‚ÌŠ„‡‚ğæ“¾
+    float GetHealthPercentage() { return static_cast<float>(this->param.hp) / static_cast<float>(this->param.max_hp); };
+
     // —Dæ“x
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 private:

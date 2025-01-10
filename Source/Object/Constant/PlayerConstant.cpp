@@ -84,7 +84,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	{
 		CharacterComponent::CharacterParam param{};
 		param.max_hp = 100;
-		param.hp = 50;
+		param.hp = 100;
 		player->AddComponent<CharacterComponent>(param);
 	}
 

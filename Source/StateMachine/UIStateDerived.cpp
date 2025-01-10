@@ -1,8 +1,11 @@
 #include "UIStateDerived.h"
 #include "Object\Object.h"
+#include "Object\GameObject.h"
 #include "System\GameData.h"
 
 #include "Component\TextNumberComponent.h"
+#include "Component\SpriteComponent.h"
+#include "Component\CharacterComponent.h"
 
 const MyHash ScoreUIDefaultState::STATE_NAME = MyHash("ScoreUIDefaultState");
 ScoreUIDefaultState::ScoreUIDefaultState()
@@ -27,7 +30,7 @@ void ScoreUIDefaultState::Update(float elapsed_time)
 
 const MyHash EndTimerUIDefaultState::STATE_NAME = MyHash("EndTimerUIDefaultState");
 EndTimerUIDefaultState::EndTimerUIDefaultState()
-    :State(EndTimerUIDefaultState::STATE_NAME)
+    : State(EndTimerUIDefaultState::STATE_NAME)
 {
 }
 
@@ -44,4 +47,36 @@ void EndTimerUIDefaultState::Update(float elapsed_time)
             }
         }
     }
+}
+
+const MyHash PlayerHPBarUIState::STATE_NAME = MyHash("PlayerHPBarUIState");
+PlayerHPBarUIState::PlayerHPBarUIState()
+    : State(PlayerHPBarUIState::STATE_NAME)
+{
+}
+
+void PlayerHPBarUIState::Update(float elapsed_time)
+{
+    if (const auto onwer = GetOwner())
+    {
+        if (const auto& sprite = onwer->EnsureComponentValid(this->sprite_Wptr))
+        {
+            sprite->SetDisplaySizeX(CalculateHealthBarWidth());
+        }
+    }
+}
+
+float PlayerHPBarUIState::CalculateHealthBarWidth()
+{
+    if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+    {
+        if (const auto player = game_object->GetPlayer())
+        {
+            if (const auto& player_health = player->EnsureComponentValid(this->player_health_Wptr))
+            {
+                return player_health->GetHealthPercentage();
+            }
+        }
+    }
+    return 1.0f;
 }

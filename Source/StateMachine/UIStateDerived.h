@@ -2,6 +2,8 @@
 #include "StateMachine\StateBase.h"
 
 class TextNumberComponent;
+class SpriteComponent;
+class CharacterComponent;
 
 // スコアUIの通常ステート
 class ScoreUIDefaultState : public State
@@ -39,4 +41,27 @@ public:
 	void End() override {};
 private:
 	std::weak_ptr<TextNumberComponent> text_number_Wptr;
+};
+
+// 終了タイマーの通常ステート
+class PlayerHPBarUIState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	PlayerHPBarUIState();
+	~PlayerHPBarUIState() {}
+	// ステートに入った時のメソッド
+	void Staet() override {};
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override {};
+private:
+	// 体力バーの幅を計算する
+	float CalculateHealthBarWidth();
+private:
+	std::weak_ptr<SpriteComponent> sprite_Wptr;
+	std::weak_ptr<CharacterComponent> player_health_Wptr;
 };
