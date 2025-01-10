@@ -201,6 +201,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 	{
 		Transform2DComponent::Transform2DParam paam{};
 		paam.local_position = { 0.0f, 1.0f };
+		paam.local_scale = { 0.2f,0.15f };
 		hp_ber->AddComponent<Transform2DComponent>(paam);
 	}
 

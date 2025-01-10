@@ -101,16 +101,11 @@ void Transform2DComponent::SetLocalPosition(DirectX::XMFLOAT2 pos) noexcept
 	this->local_dirty_flag = true;
 
 	// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+	if (const auto& owner = GetOwner())
 	{
-		if (const auto& owner = GetOwner())
+		for (const auto& chilled : owner->GetChildren())
 		{
-			for (const auto& chilled : owner->GetChildren())
-			{
-				if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
-				{
-					chilled_transform->SetWorldDirtyFlag();
-				}
-			}
+			SetDirtyFlag(chilled);
 		}
 	}
 }
@@ -154,16 +149,11 @@ void Transform2DComponent::SetLocalAngle(float angle) noexcept
 	this->local_dirty_flag = true;
 
 	// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+	if (const auto& owner = GetOwner())
 	{
-		if (const auto& owner = GetOwner())
+		for (const auto& chilled : owner->GetChildren())
 		{
-			for (const auto& chilled : owner->GetChildren())
-			{
-				if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
-				{
-					chilled_transform->SetWorldDirtyFlag();
-				}
-			}
+			SetDirtyFlag(chilled);
 		}
 	}
 }
@@ -178,17 +168,27 @@ void Transform2DComponent::SetLocalScale(DirectX::XMFLOAT2 scale) noexcept
 	this->local_dirty_flag = true;
 
 	// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+	if (const auto& owner = GetOwner())
 	{
-		if (const auto& owner = GetOwner())
+		for (const auto& chilled : owner->GetChildren())
 		{
-			for (const auto& chilled : owner->GetChildren())
-			{
-				if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
-				{
-					chilled_transform->SetWorldDirtyFlag();
-				}
-			}
+			SetDirtyFlag(chilled);
 		}
+	}
+}
+
+void Transform2DComponent::SetDirtyFlag(const std::shared_ptr<Object>& chilled_object)
+{
+	if (auto chilled_transform = chilled_object->GetComponent<Transform2DComponent>())
+	{
+		// フラグを立てる
+		chilled_transform->SetWorldDirtyFlag();
+	}
+
+	// 子オブジェクトのフラグを立てる
+	for (const auto& chilled : chilled_object->GetChildren())
+	{
+		SetDirtyFlag(chilled);
 	}
 }
 
@@ -228,16 +228,11 @@ void Transform2DComponent::DrawDebugGUI()
 			this->world_dirty_flag = true;
 
 			// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+			if (const auto& owner = GetOwner())
 			{
-				if (const auto& owner = GetOwner())
+				for (const auto& chilled : owner->GetChildren())
 				{
-					for (const auto& chilled : owner->GetChildren())
-					{
-						if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
-						{
-							chilled_transform->SetWorldDirtyFlag();
-						}
-					}
+					SetDirtyFlag(chilled);
 				}
 			}
 		}
@@ -255,16 +250,11 @@ void Transform2DComponent::DrawDebugGUI()
 			this->world_dirty_flag = true;
 
 			// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+			if (const auto& owner = GetOwner())
 			{
-				if (const auto& owner = GetOwner())
+				for (const auto& chilled : owner->GetChildren())
 				{
-					for (const auto& chilled : owner->GetChildren())
-					{
-						if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
-						{
-							chilled_transform->SetWorldDirtyFlag();
-						}
-					}
+					SetDirtyFlag(chilled);
 				}
 			}
 		}
@@ -285,14 +275,12 @@ void Transform2DComponent::DrawDebugGUI()
 
 		// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
 		{
+			// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
 			if (const auto& owner = GetOwner())
 			{
 				for (const auto& chilled : owner->GetChildren())
 				{
-					if (auto chilled_transform = chilled->GetComponent<Transform2DComponent>())
-					{
-						chilled_transform->SetWorldDirtyFlag();
-					}
+					SetDirtyFlag(chilled);
 				}
 			}
 		}

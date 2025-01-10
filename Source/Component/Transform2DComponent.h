@@ -62,8 +62,11 @@ public:
     DirectX::XMFLOAT2 GetLocalScale()const noexcept { return this->param.local_scale; }
     void SetLocalScale(DirectX::XMFLOAT2 scale)noexcept;
 
+private:
     // ワールドパラメータの更新が必要なことを示すフラグを設定する
     void SetWorldDirtyFlag() { this->world_dirty_flag = true; }
+    // 引数のオブジェクトのdirty_flagを立てる
+    void SetDirtyFlag(const std::shared_ptr<Object>&);
 #pragma endregion set parame
 private:
     Transform2DParam param;
