@@ -326,59 +326,10 @@ void ObjectManager::DrawLister()
 {
     if (ImGui::Begin("Object"))
     {
-        auto DrawDebugNode = [&](const std::shared_ptr<Object>& object)
-            {
-                ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_Leaf;
-
-                if (selection_object_vec.find(object) != selection_object_vec.end())
-                {
-                    nodeFlags |= ImGuiTreeNodeFlags_Selected;
-                    nodeFlags |= ImGuiTreeNodeFlags_Bullet;
-                }
-
-                // 非アクティブのオブジェクトは灰色に表示させる
-                bool is_active = (!object->GetIsActive());
-                if (is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
-
-                ImGui::TreeNodeEx(object.get(), nodeFlags, object->GetNameCStr());
-
-                if (is_active) ImGui::PopStyleColor();
-
-                // 選択
-                if (ImGui::IsItemClicked())
-                {
-                    // 単一選択だけ対応しておく
-                    ImGuiIO& io = ImGui::GetIO();
-                    selection_object_vec.clear();
-                    selection_object_vec.insert(object);
-                }
-                // (非)アクティブ化
-                if (ImGui::IsItemClicked(1))
-                {
-                    object->SetIsActive(is_active);
-                }
-
-                ImGui::TreePop();
-                return;
-            };
-
         for (std::shared_ptr<Object>& object : update_object_vec)
         {
             DrawDebugNode(object);
-
-            // 子オブジェクト描画
-            const std::vector<std::shared_ptr<Object>>& children = object->GetChildren();
-            if (children.size())
-            {
-                ImGui::Indent(10.0f);
-                for (const std::shared_ptr<Object>& chilled : children)
-                {
-                    DrawDebugNode(chilled);
-                }
-                ImGui::Unindent(10.0f);
-            }
         }
-
     }
     ImGui::End();
 }
@@ -395,5 +346,53 @@ void ObjectManager::DrawDetail()
 
     ImGui::End();
 }
+
+void ObjectManager::DrawDebugNode(const std::shared_ptr<Object>& object)
+{
+    ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_Leaf;
+
+    if (selection_object_vec.find(object) != selection_object_vec.end())
+    {
+        nodeFlags |= ImGuiTreeNodeFlags_Selected;
+        nodeFlags |= ImGuiTreeNodeFlags_Bullet;
+    }
+
+    // 非アクティブのオブジェクトは灰色に表示させる
+    bool is_active = (!object->GetIsActive());
+    if (is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+
+    ImGui::TreeNodeEx(object.get(), nodeFlags, object->GetNameCStr());
+
+    if (is_active) ImGui::PopStyleColor();
+
+    // 選択
+    if (ImGui::IsItemClicked())
+    {
+        // 単一選択だけ対応しておく
+        ImGuiIO& io = ImGui::GetIO();
+        selection_object_vec.clear();
+        selection_object_vec.insert(object);
+    }
+    // (非)アクティブ化
+    if (ImGui::IsItemClicked(1))
+    {
+        object->SetIsActive(is_active);
+    }
+
+    ImGui::TreePop();
+
+    // 子オブジェクト描画
+    const std::vector<std::shared_ptr<Object>>& children = object->GetChildren();
+    if (children.size())
+    {
+        ImGui::Indent(10.0f);
+        for (const std::shared_ptr<Object>& chilled : children)
+        {
+            DrawDebugNode(chilled);
+        }
+        ImGui::Unindent(10.0f);
+    }
+    return;
+};
 
 #endif // _DEBUG

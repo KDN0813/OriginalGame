@@ -229,6 +229,14 @@ public:
 private:
 	// 詳細表示するobjectの選択
 	void DrawLister();
+	/**
+	 * オブジェクトをリストに表示する
+	 * DrawLister関数内で使用
+	 * 
+	 * \param object 表示するリスト
+	 */
+	void DrawDebugNode(const std::shared_ptr<Object>& object);
+	
 	// objectの詳細表示
 	void DrawDetail();
 private:

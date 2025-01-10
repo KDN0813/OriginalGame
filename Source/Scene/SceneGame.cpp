@@ -88,6 +88,9 @@ void SceneGame::Initialize()
 		// ゲーム時間表示オブジェクト
 		UIConstant::CreateGameTimerUI(object_manager.Create("GameTimer"));
 
+		// プレイヤー体力ゲージオブジェクト
+		UIConstant::CreatePlayerHpBarUI(object_manager.Create("PlayerHpBar"));
+
 		// ステージ(床)
 		const auto& stage_foor = StageConstant::CreateStageFloor(object_manager.Create("StageFloor"));
 

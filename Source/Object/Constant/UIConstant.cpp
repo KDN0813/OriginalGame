@@ -194,3 +194,70 @@ const std::shared_ptr<Object>& UIConstant::CreateFadeObject(const std::shared_pt
 
 	return fade_object;
 }
+
+const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared_ptr<Object>& hp_ber)
+{
+	// transform
+	{
+		Transform2DComponent::Transform2DParam paam{};
+		paam.local_position = { 0.0f, 1.0f };
+		hp_ber->AddComponent<Transform2DComponent>(paam);
+	}
+
+	// 子オブジェクト
+	{
+		// 背景
+		{
+			const auto bg_object = hp_ber->CreateChildObject("SpriteBG");
+
+			// スプライト読み込み
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 0.0f,0.0f, 0.0f, 1.0f };
+				param.draw_priority = PRIORITY::DEFAULT;
+				param.center_type = Sprite::CENTER_TYPE::BOTTOM_LEFT;
+				bg_object->AddComponent<SpriteComponent>(param);
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam paam{};
+				bg_object->AddComponent<Transform2DComponent>(paam);
+			}
+
+			// 子オブジェクト
+			{
+				// 体力ゲージ
+				{
+					const auto bar_object = bg_object->CreateChildObject("HpBer");
+
+					// transform
+					{
+						Transform2DComponent::Transform2DParam paam{};
+						bar_object->AddComponent<Transform2DComponent>(paam);
+					}
+
+					// スプライト読み込み
+					{
+						SpriteComponent::SpriteParam param{};
+						param.color = { 0.0f,1.0f, 0.0f, 1.0f };
+						param.draw_priority = PRIORITY::DEFAULT;
+						param.center_type = Sprite::CENTER_TYPE::BOTTOM_LEFT;
+						bar_object->AddComponent<SpriteComponent>(param);
+					}
+
+					// 更新処理
+					//{
+					//	auto state_machine = hp_ber->AddComponent<StateMachineComponent>();
+
+					//	state_machine->RegisterState<EndTimerUIDefaultState>();
+
+					//	state_machine->SetDefaultState(EndTimerUIDefaultState::STATE_NAME);
+					//}
+				}
+			}
+		}
+	}
+
+	return hp_ber;
+}
