@@ -129,7 +129,9 @@
     <ClInclude Include="Source\Camera\CameraParam.h" />
     <ClInclude Include="Source\Collision\Collision.h" />
     <ClInclude Include="Source\Collision\CircleCollisionManager.h" />
+    <ClInclude Include="Source\Collision\CollisionActionDerived.h" />
     <ClInclude Include="Source\Collision\CollisionParam.h" />
+    <ClInclude Include="Source\Collision\CollisionActionBase.h" />
     <ClInclude Include="Source\Component\BaseSpriteComponent.h" />
     <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Component\FadeControllerComponent.h" />
@@ -240,6 +242,7 @@
     <ClCompile Include="Source\Camera\CameraManager.cpp" />
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Collision\CircleCollisionManager.cpp" />
+    <ClCompile Include="Source\Collision\CollisionActionDerived.cpp" />
     <ClCompile Include="Source\Component\BaseSpriteComponent.cpp" />
     <ClCompile Include="Source\Component\DebugParticle.cpp" />
     <ClCompile Include="Source\Component\FadeControllerComponent.cpp" />
