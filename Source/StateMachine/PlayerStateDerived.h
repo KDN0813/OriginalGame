@@ -27,6 +27,7 @@ private:
 	State::ChangeState change_attack_state;
 	State::ChangeState change_damage_state;
 	State::ChangeState change_spin_attack_state;
+	State::ChangeState change_dead_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
@@ -52,6 +53,7 @@ private:
 	State::ChangeState change_damage_state;
 	State::ChangeState change_attack_state;
 	State::ChangeState change_spin_attack_state;
+	State::ChangeState change_dead_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
@@ -74,6 +76,7 @@ public:
 	void End() override;
 private:
 	State::ChangeState change_idle_state;
+	State::ChangeState change_dead_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
@@ -98,6 +101,7 @@ public:
 	void End() override;
 private:
 	State::ChangeState change_idle_state;
+	State::ChangeState change_dead_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
@@ -125,9 +129,11 @@ private:
 	State::ChangeState change_move_state;
 	State::ChangeState change_attack_state;
 	State::ChangeState change_spin_attack_state;
+	State::ChangeState change_dead_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
 // 死亡ステート

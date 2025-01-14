@@ -21,6 +21,7 @@ PlayerIdleState::PlayerIdleState()
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
     this->change_damage_state.change_state_name = PlayerDamageState::STATE_NAME;
     this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerIdleState::Staet()
@@ -47,12 +48,24 @@ void PlayerIdleState::Update(float elapsed_time)
         return;
     }
 
-    // 被ダメ確認
-    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character->IsDamage())
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // 被ダメステートに遷移
-        state_machine->ChangeState(this->change_damage_state);
-        return;
+        // TODO 自機死亡処理③
+        // 死亡判定
+        if (!character->IsAlive())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+
+        // 被ダメ判定
+        if (character->IsDamage())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_damage_state);
+            return;
+        }
     }
 
     // 入力受付
@@ -73,9 +86,6 @@ void PlayerIdleState::Update(float elapsed_time)
             return;
         }
     }
-
-    // TODO 自機死亡処理③
-    // 死亡したらダメージステートに遷移
 }
 
 const MyHash PlayerMoveState::STATE_NAME = MyHash("PlayerMoveState");
@@ -86,6 +96,7 @@ PlayerMoveState::PlayerMoveState()
     this->change_damage_state.change_state_name = PlayerDamageState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
     this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerMoveState::Staet()
@@ -112,12 +123,24 @@ void PlayerMoveState::Update(float elapsed_time)
         return;
     }
 
-    // 被ダメ確認
-    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character->IsDamage())
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // 被ダメステートに遷移
-        state_machine->ChangeState(this->change_damage_state);
-        return;
+        // TODO 自機死亡処理③
+        // 死亡判定
+        if (!character->IsAlive())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+
+        // 被ダメ判定
+        if (character->IsDamage())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_damage_state);
+            return;
+        }
     }
 
     // 入力受付
@@ -139,9 +162,6 @@ void PlayerMoveState::Update(float elapsed_time)
             return;
         }
     }
-
-    // TODO 自機死亡処理③
-    // 死亡したらダメージステートに遷移
 }
 
 const MyHash PlayerAttackState::STATE_NAME = MyHash("PlayerAttackState");
@@ -149,6 +169,7 @@ PlayerAttackState::PlayerAttackState()
     : State(PlayerAttackState::STATE_NAME)
 {
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
+    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerAttackState::Staet()
@@ -200,6 +221,18 @@ void PlayerAttackState::Update(float elapsed_time)
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
+    {
+        // TODO 自機死亡処理③
+        // 死亡判定
+        if (!character->IsAlive())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+    }
+
     // アニメーション再生待ち
     if (!animation->IsPlayAnimation())
     {
@@ -207,9 +240,6 @@ void PlayerAttackState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
-
-    // TODO 自機死亡処理③
-    // 死亡したらダメージステートに遷移
 }
 
 void PlayerAttackState::End()
@@ -240,6 +270,7 @@ PlayerSpinAttackState::PlayerSpinAttackState()
     :State(PlayerSpinAttackState::STATE_NAME)
 {
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
+    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerSpinAttackState::Staet()
@@ -291,6 +322,18 @@ void PlayerSpinAttackState::Update(float elapsed_time)
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
+    {
+        // TODO 自機死亡処理③
+        // 死亡判定
+        if (!character->IsAlive())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+    }
+
     // アニメーション再生待ち
     if (!animation->IsPlayAnimation())
     {
@@ -298,9 +341,6 @@ void PlayerSpinAttackState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
-
-    // TODO 自機死亡処理③
-    // 死亡したらダメージステートに遷移
 }
 
 void PlayerSpinAttackState::End()
@@ -335,6 +375,7 @@ PlayerDamageState::PlayerDamageState()
     this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
     this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerDamageState::Staet()
@@ -359,6 +400,18 @@ void PlayerDamageState::Update(float elapsed_time)
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
+    {
+        // TODO 自機死亡処理③
+        // 死亡判定
+        if (!character->IsAlive())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+    }
+
     // アニメーション再生待ち
     if (!animation->IsPlayAnimation())
     {
@@ -366,9 +419,6 @@ void PlayerDamageState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
-
-    // TODO 自機死亡処理③
-    // 死亡したらダメージステートに遷移
 }
 
 void PlayerDamageState::End()
@@ -440,7 +490,7 @@ PlayerDeadIdleState::PlayerDeadIdleState()
 
 void PlayerDeadIdleState::Staet()
 {
-    // TODO 自機死亡処理②
+    // TODO 自機死亡処理②_(済)
     // アニメーション再生
     const auto& owner = this->GetOwner();
     if (!owner) return;

@@ -56,11 +56,18 @@ void CharacterComponent::DrawDebugGUI()
     ImGui::InputFloat("Invincible Timer", &this->param.invincible_timer);
     ImGui::InputFloat("Max Invincible Timer", &this->param.max_invincible_timer);
 
-    // ダメージテスト
+    // デバッグ用ダメージボタン
     ImGui::InputInt("Test Damage", &this->test_damage);
     if (ImGui::Button("Test ApplyDamage"))
     {
         ApplyDamage(this->test_damage);
+    }
+
+    // デバッグ用死亡ボタン
+    ImGui::InputInt("Test Damage", &this->test_damage);
+    if (ImGui::Button("Test Death"))
+    {
+        this->param.hp = 0;
     }
 
     bool is_alive = IsAlive();
