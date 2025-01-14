@@ -318,9 +318,9 @@ void EnemyComponent::SetRandomTargetPosition()
 {
 	float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
 	float range = MyMathf::RandomRange(0.0f, this->param.territory_range);
-	this->param.target_position.x =  + sinf(theta) * range;
+	this->param.target_position.x = this->spawn_point.x + sinf(theta) * range;
 	this->param.target_position.y = 0.0f;
-	this->param.target_position.z =  + cosf(theta) * range;
+	this->param.target_position.z = this->spawn_point.z + cosf(theta) * range;
 }
 
 void EnemyComponent::SetRandomIdleTime()
@@ -357,7 +357,15 @@ bool EnemyComponent::IsNearByPlayer()
 
 	// –Ú“I’n“_‚Ü‚Å‚ÌXZ•½–Ê‚Å‚Ì‹——£”»’è
 	MYVECTOR3 Position = transform->GetWorldPosition();
-	MYVECTOR3 Target_position = this->spawn_point;
+	MYVECTOR3 Target_position{};
+	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+	{
+		const auto& player = game_object->GetPlayer();
+		if (!player) return false;
+		const auto& player_transform = player->GetComponent<Transform3DComponent>();
+		if (!player_transform) return false;
+		Target_position = player_transform->GetWorldPosition();
+	}
 
 	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
 
@@ -399,11 +407,14 @@ void EnemyComponent::DrawDebugPrimitive()
 	if (!debug_manager.Get()) return;
 	auto debug_render = debug_manager->GetDebugPrimitiveRenderer();
 	if (debug_render && !this->IsAtTarget())
-		debug_render->DrawSphere(this->param.target_position, this->param.radius, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+	{
+		debug_render->DrawSphere(this->param.target_position, 1.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+	}
 	
 	if (debug_render)
 	{
 		debug_render->DrawCylinder(spawn_point, this->param.close_range_radius, 2.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+		debug_render->DrawCylinder(spawn_point, DEFAULT_TERRITORY_RENGR, 2.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 }
 

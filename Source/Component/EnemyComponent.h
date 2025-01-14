@@ -33,7 +33,7 @@ public:
         DirectX::XMFLOAT3 target_position{};
         float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
         float radius = 0.1f;
-        float move_speed = 3.0f;
+        float move_speed = 30.0f;
         float speed_rate = 0.5f;
 
         float close_range_radius = 10.0f;    // プレイヤーを追いかける有効範囲
