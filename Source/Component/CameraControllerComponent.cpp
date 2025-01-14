@@ -22,12 +22,12 @@ void CameraControllerGamepad::Update(float elapsed_time)
 {
 	auto owner = GetOwner();
 	if (!owner) return;
-	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);
+	auto camera = owner->GetComponent<CameraComponent>(this->camera_Wptr);
 	if (!camera) return;
 	if (!camera->GetIsActive()) return;
 	DirectX::XMFLOAT3 focus{};
 	{
-		auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+		auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 		if (transform)
 		{
 			focus = transform->GetWorldPosition();
@@ -95,7 +95,7 @@ void CameraControllerDebug::Update(float elapsed_time)
 
 	auto owner = GetOwner();
 	if (!owner) return;
-	auto camera = owner->EnsureComponentValid<CameraComponent>(this->camera_Wptr);
+	auto camera = owner->GetComponent<CameraComponent>(this->camera_Wptr);
 	if (!camera) return;
 	if (!camera->GetIsActive()) return;
 

@@ -29,7 +29,7 @@ void ModelShaderComponent::Draw(ID3D11DeviceContext* dc)
     if (!this->GetOwner()->GetIsActive()) return;
     auto owner = GetOwner();
 
-    if (auto model = owner->EnsureComponentValid<ModelComponent>(this->model_Wptr))
+    if (auto model = owner->GetComponent<ModelComponent>(this->model_Wptr))
     {
         this->shader->Draw(dc, model.get());
     }

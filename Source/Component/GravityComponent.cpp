@@ -7,7 +7,7 @@ void GravityComponent::Update(float elapsed_time)
 {
     auto owner = GetOwner();
     if (!owner) return;
-    auto movement = owner->EnsureComponentValid<MovementComponent>(this->movement_Wptr);
+    auto movement = owner->GetComponent<MovementComponent>(this->movement_Wptr);
     if (!movement) return;
     movement->AddAccelerationY(this->param.gravity);
 }

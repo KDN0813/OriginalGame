@@ -33,7 +33,7 @@ void Transform3DComponent::UpdateWorldParam()
 	{
 		if (const auto& parent = owner->GetParent())
 		{
-			if (auto parent_transform = parent->EnsureComponentValid(this->parent_ransform_Wptr))
+			if (auto parent_transform = parent->GetComponent(this->parent_ransform_Wptr))
 			{
 				Parent_transform = parent_transform->GetWolrdTransform();
 			}
@@ -201,7 +201,7 @@ void Transform3DComponent::UpdateWorldPosition()
 		this->world_position = this->param.local_position;;
 		return;
 	};
-	auto parent_ransform = parent->EnsureComponentValid(this->parent_ransform_Wptr);
+	auto parent_ransform = parent->GetComponent(this->parent_ransform_Wptr);
 	if (!parent_ransform)
 	{
 		this->world_position = this->param.local_position;;

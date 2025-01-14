@@ -64,7 +64,7 @@ public:
 	}
 	
 	/**
-	 * @fn EnsureComponentValid
+	 * @fn GetComponent
 	 * @brief コンポーネントが有効であるか確認する
 	 * 引数のweak_ptrのリンクが切れていなければlock関数を用いて値を返す
 	 * 切れていた場合は総当たりで検索する
@@ -74,7 +74,7 @@ public:
 	 * \return コンポーネントのシェアドポインタを返す
 	 */
 	template<is_Component ComponentType>
-	std::shared_ptr<ComponentType> EnsureComponentValid(std::weak_ptr<ComponentType>& componentWptr)
+	std::shared_ptr<ComponentType> GetComponent(std::weak_ptr<ComponentType>& componentWptr)
 	{
 		auto component = componentWptr.lock();
 		if (component)

@@ -32,7 +32,7 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
     DirectX::XMFLOAT2 scale{};
     if (const auto& owner = GetOwner())
     {
-        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
             display_pos = transform->GetWorldPosition();
             angle = transform->GetWorldAngle();

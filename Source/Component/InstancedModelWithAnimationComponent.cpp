@@ -59,7 +59,7 @@ void InstancedModelWithAnimationComponent::Update(float elapsed_time)
 
     if (const auto& owner = GetOwner())
     {
-        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
             MYMATRIX World_transform = transform->GetWolrdTransform();
 
@@ -142,7 +142,7 @@ std::vector<DirectX::BoundingBox> InstancedModelWithAnimationComponent::GetBound
 
     if (const auto& owner = GetOwner())
     {
-        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
             MYMATRIX World_transform = transform->GetWolrdTransform();
 

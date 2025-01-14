@@ -17,7 +17,7 @@ void ScoreUIDefaultState::Update(float elapsed_time)
 {
     if (const auto onwer = GetOwner())
     {
-        if (const auto& text_number = onwer->EnsureComponentValid(this->text_number_Wptr))
+        if (const auto& text_number = onwer->GetComponent(this->text_number_Wptr))
         {
             if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
             {
@@ -38,7 +38,7 @@ void EndTimerUIDefaultState::Update(float elapsed_time)
 {
     if (const auto onwer = GetOwner())
     {
-        if (const auto& text_number = onwer->EnsureComponentValid(this->text_number_Wptr))
+        if (const auto& text_number = onwer->GetComponent(this->text_number_Wptr))
         {
             if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
             {
@@ -59,7 +59,7 @@ void PlayerHPBarUIState::Update(float elapsed_time)
 {
     if (const auto onwer = GetOwner())
     {
-        if (const auto& sprite = onwer->EnsureComponentValid(this->sprite_Wptr))
+        if (const auto& sprite = onwer->GetComponent(this->sprite_Wptr))
         {
             sprite->SetDisplaySizeX(CalculateHealthBarWidth());
         }
@@ -72,7 +72,7 @@ float PlayerHPBarUIState::CalculateHealthBarWidth()
     {
         if (const auto player = game_object->GetPlayer())
         {
-            if (const auto& player_health = player->EnsureComponentValid(this->player_health_Wptr))
+            if (const auto& player_health = player->GetComponent(this->player_health_Wptr))
             {
                 return player_health->GetHealthPercentage();
             }

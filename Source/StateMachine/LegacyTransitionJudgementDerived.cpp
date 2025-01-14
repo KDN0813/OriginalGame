@@ -34,7 +34,7 @@ bool Judgement_Move::CheckTransitionCondition()
 {
 	auto owner = this->owner_Wptr.lock();
 	if (!owner) return false;
-	auto movement = owner->EnsureComponentValid(this->movement_Wpt);
+	auto movement = owner->GetComponent(this->movement_Wpt);
 	if (!movement) return false;
 	if (!movement->IsMoveXZAxis()) return false;
 
@@ -63,7 +63,7 @@ bool Judgement_IsAtTarget::CheckTransitionCondition()
 {
 	auto owner = this->owner_Wptr.lock();
 	if (!owner) return false;
-	auto enemy = owner->EnsureComponentValid(this->enemy_Wptr);
+	auto enemy = owner->GetComponent(this->enemy_Wptr);
 	if (!enemy) return false;
 	return enemy->IsAtTarget();
 }
@@ -72,7 +72,7 @@ bool Judgement_IdleFinished::CheckTransitionCondition()
 {
 	auto owner = this->owner_Wptr.lock();
 	if (!owner) return false;
-	auto enemy = owner->EnsureComponentValid(this->enemy_Wptr);
+	auto enemy = owner->GetComponent(this->enemy_Wptr);
 	if (!enemy) return false;
 	return !enemy->IsIdle();
 }
@@ -81,7 +81,7 @@ bool Judgement_HitDamage::CheckTransitionCondition()
 {
 	auto owner = this->owner_Wptr.lock();
 	if (!owner) return false;
-	auto collision = owner->EnsureComponentValid(this->collision_Wptr);
+	auto collision = owner->GetComponent(this->collision_Wptr);
 	if (!collision) return false;
 
 	return false;

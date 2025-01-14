@@ -18,7 +18,7 @@ void ModelAnimationControlComponent::Start()
 {
 	if (const auto& onwer = GetOwner())
 	{
-		if (const auto& model = onwer->EnsureComponentValid(this->model_Wptr))
+		if (const auto& model = onwer->GetComponent(this->model_Wptr))
 		{
 			this->animation_size = static_cast<int>(model->GetResource()->GetAnimations().size());
 #ifdef _DEBUG
@@ -57,7 +57,7 @@ void ModelAnimationControlComponent::UpdateAnimation(float elapsed_time)
 
 	auto owner = GetOwner();
 	if (!owner) return;
-	auto model = owner->EnsureComponentValid<ModelComponent>(this->model_Wptr);
+	auto model = owner->GetComponent<ModelComponent>(this->model_Wptr);
 	if (!model) return;
 	auto model_resource = model->GetResource();
 	if (!model_resource) return;
@@ -211,7 +211,7 @@ void ModelAnimationControlComponent::DrawDebugGUI()
 {
 	if (const auto& onwer = GetOwner())
 	{
-		if (const auto& model = onwer->EnsureComponentValid(this->model_Wptr))
+		if (const auto& model = onwer->GetComponent(this->model_Wptr))
 		{
 			auto model_resource = model->GetResource();
 			if (!model_resource) return;

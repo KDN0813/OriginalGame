@@ -28,7 +28,7 @@ void DebugParticle::Update(float elapsed_time)
 
     if (const auto& owner = GetOwner())
     {
-        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
             this->area_pos = transform->GetWorldPosition();
 #ifdef _DEBUG

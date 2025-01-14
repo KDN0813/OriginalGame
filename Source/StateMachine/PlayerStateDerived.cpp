@@ -27,7 +27,7 @@ void PlayerIdleState::Staet()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.2f);
 }
@@ -36,10 +36,10 @@ void PlayerIdleState::Update(float elapsed_time)
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    const auto& state_machine = owner->EnsureComponentValid<StateMachineComponent>(this->state_machine_Wptr);
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
 
-    auto movement = owner->EnsureComponentValid<MovementComponent>(this->movement_Wpt);
+    auto movement = owner->GetComponent<MovementComponent>(this->movement_Wpt);
     if (!movement) return;
     if (movement->IsMoveXZAxis())
     {
@@ -48,7 +48,7 @@ void PlayerIdleState::Update(float elapsed_time)
     }
 
     // 被ダメ確認
-    if (const auto& character = owner->EnsureComponentValid<CharacterComponent>(this->character_Wptr); character->IsDamage())
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character->IsDamage())
     {
         // 被ダメステートに遷移
         state_machine->ChangeState(this->change_damage_state);
@@ -89,7 +89,7 @@ void PlayerMoveState::Staet()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.2f);
 }
@@ -98,10 +98,10 @@ void PlayerMoveState::Update(float elapsed_time)
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    const auto& state_machine = owner->EnsureComponentValid<StateMachineComponent>(this->state_machine_Wptr);
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
 
-    auto movement = owner->EnsureComponentValid<MovementComponent>(this->movement_Wpt);
+    auto movement = owner->GetComponent<MovementComponent>(this->movement_Wpt);
     if (!movement) return;
     if (!movement->IsMoveXZAxis())
     {
@@ -110,7 +110,7 @@ void PlayerMoveState::Update(float elapsed_time)
     }
 
     // 被ダメ確認
-    if (const auto& character = owner->EnsureComponentValid<CharacterComponent>(this->character_Wptr); character->IsDamage())
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character->IsDamage())
     {
         // 被ダメステートに遷移
         state_machine->ChangeState(this->change_damage_state);
@@ -151,7 +151,7 @@ void PlayerAttackState::Staet()
     if (!owner) return;
 
     // アニメーションの再生
-    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
         animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, false, 0.2f);
 
@@ -166,14 +166,14 @@ void PlayerAttackState::Staet()
     }
 
     // プレイヤーの入力移動を無効にする
-    auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
+    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
         player->SetInputMoveValidityFlag(false);
 
     // 攻撃判定オブジェクトを有効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
-    auto collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
+    auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
         collision->SetIsActive(true);  // コリジョンを有効にする
 
@@ -184,9 +184,9 @@ void PlayerAttackState::Update(float elapsed_time)
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    const auto& state_machine = owner->EnsureComponentValid<StateMachineComponent>(this->state_machine_Wptr);
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
-    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
     // アニメーション再生待ち
@@ -204,14 +204,14 @@ void PlayerAttackState::End()
     if (!owner) return;
 
     // プレイヤーの入力移動を有効にする
-    auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
+    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
         player->SetInputMoveValidityFlag(true);
 
     // 攻撃判定オブジェクトを無効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
-    auto child_collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
+    auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
         child_collision->SetIsActive(false);  // コリジョンを無効にする
 }
@@ -229,7 +229,7 @@ void PlayerSpinAttackState::Staet()
     if (!owner) return;
 
     // アニメーションの再生
-    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
         animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK, false, 0.2f);
 
@@ -244,14 +244,14 @@ void PlayerSpinAttackState::Staet()
     }
 
     // プレイヤーの入力移動を無効にする
-    auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
+    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
         player->SetInputMoveValidityFlag(false);
 
     // 攻撃判定オブジェクトを有効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
-    auto collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
+    auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
         collision->SetIsActive(true);  // コリジョンを有効にする
 
@@ -262,9 +262,9 @@ void PlayerSpinAttackState::Update(float elapsed_time)
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    const auto& state_machine = owner->EnsureComponentValid<StateMachineComponent>(this->state_machine_Wptr);
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
-    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
     // アニメーション再生待ち
@@ -282,14 +282,14 @@ void PlayerSpinAttackState::End()
     if (!owner) return;
 
     // プレイヤーの入力移動を有効にする
-    auto player = owner->EnsureComponentValid<PlayerComponent>(this->player_Wprt);
+    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
         player->SetInputMoveValidityFlag(true);
 
     // 攻撃判定オブジェクトを無効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
-    auto child_collision = attack_object->EnsureComponentValid<CircleCollisionComponent>(this->child_collision_Wprt);
+    auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
         child_collision->SetIsActive(false);  // コリジョンを無効にする
 }
@@ -309,22 +309,25 @@ void PlayerDamageState::Staet()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    const auto& animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::DAMAGE, false);
 
     // TODO 自機ダメージ②
     // 被ダメ時無敵時間を持たせる
     // 入力受付フラグを立てる
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (!player)return;
+    player->SetInputMoveValidityFlag(false);
 }
 
 void PlayerDamageState::Update(float elapsed_time)
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    const auto& state_machine = owner->EnsureComponentValid<StateMachineComponent>(this->state_machine_Wptr);
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
-    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
     // アニメーション再生待ち
@@ -341,4 +344,9 @@ void PlayerDamageState::End()
     // TODO 自機ダメージ②
     // 被ダメ時無敵時間を持たせる
     // 入力受付フラグを立てる
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (!player)return;
+    player->SetInputMoveValidityFlag(true);
 }

@@ -70,7 +70,7 @@ void ModelComponent::Update(float elapsed_time)
 	auto owner = GetOwner();
 	if (owner)
 	{
-		if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
+		if (auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
 		{
 			World_transform = transform->GetWolrdTransform();
 		}

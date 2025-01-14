@@ -18,7 +18,7 @@ void LoadingIconAnimationState::Update(float elapsed_time)
 {
     if (const auto& onwer = GetOwner())
     {
-        if (const auto& transform = onwer->EnsureComponentValid(this->transform_Wprt))
+        if (const auto& transform = onwer->GetComponent(this->transform_Wprt))
         {
             transform->SetLocalAngle(transform->GetLocalAngle() + ROTATION_SPEED);
         }

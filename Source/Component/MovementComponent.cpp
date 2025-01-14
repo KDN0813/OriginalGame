@@ -29,7 +29,7 @@ void MovementComponent::Update(float elapsed_time)
 {
     auto owner = GetOwner();
 	if (!owner) return;
-	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 	if (!transform) return;
 
 	MYVECTOR3 Acceleration = this->param.acceleration;
@@ -81,7 +81,7 @@ void MovementComponent::FaceMovementDirection(float elapsed_time)
 	if (length < 0.001) return;
 
 	auto owner = GetOwner();
-	if (auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr))
+	if (auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
 	{
 		speed *= elapsed_time;
 
@@ -174,16 +174,16 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 	std::shared_ptr<ModelComponent> stage_foor_model = nullptr;
 	if (auto stage_foor_object = game_object->GetStageFoor())
 	{
-		stage_foor_model = stage_foor_object->EnsureComponentValid<ModelComponent>(this->stage_foor_model_Wptr);
+		stage_foor_model = stage_foor_object->GetComponent<ModelComponent>(this->stage_foor_model_Wptr);
 	}
 
 	std::shared_ptr<ModelComponent> stage_wall_model = nullptr;
 	if (auto stage_wall_object = game_object->GetStageWall())
 	{
-		stage_wall_model = stage_wall_object->EnsureComponentValid<ModelComponent>(this->stage_wall_model_Wptr);
+		stage_wall_model = stage_wall_object->GetComponent<ModelComponent>(this->stage_wall_model_Wptr);
 	}
 	
-	auto gravity = owner->EnsureComponentValid<GravityComponent>(this->gravity_Wptr);
+	auto gravity = owner->GetComponent<GravityComponent>(this->gravity_Wptr);
 	// 地面方向にレイキャストを行う
 	if (gravity && stage_foor_model)
 	{

@@ -93,7 +93,7 @@ CircleParam CircleCollisionComponent::GetCircleParam()
 
     auto owner = GetOwner();
     if (!owner) return circle_param;
-    auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+    auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
     if (!transform) return circle_param;
 
     DirectX::XMFLOAT3 world_pos = transform->GetWorldPosition();

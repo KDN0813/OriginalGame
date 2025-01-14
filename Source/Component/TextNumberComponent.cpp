@@ -53,7 +53,7 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     float angle{};
     if (const auto& owner = GetOwner())
     {
-        if (const auto& transform = owner->EnsureComponentValid(this->transform_Wptr))
+        if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
             pos = transform->GetWorldPosition();
             scale = transform->GetWorldScale();

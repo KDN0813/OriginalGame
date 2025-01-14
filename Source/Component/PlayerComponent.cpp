@@ -67,7 +67,7 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 {
     auto owner = GetOwner();
 
-    if (auto movement = owner->EnsureComponentValid<MovementComponent>(movement_Wptr))
+    if (auto movement = owner->GetComponent<MovementComponent>(movement_Wptr))
     {
 #ifdef _DEBUG
         if (Input::Instance input = Input::GetInstance(); input.Get())

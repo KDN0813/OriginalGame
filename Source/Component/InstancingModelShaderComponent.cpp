@@ -39,9 +39,9 @@ void InstancingModelShaderComponent::InstancingAdd()
     auto owner = GetOwner();
     if (!owner) return;
     auto instancing_model
-        = owner->EnsureComponentValid<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr);
+        = owner->GetComponent<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr);
     auto transform
-        = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+        = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 
     if (instancing_model && transform)
     {
@@ -54,7 +54,7 @@ void InstancingModelShaderComponent::InstancingEnd(ID3D11DeviceContext* dc)
     auto owner = GetOwner();
     if (!owner) return;
     if (auto instancing_model
-        = owner->EnsureComponentValid<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr))
+        = owner->GetComponent<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr))
     {
         this->shader->InstancingEnd(dc, instancing_model.get());
     }
@@ -65,9 +65,9 @@ bool InstancingModelShaderComponent::IsShaderValid()
     auto owner = GetOwner();
     if (!owner) return false;
     auto instancing_model
-        = owner->EnsureComponentValid<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr);
+        = owner->GetComponent<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr);
     auto transform
-        = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+        = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 
     return (instancing_model && transform);
 }
@@ -77,7 +77,7 @@ int InstancingModelShaderComponent::GetModelId()
     auto owner = GetOwner();
     if (!owner) return -1;
     auto instancing_model
-        = owner->EnsureComponentValid<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr);
+        = owner->GetComponent<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr);
     if (!instancing_model) return-1;
     return instancing_model->GetModelId();
 }

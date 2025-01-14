@@ -31,9 +31,9 @@ void EnemyComponent::Update(float elapsed_time)
 {
 	const auto& owner = GetOwner();
 	if (!owner) return;
-	const auto& model_component = owner->EnsureComponentValid(this->model_Wptr);
+	const auto& model_component = owner->GetComponent(this->model_Wptr);
 	if (!model_component) return;
-	const auto& character = owner->EnsureComponentValid<CharacterComponent>(this->character_Wptr);
+	const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
 
 	// 死亡判定
 	if (character && !character->IsAlive() && !this->param.pending_removal_flag)
@@ -84,7 +84,7 @@ void EnemyComponent::Update(float elapsed_time)
 	{
 		// 移動処理
 		{
-			auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+			auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 			// 移動処理
 			if (transform && this->param.move_validity_flag)
 			{
@@ -156,7 +156,7 @@ void EnemyComponent::Move(float vx, float vz, float speed)
 {
 	auto owner = GetOwner();
 
-	if (auto movement = owner->EnsureComponentValid<MovementComponent>(movement_Wptr))
+	if (auto movement = owner->GetComponent<MovementComponent>(movement_Wptr))
 	{
 		movement->AddAccelerationXZ(vx * speed, vz * speed);
 	}
@@ -193,7 +193,7 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 			if (const auto& owner = GetOwner())
 			{
 				// トランスフォーム取得
-				if (const auto& child_transform = owner->EnsureComponentValid(this->child_transform_Wptr))
+				if (const auto& child_transform = owner->GetComponent(this->child_transform_Wptr))
 				{
 					// 生成位置を設定
 					Pos = child_transform->GetWorldPosition();
@@ -248,7 +248,7 @@ bool EnemyComponent::IsAtTarget()
 {
 	auto owner = GetOwner();
 	if (!owner) return false;
-	auto transform = owner->EnsureComponentValid<Transform3DComponent>(this->transform_Wptr);
+	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 	if (!transform) return false;
 
 	// 目的地点までのXZ平面での距離判定
@@ -268,7 +268,7 @@ void EnemyComponent::SetDamageState()
 {
 	const auto& owner = GetOwner();
 	if (!owner) return;
-	const auto& model_component = owner->EnsureComponentValid(this->model_Wptr);
+	const auto& model_component = owner->GetComponent(this->model_Wptr);
 	if (!model_component) return;
 
 	this->param.state = STATE::DAMAGE;
