@@ -51,7 +51,6 @@ void PlayerIdleState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // TODO Ž©‹@Ž€–Sˆ—‡B
         // Ž€–S”»’è
         if (!character->IsAlive())
         {
@@ -126,7 +125,6 @@ void PlayerMoveState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // TODO Ž©‹@Ž€–Sˆ—‡B
         // Ž€–S”»’è
         if (!character->IsAlive())
         {
@@ -224,7 +222,6 @@ void PlayerAttackState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // TODO Ž©‹@Ž€–Sˆ—‡B
         // Ž€–S”»’è
         if (!character->IsAlive())
         {
@@ -325,7 +322,6 @@ void PlayerSpinAttackState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // TODO Ž©‹@Ž€–Sˆ—‡B
         // Ž€–S”»’è
         if (!character->IsAlive())
         {
@@ -403,7 +399,6 @@ void PlayerDamageState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // TODO Ž©‹@Ž€–Sˆ—‡B_Ï
         // Ž€–S”»’è
         if (!character->IsAlive())
         {
@@ -441,7 +436,6 @@ PlayerDeadState::PlayerDeadState()
 
 void PlayerDeadState::Start()
 {
-    // TODO Ž©‹@Ž€–Sˆ—‡@_‡@
     const auto& owner = this->GetOwner();
     if (!owner) return;
     // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
@@ -459,10 +453,7 @@ void PlayerDeadState::Start()
 }
 
 void PlayerDeadState::Update(float elapsed_time)
-{
-    // TODO Ž©‹@Ž€–Sˆ—‡@_‡A
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶I—¹ŒãŽ€–S‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
-    
+{   
     const auto& owner = this->GetOwner();
     if (!owner) return;
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
@@ -479,8 +470,7 @@ void PlayerDeadState::Update(float elapsed_time)
     }
 }
 
-// TODO Ž©‹@Ž€–Sˆ—‡A
-// Ž€–SƒXƒe[ƒgì¬
+// Ž€–SƒXƒe[ƒg
 const MyHash PlayerDeadIdleState::STATE_NAME = MyHash("PlayerDeadIdleState");
 PlayerDeadIdleState::PlayerDeadIdleState()
     :State(STATE_NAME)
@@ -489,7 +479,6 @@ PlayerDeadIdleState::PlayerDeadIdleState()
 
 void PlayerDeadIdleState::Start()
 {
-    // TODO Ž©‹@Ž€–Sˆ—‡A_(Ï)
     // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -497,10 +486,10 @@ void PlayerDeadIdleState::Start()
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::DEAD_STAY, false);
 
-    // TODO Ž©‹@Ž€–Sˆ—‡C ƒQ[ƒ€ƒ‚[ƒh‚ðÝ’è
+    // ƒQ[ƒ€ƒ‚[ƒh‚ðÝ’è
     if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
     {
-        // ƒQ[ƒ€ƒ‚[ƒhÝ’è
+        // ”s–kó‘Ô‚É•ÏX
         game_data->SetGameStatus(GameData::GameStatus::DEFEAT);
     }
 }

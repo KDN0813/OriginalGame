@@ -421,8 +421,6 @@ void SceneGame::ProcessGameState()
 	{
 	case GameData::GameStatus::DEFEAT:	// ƒvƒŒƒCƒ„[‚Ì”s–k
 	{
-		// TODO ©‹@€–Sˆ—‡D ‘JˆÚˆ—’Ç‰Á
-
 		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
 		{
 			switch (this->change_state)
