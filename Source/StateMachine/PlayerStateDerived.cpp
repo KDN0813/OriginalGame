@@ -309,7 +309,7 @@ void PlayerDamageState::Staet()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
+    const auto& animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::DAMAGE, false);
 

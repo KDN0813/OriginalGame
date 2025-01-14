@@ -45,8 +45,8 @@ void CharacterComponent::DrawDebugGUI()
 {
     if (ImGui::InputInt("HP", &this->param.hp)) this->param.hp = (std::min)((std::max)(this->param.hp, 0), this->param.max_hp);
     ImGui::InputInt("Max HP", &this->param.max_hp);
-    if (ImGui::InputFloat("Invincible Timer", &this->param.invincible_timer));
-    if (ImGui::InputFloat("Max Invincible Timer", &this->param.max_invincible_timer));
+    ImGui::InputFloat("Invincible Timer", &this->param.invincible_timer);
+    ImGui::InputFloat("Max Invincible Timer", &this->param.max_invincible_timer);
 
     // ダメージテスト
     ImGui::InputInt("Test Damage", &this->test_damage);
