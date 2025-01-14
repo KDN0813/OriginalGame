@@ -44,6 +44,7 @@ private:
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
+    std::weak_ptr<Transform3DComponent> character_Wptr;
 
 #ifdef _DEBUG
 public:

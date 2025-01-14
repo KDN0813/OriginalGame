@@ -117,7 +117,7 @@ public:
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
-	void End() override {};
+	void End() override;
 private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_move_state;

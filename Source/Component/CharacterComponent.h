@@ -9,6 +9,8 @@ public:
         int hp = 1;     // 体力
         int old_hp = 1; // 前フレームの体力
         int max_hp = 1; // 最大体力
+        float invincible_timer = 0.0f;      // 無敵時間
+        float max_invincible_timer = 1.0f;  // 無敵時間の最大値
     };
 public:
     CharacterComponent(CharacterParam param);
@@ -21,7 +23,7 @@ public:
     // リスタート処理
     void ReStart() override;      // パラメータの初期化
     // 更新関数
-    void Update(float elapsed_time) override { this->param.old_hp = this->param.hp; };
+    void Update(float elapsed_time) override;
 
     // 名前取得
     const char* GetName()const  override { return "CharacterComponent"; };

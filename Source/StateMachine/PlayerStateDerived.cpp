@@ -312,6 +312,10 @@ void PlayerDamageState::Staet()
     auto animation = owner->EnsureComponentValid<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::DAMAGE, false);
+
+    // TODO 自機ダメージ②
+    // 被ダメ時無敵時間を持たせる
+    // 入力受付フラグを立てる
 }
 
 void PlayerDamageState::Update(float elapsed_time)
@@ -330,4 +334,11 @@ void PlayerDamageState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
+}
+
+void PlayerDamageState::End()
+{
+    // TODO 自機ダメージ②
+    // 被ダメ時無敵時間を持たせる
+    // 入力受付フラグを立てる
 }
