@@ -187,6 +187,20 @@ void EnemyComponent::Update(float elapsed_time)
 					MoveToTarget(elapsed_time, transform, this->param.speed_rate);
 				}
 			}
+
+			// 近くにプレイヤーがいるか判定
+			if (!IsNearByPlayer())
+			{
+				// 有効範囲外なら待機状態に遷移
+				this->param.state = STATE::IDLE;
+
+				// 待機状態への準備
+				{
+					model_component->PlayAnimation(EnemyCT::IDLE_BATTLE, true);
+					SetRandomIdleTime();
+					return;
+				}
+			}
 		}
 
 		break;
