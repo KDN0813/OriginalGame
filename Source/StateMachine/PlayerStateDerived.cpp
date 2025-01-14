@@ -313,9 +313,6 @@ void PlayerDamageState::Staet()
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::DAMAGE, false);
 
-    // TODO 自機ダメージ②
-    // 被ダメ時無敵時間を持たせる
-    // 入力受付フラグを立てる
     const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (!player)return;
     player->SetInputMoveValidityFlag(false);
@@ -341,9 +338,6 @@ void PlayerDamageState::Update(float elapsed_time)
 
 void PlayerDamageState::End()
 {
-    // TODO 自機ダメージ②
-    // 被ダメ時無敵時間を持たせる
-    // 入力受付フラグを立てる
     const auto& owner = this->GetOwner();
     if (!owner) return;
     const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
