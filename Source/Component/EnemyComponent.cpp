@@ -94,10 +94,10 @@ void EnemyComponent::Update(float elapsed_time)
 			}
 		}
 
-		// 近くにプレイヤーがいるか判定
+		// 移動範囲にプレイヤーが存在するか判定
 		if(IsPlayerInMovementArea())
 		{
-			// 近くにいれば接近状態に遷移
+			// 範囲内に存在すれば接近ステートに遷移
 			this->param.state = STATE::CHASE;
 
 			// 移動状態への準備
@@ -142,10 +142,10 @@ void EnemyComponent::Update(float elapsed_time)
 			}
 		}
 
-		// 近くにプレイヤーがいるか判定
+		// 移動範囲にプレイヤーが存在するか判定
 		if (IsPlayerInMovementArea())
 		{
-			// 近くにいれば接近状態に遷移
+			// 範囲内に存在すれば接近ステートに遷移
 			this->param.state = STATE::CHASE;
 
 			// 移動状態への準備
@@ -165,19 +165,20 @@ void EnemyComponent::Update(float elapsed_time)
 			// 移動処理
 			if (transform && this->param.move_validity_flag)
 			{
-				// 目的地点までのXZ平面での距離判定
-				MYVECTOR3 Position = transform->GetWorldPosition();
-				// プレイヤーの位置を目的地に設定
-				MYVECTOR3 Target_position = Position;
+				// 目的地をプレイヤーの位置に設定
 				if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 				{
 					if (const auto& player = game_object->GetPlayer())
 					{
-						const auto transform = player->GetComponent<Transform3DComponent>();
-						Target_position = transform->GetWorldPosition();
+						if (const auto transform = player->GetComponent<Transform3DComponent>())
+						{
+							this->param.target_position = transform->GetWorldPosition();
+						}
 					}
 				}
-				Target_position.GetFlaot3(this->param.target_position);
+
+				MYVECTOR3 Position = transform->GetWorldPosition();			// 自身の位置
+				MYVECTOR3 Target_position = this->param.target_position;	// 目的地
 
 				float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
 
@@ -188,10 +189,10 @@ void EnemyComponent::Update(float elapsed_time)
 				}
 			}
 
-			// 近くにプレイヤーがいるか判定
+			// 移動範囲にプレイヤーが存在するか判定
 			if (!IsPlayerInMovementArea())
 			{
-				// 有効範囲外なら待機状態に遷移
+				// 範囲内にいないなら待機ステートに遷移
 				this->param.state = STATE::IDLE;
 
 				// 待機状態への準備
