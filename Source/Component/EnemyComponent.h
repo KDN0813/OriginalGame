@@ -12,9 +12,9 @@ class EnemyComponent : public Component
 {
 public:
 #ifdef _DEBUG
-    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;
+    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;    // 敵の移動範囲
 #else
-    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;
+    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;    // 敵の移動範囲
 #endif // _DEBUG
 
 
@@ -36,7 +36,7 @@ public:
         float move_speed = 30.0f;
         float speed_rate = 0.5f;
 
-        float close_range_radius = 10.0f;    // プレイヤーを追いかける有効範囲
+        //float close_range_radius = 10.0f;    // プレイヤーを追いかける有効範囲
 
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;

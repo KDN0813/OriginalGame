@@ -381,7 +381,7 @@ bool EnemyComponent::IsPlayerInMovementArea()
 	
 	// îÕàÕì‡Ç…ë∂ç›Ç∑ÇÈÇ©îªíËÇ∑ÇÈ
 	float distSq = (Player_position.GetMyVectorXZ() - SpawnPosition.GetMyVectorXZ()).LengthSq();
-	return (distSq < this->param.close_range_radius * this->param.close_range_radius);
+	return (distSq < this->param.territory_range * this->param.territory_range);
 }
 
 void EnemyComponent::SetDamageState()
@@ -425,8 +425,8 @@ void EnemyComponent::DrawDebugPrimitive()
 	
 	if (debug_render)
 	{
-		debug_render->DrawCylinder(spawn_point, this->param.close_range_radius, 2.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-		debug_render->DrawCylinder(spawn_point, DEFAULT_TERRITORY_RENGR, 2.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+		// à⁄ìÆîÕàÕï`âÊ
+		debug_render->DrawCylinder(spawn_point, this->param.territory_range, 2.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
 	}
 }
 
