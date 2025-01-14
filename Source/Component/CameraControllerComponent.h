@@ -71,13 +71,14 @@ public:
     struct CameraControllerParam
     {
         float rotation_speed = DirectX::XMConvertToRadians(5.0f);
+        float range_move_speed = 1.0f;
     };
 public:
     CameraControllerDeathComponent(CameraControllerParam param) : param(param) {};
     ~CameraControllerDeathComponent() {};
 
     // 開始関数
-    void Start()  override {};
+    void Start()  override;
     // 終了関数
     void End()  override {};
     // リスタート処理
