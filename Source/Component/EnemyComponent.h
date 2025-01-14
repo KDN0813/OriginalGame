@@ -76,8 +76,8 @@ public:
     // 目的地に到達しているか
     bool IsAtTarget();
     bool IsAtTarget(float distSq);
-    // プレイヤーが近くにいるか
-    bool IsNearByPlayer();
+    // 移動範囲内にプレイヤーが存在するか
+    bool IsPlayerInMovementArea();
 
     // 現在待機行動中であるか
     bool IsIdle() { return (this->param.idle_timer > 0.0f); }
@@ -104,6 +104,8 @@ private:
     std::weak_ptr<Transform3DComponent> child_transform_Wptr;
     std::weak_ptr<CharacterComponent> character_Wptr;
     std::weak_ptr<InstancedModelWithAnimationComponent> model_Wptr;
+
+    std::weak_ptr<Transform3DComponent> player_transform_Wptr;
 #ifdef _DEBUG
 public:
     /**

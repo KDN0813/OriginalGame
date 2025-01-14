@@ -95,7 +95,7 @@ void EnemyComponent::Update(float elapsed_time)
 		}
 
 		// 近くにプレイヤーがいるか判定
-		if(IsNearByPlayer())
+		if(IsPlayerInMovementArea())
 		{
 			// 近くにいれば接近状態に遷移
 			this->param.state = STATE::CHASE;
@@ -143,7 +143,7 @@ void EnemyComponent::Update(float elapsed_time)
 		}
 
 		// 近くにプレイヤーがいるか判定
-		if (IsNearByPlayer())
+		if (IsPlayerInMovementArea())
 		{
 			// 近くにいれば接近状態に遷移
 			this->param.state = STATE::CHASE;
@@ -189,7 +189,7 @@ void EnemyComponent::Update(float elapsed_time)
 			}
 
 			// 近くにプレイヤーがいるか判定
-			if (!IsNearByPlayer())
+			if (!IsPlayerInMovementArea())
 			{
 				// 有効範囲外なら待機状態に遷移
 				this->param.state = STATE::IDLE;
@@ -362,22 +362,24 @@ bool EnemyComponent::IsAtTarget(float distSq)
 	return (distSq < this->param.radius * this->param.radius);
 }
 
-bool EnemyComponent::IsNearByPlayer()
+bool EnemyComponent::IsPlayerInMovementArea()
 {
-	// 目的地点までのXZ平面での距離判定
-	MYVECTOR3 SpawnPosition = this->spawn_point;
-	MYVECTOR3 Target_position{};
-	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
-	{
-		const auto& player = game_object->GetPlayer();
-		if (!player) return false;
-		const auto& player_transform = player->GetComponent<Transform3DComponent>();
-		if (!player_transform) return false;
-		Target_position = player_transform->GetWorldPosition();
-	}
+	MYVECTOR3 SpawnPosition = this->spawn_point;	// 生成位置(移動範囲の中心)
+	MYVECTOR3 Player_position{};					// プレイヤーの位置
 
-	float distSq = (Target_position.GetMyVectorXZ() - SpawnPosition.GetMyVectorXZ()).LengthSq();
+	// プレイヤー取得
+	GameObject::Instance game_object = GameObject::GetInstance();
+	if (!game_object.Get()) return false;
+	const auto& player = game_object->GetPlayer();
+	if (!player) return false;
 
+	// プレイヤーの位置設定
+	const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
+	if (!player_transform) return false;
+	Player_position = player_transform->GetWorldPosition();
+	
+	// 範囲内に存在するか判定する
+	float distSq = (Player_position.GetMyVectorXZ() - SpawnPosition.GetMyVectorXZ()).LengthSq();
 	return (distSq < this->param.close_range_radius * this->param.close_range_radius);
 }
 
