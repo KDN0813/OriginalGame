@@ -11,7 +11,7 @@ public:
     // ゲームの状態
     enum class GameStatus
     {
-        GAME,               // ゲーム状態
+        GAME = 0,           // ゲーム状態
         TITLE,              // タイトル状態
         DEFEAT,             // 自機が死亡したとき（敗北）
         VICTORY,            // 制限時間まで生存した(勝利)

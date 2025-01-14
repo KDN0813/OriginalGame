@@ -17,7 +17,7 @@ public:
 	PlayerIdleState();
 	~PlayerIdleState() {}
 	// ステートに入った時のメソッド
-	void Staet() override;
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
@@ -43,7 +43,7 @@ public:
 	PlayerMoveState();
 	~PlayerMoveState() {}
 	// ステートに入った時のメソッド
-	void Staet() override;
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
@@ -69,7 +69,7 @@ public:
 	PlayerAttackState();
 	~PlayerAttackState() {}
 	// ステートに入った時のメソッド
-	void Staet() override;
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
@@ -94,7 +94,7 @@ public:
 	PlayerSpinAttackState();
 	~PlayerSpinAttackState() {}
 	// ステートに入った時のメソッド
-	void Staet() override;
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
@@ -119,7 +119,7 @@ public:
 	PlayerDamageState();
 	~PlayerDamageState() {}
 	// ステートに入った時のメソッド
-	void Staet() override;
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
@@ -146,7 +146,7 @@ public:
 	PlayerDeadState();
 	~PlayerDeadState() {}
 	// ステートに入った時のメソッド
-	void Staet() override;
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
@@ -168,7 +168,7 @@ public:
 	PlayerDeadIdleState();
 	~PlayerDeadIdleState() {}
 	// ステートに入った時のメソッド
-	void Staet() override;
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override {};
 	// ステートから出ていくときのメソッド

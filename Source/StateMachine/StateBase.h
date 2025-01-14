@@ -25,7 +25,7 @@ public:
 	State(MyHash name) : state_name(name) {}
 	virtual ~State() {}
 	// ステートに入った時のメソッド
-	virtual void Staet() = 0;
+	virtual void Start() = 0;
 	// ステートで実行するメソッド
 	virtual void Update(float elapsed_time) = 0;
 	// ステートから出ていくときのメソッド
@@ -56,7 +56,7 @@ public:
 	DefaultState() :State(MyHash("DefaultState")) {};
 	~DefaultState() {}
 	// ステートに入った時のメソッド
-	void Staet() override{};
+	void Start() override{};
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override {};
 	// ステートから出ていくときのメソッド

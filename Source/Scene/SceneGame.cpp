@@ -435,13 +435,21 @@ void SceneGame::ProcessGameState()
 		{
 			switch (this->change_state)
 			{
-			case CHANGE_SCENE_STATE::START:	// フェードイン準備
+			case CHANGE_SCENE_STATE::START:
 			{
+				// フェードイン準備
 				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
 				{
-					fead_controlle->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::DEFAULT_FEAD_DURATION);
+					fead_controlle->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::PLAYER_DEFEAT_FEAD_DURATION);
 					fead_controlle->FeadStart();
 				}
+
+				// デスカメラに遷移
+				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+				{
+					camera_manager->SetCurrentCamera(CAMERA_TYPE::DEATH);
+				}
+
 				this->change_state = CHANGE_SCENE_STATE::RUN;
 			}
 			break;
@@ -461,6 +469,7 @@ void SceneGame::ProcessGameState()
 			default:break;
 			}
 		}
+		break;
 	}
 	case GameData::GameStatus::VICTORY:	// プレイヤーの勝利
 	{

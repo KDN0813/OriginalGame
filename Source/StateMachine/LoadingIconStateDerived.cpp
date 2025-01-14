@@ -9,7 +9,7 @@ LoadingIconAnimationState::LoadingIconAnimationState()
 {
 }
 
-void LoadingIconAnimationState::Staet()
+void LoadingIconAnimationState::Start()
 {
     this->timer = 0.0f;
 }

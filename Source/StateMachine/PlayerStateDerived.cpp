@@ -3,6 +3,7 @@
 #include "Object/Object.h"
 #include "Object\Constant\PlayerConstant.h"
 #include "Audio\Audio.h"
+#include "System\GameData.h"
 
 #include "Object\Constant\PlayerConstant.h"
 
@@ -24,7 +25,7 @@ PlayerIdleState::PlayerIdleState()
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
-void PlayerIdleState::Staet()
+void PlayerIdleState::Start()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -99,7 +100,7 @@ PlayerMoveState::PlayerMoveState()
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
-void PlayerMoveState::Staet()
+void PlayerMoveState::Start()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -172,7 +173,7 @@ PlayerAttackState::PlayerAttackState()
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
-void PlayerAttackState::Staet()
+void PlayerAttackState::Start()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -273,7 +274,7 @@ PlayerSpinAttackState::PlayerSpinAttackState()
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
-void PlayerSpinAttackState::Staet()
+void PlayerSpinAttackState::Start()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -378,7 +379,7 @@ PlayerDamageState::PlayerDamageState()
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
-void PlayerDamageState::Staet()
+void PlayerDamageState::Start()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -402,7 +403,7 @@ void PlayerDamageState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // TODO Ž©‹@Ž€–Sˆ—‡B
+        // TODO Ž©‹@Ž€–Sˆ—‡B_Ï
         // Ž€–S”»’è
         if (!character->IsAlive())
         {
@@ -438,7 +439,7 @@ PlayerDeadState::PlayerDeadState()
     this->change_dead_idle_state.change_state_name = PlayerDeadIdleState::STATE_NAME;
 }
 
-void PlayerDeadState::Staet()
+void PlayerDeadState::Start()
 {
     // TODO Ž©‹@Ž€–Sˆ—‡@_‡@
     const auto& owner = this->GetOwner();
@@ -476,8 +477,6 @@ void PlayerDeadState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_dead_idle_state);
         return;
     }
-
-    // TODO Ž©‹@Ž€–Sˆ—‡C ƒQ[ƒ€ƒ‚[ƒh‚ðÝ’è
 }
 
 // TODO Ž©‹@Ž€–Sˆ—‡A
@@ -488,7 +487,7 @@ PlayerDeadIdleState::PlayerDeadIdleState()
 {
 }
 
-void PlayerDeadIdleState::Staet()
+void PlayerDeadIdleState::Start()
 {
     // TODO Ž©‹@Ž€–Sˆ—‡A_(Ï)
     // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
@@ -497,4 +496,11 @@ void PlayerDeadIdleState::Staet()
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::DEAD_STAY, false);
+
+    // TODO Ž©‹@Ž€–Sˆ—‡C ƒQ[ƒ€ƒ‚[ƒh‚ðÝ’è
+    if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+    {
+        // ƒQ[ƒ€ƒ‚[ƒhÝ’è
+        game_data->SetGameStatus(GameData::GameStatus::DEFEAT);
+    }
 }

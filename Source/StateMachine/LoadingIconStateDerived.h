@@ -12,7 +12,7 @@ public:
 	LoadingIconAnimationState();
 	~LoadingIconAnimationState() {}
 	// ステートに入った時のメソッド
-	void Staet() override;
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド

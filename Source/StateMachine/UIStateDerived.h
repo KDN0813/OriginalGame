@@ -15,7 +15,7 @@ public:
 	ScoreUIDefaultState();
 	~ScoreUIDefaultState() {}
 	// ステートに入った時のメソッド
-	void Staet() override {};
+	void Start() override {};
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
@@ -34,7 +34,7 @@ public:
 	EndTimerUIDefaultState();
 	~EndTimerUIDefaultState() {}
 	// ステートに入った時のメソッド
-	void Staet() override {};
+	void Start() override {};
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
@@ -53,7 +53,7 @@ public:
 	PlayerHPBarUIState();
 	~PlayerHPBarUIState() {}
 	// ステートに入った時のメソッド
-	void Staet() override {};
+	void Start() override {};
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド

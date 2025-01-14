@@ -42,7 +42,7 @@ void StateMachineComponent::ChangeState(State::ChangeState& chage_state)
 	this->current_state = this->state_pool.at(chage_state.change_state_index).get();
 
 	// 新しいステートの開始関数を呼び出す。
-	this->current_state->Staet();
+	this->current_state->Start();
 }
 
 void StateMachineComponent::SetDefaultState(MyHash default_name)
@@ -82,7 +82,7 @@ void StateMachineComponent::DrawDebugGUI()
 	{
 		current_state->End();
 		this->current_state = this->state_pool.at(static_cast<size_t>(current_index_int)).get();
-		current_state->Staet();
+		current_state->Start();
 	}
 }
 
