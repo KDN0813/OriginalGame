@@ -129,3 +129,43 @@ private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 };
+
+// 死亡ステート
+class PlayerDeadState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	PlayerDeadState();
+	~PlayerDeadState() {}
+	// ステートに入った時のメソッド
+	void Staet() override;
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override {};
+private:
+	State::ChangeState change_dead_idle_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+};
+
+// 死亡待機ステート
+class PlayerDeadIdleState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	PlayerDeadIdleState();
+	~PlayerDeadIdleState() {}
+	// ステートに入った時のメソッド
+	void Staet() override;
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override {};
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+};

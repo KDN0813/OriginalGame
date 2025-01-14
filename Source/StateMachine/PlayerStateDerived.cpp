@@ -73,6 +73,9 @@ void PlayerIdleState::Update(float elapsed_time)
             return;
         }
     }
+
+    // TODO 自機死亡処理③
+    // 死亡したらダメージステートに遷移
 }
 
 const MyHash PlayerMoveState::STATE_NAME = MyHash("PlayerMoveState");
@@ -136,6 +139,9 @@ void PlayerMoveState::Update(float elapsed_time)
             return;
         }
     }
+
+    // TODO 自機死亡処理③
+    // 死亡したらダメージステートに遷移
 }
 
 const MyHash PlayerAttackState::STATE_NAME = MyHash("PlayerAttackState");
@@ -201,6 +207,9 @@ void PlayerAttackState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
+
+    // TODO 自機死亡処理③
+    // 死亡したらダメージステートに遷移
 }
 
 void PlayerAttackState::End()
@@ -289,6 +298,9 @@ void PlayerSpinAttackState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
+
+    // TODO 自機死亡処理③
+    // 死亡したらダメージステートに遷移
 }
 
 void PlayerSpinAttackState::End()
@@ -354,6 +366,9 @@ void PlayerDamageState::Update(float elapsed_time)
         state_machine->ChangeState(this->change_idle_state);
         return;
     }
+
+    // TODO 自機死亡処理③
+    // 死亡したらダメージステートに遷移
 }
 
 void PlayerDamageState::End()
@@ -363,4 +378,42 @@ void PlayerDamageState::End()
     const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (!player)return;
     player->SetInputMoveValidityFlag(true);
+}
+
+
+const MyHash PlayerDeadState::STATE_NAME = MyHash("PlayerDeadState");
+PlayerDeadState::PlayerDeadState()
+    :State(STATE_NAME)
+{
+}
+
+void PlayerDeadState::Staet()
+{
+    // TODO 自機死亡処理①_①
+    // アニメーション再生
+    // デスカメラに遷移
+}
+
+void PlayerDeadState::Update(float elapsed_time)
+{
+    // TODO 自機死亡処理①_②
+    // アニメーション再生終了後死亡待機ステートに遷移
+}
+
+// TODO 自機死亡処理②
+// 死亡ステート作成
+const MyHash PlayerDeadIdleState::STATE_NAME = MyHash("PlayerDeadIdleState");
+PlayerDeadIdleState::PlayerDeadIdleState()
+    :State(STATE_NAME)
+{
+}
+
+void PlayerDeadIdleState::Staet()
+{
+    // TODO 自機死亡処理②
+    // アニメーション再生
+}
+
+void PlayerDeadIdleState::Update(float elapsed_time)
+{
 }
