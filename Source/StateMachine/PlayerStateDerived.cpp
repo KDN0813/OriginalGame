@@ -398,6 +398,8 @@ void PlayerDeadState::Update(float elapsed_time)
 {
     // TODO 自機死亡処理①_②
     // アニメーション再生終了後死亡待機ステートに遷移
+
+    // TODO 自機死亡処理④ ゲームモードを設定
 }
 
 // TODO 自機死亡処理②

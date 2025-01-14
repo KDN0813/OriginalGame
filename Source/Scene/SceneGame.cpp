@@ -429,11 +429,38 @@ void SceneGame::ProcessGameState()
 	{
 	case GameData::GameStatus::DEFEAT:	// プレイヤーの敗北
 	{
+		// TODO 自機死亡処理⑤ 遷移処理追加
+
 		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
 		{
-			scene_manager->ChangeScene(new SceneResult);
+			switch (this->change_state)
+			{
+			case CHANGE_SCENE_STATE::START:	// フェードイン準備
+			{
+				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
+				{
+					fead_controlle->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::DEFAULT_FEAD_DURATION);
+					fead_controlle->FeadStart();
+				}
+				this->change_state = CHANGE_SCENE_STATE::RUN;
+			}
+			break;
+			case CHANGE_SCENE_STATE::RUN:	// フェードイン待機
+			{
+				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
+				{
+					// フェード中ならreturn
+					if (fead_controlle->GetIsActive()) return;
+
+					// シーン切り替え
+					scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
+					this->change_state = CHANGE_SCENE_STATE::END;
+				}
+			}
+			break;
+			default:break;
+			}
 		}
-		break;
 	}
 	case GameData::GameStatus::VICTORY:	// プレイヤーの勝利
 	{
