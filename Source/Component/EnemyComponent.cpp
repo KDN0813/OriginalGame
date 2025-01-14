@@ -186,15 +186,23 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
 	if (this->param.pending_removal_flag) return;	// 削除待ちの場合return
 
-	// 斬撃effect再生
+	const auto& owner = GetOwner();
+	if (!owner) return;
+	const auto collision = owner->GetComponent(circle_collision_Wptr);
+	if (!collision) return;
+
+	switch (collision->GetCircleHitResult().collision_role)
 	{
-		MYVECTOR3 Pos{};    // 生成位置
-		DirectX::XMFLOAT3 pos{};    // 生成位置
-		
-		// 発生位置計算
+	case COLLISION_ROLE::ATTACKER:	// 衝突を与えた時の処理
+		break;
+	case COLLISION_ROLE::RECEIVER:	// 衝突を受けた時の処理
+	{
+		// 斬撃effect再生
 		{
-			// エネミーの位置を設定
-			if (const auto& owner = GetOwner())
+			MYVECTOR3 Pos{};    // 生成位置
+			DirectX::XMFLOAT3 pos{};    // 生成位置
+
+			// 発生位置計算
 			{
 				// トランスフォーム取得
 				if (const auto& child_transform = owner->GetComponent(this->child_transform_Wptr))
@@ -202,35 +210,39 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 					// 生成位置を設定
 					Pos = child_transform->GetWorldPosition();
 				}
-			}
 
-			// カメラの向取得
-			MYVECTOR3 Forward = MYVECTOR3(1.0f, 0.0f, 0.0f);
-			MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
-			if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
-			{
-				if (const auto& camera = camera_manager->GetCamera(CAMERA_TYPE::MAIN))
+				// カメラの向取得
+				MYVECTOR3 Forward = MYVECTOR3(1.0f, 0.0f, 0.0f);
+				MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
+				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 				{
-					Forward = camera->GetForward();
-					Up = camera->GetUp();
+					if (const auto& camera = camera_manager->GetCamera(CAMERA_TYPE::MAIN))
+					{
+						Forward = camera->GetForward();
+						Up = camera->GetUp();
+					}
 				}
+
+				// 再生位置計算
+				Pos += (Up * this->param.damage_effect_offset_up);
+				Pos.GetFlaot3(pos);
 			}
 
-			// 再生位置計算
-			Pos += (Up * this->param.damage_effect_offset_up);
-			Pos.GetFlaot3(pos);
+			// エフェクト再生
+			if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
+			{
+				particle_system->PlayEffect(
+					EFFECT_HIT,
+					pos,
+					45.0f,
+					DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f)
+				);
+			}
 		}
-
-		// エフェクト再生
-		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
-		{
-			particle_system->PlayEffect(
-				EFFECT_HIT,
-				pos,
-				45.0f,
-				DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f)
-			);
-		}
+	}
+		break;
+	default:
+		break;
 	}
 }
 

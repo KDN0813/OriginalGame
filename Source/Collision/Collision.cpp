@@ -26,6 +26,10 @@ bool Collision::IntersectCircleVsCircle(
     MYVECTOR2 Out_positionB = CenterB + (vec * range);
     Out_positionB.GetFlaot2(hit_resultB.out_position);
 
+    // ÉçÅ[Éãê›íË
+    hit_resultA.collision_role = COLLISION_ROLE::ATTACKER;
+    hit_resultB.collision_role = COLLISION_ROLE::RECEIVER;
+
     return true;
 }
 

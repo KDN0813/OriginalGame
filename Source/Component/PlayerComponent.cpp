@@ -4,11 +4,13 @@
 #include "Camera/CameraManager.h"
 #include "Object/Object.h"
 #include "System/GameData.h"
+#include "Object\Constant\PlayerConstant.h"
 
 #include "Component/CameraComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/CharacterComponent.h"
+#include "Component/CircleCollisionComponent.h"
 
 #ifdef _DEBUG
 #include "Shader\ParticleSystem.h"
@@ -41,14 +43,30 @@ void PlayerComponent::Update(float elapsed_time)
 
 void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
-    if (hit_object)
+    const auto& owner = GetOwner();
+    if (!owner) return;
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    const auto attack_object_collision = attack_object->GetComponent(circle_collision_Wptr);
+    if (!attack_object_collision) return;
+
+    switch (attack_object_collision->GetCircleHitResult().collision_role)
     {
-        // ヒットしたオブジェクトにダメージを与える
-        const auto& hit_object_character = hit_object->GetComponent<CharacterComponent>();
-        if (hit_object_character)
+    case COLLISION_ROLE::ATTACKER:	// 衝突を与えた時の処理
+        if (hit_object)
         {
-            hit_object_character->ApplyDamage(this->param.damage_amount);
+            // ヒットしたオブジェクトにダメージを与える
+            const auto& hit_object_character = hit_object->GetComponent<CharacterComponent>();
+            if (hit_object_character)
+            {
+                hit_object_character->ApplyDamage(this->param.damage_amount);
+            }
         }
+        break;
+    case COLLISION_ROLE::RECEIVER:	// 衝突を受けた時の処理
+        break;
+    default:
+        break;
     }
 }
 

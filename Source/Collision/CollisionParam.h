@@ -14,6 +14,12 @@ enum class COLLISION_OBJECT_TYPE : CollisionType
     NONE,
 };
 
+enum class COLLISION_ROLE
+{
+    ATTACKER = 0,  // 衝突を引き起こした側（攻撃者）
+    RECEIVER       // 衝突を受けた側（被攻撃者）
+};
+
 struct CircleParam
 {
     DirectX::XMFLOAT2 center;
@@ -23,6 +29,7 @@ struct CircleParam
 struct CircleHitResult
 {
     DirectX::XMFLOAT2 out_position;
+    COLLISION_ROLE collision_role;
 };
 
 /**
