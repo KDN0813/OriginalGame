@@ -130,7 +130,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 					const auto camera_component = death_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
 				
 					camera_component->SetRange(15.0f);
-					camera_component->SetRotateX(DirectX::XMConvertToRadians(90.0f));
+					camera_component->SetRotateX(DirectX::XMConvertToRadians(85.0f));
 				}
 			}
 			// トランスフォーム設定
