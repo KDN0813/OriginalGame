@@ -24,7 +24,6 @@ void CameraControllerGamepad::Update(float elapsed_time)
 	if (!owner) return;
 	auto camera = owner->GetComponent<CameraComponent>(this->camera_Wptr);
 	if (!camera) return;
-	if (!camera->GetIsActive()) return;
 	DirectX::XMFLOAT3 focus{};
 	{
 		auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
@@ -220,3 +219,32 @@ void CameraControllerGamepad::DrawDebugGUI()
 #endif // DEBUG
 
 #endif // _DEBUG
+
+void CameraControllerDeathComponent::Update(float elapsed_time)
+{
+	auto owner = GetOwner();
+	if (!owner) return;
+	auto camera = owner->GetComponent<CameraComponent>(this->camera_Wptr);
+	if (!camera) return;
+	if (!camera->GetIsActive()) return;
+	DirectX::XMFLOAT3 focus{};
+	{
+		auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+		if (transform)
+		{
+			focus = transform->GetWorldPosition();
+		}
+	}
+
+	// ‰ñ“]ˆ—
+	float rotateY = camera->GetRotateY();
+	rotateY += this->param.rotation_speed * elapsed_time;
+	if (rotateY < -DirectX::XM_PI) rotateY += DirectX::XM_2PI;
+	if (rotateY > DirectX::XM_PI) rotateY -= DirectX::XM_2PI;
+	camera->SetRotateY(rotateY);
+}
+
+void CameraControllerDeathComponent::DrawDebugGUI()
+{
+	ImGui::InputFloat("Rotation Speed", &this->param.rotation_speed);
+}

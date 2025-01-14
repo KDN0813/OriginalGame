@@ -121,13 +121,16 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		}
 		// デスカメラ
 		{
-			std::shared_ptr<Object> death_camera_object = player->CreateChildObject(PLAYER_CAMERA_NAME.GetString().c_str());
+			std::shared_ptr<Object> death_camera_object = player->CreateChildObject(DEATH_CAMERA_NAME.GetString().c_str());
 
 			// カメラ設定
 			{
 				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 				{
-					death_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
+					const auto camera_component = death_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
+				
+					camera_component->SetRange(15.0f);
+					camera_component->SetRotateX(DirectX::XMConvertToRadians(90.0f));
 				}
 			}
 			// トランスフォーム設定
@@ -137,7 +140,9 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			}
 			// カメラコントローラー設定
 			{
-
+				CameraControllerDeathComponent::CameraControllerParam param{};
+				param.rotation_speed = DirectX::XMConvertToRadians(5.0f);
+				death_camera_object->AddComponent<CameraControllerDeathComponent>(param);
 			}
 		}
 
