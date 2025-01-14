@@ -35,6 +35,13 @@ void EnemyComponent::Update(float elapsed_time)
 	if (!model_component) return;
 	const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
 
+	// 被ダメ判定
+	if (character && character->IsDamage() && character->IsAlive())
+	{
+		// ダメージステートに遷移
+		SetDamageState();
+	}
+
 	// 死亡判定
 	if (character && !character->IsAlive() && !this->param.pending_removal_flag)
 	{
@@ -178,9 +185,6 @@ void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3
 void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
 	if (this->param.pending_removal_flag) return;	// 削除待ちの場合return
-
-	// ダメージステートに遷移させる
-	SetDamageState();
 
 	// 斬撃effect再生
 	{
