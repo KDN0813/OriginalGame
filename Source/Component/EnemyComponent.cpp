@@ -11,6 +11,7 @@
 #include "Shader\ParticleSystem.h"
 #include "Camera\CameraManager.h"
 #include "System\GameData.h"
+#include "Object\GameObject.h"
 
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
@@ -21,6 +22,13 @@
 
 void EnemyComponent::Start()
 {
+	auto owner = GetOwner();
+	if (!owner) return;
+	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+	if (!transform) return;
+
+	// スポーン位置保存
+	this->spawn_point = transform->GetSpawnPosition();
 }
 
 void EnemyComponent::End()
@@ -76,7 +84,7 @@ void EnemyComponent::Update(float elapsed_time)
 		else
 		{
 			// 待機時間が終了したら移動状態に遷移
-			this->param.state = STATE::MOVE;
+			this->param.state = STATE::WANDERING;
 
 			// 移動状態への準備
 			{
@@ -85,9 +93,22 @@ void EnemyComponent::Update(float elapsed_time)
 				return;
 			}
 		}
+
+		// 近くにプレイヤーがいるか判定
+		if(IsNearByPlayer())
+		{
+			// 近くにいれば接近状態に遷移
+			this->param.state = STATE::CHASE;
+
+			// 移動状態への準備
+			{
+				model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
+				return;
+			}
+		}
 		break;
 	}
-	case EnemyComponent::STATE::MOVE:
+	case EnemyComponent::STATE::WANDERING:
 	{
 		// 移動処理
 		{
@@ -121,6 +142,53 @@ void EnemyComponent::Update(float elapsed_time)
 			}
 		}
 
+		// 近くにプレイヤーがいるか判定
+		if (IsNearByPlayer())
+		{
+			// 近くにいれば接近状態に遷移
+			this->param.state = STATE::CHASE;
+
+			// 移動状態への準備
+			{
+				model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
+				return;
+			}
+		}
+
+		break;
+	}
+	case EnemyComponent::STATE::CHASE:
+	{
+		// 移動処理
+		{
+			auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+			// 移動処理
+			if (transform && this->param.move_validity_flag)
+			{
+				// 目的地点までのXZ平面での距離判定
+				MYVECTOR3 Position = transform->GetWorldPosition();
+				// プレイヤーの位置を目的地に設定
+				MYVECTOR3 Target_position = Position;
+				if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+				{
+					if (const auto& player = game_object->GetPlayer())
+					{
+						const auto transform = player->GetComponent<Transform3DComponent>();
+						Target_position = transform->GetWorldPosition();
+					}
+				}
+				Target_position.GetFlaot3(this->param.target_position);
+
+				float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
+
+				if (!this->IsAtTarget(distSq))
+				{
+					// 目的地点へ移動
+					MoveToTarget(elapsed_time, transform, this->param.speed_rate);
+				}
+			}
+		}
+
 		break;
 	}
 	case EnemyComponent::STATE::DAMAGE:
@@ -128,7 +196,7 @@ void EnemyComponent::Update(float elapsed_time)
 		if (!model_component->IsPlayAnime())
 		{
 			// アニメーションが終了移動状態に遷移
-			this->param.state = STATE::MOVE;
+			this->param.state = STATE::WANDERING;
 
 			// 移動状態への準備
 			{
@@ -280,6 +348,22 @@ bool EnemyComponent::IsAtTarget(float distSq)
 	return (distSq < this->param.radius * this->param.radius);
 }
 
+bool EnemyComponent::IsNearByPlayer()
+{
+	auto owner = GetOwner();
+	if (!owner) return false;
+	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+	if (!transform) return false;
+
+	// 目的地点までのXZ平面での距離判定
+	MYVECTOR3 Position = transform->GetWorldPosition();
+	MYVECTOR3 Target_position = this->spawn_point;
+
+	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
+
+	return (distSq < this->param.close_range_radius * this->param.close_range_radius);
+}
+
 void EnemyComponent::SetDamageState()
 {
 	const auto& owner = GetOwner();
@@ -316,6 +400,11 @@ void EnemyComponent::DrawDebugPrimitive()
 	auto debug_render = debug_manager->GetDebugPrimitiveRenderer();
 	if (debug_render && !this->IsAtTarget())
 		debug_render->DrawSphere(this->param.target_position, this->param.radius, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+	
+	if (debug_render)
+	{
+		debug_render->DrawCylinder(spawn_point, this->param.close_range_radius, 2.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	}
 }
 
 #endif // _DEBUG

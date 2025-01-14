@@ -11,6 +11,8 @@
 template <class T>
 concept is_Component = requires{ std::is_base_of_v<Component, T>; };
 
+class Transform3DComponent;
+
 class Object : public std::enable_shared_from_this<Object>
 {
 public:

@@ -22,7 +22,8 @@ public:
     enum class STATE
     {
         IDLE = 0,
-        MOVE,
+        WANDERING,  // 放浪
+        CHASE,      // 接近
         DAMAGE,
         DETH,
     };
@@ -34,6 +35,8 @@ public:
         float radius = 0.1f;
         float move_speed = 3.0f;
         float speed_rate = 0.5f;
+
+        float close_range_radius = 10.0f;    // プレイヤーを追いかける有効範囲
 
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;
@@ -73,6 +76,9 @@ public:
     // 目的地に到達しているか
     bool IsAtTarget();
     bool IsAtTarget(float distSq);
+    // プレイヤーが近くにいるか
+    bool IsNearByPlayer();
+
     // 現在待機行動中であるか
     bool IsIdle() { return (this->param.idle_timer > 0.0f); }
 
@@ -90,6 +96,7 @@ private:
 private:
     EnemyParam param;
     EnemyParam default_param;
+    DirectX::XMFLOAT3 spawn_point{};    // スポーン位置
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;

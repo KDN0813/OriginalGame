@@ -64,6 +64,14 @@ public:
     
     // ワールドパラメータの更新が必要なことを示すフラグを設定する
     void SetWorldDirtyFlag() { this->world_dirty_flag = true; }
+
+    /**
+     * 生成位置を取得
+     * ローカルポジションであることを注意する
+     * 
+     * \return 生成位置
+     */
+    DirectX::XMFLOAT3 GetSpawnPosition()const { return this->default_param.local_position; }
 #pragma endregion set parame
 private:
     Transform3DParam param;
