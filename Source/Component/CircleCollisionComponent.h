@@ -45,13 +45,8 @@ public:
     // 他オブジェクトに接触した時の処理
     void OnCollision(const std::shared_ptr<Object>& hit_object)override;
 
-    // ヒットが発生した瞬間かどうか
-    bool IsHitTriggered() const { return true; }
-
     // 接触した瞬間処理するコンポーネントの追加
-    void AddCollisionEntercomponent(const std::shared_ptr<Component> component);
-    // 接触している間処理するコンポーネントの追加
-    void AddCollisionStaycomponent(const std::shared_ptr<Component> component);
+    void AddCollisionComponent(const std::shared_ptr<Component> component);
 
     // 各種取得・設定関数
     COLLISION_OBJECT_TYPE GetCollisionType() const { return this->param.collision_type; }
@@ -63,18 +58,13 @@ public:
     void SetHitResult(CircleHitResult result) { this->hit_result = result; }
     void SetHitFlag(bool flag) { this->param.hit_flag = flag; }
 private:
-    // 接触した瞬間呼ばれる関数
-    void OnCollisionEnter(const std::shared_ptr<Object>& hit_object);
-    // 接触している間呼ばれる関数
-    void OnCollisionStay(const std::shared_ptr<Object>& hit_object);
 
 private:
     CollisionParam param;
     CollisionParam default_param;
     CircleHitResult hit_result{};
 
-    std::vector<std::weak_ptr<Component>> collision_enter_component_Wptr_pool;  // 接触した瞬間処理するコンポーネント
-    std::vector<std::weak_ptr<Component>> collision_stay_component_Wptr_pool;   // 接触している間処理するコンポーネント
+    std::vector<std::weak_ptr<Component>> collision_component_Wptr_pool;    // 接触した瞬間処理するコンポーネント
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
 #ifdef _DEBUG

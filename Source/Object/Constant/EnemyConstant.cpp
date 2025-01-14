@@ -70,6 +70,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 		CharacterComponent::CharacterParam param{};
 		param.max_hp = 10;
 		param.hp = 2;
+		param.max_invincible_timer = 0.0f;
 		enemy->AddComponent<CharacterComponent>(param);
 	}
 
@@ -85,7 +86,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 		CircleCollisionComponent::CollisionParam param{};
 		param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
 		auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
-		collision->AddCollisionEntercomponent(enemy_component);
+		collision->AddCollisionComponent(enemy_component);
 	}
 
 	return enemy;

@@ -143,7 +143,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 
 				// 接触時処理するコンポーネントの追加
 				{
-					child_collision->AddCollisionEntercomponent(player_component);
+					child_collision->AddCollisionComponent(player_component);
 				}
 			}
 		}
@@ -169,7 +169,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 
 				// 接触時処理するコンポーネントの追加
 				{
-					child_collision->AddCollisionEntercomponent(player_component);
+					child_collision->AddCollisionComponent(player_component);
 				}
 			}
 		}

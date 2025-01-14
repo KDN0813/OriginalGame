@@ -70,20 +70,18 @@ void CircleCollisionComponent::OnCollision(const std::shared_ptr<Object>& hit_ob
     _ASSERT_EXPR_W((hit_object != nullptr), "hit_object‚ªnullptr‚Å‚·");
     if (!hit_object) return;
 
-    // ÚG‚µ‚½uŠÔ‚Ìˆ—
-    if(IsHitTriggered()) OnCollisionEnter(hit_object);
-    // ÚG‚µ‚Ä‚¢‚éŠÔ‚Ìˆ—
-    OnCollisionStay(hit_object);
+    for (const auto& component_Wptr : this->collision_component_Wptr_pool)
+    {
+        if (const auto& component = component_Wptr.lock())
+        {
+            component->OnCollision(hit_object);
+        }
+    }
 }
 
-void CircleCollisionComponent::AddCollisionEntercomponent(const std::shared_ptr<Component> component)
+void CircleCollisionComponent::AddCollisionComponent(const std::shared_ptr<Component> component)
 {
-    this->collision_enter_component_Wptr_pool.emplace_back(component);
-}
-
-void CircleCollisionComponent::AddCollisionStaycomponent(const std::shared_ptr<Component> component)
-{
-    this->collision_stay_component_Wptr_pool.emplace_back(component);
+    this->collision_component_Wptr_pool.emplace_back(component);
 }
 
 CircleParam CircleCollisionComponent::GetCircleParam()
@@ -99,28 +97,6 @@ CircleParam CircleCollisionComponent::GetCircleParam()
     DirectX::XMFLOAT3 world_pos = transform->GetWorldPosition();
     circle_param.center = DirectX::XMFLOAT2(world_pos.x, world_pos.z);
     return circle_param;
-}
-
-void CircleCollisionComponent::OnCollisionEnter(const std::shared_ptr<Object>& hit_object)
-{
-    for (const auto& component_Wptr : this->collision_enter_component_Wptr_pool)
-    {
-        if (const auto& component = component_Wptr.lock())
-        {
-            component->OnCollision(hit_object);
-        }
-    }
-}
-
-void CircleCollisionComponent::OnCollisionStay(const std::shared_ptr<Object>& hit_object)
-{
-    for (const auto& component_Wptr : this->collision_stay_component_Wptr_pool)
-    {
-        if (const auto& component = component_Wptr.lock())
-        {
-            component->OnCollision(hit_object);
-        }
-    }
 }
 
 #ifdef _DEBUG
