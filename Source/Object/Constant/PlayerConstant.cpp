@@ -20,6 +20,7 @@
 #include "StateMachine\PlayerStateDerived.h"
 
 const MyHash PlayerConstant::PLAYER_CAMERA_NAME = MyHash("PlayerCamera");
+const MyHash PlayerConstant::DEATH_CAMERA_NAME = MyHash("DeathCamera");
 const MyHash PlayerConstant::ATTACK_OBJECT_NAME = MyHash("AttackObject");
 const MyHash PlayerConstant::SPIN_ATTACK_OBJECT_NAME = MyHash("SpinAttackObject");
 
@@ -96,8 +97,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	{
 		// プレイヤーカメラ
 		{
-			std::shared_ptr<Object> player_camera_object = player->CreateChildObject();
-			player_camera_object->SetName(PLAYER_CAMERA_NAME.GetString().c_str());
+			std::shared_ptr<Object> player_camera_object = player->CreateChildObject(PLAYER_CAMERA_NAME.GetString().c_str());
 			// カメラ設定
 			{
 				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
@@ -119,6 +119,28 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 				player_camera_object->AddComponent<Transform3DComponent>(param);
 			}
 		}
+		// デスカメラ
+		{
+			std::shared_ptr<Object> death_camera_object = player->CreateChildObject(PLAYER_CAMERA_NAME.GetString().c_str());
+
+			// カメラ設定
+			{
+				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+				{
+					death_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
+				}
+			}
+			// トランスフォーム設定
+			{
+				Transform3DComponent::Transform3DParam param{};
+				death_camera_object->AddComponent<Transform3DComponent>(param);
+			}
+			// カメラコントローラー設定
+			{
+
+			}
+		}
+
 		// プレイヤーの攻撃判定用オブジェクト
 		{
 			std::shared_ptr<Object> player_attack_object = player->CreateChildObject();

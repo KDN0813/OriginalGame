@@ -29,6 +29,7 @@
 #include "Object\Constant\EnemyConstant.h"
 #include "Object\Constant\StageConstant.h"
 #include "Object\Constant\UIConstant.h"
+#include "Object\Constant\CameraConstant.h"
 
 #include "System/MyMath/MyMathf.h"
 #include "Collision/Collision.h"
@@ -99,15 +100,6 @@ void SceneGame::Initialize()
 
 		// プレイヤー
 		const auto& player = PlayerConstant::CreatePlayer(object_manager.Create("Player"));
-
-		// デスカメラ
-		{
-			auto death_camera = object_manager.Create("Death Camera");
-			if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
-			{
-				death_camera->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
-			}
-		}
 
 #ifdef _DEBUG	// デバッグ用オブジェクト
 		{

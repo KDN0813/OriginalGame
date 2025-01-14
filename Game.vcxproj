@@ -176,6 +176,7 @@
     <ClInclude Include="Source\Model\ModelCommonData.h" />
     <ClInclude Include="Source\Model\ModelResource.h" />
     <ClInclude Include="Source\Model\ModelResourceManager.h" />
+    <ClInclude Include="Source\Object\Constant\CameraConstant.h" />
     <ClInclude Include="Source\Object\Constant\EnemyConstant.h" />
     <ClInclude Include="Source\Object\Constant\PlayerConstant.h" />
     <ClInclude Include="Source\Object\Constant\StageConstant.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="Source\Model\InstancingModelResourceManager.cpp" />
     <ClCompile Include="Source\Model\ModelResource.cpp" />
     <ClCompile Include="Source\Model\ModelResourceManager.cpp" />
+    <ClCompile Include="Source\Object\Constant\CameraConstant.cpp" />
     <ClCompile Include="Source\Object\Constant\EnemyConstant.cpp" />
     <ClCompile Include="Source\Object\Constant\PlayerConstant.cpp" />
     <ClCompile Include="Source\Object\Constant\StageConstant.cpp" />

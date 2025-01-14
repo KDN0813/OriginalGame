@@ -208,6 +208,9 @@
     <Filter Include="Source\Component\UI">
       <UniqueIdentifier>{2b813e33-b9a1-4e0b-a52d-43bf7f416cf5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Object\Constant\Camera">
+      <UniqueIdentifier>{7a9b7dde-311c-4e0c-b418-c102cc4b3066}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -549,6 +552,9 @@
     <ClInclude Include="Source\Component\FadeControllerComponent.h">
       <Filter>Source\Component\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Object\Constant\CameraConstant.h">
+      <Filter>Source\Object\Constant\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -817,6 +823,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\FadeControllerComponent.cpp">
       <Filter>Source\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Constant\CameraConstant.cpp">
+      <Filter>Source\Object\Constant\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
