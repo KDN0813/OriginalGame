@@ -385,19 +385,47 @@ const MyHash PlayerDeadState::STATE_NAME = MyHash("PlayerDeadState");
 PlayerDeadState::PlayerDeadState()
     :State(STATE_NAME)
 {
+    this->change_dead_idle_state.change_state_name = PlayerDeadIdleState::STATE_NAME;
 }
 
 void PlayerDeadState::Staet()
 {
     // TODO 自機死亡処理①_①
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
     // アニメーション再生
-    // デスカメラに遷移
+    const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (animation)
+    {
+        animation->PlayAnimation(PlayerConstant::ANIMATION::DEAD, false);
+    }
+    // 入力受付をしないように設定
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (player)
+    {
+        player->SetInputMoveValidityFlag(false);
+    }
 }
 
 void PlayerDeadState::Update(float elapsed_time)
 {
     // TODO 自機死亡処理①_②
     // アニメーション再生終了後死亡待機ステートに遷移
+    
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+    const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (!animation) return;
+    
+    // アニメーション再生待ち
+    if (!animation->IsPlayAnimation())
+    {
+        // 死亡待機ステートに遷移
+        state_machine->ChangeState(this->change_dead_idle_state);
+        return;
+    }
 
     // TODO 自機死亡処理④ ゲームモードを設定
 }
@@ -414,8 +442,9 @@ void PlayerDeadIdleState::Staet()
 {
     // TODO 自機死亡処理②
     // アニメーション再生
-}
-
-void PlayerDeadIdleState::Update(float elapsed_time)
-{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (!animation) return;
+    animation->PlayAnimation(PlayerConstant::ANIMATION::DEAD_STAY, false);
 }

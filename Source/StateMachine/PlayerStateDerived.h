@@ -149,6 +149,7 @@ private:
 	State::ChangeState change_dead_idle_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<PlayerComponent> player_Wprt;
 };
 
 // 死亡待機ステート
@@ -163,7 +164,7 @@ public:
 	// ステートに入った時のメソッド
 	void Staet() override;
 	// ステートで実行するメソッド
-	void Update(float elapsed_time) override;
+	void Update(float elapsed_time) override {};
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
