@@ -89,7 +89,7 @@ void PlayerMoveState::Staet()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.2f);
 }
@@ -178,6 +178,11 @@ void PlayerAttackState::Staet()
         collision->SetIsActive(true);  // コリジョンを有効にする
 
     collision->EvaluateCollision();
+
+    // 無敵状態に設定
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(true);
 }
 
 void PlayerAttackState::Update(float elapsed_time)
@@ -214,6 +219,11 @@ void PlayerAttackState::End()
     auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
         child_collision->SetIsActive(false);  // コリジョンを無効にする
+
+    // 無敵状態を解除
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(false);
 }
 
 const MyHash PlayerSpinAttackState::STATE_NAME = MyHash("PlayerSpinAttackState");
@@ -256,6 +266,11 @@ void PlayerSpinAttackState::Staet()
         collision->SetIsActive(true);  // コリジョンを有効にする
 
     collision->EvaluateCollision();
+
+    // 無敵状態に設定
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(true);
 }
 
 void PlayerSpinAttackState::Update(float elapsed_time)
@@ -292,6 +307,11 @@ void PlayerSpinAttackState::End()
     auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
         child_collision->SetIsActive(false);  // コリジョンを無効にする
+
+    // 無敵状態を解除
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(false);
 }
 
 

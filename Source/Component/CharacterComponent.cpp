@@ -1,6 +1,7 @@
 #include "CharacterComponent.h"
 #ifdef _DEBUG
 #include <imgui.h>
+#include <string>
 #endif // _DEBUG
 
 
@@ -23,6 +24,7 @@ void CharacterComponent::Update(float elapsed_time)
 void CharacterComponent::ApplyDamage(int damege)
 {
     if (damege <= 0) return;
+    if (this->param.invincible_flag) return;            // –³“G’†‚È‚çDamage‚ðŽó‚¯‚È‚¢
     if (0.0f < this->param.invincible_timer) return;    // –³“G’†‚È‚çDamage‚ðŽó‚¯‚È‚¢
     this->param.hp = (std::max)(this->param.hp - damege, 0);
 
@@ -43,6 +45,12 @@ bool CharacterComponent::IsDamage()
 
 void CharacterComponent::DrawDebugGUI()
 {
+    std::string is_invincible_text = "Invincibility:";
+    is_invincible_text +=
+        (this->param.invincible_flag || 0.0f < this->param.invincible_timer) ?
+        "Active" : "Not Active";
+    ImGui::Text(is_invincible_text.c_str());
+    ImGui::Checkbox("Invincible Flag", &this->param.invincible_flag);
     if (ImGui::InputInt("HP", &this->param.hp)) this->param.hp = (std::min)((std::max)(this->param.hp, 0), this->param.max_hp);
     ImGui::InputInt("Max HP", &this->param.max_hp);
     ImGui::InputFloat("Invincible Timer", &this->param.invincible_timer);

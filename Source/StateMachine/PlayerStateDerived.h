@@ -78,6 +78,7 @@ private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
 // 回転攻撃
@@ -101,6 +102,7 @@ private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
 // ダメージステート

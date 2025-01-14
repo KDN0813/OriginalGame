@@ -11,6 +11,7 @@ public:
         int max_hp = 1; // 最大体力
         float invincible_timer = 0.0f;      // 無敵時間
         float max_invincible_timer = 1.0f;  // 無敵時間の最大値
+        bool invincible_flag = false;       // 無敵フラグ(永続的に無敵状態にする際に使用する)
     };
 public:
     CharacterComponent(CharacterParam param);
@@ -35,11 +36,13 @@ public:
     // ダメージを受けたか
     bool IsDamage();
 
-    // 各種取得関数
+    // 各種取得・設定関数
     int GetHP()const { return this->param.hp; }
     int GetMaxHP()const { return this->param.max_hp; }
     // 体力の割合を取得
     float GetHealthPercentage() { return static_cast<float>(this->param.hp) / static_cast<float>(this->param.max_hp); };
+    bool GetInvincibleFlag()const { return this->param.invincible_flag; }
+    void SetInvincibleFlag(const bool flag) { this->param.invincible_flag = flag; }
 
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::LOWEST; };
