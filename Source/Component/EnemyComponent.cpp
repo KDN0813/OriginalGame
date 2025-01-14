@@ -350,13 +350,8 @@ bool EnemyComponent::IsAtTarget(float distSq)
 
 bool EnemyComponent::IsNearByPlayer()
 {
-	auto owner = GetOwner();
-	if (!owner) return false;
-	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
-	if (!transform) return false;
-
 	// –Ú“I’n“_‚Ü‚Å‚ÌXZ•½–Ê‚Å‚Ì‹——£”»’è
-	MYVECTOR3 Position = transform->GetWorldPosition();
+	MYVECTOR3 SpawnPosition = this->spawn_point;
 	MYVECTOR3 Target_position{};
 	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
@@ -367,7 +362,7 @@ bool EnemyComponent::IsNearByPlayer()
 		Target_position = player_transform->GetWorldPosition();
 	}
 
-	float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
+	float distSq = (Target_position.GetMyVectorXZ() - SpawnPosition.GetMyVectorXZ()).LengthSq();
 
 	return (distSq < this->param.close_range_radius * this->param.close_range_radius);
 }
