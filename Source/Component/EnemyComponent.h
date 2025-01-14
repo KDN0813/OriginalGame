@@ -21,11 +21,12 @@ public:
 public:
     enum class STATE
     {
-        IDLE = 0,
+        IDLE = 0,   // 待機
         WANDERING,  // 放浪
         CHASE,      // 接近
-        DAMAGE,
-        DETH,
+        ATTACK,     // 攻撃
+        DAMAGE,     // ダメージ
+        DETH,       // 死亡
     };
 
     struct EnemyParam
@@ -36,7 +37,7 @@ public:
         float move_speed = 30.0f;
         float speed_rate = 0.5f;
 
-        //float close_range_radius = 10.0f;    // プレイヤーを追いかける有効範囲
+        float attack_range = 3.0f;    // 攻撃範囲
 
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;
@@ -78,6 +79,8 @@ public:
     bool IsAtTarget(float distSq);
     // 移動範囲内にプレイヤーが存在するか
     bool IsPlayerInMovementArea();
+    // 攻撃範囲内にプレイヤーが存在するか
+    bool IsPlayerInAttaclArea();
 
     // 現在待機行動中であるか
     bool IsIdle() { return (this->param.idle_timer > 0.0f); }

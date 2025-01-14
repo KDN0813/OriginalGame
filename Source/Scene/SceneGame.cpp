@@ -126,7 +126,7 @@ void SceneGame::Initialize()
 			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
 #ifdef _DEBUG
-				for (int i = 0; i < 1; ++i)
+				for (int i = 0; i < 100; ++i)
 #else
 				for (int i = 0; i < this->enemy_max; ++i)
 #endif // _DEBUG

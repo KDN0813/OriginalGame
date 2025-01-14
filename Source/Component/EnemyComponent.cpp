@@ -189,8 +189,55 @@ void EnemyComponent::Update(float elapsed_time)
 				}
 			}
 
+			// 攻撃範囲にプレイヤーが存在するか
+			if (IsPlayerInAttaclArea())
+			{
+				// 範囲内にいるなら攻撃ステートに遷移
+				this->param.state = STATE::ATTACK;
+
+				// 攻撃状態への準備
+				{
+					model_component->PlayAnimation(EnemyCT::ATTACK01, false);
+					return;
+				}
+			}
+
 			// 移動範囲にプレイヤーが存在するか判定
 			if (!IsPlayerInMovementArea())
+			{
+				// 範囲内にいないなら待機ステートに遷移
+				this->param.state = STATE::IDLE;
+
+				// 待機状態への準備
+				{
+					model_component->PlayAnimation(EnemyCT::IDLE_BATTLE, true);
+					SetRandomIdleTime();
+					return;
+				}
+			}
+		}
+
+		break;
+	}
+	case EnemyComponent::STATE::ATTACK:
+	{
+		// アニメーション再生中であるか
+		if (!model_component->IsPlayAnime())
+		{
+			// 再生が終わっていたら
+
+			if (IsPlayerInMovementArea())
+			{
+				// 範囲内に存在すれば接近ステートに遷移
+				this->param.state = STATE::CHASE;
+
+				// 移動状態への準備
+				{
+					model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
+					return;
+				}
+			}
+			else
 			{
 				// 範囲内にいないなら待機ステートに遷移
 				this->param.state = STATE::IDLE;
@@ -384,6 +431,32 @@ bool EnemyComponent::IsPlayerInMovementArea()
 	return (distSq < this->param.territory_range * this->param.territory_range);
 }
 
+bool EnemyComponent::IsPlayerInAttaclArea()
+{
+	// 自身の位置取得
+	auto owner = GetOwner();
+	if (!owner) return false;
+	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+	if (!transform) return false;
+	MYVECTOR3 Position = transform->GetWorldPosition();
+
+	// プレイヤー取得
+	GameObject::Instance game_object = GameObject::GetInstance();
+	if (!game_object.Get()) return false;
+	const auto& player = game_object->GetPlayer();
+	if (!player) return false;
+	MYVECTOR3 Player_position{};
+
+	// プレイヤーの位置設定
+	const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
+	if (!player_transform) return false;
+	Player_position = player_transform->GetWorldPosition();
+
+	// 範囲内に存在するか判定する
+	float distSq = (Player_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
+	return (distSq < this->param.attack_range * this->param.attack_range);
+}
+
 void EnemyComponent::SetDamageState()
 {
 	const auto& owner = GetOwner();
@@ -418,6 +491,13 @@ void EnemyComponent::DrawDebugPrimitive()
 	DebugManager::Instance debug_manager = DebugManager::GetInstance();
 	if (!debug_manager.Get()) return;
 	auto debug_render = debug_manager->GetDebugPrimitiveRenderer();
+
+	const auto& owner = GetOwner();
+	if (!owner) return;
+	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+	if (!transform) return;
+	MYVECTOR3 Position = transform->GetWorldPosition();
+
 	if (debug_render && !this->IsAtTarget())
 	{
 		debug_render->DrawSphere(this->param.target_position, 1.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
@@ -427,6 +507,12 @@ void EnemyComponent::DrawDebugPrimitive()
 	{
 		// 移動範囲描画
 		debug_render->DrawCylinder(spawn_point, this->param.territory_range, 2.0f, DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+		
+		if (IsPlayerInMovementArea())
+		{
+			// 攻撃範囲
+			debug_render->DrawCylinder(transform->GetWorldPosition(), this->param.attack_range, 2.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+		}
 	}
 }
 
