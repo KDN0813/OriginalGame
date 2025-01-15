@@ -60,6 +60,7 @@ void EnemyIdleState::Update(float elapsed_time)
     {
         // 範囲内に存在すれば接近ステートに遷移
         state_machine->ChangeState(this->change_chase_state);
+        return;
     }
 }
 
@@ -92,6 +93,8 @@ void EnemyWanderingState::Start()
     if (!enemy) return;
     // 移動有効に設定
     enemy->SetMoveValidityFlag(true);
+    // ターゲット設定
+    enemy->SetRandomTargetPosition();
 }
 
 void EnemyWanderingState::Update(float elapsed_time)
@@ -107,6 +110,7 @@ void EnemyWanderingState::Update(float elapsed_time)
     {
         // 目的地に到着したら待機状態に遷移
         state_machine->ChangeState(this->change_idle_state);
+        return;
     }
 
     // 移動範囲にプレイヤーが存在するか判定
@@ -114,6 +118,7 @@ void EnemyWanderingState::Update(float elapsed_time)
     {
         // 範囲内に存在すれば接近ステートに遷移
         state_machine->ChangeState(this->change_chase_state);
+        return;
     }
 }
 
@@ -131,6 +136,7 @@ const MyHash EnemyChaseState::STATE_NAME = MyHash("EnemyChaseState");
 EnemyChaseState::EnemyChaseState()
     :State(STATE_NAME)
 {
+    this->change_attack_state.change_state_name = EnemyAttackState::STATE_NAME;
     this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
 }
 
@@ -163,6 +169,8 @@ void EnemyChaseState::Update(float elapsed_time)
     {
         // 範囲内にいるなら攻撃ステートに遷移
         state_machine->ChangeState(this->change_attack_state);
+        return;
+        return;
     }
 
     // 移動範囲にプレイヤーが存在するか判定
@@ -170,6 +178,7 @@ void EnemyChaseState::Update(float elapsed_time)
     {
         // 範囲内にいないなら待機ステートに遷移
         state_machine->ChangeState(this->change_idle_state);
+        return;
     }
 }
 
@@ -231,11 +240,13 @@ void EnemyAttackState::Update(float elapsed_time)
         {
             // 範囲内に存在すれば接近ステートに遷移
             state_machine->ChangeState(this->change_chase_state);
+            return;
         }
         else
         {
             // 範囲内にいないなら待機ステートに遷移
             state_machine->ChangeState(this->change_idle_state);
+            return;
         }
     }
 }
@@ -274,10 +285,11 @@ void EnemyDamageState::Update(float elapsed_time)
     {
         // アニメーションが終了待機状態に遷移
         state_machine->ChangeState(this->change_idle_state);
+        return;
     }
 }
 
-const MyHash EnemyDeadState::STATE_NAME = MyHash("EnemyDethState");
+const MyHash EnemyDeadState::STATE_NAME = MyHash("EnemyDeadState");
 EnemyDeadState::EnemyDeadState()
     :State(STATE_NAME)
 {
@@ -307,10 +319,11 @@ void EnemyDeadState::Update(float elapsed_time)
     {
         // アニメーションが終了待機状態に遷移
         state_machine->ChangeState(this->change_deth_idle_state);
+        return;
     }
 }
 
-const MyHash EnemyDeadIdleState::STATE_NAME = MyHash("EnemyDethIdleState");
+const MyHash EnemyDeadIdleState::STATE_NAME = MyHash("EnemyDeadIdleState");
 EnemyDeadIdleState::EnemyDeadIdleState()
     :State(STATE_NAME)
 {
