@@ -29,6 +29,7 @@ public:
     static const MyHash PLAYER_CAMERA_NAME;
     static const MyHash DEATH_CAMERA_NAME;
     static const MyHash ATTACK_OBJECT_NAME;
+    static const MyHash DEFENSE_OBJECT_NAME;
     static const MyHash SPIN_ATTACK_OBJECT_NAME;
 public:
     static const std::shared_ptr<Object>& CreatePlayer(const std::shared_ptr<Object>& object);

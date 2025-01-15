@@ -22,6 +22,7 @@
 const MyHash PlayerConstant::PLAYER_CAMERA_NAME = MyHash("PlayerCamera");
 const MyHash PlayerConstant::DEATH_CAMERA_NAME = MyHash("DeathCamera");
 const MyHash PlayerConstant::ATTACK_OBJECT_NAME = MyHash("AttackObject");
+const MyHash PlayerConstant::DEFENSE_OBJECT_NAME = MyHash("DefenseObject");
 const MyHash PlayerConstant::SPIN_ATTACK_OBJECT_NAME = MyHash("SpinAttackObject");
 
 const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_ptr<Object>& player)
@@ -158,14 +159,10 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 
 				auto child_transform = player_attack_object->AddComponent<Transform3DComponent>(param);
 			}
-			// ムーブメント設定
-			{
-				auto child_movement = player_attack_object->AddComponent<MovementComponent>(MovementComponent::MovementParam());
-			}
 			// 円のコライダー
 			{
 				CircleCollisionComponent::CollisionParam param{};
-				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER;
+				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
 				param.radius = 2.0f;
 				param.default_active_flag = false;
 				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
@@ -191,9 +188,32 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			// 円のコライダー
 			{
 				CircleCollisionComponent::CollisionParam param{};
-				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER;
+				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
 				param.radius = 5.0f;
 				param.default_active_flag = false;
+				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
+
+				// 接触時処理するコンポーネントの追加
+				{
+					child_collision->AddCollisionComponent(player_component);
+				}
+			}
+		}
+		// ヒットボックス
+		{
+			std::shared_ptr<Object> player_attack_object = player->CreateChildObject(DEFENSE_OBJECT_NAME.GetString().c_str());
+			// トランスフォーム設定
+			{
+				Transform3DComponent::Transform3DParam param{};
+				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+				auto child_transform = player_attack_object->AddComponent<Transform3DComponent>(param);
+			}
+			// 円のコライダー
+			{
+				CircleCollisionComponent::CollisionParam param{};
+				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_DEFENSE;
+				param.radius = 2.0f;
 				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 
 				// 接触時処理するコンポーネントの追加

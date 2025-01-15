@@ -8,8 +8,10 @@ using CollisionType = size_t;
 
 enum class COLLISION_OBJECT_TYPE : CollisionType
 {
-    PLAYER = 0,
-    ENEMY,     
+    PLAYER_ATTACK = 0,
+    PLAYER_DEFENSE,
+    ENEMY_ATTACK,     
+    ENEMY_DEFENSE,
     MAX,
     NONE,
 };

@@ -86,7 +86,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 	// 円のコライダー
 	{
 		CircleCollisionComponent::CollisionParam param{};
-		param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
+		param.collision_type = COLLISION_OBJECT_TYPE::ENEMY_DEFENSE;
 		auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 		collision->AddCollisionComponent(enemy_component);
 	}
@@ -108,7 +108,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 			// 円のコライダー
 			{
 				CircleCollisionComponent::CollisionParam param{};
-				param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
+				param.collision_type = COLLISION_OBJECT_TYPE::ENEMY_ATTACK;
 				param.radius = 2.0f;
 				param.default_active_flag = false;
 				auto child_collision = enemy_attack_object->AddComponent<CircleCollisionComponent>(param);

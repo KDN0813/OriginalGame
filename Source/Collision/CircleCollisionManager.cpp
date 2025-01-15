@@ -2,6 +2,7 @@
 #include "Object/GameObject.h"
 #include "Collision/CollisionParam.h"
 #include "Collision/Collision.h"
+#include "Object\Constant\PlayerConstant.h"
 
 #include "Component/CircleCollisionComponent.h"
 
@@ -9,12 +10,12 @@ void CircleCollisionManager::EvaluateCollision(const std::shared_ptr<CircleColli
 {
 	switch (collison->GetCollisionType())
 	{
-	case COLLISION_OBJECT_TYPE::PLAYER:
+	case COLLISION_OBJECT_TYPE::PLAYER_ATTACK:
 	{
 		this->vs_enemy_collision_Wptr_pool.emplace_back(collison);
 		break;
 	}
-	case COLLISION_OBJECT_TYPE::ENEMY:
+	case COLLISION_OBJECT_TYPE::ENEMY_ATTACK:
 	{
 		this->vs_player_collision_Wptr_pool.emplace_back(collison);
 		break;
@@ -86,7 +87,10 @@ void CircleCollisionManager::VsPlayer()
 			const auto& player = game_object->GetPlayer();
 			if (!player) continue;
 			if (!player->GetIsActive()) continue;
-			const auto& player_circle = player->GetComponent<CircleCollisionComponent>();
+			const auto& player_defense_object = player->FindChildObject(PlayerConstant::DEFENSE_OBJECT_NAME);
+			if (!player_defense_object) continue;
+			if (!player_defense_object->GetIsActive()) continue;
+			const auto& player_circle = player_defense_object->GetComponent<CircleCollisionComponent>();
 			if (!player_circle) return;
 			if (!player_circle->GetIsActive()) return;
 
