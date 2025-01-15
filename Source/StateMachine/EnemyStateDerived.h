@@ -1,10 +1,13 @@
 #pragma once
+#include <DirectXMath.h>
+#include <memory>
 #include "StateMachine\StateBase.h"
 
 class InstancedModelWithAnimationComponent;
 class CharacterComponent;
 class EnemyComponent;
 class Transform3DComponent;
+class CircleCollisionComponent;
 
 // 待機ステート
 class EnemyIdleState : public State
@@ -53,8 +56,6 @@ public:
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override;
-private:
-	DirectX::XMFLOAT3 target_position;
 private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_chase_state;
@@ -137,14 +138,14 @@ private:
 };
 
 // 死亡ステート
-class EnemyDethState : public State
+class EnemyDeadState : public State
 {
 public:
 	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
-	EnemyDethState();
-	~EnemyDethState() {}
+	EnemyDeadState();
+	~EnemyDeadState() {}
 	// ステートに入った時のメソッド
 	void Start() override;
 	// ステートで実行するメソッド
@@ -158,14 +159,14 @@ private:
 };
 
 // 死亡待機ステート
-class EnemyDethIdleState : public State
+class EnemyDeadIdleState : public State
 {
 public:
 	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
-	EnemyDethIdleState();
-	~EnemyDethIdleState() {}
+	EnemyDeadIdleState();
+	~EnemyDeadIdleState() {}
 	// ステートに入った時のメソッド
 	void Start() override;
 	// ステートで実行するメソッド

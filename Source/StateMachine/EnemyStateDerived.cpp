@@ -10,7 +10,7 @@
 #include "Component\TransformComponent.h"
 #include "Component\CircleCollisionComponent.h"
 
-const MyHash EnemyIdleState::STATE_NAME = MyHash("EnemydleState");
+const MyHash EnemyIdleState::STATE_NAME = MyHash("EnemyIdleState");
 EnemyIdleState::EnemyIdleState()
     :State(STATE_NAME)
 {
@@ -18,7 +18,7 @@ EnemyIdleState::EnemyIdleState()
     this->change_chase_state.change_state_name = EnemyChaseState::STATE_NAME;
     this->change_attack_state.change_state_name = EnemyAttackState::STATE_NAME;
     this->change_damage_state.change_state_name = EnemyDamageState::STATE_NAME;
-    this->change_deth_state.change_state_name = EnemyDethState::STATE_NAME;
+    this->change_deth_state.change_state_name = EnemyDeadState::STATE_NAME;
 }
 
 void EnemyIdleState::Start()
@@ -76,7 +76,7 @@ EnemyWanderingState::EnemyWanderingState()
     this->change_chase_state.change_state_name = EnemyChaseState::STATE_NAME;
     this->change_attack_state.change_state_name = EnemyAttackState::STATE_NAME;
     this->change_damage_state.change_state_name = EnemyDamageState::STATE_NAME;
-    this->change_deth_state.change_state_name = EnemyDethState::STATE_NAME;
+    this->change_deth_state.change_state_name = EnemyDeadState::STATE_NAME;
 }
 
 void EnemyWanderingState::Start()
@@ -197,7 +197,7 @@ void EnemyAttackState::Start()
     if (!owner)return;
     const auto& animation = owner->GetComponent(animation_Wprt);
     if (!animation)return;
-
+    // アニメーション再生
     animation->PlayAnimation(EnemyConstant::ATTACK01, false);
 
     // 攻撃判定オブジェクトを有効にする
@@ -257,7 +257,7 @@ void EnemyDamageState::Start()
     if (!owner)return;
     const auto& animation = owner->GetComponent(animation_Wprt);
     if (!animation)return;
-
+    // アニメーション再生
     animation->PlayAnimation(EnemyConstant::TAUNTING, false);
 }
 
@@ -277,24 +277,24 @@ void EnemyDamageState::Update(float elapsed_time)
     }
 }
 
-const MyHash EnemyDethState::STATE_NAME = MyHash("EnemyDethState");
-EnemyDethState::EnemyDethState()
+const MyHash EnemyDeadState::STATE_NAME = MyHash("EnemyDethState");
+EnemyDeadState::EnemyDeadState()
     :State(STATE_NAME)
 {
-    this->change_deth_idle_state.change_state_name = EnemyDethIdleState::STATE_NAME;
+    this->change_deth_idle_state.change_state_name = EnemyDeadIdleState::STATE_NAME;
 }
 
-void EnemyDethState::Start()
+void EnemyDeadState::Start()
 {
     const auto& owner = GetOwner();
     if (!owner)return;
     const auto& animation = owner->GetComponent(animation_Wprt);
     if (!animation)return;
-
+    // アニメーション再生
     animation->PlayAnimation(EnemyConstant::DIE, false);
 }
 
-void EnemyDethState::Update(float elapsed_time)
+void EnemyDeadState::Update(float elapsed_time)
 {
     const auto& owner = GetOwner();
     if (!owner)return;
@@ -310,18 +310,18 @@ void EnemyDethState::Update(float elapsed_time)
     }
 }
 
-const MyHash EnemyDethIdleState::STATE_NAME = MyHash("EnemyDethIdleState");
-EnemyDethIdleState::EnemyDethIdleState()
+const MyHash EnemyDeadIdleState::STATE_NAME = MyHash("EnemyDethIdleState");
+EnemyDeadIdleState::EnemyDeadIdleState()
     :State(STATE_NAME)
 {
 }
 
-void EnemyDethIdleState::Start()
+void EnemyDeadIdleState::Start()
 {
     const auto& owner = GetOwner();
     if (!owner)return;
     const auto& animation = owner->GetComponent(animation_Wprt);
     if (!animation)return;
-
+    // アニメーション再生
     animation->PlayAnimation(EnemyConstant::DIZZY, false);
 }

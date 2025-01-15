@@ -3,6 +3,7 @@
 #include "System\MyMath\MyMathf.h"
 
 #include "Shader\InstanceModelShader.h"
+#include "StateMachine\EnemyStateDerived.h"
 
 #include "Component\EnemyComponent.h"
 #include "Component\MovementComponent.h"
@@ -11,6 +12,7 @@
 #include "Component\CharacterComponent.h"
 #include "Component\InstancingModelShaderComponent.h"
 #include "Component\CircleCollisionComponent.h"
+#include "Component\StateMachineComponent.h"
 
 const MyHash EnemyConstant::ATTACK_OBJECT_NAME = MyHash("EnemyAttackObject");
 
@@ -89,6 +91,23 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 		param.collision_type = COLLISION_OBJECT_TYPE::ENEMY_DEFENSE;
 		auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 		collision->AddCollisionComponent(enemy_component);
+	}
+	// ステートマシン
+	{
+		// ステートマシン設定
+		auto state_machine = enemy->AddComponent<StateMachineComponent>();
+		{
+			// ステートの追加
+			state_machine->RegisterState<EnemyIdleState>();
+			state_machine->RegisterState<EnemyWanderingState>();
+			state_machine->RegisterState<EnemyChaseState>();
+			state_machine->RegisterState<EnemyAttackState>();
+			state_machine->RegisterState<EnemyDamageState>();
+			state_machine->RegisterState<EnemyDeadState>();
+			state_machine->RegisterState<EnemyDeadIdleState>();
+
+			state_machine->SetDefaultState(EnemyIdleState::STATE_NAME);	// デフォルトステートの設定
+		}
 	}
 
 	// 子オブジェクト

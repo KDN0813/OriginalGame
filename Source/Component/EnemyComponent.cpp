@@ -44,268 +44,49 @@ void EnemyComponent::Update(float elapsed_time)
 	if (!model_component) return;
 	const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
 
-	// 被ダメ判定
-	if (character && character->IsDamage() && character->IsAlive())
+	//// 被ダメ判定
+	//if (character && character->IsDamage() && character->IsAlive())
+	//{
+	//	// ダメージステートに遷移
+	//	SetDamageState();
+	//}
+
+	//// 死亡判定
+	//if (character && !character->IsAlive() && !this->param.pending_removal_flag)
+	//{
+	//	// 削除待ちフラグを立てる
+	//	this->param.pending_removal_flag = true;
+
+	//	// 死亡状態へ遷移
+	//	this->param.state = STATE::DETH;
+
+	//	// 死亡状態への準備
+	//	{
+	//		model_component->PlayAnimation(EnemyCT::ANIMATION::DIE, false);
+	//	}
+
+	//	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+	//	{
+	//		// スコア加算
+	//		game_data->AddScore(1);
+	//	}
+	//}
+
+
+	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+	// 移動処理
+	if (transform && this->param.move_validity_flag)
 	{
-		// ダメージステートに遷移
-		SetDamageState();
-	}
+		// 目的地点までのXZ平面での距離判定
+		MYVECTOR3 Position = transform->GetWorldPosition();
+		MYVECTOR3 Target_position = this->param.target_position;
+		float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
 
-	// 死亡判定
-	if (character && !character->IsAlive() && !this->param.pending_removal_flag)
-	{
-		// 削除待ちフラグを立てる
-		this->param.pending_removal_flag = true;
-
-		// 死亡状態へ遷移
-		this->param.state = STATE::DETH;
-
-		// 死亡状態への準備
+		if (!this->IsAtTarget(distSq))
 		{
-			model_component->PlayAnimation(EnemyCT::ANIMATION::DIE, false);
+			// 目的地点へ移動
+			MoveToTarget(elapsed_time, transform, this->param.speed_rate);
 		}
-
-		if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-		{
-			// スコア加算
-			game_data->AddScore(1);
-		}
-	}
-
-	// ステート更新
-	switch (this->param.state)
-	{
-	case EnemyComponent::STATE::IDLE:
-	{
-		if (this->param.idle_timer > 0.0f)
-		{
-			// 待機タイマー更新
-			this->param.idle_timer -= elapsed_time;
-		}
-		else
-		{
-			// 待機時間が終了したら移動状態に遷移
-			this->param.state = STATE::WANDERING;
-
-			// 移動状態への準備
-			{
-				model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
-				SetRandomTargetPosition();
-				return;
-			}
-		}
-
-		// 移動範囲にプレイヤーが存在するか判定
-		if(IsPlayerInMovementArea())
-		{
-			// 範囲内に存在すれば接近ステートに遷移
-			this->param.state = STATE::CHASE;
-
-			// 移動状態への準備
-			{
-				model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
-				return;
-			}
-		}
-		break;
-	}
-	case EnemyComponent::STATE::WANDERING:
-	{
-		// 移動処理
-		{
-			auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
-			// 移動処理
-			if (transform && this->param.move_validity_flag)
-			{
-				// 目的地点までのXZ平面での距離判定
-				MYVECTOR3 Position = transform->GetWorldPosition();
-				MYVECTOR3 Target_position = this->param.target_position;
-				float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
-
-				if (!this->IsAtTarget(distSq))
-				{
-					// 目的地点へ移動
-					MoveToTarget(elapsed_time, transform, this->param.speed_rate);
-				}
-			}
-		}
-
-		if (IsAtTarget())
-		{
-			// 目的地に到着したら待機状態に遷移
-			this->param.state = STATE::IDLE;
-
-			// 待機状態への準備
-			{
-				model_component->PlayAnimation(EnemyCT::IDLE_BATTLE, true);
-				SetRandomIdleTime();
-				return;
-			}
-		}
-
-		// 移動範囲にプレイヤーが存在するか判定
-		if (IsPlayerInMovementArea())
-		{
-			// 範囲内に存在すれば接近ステートに遷移
-			this->param.state = STATE::CHASE;
-
-			// 移動状態への準備
-			{
-				model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
-				return;
-			}
-		}
-
-		break;
-	}
-	case EnemyComponent::STATE::CHASE:
-	{
-		// 移動処理
-		{
-			auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
-			// 移動処理
-			if (transform && this->param.move_validity_flag)
-			{
-				// 目的地をプレイヤーの位置に設定
-				if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
-				{
-					if (const auto& player = game_object->GetPlayer())
-					{
-						if (const auto transform = player->GetComponent<Transform3DComponent>())
-						{
-							this->param.target_position = transform->GetWorldPosition();
-						}
-					}
-				}
-
-				MYVECTOR3 Position = transform->GetWorldPosition();			// 自身の位置
-				MYVECTOR3 Target_position = this->param.target_position;	// 目的地
-
-				float distSq = (Target_position.GetMyVectorXZ() - Position.GetMyVectorXZ()).LengthSq();
-
-				if (!this->IsAtTarget(distSq))
-				{
-					// 目的地点へ移動
-					MoveToTarget(elapsed_time, transform, this->param.speed_rate);
-				}
-			}
-
-			// 攻撃範囲にプレイヤーが存在するか
-			if (IsPlayerInAttaclArea())
-			{
-				// 範囲内にいるなら攻撃ステートに遷移
-				this->param.state = STATE::ATTACK;
-
-				// 攻撃状態への準備
-				{
-					model_component->PlayAnimation(EnemyCT::ATTACK01, false);
-
-					// 攻撃判定オブジェクトを有効にする
-					const auto& attack_object = owner->FindChildObject(EnemyConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
-					if (!attack_object) return;
-					auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
-					if (collision)
-						collision->SetIsActive(true);  // コリジョンを有効にする
-
-					collision->EvaluateCollision();
-
-					return;
-				}
-			}
-
-			// 移動範囲にプレイヤーが存在するか判定
-			if (!IsPlayerInMovementArea())
-			{
-				// 範囲内にいないなら待機ステートに遷移
-				this->param.state = STATE::IDLE;
-
-				// 待機状態への準備
-				{
-					{
-						// 攻撃判定オブジェクトを無効にする
-						const auto& attack_object = owner->FindChildObject(EnemyConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
-						if (!attack_object) return;
-						auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
-						if (collision)
-							collision->SetIsActive(false);  // コリジョンを有効にする
-					}
-
-					model_component->PlayAnimation(EnemyCT::IDLE_BATTLE, true);
-					SetRandomIdleTime();
-					return;
-				}
-			}
-		}
-
-		break;
-	}
-	case EnemyComponent::STATE::ATTACK:
-	{
-		// アニメーション再生中であるか
-		if (!model_component->IsPlayAnime())
-		{
-			// 再生が終わっていたら
-
-			if (IsPlayerInMovementArea())
-			{
-				// 範囲内に存在すれば接近ステートに遷移
-				this->param.state = STATE::CHASE;
-
-				// 移動状態への準備
-				{
-					model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
-					return;
-				}
-			}
-			else
-			{
-				// 範囲内にいないなら待機ステートに遷移
-				this->param.state = STATE::IDLE;
-
-				// 待機状態への準備
-				{
-					model_component->PlayAnimation(EnemyCT::IDLE_BATTLE, true);
-					SetRandomIdleTime();
-					return;
-				}
-			}
-		}
-
-		break;
-	}
-	case EnemyComponent::STATE::DAMAGE:
-	{
-		if (!model_component->IsPlayAnime())
-		{
-			// アニメーションが終了移動状態に遷移
-			this->param.state = STATE::WANDERING;
-
-			// 移動状態への準備
-			{
-				model_component->PlayAnimation(EnemyCT::MOVE_FWD, true);
-				SetRandomTargetPosition();
-				return;
-			}
-		}
-
-		break;
-	}
-	case EnemyComponent::STATE::DETH:
-	{
-		if (model_component->IsPlayAnime()) break;	// アニメーション再生中ならbreak
-
-		if (this->param.remove_timer > 0.0f)
-		{
-			// 削除タイマー更新
-			this->param.remove_timer -= elapsed_time;
-		}
-		else
-		{
-			owner->SetIsRemove(true);
-		}
-		break;
-	}
-	default:break;
 	}
 }
 
