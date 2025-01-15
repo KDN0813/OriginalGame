@@ -1,7 +1,7 @@
 #pragma once
 #include "StateMachine\StateBase.h"
 
-class ModelAnimationControlComponent;
+class InstancedModelWithAnimationComponent;
 class CharacterComponent;
 class EnemyComponent;
 class Transform3DComponent;
@@ -33,7 +33,7 @@ private:
 	State::ChangeState change_damage_state;
 	State::ChangeState change_deth_state;
 private:
-	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
@@ -62,7 +62,7 @@ private:
 	State::ChangeState change_damage_state;
 	State::ChangeState change_deth_state;
 private:
-	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<Transform3DComponent> transform_Wprt;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
@@ -77,17 +77,18 @@ public:
 	EnemyChaseState();
 	~EnemyChaseState() {}
 	// ステートに入った時のメソッド
-	void Start() override {};
+	void Start() override;
 	// ステートで実行するメソッド
-	void Update(float elapsed_time) override {};
+	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
-	void End() override {};
+	void End() override;
 private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_chase_state;
 	State::ChangeState change_attack_state;
 private:
-	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
+	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
 
 // 攻撃ステート
@@ -100,15 +101,17 @@ public:
 	EnemyAttackState();
 	~EnemyAttackState() {}
 	// ステートに入った時のメソッド
-	void Start() override {};
+	void Start() override;
 	// ステートで実行するメソッド
-	void Update(float elapsed_time) override {};
+	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
-	void End() override {};
+	void End() override;
 private:
 	State::ChangeState change_idle_state;
+	State::ChangeState change_chase_state;
 private:
-	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
+	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 };
 
 // ダメージステート
@@ -129,7 +132,7 @@ public:
 private:
 	State::ChangeState change_idle_state;
 private:
-	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 };
 
 // 死亡ステート
@@ -150,7 +153,7 @@ public:
 private:
 	State::ChangeState change_deth_idle_state;
 private:
-	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 };
 
 // 死亡待機ステート
@@ -169,5 +172,5 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
-	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 };

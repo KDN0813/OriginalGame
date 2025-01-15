@@ -6,8 +6,9 @@
 
 #include "Component\StateMachineComponent.h"
 #include "Component\EnemyComponent.h"
-#include "Component\ModelAnimationControlComponent.h"
+#include "Component\InstancedModelWithAnimationComponent.h"
 #include "Component\TransformComponent.h"
+#include "Component\CircleCollisionComponent.h"
 
 const MyHash EnemyIdleState::STATE_NAME = MyHash("EnemydleState");
 EnemyIdleState::EnemyIdleState()
@@ -133,11 +134,114 @@ EnemyChaseState::EnemyChaseState()
     this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
 }
 
+void EnemyChaseState::Start()
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+    // アニメーション再生
+    animation->PlayAnimation(EnemyConstant::MOVE_FWD, true);
+
+    const auto& enemy = owner->GetComponent<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+    // 移動有効に設定
+    enemy->SetMoveValidityFlag(true);
+}
+
+void EnemyChaseState::Update(float elapsed_time)
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& enemy = owner->GetComponent<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+
+    // 攻撃範囲にプレイヤーが存在するか
+    if (enemy->IsPlayerInAttaclArea())
+    {
+        // 範囲内にいるなら攻撃ステートに遷移
+        state_machine->ChangeState(this->change_attack_state);
+    }
+
+    // 移動範囲にプレイヤーが存在するか判定
+    if (!enemy->IsPlayerInMovementArea())
+    {
+        // 範囲内にいないなら待機ステートに遷移
+        state_machine->ChangeState(this->change_idle_state);
+    }
+}
+
+void EnemyChaseState::End()
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& enemy = owner->GetComponent<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+    // 移動無効に設定
+    enemy->SetMoveValidityFlag(false);
+}
+
 const MyHash EnemyAttackState::STATE_NAME = MyHash("EnemyAttackState");
 EnemyAttackState::EnemyAttackState()
     :State(STATE_NAME)
 {
     this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
+    this->change_chase_state.change_state_name = EnemyChaseState::STATE_NAME;
+}
+
+void EnemyAttackState::Start()
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+
+    animation->PlayAnimation(EnemyConstant::ATTACK01, false);
+
+    // 攻撃判定オブジェクトを有効にする
+    const auto& attack_object = owner->FindChildObject(EnemyConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (collision)
+        collision->SetIsActive(true);  // コリジョンを有効にする
+
+    collision->EvaluateCollision();
+}
+
+void EnemyAttackState::Update(float elapsed_time)
+// 移動処理
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+    const auto& enemy = owner->GetComponent<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+
+    // アニメーション再生中であるか
+    if (!animation->IsPlayAnime())
+    {
+        // 再生が終わっていたら
+
+        if (enemy->IsPlayerInMovementArea())
+        {
+            // 範囲内に存在すれば接近ステートに遷移
+            state_machine->ChangeState(this->change_chase_state);
+        }
+        else
+        {
+            // 範囲内にいないなら待機ステートに遷移
+            state_machine->ChangeState(this->change_idle_state);
+        }
+    }
+}
+
+void EnemyAttackState::End()
+{
 }
 
 const MyHash EnemyDamageState::STATE_NAME = MyHash("EnemyDamageState");
