@@ -126,7 +126,7 @@ void SceneGame::Initialize()
 			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
 #ifdef _DEBUG
-				for (int i = 0; i < 100; ++i)
+				for (int i = 0; i < 1; ++i)
 #else
 				for (int i = 0; i < this->enemy_max; ++i)
 #endif // _DEBUG
@@ -311,6 +311,7 @@ void SceneGame::Update(float elapsed_time)
 	if (CircleCollisionManager::Instance collision_manager = CircleCollisionManager::GetInstance(); collision_manager.Get())
 	{
 		collision_manager->VsEnemy();
+		collision_manager->VsPlayer();
 	}
 
 #ifdef _DEBUG

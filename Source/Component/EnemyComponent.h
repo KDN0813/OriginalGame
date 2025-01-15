@@ -44,6 +44,7 @@ public:
         float min_idle_time = 0.5f;
         float remove_timer = 2.0f;    // 削除タイマー
         float damage_effect_offset_up = 0.5f;   // ダメージエフェクトを受ける時の上方向のoffset値
+        int damage_amount = 1;
         bool move_validity_flag = true;   // 移動が有効であるかのフラグ
         bool pending_removal_flag = false;     // 削除待ちをしているか(死亡演出を待っているか)
         STATE state = STATE::IDLE;  // 状態
@@ -107,6 +108,7 @@ private:
     std::weak_ptr<Transform3DComponent> child_transform_Wptr;
     std::weak_ptr<CharacterComponent> character_Wptr;
     std::weak_ptr<InstancedModelWithAnimationComponent> model_Wptr;
+    std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;   // 攻撃用のコリジョン
 
     std::weak_ptr<Transform3DComponent> player_transform_Wptr;
 #ifdef _DEBUG

@@ -12,6 +12,7 @@
 #include "Camera\CameraManager.h"
 #include "System\GameData.h"
 #include "Object\GameObject.h"
+#include "Object\Constant\EnemyConstant.h"
 
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
@@ -198,6 +199,16 @@ void EnemyComponent::Update(float elapsed_time)
 				// 攻撃状態への準備
 				{
 					model_component->PlayAnimation(EnemyCT::ATTACK01, false);
+
+					// 攻撃判定オブジェクトを有効にする
+					const auto& attack_object = owner->FindChildObject(EnemyConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+					if (!attack_object) return;
+					auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+					if (collision)
+						collision->SetIsActive(true);  // コリジョンを有効にする
+
+					collision->EvaluateCollision();
+
 					return;
 				}
 			}
@@ -210,6 +221,15 @@ void EnemyComponent::Update(float elapsed_time)
 
 				// 待機状態への準備
 				{
+					{
+						// 攻撃判定オブジェクトを無効にする
+						const auto& attack_object = owner->FindChildObject(EnemyConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+						if (!attack_object) return;
+						auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+						if (collision)
+							collision->SetIsActive(false);  // コリジョンを有効にする
+					}
+
 					model_component->PlayAnimation(EnemyCT::IDLE_BATTLE, true);
 					SetRandomIdleTime();
 					return;
@@ -324,7 +344,15 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 	switch (collision->GetCircleHitResult().collision_role)
 	{
 	case COLLISION_ROLE::ATTACKER:	// 衝突を与えた時の処理
+	{
+		// ヒットしたオブジェクトにダメージを与える
+		const auto& hit_object_character = hit_object->GetComponent<CharacterComponent>();
+		if (hit_object_character)
+		{
+			hit_object_character->ApplyDamage(this->param.damage_amount);
+		}
 		break;
+	}
 	case COLLISION_ROLE::RECEIVER:	// 衝突を受けた時の処理
 	{
 		// 斬撃effect再生

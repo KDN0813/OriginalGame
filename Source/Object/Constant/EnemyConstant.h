@@ -32,5 +32,7 @@ public:
     };
 
 public:
+    static const MyHash ATTACK_OBJECT_NAME;
+public:
     static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);
 };

@@ -14,6 +14,11 @@ void CircleCollisionManager::EvaluateCollision(const std::shared_ptr<CircleColli
 		this->vs_enemy_collision_Wptr_pool.emplace_back(collison);
 		break;
 	}
+	case COLLISION_OBJECT_TYPE::ENEMY:
+	{
+		this->vs_player_collision_Wptr_pool.emplace_back(collison);
+		break;
+	}
 	default:
 		break;
 	}
@@ -66,4 +71,46 @@ void CircleCollisionManager::VsEnemy()
 
 	// 要素をクリアする
 	this->vs_enemy_collision_Wptr_pool.clear();
+}
+
+void CircleCollisionManager::VsPlayer()
+{
+	GameObject::Instance game_object = GameObject::GetInstance();
+	if (!game_object.Get()) return;
+
+	// プレイヤーと接触判定を行うコリジョンの取得
+	for (const auto& collision_Wptr : this->vs_player_collision_Wptr_pool)
+	{
+		if (auto enemy_circle = collision_Wptr.lock())
+		{
+			const auto& player = game_object->GetPlayer();
+			if (!player) continue;
+			if (!player->GetIsActive()) continue;
+			const auto& player_circle = player->GetComponent<CircleCollisionComponent>();
+			if (!player_circle) return;
+			if (!player_circle->GetIsActive()) return;
+
+			// 敵(攻)Vsプレイヤー(受)
+			CircleHitResult enemy_hit_result{};
+			CircleHitResult player_hit_result{};
+			if (Collision::IntersectCircleVsCircle(
+				enemy_circle->GetCircleParam(),
+				player_circle->GetCircleParam(),
+				enemy_hit_result,
+				player_hit_result
+			))
+			{
+				// ヒットリザルト設定
+				enemy_circle->SetHitResult(enemy_hit_result);
+				player_circle->SetHitResult(player_hit_result);
+
+				// 接触処理
+				enemy_circle->OnCollision(enemy_circle->GetOwner());
+				player_circle->OnCollision(player);
+			}
+		}
+	}
+
+	// 要素をクリアする
+	this->vs_player_collision_Wptr_pool.clear();
 }

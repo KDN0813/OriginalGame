@@ -16,7 +16,10 @@ public:
 
     // エネミーと当たり判定を行う
     void VsEnemy();
+    // プレイヤーと当たり判定を行う
+    void VsPlayer();
 private:
-    std::vector<std::weak_ptr<CircleCollisionComponent>> vs_enemy_collision_Wptr_pool; // エネミーと判定を行うコリジョン
+    std::vector<std::weak_ptr<CircleCollisionComponent>> vs_enemy_collision_Wptr_pool;  // エネミーと判定を行うコリジョン
+    std::vector<std::weak_ptr<CircleCollisionComponent>> vs_player_collision_Wptr_pool; // プレイヤーと判定を行うコリジョン
 };
 

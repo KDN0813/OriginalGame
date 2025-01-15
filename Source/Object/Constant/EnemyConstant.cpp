@@ -12,6 +12,8 @@
 #include "Component\InstancingModelShaderComponent.h"
 #include "Component\CircleCollisionComponent.h"
 
+const MyHash EnemyConstant::ATTACK_OBJECT_NAME = MyHash("EnemyAttackObject");
+
 const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<Object>& enemy)
 {
 	// TODO 仮配置(マジックナンバー)をやめる
@@ -87,6 +89,36 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 		param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
 		auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 		collision->AddCollisionComponent(enemy_component);
+	}
+
+	// 子オブジェクト
+	{
+		// 攻撃用オブジェクト
+		{
+			std::shared_ptr<Object> enemy_attack_object = enemy->CreateChildObject();
+			enemy_attack_object->SetName(ATTACK_OBJECT_NAME.GetString().c_str());
+			// トランスフォーム設定
+			{
+				Transform3DComponent::Transform3DParam param{};
+				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 100.0f);
+				param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
+
+				auto child_transform = enemy_attack_object->AddComponent<Transform3DComponent>(param);
+			}
+			// 円のコライダー
+			{
+				CircleCollisionComponent::CollisionParam param{};
+				param.collision_type = COLLISION_OBJECT_TYPE::ENEMY;
+				param.radius = 2.0f;
+				param.default_active_flag = false;
+				auto child_collision = enemy_attack_object->AddComponent<CircleCollisionComponent>(param);
+
+				// 接触時処理するコンポーネントの追加
+				{
+					child_collision->AddCollisionComponent(enemy_component);
+				}
+			}
+		}
 	}
 
 	return enemy;
