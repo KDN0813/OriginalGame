@@ -23,9 +23,26 @@ void CircleCollisionComponent::Start()
     {
         // タイプの値が以上な場合設定しない
         if (this->param.collision_type >= COLLISION_OBJECT_TYPE::MAX) return;
-        DirectX::XMFLOAT4 color[2] = { DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) ,DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) };
-        circle_collsion_primitive = CylinderParam(color[static_cast<size_t>(this->param.collision_type)],
-            this->param.radius, height);
+        
+        DirectX::XMFLOAT4 color = { 0.0f,0.0f ,0.0f ,1.0f };
+        switch (this->param.collision_type)
+        {
+        case COLLISION_OBJECT_TYPE::PLAYER_ATTACK:
+            color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+            break;
+        case COLLISION_OBJECT_TYPE::PLAYER_DEFENSE:
+            color = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+            break;
+        case COLLISION_OBJECT_TYPE::ENEMY_ATTACK:
+            color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+            break;
+        case COLLISION_OBJECT_TYPE::ENEMY_DEFENSE:
+            color = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+            break;
+        default:
+            break;
+        }
+        circle_collsion_primitive = CylinderParam(color,this->param.radius, height);
     }
 #endif // DEBUG
 }
