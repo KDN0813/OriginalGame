@@ -251,6 +251,32 @@ EnemyDamageState::EnemyDamageState()
     this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
 }
 
+void EnemyDamageState::Start()
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+
+    animation->PlayAnimation(EnemyConstant::TAUNTING, false);
+}
+
+void EnemyDamageState::Update(float elapsed_time)
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+
+    if (!animation->IsPlayAnime())
+    {
+        // アニメーションが終了待機状態に遷移
+        state_machine->ChangeState(this->change_idle_state);
+    }
+}
+
 const MyHash EnemyDethState::STATE_NAME = MyHash("EnemyDethState");
 EnemyDethState::EnemyDethState()
     :State(STATE_NAME)
@@ -258,8 +284,44 @@ EnemyDethState::EnemyDethState()
     this->change_deth_idle_state.change_state_name = EnemyDethIdleState::STATE_NAME;
 }
 
+void EnemyDethState::Start()
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+
+    animation->PlayAnimation(EnemyConstant::DIE, false);
+}
+
+void EnemyDethState::Update(float elapsed_time)
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+
+    if (!animation->IsPlayAnime())
+    {
+        // アニメーションが終了待機状態に遷移
+        state_machine->ChangeState(this->change_deth_idle_state);
+    }
+}
+
 const MyHash EnemyDethIdleState::STATE_NAME = MyHash("EnemyDethIdleState");
 EnemyDethIdleState::EnemyDethIdleState()
     :State(STATE_NAME)
 {
+}
+
+void EnemyDethIdleState::Start()
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+
+    animation->PlayAnimation(EnemyConstant::DIZZY, false);
 }

@@ -112,6 +112,7 @@ private:
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
+	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
 
 // ダメージステート
@@ -124,9 +125,9 @@ public:
 	EnemyDamageState();
 	~EnemyDamageState() {}
 	// ステートに入った時のメソッド
-	void Start() override {};
+	void Start() override;
 	// ステートで実行するメソッド
-	void Update(float elapsed_time) override {};
+	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
@@ -145,9 +146,9 @@ public:
 	EnemyDethState();
 	~EnemyDethState() {}
 	// ステートに入った時のメソッド
-	void Start() override {};
+	void Start() override;
 	// ステートで実行するメソッド
-	void Update(float elapsed_time) override {};
+	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
@@ -166,7 +167,7 @@ public:
 	EnemyDethIdleState();
 	~EnemyDethIdleState() {}
 	// ステートに入った時のメソッド
-	void Start() override {};
+	void Start() override;
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override {};
 	// ステートから出ていくときのメソッド
