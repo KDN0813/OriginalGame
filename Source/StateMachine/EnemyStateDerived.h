@@ -65,6 +65,7 @@ private:
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<Transform3DComponent> transform_Wprt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
 
@@ -87,9 +88,12 @@ private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_chase_state;
 	State::ChangeState change_attack_state;
+	State::ChangeState change_damage_state;
+	State::ChangeState change_deth_state;
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
 // 攻撃ステート
@@ -110,10 +114,13 @@ public:
 private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_chase_state;
+	State::ChangeState change_damage_state;
+	State::ChangeState change_deth_state;
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
 // ダメージステート
@@ -133,8 +140,10 @@ public:
 	void End() override {};
 private:
 	State::ChangeState change_idle_state;
+	State::ChangeState change_deth_state;
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
 // 死亡ステート

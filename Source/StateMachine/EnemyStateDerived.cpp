@@ -9,6 +9,7 @@
 #include "Component\InstancedModelWithAnimationComponent.h"
 #include "Component\TransformComponent.h"
 #include "Component\CircleCollisionComponent.h"
+#include "Component\CharacterComponent.h"
 
 const MyHash EnemyIdleState::STATE_NAME = MyHash("EnemyIdleState");
 EnemyIdleState::EnemyIdleState()
@@ -42,6 +43,8 @@ void EnemyIdleState::Update(float elapsed_time)
     if (!state_machine) return;
     const auto& enemy = owner->GetComponent<EnemyComponent>(this->enemy_Wptr);
     if (!enemy) return;
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!state_machine) return;
 
     if (this->idle_timer > 0.0f)
     {
@@ -60,6 +63,22 @@ void EnemyIdleState::Update(float elapsed_time)
     {
         // 範囲内に存在すれば接近ステートに遷移
         state_machine->ChangeState(this->change_chase_state);
+        return;
+    }
+
+    // ダメージを受けたか判定
+    if (character->IsDamage())
+    {
+        // ダメージを受けたならダメージステートに遷移
+        state_machine->ChangeState(this->change_damage_state);
+        return;
+    }
+
+    // 生存してるか判定
+    if (!character->IsAlive())
+    {
+        // 生存していないなら死亡ステートに遷移
+        state_machine->ChangeState(this->change_deth_state);
         return;
     }
 }
@@ -105,6 +124,8 @@ void EnemyWanderingState::Update(float elapsed_time)
     if (!enemy) return;
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!state_machine) return;
 
     if (enemy->IsAtTarget())
     {
@@ -118,6 +139,22 @@ void EnemyWanderingState::Update(float elapsed_time)
     {
         // 範囲内に存在すれば接近ステートに遷移
         state_machine->ChangeState(this->change_chase_state);
+        return;
+    }
+
+    // ダメージを受けたか判定
+    if (character->IsDamage())
+    {
+        // ダメージを受けたならダメージステートに遷移
+        state_machine->ChangeState(this->change_damage_state);
+        return;
+    }
+
+    // 生存してるか判定
+    if (!character->IsAlive())
+    {
+        // 生存していないなら死亡ステートに遷移
+        state_machine->ChangeState(this->change_deth_state);
         return;
     }
 }
@@ -138,6 +175,8 @@ EnemyChaseState::EnemyChaseState()
 {
     this->change_attack_state.change_state_name = EnemyAttackState::STATE_NAME;
     this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
+    this->change_damage_state.change_state_name = EnemyDamageState::STATE_NAME;
+    this->change_deth_state.change_state_name = EnemyDeadState::STATE_NAME;
 }
 
 void EnemyChaseState::Start()
@@ -163,6 +202,8 @@ void EnemyChaseState::Update(float elapsed_time)
     if (!enemy) return;
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!state_machine) return;
 
     // 目的地をプレイヤーに設定
     enemy->SetTargetPositionByPlayer();
@@ -173,7 +214,6 @@ void EnemyChaseState::Update(float elapsed_time)
         // 範囲内にいるなら攻撃ステートに遷移
         state_machine->ChangeState(this->change_attack_state);
         return;
-        return;
     }
 
     // 移動範囲にプレイヤーが存在するか判定
@@ -181,6 +221,22 @@ void EnemyChaseState::Update(float elapsed_time)
     {
         // 範囲内にいないなら待機ステートに遷移
         state_machine->ChangeState(this->change_idle_state);
+        return;
+    }
+
+    // ダメージを受けたか判定
+    if (character->IsDamage())
+    {
+        // ダメージを受けたならダメージステートに遷移
+        state_machine->ChangeState(this->change_damage_state);
+        return;
+    }
+
+    // 生存してるか判定
+    if (!character->IsAlive())
+    {
+        // 生存していないなら死亡ステートに遷移
+        state_machine->ChangeState(this->change_deth_state);
         return;
     }
 }
@@ -201,6 +257,8 @@ EnemyAttackState::EnemyAttackState()
 {
     this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
     this->change_chase_state.change_state_name = EnemyChaseState::STATE_NAME;
+    this->change_damage_state.change_state_name = EnemyDamageState::STATE_NAME;
+    this->change_deth_state.change_state_name = EnemyDeadState::STATE_NAME;
 }
 
 void EnemyAttackState::Start()
@@ -233,6 +291,8 @@ void EnemyAttackState::Update(float elapsed_time)
     if (!state_machine) return;
     const auto& enemy = owner->GetComponent<EnemyComponent>(this->enemy_Wptr);
     if (!enemy) return;
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!state_machine) return;
 
     // アニメーション再生中であるか
     if (!animation->IsPlayAnime())
@@ -252,6 +312,22 @@ void EnemyAttackState::Update(float elapsed_time)
             return;
         }
     }
+
+    // ダメージを受けたか判定
+    if (character->IsDamage())
+    {
+        // ダメージを受けたならダメージステートに遷移
+        state_machine->ChangeState(this->change_damage_state);
+        return;
+    }
+
+    // 生存してるか判定
+    if (!character->IsAlive())
+    {
+        // 生存していないなら死亡ステートに遷移
+        state_machine->ChangeState(this->change_deth_state);
+        return;
+    }
 }
 
 void EnemyAttackState::End()
@@ -263,6 +339,7 @@ EnemyDamageState::EnemyDamageState()
     :State(STATE_NAME)
 {
     this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
+    this->change_deth_state.change_state_name = EnemyDeadState::STATE_NAME;
 }
 
 void EnemyDamageState::Start()
@@ -283,11 +360,21 @@ void EnemyDamageState::Update(float elapsed_time)
     if (!animation)return;
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!state_machine) return;
 
     if (!animation->IsPlayAnime())
     {
         // アニメーションが終了待機状態に遷移
         state_machine->ChangeState(this->change_idle_state);
+        return;
+    }
+
+    // 生存してるか判定
+    if (!character->IsAlive())
+    {
+        // 生存していないなら死亡ステートに遷移
+        state_machine->ChangeState(this->change_deth_state);
         return;
     }
 }
