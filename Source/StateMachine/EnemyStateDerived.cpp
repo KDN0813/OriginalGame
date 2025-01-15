@@ -164,6 +164,9 @@ void EnemyChaseState::Update(float elapsed_time)
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
 
+    // 目的地をプレイヤーに設定
+    enemy->SetTargetPositionByPlayer();
+
     // 攻撃範囲にプレイヤーが存在するか
     if (enemy->IsPlayerInAttaclArea())
     {

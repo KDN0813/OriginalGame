@@ -194,6 +194,18 @@ void EnemyComponent::SetRandomTargetPosition()
 	this->param.target_position.z = this->spawn_point.z + cosf(theta) * range;
 }
 
+void EnemyComponent::SetTargetPositionByPlayer()
+{
+	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+	{
+		const auto& player = game_object->GetPlayer();
+		if (!player) return;
+		const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
+		if (!player_transform) return;
+		this->param.target_position = player_transform->GetWorldPosition();
+	}
+}
+
 void EnemyComponent::SetRandomIdleTime()
 {
 	this->param.idle_timer = MyMathf::RandomRange(this->param.min_idle_time, this->param.max_idle_time);

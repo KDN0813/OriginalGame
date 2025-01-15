@@ -72,6 +72,8 @@ public:
 
     // 次の目的地設定
     void SetRandomTargetPosition();
+    // 次の目的地をプレイヤーの位置に設定
+    void SetTargetPositionByPlayer();
     // 待機時間設定
     void SetRandomIdleTime();
     // 目的地に到達しているか
