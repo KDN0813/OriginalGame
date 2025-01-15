@@ -2,8 +2,9 @@
 #include "StateMachine\StateBase.h"
 
 class ModelAnimationControlComponent;
-class MovementComponent;
 class CharacterComponent;
+class EnemyComponent;
+class Transform3DComponent;
 
 // 待機ステート
 class EnemyIdleState : public State
@@ -21,6 +22,11 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
+	// 待機時間を設定する
+	void SetRandomIdleTime();
+private:
+	float idle_timer = 0.0f;	// 待機時間
+private:
 	State::ChangeState change_wandering_state;
 	State::ChangeState change_chase_state;
 	State::ChangeState change_attack_state;
@@ -28,8 +34,8 @@ private:
 	State::ChangeState change_deth_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
-	std::weak_ptr<MovementComponent> movement_Wpt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
+	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
 
 // 徘徊ステート
@@ -42,17 +48,23 @@ public:
 	EnemyWanderingState();
 	~EnemyWanderingState() {}
 	// ステートに入った時のメソッド
-	void Start() override {};
+	void Start() override;
 	// ステートで実行するメソッド
-	void Update(float elapsed_time) override {};
+	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
-	void End() override {};
+	void End() override;
+private:
+	DirectX::XMFLOAT3 target_position;
 private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_chase_state;
 	State::ChangeState change_attack_state;
 	State::ChangeState change_damage_state;
 	State::ChangeState change_deth_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<Transform3DComponent> transform_Wprt;
+	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
 
 // 接近ステート
@@ -74,6 +86,8 @@ private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_chase_state;
 	State::ChangeState change_attack_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 };
 
 // 攻撃ステート
@@ -93,6 +107,8 @@ public:
 	void End() override {};
 private:
 	State::ChangeState change_idle_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 };
 
 // ダメージステート
@@ -112,6 +128,8 @@ public:
 	void End() override {};
 private:
 	State::ChangeState change_idle_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 };
 
 // 死亡ステート
@@ -131,6 +149,8 @@ public:
 	void End() override {};
 private:
 	State::ChangeState change_deth_idle_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 };
 
 // 死亡待機ステート
@@ -149,4 +169,5 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 };

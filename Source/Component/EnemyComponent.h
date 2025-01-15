@@ -17,7 +17,6 @@ public:
     static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
 #endif // _DEBUG
 
-
 public:
     enum class STATE
     {
