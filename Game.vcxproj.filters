@@ -211,6 +211,9 @@
     <Filter Include="Source\Object\Constant\Camera">
       <UniqueIdentifier>{7a9b7dde-311c-4e0c-b418-c102cc4b3066}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\StateMachine\Enemy">
+      <UniqueIdentifier>{d6acca81-b9ee-4b54-a652-afdc5214c0b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -555,6 +558,9 @@
     <ClInclude Include="Source\Object\Constant\CameraConstant.h">
       <Filter>Source\Object\Constant\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Source\StateMachine\EnemyStateDerived.h">
+      <Filter>Source\StateMachine\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -826,6 +832,9 @@
     </ClCompile>
     <ClCompile Include="Source\Object\Constant\CameraConstant.cpp">
       <Filter>Source\Object\Constant\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StateMachine\EnemyStateDerived.cpp">
+      <Filter>Source\StateMachine\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

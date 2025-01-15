@@ -201,6 +201,7 @@
     <ClInclude Include="Source\Shader\SkyBox.h" />
     <ClInclude Include="Source\Shader\SpriteShader.h" />
     <ClInclude Include="Source\Sprite\Sprite.h" />
+    <ClInclude Include="Source\StateMachine\EnemyStateDerived.h" />
     <ClInclude Include="Source\StateMachine\LegacyState.h" />
     <ClInclude Include="Source\StateMachine\LegacyStateDerived.h" />
     <ClInclude Include="Source\StateMachine\LegacyTransitionJudgement.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="Source\Shader\SkyBox.cpp" />
     <ClCompile Include="Source\Shader\SpriteShader.cpp" />
     <ClCompile Include="Source\Sprite\Sprite.cpp" />
+    <ClCompile Include="Source\StateMachine\EnemyStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyState.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\LegacyTransitionJudgement.cpp" />
