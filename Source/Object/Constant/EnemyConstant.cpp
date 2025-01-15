@@ -18,7 +18,7 @@ const MyHash EnemyConstant::ATTACK_OBJECT_NAME = MyHash("EnemyAttackObject");
 
 const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<Object>& enemy)
 {
-	// TODO 仮配置(マジックナンバー)をやめる
+	// TODO 仮配置
 	float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
 	float player_area_rage = 10.0f;
 

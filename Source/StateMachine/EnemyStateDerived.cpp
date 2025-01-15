@@ -3,6 +3,7 @@
 #include "Object\Constant\EnemyConstant.h"
 #include "System\MyMath\MyMathf.h"
 #include "System\MyMath\MYVECTOR3.h"
+#include "System\GameData.h"
 
 #include "Component\StateMachineComponent.h"
 #include "Component\EnemyComponent.h"
@@ -392,8 +393,14 @@ void EnemyDeadState::Start()
     if (!owner)return;
     const auto& animation = owner->GetComponent(animation_Wprt);
     if (!animation)return;
+    const auto& enemy = owner->GetComponent<EnemyComponent>(enemy_Wptr);
+    if (!enemy)return;
+
     // アニメーション再生
     animation->PlayAnimation(EnemyConstant::DIE, false);
+
+    // 死亡待ちフラグを立てる
+    enemy->SetPendingRemovalFlag(true);
 }
 
 void EnemyDeadState::Update(float elapsed_time)
@@ -421,10 +428,26 @@ EnemyDeadIdleState::EnemyDeadIdleState()
 
 void EnemyDeadIdleState::Start()
 {
+    this->remove_timer = EnemyConstant::REMOVE_IDLE_TIME;
+}
+
+void EnemyDeadIdleState::Update(float elapsed_time)
+{
     const auto& owner = GetOwner();
     if (!owner)return;
-    const auto& animation = owner->GetComponent(animation_Wprt);
-    if (!animation)return;
-    // アニメーション再生
-    animation->PlayAnimation(EnemyConstant::DIZZY, false);
+
+    if (this->remove_timer > 0.0f)
+    {
+        // 削除タイマー更新
+        this->remove_timer -= elapsed_time;
+    }
+    else
+    {
+        if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+        {
+            // スコア加算
+            game_data->AddScore(1);
+        }
+        owner->SetIsRemove(true);   // 削除する
+    }
 }

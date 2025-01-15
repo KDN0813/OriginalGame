@@ -44,35 +44,6 @@ void EnemyComponent::Update(float elapsed_time)
 	if (!model_component) return;
 	const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
 
-	//// ”íƒ_ƒ”»’è
-	//if (character && character->IsDamage() && character->IsAlive())
-	//{
-	//	// ƒ_ƒ[ƒWƒXƒe[ƒg‚É‘JˆÚ
-	//	SetDamageState();
-	//}
-
-	//// Ž€–S”»’è
-	//if (character && !character->IsAlive() && !this->param.pending_removal_flag)
-	//{
-	//	// íœ‘Ò‚¿ƒtƒ‰ƒO‚ð—§‚Ä‚é
-	//	this->param.pending_removal_flag = true;
-
-	//	// Ž€–Só‘Ô‚Ö‘JˆÚ
-	//	this->param.state = STATE::DETH;
-
-	//	// Ž€–Só‘Ô‚Ö‚Ì€”õ
-	//	{
-	//		model_component->PlayAnimation(EnemyCT::ANIMATION::DIE, false);
-	//	}
-
-	//	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-	//	{
-	//		// ƒXƒRƒA‰ÁŽZ
-	//		game_data->AddScore(1);
-	//	}
-	//}
-
-
 	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 	// ˆÚ“®ˆ—
 	if (transform && this->param.move_validity_flag)

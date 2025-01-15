@@ -36,6 +36,7 @@ public:
 
     static constexpr float MIN_IDLE_TIME = 0.5f;
     static constexpr float MAX_IDLE_TIME = 5.0f;
+    static constexpr float REMOVE_IDLE_TIME = 2.0f; // 死亡アニメーション再生終了から削除されるまでの時間
 public:
     static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);
 };

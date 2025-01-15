@@ -165,6 +165,7 @@ private:
 	State::ChangeState change_deth_idle_state;
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
+	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
 
 // 死亡待機ステート
@@ -179,9 +180,11 @@ public:
 	// ステートに入った時のメソッド
 	void Start() override;
 	// ステートで実行するメソッド
-	void Update(float elapsed_time) override {};
+	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override {};
+private:
+	float remove_timer = {};
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 };

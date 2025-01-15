@@ -92,6 +92,7 @@ public:
     float GetIdleTime() { return this->param.idle_timer; }
     void SetIdleTime(float time) { this->param.idle_timer = time; }
     void SetMoveValidityFlag(bool flag) { this->param.move_validity_flag = flag; }
+    void SetPendingRemovalFlag(bool flag) { this->param.pending_removal_flag = flag; }
 private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);
