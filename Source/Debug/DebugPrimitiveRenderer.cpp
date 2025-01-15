@@ -217,6 +217,9 @@ DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 
 	// 円柱メッシュ作成
 	CreateCylinderMesh(device, 1.0f, 1.0f, 0.0f, 1.0f, 16, 1);
+
+	// 箱メッシュ生成
+	CreateBoxMesh(device, 1.0f, 1.0f, 1.0f);
 }
 
 // 描画開始
@@ -296,6 +299,27 @@ void DebugPrimitiveRenderer::Render()
 	}
 	cylinders.clear();
 
+	for (const Instance& instance : instances)
+	{
+		// 頂点バッファ設定
+		context->IASetVertexBuffers(0, 1, instance.mesh->vertexBuffer.GetAddressOf(), &stride, &offset);
+
+		// ワールドビュープロジェクション行列作成
+		MYMATRIX W = DirectX::XMLoadFloat4x4(&instance.worldTransform);
+		MYMATRIX WVP = W * View_projection;
+
+		// 定数バッファ更新
+		CbMesh cbMesh;
+		WVP.GetFlaot4x4(cbMesh.wvp);
+		cbMesh.color = instance.color;
+
+		context->UpdateSubresource(constant_buffer.Get(), 0, 0, &cbMesh, 0, 0);
+
+		// 描画
+		context->Draw(instance.mesh->vertexCount, 0);
+	}
+	instances.clear();
+
 	// 初期化
 	context->IASetInputLayout(nullptr);
 	context->IASetVertexBuffers(0, 0, nullptr, 0, 0);
@@ -351,6 +375,18 @@ void DebugPrimitiveRenderer::DrawAABBCorners(AABBCorners AABB_corners)
 	{
 		DrawSphere(AABB_corners.GetCenter(i), AABB_corners.GetRadius(), AABB_corners.GetColor());
 	}
+}
+
+void DebugPrimitiveRenderer::DrawBox(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& angle, const DirectX::XMFLOAT3& size, const DirectX::XMFLOAT4& color)
+{
+	Instance& instance = instances.emplace_back();
+	instance.mesh = &box_mesh;
+	instance.color = color;
+
+	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(size.x, size.y, size.z);
+	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
+	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+	DirectX::XMStoreFloat4x4(&instance.worldTransform, S * R * T);
 }
 
 // 球メッシュ作成
@@ -496,4 +532,76 @@ void DebugPrimitiveRenderer::CreateCylinderMesh(ID3D11Device* device, float radi
 		HRESULT hr = device->CreateBuffer(&desc, &subresourceData, cylinder_vertex_buffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
+}
+
+void DebugPrimitiveRenderer::CreateBoxMesh(ID3D11Device* device, float width, float height, float depth)
+
+{
+	DirectX::XMFLOAT3 positions[8] =
+	{
+		// top
+		{ -width,  height, -depth},
+		{  width,  height, -depth},
+		{  width,  height,  depth},
+		{ -width,  height,  depth},
+		// bottom
+		{ -width, -height, -depth},
+		{  width, -height, -depth},
+		{  width, -height,  depth},
+		{ -width, -height,  depth},
+	};
+
+	std::vector<DirectX::XMFLOAT3> vertices;
+	vertices.resize(32);
+
+	// top
+	vertices.emplace_back(positions[0]);
+	vertices.emplace_back(positions[1]);
+	vertices.emplace_back(positions[1]);
+	vertices.emplace_back(positions[2]);
+	vertices.emplace_back(positions[2]);
+	vertices.emplace_back(positions[3]);
+	vertices.emplace_back(positions[3]);
+	vertices.emplace_back(positions[0]);
+	// bottom
+	vertices.emplace_back(positions[4]);
+	vertices.emplace_back(positions[5]);
+	vertices.emplace_back(positions[5]);
+	vertices.emplace_back(positions[6]);
+	vertices.emplace_back(positions[6]);
+	vertices.emplace_back(positions[7]);
+	vertices.emplace_back(positions[7]);
+	vertices.emplace_back(positions[4]);
+	// side
+	vertices.emplace_back(positions[0]);
+	vertices.emplace_back(positions[4]);
+	vertices.emplace_back(positions[1]);
+	vertices.emplace_back(positions[5]);
+	vertices.emplace_back(positions[2]);
+	vertices.emplace_back(positions[6]);
+	vertices.emplace_back(positions[3]);
+	vertices.emplace_back(positions[7]);
+
+	// メッシュ生成
+	CreateMesh(device, vertices, box_mesh);
+}
+
+void DebugPrimitiveRenderer::CreateMesh(ID3D11Device* device, const std::vector<DirectX::XMFLOAT3>& vertices, Mesh& mesh)
+{
+	D3D11_BUFFER_DESC desc = {};
+	desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT3) * vertices.size());
+	desc.Usage = D3D11_USAGE_IMMUTABLE;
+	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	desc.CPUAccessFlags = 0;
+	desc.MiscFlags = 0;
+	desc.StructureByteStride = 0;
+	D3D11_SUBRESOURCE_DATA subresourceData = {};
+	subresourceData.pSysMem = vertices.data();
+	subresourceData.SysMemPitch = 0;
+	subresourceData.SysMemSlicePitch = 0;
+
+	HRESULT hr = device->CreateBuffer(&desc, &subresourceData, mesh.vertexBuffer.GetAddressOf());
+	_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+
+	mesh.vertexCount = static_cast<UINT>(vertices.size());
 }

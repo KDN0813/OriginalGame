@@ -112,6 +112,26 @@ public:
 	// AABBの頂点描画
 	void DrawAABBCorners(AABBCorners AABB_corners);
 
+	// 箱描画
+	void DrawBox(
+		const DirectX::XMFLOAT3& position,
+		const DirectX::XMFLOAT3& angle,
+		const DirectX::XMFLOAT3& size,
+		const DirectX::XMFLOAT4& color);
+private:
+	struct Mesh
+	{
+		Microsoft::WRL::ComPtr<ID3D11Buffer>	vertexBuffer;
+		UINT									vertexCount;
+	};
+
+	struct Instance
+	{
+		Mesh* mesh;
+		DirectX::XMFLOAT4X4		worldTransform;
+		DirectX::XMFLOAT4		color;
+	};
+
 private:
 	// 球メッシュ作成
 	void CreateSphereMesh(ID3D11Device* device, float radius, int slices, int stacks);
@@ -119,6 +139,11 @@ private:
 	// 円柱メッシュ作成
 	void CreateCylinderMesh(ID3D11Device* device, float radius1, float radius2, float start, float height, int slices, int stacks);
 
+	// 箱メッシュ作成
+	void CreateBoxMesh(ID3D11Device* device, float width, float height, float depth);
+
+	// メッシュ生成
+	void CreateMesh(ID3D11Device* device, const std::vector<DirectX::XMFLOAT3>& vertices, Mesh& mesh);
 private:
 	struct CbMesh
 	{
@@ -140,6 +165,9 @@ private:
 		float				radius;
 		float				height;
 	};
+
+	Mesh											box_mesh;
+	std::vector<Instance>							instances;
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sphere_vertex_buffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			cylinder_vertex_buffer;
