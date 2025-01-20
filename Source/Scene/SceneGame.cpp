@@ -251,51 +251,6 @@ void SceneGame::Update(float elapsed_time)
 		// 更新処理
 		// 主に削除されたエネミーをリストから消す処理
 		game_object->Update();
-
-		// カメラ外の敵オブジェクトを非アクティブにする
-		// カメラ範囲とキャラのボックスで判定をとる
-		//if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
-		//{
-		//	for (const auto& enemy_Wprt : game_object->GetEnemyWptPool())
-		//	{
-		//		if (const auto& enemy = enemy_Wprt.lock())
-		//		{
-		//			if (const auto& instancing_model = enemy->GetComponent<InstancedModelWithAnimationComponent>())
-		//			{
-		//				enemy->SetIsActive(camera_manager->IsAnyMeshAABBVisible(instancing_model->GetBoundingBoxs()));
-		//			}
-		//		}
-		//	}
-		//}
-
-		// プレイヤーの移動範囲制限
-		// TODO ステージを変更したらステージに合わせた移動範囲の制限をかける
-		{
-			const auto& player = game_object->GetPlayer();
-			if (const auto& player_transform = player->GetComponent<Transform3DComponent>())
-			{
-				DirectX::XMFLOAT3 player_pos = player_transform->GetWorldPosition();
-
-				// TODO 仮配置(マジックナンバー)をやめる
-				float territory_range = 185.0f;
-				if (territory_range < player_pos.x)
-				{
-					player_transform->AddLocalPosition({ territory_range - player_pos.x,0.0f,0.0f });
-				}
-				if (player_pos.x < -territory_range)
-				{
-					player_transform->AddLocalPosition({ -territory_range - player_pos.x,0.0f,0.0f });
-				}
-				if (territory_range < player_pos.z)
-				{
-					player_transform->AddLocalPosition({ 0.0f,0.0f,territory_range - player_pos.z });
-				}
-				if (player_pos.z < -territory_range)
-				{
-					player_transform->AddLocalPosition({ 0.0f,0.0f,-territory_range - player_pos.z });
-				}
-			}
-		}
 	}
 
 	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())

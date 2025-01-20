@@ -86,6 +86,18 @@ std::shared_ptr<CameraComponent> CameraManager::GetCamera(CAMERA_TYPE type)
     return this->camera_pool[static_cast<size_t>(type)];
 }
 
+const std::shared_ptr<CameraComponent>& CameraManager::GetCurrentCamera()
+{
+#ifdef _DEBUG
+
+    return this->camera_index == static_cast<int>(CAMERA_TYPE::DEBUG) ? this->current_camera : this->camera_pool[this->temp_camera_index];
+
+#else
+    return this->current_camera;
+#endif // DEBUG
+
+}
+
 void CameraManager::Update(float elapsed_time)
 {
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)

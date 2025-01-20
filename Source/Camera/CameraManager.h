@@ -24,7 +24,7 @@ public:
     // カメラの取得
     std::shared_ptr<CameraComponent> GetCamera(CAMERA_TYPE type);
     // 現在カメラの取得
-    const std::shared_ptr<CameraComponent>& GetCurrentCamera() { return this->current_camera; }
+    const std::shared_ptr<CameraComponent>& GetCurrentCamera();
 
     // 更新処理
     void Update(float elapsed_time);

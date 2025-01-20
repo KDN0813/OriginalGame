@@ -4,6 +4,7 @@
 #include "Object/Object.h"
 
 #include "Shader/InstanceModelShader.h"
+#include "Camera\CameraManager.h"
 
 #include "Component/InstancedModelWithAnimationComponent.h"
 #include "Component/TransformComponent.h"
@@ -33,15 +34,19 @@ void InstancingModelShaderComponent::InstancingAdd()
 #ifdef _DEBUG
     if (!this->is_active) return;
 #endif // _DEBUG
-
-
     if (!this->GetOwner()->GetIsActive()) return;
+
     auto owner = GetOwner();
     if (!owner) return;
     auto instancing_model
         = owner->GetComponent<InstancedModelWithAnimationComponent>(this->instancing_model_Wptr);
     auto transform
         = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+
+    if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+    {
+        if (!camera_manager->IsAnyMeshAABBVisible(instancing_model->GetBoundingBoxs())) return;
+    }
 
     if (instancing_model && transform)
     {

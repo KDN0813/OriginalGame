@@ -255,6 +255,7 @@ void InstancingModelShader::Render()
 	{
 		bool is_render_ready = false;	// 描画準備ができているか
 		InstancingModelShaderComponent* valid_Sc = nullptr;	// 使用可能なシェーダーコンポーネント
+		
 		for (auto shader_component : shader_component_vec.second)
 		{
 			if (!shader_component) continue;
