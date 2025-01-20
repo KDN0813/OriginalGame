@@ -48,6 +48,7 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     float rot = Input[node].rot;
     float alpha = Input[node].alpha;
     float lifetimer = Input[node].lifetimer;
+    int texture_no = Input[node].texture_no;
     
     // 補間率
     float t = 0.0f;
@@ -69,11 +70,13 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     alpha = 1.0f;
                     scale = Input2[node].initial_scale;
                     lifetimer = Input2[node].initial_lifetime;
+                    texture_no = EFFECT_HIT;
                     // CPU共有データの設定
                     Result2[node].step = 1;
                     break;
                 case 1: // 更新
-
+                    texture_no = EFFECT_HIT;
+            
                     lifetimer = max(0.0f, lifetimer - elapsed_time);
                     t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
             
@@ -115,11 +118,13 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     alpha = 1.0f;
                     scale = Input2[node].initial_scale;
                     lifetimer = Input2[node].initial_lifetime;
+                    texture_no = EFFECT_HIT2;
                     // CPU共有データの設定
                     Result2[node].step = 1;
                     break;
                 case 1: // 更新
-
+                    texture_no = EFFECT_HIT2;
+            
                     lifetimer = max(0.0f, lifetimer - elapsed_time);
                     t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
             
@@ -161,10 +166,12 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
                     alpha = 0.0f;
                     scale = Input2[node].initial_scale;
                     lifetimer = Input2[node].initial_lifetime;
+                    texture_no = EFFECT_SLASH;
                     // CPU共有データの設定
                     Result2[node].step = 1;
                     break;
                 case 1: // 更新
+                    texture_no = EFFECT_SLASH;
             
                     lifetimer = max(0.0f, lifetimer - elapsed_time);
                     t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
@@ -196,4 +203,5 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     Result[node].rot = rot;
     Result[node].alpha = alpha;
     Result[node].lifetimer = lifetimer;
+    Result[node].texture_no = texture_no;
 }

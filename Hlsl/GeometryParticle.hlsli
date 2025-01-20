@@ -48,6 +48,7 @@ struct InputGp
     float rot;      // 角度
     float alpha;    // 透明度
     float lifetimer;// 生存時間
+    int texture_no; // テクスチャNO
 };
 
 // CPUで共有するデータ

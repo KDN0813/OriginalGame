@@ -37,6 +37,7 @@ private:
 		float rot;      // 角度
 		float alpha;    // 透明度
 		float timer;    // 生存時間(最大値は定数で持つ)
+		int texture_no; // テクスチャNO
 	};
 
 	// CPUで共有するデータ

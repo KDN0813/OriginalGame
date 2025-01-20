@@ -10,6 +10,6 @@ GsIn main(uint index : SV_VertexID)
 	
     output.param.rot = Input[index].rot;
     output.param.scale = Input[index].scale;
-    output.param.texture_no = 2;
+    output.param.texture_no = Input[index].texture_no;
     return output;
 }
