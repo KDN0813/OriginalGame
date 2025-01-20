@@ -88,7 +88,7 @@ void DebugParticle::DrawDebugGUI()
 
     ImGui::Checkbox("Is Random Spawn Position", &this->is_random_spawn_position);
 
-    ImGui::SliderInt("Effect Type", &this->draw_effect_type, 0, 1);
+    ImGui::SliderInt("Effect Type", &this->draw_effect_type, 0, 2);
     ImGui::Checkbox("Effect Looping", &this->effect_looping);
     if (this->effect_looping)
     {

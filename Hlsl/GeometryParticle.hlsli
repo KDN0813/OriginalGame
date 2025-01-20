@@ -4,6 +4,7 @@ struct ParticleParam
 {
     float rot : ROTATION;
     float2 scale : SCALE;
+    int texture_no : TEXTURE_NO; //テキスチャーのNO
 };
 
 //  頂点情報

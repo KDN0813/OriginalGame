@@ -296,7 +296,7 @@ ParticleSystem::ParticleSystem()
 			effect.initial_scale = {};							// 初期拡大率
 			effect.f_scale = DirectX::XMFLOAT2(0.02f, 0.01f);		// 拡大率(補間開始)
 			effect.e_scale = DirectX::XMFLOAT2(0.01f, 0.035f);		// 拡大率(補間終了)
-			effect.color = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	// 色
+			effect.color = DirectX::XMFLOAT3(1.0f, 0.0f, 1.0f);	// 色
 			effect.rot = {};									// 角度
 			effect.rot_speed = {};								// 回転速度
 			effect.initial_lifetime = 0.8f;						// 生存時間
@@ -532,18 +532,7 @@ void ParticleSystem::PlayEffect(
 {
 	switch (type)
 	{
-	case EFFECT_SLASH:		// 斬撃エフェクト
-	{
-		PlayEffect(
-			parent_pos,
-			parent_rot,
-			parent_color,
-			forward,
-			this->effect_slash
-		);
-		break;
-	}
-	case EFFECT_HIT:	// 落下斬撃エフェクト
+	case EFFECT_HIT:		// 斬撃エフェクト
 	{
 		PlayEffect(
 			parent_pos,
@@ -551,6 +540,28 @@ void ParticleSystem::PlayEffect(
 			parent_color,
 			forward,
 			this->effect_hit
+		);
+		break;
+	}
+	case EFFECT_HIT2:	// 落下斬撃エフェクト
+	{
+		PlayEffect(
+			parent_pos,
+			parent_rot,
+			parent_color,
+			forward,
+			this->effect_hit
+		);
+		break;
+	}
+	case EFFECT_SLASH:	// 落下斬撃エフェクト
+	{
+		PlayEffect(
+			parent_pos,
+			parent_rot,
+			parent_color,
+			forward,
+			this->effect_slash
 		);
 		break;
 	}

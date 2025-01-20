@@ -56,43 +56,6 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
     {
         // 各種更新
         
-        case EFFECT_SLASH:  // 斬撃エフェクト
-            switch (Input2[node].step)
-            {
-                case 0: // 初期設定
-                
-                    // GPU専用データの設定
-                    color = Input2[node].color;
-                    position = Input2[node].initial_position;
-                    velocity = Input2[node].velocity;
-                    rot = Input2[node].rot;
-                    alpha = 0.0f;
-                    scale = Input2[node].initial_scale;
-                    lifetimer = Input2[node].initial_lifetime;
-                    // CPU共有データの設定
-                    Result2[node].step = 1;
-                    break;
-                case 1: // 更新
-            
-                    lifetimer = max(0.0f, lifetimer - elapsed_time);
-                    t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
-            
-                    // 透明度の補間
-                    alpha = FadeInOut(t);
-                    // 拡大率の補間
-                    scale.x = EaseOutQuadInRange(Input2[node].f_scale.x, Input2[node].e_scale.x, (t));
-                    scale.y = EaseOutQuadInRange(Input2[node].f_scale.y, Input2[node].e_scale.y, (t));
-            
-                    if (0.0f < lifetimer) break;
-                    // 寿命が0以下になった実行
-                    Result2[node].is_busy = 0;
-                    alpha = 0.0f;
-                    
-                    break;
-            }
-        
-            break;   // 斬撃エフェクト
-        
         case EFFECT_HIT: // ヒットエフェクト
             switch (Input2[node].step)
             {
@@ -138,6 +101,91 @@ void main(uint3 Gid : SV_GroupID, //グループID　ディスパッチ側で指定
             }
         
             break; // 落下斬撃エフェクト
+        
+        case EFFECT_HIT2: // ヒットエフェクト
+            switch (Input2[node].step)
+            {
+                case 0: // 初期設定
+                
+                    // GPU専用データの設定
+                    color = Input2[node].color;
+                    position = Input2[node].initial_position;
+                    velocity = Input2[node].velocity;
+                    rot = Input2[node].rot;
+                    alpha = 1.0f;
+                    scale = Input2[node].initial_scale;
+                    lifetimer = Input2[node].initial_lifetime;
+                    // CPU共有データの設定
+                    Result2[node].step = 1;
+                    break;
+                case 1: // 更新
+
+                    lifetimer = max(0.0f, lifetimer - elapsed_time);
+                    t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
+            
+                    // 角度更新
+                    rot = NormalizeRadiansIfOutOfRange(rot + Input2[node].rot_speed * elapsed_time);
+            
+                    // 位置更新
+                    position += velocity * elapsed_time;
+                    // 速度更新
+                    velocity += Input2[node].acceleration * elapsed_time;
+                    // 透明度更新
+                    alpha = EaseInQuartLerp(1.0f, 0.0f, t);
+                    // 色更新
+                    color.x = EaseInQuartLerp(Input2[node].f_color.x, Input2[node].e_color.x, t);
+                    color.y = EaseInQuartLerp(Input2[node].f_color.y, Input2[node].e_color.y, t);
+                    color.z = EaseInQuartLerp(Input2[node].f_color.z, Input2[node].e_color.z, t);
+            
+                    if (0.0f < lifetimer)
+                        break;
+                    // パーティクルが地面まで移動したらor寿命が尽きたら実行
+                    Result2[node].is_busy = 0;
+                    alpha = 0.0f;
+            
+                    break;
+            }
+        
+            break; // 落下斬撃エフェクト
+        
+        case EFFECT_SLASH: // 斬撃エフェクト
+            switch (Input2[node].step)
+            {
+                case 0: // 初期設定
+                
+                    // GPU専用データの設定
+                    color = Input2[node].color;
+                    position = Input2[node].initial_position;
+                    velocity = Input2[node].velocity;
+                    rot = Input2[node].rot;
+                    alpha = 0.0f;
+                    scale = Input2[node].initial_scale;
+                    lifetimer = Input2[node].initial_lifetime;
+                    // CPU共有データの設定
+                    Result2[node].step = 1;
+                    break;
+                case 1: // 更新
+            
+                    lifetimer = max(0.0f, lifetimer - elapsed_time);
+                    t = (Input2[node].initial_lifetime - lifetimer) / Input2[node].initial_lifetime;
+            
+                    // 透明度の補間
+                    alpha = FadeInOut(t);
+                    // 拡大率の補間
+                    scale.x = EaseOutQuadInRange(Input2[node].f_scale.x, Input2[node].e_scale.x, (t));
+                    scale.y = EaseOutQuadInRange(Input2[node].f_scale.y, Input2[node].e_scale.y, (t));
+            
+                    if (0.0f < lifetimer)
+                        break;
+                    // 寿命が0以下になった実行
+                    Result2[node].is_busy = 0;
+                    alpha = 0.0f;
+                    
+                    break;
+            }
+        
+            break; // 斬撃エフェクト
+        
     }
     
     // Resultに計算結果を代入
