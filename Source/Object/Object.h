@@ -166,12 +166,14 @@ public:
 	const char* GetNameCStr() const { return this->name.GetString().c_str(); }
 	std::shared_ptr<Object> GetParent() { return this->parent_Wptr.lock(); }
 	const std::vector<std::shared_ptr<Object>>& GetChildren() { return this->children; }
-	const bool& GetIsActive() { return this->is_active; }
-	const bool& GetIsRemove() { return this->is_remove; }
+	const bool GetIsActive() { return this->is_active; }
+	const bool GetIsRemove() { return this->is_remove; }
+	const bool GetIsOffScreen() { return this->is_remove; }
 	void SetName(const char* name) { this->name.GenerateHash(name); }
 	void SetIsActive(const bool is_active) { this->is_active = is_active; }
 	void SetParent(std::shared_ptr<Object> parent) { this->parent_Wptr = parent; }
 	void SetIsRemove(bool is_remove) { this->is_remove = is_remove; }
+	void SetIsOffScreen(bool is_off_screen) { this->is_off_screen = is_off_screen; }
 
 private:
 	/**
@@ -183,6 +185,7 @@ private:
 	MyHash name;
 	bool is_active = true;
 	bool is_remove = false;
+	bool is_off_screen = false;	// オブジェクト画面外にいるか
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
 	ComponentVector component_vec;
 	std::vector<std::shared_ptr<Object>> children;

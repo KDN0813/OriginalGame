@@ -96,6 +96,9 @@ void InstancedModelWithAnimationComponent::PlayAnimation(const PlayAnimeParam& p
 
 void InstancedModelWithAnimationComponent::UpdateAnimation(float elapsed_time)
 {
+    const auto& owner = GetOwner();
+    if (owner && owner->GetIsOffScreen()) return;
+
     const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
     const UINT& animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
     const float& animation_length = animation.seconds_length;

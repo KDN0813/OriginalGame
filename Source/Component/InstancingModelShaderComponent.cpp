@@ -45,7 +45,9 @@ void InstancingModelShaderComponent::InstancingAdd()
 
     if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
     {
-        if (!camera_manager->IsAnyMeshAABBVisible(instancing_model->GetBoundingBoxs())) return;
+        const bool is_off_screen = (!camera_manager->IsAnyMeshAABBVisible(instancing_model->GetBoundingBoxs()));
+        owner->SetIsOffScreen(is_off_screen);
+        if (is_off_screen) return;
     }
 
     if (instancing_model && transform)

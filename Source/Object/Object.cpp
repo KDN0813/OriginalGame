@@ -191,6 +191,10 @@ void Object::DrawDebugGUI()
     ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.5f, 0.5f, 1.0f));  // 緑色のボタン
+    
+    // is_off_screen
+    ImGui::Checkbox("Is Off Screen", &this->is_off_screen);
+
     // リスタート
     if (ImGui::Button("All ReStart"))
     {
