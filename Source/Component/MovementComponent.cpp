@@ -258,9 +258,10 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 			// 水平方向の移動量
 			float mx = this->param.velocity.x;
 			float mz = this->param.velocity.z;
+			const float adjustment_rate = 0.01f;
 
 			// レイの開始位置と終点位置
-			MYVECTOR3 Start = Current_pos + MYVECTOR3(0.0f, this->param.step_offset, 0.0f);
+			MYVECTOR3 Start = Current_pos + MYVECTOR3(-mx * adjustment_rate, this->param.step_offset, -mz * adjustment_rate);
 			MYVECTOR3 End = Current_pos + MYVECTOR3(mx, this->param.step_offset, mz);
 
 #ifdef _DEBUG
@@ -291,7 +292,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				
 				// 壁ずり方向へのレイキャスト
 				RayHitResult hit2;
-				if (!Collision::IntersectRayVsModel(Start, Correction_positon, stage_wall_model.get(), hit2))
+				if (!Collision::IntersectRayVsModel(S, Correction_positon, stage_wall_model.get(), hit2))
 				{
 					DirectX::XMFLOAT3 pos = {};
 					Correction_positon.GetFlaot3(pos);
