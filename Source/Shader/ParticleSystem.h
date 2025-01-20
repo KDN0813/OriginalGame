@@ -158,6 +158,7 @@ private:
 	// エフェクト情報
 	std::vector<CPUGPUBuffer> effect_slash;			// 斬撃エフェクトの初期値
 	std::vector<CPUGPUBuffer> effect_hit;			// ヒットエフェクト
+	std::vector<CPUGPUBuffer> effect_hit2;			// ヒットエフェクト
 
 	// パーティクの定数バッファ
 	ParticleCommonConstant particle_data{};
