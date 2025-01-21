@@ -315,8 +315,9 @@ void SceneGame::Render()
 		{
 			debug_manager->GetDebugPrimitiveRenderer()->Render();
 		}
-
 	}
+
+	grid_object_manager.DrawDebugPrimitive();;
 #endif // _DEBUG
 
 	// 2Dスプライト描画
@@ -488,6 +489,9 @@ void SceneGame::DebugDrawGUI()
 	{
 		particle_system->DebugDrawGUI();
 	}
+
+	// grid_object_manager
+	grid_object_manager.DrawDebugGUI();
 }
 
 void SceneGame::DrawShaderImGui()

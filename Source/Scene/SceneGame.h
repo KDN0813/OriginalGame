@@ -6,6 +6,7 @@
 #include "Object/Object.h"
 #include "Object/GameObject.h"
 #include "Collision/CircleCollisionManager.h"
+#include "GridObjectManager/GridObjectManager.h"
 
 // シェーダー
 #include "Shader/InstanceModelShader.h"
@@ -48,6 +49,7 @@ private:
     CircleCollisionManager circle_collision_manager;
     ParticleSystem particle_system;
     LightManager light_manager;
+    GridObjectManager grid_object_manager;
 
     CHANGE_SCENE_STATE change_state = CHANGE_SCENE_STATE::START;    // シーン遷移用ステート
 #ifdef _DEBUG
