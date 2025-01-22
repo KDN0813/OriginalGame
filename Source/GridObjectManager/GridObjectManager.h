@@ -20,6 +20,7 @@ public:
 public:
     static constexpr float CELL_SIZE = 2.0f;        // 各グリッドセルのサイズ
     static constexpr float HALF_CELL_SIZE = CELL_SIZE * 0.5f; // グリッドセルの半分のサイズ
+    float push_out_force = 2.0f;
     float stage_size{};                              // ステージ全体のサイズ
     int max_cells_per_row{};                         // ステージの1行あたりのセル数
 
@@ -30,8 +31,19 @@ public:
     // オブジェクトをグリッドセルに登録する関数
     // 登録に失敗、またはすでに登録済みの場合はfalseを返す
     bool RegisterObject(std::shared_ptr<Object> object, DirectX::XMFLOAT3 position);
+    bool RegisterObject(std::shared_ptr<Object> object, const int cell_index);
 
+    // セルデータを取得する
+    const GridCell& GetCellDataAtPosition(const DirectX::XMFLOAT3 position);
+    const GridCell& GetCellDataAtPosition(const int cell_index);
 
+    // セルインデックスを取得する
+    // 取得に失敗すると-1が返ってくる
+    const int GetCellIndex(const DirectX::XMFLOAT3 position);
+
+    // セルの中心を取得
+    const DirectX::XMFLOAT3 GetCellCenter(const DirectX::XMFLOAT3 position);
+    const DirectX::XMFLOAT3 GetCellCenter(int cell_index);
 
     // クリッドセルに登録されているオブジェクトをリセットする
     void ClearGridObject();

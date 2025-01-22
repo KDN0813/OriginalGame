@@ -73,7 +73,26 @@ void MovementComponent::Update(float elapsed_time)
 
 	// オブジェクトをグリッドセルに登録
 	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
-	grid_object_manager->RegisterObject(owner, owner->GetComponent<Transform3DComponent>(transform_Wptr));
+	if (!grid_object_manager->RegisterObject(owner, transform->GetWorldPosition()))
+	{
+		// 既に登録されている場合
+		const int cell_index = grid_object_manager->GetCellIndex(transform->GetWorldPosition());
+
+		if (0 <= cell_index)
+		{
+			MYVECTOR3 Cell_center = grid_object_manager->GetCellCenter(cell_index);
+			MYVECTOR3 Position = transform->GetWorldPosition();
+			MYVECTOR3 Vec = Position - Cell_center;
+			Vec.NormalizeSelf();
+
+			MYVECTOR3 Push_out_force = Vec * grid_object_manager->push_out_force * elapsed_time;
+			DirectX::XMFLOAT3 push_out_force;
+			Push_out_force.GetFlaot3(push_out_force);
+			push_out_force.y = 0.0f;
+
+			transform->AddLocalPosition(push_out_force);
+		}
+	}
 }
 
 void MovementComponent::FaceMovementDirection(float elapsed_time)
