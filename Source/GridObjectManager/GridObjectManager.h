@@ -11,33 +11,35 @@ class Transform3DComponent;
 class GridObjectManager : public Singleton<GridObjectManager>
 {
 public:
-    // エリア毎に格納するデータ
-    struct GridData
+    // データを格納するための構造体（各エリアのデータ）
+    struct GridCell
     {
-        std::weak_ptr<Object> object;   // 現在このエリアに入っているオブジェクト
+        std::weak_ptr<Object> contained_object;   // このエリアに現在登録されているオブジェクト
     };
+
 public:
-    static constexpr float AREA_RAGE = 2.0f;    // エリアサイズ
-    static constexpr float HALF_AREA_RAGE = AREA_RAGE * 0.5f;    // エリアサイズ
-    float STAGE_RAGE{};  // ステージのサイズ
-    int CELL_MAX{};
+    static constexpr float CELL_SIZE = 2.0f;        // 各グリッドセルのサイズ
+    static constexpr float HALF_CELL_SIZE = CELL_SIZE * 0.5f; // グリッドセルの半分のサイズ
+    float stage_size{};                              // ステージ全体のサイズ
+    int max_cells_per_row{};                         // ステージの1行あたりのセル数
+
 public:
     GridObjectManager();
-    ~GridObjectManager() {};
+    ~GridObjectManager() {}
 
-    // 自身をエリアに登録する
-    // 登録に失敗、既に登録されている場合はfalseを返す
-    bool Check(std::shared_ptr<Object> object, std::shared_ptr<Transform3DComponent> transform);
+    // オブジェクトをグリッドセルに登録する関数
+    // 登録に失敗、またはすでに登録済みの場合はfalseを返す
+    bool RegisterObject(std::shared_ptr<Object> object, std::shared_ptr<Transform3DComponent> transform);
 
 private:
-    DirectX::XMFLOAT3 min_erea_pos;   // 全体の左上の座標
-    DirectX::XMFLOAT3 max_erea_pos;   // 全体の右下の座標
-    std::vector<GridData> grid_data_pool;
+    DirectX::XMFLOAT3 grid_min_position;   // ステージ全体の左上のワールド座標
+    DirectX::XMFLOAT3 grid_max_position;   // ステージ全体の右下のワールド座標
+    std::vector<GridCell> grid_cells;      // グリッドセルのデータを保持するプール
 
 #ifdef _DEBUG
 public:
-    void DrawDebugGUI();
-    void DrawDebugPrimitive();
+    void DrawDebugGUI();      // デバッグ用のGUI描画
+    void DrawDebugPrimitive(); // デバッグ用のプリミティブ描画
 
 #endif // _DEBUG
 };

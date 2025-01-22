@@ -13,61 +13,62 @@
 
 
 GridObjectManager::GridObjectManager()
-:Singleton(this) 
+    : Singleton(this)
 {
-    // ステージのサイズ設定(ステージは正方形
-    this->STAGE_RAGE = EnemyComponent::DEFAULT_TERRITORY_RENGR;
-    
-    // 1つのエリアのサイズ
-    this->AREA_RAGE;
+    // ステージのサイズ設定（ステージは正方形）
+    this->stage_size = EnemyComponent::DEFAULT_TERRITORY_RENGR;
 
-    // 一列に何個のエリアがあるか
-    this->CELL_MAX = static_cast<int>(this->STAGE_RAGE / this->AREA_RAGE);
+    // 1行あたりのセル数を計算
+    this->max_cells_per_row = static_cast<int>(this->stage_size / CELL_SIZE);
 
-    // エリア毎に格納するデータのコンテナのサイズ確保
-    this->grid_data_pool.resize(this->CELL_MAX * this->CELL_MAX);
+    // エリアごとのデータを格納するコンテナのサイズを確保
+    this->grid_cells.resize(this->max_cells_per_row * this->max_cells_per_row);
 
-    const float HALF_STAGE_RAGE = this->STAGE_RAGE * 0.5f;
-        
-    float OFFSET = this->HALF_AREA_RAGE;  // 下記のコードでHALF_STAGE_RAGEだけだと中心の位置になるので
-    OFFSET = 0.0f;  // 下記のコードでHALF_STAGE_RAGEだけだと中心の位置になるので
-    // 左上の位置
-    this->min_erea_pos = { -HALF_STAGE_RAGE - OFFSET ,0.0f,-HALF_STAGE_RAGE - OFFSET };
-    // 右下の位置
-    this->max_erea_pos = { +HALF_STAGE_RAGE + OFFSET ,0.0f,+HALF_STAGE_RAGE + OFFSET };
+    // ステージの半分のサイズ
+    float half_stage_size = this->stage_size * 0.5f;
+
+    // 左上と右下の座標を計算
+    this->grid_min_position = { -half_stage_size, 0.0f, -half_stage_size };
+    this->grid_max_position = { half_stage_size, 0.0f, half_stage_size };
 }
 
-bool GridObjectManager::Check(std::shared_ptr<Object> object, std::shared_ptr<Transform3DComponent> transform)
+bool GridObjectManager::RegisterObject(std::shared_ptr<Object> object, std::shared_ptr<Transform3DComponent> transform)
 {
+    // オブジェクトまたはトランスフォームが無効な場合は登録失敗
     if (!object || !transform) return false;
 
-    const MYVECTOR3 Min = this->min_erea_pos;   // 右上座標
-    const MYVECTOR3 Max = this->max_erea_pos;   // 左下座標
-    const MYVECTOR3 WorldPos = MYVECTOR3(transform->GetWorldPosition()); 
-    const MYVECTOR3 Pos = WorldPos - Min;   // 左上を0.0とした位置に変更する
+    // グリッドの左上を基準にした座標計算
+    const MYVECTOR3 grid_origin = this->grid_min_position;   // グリッドの左上座標
+    const MYVECTOR3 world_position = MYVECTOR3(transform->GetWorldPosition()); // オブジェクトのワールド座標
+    const MYVECTOR3 local_position = world_position - grid_origin;              // グリッド基準でのローカル座標
 
-    DirectX::XMFLOAT3 pos{};
-    Pos.GetFlaot3(pos);
+    DirectX::XMFLOAT3 position_float{};
+    local_position.GetFlaot3(position_float);
 
-    if (pos.x < 0.0f || pos.z < 0.0f) return false;
+    // XZ平面内でグリッド範囲外の場合は登録失敗
+    if (position_float.x < 0.0f || position_float.z < 0.0f) return false;
 
-    int x = static_cast<int>(pos.x) / static_cast<int>(this->AREA_RAGE);
-    int z = static_cast<int>(pos.z) / static_cast<int>(this->AREA_RAGE);
+    // ローカル座標からセルインデックスを計算
+    int cell_x = static_cast<int>(position_float.x / CELL_SIZE);
+    int cell_z = static_cast<int>(position_float.z / CELL_SIZE);
 
-    int index = z * CELL_MAX + x;
+    int cell_index = cell_z * this->max_cells_per_row + cell_x;
 
-    if (this->grid_data_pool.size() < index) return false;
+    // インデックスが範囲外の場合は登録失敗
+    if (cell_index >= static_cast<int>(this->grid_cells.size())) return false;
 
-    this->grid_data_pool[index].object = object;
+    // 該当セルにオブジェクトを登録
+    this->grid_cells[cell_index].contained_object = object;
     return true;
 }
+
 #ifdef _DEBUG
 
 void GridObjectManager::DrawDebugGUI()
 {
-    if(ImGui::Begin("GridObjectManager"))
+    if (ImGui::Begin("GridObjectManager"))
     {
-        ImGui::InputFloat3("min_erea_pos", &min_erea_pos.x);
+        ImGui::InputFloat3("grid_min_position", &this->grid_min_position.x);
     }
     ImGui::End();
 }
@@ -78,17 +79,20 @@ void GridObjectManager::DrawDebugPrimitive()
     const auto& debug_primitive_render = debug_manager->GetDebugPrimitiveRenderer();
     if (!debug_primitive_render) return;
 
-    //for (int i = 0; i < 2; ++i)
-    for (int i = 0; i < this->CELL_MAX * this->CELL_MAX; ++i)
+    for (int i = 0; i < this->max_cells_per_row * this->max_cells_per_row; ++i)
     {
-        float x = static_cast<float>(i % this->CELL_MAX);
-        float z = static_cast<float>(i / this->CELL_MAX);
-        DirectX::XMFLOAT3 pos = { this->min_erea_pos.x + this->HALF_AREA_RAGE + x * this->AREA_RAGE,0.0f,this->min_erea_pos.z + this->HALF_AREA_RAGE  + z * this->AREA_RAGE };
-        
+        float x = static_cast<float>(i % this->max_cells_per_row);
+        float z = static_cast<float>(i / this->max_cells_per_row);
+        DirectX::XMFLOAT3 position = {
+            this->grid_min_position.x + HALF_CELL_SIZE + x * CELL_SIZE,
+            0.0f,
+            this->grid_min_position.z + HALF_CELL_SIZE + z * CELL_SIZE
+        };
+
         // エリア内にオブジェクトが存在するか
-        bool is_object = (this->grid_data_pool[i].object.lock() != nullptr);
+        bool is_object = (this->grid_cells[i].contained_object.lock() != nullptr);
         DirectX::XMFLOAT4 color = is_object ? DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) : DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-        debug_primitive_render->DrawBox(pos, {}, { this->HALF_AREA_RAGE ,this->HALF_AREA_RAGE ,this->HALF_AREA_RAGE }, color);
+        debug_primitive_render->DrawBox(position, {}, { HALF_CELL_SIZE, HALF_CELL_SIZE, HALF_CELL_SIZE }, color);
     }
 }
 
