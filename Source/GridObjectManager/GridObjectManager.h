@@ -29,8 +29,12 @@ public:
 
     // オブジェクトをグリッドセルに登録する関数
     // 登録に失敗、またはすでに登録済みの場合はfalseを返す
-    bool RegisterObject(std::shared_ptr<Object> object, std::shared_ptr<Transform3DComponent> transform);
+    bool RegisterObject(std::shared_ptr<Object> object, DirectX::XMFLOAT3 position);
 
+
+
+    // クリッドセルに登録されているオブジェクトをリセットする
+    void ClearGridObject();
 private:
     DirectX::XMFLOAT3 grid_min_position;   // ステージ全体の左上のワールド座標
     DirectX::XMFLOAT3 grid_max_position;   // ステージ全体の右下のワールド座標

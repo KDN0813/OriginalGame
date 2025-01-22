@@ -215,6 +215,9 @@ void SceneGame::Update(float elapsed_time)
 		}
 	}
 
+	// グリッドセルの更新
+	grid_object_manager.ClearGridObject();
+
 #ifdef _DEBUG
 	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{

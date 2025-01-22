@@ -3,6 +3,8 @@
 #include "Object/Object.h"
 #include "Object/GameObject.h"
 #include "Collision/Collision.h"
+#include "GridObjectManager\GridObjectManager.h"
+
 #ifdef _DEBUG
 #include "Debug/DebugManager.h"
 #include "Input\Input.h"
@@ -68,6 +70,10 @@ void MovementComponent::Update(float elapsed_time)
 
 	// 加速度を初期化
 	this->param.acceleration = {};
+
+	// オブジェクトをグリッドセルに登録
+	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
+	grid_object_manager->RegisterObject(owner, owner->GetComponent<Transform3DComponent>(transform_Wptr));
 }
 
 void MovementComponent::FaceMovementDirection(float elapsed_time)

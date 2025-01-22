@@ -14,7 +14,6 @@
 
 #ifdef _DEBUG
 #include "Shader\ParticleSystem.h"
-#include "GridObjectManager\GridObjectManager.h"
 #endif // DEBUG
 
 #ifdef _DEBUG
@@ -34,10 +33,6 @@ void PlayerComponent::Update(float elapsed_time)
 {
     // Š—LŽÒ‚ÌŽæ“¾
     const auto& owner = GetOwner();
-
-    GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
-    grid_object_manager->RegisterObject(owner, owner->GetComponent<Transform3DComponent>(transform_Wptr));
-
 
     // ˆÚ“®ˆ—
     if(this->param.input_move_validity_flag)

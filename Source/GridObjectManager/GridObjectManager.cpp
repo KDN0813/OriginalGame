@@ -32,14 +32,14 @@ GridObjectManager::GridObjectManager()
     this->grid_max_position = { half_stage_size, 0.0f, half_stage_size };
 }
 
-bool GridObjectManager::RegisterObject(std::shared_ptr<Object> object, std::shared_ptr<Transform3DComponent> transform)
+bool GridObjectManager::RegisterObject(std::shared_ptr<Object> object, DirectX::XMFLOAT3 position)
 {
     // オブジェクトまたはトランスフォームが無効な場合は登録失敗
-    if (!object || !transform) return false;
+    if (!object) return false;
 
     // グリッドの左上を基準にした座標計算
     const MYVECTOR3 grid_origin = this->grid_min_position;   // グリッドの左上座標
-    const MYVECTOR3 world_position = MYVECTOR3(transform->GetWorldPosition()); // オブジェクトのワールド座標
+    const MYVECTOR3 world_position = position; // オブジェクトのワールド座標
     const MYVECTOR3 local_position = world_position - grid_origin;              // グリッド基準でのローカル座標
 
     DirectX::XMFLOAT3 position_float{};
@@ -93,6 +93,14 @@ void GridObjectManager::DrawDebugPrimitive()
         bool is_object = (this->grid_cells[i].contained_object.lock() != nullptr);
         DirectX::XMFLOAT4 color = is_object ? DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) : DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
         debug_primitive_render->DrawBox(position, {}, { HALF_CELL_SIZE, HALF_CELL_SIZE, HALF_CELL_SIZE }, color);
+    }
+}
+
+void GridObjectManager::ClearGridObject()
+{
+    for (auto& grid_cell : this->grid_cells)
+    {
+        grid_cell.contained_object.reset();
     }
 }
 
