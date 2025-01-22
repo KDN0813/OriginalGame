@@ -123,7 +123,7 @@ void SpriteShader::Render()
 		this->should_sort = false;
 	}
 
-    for (auto sprite_Wptr : this->sprite_pool)
+    for (const auto& sprite_Wptr : this->sprite_pool)
     {
         auto sprite = sprite_Wptr.lock();
         if (!sprite) continue;
