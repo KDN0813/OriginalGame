@@ -18,6 +18,11 @@ const MyHash EnemyConstant::ATTACK_OBJECT_NAME = MyHash("EnemyAttackObject");
 
 const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<Object>& enemy)
 {
+	return CreateEnemy({}, enemy);
+}
+
+const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>& enemy)
+{
 	// TODO 仮配置
 	float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
 	float player_area_rage = 10.0f;
@@ -28,6 +33,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 	// エネミーコンポーネント設定
 	{
 		EnemyComponent::EnemyParam param{};
+		param.spawn_point = spawn_point;
 		enemy_component = enemy->AddComponent<EnemyComponent>(param);
 	}
 	// ムーブメント設定
@@ -59,9 +65,9 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 						0.0f,
 						0.0f,
 #else
-						sinf(theta) * range,
+						spawn_point.x + sinf(theta) * range,
 						1.0f,
-						cosf(theta) * range ,
+						spawn_point.y + cosf(theta) * range ,
 #endif
 		};
 		param.local_scale = DirectX::XMFLOAT3(0.015f, 0.015f, 0.015f);
@@ -79,7 +85,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 	}
 
 	// シェーダー設定
-	if(InstancingModelShader::Instance instancing_model_shader = InstancingModelShader::GetInstance(); instancing_model_shader.Get())
+	if (InstancingModelShader::Instance instancing_model_shader = InstancingModelShader::GetInstance(); instancing_model_shader.Get())
 	{
 		auto shader_component =
 			enemy->AddComponent<InstancingModelShaderComponent>(instancing_model_shader.Get());

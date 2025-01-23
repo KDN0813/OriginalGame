@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <DirectXMath.h>
 #include "Model/ModelCommonData.h"
 
 #include "Object\Object.h"
@@ -39,4 +40,5 @@ public:
     static constexpr float REMOVE_IDLE_TIME = 2.0f; // 死亡アニメーション再生終了から削除されるまでの時間
 public:
     static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);
+    static const std::shared_ptr<Object>& CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>&);
 };

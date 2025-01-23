@@ -145,6 +145,8 @@ void GridObjectManager::DrawDebugGUI()
 {
     if (ImGui::Begin("GridObjectManager"))
     {
+        ImGui::Checkbox("Debug Primitive", &this->is_draw_debug_primitive);
+
         ImGui::InputFloat3("grid_min_position", &this->grid_min_position.x);
         ImGui::InputFloat("push_out_force", &this->push_out_force);
     }
@@ -153,6 +155,8 @@ void GridObjectManager::DrawDebugGUI()
 
 void GridObjectManager::DrawDebugPrimitive()
 {
+    if (!this->is_draw_debug_primitive) return;
+
     DebugManager::Instance debug_manager = DebugManager::GetInstance();
     const auto& debug_primitive_render = debug_manager->GetDebugPrimitiveRenderer();
     if (!debug_primitive_render) return;

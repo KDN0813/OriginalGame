@@ -57,5 +57,8 @@ public:
     void DrawDebugGUI();      // デバッグ用のGUI描画
     void DrawDebugPrimitive(); // デバッグ用のプリミティブ描画
 
+private:
+    bool is_draw_debug_primitive = true;
+
 #endif // _DEBUG
 };

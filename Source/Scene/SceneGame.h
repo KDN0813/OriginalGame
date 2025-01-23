@@ -52,6 +52,8 @@ private:
     GridObjectManager grid_object_manager;
 
     CHANGE_SCENE_STATE change_state = CHANGE_SCENE_STATE::START;    // シーン遷移用ステート
+
+    const size_t enemy_spawn_point_count = 3;   // 敵を生成する数(1列、縦横同じ)
 #ifdef _DEBUG
     const size_t enemy_max = 500;
     std::shared_ptr<Object> debug_Particle;

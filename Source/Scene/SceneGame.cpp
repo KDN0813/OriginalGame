@@ -125,17 +125,40 @@ void SceneGame::Initialize()
 		{
 			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
-#ifdef _DEBUG
-				for (int i = 0; i < 1; ++i)
-#else
-				for (int i = 0; i < this->enemy_max; ++i)
-#endif // _DEBUG
-				{
-					const auto& enemy = EnemyConstant::CreateEnemy(object_manager.Create(("enemy" + std::to_string(i)).c_str()));
+				const float half_stage_size = StageConstant::STAGE_SIZE * 0.5f;
+				const float one_size = StageConstant::STAGE_SIZE / this->enemy_spawn_point_count;
+				std::vector<DirectX::XMFLOAT3> spawn_point_pool;
+				spawn_point_pool.resize(this->enemy_spawn_point_count * this->enemy_spawn_point_count);
 
-					game_object->SetEnemy(enemy);
+				size_t count = 0;
+				for (auto& spawn_point : spawn_point_pool)
+				{
+					spawn_point.x = half_stage_size - one_size * 0.5f - static_cast<float>(count % this->enemy_spawn_point_count) * one_size;
+					spawn_point.y = 0.0f;
+					spawn_point.z = half_stage_size - one_size * 0.5f - static_cast<float>(count / this->enemy_spawn_point_count) * one_size;
+
+					++count;
 				}
 
+				for (int j = 0; j < spawn_point_pool.size(); ++j)
+				{
+#ifdef _DEBUG
+					for (int i = 0; i < this->enemy_max / this->enemy_spawn_point_count; ++i)
+#else
+					for (int i = 0; i < this->enemy_max; ++i)
+#endif // _DEBUG
+					{
+						const int x = j % 3;
+						const int z = j / 3;
+						const int index = x + z * this->enemy_spawn_point_count;
+
+						DirectX::XMFLOAT3 spawn_point = spawn_point_pool[index];
+
+						const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create(("enemy" + std::to_string(i)).c_str()));
+
+						game_object->SetEnemy(enemy);
+					}
+				}
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);
 				game_object->SetStageFoor(stage_foor);

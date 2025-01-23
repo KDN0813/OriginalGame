@@ -12,9 +12,9 @@ class EnemyComponent : public Component
 {
 public:
 #ifdef _DEBUG
-    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;    // 敵の移動範囲
+    static constexpr float DEFAULT_TERRITORY_RENGR = 70.0f;    // 敵の移動範囲
 #else
-    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;    // 敵の移動範囲
+    static constexpr float DEFAULT_TERRITORY_RENGR = 200.0f;    // 敵の移動範囲
 #endif // _DEBUG
 
 public:
@@ -47,6 +47,7 @@ public:
         bool move_validity_flag = true;   // 移動が有効であるかのフラグ
         bool pending_removal_flag = false;     // 削除待ちをしているか(死亡演出を待っているか)
         STATE state = STATE::IDLE;  // 状態
+        DirectX::XMFLOAT3 spawn_point{};    // スポーン位置
     };
 public:
     EnemyComponent(EnemyParam param) :param(param),default_param(param){};
@@ -102,7 +103,6 @@ private:
 private:
     EnemyParam param;
     EnemyParam default_param;
-    DirectX::XMFLOAT3 spawn_point{};    // スポーン位置
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;

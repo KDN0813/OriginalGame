@@ -27,9 +27,6 @@ void EnemyComponent::Start()
 	if (!owner) return;
 	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 	if (!transform) return;
-
-	// スポーン位置保存
-	this->spawn_point = transform->GetSpawnPosition();
 }
 
 void EnemyComponent::End()
@@ -160,9 +157,9 @@ void EnemyComponent::SetRandomTargetPosition()
 {
 	float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
 	float range = MyMathf::RandomRange(0.0f, this->param.territory_range);
-	this->param.target_position.x = this->spawn_point.x + sinf(theta) * range;
+	this->param.target_position.x = this->param.spawn_point.x + sinf(theta) * range;
 	this->param.target_position.y = 0.0f;
-	this->param.target_position.z = this->spawn_point.z + cosf(theta) * range;
+	this->param.target_position.z = this->param.spawn_point.z + cosf(theta) * range;
 }
 
 void EnemyComponent::SetTargetPositionByPlayer()
@@ -204,7 +201,7 @@ bool EnemyComponent::IsAtTarget(float distSq)
 
 bool EnemyComponent::IsPlayerInMovementArea()
 {
-	MYVECTOR3 SpawnPosition = this->spawn_point;	// 生成位置(移動範囲の中心)
+	MYVECTOR3 SpawnPosition = this->param.spawn_point;	// 生成位置(移動範囲の中心)
 	MYVECTOR3 Player_position{};					// プレイヤーの位置
 
 	// プレイヤー取得
@@ -298,7 +295,7 @@ void EnemyComponent::DrawDebugPrimitive()
 	if (debug_render)
 	{
 		// 移動範囲描画
-		debug_render->DrawCylinder(spawn_point, this->param.territory_range, 2.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+		debug_render->DrawCylinder(this->param.spawn_point, this->param.territory_range, 2.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 		
 		if (IsPlayerInMovementArea())
 		{
