@@ -80,18 +80,26 @@ void MovementComponent::Update(float elapsed_time)
 
 		if (0 <= cell_index)
 		{
-			MYVECTOR3 Cell_center = grid_object_manager->GetCellCenter(cell_index);
+			DirectX::XMFLOAT3 cell_center = grid_object_manager->GetCellCenter(cell_index);
+			MYVECTOR3 Cell_center = cell_center;
 			MYVECTOR3 Position = transform->GetWorldPosition();
 			MYVECTOR3 Vec = Position - Cell_center;
 			Vec.NormalizeSelf();
 
-			MYVECTOR3 Push_out_force = Vec * grid_object_manager->push_out_force * elapsed_time;
-			DirectX::XMFLOAT3 push_out_force;
-			Push_out_force.GetFlaot3(push_out_force);
-			push_out_force.y = 0.0f;
+			DirectX::XMFLOAT3 vec;
+			Vec.GetFlaot3(vec);
 
+			MYVECTOR3 Push_out_force = Vec * (grid_object_manager->HALF_CELL_SIZE * elapsed_time * this->param.puth_rate);
+			DirectX::XMFLOAT3 push_out_force{};
+			Push_out_force.GetFlaot3(push_out_force);
 			transform->AddLocalPosition(push_out_force);
+
+			this->param.puth_rate += 0.2f;
 		}
+	}
+	else
+	{
+		this->param.puth_rate = 1.0f;
 	}
 }
 
@@ -355,6 +363,18 @@ void MovementComponent::DrawDebugGUI()
 	{
 		ImGui::InputFloat("Step Offset", &this->param.step_offset);
 	}
+
+	auto owner = GetOwner();
+	if (!owner) return;
+	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+	if (!transform) return;
+
+	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
+	int cell_index = grid_object_manager->GetCellIndex(transform->GetWorldPosition());
+	DirectX::XMFLOAT3 cell_center = grid_object_manager->GetCellCenter(cell_index);
+
+	ImGui::InputInt("cell_index", &cell_index);
+	ImGui::InputFloat3("cell_center", &cell_center.x);
 }
 
 void MovementComponent::DrawDebugPrimitive()

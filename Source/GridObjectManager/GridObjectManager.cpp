@@ -115,16 +115,16 @@ const DirectX::XMFLOAT3 GridObjectManager::GetCellCenter(const DirectX::XMFLOAT3
 
 const DirectX::XMFLOAT3 GridObjectManager::GetCellCenter(int cell_index)
 {
-    _ASSERT_EXPR_W(cell_index <= static_cast<int>(this->grid_cells.size()), L"cell_indexÇÃílÇ™àŸèÌÇ≈Ç∑");
-    if(cell_index <= static_cast<int>(this->grid_cells.size())) return DirectX::XMFLOAT3();
+    _ASSERT_EXPR_W(cell_index < static_cast<int>(this->grid_cells.size()), L"cell_indexÇÃílÇ™àŸèÌÇ≈Ç∑");
+    if(cell_index >= static_cast<int>(this->grid_cells.size())) return DirectX::XMFLOAT3();
 
     float x = static_cast<float>(cell_index % this->max_cells_per_row);
     float z = static_cast<float>(cell_index / this->max_cells_per_row);
     const DirectX::XMFLOAT3 position =
     {
-        this->grid_min_position.x + x * CELL_SIZE,
+        this->grid_min_position.x + x * CELL_SIZE + HALF_CELL_SIZE,
         0.0f,
-        this->grid_min_position.z + z * CELL_SIZE
+        this->grid_min_position.z + z * CELL_SIZE + HALF_CELL_SIZE
     };
 
     return position;

@@ -22,6 +22,8 @@ public:
         float max_accelerationXZ = 5.0f;            // XZ軸の最大加速度
         float turn_speed = 15.0f;                   // 回転速度
         bool is_stage_raycas = false;               // ステージとのレイキャストの有無
+
+        float puth_rate = 1.0f;
     };
 public:
     MovementComponent(MovementParam param);

@@ -54,8 +54,8 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 		Transform3DComponent::Transform3DParam param{};
 		param.local_position =
 		{
-#if 0	// ‰Šú’lŒÅ’è
-						0.0f,
+#if 1	// ‰Šú’lŒÅ’è
+						20.0f,
 						0.0f,
 						0.0f,
 #else
