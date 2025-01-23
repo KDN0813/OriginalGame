@@ -260,7 +260,11 @@ void CameraControllerDeathComponent::Update(float elapsed_time)
 	}
 }
 
+#ifdef _DEBUG
+
 void CameraControllerDeathComponent::DrawDebugGUI()
 {
 	ImGui::InputFloat("Rotation Speed", &this->param.rotation_speed);
 }
+
+#endif // _DEBUG

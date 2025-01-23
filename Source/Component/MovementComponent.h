@@ -23,7 +23,7 @@ public:
         float turn_speed = 15.0f;                   // 回転速度
         bool is_stage_raycas = false;               // ステージとのレイキャストの有無
 
-        float puth_rate = 1.0f;
+        float push_rate = 1.0f;
     };
 public:
     MovementComponent(MovementParam param);
@@ -58,6 +58,8 @@ public:
     // ステージとのレイキャスト
     void RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform);
 
+    // セルとの衝突判定を行う
+    void ResolveGridCellCollision(std::shared_ptr<Object> owner, std::shared_ptr<Transform3DComponent>& transform,float elapsed_time);
 private:
     MovementParam param;
     MovementParam default_param;

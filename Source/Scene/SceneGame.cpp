@@ -40,9 +40,9 @@
 #include "Component\CircleCollisionComponent.h"
 #include "Component\CameraComponent.h"
 #ifdef _DEBUG
+#include "Component\FadeControllerComponent.h"
 #include "Component\ModelShaderComponent.h"
 #include "Component\DebugParticle.h"
-#include "Component\FadeControllerComponent.h"
 #endif // DEBUG
 
 

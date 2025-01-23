@@ -3,6 +3,7 @@
 #include "System\MyMath\MYVECTOR3.h"
 #include "Object\Object.h"
 #include "System\Misc.h"
+#include "Object\Constant\StageConstant.h"
 
 #include "Component\EnemyComponent.h"
 #include "Component\TransformComponent.h"
@@ -17,7 +18,7 @@ GridObjectManager::GridObjectManager()
     : Singleton(this)
 {
     // ステージのサイズ設定（ステージは正方形）
-    this->stage_size = EnemyComponent::DEFAULT_TERRITORY_RENGR;
+    this->stage_size = StageConstant::STAGE_SIZE;
 
     // 1行あたりのセル数を計算
     this->max_cells_per_row = static_cast<int>(this->stage_size / CELL_SIZE);

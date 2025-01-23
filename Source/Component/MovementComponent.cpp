@@ -64,43 +64,14 @@ void MovementComponent::Update(float elapsed_time)
 	}
 	this->param.velocity.y = this->param.acceleration.y * elapsed_time;
 
-	RaycasVsStage(owner, transform);
-
 	FaceMovementDirection(elapsed_time);
+
+	ResolveGridCellCollision(owner, transform,elapsed_time);
+
+	RaycasVsStage(owner, transform);
 
 	// ‰Á‘¬“x‚ð‰Šú‰»
 	this->param.acceleration = {};
-
-	// ƒIƒuƒWƒFƒNƒg‚ðƒOƒŠƒbƒhƒZƒ‹‚É“o˜^
-	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
-	if (!grid_object_manager->RegisterObject(owner, transform->GetWorldPosition()))
-	{
-		// Šù‚É“o˜^‚³‚ê‚Ä‚¢‚éê‡
-		const int cell_index = grid_object_manager->GetCellIndex(transform->GetWorldPosition());
-
-		if (0 <= cell_index)
-		{
-			DirectX::XMFLOAT3 cell_center = grid_object_manager->GetCellCenter(cell_index);
-			MYVECTOR3 Cell_center = cell_center;
-			MYVECTOR3 Position = transform->GetWorldPosition();
-			MYVECTOR3 Vec = Position - Cell_center;
-			Vec.NormalizeSelf();
-
-			DirectX::XMFLOAT3 vec;
-			Vec.GetFlaot3(vec);
-
-			MYVECTOR3 Push_out_force = Vec * (grid_object_manager->HALF_CELL_SIZE * elapsed_time * this->param.puth_rate);
-			DirectX::XMFLOAT3 push_out_force{};
-			Push_out_force.GetFlaot3(push_out_force);
-			transform->AddLocalPosition(push_out_force);
-
-			this->param.puth_rate += 0.2f;
-		}
-	}
-	else
-	{
-		this->param.puth_rate = 1.0f;
-	}
 }
 
 void MovementComponent::FaceMovementDirection(float elapsed_time)
@@ -347,6 +318,48 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 				transform->SetLocalPosition(position);
 			}
 		}
+	}
+}
+
+void MovementComponent::ResolveGridCellCollision(std::shared_ptr<Object> owner, std::shared_ptr<Transform3DComponent>& transform,float elapsed_time)
+{
+	MYVECTOR3 new_position = transform->GetWorldPosition(); // ˆÚ“®Œã‚ÌˆÊ’u
+	MYVECTOR3 current_velocity = this->param.velocity;
+	new_position += current_velocity;
+
+	DirectX::XMFLOAT3 position_float3{};
+	new_position.GetFlaot3(position_float3);
+
+	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
+	if (!grid_object_manager->RegisterObject(owner, position_float3))
+	{
+		// Šù‚É“o˜^‚³‚ê‚Ä‚¢‚éê‡
+		const int cell_index = grid_object_manager->GetCellIndex(position_float3);
+
+		if (0 <= cell_index)
+		{
+			DirectX::XMFLOAT3 cell_center_float3 = grid_object_manager->GetCellCenter(cell_index);
+			MYVECTOR3 cell_center = cell_center_float3;
+			MYVECTOR3 current_position = transform->GetWorldPosition();
+			MYVECTOR3 direction_to_center = cell_center - current_position;
+			direction_to_center.NormalizeSelf();
+
+			DirectX::XMFLOAT3 normalized_direction;
+			direction_to_center.GetFlaot3(normalized_direction);
+
+			DirectX::XMFLOAT3 previous_velocity = this->param.velocity;
+
+			MYVECTOR3 push_out_force = direction_to_center * (grid_object_manager->HALF_CELL_SIZE * elapsed_time * this->param.push_rate);
+			current_velocity -= push_out_force;
+			current_velocity.GetFlaot3(this->param.velocity);
+			this->param.velocity.y = 0.0f;
+
+			this->param.push_rate += elapsed_time;
+		}
+	}
+	else
+	{
+		this->param.push_rate = 1.0f;
 	}
 }
 
