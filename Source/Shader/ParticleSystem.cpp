@@ -409,7 +409,6 @@ void ParticleSystem::Update()
 		immediate_context->CSSetConstantBuffers(1, 1, this->particle_common_constant.GetAddressOf());
 	}
 
-	// TODO エフェクトが追加された時だけ実行されるように変更する
 	// 初期化用パラメータを更新
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource{};
@@ -433,8 +432,6 @@ void ParticleSystem::Update()
 	// コンピュート・シェーダの実行
 	immediate_context->Dispatch(PERTICLES_PIECE_NO, 1, 1);//グループの数
 
-	// TODO エフェクトの再生指示が行われた場合のみ実行するようにする。
-	// TODO 空いている用ののインデックスをキューで管理するように変更する
 	{
 		HRESULT hr = S_OK;
 
