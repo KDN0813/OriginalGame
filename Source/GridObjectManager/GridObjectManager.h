@@ -18,7 +18,7 @@ public:
     };
 
 public:
-    static constexpr float CELL_SIZE = 5.0f;        // 各グリッドセルのサイズ
+    static constexpr float CELL_SIZE = 4.0f;        // 各グリッドセルのサイズ
     static constexpr float HALF_CELL_SIZE = CELL_SIZE * 0.5f; // グリッドセルの半分のサイズ
     float push_out_force = 2.0f;
     float stage_size{};                              // ステージ全体のサイズ

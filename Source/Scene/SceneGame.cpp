@@ -142,11 +142,7 @@ void SceneGame::Initialize()
 
 				for (int i = 0; i < this->enemy_max; ++i)
 				{
-					const int index = i % (spawn_point_pool.size());
-
-					DirectX::XMFLOAT3 spawn_point = spawn_point_pool[index];
-
-					const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create(("enemy" + std::to_string(i)).c_str()));
+					const auto& enemy = EnemyConstant::CreateEnemy(object_manager.Create(("enemy" + std::to_string(i)).c_str()));
 
 					game_object->SetEnemy(enemy);
 				}

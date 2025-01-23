@@ -60,12 +60,12 @@ void EnemyIdleState::Update(float elapsed_time)
     }
 
     // 移動範囲にプレイヤーが存在するか判定
-    //if (enemy->IsPlayerInMovementArea())
-    //{
-    //    // 範囲内に存在すれば接近ステートに遷移
-    //    state_machine->ChangeState(this->change_chase_state);
-    //    return;
-    //}
+    if (enemy->IsPlayerInMovementArea())
+    {
+        // 範囲内に存在すれば接近ステートに遷移
+        state_machine->ChangeState(this->change_chase_state);
+        return;
+    }
 
     // ダメージを受けたか判定
     if (character->IsDamage())
@@ -136,12 +136,12 @@ void EnemyWanderingState::Update(float elapsed_time)
     }
 
     // 移動範囲にプレイヤーが存在するか判定
-    //if (enemy->IsPlayerInMovementArea())
-    //{
-    //    // 範囲内に存在すれば接近ステートに遷移
-    //    state_machine->ChangeState(this->change_chase_state);
-    //    return;
-    //}
+    if (enemy->IsPlayerInMovementArea())
+    {
+        // 範囲内に存在すれば接近ステートに遷移
+        state_machine->ChangeState(this->change_chase_state);
+        return;
+    }
 
     // ダメージを受けたか判定
     if (character->IsDamage())

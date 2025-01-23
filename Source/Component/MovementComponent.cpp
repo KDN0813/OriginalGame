@@ -66,9 +66,13 @@ void MovementComponent::Update(float elapsed_time)
 
 	FaceMovementDirection(elapsed_time);
 
-	//ResolveGridCellCollision(owner, transform,elapsed_time);
+	ResolveGridCellCollision(owner, transform,elapsed_time);
 
 	RaycasVsStage(owner, transform);
+
+	// ˆÚ“®Œã‚É‚à‚¤ˆê“x“o˜^‚·‚é
+	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
+	grid_object_manager->RegisterObject(owner, transform->GetWorldPosition());
 
 	// ‰Á‘¬“x‚ð‰Šú‰»
 	this->param.acceleration = {};
@@ -334,32 +338,7 @@ void MovementComponent::ResolveGridCellCollision(std::shared_ptr<Object> owner, 
 	if (!grid_object_manager->RegisterObject(owner, position_float3))
 	{
 		// Šù‚É“o˜^‚³‚ê‚Ä‚¢‚éê‡
-		const int cell_index = grid_object_manager->GetCellIndex(position_float3);
-
-		if (0 <= cell_index)
-		{
-			DirectX::XMFLOAT3 cell_center_float3 = grid_object_manager->GetCellCenter(cell_index);
-			MYVECTOR3 cell_center = cell_center_float3;
-			MYVECTOR3 current_position = transform->GetWorldPosition();
-			MYVECTOR3 direction_to_center = cell_center - current_position;
-			direction_to_center.NormalizeSelf();
-
-			DirectX::XMFLOAT3 normalized_direction;
-			direction_to_center.GetFlaot3(normalized_direction);
-
-			DirectX::XMFLOAT3 previous_velocity = this->param.velocity;
-
-			MYVECTOR3 push_out_force = direction_to_center * (grid_object_manager->HALF_CELL_SIZE * elapsed_time * this->param.push_rate);
-			current_velocity -= push_out_force;
-			current_velocity.GetFlaot3(this->param.velocity);
-			this->param.velocity.y = 0.0f;
-
-			this->param.push_rate += elapsed_time;
-		}
-	}
-	else
-	{
-		this->param.push_rate = 1.0f;
+		this->param.velocity = {};
 	}
 }
 

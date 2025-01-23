@@ -173,8 +173,8 @@ void GridObjectManager::DrawDebugPrimitive()
 
         // エリア内にオブジェクトが存在するか
         bool is_object = (this->grid_cells[i].contained_object.lock() != nullptr);
-        DirectX::XMFLOAT4 color = is_object ? DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) : DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-        debug_primitive_render->DrawBox(position, {}, { HALF_CELL_SIZE, HALF_CELL_SIZE, HALF_CELL_SIZE }, color);
+        DirectX::XMFLOAT4 color = is_object ? DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) : DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+        debug_primitive_render->DrawBox(position, {}, { HALF_CELL_SIZE, 20.0f, HALF_CELL_SIZE }, color);
     }
 }
 

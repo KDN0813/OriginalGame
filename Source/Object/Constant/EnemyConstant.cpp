@@ -53,8 +53,9 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	}
 	// トランスフォーム設定
 	{
-		const float offset_x = MyMathf::RandomRange(-territory_range, territory_range);
-		const float offset_z = MyMathf::RandomRange(-territory_range, territory_range);
+		float offset = 2.0f;
+		const float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
+		const float range = MyMathf::RandomRange(player_area_rage, territory_range);
 
 		Transform3DComponent::Transform3DParam param{};
 		param.local_position =
@@ -64,9 +65,9 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 						0.0f,
 						0.0f,
 #else
-						spawn_point.x + offset_x,
+						spawn_point.x + sinf(theta) * range,
 						1.0f,
-						spawn_point.z + offset_z ,
+						spawn_point.z + cosf(theta) * range ,
 #endif
 		};
 		param.local_scale = DirectX::XMFLOAT3(0.015f, 0.015f, 0.015f);
