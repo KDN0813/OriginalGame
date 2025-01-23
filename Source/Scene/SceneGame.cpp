@@ -184,6 +184,10 @@ void SceneGame::Finalize()
 	{
 		//this->pause_object->SetIsActive(false);
 	}
+
+	// ポーズオブジェクトを非アクティブに設定
+	SceneManager::Instance scene_manager = SceneManager::GetInstance();;
+	scene_manager->GetPauseObject()->SetIsActive(false);
 }
 
 void SceneGame::Update(float elapsed_time)
@@ -203,6 +207,10 @@ void SceneGame::Update(float elapsed_time)
 					{
 						game_data->SetIsPause(false);
 						game_data->SetGameStatus(GameData::GameStatus::GAME);
+
+						// ポーズオブジェクトを非アクティブに設定
+						SceneManager::Instance scene_manager = SceneManager::GetInstance();;
+						scene_manager->GetPauseObject()->SetIsActive(false);
 						return;
 					}
 					// (Y)リトライ
@@ -210,6 +218,10 @@ void SceneGame::Update(float elapsed_time)
 					{
 						game_data->SetIsPause(false);
 						game_data->SetGameStatus(GameData::GameStatus::RESTART);
+
+						// ポーズオブジェクトを非アクティブに設定
+						SceneManager::Instance scene_manager = SceneManager::GetInstance();;
+						scene_manager->GetPauseObject()->SetIsActive(false);
 						return;
 					}
 					// (B)タイトルに戻る
@@ -217,6 +229,10 @@ void SceneGame::Update(float elapsed_time)
 					{
 						game_data->SetIsPause(false);
 						game_data->SetGameStatus(GameData::GameStatus::RETURN_TO_TITLE);
+
+						// ポーズオブジェクトを非アクティブに設定
+						SceneManager::Instance scene_manager = SceneManager::GetInstance();;
+						scene_manager->GetPauseObject()->SetIsActive(false);
 						return;
 					}
 
