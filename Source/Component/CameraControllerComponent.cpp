@@ -8,6 +8,25 @@
 #include "Component/CameraComponent.h"
 #include "Component/TransformComponent.h"
 
+void CameraControllerDefault::Update(float elapsed_time)
+{
+	auto owner = GetOwner();
+	if (!owner) return;
+	auto camera = owner->GetComponent<CameraComponent>(this->camera_Wptr);
+	if (!camera) return;
+	DirectX::XMFLOAT3 focus{};
+	{
+		auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
+		if (transform)
+		{
+			focus = transform->GetWorldPosition();
+		}
+	}
+
+	camera->SetFocus(focus);
+}
+
+
 CameraControllerGamepad::CameraControllerGamepad(CameraControllerParam param)
 	: param(param),default_param(param)
 {
