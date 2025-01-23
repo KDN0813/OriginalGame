@@ -12,9 +12,9 @@ class EnemyComponent : public Component
 {
 public:
 #ifdef _DEBUG
-    static constexpr float DEFAULT_TERRITORY_RENGR = 70.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
+    static constexpr float DEFAULT_TERRITORY_RENGR = 100.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
 #else
-    static constexpr float DEFAULT_TERRITORY_RENGR = 70.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
+    static constexpr float DEFAULT_TERRITORY_RENGR = 200.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
 #endif // _DEBUG
 
 public:
@@ -33,7 +33,7 @@ public:
         DirectX::XMFLOAT3 target_position{};
         float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
         float radius = 0.1f;
-        float move_speed = 30.0f;
+        float move_speed = 5.0f;
         float speed_rate = 0.5f;
 
         float attack_range = 3.0f;    // UŒ‚”ÍˆÍ

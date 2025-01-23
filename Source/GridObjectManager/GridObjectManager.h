@@ -58,7 +58,7 @@ public:
     void DrawDebugPrimitive(); // デバッグ用のプリミティブ描画
 
 private:
-    bool is_draw_debug_primitive = true;
+    bool is_draw_debug_primitive = false;
 
 #endif // _DEBUG
 };

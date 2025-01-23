@@ -107,6 +107,9 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 				{
 					auto camera = player_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
+				
+					camera->SetRotateX(0.8f);
+					camera->SetRange(40.0f);
 				}
 			}
 			// カメラコントローラー設定

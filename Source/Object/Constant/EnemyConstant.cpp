@@ -23,9 +23,8 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 
 const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>& enemy)
 {
-	// TODO 仮配置
-	float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
-	float player_area_rage = 10.0f;
+	const float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
+	const float player_area_rage = 50.0f;
 
 	// コリジョンに設定するコンポーネントは事前に作成しておく
 	std::shared_ptr<EnemyComponent> enemy_component;
