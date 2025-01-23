@@ -66,7 +66,7 @@ void MovementComponent::Update(float elapsed_time)
 
 	FaceMovementDirection(elapsed_time);
 
-	ResolveGridCellCollision(owner, transform,elapsed_time);
+	//ResolveGridCellCollision(owner, transform,elapsed_time);
 
 	RaycasVsStage(owner, transform);
 

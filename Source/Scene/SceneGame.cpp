@@ -140,25 +140,17 @@ void SceneGame::Initialize()
 					++count;
 				}
 
-				for (int j = 0; j < spawn_point_pool.size(); ++j)
+				for (int i = 0; i < this->enemy_max; ++i)
 				{
-#ifdef _DEBUG
-					for (int i = 0; i < this->enemy_max / this->enemy_spawn_point_count; ++i)
-#else
-					for (int i = 0; i < this->enemy_max; ++i)
-#endif // _DEBUG
-					{
-						const int x = j % 3;
-						const int z = j / 3;
-						const int index = x + z * this->enemy_spawn_point_count;
+					const int index = i % (spawn_point_pool.size());
 
-						DirectX::XMFLOAT3 spawn_point = spawn_point_pool[index];
+					DirectX::XMFLOAT3 spawn_point = spawn_point_pool[index];
 
-						const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create(("enemy" + std::to_string(i)).c_str()));
+					const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create(("enemy" + std::to_string(i)).c_str()));
 
-						game_object->SetEnemy(enemy);
-					}
+					game_object->SetEnemy(enemy);
 				}
+
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);
 				game_object->SetStageFoor(stage_foor);

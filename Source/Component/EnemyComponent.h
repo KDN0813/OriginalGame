@@ -14,7 +14,7 @@ public:
 #ifdef _DEBUG
     static constexpr float DEFAULT_TERRITORY_RENGR = 70.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
 #else
-    static constexpr float DEFAULT_TERRITORY_RENGR = 200.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
+    static constexpr float DEFAULT_TERRITORY_RENGR = 70.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
 #endif // _DEBUG
 
 public:

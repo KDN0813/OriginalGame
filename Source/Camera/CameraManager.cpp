@@ -157,7 +157,7 @@ DirectX::BoundingFrustum CameraManager::GetBoundingFrustum()
 {
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)
 #if 1   // メインカメラでカリングを行うか
-    const auto& camera = this->GetCamera(CAMERA_TYPE::MAIN);
+    const auto& camera = this->GetCurrentCamera();
 #else
     const auto& camera = this->GetCurrentCamera();
 #endif
