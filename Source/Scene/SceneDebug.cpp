@@ -36,7 +36,7 @@ void SceneDebug::Initialize()
 	// オブジェクト作成
 	{
 		auto stage = object_manager.Create("Stage");
-		stage->AddComponent<ModelComponent>("Data/Debug/Model/Cube/Cube.mdl");
+		stage->AddComponent<ModelComponent>("Data/Model/Floor/StageFloor.mdl");
 		// トランスフォーム設定
 		{
 			Transform3DComponent::Transform3DParam param{};

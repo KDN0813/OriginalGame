@@ -4,6 +4,7 @@
 #include "Camera\CameraManager.h"
 #include "Shader\ModelShader.h"
 #include "GridObjectManager\GridObjectManager.h"
+#include "Graphics\Graphics.h"
 
 #include "Component/PlayerComponent.h"
 #include "Component/ModelComponent.h"
@@ -33,7 +34,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 
 	// モデル設定
 	{
-		auto model = player->AddComponent<ModelComponent>("Data/Debug/Model/Player/Player.mdl");
+		auto model = player->AddComponent<ModelComponent>("Data/Model/Player/Player.mdl");
 	}
 	// アニメーション設定
 	{
@@ -108,8 +109,18 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 				{
 					auto camera = player_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
 				
-					camera->SetRotateX(0.8f);
-					camera->SetRange(40.0f);
+					CameraComponent::CameraParam param{};
+					param.rotateX = 0.8f;
+					param.range = 40.0f;
+					param.fovY = DirectX::XMConvertToRadians(45.0f);
+					// グラフィックスからアスペクト比を計算
+					if (Graphics::Instance graphics = Graphics::GetInstance(); graphics.Get())
+					{
+						param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
+					}
+					param.nearZ = 0.1f;
+					param.farZ = 1000.0f;
+					camera->SetDefaultParam(param);
 				}
 			}
 			// カメラコントローラー設定

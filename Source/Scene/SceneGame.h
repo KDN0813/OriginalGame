@@ -55,7 +55,7 @@ private:
 
     const size_t enemy_spawn_point_count = 3;   // “G‚ğ¶¬‚·‚é”(1—ñAc‰¡“¯‚¶)
 #ifdef _DEBUG
-    const size_t enemy_max = 400;
+    const size_t enemy_max = 200;
     std::shared_ptr<Object> debug_Particle;
 #else
     const int enemy_max = 3000;

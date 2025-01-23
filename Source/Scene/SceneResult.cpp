@@ -21,7 +21,7 @@ void SceneResult::Initialize()
 			// スプライト
 			{
 				SpriteComponent::SpriteParam param{};
-				param.filename = "Data/Debug/Sprite/Title.png";
+				param.filename = "Data/Sprite/TitleBack.png";
 				param.color = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
 				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
 			}

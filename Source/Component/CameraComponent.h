@@ -107,6 +107,8 @@ public:
 	CAMERA_TYPE GetCameraType() const { return this->camera_type; }
 	// カメラパラメータの取得
 	CameraParam GetCameraParam() const { return this->camera_param; }
+	// DefaultParamを設定する
+	void SetDefaultParam(CameraParam param) { this->default_param = param; this->camera_param = this->default_param; }
 	// 視錐台取得
 	DirectX::BoundingFrustum GetBoundingFrustum();
 private:
