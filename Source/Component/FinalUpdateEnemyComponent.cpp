@@ -48,7 +48,7 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
         {
             // Õ“Ë‚µ‚Ä‚¢‚½‚çA‰Ÿ‚µo‚µˆ—‚ğs‚¤
             Vec.NormalizeSelf();
-            MYVECTOR3 New_pos = Pos + Vec * player_radius;
+            MYVECTOR3 New_pos = Player_pos + Vec * player_radius;
             DirectX::XMFLOAT3 new_pos{};
             New_pos.GetFlaot3(new_pos);
             new_pos.y = 0;
