@@ -27,6 +27,7 @@ public:
         float game_end_timer = 100.0f;                   // ゲーム終了までの時間
         bool is_loading = false;                         // ロード中であるか
         bool is_pause = false;                           // ポーズ中であるか
+        bool is_close_window = false;                    // ウィンドウの終了フラグ
         GameStatus game_status = GameStatus::GAME;       // ゲームの状態
     };
 public:
@@ -57,6 +58,9 @@ public:
     void SetIsLoading(bool is_loading) { this->param.is_loading = is_loading; }
     void SetIsPause(bool is_pause) { this->param.is_pause = is_pause; }
     void SetGameStatus(GameStatus status) { this->param.game_status = status; }
+    // ウィンドウを終了する
+    void CloseWindow() { this->param.is_close_window = true; }
+    bool GetIsCloseWindow()const { return this->param.is_close_window; }
 private:
     GameParam param{};
 

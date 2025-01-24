@@ -181,12 +181,6 @@ void SceneGame::Finalize()
 		camera_manager->Reset();
 	}
 
-	// ポーズ解除
-	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-	{
-		//this->pause_object->SetIsActive(false);
-	}
-
 	// ポーズオブジェクトを非アクティブに設定
 	SceneManager::Instance scene_manager = SceneManager::GetInstance();;
 	scene_manager->GetPauseObject()->SetIsActive(false);

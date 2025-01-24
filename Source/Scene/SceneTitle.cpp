@@ -97,13 +97,18 @@ void SceneTitle::Update(float elapsed_time)
 	{
 		const auto& game_pad = input->GetGamePad();
 
-		// ボタンが押されたら
-		if ((GamePad::BTN_A | GamePad::BTN_B | GamePad::BTN_X | GamePad::BTN_Y) & game_pad.GetButtonDown())
+		// Xボタンが押されたら
+		if (GamePad::BTN_X & game_pad.GetButtonDown())
 		{
 			if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
 			{
 				scene_manager->ChangeScene(new SceneLoading(new SceneGame()));
 			}
+		}
+		// Yボタンが押されたら
+		else if(GamePad::BTN_Y & game_pad.GetButtonDown())
+		{
+
 		}
 	}
 }

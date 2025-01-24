@@ -31,8 +31,8 @@ private:
 
 	void CalculateFrameStats();
 
-	// ウィンドウ終了キーが押されているか
-	bool IsPressedWindowCloseKey();
+	// ウィンドウ終了指示がきているか
+	bool IsWindowClose();
 	// ポーズキーが押されているか
 	bool IsPressedPauseKey();
 private:

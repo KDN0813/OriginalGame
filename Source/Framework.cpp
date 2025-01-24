@@ -83,6 +83,12 @@ void Framework::Update(float elapsed_time)
 	CalculateFrameStats();
 
 	scene_manager.Update(elapsed_time);
+
+	// ウィンドウの終了判定
+	if (IsWindowClose())
+	{
+		PostMessage(hWnd, WM_CLOSE, 0, 0);
+	}
 }
 
 void Framework::Render(float elapsed_time)
@@ -134,9 +140,11 @@ void Framework::CalculateFrameStats()
 	}
 }
 
-bool Framework::IsPressedWindowCloseKey()
+bool Framework::IsWindowClose()
 {
-	return (GetAsyncKeyState(VK_ESCAPE) & 0x8000 && GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	GameData::Instance game_data = GameData::GetInstance();
+	if (game_data->GetIsPause()) return false;	// ポーズは終了しない
+	return (game_data->GetIsCloseWindow());
 }
 
 bool Framework::IsPressedPauseKey()
@@ -214,8 +222,6 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 	case WM_CREATE:
 		break;
 	case WM_KEYDOWN:
-		// 終了キーが押されていればウィンドウを閉じる
-		if (IsPressedWindowCloseKey()) PostMessage(hWnd, WM_CLOSE, 0, 0);
 		break;
 	case WM_ENTERSIZEMOVE:
 		timer.Stop();
