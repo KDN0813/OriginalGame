@@ -108,7 +108,9 @@ void SceneTitle::Update(float elapsed_time)
 		// Yボタンが押されたら
 		else if(GamePad::BTN_Y & game_pad.GetButtonDown())
 		{
-
+			GameData::Instance game_data = GameData::GetInstance();
+			// ウィンドウを終了させる
+			game_data->CloseWindow();
 		}
 	}
 }
