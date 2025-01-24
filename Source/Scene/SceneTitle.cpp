@@ -105,8 +105,8 @@ void SceneTitle::Update(float elapsed_time)
 				scene_manager->ChangeScene(new SceneLoading(new SceneGame()));
 			}
 		}
-		// Yボタンが押されたら
-		else if(GamePad::BTN_Y & game_pad.GetButtonDown())
+		// [Yボタン/ESCキー] が押されたら
+		else if((GamePad::BTN_Y | GamePad::BTN_EXIT) & game_pad.GetButtonDown())
 		{
 			GameData::Instance game_data = GameData::GetInstance();
 			// ウィンドウを終了させる
