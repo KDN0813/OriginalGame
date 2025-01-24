@@ -163,6 +163,8 @@ void SceneGame::Initialize()
 			audio->Play(param);
 		}
 	}
+
+	this->grid_object_manager.ClearGridCell();	// グリッドセルの初期化
 }
 
 void SceneGame::Finalize()
@@ -241,9 +243,6 @@ void SceneGame::Update(float elapsed_time)
 			}
 		}
 	}
-
-	// グリッドセルの更新
-	grid_object_manager.ClearGridObject();
 
 #ifdef _DEBUG
 	if (Input::Instance input = Input::GetInstance(); input.Get())

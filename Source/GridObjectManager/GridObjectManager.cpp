@@ -39,13 +39,13 @@ bool GridObjectManager::RegisterObject(std::shared_ptr<Object> object, DirectX::
     // オブジェクトまたはトランスフォームが無効な場合は登録失敗
     if (!object) return false;
 
-    int cell_index = GetCellIndex(position);
-    if (cell_index < 0)return false;
+    const int cell_index = GetCellIndex(position);
+    if (IndexErrorCheck(cell_index)) return false;
 
     // インデックスが範囲外の場合は登録失敗
     if (cell_index >= static_cast<int>(this->grid_cells.size())) return false;
 
-    if (!this->grid_cells[cell_index].contained_object.expired()) return false;
+    if (this->grid_cells[cell_index].contained_object.expired()) return false;
 
     // 該当セルにオブジェクトを登録
     this->grid_cells[cell_index].contained_object = object;
@@ -55,16 +55,23 @@ bool GridObjectManager::RegisterObject(std::shared_ptr<Object> object, DirectX::
 bool GridObjectManager::RegisterObject(std::shared_ptr<Object> object, int cell_index)
 {
     // インデックスが範囲外の場合は登録失敗
-    if (cell_index >= static_cast<int>(this->grid_cells.size())) return false;
+    if (IndexErrorCheck(cell_index)) return false;
 
     // 該当セルにオブジェクトを登録
     this->grid_cells[cell_index].contained_object = object;
     return true;
 }
 
+bool GridObjectManager::IsObjectInCell(const int cell_index)
+{
+    if (IndexErrorCheck(cell_index)) return false;
+
+    return (!this->grid_cells[cell_index].contained_object.expired());
+}
+
 const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(const DirectX::XMFLOAT3 position)
 {
-    _ASSERT_EXPR_W(!this->grid_cells.size(), L"grid_cellsのサイズ");
+    _ASSERT_EXPR_W(!this->grid_cells.size(), L"grid_cellsのサイズが0です");
 
     const int cell_index = GetCellIndex(position);
     if (cell_index < 0) return this->grid_cells[0];
@@ -79,8 +86,8 @@ const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(cons
 
 const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(const int cell_index)
 {
-    _ASSERT_EXPR_W(cell_index <= static_cast<int>(this->grid_cells.size()), L"cell_indexがgrid_cellsのサイズを超えています");
-    if (cell_index >= static_cast<int>(this->grid_cells.size())) return this->grid_cells[0];
+    _ASSERT_EXPR_W(!IndexErrorCheck(cell_index), L"cell_indexの値が異常です");
+    if (IndexErrorCheck(cell_index)) return this->grid_cells[0];
 
     // 該当セルに返す
     return this->grid_cells[cell_index];
@@ -103,8 +110,10 @@ const int GridObjectManager::GetCellIndex(const DirectX::XMFLOAT3 position)
     int cell_x = static_cast<int>(position_float.x / CELL_SIZE);
     int cell_z = static_cast<int>(position_float.z / CELL_SIZE);
 
-    int cell_index = cell_z * this->max_cells_per_row + cell_x;
-    _ASSERT_EXPR_W(cell_index <= static_cast<int>(this->grid_cells.size()), L"cell_indexの値が異常です");
+    const int cell_index = cell_z * this->max_cells_per_row + cell_x;
+    
+    _ASSERT_EXPR_W(!IndexErrorCheck(cell_index), L"cell_indexの値が異常です");
+    if (IndexErrorCheck(cell_index)) return 0;
 
     return cell_index;
 }
@@ -116,8 +125,8 @@ const DirectX::XMFLOAT3 GridObjectManager::GetCellCenter(const DirectX::XMFLOAT3
 
 const DirectX::XMFLOAT3 GridObjectManager::GetCellCenter(int cell_index)
 {
-    _ASSERT_EXPR_W(cell_index < static_cast<int>(this->grid_cells.size()), L"cell_indexの値が異常です");
-    if(cell_index >= static_cast<int>(this->grid_cells.size())) return DirectX::XMFLOAT3();
+    _ASSERT_EXPR_W(!IndexErrorCheck(cell_index), L"cell_indexの値が異常です");
+    if (IndexErrorCheck(cell_index)) return DirectX::XMFLOAT3();
 
     float x = static_cast<float>(cell_index % this->max_cells_per_row);
     float z = static_cast<float>(cell_index / this->max_cells_per_row);
@@ -131,12 +140,33 @@ const DirectX::XMFLOAT3 GridObjectManager::GetCellCenter(int cell_index)
     return position;
 }
 
-void GridObjectManager::ClearGridObject()
+void GridObjectManager::ClearGridCell()
 {
     for (auto& grid_cell : this->grid_cells)
     {
         grid_cell.contained_object.reset();
     }
+}
+
+void GridObjectManager::ReleaseObject(std::shared_ptr<Object> object, DirectX::XMFLOAT3 position)
+{
+    ReleaseObject(object, GetCellIndex(position));
+}
+
+void GridObjectManager::ReleaseObject(std::shared_ptr<Object> object, const int cell_index)
+{
+    _ASSERT_EXPR_W(object, L"objectがnullptrです");
+    if (!object) return;
+    _ASSERT_EXPR_W(!IndexErrorCheck(cell_index), L"cell_indexの値が異常です");
+    if (IndexErrorCheck(cell_index)) return;
+
+    if (this->grid_cells[cell_index].contained_object.lock() != object) return;
+    this->grid_cells[cell_index].contained_object.reset();  // オブジェクトの登録を解除する
+}
+
+bool GridObjectManager::IndexErrorCheck(const int cell_index)
+{
+    return (cell_index >= static_cast<int>(this->grid_cells.size()) ||  cell_index < 0);
 }
 
 #ifdef _DEBUG

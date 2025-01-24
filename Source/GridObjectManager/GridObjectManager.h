@@ -33,6 +33,9 @@ public:
     bool RegisterObject(std::shared_ptr<Object> object, DirectX::XMFLOAT3 position);
     bool RegisterObject(std::shared_ptr<Object> object, const int cell_index);
 
+    // セルにオブジェクトが存在するかどうかを確認する
+    bool IsObjectInCell(const int cell_index);
+
     // セルデータを取得する
     const GridCell& GetCellDataAtPosition(const DirectX::XMFLOAT3 position);
     const GridCell& GetCellDataAtPosition(const int cell_index);
@@ -46,7 +49,15 @@ public:
     const DirectX::XMFLOAT3 GetCellCenter(int cell_index);
 
     // クリッドセルに登録されているオブジェクトをリセットする
-    void ClearGridObject();
+    void ClearGridCell();
+
+    // オブジェクトをグリッドセルから解除する関数
+    void ReleaseObject(std::shared_ptr<Object> object, DirectX::XMFLOAT3 position);
+    void ReleaseObject(std::shared_ptr<Object> object, const int cell_index);
+
+    // インデックスのエラーチェック
+    // 値が異常ならtrueを返す
+    bool IndexErrorCheck(const int cell_index);
 private:
     DirectX::XMFLOAT3 grid_min_position;   // ステージ全体の左上のワールド座標
     DirectX::XMFLOAT3 grid_max_position;   // ステージ全体の右下のワールド座標

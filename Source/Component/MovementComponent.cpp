@@ -71,8 +71,20 @@ void MovementComponent::Update(float elapsed_time)
 	RaycasVsStage(owner, transform);
 
 	// ˆÚ“®Œã‚É‚à‚¤ˆê“x“o˜^‚·‚é
-	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
-	grid_object_manager->RegisterObject(owner, transform->GetWorldPosition());
+	{
+		GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
+
+		this->current_cell_index = grid_object_manager->GetCellIndex(transform->GetWorldPosition());
+		grid_object_manager->RegisterObject(owner, this->current_cell_index);
+
+		// ‘O‰ñ‚©‚çƒZƒ‹‚ðˆÚ“®‚µ‚Ä‚¢‚½‚ç“o˜^‚ð‰ðœ‚·‚é
+		if (this->old_cell_index > 0 && this->old_cell_index != this->current_cell_index)
+		{
+			grid_object_manager->ReleaseObject(owner, this->old_cell_index);
+		}
+
+		this->old_cell_index = this->current_cell_index;
+	}
 
 	// ‰Á‘¬“x‚ð‰Šú‰»
 	this->param.acceleration = {};
@@ -335,7 +347,11 @@ void MovementComponent::ResolveGridCellCollision(std::shared_ptr<Object> owner, 
 	new_position.GetFlaot3(position_float3);
 
 	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
-	if (!grid_object_manager->RegisterObject(owner, position_float3))
+	
+	const int cell_index = grid_object_manager->GetCellIndex(position_float3);
+
+	if (cell_index != this->old_cell_index &&				// ‘O‰ñ‚Æˆá‚¤ƒZƒ‹‚Ìê‡
+		grid_object_manager->IsObjectInCell(cell_index))	// Šù‚ÉƒZƒ‹‚ÉƒIƒuƒWƒFƒNƒg‚ª‘¶Ý‚·‚é
 	{
 		// Šù‚É“o˜^‚³‚ê‚Ä‚¢‚éê‡
 		this->param.velocity = {};
@@ -362,10 +378,9 @@ void MovementComponent::DrawDebugGUI()
 	if (!transform) return;
 
 	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
-	int cell_index = grid_object_manager->GetCellIndex(transform->GetWorldPosition());
-	DirectX::XMFLOAT3 cell_center = grid_object_manager->GetCellCenter(cell_index);
+	DirectX::XMFLOAT3 cell_center = grid_object_manager->GetCellCenter(this->current_cell_index);
 
-	ImGui::InputInt("cell_index", &cell_index);
+	ImGui::InputInt("cell_index", &this->current_cell_index);
 	ImGui::InputFloat3("cell_center", &cell_center.x);
 }
 

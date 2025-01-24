@@ -64,6 +64,8 @@ private:
     MovementParam param;
     MovementParam default_param;
 
+    int old_cell_index = -1;            // 前フレームのセルインデックス
+    int current_cell_index = -1;        // セルインデックス
 private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
     std::weak_ptr<GravityComponent> gravity_Wptr;
