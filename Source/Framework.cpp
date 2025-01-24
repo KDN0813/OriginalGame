@@ -148,7 +148,6 @@ void Framework::CalculateFrameStats()
 bool Framework::IsWindowClose()
 {
 	GameData::Instance game_data = GameData::GetInstance();
-	if (game_data->GetIsPause()) return false;	// ポーズは終了しない
 	return (game_data->GetIsCloseWindow());
 }
 

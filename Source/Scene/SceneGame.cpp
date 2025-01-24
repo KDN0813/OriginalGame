@@ -231,7 +231,12 @@ void SceneGame::Update(float elapsed_time)
 						scene_manager->GetPauseObject()->SetIsActive(false);
 						return;
 					}
-
+					// (A)ƒQ[ƒ€I—¹
+					else if (GamePad::BTN_A & game_pad.GetButtonDown())
+					{
+						game_data->CloseWindow();
+						return;
+					}
 				}
 				return;
 			}
