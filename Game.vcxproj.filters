@@ -214,6 +214,9 @@
     <Filter Include="Source\StateMachine\Enemy">
       <UniqueIdentifier>{d6acca81-b9ee-4b54-a652-afdc5214c0b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\GridObjectManager">
+      <UniqueIdentifier>{2d5d7287-8b62-4094-9f2d-f296af767a47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -561,9 +564,11 @@
     <ClInclude Include="Source\StateMachine\EnemyStateDerived.h">
       <Filter>Source\StateMachine\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GridObjectManager\GridObjectManager.h" />
     <ClInclude Include="Source\Component\FinalUpdateEnemyComponent.h">
       <Filter>Source\Component\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GridObjectManager\GridObjectManager.h">
+      <Filter>Source\GridObjectManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -840,11 +845,11 @@
     <ClCompile Include="Source\StateMachine\EnemyStateDerived.cpp">
       <Filter>Source\StateMachine\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GridObjectManager\GridObjectManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\FinalUpdateEnemyComponent.cpp">
       <Filter>Source\Component\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GridObjectManager\GridObjectManager.cpp">
+      <Filter>Source\GridObjectManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
