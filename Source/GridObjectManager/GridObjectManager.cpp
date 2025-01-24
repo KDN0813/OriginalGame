@@ -69,6 +69,13 @@ bool GridObjectManager::IsObjectInCell(const int cell_index)
     return (!this->grid_cells[cell_index].contained_object.expired());
 }
 
+bool GridObjectManager::IsObjectInCell(const std::shared_ptr<Object>& object, int cell_index)
+{
+    if (IndexErrorCheck(cell_index)) return false;
+
+    return this->grid_cells[cell_index].contained_object.lock() == object;
+}
+
 const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(const DirectX::XMFLOAT3 position)
 {
     _ASSERT_EXPR_W(!this->grid_cells.size(), L"grid_cellsのサイズが0です");
@@ -162,13 +169,6 @@ void GridObjectManager::ReleaseObject(const std::shared_ptr<Object>& object, con
 
     if (this->grid_cells[cell_index].contained_object.lock() != object) return;
     this->grid_cells[cell_index].contained_object.reset();  // オブジェクトの登録を解除する
-}
-
-bool GridObjectManager::IsObjectInCell(const std::shared_ptr<Object>& object,int cell_index)
-{
-    if (IndexErrorCheck(cell_index)) return false;
-
-    return this->grid_cells[cell_index].contained_object.lock() == object;
 }
 
 bool GridObjectManager::IndexErrorCheck(const int cell_index)

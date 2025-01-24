@@ -35,6 +35,8 @@ public:
 
     // セルにオブジェクトが存在するかどうかを確認する
     bool IsObjectInCell(const int cell_index);
+    // セルに特定のオブジェクトが存在するか
+    bool IsObjectInCell(const std::shared_ptr<Object>& target_object, int cell_index);
 
     // セルデータを取得する
     const GridCell& GetCellDataAtPosition(const DirectX::XMFLOAT3 position);
@@ -54,9 +56,6 @@ public:
     // オブジェクトをグリッドセルから解除する関数
     void ReleaseObject(const std::shared_ptr<Object>&, DirectX::XMFLOAT3 position);
     void ReleaseObject(const std::shared_ptr<Object>&, const int cell_index);
-
-    // セルに特定のオブジェクトが存在するか
-    bool IsObjectInCell(const std::shared_ptr<Object>& target_object,int cell_index);
 
     // インデックスのエラーチェック
     // 値が異常ならtrueを返す
