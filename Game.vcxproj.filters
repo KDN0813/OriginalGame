@@ -561,6 +561,10 @@
     <ClInclude Include="Source\StateMachine\EnemyStateDerived.h">
       <Filter>Source\StateMachine\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GridObjectManager\GridObjectManager.h" />
+    <ClInclude Include="Source\Component\FinalUpdateEnemyComponent.h">
+      <Filter>Source\Component\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -835,6 +839,12 @@
     </ClCompile>
     <ClCompile Include="Source\StateMachine\EnemyStateDerived.cpp">
       <Filter>Source\StateMachine\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GridObjectManager\GridObjectManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\FinalUpdateEnemyComponent.cpp">
+      <Filter>Source\Component\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

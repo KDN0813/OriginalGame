@@ -76,6 +76,28 @@ bool GridObjectManager::IsObjectInCell(const std::shared_ptr<Object>& object, in
     return this->grid_cells[cell_index].contained_object.lock() == object;
 }
 
+int GridObjectManager::GetDistanceInCells(const int cell_index_a, const int cell_index_b)
+{
+    // セルの行と列を計算
+    int row_a = cell_index_a / this->max_cells_per_row;
+    int col_a = cell_index_a % this->max_cells_per_row;
+
+    int row_b = cell_index_b / this->max_cells_per_row;
+    int col_b = cell_index_b % this->max_cells_per_row;
+
+    // 行と列の差分を計算
+    int row_difference = std::abs(row_a - row_b);
+    int col_difference = std::abs(col_a - col_b);
+
+    // チェビシェフ距離を計算（斜め移動が可能な場合の最短距離）
+    return (std::max)(row_difference, col_difference);
+}
+
+int GridObjectManager::GetDistanceInCells(const DirectX::XMFLOAT3 positon_a, const DirectX::XMFLOAT3 positon_b)
+{
+    return GetDistanceInCells(GetCellIndex(positon_a), GetCellIndex(positon_b));
+}
+
 const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(const DirectX::XMFLOAT3 position)
 {
     _ASSERT_EXPR_W(!this->grid_cells.size(), L"grid_cellsのサイズが0です");

@@ -6,6 +6,7 @@
 #include "StateMachine\EnemyStateDerived.h"
 
 #include "Component\EnemyComponent.h"
+#include "Component\FinalUpdateEnemyComponent.h"
 #include "Component\MovementComponent.h"
 #include "Component\InstancedModelWithAnimationComponent.h"
 #include "Component\TransformComponent.h"
@@ -113,6 +114,10 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 
 			state_machine->SetDefaultState(EnemyIdleState::STATE_NAME);	// デフォルトステートの設定
 		}
+	}
+	// FinalUpdateEnemyComponent
+	{
+		enemy->AddComponent<FinalUpdateEnemyComponent>();
 	}
 
 	// 子オブジェクト

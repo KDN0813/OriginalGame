@@ -38,6 +38,11 @@ public:
     // セルに特定のオブジェクトが存在するか
     bool IsObjectInCell(const std::shared_ptr<Object>& target_object, int cell_index);
 
+
+    // セル間の距離を計算する関数
+    int GetDistanceInCells(const int cell_index_a, const int cell_index_b);
+    int GetDistanceInCells(const DirectX::XMFLOAT3 positon_a, const DirectX::XMFLOAT3 positon_b);
+
     // セルデータを取得する
     const GridCell& GetCellDataAtPosition(const DirectX::XMFLOAT3 position);
     const GridCell& GetCellDataAtPosition(const int cell_index);

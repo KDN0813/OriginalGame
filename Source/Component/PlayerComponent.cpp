@@ -14,11 +14,22 @@
 
 #ifdef _DEBUG
 #include "Shader\ParticleSystem.h"
+#include "Debug\DebugManager.h"
 #endif // DEBUG
 
 #ifdef _DEBUG
 float PlayerComponent::debug_move_speed = 100.0f;
 #endif // DEBUG
+
+PlayerComponent::PlayerComponent(PlayerParam param)
+    :param(param), default_param(param) 
+{
+#ifdef _DEBUG
+    this->clinde_push_radius.SetColor({ 0.5f ,0.5f ,0.5f ,1.0f });
+    this->clinde_push_radius.SetRadius(this->param.push_radius);
+    this->clinde_push_radius.SetHeight(3.0f);
+#endif // _DEBUG
+}
 
 PlayerComponent::~PlayerComponent()
 {
@@ -31,14 +42,21 @@ PlayerComponent::~PlayerComponent()
 
 void PlayerComponent::Update(float elapsed_time)
 {
-    // Š—LŽÒ‚ÌŽæ“¾
-    const auto& owner = GetOwner();
-
     // ˆÚ“®ˆ—
     if(this->param.input_move_validity_flag)
     {
         InputMove(elapsed_time);
     }
+
+#ifdef _DEBUG
+    if (const auto& owner = GetOwner())
+    {
+        if (const auto& transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
+        {
+            this->clinde_push_radius.SetPosition(transform->GetWorldPosition());
+        }
+    }
+#endif // _DEBUG
 }
 
 void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
@@ -166,6 +184,19 @@ void PlayerComponent::DrawDebugGUI()
     ImGui::InputFloat("move_speed", &this->param.move_speed);
     ImGui::Checkbox("Input Move Validity Flag", &this->param.input_move_validity_flag);
     ImGui::InputFloat("Debug Move Speed", &this->debug_move_speed);
+}
+
+void PlayerComponent::DrawDebugPrimitive()
+{
+    DebugManager::Instance debug_manager = DebugManager::GetInstance();
+    const auto& debug_primitive_renderer = debug_manager->GetDebugPrimitiveRenderer();
+    if (!debug_primitive_renderer) return;
+    debug_primitive_renderer->DrawCylinder(this->clinde_push_radius);
+}
+
+void PlayerComponent::DrawDebugPrimitiveGUI()
+{
+    this->clinde_push_radius.DrawDebugGUI("clinde_push_radius");
 }
 
 #endif // DEBUG
