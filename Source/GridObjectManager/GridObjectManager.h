@@ -14,11 +14,11 @@ public:
     // データを格納するための構造体（各エリアのデータ）
     struct GridCell
     {
-        std::weak_ptr<Object> contained_object;   // このエリアに現在登録されているオブジェクト
+        std::weak_ptr<Object> contained_object;     // このエリアに現在登録されているオブジェクト
     };
 
 public:
-    static constexpr float CELL_SIZE = 4.0f;        // 各グリッドセルのサイズ
+    static constexpr float CELL_SIZE = 2.0f;        // 各グリッドセルのサイズ
     static constexpr float HALF_CELL_SIZE = CELL_SIZE * 0.5f; // グリッドセルの半分のサイズ
     float push_out_force = 2.0f;
     float stage_size{};                              // ステージ全体のサイズ
@@ -30,8 +30,8 @@ public:
 
     // オブジェクトをグリッドセルに登録する関数
     // 登録に失敗、またはすでに登録済みの場合はfalseを返す
-    bool RegisterObject(std::shared_ptr<Object> object, DirectX::XMFLOAT3 position);
-    bool RegisterObject(std::shared_ptr<Object> object, const int cell_index);
+    bool RegisterObject(const std::shared_ptr<Object>&, DirectX::XMFLOAT3 position);
+    bool RegisterObject(const std::shared_ptr<Object>&, const int cell_index);
 
     // セルにオブジェクトが存在するかどうかを確認する
     bool IsObjectInCell(const int cell_index);
@@ -52,8 +52,11 @@ public:
     void ClearGridCell();
 
     // オブジェクトをグリッドセルから解除する関数
-    void ReleaseObject(std::shared_ptr<Object> object, DirectX::XMFLOAT3 position);
-    void ReleaseObject(std::shared_ptr<Object> object, const int cell_index);
+    void ReleaseObject(const std::shared_ptr<Object>&, DirectX::XMFLOAT3 position);
+    void ReleaseObject(const std::shared_ptr<Object>&, const int cell_index);
+
+    // セルに特定のオブジェクトが存在するか
+    bool IsObjectInCell(const std::shared_ptr<Object>& target_object,int cell_index);
 
     // インデックスのエラーチェック
     // 値が異常ならtrueを返す
