@@ -29,6 +29,7 @@ public:
 	static const GamePadButton BTN_DEBUG_RETURN_TO_TITLE	= (1 << 19);	// デバッグ用のタイトルに戻るボタン
 	static const GamePadButton BTN_DEBUG_GAME_RESET			= (1 << 20);	// デバッグ用のタイトルに戻るボタン
 	static const GamePadButton BTN_DEBUG_DEMO				= (1 << 21);	// デバッグ用のデモ状態を変更するフラグ
+	static const GamePadButton BTN_DEBUG_FORCE_EXIT			= (1 << 22);	// デバッグ用の強制終了ボタン
 #endif // _DEBUG
 
 public:

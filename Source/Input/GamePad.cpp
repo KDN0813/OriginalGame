@@ -159,6 +159,7 @@ void GamePad::Update()
 		if (GetAsyncKeyState(VK_F3) & 0x8000)	new_button_state |= BTN_DEBUG_RETURN_TO_TITLE;
 		if (GetAsyncKeyState(VK_F4) & 0x8000)	new_button_state |= BTN_DEBUG_GAME_RESET;
 		if (GetAsyncKeyState(VK_F5) & 0x8000)	new_button_state |= BTN_DEBUG_DEMO;
+		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000 && GetAsyncKeyState(VK_SHIFT))	new_button_state |= BTN_DEBUG_FORCE_EXIT;
 #endif // _DEBUG
 
 #if 1

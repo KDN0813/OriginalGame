@@ -74,6 +74,11 @@ void Framework::Update(float elapsed_time)
 					scene_manager->ChangeScene(new SceneTitle);
 				}
 			}
+			// 強制ゲーム終了ボタン
+			if (GamePad::BTN_DEBUG_FORCE_EXIT & game_pad.GetButtonDown())
+			{
+				game_data->CloseWindow();
+			}
 		}
 	}
 
