@@ -176,14 +176,17 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 				SpriteComponent::SpriteParam param{};
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				param.filename = "Data/Sprite/PauseUI.png";
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				param.draw_priority = PRIORITY::LOWEST;
 				auto sprite = pause_ui->AddComponent<SpriteComponent>(param);
 			}
 
 			// transform
 			{
-				Transform2DComponent::Transform2DParam paam{};
-				pause_ui->AddComponent<Transform2DComponent>(paam);
+				Transform2DComponent::Transform2DParam param{};
+				param.local_position = { 0.6f,0.64f };
+				param.local_scale = { 0.75f,0.75f };
+				pause_ui->AddComponent<Transform2DComponent>(param);
 			}
 		}
 	}

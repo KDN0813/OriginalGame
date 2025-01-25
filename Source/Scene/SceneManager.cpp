@@ -82,6 +82,13 @@ void SceneManager::DrawDebugGUI()
         {
             this->pause_object->DrawDebugGUI();
         }
+        for (const auto& chilled : this->pause_object->GetChildren())
+        {
+            if (ImGui::CollapsingHeader(chilled->GetNameCStr()))
+            {
+                chilled->DrawDebugGUI();
+            }
+        }
 
         if (ImGui::CollapsingHeader(this->fade_object->GetNameCStr()))
         {
