@@ -99,6 +99,14 @@ void Object::ReStart()
     }
 }
 
+const bool Object::GetIsActive()
+{
+    if (const auto& parent = this->parent_Wptr.lock())
+    {
+        if (!parent->GetIsActive()) return false;
+    }
+    return this->is_active;
+}
 void Object::sortComponentsByPriority()
 {
     auto sort_func = [](std::shared_ptr<Component>& lhs, std::shared_ptr<Component>& rhs) -> bool

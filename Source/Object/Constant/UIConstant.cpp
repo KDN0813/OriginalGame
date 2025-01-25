@@ -166,6 +166,28 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 		pause_object->AddComponent<Transform2DComponent>(paam);
 	}
 
+	// 子オブジェクト
+	{
+		// ポーズUI
+		{
+			const auto& pause_ui = pause_object->CreateChildObject("Pause UI");
+			// スプライト読み込み
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.filename = "Data/Sprite/PauseUI.png";
+				param.draw_priority = PRIORITY::LOWEST;
+				auto sprite = pause_ui->AddComponent<SpriteComponent>(param);
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam paam{};
+				pause_ui->AddComponent<Transform2DComponent>(paam);
+			}
+		}
+	}
+
 	return pause_object;
 }
 

@@ -166,7 +166,7 @@ public:
 	const char* GetNameCStr() const { return this->name.GetString().c_str(); }
 	std::shared_ptr<Object> GetParent() { return this->parent_Wptr.lock(); }
 	const std::vector<std::shared_ptr<Object>>& GetChildren() { return this->children; }
-	const bool GetIsActive() { return this->is_active; }
+	const bool GetIsActive();
 	const bool GetIsRemove() { return this->is_remove; }
 	const bool GetIsOffScreen() { return this->is_remove; }
 	void SetName(const char* name) { this->name.GenerateHash(name); }
