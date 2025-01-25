@@ -65,20 +65,45 @@ void SceneTitle::Initialize()
 			}
 		}
 
-		// タイトルロゴ
+		// ゲームスタートテキスト
 		{
 			auto sprite_bg = object_manager.Create("Game Staet Text");
-			SpriteComponent::SpriteParam param{};
-			param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-			param.display_size = { 0.5f,0.1f };
-			param.filename = "Data/Sprite/TitleGameStartText.png";
-			auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.display_size = { 1.0f,0.5f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
+				param.filename = "Data/Sprite/TitleGameStartText.png";
+				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+			}
 
 			// transform
 			{
-				Transform2DComponent::Transform2DParam paam{};
-				paam.local_position = { 0.254f,0.792f };
-				sprite_bg->AddComponent<Transform2DComponent>(paam);
+				Transform2DComponent::Transform2DParam param{};
+				param.local_position = { 0.5f,0.630f };
+				param.local_scale = { 0.5f,0.5f };
+				sprite_bg->AddComponent<Transform2DComponent>(param);
+			}
+		}
+
+		// ゲーム終了テキスト
+		{
+			auto sprite_bg = object_manager.Create("Game Staet End");
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.display_size = { 1.0f,0.5f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
+				param.filename = "Data/Sprite/TitleGameEndText.png";
+				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam param{};
+				param.local_position = { 0.5f,0.87f };
+				param.local_scale = { 0.5f,0.5f };
+				sprite_bg->AddComponent<Transform2DComponent>(param);
 			}
 		}
 	}
