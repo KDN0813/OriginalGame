@@ -36,7 +36,6 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 		EnemyComponent::EnemyParam param{};
 		param.spawn_point = spawn_point;
 		enemy_component = enemy->AddComponent<EnemyComponent>(param);
-		enemy_component->SetIsDebugPrimitive(false);
 	}
 	// ムーブメント設定
 	{
@@ -99,8 +98,6 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 		param.collision_type = COLLISION_OBJECT_TYPE::ENEMY_DEFENSE;
 		auto collision = enemy->AddComponent<CircleCollisionComponent>(param);
 		collision->AddCollisionComponent(enemy_component);
-
-		collision->SetIsDebugPrimitive(false);
 	}
 	// ステートマシン
 	{

@@ -2,6 +2,7 @@
 
 #include "System\MyMath\MYVECTOR3.h"
 #include "Object\GameObject.h"
+#include "Object\Constant\StageConstant.h"
 #include "GridObjectManager\GridObjectManager.h"
 
 #include "Component\EnemyComponent.h"
@@ -51,7 +52,7 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
             MYVECTOR3 New_pos = Player_pos + Vec * player_radius;
             DirectX::XMFLOAT3 new_pos{};
             New_pos.GetFlaot3(new_pos);
-            new_pos.y = 0;
+            new_pos.y = StageConstant::STAGE_FLOOR_Y;   // YÀ•W‚Í°‚ÌˆÊ’u‚ÅŒÅ’è‚·‚é
 
             transform->SetLocalPosition(new_pos);
         }
