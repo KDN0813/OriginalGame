@@ -5,6 +5,7 @@
 #include "Shader\ModelShader.h"
 #include "GridObjectManager\GridObjectManager.h"
 #include "Graphics\Graphics.h"
+#include "Object\Constant\StageConstant.h"
 
 #include "Component/PlayerComponent.h"
 #include "Component/ModelComponent.h"
@@ -64,7 +65,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 
 		Transform3DComponent::Transform3DParam param{};
 		param.local_scale = DirectX::XMFLOAT3(0.018f, 0.018f, 0.018f);
-		param.local_position = DirectX::XMFLOAT3(half_cell_size, 0.5f, half_cell_size);
+		param.local_position = DirectX::XMFLOAT3(half_cell_size, StageConstant::STAGE_FLOOR_Y, half_cell_size);
 		auto transform = player->AddComponent<Transform3DComponent>(param);
 	}
 	// ƒ€[ƒuƒƒ“ƒgİ’è
