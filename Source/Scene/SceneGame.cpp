@@ -125,21 +125,6 @@ void SceneGame::Initialize()
 		{
 			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
-				const float half_stage_size = StageConstant::STAGE_SIZE * 0.5f;
-				const float one_size = StageConstant::STAGE_SIZE / this->enemy_spawn_point_count;
-				std::vector<DirectX::XMFLOAT3> spawn_point_pool;
-				spawn_point_pool.resize(this->enemy_spawn_point_count * this->enemy_spawn_point_count);
-
-				size_t count = 0;
-				for (auto& spawn_point : spawn_point_pool)
-				{
-					spawn_point.x = half_stage_size - one_size * 0.5f - static_cast<float>(count % this->enemy_spawn_point_count) * one_size;
-					spawn_point.y = 0.0f;
-					spawn_point.z = half_stage_size - one_size * 0.5f - static_cast<float>(count / this->enemy_spawn_point_count) * one_size;
-
-					++count;
-				}
-
 				for (int i = 0; i < this->enemy_max; ++i)
 				{
 					const auto& enemy = EnemyConstant::CreateEnemy(object_manager.Create(("enemy" + std::to_string(i)).c_str()));
