@@ -12,7 +12,7 @@ class GridObjectManager : public Singleton<GridObjectManager>
 {
 public:
     // データを格納するための構造体（各エリアのデータ）
-    struct GridCell
+    struct GridData
     {
         std::weak_ptr<Object> contained_object;     // このエリアに現在登録されているオブジェクト
     };
@@ -44,8 +44,8 @@ public:
     int GetDistanceInGrid(const DirectX::XMFLOAT3 positon_a, const DirectX::XMFLOAT3 positon_b);
 
     // グリッドデータを取得する
-    const GridCell& GetGridDataAtPosition(const DirectX::XMFLOAT3 position);
-    const GridCell& GetGridDataAtPosition(const int cell_index);
+    const GridData& GetGridDataAtPosition(const DirectX::XMFLOAT3 position);
+    const GridData& GetGridDataAtPosition(const int cell_index);
 
     // グリッドインデックスを取得する
     // 取得に失敗すると-1が返ってくる
@@ -68,7 +68,7 @@ public:
 private:
     DirectX::XMFLOAT3 grid_min_position;   // ステージ全体の左上のワールド座標
     DirectX::XMFLOAT3 grid_max_position;   // ステージ全体の右下のワールド座標
-    std::vector<GridCell> grid_cells;      // グリッドセルのデータを保持するプール
+    std::vector<GridData> grid_cells;      // グリッドセルのデータを保持するプール
 
 #ifdef _DEBUG
 public:

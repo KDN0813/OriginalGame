@@ -98,7 +98,7 @@ int GridObjectManager::GetDistanceInGrid(const DirectX::XMFLOAT3 positon_a, cons
     return GetDistanceInGrid(GetGridlIndex(positon_a), GetGridlIndex(positon_b));
 }
 
-const GridObjectManager::GridCell& GridObjectManager::GetGridDataAtPosition(const DirectX::XMFLOAT3 position)
+const GridObjectManager::GridData& GridObjectManager::GetGridDataAtPosition(const DirectX::XMFLOAT3 position)
 {
     _ASSERT_EXPR_W(!this->grid_cells.size(), L"grid_cellsのサイズが0です");
 
@@ -113,7 +113,7 @@ const GridObjectManager::GridCell& GridObjectManager::GetGridDataAtPosition(cons
     return this->grid_cells[cell_index];
 }
 
-const GridObjectManager::GridCell& GridObjectManager::GetGridDataAtPosition(const int cell_index)
+const GridObjectManager::GridData& GridObjectManager::GetGridDataAtPosition(const int cell_index)
 {
     _ASSERT_EXPR_W(!IndexErrorCheck(cell_index), L"cell_indexの値が異常です");
     if (IndexErrorCheck(cell_index)) return this->grid_cells[0];
