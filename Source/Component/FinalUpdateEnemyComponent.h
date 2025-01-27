@@ -13,7 +13,7 @@ public:
     ~FinalUpdateEnemyComponent() {};
 
     // 開始関数
-    void Start()  override {};
+    void Start()  override;
     // 終了関数
     void End()  override {};
     // リスタート処理

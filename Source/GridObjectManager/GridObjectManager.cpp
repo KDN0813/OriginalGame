@@ -39,7 +39,7 @@ bool GridObjectManager::RegisterObject(const std::shared_ptr<Object>& object, Di
     // オブジェクトまたはトランスフォームが無効な場合は登録失敗
     if (!object) return false;
 
-    const int cell_index = GetCellIndex(position);
+    const int cell_index = GetGridlIndex(position);
     if (IndexErrorCheck(cell_index)) return false;
 
     // インデックスが範囲外の場合は登録失敗
@@ -62,21 +62,21 @@ bool GridObjectManager::RegisterObject(const std::shared_ptr<Object>& object, in
     return true;
 }
 
-bool GridObjectManager::IsObjectInCell(const int cell_index)
+bool GridObjectManager::IsObjectInGrid(const int cell_index)
 {
     if (IndexErrorCheck(cell_index)) return false;
 
     return (!this->grid_cells[cell_index].contained_object.expired());
 }
 
-bool GridObjectManager::IsObjectInCell(const std::shared_ptr<Object>& object, int cell_index)
+bool GridObjectManager::IsObjectInGrid(const std::shared_ptr<Object>& object, int cell_index)
 {
     if (IndexErrorCheck(cell_index)) return false;
 
     return this->grid_cells[cell_index].contained_object.lock() == object;
 }
 
-int GridObjectManager::GetDistanceInCells(const int cell_index_a, const int cell_index_b)
+int GridObjectManager::GetDistanceInGrid(const int cell_index_a, const int cell_index_b)
 {
     // セルの行と列を計算
     int row_a = cell_index_a / this->max_cells_per_row;
@@ -93,16 +93,16 @@ int GridObjectManager::GetDistanceInCells(const int cell_index_a, const int cell
     return (std::max)(row_difference, col_difference);
 }
 
-int GridObjectManager::GetDistanceInCells(const DirectX::XMFLOAT3 positon_a, const DirectX::XMFLOAT3 positon_b)
+int GridObjectManager::GetDistanceInGrid(const DirectX::XMFLOAT3 positon_a, const DirectX::XMFLOAT3 positon_b)
 {
-    return GetDistanceInCells(GetCellIndex(positon_a), GetCellIndex(positon_b));
+    return GetDistanceInGrid(GetGridlIndex(positon_a), GetGridlIndex(positon_b));
 }
 
-const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(const DirectX::XMFLOAT3 position)
+const GridObjectManager::GridCell& GridObjectManager::GetGridDataAtPosition(const DirectX::XMFLOAT3 position)
 {
     _ASSERT_EXPR_W(!this->grid_cells.size(), L"grid_cellsのサイズが0です");
 
-    const int cell_index = GetCellIndex(position);
+    const int cell_index = GetGridlIndex(position);
     if (cell_index < 0) return this->grid_cells[0];
 
     // インデックスが範囲外の場合は登録失敗
@@ -113,7 +113,7 @@ const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(cons
     return this->grid_cells[cell_index];
 }
 
-const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(const int cell_index)
+const GridObjectManager::GridCell& GridObjectManager::GetGridDataAtPosition(const int cell_index)
 {
     _ASSERT_EXPR_W(!IndexErrorCheck(cell_index), L"cell_indexの値が異常です");
     if (IndexErrorCheck(cell_index)) return this->grid_cells[0];
@@ -122,7 +122,7 @@ const GridObjectManager::GridCell& GridObjectManager::GetCellDataAtPosition(cons
     return this->grid_cells[cell_index];
 }
 
-const int GridObjectManager::GetCellIndex(const DirectX::XMFLOAT3 position)
+const int GridObjectManager::GetGridlIndex(const DirectX::XMFLOAT3 position)
 {
     // グリッドの左上を基準にした座標計算
     const MYVECTOR3 grid_origin = this->grid_min_position;   // グリッドの左上座標
@@ -147,12 +147,12 @@ const int GridObjectManager::GetCellIndex(const DirectX::XMFLOAT3 position)
     return cell_index;
 }
 
-const DirectX::XMFLOAT3 GridObjectManager::GetCellCenter(const DirectX::XMFLOAT3 position)
+const DirectX::XMFLOAT3 GridObjectManager::GetGridCenter(const DirectX::XMFLOAT3 position)
 {
-    return GetCellCenter(GetCellIndex(position));
+    return GetGridCenter(GetGridlIndex(position));
 }
 
-const DirectX::XMFLOAT3 GridObjectManager::GetCellCenter(int cell_index)
+const DirectX::XMFLOAT3 GridObjectManager::GetGridCenter(int cell_index)
 {
     _ASSERT_EXPR_W(!IndexErrorCheck(cell_index), L"cell_indexの値が異常です");
     if (IndexErrorCheck(cell_index)) return DirectX::XMFLOAT3();
@@ -179,7 +179,7 @@ void GridObjectManager::ClearGridCell()
 
 void GridObjectManager::ReleaseObject(const std::shared_ptr<Object>& object, DirectX::XMFLOAT3 position)
 {
-    ReleaseObject(object, GetCellIndex(position));
+    ReleaseObject(object, GetGridlIndex(position));
 }
 
 void GridObjectManager::ReleaseObject(const std::shared_ptr<Object>& object, const int cell_index)

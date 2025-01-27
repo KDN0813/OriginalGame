@@ -28,32 +28,32 @@ public:
     GridObjectManager();
     ~GridObjectManager() {}
 
-    // オブジェクトをグリッドセルに登録する関数
+    // オブジェクトをグリッドグリッドに登録する関数
     // 登録に失敗、またはすでに登録済みの場合はfalseを返す
     bool RegisterObject(const std::shared_ptr<Object>&, DirectX::XMFLOAT3 position);
     bool RegisterObject(const std::shared_ptr<Object>&, const int cell_index);
 
-    // セルにオブジェクトが存在するかどうかを確認する
-    bool IsObjectInCell(const int cell_index);
-    // セルに特定のオブジェクトが存在するか
-    bool IsObjectInCell(const std::shared_ptr<Object>& target_object, int cell_index);
+    // グリッドにオブジェクトが存在するかどうかを確認する
+    bool IsObjectInGrid(const int cell_index);
+    // グリッドに特定のオブジェクトが存在するか
+    bool IsObjectInGrid(const std::shared_ptr<Object>& target_object, int cell_index);
 
 
-    // セル間の距離を計算する関数
-    int GetDistanceInCells(const int cell_index_a, const int cell_index_b);
-    int GetDistanceInCells(const DirectX::XMFLOAT3 positon_a, const DirectX::XMFLOAT3 positon_b);
+    // グリッド間の距離を計算する関数
+    int GetDistanceInGrid(const int cell_index_a, const int cell_index_b);
+    int GetDistanceInGrid(const DirectX::XMFLOAT3 positon_a, const DirectX::XMFLOAT3 positon_b);
 
-    // セルデータを取得する
-    const GridCell& GetCellDataAtPosition(const DirectX::XMFLOAT3 position);
-    const GridCell& GetCellDataAtPosition(const int cell_index);
+    // グリッドデータを取得する
+    const GridCell& GetGridDataAtPosition(const DirectX::XMFLOAT3 position);
+    const GridCell& GetGridDataAtPosition(const int cell_index);
 
-    // セルインデックスを取得する
+    // グリッドインデックスを取得する
     // 取得に失敗すると-1が返ってくる
-    const int GetCellIndex(const DirectX::XMFLOAT3 position);
+    const int GetGridlIndex(const DirectX::XMFLOAT3 position);
 
-    // セルの中心を取得
-    const DirectX::XMFLOAT3 GetCellCenter(const DirectX::XMFLOAT3 position);
-    const DirectX::XMFLOAT3 GetCellCenter(int cell_index);
+    // グリッドの中心を取得
+    const DirectX::XMFLOAT3 GetGridCenter(const DirectX::XMFLOAT3 position);
+    const DirectX::XMFLOAT3 GetGridCenter(int cell_index);
 
     // クリッドセルに登録されているオブジェクトをリセットする
     void ClearGridCell();

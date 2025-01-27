@@ -9,6 +9,10 @@
 #include "Component\TransformComponent.h"
 #include "Component\PlayerComponent.h"
 
+void FinalUpdateEnemyComponent::Start()
+{
+}
+
 void FinalUpdateEnemyComponent::Update(float elapsed_time)
 {
     const auto& onwer = GetOwner();
@@ -29,8 +33,8 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
     GridObjectManager::Instance grid_object_maanager = GridObjectManager::GetInstance();
     // プレイヤーのセル検索
     DirectX::XMFLOAT3 player_pos = player_transform->GetWorldPosition();
-    // 2点間のセルの距離を求める
-    const int range = grid_object_maanager->GetDistanceInCells(pos, player_pos);
+    // 2点間のグリッドの距離を求める
+    const int range = grid_object_maanager->GetDistanceInGrid(pos, player_pos);
 
     // 2マス以内にプレイヤーが存在すれば
     if (range <= 3)
