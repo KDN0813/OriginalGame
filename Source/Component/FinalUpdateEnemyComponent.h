@@ -33,6 +33,7 @@ private:
 
     std::weak_ptr<Transform3DComponent> player_transform_Wptr;
     std::weak_ptr<PlayerComponent> player_Wptr;
+    int collision_range = 1;    // プレイヤーとの当たり判定を行う範囲
 #ifdef _DEBUG
 public:
     /**

@@ -1,5 +1,6 @@
 #include "FinalUpdateEnemyComponent.h"
 
+#include <cmath>
 #include "System\MyMath\MYVECTOR3.h"
 #include "Object\GameObject.h"
 #include "Object\Constant\StageConstant.h"
@@ -11,6 +12,15 @@
 
 void FinalUpdateEnemyComponent::Start()
 {
+    GameObject::Instance game_object = GameObject::GetInstance();
+    const auto& player = game_object->GetPlayer();
+    if (!player) return;
+    const auto& player_component = player->GetComponent<PlayerComponent>(this->player_Wptr);
+    if (!player_component) return;
+    const float player_radius = player_component->GetPushRadius();
+
+    // プレイヤーとの当たり判定を行う範囲を計算
+    this->collision_range = static_cast<int>(std::ceil(static_cast<double>(player_radius) / GridObjectManager::CELL_SIZE));
 }
 
 void FinalUpdateEnemyComponent::Update(float elapsed_time)
@@ -33,11 +43,11 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
     GridObjectManager::Instance grid_object_maanager = GridObjectManager::GetInstance();
     // プレイヤーのセル検索
     DirectX::XMFLOAT3 player_pos = player_transform->GetWorldPosition();
-    // 2点間のグリッドの距離を求める
-    const int range = grid_object_maanager->GetDistanceInGrid(pos, player_pos);
+    // グリッド間の距離
+    const int grid_spacing = grid_object_maanager->GetDistanceInGrid(pos, player_pos);
 
     // 2マス以内にプレイヤーが存在すれば
-    if (range <= 3)
+    if (grid_spacing <= this->collision_range)
     {
         // 衝突判定を行う
         MYVECTOR3 Pos = pos;
