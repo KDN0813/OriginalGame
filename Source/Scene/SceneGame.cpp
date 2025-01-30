@@ -22,7 +22,6 @@
 #include "Input/Input.h"
 #include "Input/GamePad.h"
 #include "System/GameData.h"
-#include "ConstantManager.h"
 
 // object’è”
 #include "Object\Constant\PlayerConstant.h"

@@ -11,6 +11,7 @@
 #ifdef _DEBUG
 #include "Debug\DebugManager.h"
 #include "Debug\ImGuiHelper.h"
+#include "Object\GameObject.h"
 #endif // _DEBUG
 
 
@@ -208,6 +209,7 @@ void GridObjectManager::DrawDebugGUI()
 
         ImGui::InputFloat3("grid_min_position", &this->grid_min_position.x);
         ImGui::InputFloat("push_out_force", &this->push_out_force);
+        ImGui::InputInt("Visible Cell Range", &this->visible_cell_range);
     }
     ImGui::End();
 }
@@ -220,8 +222,20 @@ void GridObjectManager::DrawDebugPrimitive()
     const auto& debug_primitive_render = debug_manager->GetDebugPrimitiveRenderer();
     if (!debug_primitive_render) return;
 
+    // プレイヤー取得
+    GameObject::Instance game_object = GameObject::GetInstance();
+    const auto& player = game_object->GetPlayer();
+    if (!player) return;
+    const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
+    if (!player_transform) return;
+
+    // プレイヤーのいるセルのインデックス
+    const int player_grid_index = GetGridlIndex(player_transform->GetWorldPosition());
+
     for (int i = 0; i < this->max_cells_per_row * this->max_cells_per_row; ++i)
     {
+        if (this->visible_cell_range < GetDistanceInGrid(i, player_grid_index)) continue;
+
         float x = static_cast<float>(i % this->max_cells_per_row);
         float z = static_cast<float>(i / this->max_cells_per_row);
         DirectX::XMFLOAT3 position = {

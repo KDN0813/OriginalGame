@@ -77,6 +77,8 @@ public:
 
 private:
     bool is_draw_debug_primitive = false;
+    int visible_cell_range = 15;    // •`‰æ‚·‚éƒOƒŠƒbƒh‚Ì”
+    std::weak_ptr<Transform3DComponent> player_transform_Wptr;
 
 #endif // _DEBUG
 };
