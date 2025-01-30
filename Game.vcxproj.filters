@@ -342,9 +342,6 @@
     <ClInclude Include="Source\Debug\DebugComponent.h">
       <Filter>Source\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ConstantManager.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Collision\CollisionParam.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
@@ -629,9 +626,6 @@
     <ClCompile Include="Source\Input\Mouse.cpp">
       <Filter>Source\input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ConstantManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Object\GameObject.cpp">
       <Filter>Source\Object</Filter>
     </ClCompile>
@@ -833,9 +827,6 @@
     <ClCompile Include="Source\Object\Constant\UIConstant.cpp">
       <Filter>Source\Object\Constant\UIConstat</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\BaseSpriteComponent.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\FadeControllerComponent.cpp">
       <Filter>Source\Component\UI</Filter>
     </ClCompile>
@@ -850,6 +841,9 @@
     </ClCompile>
     <ClCompile Include="Source\GridObjectManager\GridObjectManager.cpp">
       <Filter>Source\GridObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\BaseSpriteComponent.cpp">
+      <Filter>Source\Component\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

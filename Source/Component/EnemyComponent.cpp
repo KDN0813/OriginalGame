@@ -7,7 +7,6 @@
 #include "Debug/DebugManager.h"
 #endif // DEBUG
 #include "../Hlsl/ParticleDisp.h"
-#include "ConstantManager.h"
 #include "Shader\ParticleSystem.h"
 #include "Camera\CameraManager.h"
 #include "System\GameData.h"
@@ -254,7 +253,7 @@ void EnemyComponent::SetDamageState()
 	if (!model_component) return;
 
 	this->param.state = STATE::DAMAGE;
-	model_component->PlayAnimation(EnemyCT::ANIMATION::TAUNTING, false);
+	model_component->PlayAnimation(EnemyConstant::ANIMATION::TAUNTING, false);
 }
 
 #ifdef _DEBUG
