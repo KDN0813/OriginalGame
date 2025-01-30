@@ -12,6 +12,14 @@
 
 void FinalUpdateEnemyComponent::Start()
 {
+    // 自身の半径取得
+    const auto& owner = GetOwner();
+    if (!owner) return;
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    const float radius = character->GetRadius();
+
+    // プレイヤーの半径取得
     GameObject::Instance game_object = GameObject::GetInstance();
     const auto& player = game_object->GetPlayer();
     if (!player) return;
@@ -20,15 +28,19 @@ void FinalUpdateEnemyComponent::Start()
     const float player_radius = player_character->GetRadius();
 
     // プレイヤーとの当たり判定を行う範囲を計算
-    this->collision_range = static_cast<int>(std::ceil(static_cast<double>(player_radius) / GridObjectManager::CELL_SIZE));
+    this->collision_range = static_cast<int>(std::ceil(static_cast<double>(player_radius + radius) / GridObjectManager::CELL_SIZE)) + 1;
 }
 
 void FinalUpdateEnemyComponent::Update(float elapsed_time)
 {
-    const auto& onwer = GetOwner();
-    if (!onwer) return;
-    const auto& transform = onwer->GetComponent<Transform3DComponent>(this->transform_Wptr);
+    const auto& owner = GetOwner();
+    if (!owner) return;
+    const auto& transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
     if (!transform) return;
+    // 自身の半径取得
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    const float radius = character->GetRadius();
 
     // プレイヤー取得
     GameObject::Instance game_object = GameObject::GetInstance();
@@ -58,12 +70,14 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
         if (!player_character) return;
         const float player_radius = player_character->GetRadius();
 
+        const float  push_radius = radius + player_radius;
+
         const float vec_range = Vec.LengthSq();
-        if (vec_range < player_radius * player_radius)
+        if (vec_range < push_radius * push_radius)
         {
             // 衝突していたら、押し出し処理を行う
             Vec.NormalizeSelf();
-            MYVECTOR3 New_pos = Player_pos + Vec * player_radius;
+            MYVECTOR3 New_pos = Player_pos + Vec * push_radius;
             DirectX::XMFLOAT3 new_pos{};
             New_pos.GetFlaot3(new_pos);
             new_pos.y = StageConstant::STAGE_FLOOR_Y;   // Y座標は床の位置で固定する

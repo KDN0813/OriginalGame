@@ -95,7 +95,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		CharacterComponent::CharacterParam param{};
 		param.max_hp = 100;
 		param.hp = 100;
-		param.radius = 3.0f;
+		param.radius = 2.0f;
 		player->AddComponent<CharacterComponent>(param);
 	}
 
