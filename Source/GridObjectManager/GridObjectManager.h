@@ -77,7 +77,7 @@ public:
 
 private:
     bool is_draw_debug_primitive = false;
-    int visible_cell_range = 15;    // 描画するグリッドの数
+    int visible_cell_range = 24;    // 描画するグリッドの数
     std::weak_ptr<Transform3DComponent> player_transform_Wptr;
 
 #endif // _DEBUG
