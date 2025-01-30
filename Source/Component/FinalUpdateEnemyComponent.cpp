@@ -8,16 +8,16 @@
 
 #include "Component\EnemyComponent.h"
 #include "Component\TransformComponent.h"
-#include "Component\PlayerComponent.h"
+#include "Component\CharacterComponent.h"
 
 void FinalUpdateEnemyComponent::Start()
 {
     GameObject::Instance game_object = GameObject::GetInstance();
     const auto& player = game_object->GetPlayer();
     if (!player) return;
-    const auto& player_component = player->GetComponent<PlayerComponent>(this->player_Wptr);
-    if (!player_component) return;
-    const float player_radius = player_component->GetPushRadius();
+    const auto& player_character = player->GetComponent<CharacterComponent>(this->player_character_Wptr);
+    if (!player_character) return;
+    const float player_radius = player_character->GetRadius();
 
     // プレイヤーとの当たり判定を行う範囲を計算
     this->collision_range = static_cast<int>(std::ceil(static_cast<double>(player_radius) / GridObjectManager::CELL_SIZE));
@@ -54,9 +54,9 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
         MYVECTOR3 Player_pos = player_pos;
         MYVECTOR3 Vec = Pos - Player_pos;
 
-        const auto& player_component = player->GetComponent<PlayerComponent>(this->player_Wptr);
-        if (!player_component) return;
-        const float player_radius = player_component->GetPushRadius();
+        const auto& player_character = player->GetComponent<CharacterComponent>(this->player_character_Wptr);
+        if (!player_character) return;
+        const float player_radius = player_character->GetRadius();
 
         const float vec_range = Vec.LengthSq();
         if (vec_range < player_radius * player_radius)

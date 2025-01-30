@@ -2,10 +2,6 @@
 #include <DirectXMath.h>
 #include "Component.h"
 
-#ifdef _DEBUG
-#include "Debug\DebugPrimitiveRenderer.h"
-#endif // _DEBUG
-
 class MovementComponent;
 class Transform3DComponent;
 class CircleCollisionComponent;
@@ -20,7 +16,6 @@ public:
         float move_speed = 10.0f;
         int damage_amount = 1;
         bool input_move_validity_flag = true;   // 入力による移動が有効であるかのフラグ
-        float push_radius = 3.0f;   // 衝突時の押し出し量
     };
 public:
     PlayerComponent(PlayerParam param);
@@ -38,9 +33,6 @@ public:
 
     // 他オブジェクトに接触した時の処理
     void OnCollision(const std::shared_ptr<Object>& hit_object)override;
-
-    // 押し出し量を取得
-    float GetPushRadius() const { return this->param.push_radius; }
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
@@ -59,13 +51,9 @@ private:
 #ifdef _DEBUG
 public:
     void DrawDebugGUI() override;
-    void DrawDebugPrimitive() override;
-    bool IsDebugPrimitive() override  { return true; }   // DebugPrimitiveが存在するか
-    void DrawDebugPrimitiveGUI()  override;
+    bool IsDebugPrimitive() override  { return false; }   // DebugPrimitiveが存在するか
 
     static float debug_move_speed;    // Debug時の移動速度
-private:
-    CylinderParam clinde_push_radius{};
 #endif // _DEBUG
 
 #ifdef RELEASE_DEBUG

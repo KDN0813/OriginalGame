@@ -2,7 +2,7 @@
 #include "Component.h"
 
 class EnemyComponent;
-class PlayerComponent;
+class CharacterComponent;
 class Transform3DComponent;
 
 // 最後に更新する、エネミー用のコンポーネント
@@ -30,9 +30,10 @@ public:
 private:
     std::weak_ptr<EnemyComponent> enemy;
     std::weak_ptr<Transform3DComponent> transform_Wptr;
+    std::weak_ptr<CharacterComponent> character_Wptr;
 
     std::weak_ptr<Transform3DComponent> player_transform_Wptr;
-    std::weak_ptr<PlayerComponent> player_Wptr;
+    std::weak_ptr<CharacterComponent> player_character_Wptr;
     int collision_range = 1;    // プレイヤーとの当たり判定を行う範囲
 #ifdef _DEBUG
 public:

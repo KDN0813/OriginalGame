@@ -378,7 +378,7 @@ void MovementComponent::DrawDebugGUI()
 	if (!transform) return;
 
 	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
-	DirectX::XMFLOAT3 cell_center = grid_object_manager->GetCellCenter(this->current_cell_index);
+	DirectX::XMFLOAT3 cell_center = grid_object_manager->GetGridCenter(this->current_cell_index);
 
 	ImGui::InputInt("cell_index", &this->current_cell_index);
 	ImGui::InputFloat3("cell_center", &cell_center.x);
