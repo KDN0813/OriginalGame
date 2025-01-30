@@ -28,7 +28,7 @@ void FinalUpdateEnemyComponent::Start()
     const float player_radius = player_character->GetRadius();
 
     // プレイヤーとの当たり判定を行う範囲を計算
-    this->collision_range = static_cast<int>(std::ceil(static_cast<double>(player_radius + radius) / GridObjectManager::CELL_SIZE)) + 1;
+    this->collision_range = static_cast<int>(std::ceil(static_cast<double>(player_radius + radius) / GridObjectManager::CELL_SIZE));
 }
 
 void FinalUpdateEnemyComponent::Update(float elapsed_time)
@@ -58,7 +58,7 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
     // グリッド間の距離
     const int grid_spacing = grid_object_maanager->GetDistanceInGrid(pos, player_pos);
 
-    // 2マス以内にプレイヤーが存在すれば
+    // プレイヤーの一定範囲内に自身が存在すれば
     if (grid_spacing <= this->collision_range)
     {
         // 衝突判定を行う
@@ -84,5 +84,16 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
 
             transform->SetLocalPosition(new_pos);
         }
+
+#ifdef _DEBUG
+        character->SetIsDebugPrimitive(true);   // 一定距離内にいる時だけ半径を描画する
+#endif // _DEBUG
     }
+#ifdef _DEBUG
+    else
+    {
+        character->SetIsDebugPrimitive(false);
+    }
+
+#endif // _DEBUG
 }
