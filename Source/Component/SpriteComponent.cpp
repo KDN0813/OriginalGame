@@ -1,6 +1,7 @@
 #include "SpriteComponent.h"
 #include "System/MyMath/MYVECTOR2.h"
 #include "Object\Object.h"
+#include "Graphics\Graphics.h"
 
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
@@ -53,6 +54,24 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
     );
 }
 
+void SpriteComponent::AdjustDisplaySizeToSprite()
+{
+    // スプライトサイズ取得
+    const float SPRITE_WIDTH = this->sprite->GetTextureWidth();
+    const float SPRITE_HEIGHT = this->sprite->GetTextureHeight();
+
+    // スクリーンサイズ取得
+    Graphics::Instance graphics = Graphics::GetInstance();
+    const float SCREEN_WIDTH = graphics->GetScreenWidth();
+    const float SCREEN_HEIGHT = graphics->GetScreenHeight();
+
+    // 表示サイズ設定
+    this->default_param.display_size.x = SPRITE_WIDTH / SCREEN_WIDTH;
+    this->default_param.display_size.y = SPRITE_HEIGHT / SCREEN_HEIGHT;
+
+    this->param.display_size = this->default_param.display_size;
+}
+
 #ifdef _DEBUG
 
 void SpriteComponent::DrawDebugGUI()
@@ -82,6 +101,10 @@ void SpriteComponent::DrawDebugGUI()
     if (ImGui::ComboUI("CenterType", now_name, this->center_type_name_pool, center_type_index))
     {
         this->param.center_type = static_cast<Sprite::CENTER_TYPE>(center_type_index);
+    }
+    if (ImGui::Button("AdjustDisplaySizeToSprite"))
+    {
+        AdjustDisplaySizeToSprite();
     }
 }
 

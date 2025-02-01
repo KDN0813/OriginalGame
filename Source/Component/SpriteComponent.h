@@ -41,11 +41,13 @@ public:
     // 描画処理
     void Render(ID3D11DeviceContext* dc) override;
 
-    void SetColoer(DirectX::XMFLOAT4 color) { this->param.color = color; };
+    void SetColor(DirectX::XMFLOAT4 color) { this->param.color = color; };
     void SetAlpha(float a) { this->param.color.w = a; };
     void SetDisplaySize(const DirectX::XMFLOAT2 size) { this->param.display_size = size; };
     void SetDisplaySizeX(const float sizeX) { this->param.display_size.x = sizeX; };
     void SetDisplaySizeY(const float sizeY) { this->param.display_size.y = sizeY; };
+    // 表示サイズをスプライトサイズに合わせる
+    void AdjustDisplaySizeToSprite();
 private:
     std::unique_ptr<Sprite> sprite;
     SpriteParam param;
