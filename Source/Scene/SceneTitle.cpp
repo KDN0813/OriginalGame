@@ -54,14 +54,17 @@ void SceneTitle::Initialize()
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				param.display_size = { 0.55f,0.35f };
 				param.filename = "Data/Sprite/TitleLogo.png";
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				auto sprite = sprite_logo->AddComponent<SpriteComponent>(param);
+				sprite->AdjustDisplaySizeToSprite();
 			}
 
 			// transform
 			{
-				Transform2DComponent::Transform2DParam paam{};
-				paam.local_position = { 0.223f,0.1f };
-				sprite_logo->AddComponent<Transform2DComponent>(paam);
+				Transform2DComponent::Transform2DParam param{};
+				param.local_position = { 0.5f,0.2f };
+				param.local_scale = { 1.5f,1.5f };
+				sprite_logo->AddComponent<Transform2DComponent>(param);
 			}
 		}
 
@@ -71,17 +74,18 @@ void SceneTitle::Initialize()
 			{
 				SpriteComponent::SpriteParam param{};
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-				param.display_size = { 1.0f,0.5f };
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				param.filename = "Data/Sprite/TitleGameStartText.png";
 				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+				sprite->AdjustDisplaySizeToSprite();
+
 			}
 
 			// transform
 			{
 				Transform2DComponent::Transform2DParam param{};
 				param.local_position = { 0.5f,0.630f };
-				param.local_scale = { 0.5f,0.5f };
+				param.local_scale = { 0.4f,0.4f };
 				sprite_bg->AddComponent<Transform2DComponent>(param);
 			}
 		}
@@ -92,17 +96,17 @@ void SceneTitle::Initialize()
 			{
 				SpriteComponent::SpriteParam param{};
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-				param.display_size = { 1.0f,0.5f };
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				param.filename = "Data/Sprite/TitleGameEndText.png";
 				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
+				sprite->AdjustDisplaySizeToSprite();
 			}
 
 			// transform
 			{
 				Transform2DComponent::Transform2DParam param{};
 				param.local_position = { 0.5f,0.87f };
-				param.local_scale = { 0.5f,0.5f };
+				param.local_scale = { 0.4f,0.4f };
 				sprite_bg->AddComponent<Transform2DComponent>(param);
 			}
 		}
