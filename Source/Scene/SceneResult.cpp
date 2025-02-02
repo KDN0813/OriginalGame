@@ -17,17 +17,46 @@ void SceneResult::Initialize()
 	{
 		// 背景
 		{
-			auto sprite_bg = object_manager.Create("Result Back Sprite");
-			// スプライト
-			{
-				SpriteComponent::SpriteParam param{};
-				param.filename = "Data/Sprite/ResultBack.png";
-				auto sprite = sprite_bg->AddComponent<SpriteComponent>(param);
-			}
+			auto sprite_bg = object_manager.Create("Result Back");
+
 			// transform
 			{
 				Transform2DComponent::Transform2DParam param{};
 				sprite_bg->AddComponent<Transform2DComponent>(param);
+			}
+
+			// 子オブジェクト
+			{
+				// 背景
+				{
+					const auto& BG = sprite_bg->CreateChildObject("BG");
+					// スプライト
+					{
+						SpriteComponent::SpriteParam param{};
+						param.filename = "Data/Sprite/TitleBack.png";
+						auto sprite = BG->AddComponent<SpriteComponent>(param);
+					}
+					// transform
+					{
+						Transform2DComponent::Transform2DParam param{};
+						BG->AddComponent<Transform2DComponent>(param);
+					}
+				}
+				// フレーム
+				{
+					const auto& frame = sprite_bg->CreateChildObject("Frame");
+					// スプライト
+					{
+						SpriteComponent::SpriteParam param{};
+						param.filename = "Data/Sprite/ResultBack.png";
+						auto sprite = frame->AddComponent<SpriteComponent>(param);
+					}
+					// transform
+					{
+						Transform2DComponent::Transform2DParam param{};
+						frame->AddComponent<Transform2DComponent>(param);
+					}
+				}
 			}
 		}
 
