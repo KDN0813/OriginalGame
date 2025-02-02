@@ -19,7 +19,7 @@ private:
 
 #ifdef _DEBUG
 public:
-    void DebugDrawGUI()override {};
+    void DebugDrawGUI()override;
 
 #endif // DEBUG
 };
