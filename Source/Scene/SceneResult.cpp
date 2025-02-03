@@ -234,7 +234,11 @@ void SceneResult::ReStart()
 	this->object_manager.ReStart();
 }
 
+#ifdef _DEBUG
+
 void SceneResult::DebugDrawGUI()
 {
 	this->object_manager.DrawDebugGUI();
 }
+
+#endif // _DEBUG

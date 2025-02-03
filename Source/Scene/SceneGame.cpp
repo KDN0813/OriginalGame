@@ -370,6 +370,8 @@ void SceneGame::ReStart()
 	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
 		game_data->SetGameStatus(GameData::GameStatus::GAME);
+		game_data->SetScore(0);			// スコアリセット
+		game_data->RestGameTime();		// 制限時間リセット
 	}
 
 	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
