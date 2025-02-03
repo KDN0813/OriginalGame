@@ -366,7 +366,7 @@ void MovementComponent::DrawDebugGUI()
     ImGui::InputFloat("Max AccelerationXZ", &this->param.max_accelerationXZ);
 	ImGui::InputFloat3("Velocity", &this->param.velocity.x);
 	ImGui::InputFloat("Turn Speed", &this->param.turn_speed);
-	ImGui::Checkbox("Is Stage Raycas", &this->param.is_stage_raycas);
+	ImGui::Checkbox("Is Stage Raycast", &this->param.is_stage_raycas);
 	if (this->param.is_stage_raycas)
 	{
 		ImGui::InputFloat("Step Offset", &this->param.step_offset);
@@ -379,8 +379,11 @@ void MovementComponent::DrawDebugGUI()
 
 	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
 	DirectX::XMFLOAT3 cell_center = grid_object_manager->GetGridCenter(this->current_cell_index);
+	const int MAX_CELLS_PER_ROW = grid_object_manager->max_cells_per_row;
 
-	ImGui::InputInt("cell_index", &this->current_cell_index);
+	ImGui::Text(("cell_index:" + std::to_string(this->current_cell_index)).c_str());
+	ImGui::Text(("cell_X:" + std::to_string(this->current_cell_index % MAX_CELLS_PER_ROW)).c_str());
+	ImGui::Text(("cell_Z:" + std::to_string(this->current_cell_index / MAX_CELLS_PER_ROW)).c_str());
 	ImGui::InputFloat3("cell_center", &cell_center.x);
 }
 
