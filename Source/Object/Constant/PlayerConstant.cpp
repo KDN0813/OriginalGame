@@ -14,7 +14,6 @@
 #include "Component/TransformComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/CharacterComponent.h"
-#include "Component/GravityComponent.h"
 #include "Component/ModelShaderComponent.h"
 #include "Component/CameraControllerComponent.h"
 #include "Component\CameraComponent.h"
@@ -72,7 +71,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	{
 		MovementComponent::MovementParam param{};
 		param.max_accelerationXZ = 100.0f;
-		param.is_stage_raycas = true;
+		param.is_stage_raycas = false;
 		auto movement = player->AddComponent<MovementComponent>(param);
 	}
 	// プレイヤーコンポーネント作成
@@ -85,10 +84,6 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	if (ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())
 	{
 			auto shader_component = player->AddComponent<ModelShaderComponent>(model_shader.Get());
-	}
-	// 重力
-	{
-		player->AddComponent<GravityComponent>(GravityComponent::GravityParam());
 	}
 	// キャラクターステータス
 	{
