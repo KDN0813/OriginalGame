@@ -1,5 +1,7 @@
 #include "SceneResult.h"
 #include "Graphics/Graphics.h"
+#include "Input\Input.h"
+#include "System\GameData.h"
 
 // シェーダー
 #include "Shader/SpriteShader.h"
@@ -13,7 +15,6 @@
 #include "Component/StateMachineComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
-
 
 void SceneResult::Initialize()
 {
@@ -178,6 +179,28 @@ void SceneResult::Finalize()
 
 void SceneResult::Update(float elapsed_time)
 {
+	{
+		Input::Instance input = Input::GetInstance();
+		GamePad game_pad = input->GetGamePad();
+
+		GameData::Instance game_data = GameData::GetInstance();
+
+		// (X)リトライ
+		if (GamePad::BTN_X & game_pad.GetButtonDown())
+		{
+			game_data->SetGameStatus(GameData::GameStatus::GAME);
+
+			return;
+		}
+		// (Y)タイトルへ
+		else if (GamePad::BTN_Y & game_pad.GetButtonDown())
+		{
+			game_data->SetGameStatus(GameData::GameStatus::TITLE);
+
+			return;
+		}
+	}
+
 	this->object_manager.Update(elapsed_time);
 }
 
