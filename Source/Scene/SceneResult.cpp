@@ -9,6 +9,10 @@
 
 #include "Component/SpriteComponent.h"
 #include "Component/Transform2DComponent.h"
+#include "Component/TextNumberComponent.h"
+#include "Component/StateMachineComponent.h"
+
+#include "StateMachine\UIStateDerived.h"
 
 
 void SceneResult::Initialize()
@@ -62,21 +66,67 @@ void SceneResult::Initialize()
 
 		// スコアUI
 		{
-			auto result_text = object_manager.Create("Result Text");
-			// スプライト
-			{
-				SpriteComponent::SpriteParam param{};
-				param.filename = "Data/Sprite/ResultText.png";
-				param.center_type = Sprite::CENTER_TYPE::CENTER;
-				auto sprite = result_text->AddComponent<SpriteComponent>(param);
-				sprite->AdjustDisplaySizeToSprite();
-			}
+			auto scoreUI = object_manager.Create("Result Text");
+
 			// transform
 			{
 				Transform2DComponent::Transform2DParam param{};
-				param.local_scale = { 0.5f,0.5f };
-				param.local_position = { 0.5f,0.2f };
-				result_text->AddComponent<Transform2DComponent>(param);
+				scoreUI->AddComponent<Transform2DComponent>(param);
+			}
+
+			// 子オブジェクト
+			{
+				// テキスト
+				{
+					const auto& score_text = scoreUI->CreateChildObject("Text");
+					// スプライト
+					{
+						SpriteComponent::SpriteParam param{};
+						param.filename = "Data/Sprite/ResultText.png";
+						param.center_type = Sprite::CENTER_TYPE::CENTER;
+						auto sprite = score_text->AddComponent<SpriteComponent>(param);
+						sprite->AdjustDisplaySizeToSprite();
+					}
+					// transform
+					{
+						Transform2DComponent::Transform2DParam param{};
+						param.local_scale = { 0.5f,0.5f };
+						param.local_position = { 0.5f,0.2f };
+						score_text->AddComponent<Transform2DComponent>(param);
+					}
+				}
+
+				// スコア
+				{
+					const auto& score = scoreUI->CreateChildObject("Score");
+
+					// TextNumberComponent
+					{
+						TextNumberComponent::TextParam param{};
+						param.color = { 0.0f,0.0f,0.0f ,1.0f };
+						param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
+						// ファイルパス設定する
+						param.font_name = "Data/Sprite/Numbers.png";
+						auto text_number = score->AddComponent<TextNumberComponent>(param);
+					}
+
+					// transform
+					{
+						Transform2DComponent::Transform2DParam param{};
+						param.local_position = { 0.84f,0.46f };
+						param.local_scale = { 3.0f,3.0f };
+						score->AddComponent<Transform2DComponent>(param);
+					}
+
+					// 更新処理
+					{
+						auto state_machine = score->AddComponent<StateMachineComponent>();
+
+						state_machine->RegisterState<ScoreUIDefaultState>();
+
+						state_machine->SetDefaultState(ScoreUIDefaultState::STATE_NAME);
+					}
+				}
 			}
 		}
 
@@ -143,6 +193,11 @@ void SceneResult::Render()
 	{
 		sprite_shader->Render();
 	}
+}
+
+void SceneResult::ReStart()
+{
+	this->object_manager.ReStart();
 }
 
 void SceneResult::DebugDrawGUI()

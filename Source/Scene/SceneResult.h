@@ -13,6 +13,7 @@ public:
     void Finalize() override;
     void Update(float elapsed_time) override;
     void Render() override;
+    void ReStart() override;
 
 private:
     ObjectManager object_manager;
