@@ -33,6 +33,10 @@ GridObjectManager::GridObjectManager()
     // 左上と右下の座標を計算
     this->grid_min_position = { -half_stage_size, 0.0f, -half_stage_size };
     this->grid_max_position = { half_stage_size, 0.0f, half_stage_size };
+
+    // ダミーオブジェクト作製
+    this->dummy_object = std::make_shared<Object>();
+    this->dummy_object->SetName("Dummy");
 }
 
 bool GridObjectManager::RegisterObject(const std::shared_ptr<Object>& object, DirectX::XMFLOAT3 position)
@@ -172,9 +176,24 @@ const DirectX::XMFLOAT3 GridObjectManager::GetGridCenter(int cell_index)
 
 void GridObjectManager::ClearGridCell()
 {
+    int count = 0;
     for (auto& grid_cell : this->grid_cells)
     {
-        grid_cell.contained_object.reset();
+        // 侵入不可エリアの設定
+        if ((count / this->max_cells_per_row == 5)
+            || (count / this->max_cells_per_row == 195)
+            || (count % this->max_cells_per_row == 5)
+            || (count % this->max_cells_per_row == 193)
+            )
+        {
+            grid_cell.contained_object = this->dummy_object;
+        }
+        else
+        {
+            grid_cell.contained_object.reset();
+
+        }
+        ++count;
     }
 }
 

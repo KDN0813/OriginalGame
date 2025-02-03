@@ -26,7 +26,7 @@ public:
 
 public:
     GridObjectManager();
-    ~GridObjectManager() {}
+    ~GridObjectManager() override{}
 
     // オブジェクトをグリッドグリッドに登録する関数
     // 登録に失敗、またはすでに登録済みの場合はfalseを返す
@@ -70,6 +70,7 @@ private:
     DirectX::XMFLOAT3 grid_max_position;   // ステージ全体の右下のワールド座標
     std::vector<GridData> grid_cells;      // グリッドセルのデータを保持するプール
 
+    std::shared_ptr<Object> dummy_object;   // 侵入不可エリアに設定するダミーオブジェクト
 #ifdef _DEBUG
 public:
     void DrawDebugGUI();      // デバッグ用のGUI描画
