@@ -420,7 +420,7 @@ void SceneGame::ProcessGameState()
 					if (fead_controlle->GetIsActive()) return;
 
 					// シーン切り替え
-					scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
+					scene_manager->ChangeScene(new SceneResult);
 					this->change_state = CHANGE_SCENE_STATE::END;
 				}
 			}
@@ -454,7 +454,7 @@ void SceneGame::ProcessGameState()
 					if (fead_controlle->GetIsActive()) return;
 
 					// シーン切り替え
-					scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
+					scene_manager->ChangeScene(new SceneResult);
 					this->change_state = CHANGE_SCENE_STATE::END;
 				}
 			}

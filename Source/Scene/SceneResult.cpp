@@ -8,16 +8,25 @@
 
 #include "Scene/SceneManager.h"
 #include "Scene/SceneTitle.h"
+#include "Scene/SceneGame.h"
+#include "Scene/SceneLoading.h"
 
 #include "Component/SpriteComponent.h"
 #include "Component/Transform2DComponent.h"
 #include "Component/TextNumberComponent.h"
 #include "Component/StateMachineComponent.h"
+#include "Component/FadeControllerComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
 void SceneResult::Initialize()
 {
+	// フェード解除
+	{
+		const auto& fade_controlle = SceneManager::GetInstance()->GetFadeControlle();
+		fade_controlle->ClearFade();
+	}
+
 	// オブジェクト作成
 	{
 		// 背景
@@ -183,20 +192,22 @@ void SceneResult::Update(float elapsed_time)
 		Input::Instance input = Input::GetInstance();
 		GamePad game_pad = input->GetGamePad();
 
-		GameData::Instance game_data = GameData::GetInstance();
-
 		// (X)リトライ
 		if (GamePad::BTN_X & game_pad.GetButtonDown())
 		{
+			GameData::Instance game_data = GameData::GetInstance();
 			game_data->SetGameStatus(GameData::GameStatus::GAME);
-
+			SceneManager::Instance scene_manager = SceneManager::GetInstance();
+			scene_manager->ChangeScene(new SceneLoading(new SceneGame));
 			return;
 		}
 		// (Y)タイトルへ
 		else if (GamePad::BTN_Y & game_pad.GetButtonDown())
 		{
+			GameData::Instance game_data = GameData::GetInstance();
 			game_data->SetGameStatus(GameData::GameStatus::TITLE);
-
+			SceneManager::Instance scene_manager = SceneManager::GetInstance();
+			scene_manager->ChangeScene(new SceneTitle);
 			return;
 		}
 	}
