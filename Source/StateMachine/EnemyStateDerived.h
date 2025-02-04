@@ -188,3 +188,28 @@ private:
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 };
+
+// 生成ステート
+class EnemySpawnState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	EnemySpawnState();
+	~EnemySpawnState() {}
+	// ステートに入った時のメソッド
+	void Start() override;
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override;
+private:
+	float idle_timer = 0.0f;	// 待機時間
+private:
+	State::ChangeState change_idle_state;
+private:
+	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
+	std::weak_ptr<EnemyComponent> enemy_Wptr;
+	std::weak_ptr<CharacterComponent> character_Wptr;
+};

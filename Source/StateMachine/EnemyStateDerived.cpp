@@ -453,3 +453,72 @@ void EnemyDeadIdleState::Update(float elapsed_time)
         owner->SetIsRemove(true);   // 削除する
     }
 }
+
+const MyHash EnemySpawnState::STATE_NAME = MyHash("EnemySpawnState");
+EnemySpawnState::EnemySpawnState()
+    :State(STATE_NAME)
+{
+    this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
+}
+
+void EnemySpawnState::Start()
+{
+    // 待機時間設定
+    const float IDLE_TIME = 2.0f;
+    this->idle_timer = IDLE_TIME;
+
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
+    // アニメーション再生
+    animation->PlayAnimation(EnemyConstant::IDLE_NORMAL, true);
+
+    // 無敵状態に設定
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(true);
+
+    // 移動停止
+    const auto& enemy = owner->GetComponent(enemy_Wptr);
+    if (!enemy) return;
+    enemy->SetMoveValidityFlag(false);
+}
+
+void EnemySpawnState::Update(float elapsed_time)
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+    const auto& enemy = owner->GetComponent<EnemyComponent>(this->enemy_Wptr);
+    if (!enemy) return;
+
+    if (this->idle_timer > 0.0f)
+    {
+        // 待機タイマー更新
+        this->idle_timer -= elapsed_time;
+    }
+    else
+    {
+        // 待機時間が終了したら移動状態に遷移
+        state_machine->ChangeState(this->change_idle_state);
+        return;
+    }
+}
+
+void EnemySpawnState::End()
+{
+    const auto& owner = GetOwner();
+    if (!owner)return;
+
+    // 移動許可
+    const auto& enemy = owner->GetComponent(enemy_Wptr);
+    if (!enemy) return;
+    enemy->SetMoveValidityFlag(false);
+
+    // 無敵状態解除
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(false);
+}
