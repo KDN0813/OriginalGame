@@ -167,9 +167,9 @@ const MyHash PlayerAttackState::STATE_NAME = MyHash("PlayerAttackState");
 PlayerAttackState::PlayerAttackState()
     : State(PlayerAttackState::STATE_NAME)
 {
-    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
     this->change_attack_combo2_state.change_state_name = PlayerAttackLCombo2State::STATE_NAME;
+    this->change_attack_hold_state.change_state_name = PlayerAttackHoldState::STATE_NAME;
 }
 
 void PlayerAttackState::Start()
@@ -246,10 +246,10 @@ void PlayerAttackState::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (!animation->IsPlayAnimation())
+    if (0.28f <= animation->GetCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
-        state_machine->ChangeState(this->change_idle_state);
+        state_machine->ChangeState(this->change_attack_hold_state);
         return;
     }
 }
@@ -281,9 +281,9 @@ const MyHash PlayerAttackLCombo2State::STATE_NAME = MyHash("PlayerAttackLCombo2S
 PlayerAttackLCombo2State::PlayerAttackLCombo2State()
     : State(PlayerAttackLCombo2State::STATE_NAME)
 {
-    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
+    this->change_attack_hold_state.change_state_name = PlayerAttackHoldState::STATE_NAME;
 }
 
 void PlayerAttackLCombo2State::Start()
@@ -360,10 +360,10 @@ void PlayerAttackLCombo2State::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (!animation->IsPlayAnimation())
+    if (0.28f <= animation->GetCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
-        state_machine->ChangeState(this->change_idle_state);
+        state_machine->ChangeState(this->change_attack_hold_state);
         return;
     }
 }
@@ -389,6 +389,67 @@ void PlayerAttackLCombo2State::End()
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(false);
+}
+
+const MyHash PlayerAttackHoldState::STATE_NAME = MyHash("PlayerAttackHoldState");
+PlayerAttackHoldState::PlayerAttackHoldState()
+    :State(STATE_NAME)
+{
+    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
+    this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
+    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+}
+
+void PlayerAttackHoldState::Update(float elapsed_time)
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (!animation) return;
+
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
+    {
+        // 死亡判定
+        if (!character->IsAlive())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+    }
+
+    // 移動判定
+    auto movement = owner->GetComponent<MovementComponent>(this->movement_Wpt);
+    if (!movement) return;
+    if (movement->IsMoveXZAxis())
+    {
+        state_machine->ChangeState(this->change_move_state);
+        return;
+    }
+
+    // 入力受付
+    if (Input::Instance input = Input::GetInstance(); input.Get())
+    {
+        GamePad& pad = input->GetGamePad();
+        // Yボタン
+        if (pad.GetButtonDown() & GamePad::BTN_Y)
+        {
+            // 回転攻撃ステートに遷移
+            state_machine->ChangeState(this->change_spin_attack_state);
+            return;
+        }
+    }
+
+    // アニメーション再生待ち
+    if (!animation->IsPlayAnimation())
+    {
+        // 待機ステートに遷移
+        state_machine->ChangeState(this->change_idle_state);
+        return;
+    }
 }
 
 const MyHash PlayerSpinAttackState::STATE_NAME = MyHash("PlayerSpinAttackState");
@@ -496,7 +557,6 @@ void PlayerSpinAttackState::End()
     if (!character) return;
     character->SetInvincibleFlag(false);
 }
-
 
 const MyHash PlayerDamageState::STATE_NAME = MyHash("PlayerDamagekState");
 PlayerDamageState::PlayerDamageState()

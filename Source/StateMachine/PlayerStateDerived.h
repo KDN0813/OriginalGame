@@ -75,9 +75,9 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
-	State::ChangeState change_idle_state;
 	State::ChangeState change_dead_state;
 	State::ChangeState change_attack_combo2_state;
+	State::ChangeState change_attack_hold_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
@@ -100,9 +100,9 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
-	State::ChangeState change_idle_state;
 	State::ChangeState change_dead_state;
 	State::ChangeState change_attack_state;
+	State::ChangeState change_attack_hold_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
@@ -133,6 +133,34 @@ private:
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
+};
+
+// 遷移可能な攻撃ステート
+class PlayerAttackHoldState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	PlayerAttackHoldState();
+	~PlayerAttackHoldState() {}
+	// ステートに入った時のメソッド
+	void Start() override {};
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override {};
+private:
+	State::ChangeState change_idle_state;
+	State::ChangeState change_move_state;
+	State::ChangeState change_dead_state;
+	State::ChangeState change_spin_attack_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<PlayerComponent> player_Wprt;
+	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
+	std::weak_ptr<MovementComponent> movement_Wpt;
 };
 
 // ダメージステート
