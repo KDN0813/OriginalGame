@@ -40,6 +40,8 @@ void PlayerIdleState::Update(float elapsed_time)
     if (!owner) return;
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wptr);
+    if (!player) return;
 
     auto movement = owner->GetComponent<MovementComponent>(this->movement_Wpt);
     if (!movement) return;
@@ -82,8 +84,11 @@ void PlayerIdleState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
             // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
-            state_machine->ChangeState(this->change_spin_attack_state);
-            return;
+            if (0.0 < player->GetSpecialPoint())
+            {
+                state_machine->ChangeState(this->change_spin_attack_state);
+                return;
+            }
         }
     }
 }
@@ -114,6 +119,8 @@ void PlayerMoveState::Update(float elapsed_time)
     if (!owner) return;
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wptr);
+    if (!player) return;
 
     auto movement = owner->GetComponent<MovementComponent>(this->movement_Wpt);
     if (!movement) return;
@@ -157,8 +164,11 @@ void PlayerMoveState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
             // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
-            state_machine->ChangeState(this->change_spin_attack_state);
-            return;
+            if (0.0 < player->GetSpecialPoint())
+            {
+                state_machine->ChangeState(this->change_spin_attack_state);
+                return;
+            }
         }
     }
 }
@@ -413,6 +423,8 @@ void PlayerAttackHoldState::Update(float elapsed_time)
     if (!state_machine) return;
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wptr);
+    if (!player) return;
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
@@ -433,8 +445,11 @@ void PlayerAttackHoldState::Update(float elapsed_time)
         if (pad.GetButton() & GamePad::BTN_Y)
         {
             // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
-            state_machine->ChangeState(this->change_spin_attack_state);
-            return;
+            if (0.0 < player->GetSpecialPoint())
+            {
+                state_machine->ChangeState(this->change_spin_attack_state);
+                return;
+            }
         }
     }
 
@@ -578,7 +593,6 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
         // Yƒ{ƒ^ƒ“‚ð—£‚µ‚½‚ç
         if (!(pad.GetButton() & GamePad::BTN_Y))
         {
-            // UŒ‚ƒXƒe[ƒg‚Ö‘JˆÚ
             state_machine->ChangeState(this->change_idle_state);
             return;
         }

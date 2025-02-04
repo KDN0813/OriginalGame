@@ -32,6 +32,7 @@ private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
+	std::weak_ptr<PlayerComponent> player_Wptr;
 };
 
 class PlayerMoveState : public State
@@ -58,6 +59,7 @@ private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
+	std::weak_ptr<PlayerComponent> player_Wptr;
 };
 
 class PlayerAttackState : public State
@@ -157,6 +159,7 @@ private:
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
+	std::weak_ptr<PlayerComponent> player_Wptr;
 };
 
 // 回転攻撃
@@ -210,6 +213,7 @@ private:
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
 	std::weak_ptr<MovementComponent> movement_Wpt;
+	std::weak_ptr<PlayerComponent> player_Wptr;
 };
 
 // ダメージステート
