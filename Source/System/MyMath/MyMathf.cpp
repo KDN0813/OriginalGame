@@ -53,18 +53,28 @@ float MyMath::WrapToRange(float v, float low, float hight)
 
 const DirectX::XMFLOAT3 MyMath::GetRandomPointInRing(float inner_radius, float outer_radius)
 {
+	return GetRandomPointInRing({}, inner_radius, outer_radius);
+}
+
+const DirectX::XMFLOAT3 MyMath::GetRandomPointInRing(DirectX::XMFLOAT3 spawn_point, float inner_radius, float outer_radius)
+{
 	const float theta = MyMath::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
 	const float range = MyMath::RandomRange(inner_radius, outer_radius);
 
 	return DirectX::XMFLOAT3
 	{
-		sinf(theta) * range,
-		StageConstant::STAGE_FLOOR_Y,
-		cosf(theta) * range
+		spawn_point.x + sinf(theta) * range,
+		spawn_point.y + StageConstant::STAGE_FLOOR_Y,
+		spawn_point.z + cosf(theta) * range
 	};
 }
 
 const DirectX::XMFLOAT3 MyMath::GetNonOverlappingPointInRing(float inner_radius, float outer_radius)
+{
+	return GetRandomPointInRing({}, inner_radius, outer_radius);
+}
+
+const DirectX::XMFLOAT3 MyMath::GetNonOverlappingPointInRing(DirectX::XMFLOAT3 spawn_point, float inner_radius, float outer_radius)
 {
 	DirectX::XMFLOAT3 point{};
 
@@ -72,7 +82,7 @@ const DirectX::XMFLOAT3 MyMath::GetNonOverlappingPointInRing(float inner_radius,
 	int count = 0;
 	while (true)
 	{
-		point = GetRandomPointInRing(inner_radius, outer_radius);
+		point = GetRandomPointInRing(spawn_point, inner_radius, outer_radius);
 
 		GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
 		const int grid_index = grid_object_manager->GetGridlIndex(point);
