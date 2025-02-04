@@ -16,4 +16,5 @@ public:
     static const std::shared_ptr<Object>& CreatePause(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreateFadeObject(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreatePlayerHpBarUI(const std::shared_ptr<Object>&);
+    static const std::shared_ptr<Object>& CreatePlayerSpecialBar(const std::shared_ptr<Object>&);
 };

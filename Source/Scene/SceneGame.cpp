@@ -91,6 +91,9 @@ void SceneGame::Initialize()
 		// プレイヤー体力ゲージオブジェクト
 		UIConstant::CreatePlayerHpBarUI(object_manager.Create("PlayerHpBar"));
 
+		// プレイヤーのスペシャルゲージ
+		UIConstant::CreatePlayerSpecialBar(object_manager.Create("SpecialBar"));
+
 		// ステージ(床)
 		const auto& stage_foor = StageConstant::CreateStageFloor(object_manager.Create("StageFloor"));
 

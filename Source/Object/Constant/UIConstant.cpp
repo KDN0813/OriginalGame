@@ -289,3 +289,106 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 
 	return hp_ber;
 }
+
+const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::shared_ptr<Object>& special_bar)
+{
+	// transform
+	{
+		Transform2DComponent::Transform2DParam paam{};
+		paam.local_position = { 0.0f, 0.840f };
+		paam.local_scale = { 0.2f,0.15f };
+		special_bar->AddComponent<Transform2DComponent>(paam);
+	}
+
+	// 子オブジェクト
+	{
+		// 背景
+		{
+			const auto bg_object = special_bar->CreateChildObject("SpriteBG");
+
+			// スプライト読み込み
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 0.0f,0.0f, 0.0f, 1.0f };
+				param.draw_priority = PRIORITY::DEFAULT;
+				param.center_type = Sprite::CENTER_TYPE::BOTTOM_LEFT;
+				bg_object->AddComponent<SpriteComponent>(param);
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam paam{};
+				paam.local_scale = { 1.0f,0.3f };
+				bg_object->AddComponent<Transform2DComponent>(paam);
+			}
+
+			// 子オブジェクト
+			{
+				// 体力ゲージ(フレーム)
+				{
+					const auto bg_frame_object = bg_object->CreateChildObject("HpFrameBer");
+
+					// transform
+					{
+						Transform2DComponent::Transform2DParam paam{};
+						paam.local_position = { 0.04f,-0.49f };
+						paam.local_scale = { 0.9f,0.75f };
+						bg_frame_object->AddComponent<Transform2DComponent>(paam);
+					}
+
+					// スプライト読み込み
+					{
+						SpriteComponent::SpriteParam param{};
+						param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+						param.draw_priority = PRIORITY::DEFAULT;
+						param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
+						bg_frame_object->AddComponent<SpriteComponent>(param);
+					}
+
+					// 更新処理
+					{
+						auto state_machine = bg_frame_object->AddComponent<StateMachineComponent>();
+
+						state_machine->RegisterState<PlayerHPBarUIState>();
+
+						state_machine->SetDefaultState(PlayerHPBarUIState::STATE_NAME);
+					}
+
+					// 子オブジェクト
+					{
+						// 体力ゲージ
+						{
+							const auto bar_object = bg_frame_object->CreateChildObject("HpBer");
+
+							// transform
+							{
+								Transform2DComponent::Transform2DParam paam{};
+								bar_object->AddComponent<Transform2DComponent>(paam);
+							}
+
+							// スプライト読み込み
+							{
+								SpriteComponent::SpriteParam param{};
+								param.color = { 1.0f,1.0f, 0.0f, 1.0f };
+								param.draw_priority = PRIORITY::DEFAULT;
+								param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
+								bar_object->AddComponent<SpriteComponent>(param);
+							}
+
+							// 更新処理
+							{
+								auto state_machine = bar_object->AddComponent<StateMachineComponent>();
+
+								state_machine->RegisterState<PlayerHPBarUIState>();
+
+								state_machine->SetDefaultState(PlayerHPBarUIState::STATE_NAME);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return special_bar;
+}
