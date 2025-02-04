@@ -48,6 +48,15 @@ void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
 }
 
+bool PlayerComponent::UseSpecialPoint(float use_point)
+{
+    // 使用量が超過している場合
+    if (this->param.special_point < use_point) return false;
+
+    this->param.special_point -= use_point;
+    return true;;
+}
+
 bool PlayerComponent::InputMove(float elapsed_time)
 {
     // 移動ベクトルを取得
@@ -152,6 +161,7 @@ void PlayerComponent::DrawDebugGUI()
 
     ImGui::SliderFloat("Special Point", &this->param.special_point, 0, 100);
     ImGui::InputFloat("Special Point Max", &this->param.special_point_max);
+    ImGui::InputFloat("Spin Attack Use Point", &this->param.spin_attack_use_point);
 }
 
 #endif // DEBUG

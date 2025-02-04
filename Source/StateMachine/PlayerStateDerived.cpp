@@ -567,13 +567,8 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
     if (!state_machine) return;
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
-
-    // 攻撃判定オブジェクトを有効にする
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
-    if (!attack_object) return;
-    auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
-    if (!collision) return;
-    collision->EvaluateCollision();
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wptr);
+    if (!player) return;
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
@@ -596,6 +591,20 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
             state_machine->ChangeState(this->change_idle_state);
             return;
         }
+    }
+
+    // 攻撃判定オブジェクトを有効にする
+    {
+        const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+        if (!attack_object) return;
+        auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+        if (!collision) return;
+        collision->EvaluateCollision();
+    }
+
+    // ポイント消費
+    {
+        player->UseSpecialPoint(1.0f * elapsed_time);
     }
 }
 

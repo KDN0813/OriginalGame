@@ -20,6 +20,8 @@ public:
         float move_rate = 1.0f; // 速度倍率
         float spin_attack_move_rate = 2.0f;
 
+        float spin_attack_use_point = 5.0f;     // 回転攻撃に必要なポイント(毎秒コスト必用)
+
         float special_point = 0.0f;          // スペシャルポイント
         float special_point_max = 100.0f;    // スペシャルポイントの最大値
     };
@@ -48,6 +50,9 @@ public:
     void SetSpecialPoint(float point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
     const float GetSpecialPoint()const { return this->param.special_point; }
     const float GetSpecialPointMax()const { return this->param.special_point_max; }
+    // スペシャルポイントを使用する
+    // 使用できたらtrueを返す
+    bool UseSpecialPoint(float use_point);
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
