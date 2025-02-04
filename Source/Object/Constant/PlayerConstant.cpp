@@ -219,8 +219,8 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			// ダメージデータ
 			{
 				DamageComponent::DamageParam param{};
-				param.damage_amount = 1.0f;
-				param.invincible_time = 2.0f;
+				param.damage_amount = 1;
+				param.invincible_time = 1.0f;
 				player_attack_object->AddComponent<DamageComponent>(param);
 			}
 		}

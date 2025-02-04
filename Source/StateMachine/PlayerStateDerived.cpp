@@ -496,9 +496,9 @@ void PlayerSpinAttackState::Start()
     const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
-    if (collision)
-        collision->SetIsActive(true);  // コリジョンを有効にする
-
+    if (!collision) return;
+        
+    collision->SetIsActive(true);  // コリジョンを有効にする
     collision->EvaluateCollision();
 
     // 無敵状態に設定
@@ -515,6 +515,13 @@ void PlayerSpinAttackState::Update(float elapsed_time)
     if (!state_machine) return;
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
+
+    // 攻撃判定オブジェクトを有効にする
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (!collision) return;
+    collision->EvaluateCollision();
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
