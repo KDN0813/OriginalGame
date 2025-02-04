@@ -18,6 +18,7 @@
 #include "Component/CameraControllerComponent.h"
 #include "Component\CameraComponent.h"
 #include "Component/CircleCollisionComponent.h"
+#include "Component/DamageComponent.h"
 
 #include "StateMachine\PlayerStateDerived.h"
 
@@ -184,6 +185,11 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 					child_collision->AddCollisionComponent(player_component);
 				}
 			}
+			// ダメージデータ
+			{
+				DamageComponent::DamageParam param{};
+				player_attack_object->AddComponent<DamageComponent>(param);
+			}
 		}
 		// 回転攻撃用当たり判定オブジェクト
 		{
@@ -209,6 +215,13 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 				{
 					child_collision->AddCollisionComponent(player_component);
 				}
+			}
+			// ダメージデータ
+			{
+				DamageComponent::DamageParam param{};
+				param.damage_amount = 1.0f;
+				param.invincible_time = 2.0f;
+				player_attack_object->AddComponent<DamageComponent>(param);
 			}
 		}
 		// ヒットボックス

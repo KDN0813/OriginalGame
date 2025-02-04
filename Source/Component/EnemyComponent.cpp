@@ -19,6 +19,7 @@
 #include "Component/CharacterComponent.h"
 #include "Component/InstancedModelWithAnimationComponent.h"
 #include "Component\CameraComponent.h"
+#include "Component\DamageComponent.h"
 
 void EnemyComponent::Start()
 {
@@ -83,14 +84,13 @@ void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3
 void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
 	if (this->param.pending_removal_flag) return;	// çÌèúë“ÇøÇÃèÍçáReturn
-	if (this->param.pending_removal_flag) return;	// çÌèúë“ÇøÇÃèÍçáReturn
 
 	const auto& owner = GetOwner();
 	if (!owner) return;
 
 	const auto& character = owner->GetComponent(this->character_Wptr);
 	if (!character) return;
-	if (character->GetInvincibleFlag()) return;	// ñ≥ìGÉtÉâÉOÇ™óßÇ¡ÇƒÇ¢ÇÈÇŒÇÁreturn
+	if (character->IsInvincible()) return;	// ñ≥ìGèÛë‘Ç»ÇÁReturn
 
 	const auto collision = owner->GetComponent(circle_collision_Wptr);
 	if (!collision) return;
@@ -103,13 +103,20 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 		const auto& hit_object_character = hit_object->GetComponent<CharacterComponent>();
 		if (hit_object_character)
 		{
-			hit_object_character->ApplyDamage(this->param.damage_amount);
+			hit_object_character->ApplyDamage(this->param.damage_amount, 0.0f);
 		}
 		break;
 	}
 	case COLLISION_ROLE::RECEIVER:	// è’ìÀÇéÛÇØÇΩéûÇÃèàóù
 	{
-		// éaåÇeffectçƒê∂
+		// É_ÉÅÅ[ÉWèàóù
+		{
+			if (const auto& damage = hit_object->GetComponent<DamageComponent>())
+			{
+				character->ApplyDamage(damage->GetDamageAmount(), damage->GetInvincibleTime());
+			}
+		}
+		// éaåÇEffectçƒê∂
 		{
 			MYVECTOR3 Pos{};    // ê∂ê¨à íu
 			DirectX::XMFLOAT3 pos{};    // ê∂ê¨à íu

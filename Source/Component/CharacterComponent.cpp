@@ -40,14 +40,14 @@ void CharacterComponent::Update(float elapsed_time)
 #endif // _DEBUG
 }
 
-void CharacterComponent::ApplyDamage(int damege)
+void CharacterComponent::ApplyDamage(int damage, float invincible_timer)
 {
-    if (damege <= 0) return;
+    if (damage <= 0) return;
     if (this->param.invincible_flag) return;            // 無敵中ならDamageを受けない
     if (0.0f < this->param.invincible_timer) return;    // 無敵中ならDamageを受けない
-    this->param.hp = (std::max)(this->param.hp - damege, 0);
+    this->param.hp = (std::max)(this->param.hp - damage, 0);
 
-    this->param.invincible_timer = this->param.max_invincible_timer;    // 無敵時間設定
+    this->param.invincible_timer = invincible_timer;
 }
 
 bool CharacterComponent::IsAlive()
@@ -58,6 +58,14 @@ bool CharacterComponent::IsAlive()
 bool CharacterComponent::IsDamage()
 {
     return (this->param.hp < this->param.old_hp);
+}
+
+bool CharacterComponent::IsInvincible()
+{
+    if (this->param.invincible_flag) return true;            // 無敵中ならDamageを受けない
+    if (0.0f < this->param.invincible_timer) return true;    // 無敵中ならDamageを受けない
+
+    return false;
 }
 
 #ifdef _DEBUG
@@ -73,14 +81,13 @@ void CharacterComponent::DrawDebugGUI()
     if (ImGui::InputInt("HP", &this->param.hp)) this->param.hp = (std::min)((std::max)(this->param.hp, 0), this->param.max_hp);
     ImGui::InputInt("Max HP", &this->param.max_hp);
     ImGui::InputFloat("Invincible Timer", &this->param.invincible_timer);
-    ImGui::InputFloat("Max Invincible Timer", &this->param.max_invincible_timer);
     ImGui::DragFloat("Radius", &this->param.radius, 0.1f, 0.01f, 10.0f);
 
     // デバッグ用ダメージボタン
     ImGui::InputInt("Test Damage", &this->test_damage);
     if (ImGui::Button("Test ApplyDamage"))
     {
-        ApplyDamage(this->test_damage);
+        ApplyDamage(this->test_damage, 0.0f);
     }
 
     // デバッグ用死亡ボタン

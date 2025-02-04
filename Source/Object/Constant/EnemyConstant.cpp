@@ -66,7 +66,6 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 		CharacterComponent::CharacterParam param{};
 		param.max_hp = 10;
 		param.hp = 2;
-		param.max_invincible_timer = 0.0f;
 		param.radius = 1.5f;
 		enemy->AddComponent<CharacterComponent>(param);
 	}

@@ -46,31 +46,6 @@ void PlayerComponent::Update(float elapsed_time)
 
 void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
-    const auto& owner = GetOwner();
-    if (!owner) return;
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
-    if (!attack_object) return;
-    const auto attack_object_collision = attack_object->GetComponent(circle_collision_Wptr);
-    if (!attack_object_collision) return;
-
-    switch (attack_object_collision->GetCircleHitResult().collision_role)
-    {
-    case COLLISION_ROLE::ATTACKER:	// 衝突を与えた時の処理
-        if (hit_object)
-        {
-            // ヒットしたオブジェクトにダメージを与える
-            const auto& hit_object_character = hit_object->GetComponent<CharacterComponent>();
-            if (hit_object_character)
-            {
-                hit_object_character->ApplyDamage(this->param.damage_amount);
-            }
-        }
-        break;
-    case COLLISION_ROLE::RECEIVER:	// 衝突を受けた時の処理
-        break;
-    default:
-        break;
-    }
 }
 
 bool PlayerComponent::InputMove(float elapsed_time)

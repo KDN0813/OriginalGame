@@ -15,7 +15,6 @@ public:
         int old_hp = 1; // 前フレームの体力
         int max_hp = 1; // 最大体力
         float invincible_timer = 0.0f;      // 無敵時間
-        float max_invincible_timer = 1.0f;  // 無敵時間の最大値
         bool invincible_flag = false;       // 無敵フラグ(永続的に無敵状態にする際に使用する)
         float radius = 0.5f;                // キャラクターの半径
     };
@@ -36,11 +35,14 @@ public:
     const char* GetName()const  override { return "CharacterComponent"; };
 
     // ダメージを適用する
-    void ApplyDamage(int damege);
+    void ApplyDamage(int damage, float invincible_timer);
     // 生存しているか
     bool IsAlive();
     // ダメージを受けたか
     bool IsDamage();
+
+    // 無敵状態であるか
+    bool IsInvincible();
 
     // 各種取得・設定関数
     int GetHP()const { return this->param.hp; }
