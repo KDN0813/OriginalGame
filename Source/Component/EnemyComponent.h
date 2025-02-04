@@ -77,7 +77,7 @@ public:
     // 移動範囲内にプレイヤーが存在するか
     bool IsPlayerInMovementArea();
     // 攻撃範囲内にプレイヤーが存在するか
-    bool IsPlayerInAttaclArea();
+    bool IsPlayerInAttacklArea();
 
     // 現在待機行動中であるか
     bool IsIdle() { return (this->param.idle_timer > 0.0f); }
