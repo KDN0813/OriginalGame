@@ -604,7 +604,12 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
 
     // ポイント消費
     {
-        player->UseSpecialPoint(1.0f * elapsed_time);
+        if (!player->UseSpecialPoint(1.0f * elapsed_time))
+        {
+            // ポイントが使用できなければ待機ステートに遷移
+            state_machine->ChangeState(this->change_idle_state);
+            return;
+        }
     }
 }
 
