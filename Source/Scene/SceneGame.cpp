@@ -124,15 +124,14 @@ void SceneGame::Initialize()
 		{
 			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 			{
-				for (int i = 0; i < 0; ++i)
-				//for (int i = 0; i < this->enemy_max; ++i)
-				{
-					const float player_area_rage = 50.0f;
-					const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
-					const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create(("enemy" + std::to_string(i)).c_str()));
+				//for (int i = 0; i < EnemyConstant::ENEMY_MAX; ++i)
+				//{
+				//	const float player_area_rage = 50.0f;
+				//	const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
+				//	const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create(("enemy" + std::to_string(i)).c_str()));
 
-					game_object->SetEnemy(enemy);
-				}
+				//	game_object->SetEnemy(enemy);
+				//}
 
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);

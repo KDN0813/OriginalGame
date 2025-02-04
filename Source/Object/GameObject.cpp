@@ -5,6 +5,8 @@
 #include "System\MyMath\MyMathf.h"
 #include "Object\Constant\EnemyConstant.h"
 
+#include "Component\TransformComponent.h"
+
 GameObject::GameObject()
     :Singleton(this)
 {
@@ -26,6 +28,12 @@ void GameObject::Update()
 
 void GameObject::AddCreateEnemy(float elapsed_time, ObjectManager& object_manager)
 {
+    const auto& player = GetPlayer();
+    if (!player) return;
+    const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
+    if (!player_transform) return;
+    const DirectX::XMFLOAT3 PLAYER_POS = player_transform->GetWorldPosition();
+
     // “G‚Ì¶¬
     this->create_enemy_cool_time -= elapsed_time;
     if (create_enemy_cool_time <= 0.0f)
@@ -39,7 +47,7 @@ void GameObject::AddCreateEnemy(float elapsed_time, ObjectManager& object_manage
             if (CREATE_ENEMY_MAX <= i)break;
 
             const float player_area_rage = 50.0f;
-            const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
+            const DirectX::XMFLOAT3 spawn_point = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, 0.0f, EnemyConstant::NEAR_PLAYER_TERRITORY_RENGR);
 
             const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create());
             SetEnemy(enemy);

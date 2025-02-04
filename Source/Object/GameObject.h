@@ -2,6 +2,8 @@
 #include "System/ClassBase/Singleton.h"
 #include "Object/Object.h"
 
+class Transform3DComponent;
+
 class GameObject : public Singleton<GameObject>
 {
 public:
@@ -26,6 +28,7 @@ public:
     void AddCreateEnemy(float elapsed_time,ObjectManager& object_manager);
 private:
     std::weak_ptr<Object> player_Wptr;
+    std::weak_ptr<Transform3DComponent> player_transform_Wptr;
     std::weak_ptr<Object> stage_foor_Wptr;
     std::weak_ptr<Object> stage_wall_Wptr;
     std::vector<std::weak_ptr<Object>> enemy_Wptr_pool;
