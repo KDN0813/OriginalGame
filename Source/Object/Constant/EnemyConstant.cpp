@@ -25,9 +25,6 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 
 const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>& enemy)
 {
-	const float territory_range = EnemyConstant::DEFAULT_TERRITORY_RENGR;
-	const float player_area_rage = 50.0f;
-
 	// コリジョンに設定するコンポーネントは事前に作成しておく
 	std::shared_ptr<EnemyComponent> enemy_component;
 
@@ -54,23 +51,8 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	}
 	// トランスフォーム設定
 	{
-		float offset = 2.0f;
-		const float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-		const float range = MyMathf::RandomRange(player_area_rage, territory_range);
-
 		Transform3DComponent::Transform3DParam param{};
-		param.local_position =
-		{
-#if 0	// 初期値固定
-						20.0f,
-						0.0f,
-						0.0f,
-#else
-						spawn_point.x + sinf(theta) * range,
-						StageConstant::STAGE_FLOOR_Y,
-						spawn_point.z + cosf(theta) * range ,
-#endif
-		};
+		param.local_position = spawn_point;
 		param.local_scale = DirectX::XMFLOAT3(0.015f, 0.015f, 0.015f);
 
 		auto transform = enemy->AddComponent<Transform3DComponent>(param);
@@ -153,4 +135,19 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	}
 
 	return enemy;
+}
+
+const DirectX::XMFLOAT3 EnemyConstant::GetRandomSpawnPoint()
+{
+	const float territory_range = EnemyConstant::DEFAULT_TERRITORY_RENGR;
+	const float player_area_rage = 50.0f;
+	const float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
+	const float range = MyMathf::RandomRange(player_area_rage, territory_range);
+
+	return DirectX::XMFLOAT3
+	{
+		sinf(theta) * range,
+		StageConstant::STAGE_FLOOR_Y,
+		cosf(theta) * range
+	};
 }

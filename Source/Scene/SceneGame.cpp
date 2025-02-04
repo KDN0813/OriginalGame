@@ -126,7 +126,7 @@ void SceneGame::Initialize()
 			{
 				for (int i = 0; i < this->enemy_max; ++i)
 				{
-					const auto& enemy = EnemyConstant::CreateEnemy(object_manager.Create(("enemy" + std::to_string(i)).c_str()));
+					const auto& enemy = EnemyConstant::CreateEnemy(EnemyConstant::GetRandomSpawnPoint(), object_manager.Create(("enemy" + std::to_string(i)).c_str()));
 
 					game_object->SetEnemy(enemy);
 				}

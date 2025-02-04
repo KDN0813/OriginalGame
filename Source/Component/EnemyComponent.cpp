@@ -294,7 +294,7 @@ void EnemyComponent::DrawDebugPrimitive()
 	if (debug_render)
 	{
 		// ˆÚ“®”ÍˆÍ•`‰æ
-		debug_render->DrawCylinder(this->param.spawn_point, this->param.territory_range, 2.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+		//debug_render->DrawCylinder(this->param.spawn_point, this->param.territory_range, 2.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 		
 		if (IsPlayerInMovementArea())
 		{
