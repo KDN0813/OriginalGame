@@ -6,6 +6,7 @@
 #include "Component\TextNumberComponent.h"
 #include "Component\SpriteComponent.h"
 #include "Component\CharacterComponent.h"
+#include "Component\PlayerComponent.h"
 
 const MyHash ScoreUIDefaultState::STATE_NAME = MyHash("ScoreUIDefaultState");
 ScoreUIDefaultState::ScoreUIDefaultState()
@@ -75,6 +76,38 @@ float PlayerHPBarUIState::CalculateHealthBarWidth()
             if (const auto& player_health = player->GetComponent(this->player_health_Wptr))
             {
                 return player_health->GetHealthPercentage();
+            }
+        }
+    }
+    return 1.0f;
+}
+
+const MyHash PlayerSpecialPointUIState::STATE_NAME = MyHash("PlayerSpecialPointUIState");
+PlayerSpecialPointUIState::PlayerSpecialPointUIState()
+    :State(STATE_NAME)
+{
+}
+
+void PlayerSpecialPointUIState::Update(float elapsed_time)
+{
+    if (const auto onwer = GetOwner())
+    {
+        if (const auto& sprite = onwer->GetComponent(this->sprite_Wptr))
+        {
+            sprite->SetDisplaySizeX(CalculateSpecialPointWidth());
+        }
+    }
+}
+
+float PlayerSpecialPointUIState::CalculateSpecialPointWidth()
+{
+    if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+    {
+        if (const auto player = game_object->GetPlayer())
+        {
+            if (const auto& player_component = player->GetComponent(this->player_Wptr))
+            {
+                return static_cast<float>(player_component->GetSpecialPoint() / player_component->GetSpecialPointMax());
             }
         }
     }

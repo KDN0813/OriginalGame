@@ -4,6 +4,7 @@
 class TextNumberComponent;
 class SpriteComponent;
 class CharacterComponent;
+class PlayerComponent;
 
 // スコアUIの通常ステート
 class ScoreUIDefaultState : public State
@@ -64,4 +65,26 @@ private:
 private:
 	std::weak_ptr<SpriteComponent> sprite_Wptr;
 	std::weak_ptr<CharacterComponent> player_health_Wptr;
+};
+
+// スペシャルポイントの通常ステート
+class PlayerSpecialPointUIState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	PlayerSpecialPointUIState();
+	~PlayerSpecialPointUIState() {}
+	// ステートに入った時のメソッド
+	void Start() override {};
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override {};
+private:
+	float CalculateSpecialPointWidth();
+private:
+	std::weak_ptr<SpriteComponent> sprite_Wptr;
+	std::weak_ptr<PlayerComponent> player_Wptr;
 };

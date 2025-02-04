@@ -345,15 +345,6 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 						bg_frame_object->AddComponent<SpriteComponent>(param);
 					}
 
-					// 更新処理
-					{
-						auto state_machine = bg_frame_object->AddComponent<StateMachineComponent>();
-
-						state_machine->RegisterState<PlayerHPBarUIState>();
-
-						state_machine->SetDefaultState(PlayerHPBarUIState::STATE_NAME);
-					}
-
 					// 子オブジェクト
 					{
 						// 体力ゲージ
@@ -379,9 +370,9 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 							{
 								auto state_machine = bar_object->AddComponent<StateMachineComponent>();
 
-								state_machine->RegisterState<PlayerHPBarUIState>();
+								state_machine->RegisterState<PlayerSpecialPointUIState>();
 
-								state_machine->SetDefaultState(PlayerHPBarUIState::STATE_NAME);
+								state_machine->SetDefaultState(PlayerSpecialPointUIState::STATE_NAME);
 							}
 						}
 					}
