@@ -48,5 +48,5 @@ public:
     static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>&);
 
-    static const DirectX::XMFLOAT3 GetRandomSpawnPoint();
+    static const DirectX::XMFLOAT3 GetRandomPointInRing(float inner_radius, float outer_radius);
 };

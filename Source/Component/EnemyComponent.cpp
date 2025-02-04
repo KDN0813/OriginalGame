@@ -219,7 +219,7 @@ bool EnemyComponent::IsPlayerInMovementArea()
 	return (distSq < this->param.territory_range * this->param.territory_range);
 }
 
-bool EnemyComponent::IsPlayerInAttaclArea()
+bool EnemyComponent::IsPlayerInAttacklArea()
 {
 	// ©g‚ÌˆÊ’uæ“¾
 	auto owner = GetOwner();

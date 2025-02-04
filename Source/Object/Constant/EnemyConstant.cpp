@@ -137,12 +137,10 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	return enemy;
 }
 
-const DirectX::XMFLOAT3 EnemyConstant::GetRandomSpawnPoint()
+const DirectX::XMFLOAT3 EnemyConstant::GetRandomPointInRing(float inner_radius, float outer_radius)
 {
-	const float territory_range = EnemyConstant::DEFAULT_TERRITORY_RENGR;
-	const float player_area_rage = 50.0f;
 	const float theta = MyMathf::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-	const float range = MyMathf::RandomRange(player_area_rage, territory_range);
+	const float range = MyMathf::RandomRange(inner_radius, outer_radius);
 
 	return DirectX::XMFLOAT3
 	{
