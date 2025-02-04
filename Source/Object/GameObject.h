@@ -24,6 +24,8 @@ public:
     std::shared_ptr<Object> GetStageWall() const { return this->stage_wall_Wptr.lock(); }
     const std::vector<std::weak_ptr<Object>>& GetEnemyWptPool() const { return this->enemy_Wptr_pool; };
     
+    // エネミーの全削除
+    void EnemyAllClear();
     // 追加で敵を生成する
     void AddCreateEnemy(float elapsed_time,ObjectManager& object_manager);
 private:

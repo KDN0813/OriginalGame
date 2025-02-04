@@ -42,10 +42,10 @@ public:
 #ifdef _DEBUG
     static constexpr size_t ENEMY_MAX = 200;
     static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;        // 敵の移動範囲
-    static constexpr float NEAR_PLAYER_TERRITORY_RENGR = 100.0f;     // プレイヤー付近に生成する時の範囲
 #else
     static constexpr size_t ENEMY_MAX = 3000;
     static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // 敵の移動範囲
+    static constexpr float NEAR_PLAYER_TERRITORY_RENGR = 100.0f;     // プレイヤー付近に生成する時の範囲
 #endif // _DEBUG
 public:
     static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);

@@ -359,17 +359,10 @@ void SceneGame::ReStart()
 
 	object_manager.ReStart();
 
-	// エネミーの数を追加する
+	// エネミーの削除
 	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
-		const size_t now_enemy_count = game_object->GetEnemyWptPool().size();
-		for (int i = 0; i < EnemyConstant::ENEMY_MAX - now_enemy_count; ++i)
-		{
-			const float player_area_rage = 50.0f;
-			const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
-			const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create());
-			game_object->SetEnemy(enemy);
-		}
+		game_object->EnemyAllClear();
 	}
 
 	// ゲーム状態をデフォルトに設定
