@@ -127,7 +127,7 @@ void SceneGame::Initialize()
 				for (int i = 0; i < this->enemy_max; ++i)
 				{
 					const float player_area_rage = 50.0f;
-					const DirectX::XMFLOAT3 spawn_point = EnemyConstant::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
+					const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
 					const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create(("enemy" + std::to_string(i)).c_str()));
 
 					game_object->SetEnemy(enemy);
