@@ -169,6 +169,7 @@ PlayerAttackState::PlayerAttackState()
 {
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
+    this->change_attack_combo2_state.change_state_name = PlayerAttackLCombo2State::STATE_NAME;
 }
 
 void PlayerAttackState::Start()
@@ -231,6 +232,19 @@ void PlayerAttackState::Update(float elapsed_time)
         }
     }
 
+    // 入力受付
+    if (Input::Instance input = Input::GetInstance(); input.Get())
+    {
+        GamePad& pad = input->GetGamePad();
+        // Xボタン
+        if (pad.GetButtonDown() & GamePad::BTN_X)
+        {
+            // 攻撃ステートへ遷移
+            state_machine->ChangeState(this->change_attack_combo2_state);
+            return;
+        }
+    }
+
     // アニメーション再生待ち
     if (!animation->IsPlayAnimation())
     {
@@ -241,6 +255,106 @@ void PlayerAttackState::Update(float elapsed_time)
 }
 
 void PlayerAttackState::End()
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+
+    // プレイヤーの入力移動を有効にする
+    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (player)
+        player->SetInputMoveValidityFlag(true);
+
+    // 攻撃判定オブジェクトを無効にする
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (child_collision)
+        child_collision->SetIsActive(false);  // コリジョンを無効にする
+
+    // 無敵状態を解除
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(false);
+}
+
+const MyHash PlayerAttackLCombo2State::STATE_NAME = MyHash("PlayerAttackLCombo2State");
+PlayerAttackLCombo2State::PlayerAttackLCombo2State()
+    : State(PlayerAttackLCombo2State::STATE_NAME)
+{
+    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
+    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
+}
+
+void PlayerAttackLCombo2State::Start()
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+
+    // アニメーションの再生
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (animation)
+        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK02, false, 0.2f);
+
+    // SE再生
+    if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+    {
+        AudioParam param{};
+        param.volume = 0.5f;
+        param.loop = false;
+        param.filename = "Data/Audio/SE_Slash01.wav";
+        audio->Play(param);
+    }
+
+    // プレイヤーの入力移動を無効にする
+    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (player)
+        player->SetInputMoveValidityFlag(false);
+
+    // 攻撃判定オブジェクトを有効にする
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (collision)
+        collision->SetIsActive(true);  // コリジョンを有効にする
+
+    collision->EvaluateCollision();
+
+    // 無敵状態に設定
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(true);
+}
+
+void PlayerAttackLCombo2State::Update(float elapsed_time)
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (!animation) return;
+
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
+    {
+        // 死亡判定
+        if (!character->IsAlive())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+    }
+
+    // アニメーション再生待ち
+    if (!animation->IsPlayAnimation())
+    {
+        // 待機ステートに遷移
+        state_machine->ChangeState(this->change_idle_state);
+        return;
+    }
+}
+
+void PlayerAttackLCombo2State::End()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
