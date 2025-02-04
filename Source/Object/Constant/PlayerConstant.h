@@ -23,6 +23,8 @@ public:
         ATTACK01,
         ATTACK02,
         SPIN_ATTACK,
+        SPIN_ATTACK_START,
+        SPIN_ATTACK_SPIN_LOOP,
     };
 
     static const MyHash MODEL_FILENAME;
