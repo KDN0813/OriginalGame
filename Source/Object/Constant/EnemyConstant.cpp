@@ -5,6 +5,7 @@
 #include "Shader\InstanceModelShader.h"
 #include "StateMachine\EnemyStateDerived.h"
 #include "Object\Constant\StageConstant.h"
+#include "GridObjectManager\GridObjectManager.h"
 
 #include "Component\EnemyComponent.h"
 #include "Component\FinalUpdateEnemyComponent.h"
@@ -148,4 +149,26 @@ const DirectX::XMFLOAT3 EnemyConstant::GetRandomPointInRing(float inner_radius, 
 		StageConstant::STAGE_FLOOR_Y,
 		cosf(theta) * range
 	};
+}
+
+const DirectX::XMFLOAT3 EnemyConstant::GetNonOverlappingPointInRing(float inner_radius, float outer_radius)
+{
+	DirectX::XMFLOAT3 point{};
+
+	const int max_loop_count = 3;
+	int count = 0;
+	while (true)
+	{
+		point = GetRandomPointInRing(inner_radius, outer_radius);
+
+		GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
+		const int grid_index = grid_object_manager->GetGridlIndex(point);
+		// グリッド内にオブジェクト存在しないならループから抜ける
+		if (!grid_object_manager->IsObjectInGrid(grid_index)) break;
+
+		++count;
+		if (max_loop_count <= count) break;	// ループ回数が最大を超えたらループから抜ける
+	}
+
+	return point;
 }

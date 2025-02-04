@@ -48,5 +48,8 @@ public:
     static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>&);
 
+    // 円状のランダムな位置を取得
     static const DirectX::XMFLOAT3 GetRandomPointInRing(float inner_radius, float outer_radius);
+    // 他オブジェクトと重ならない位置を取得
+    static const DirectX::XMFLOAT3 GetNonOverlappingPointInRing(float inner_radius, float outer_radius);
 };
