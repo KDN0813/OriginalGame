@@ -217,6 +217,9 @@
     <Filter Include="Source\GridObjectManager">
       <UniqueIdentifier>{2d5d7287-8b62-4094-9f2d-f296af767a47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\Damage">
+      <UniqueIdentifier>{2bce6e2b-efe7-4300-b657-55ae3802a320}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -567,6 +570,9 @@
     <ClInclude Include="Source\GridObjectManager\GridObjectManager.h">
       <Filter>Source\GridObjectManager</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\DamageComponent.h">
+      <Filter>Source\Component\Damage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -844,6 +850,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\BaseSpriteComponent.cpp">
       <Filter>Source\Component\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\DamageComponent.cpp">
+      <Filter>Source\Component\Damage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
