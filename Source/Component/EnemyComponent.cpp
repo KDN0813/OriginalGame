@@ -154,8 +154,8 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 
 void EnemyComponent::SetRandomTargetPosition()
 {
-	float theta = MyMath::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-	float range = MyMath::RandomRange(0.0f, this->param.territory_range);
+	float theta = MyMath::RandomFlaotRange(-DirectX::XM_PI, DirectX::XM_PI);
+	float range = MyMath::RandomFlaotRange(0.0f, this->param.territory_range);
 	this->param.target_position.x = this->param.spawn_point.x + sinf(theta) * range;
 	this->param.target_position.y = 0.0f;
 	this->param.target_position.z = this->param.spawn_point.z + cosf(theta) * range;
@@ -175,7 +175,7 @@ void EnemyComponent::SetTargetPositionByPlayer()
 
 void EnemyComponent::SetRandomIdleTime()
 {
-	this->param.idle_timer = MyMath::RandomRange(this->param.min_idle_time, this->param.max_idle_time);
+	this->param.idle_timer = MyMath::RandomFlaotRange(this->param.min_idle_time, this->param.max_idle_time);
 }
 
 bool EnemyComponent::IsAtTarget()
@@ -286,10 +286,11 @@ void EnemyComponent::DrawDebugPrimitive()
 	if (!transform) return;
 	MYVECTOR3 Position = transform->GetWorldPosition();
 
-	if (debug_render && !this->IsAtTarget())
-	{
-		debug_render->DrawSphere(this->param.target_position, 1.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
-	}
+	// –Ú“I’n
+	//if (debug_render && !this->IsAtTarget())
+	//{
+	//	debug_render->DrawSphere(this->param.target_position, 1.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+	//}
 	
 	if (debug_render)
 	{

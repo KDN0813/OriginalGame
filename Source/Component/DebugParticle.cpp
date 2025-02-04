@@ -60,9 +60,9 @@ void DebugParticle::PlayEffect(int type)
 
     if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
     {
-        const float theta = MyMath::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
-        const float range = MyMath::RandomRange(0.0f, this->effect_area_radius);
-        const float height = MyMath::RandomRange(0.0f, this->effect_area_height);
+        const float theta = MyMath::RandomFlaotRange(-DirectX::XM_PI, DirectX::XM_PI);
+        const float range = MyMath::RandomFlaotRange(0.0f, this->effect_area_radius);
+        const float height = MyMath::RandomFlaotRange(0.0f, this->effect_area_height);
 
         float rot{};
         DirectX::XMFLOAT3 pos{ this->area_pos.x,this->area_pos.y ,this->area_pos.z };

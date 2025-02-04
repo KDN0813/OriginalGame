@@ -53,9 +53,10 @@ private:
 
     CHANGE_SCENE_STATE change_state = CHANGE_SCENE_STATE::START;    // シーン遷移用ステート
 
-    const size_t enemy_spawn_point_count = 3;   // 敵を生成する数(1列、縦横同じ)
+    float create_enemy_cool_time = 0.0f;    // 敵生成のクールタイム
 #ifdef _DEBUG
     const size_t enemy_max = 200;
+    
     std::shared_ptr<Object> debug_Particle;
 #else
     const int enemy_max = 3000;

@@ -5,6 +5,8 @@ class MyMath
 {
 public:
 	// 指定範囲のランダム値を計算する
+	static size_t RandomRange(size_t min, size_t max);
+	static int RandomRange(int min, int max);
 	static float RandomRange(float min, float max);
 
 	// 指定した角度（ラジアン）が範囲外の場合、適切な範囲内に補正します

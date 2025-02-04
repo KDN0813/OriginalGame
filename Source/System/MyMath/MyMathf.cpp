@@ -13,6 +13,21 @@ float MyMath::RandomRange(float min, float max)
 	return min + (max - min) * value;
 }
 
+size_t MyMath::RandomRange(size_t min, size_t max)
+{
+	// 0.0～1.0の間までのランダム値
+	size_t value = static_cast<size_t>(rand()) / RAND_MAX;
+
+	// min～maxまでのランダム値に変換
+	return min + (max - min) * value;
+}
+
+int MyMath::RandomRange(int min, int max)
+{
+	int value = rand() / RAND_MAX;
+	return min + (max - min) * value;
+}
+
 float MyMath::ClampRadian(float radian)
 {
 	return MyMath::WrapToRange(radian, 0.0f, 36.0f);

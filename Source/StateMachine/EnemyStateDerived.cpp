@@ -86,7 +86,7 @@ void EnemyIdleState::Update(float elapsed_time)
 
 void EnemyIdleState::SetRandomIdleTime()
 {
-    this->idle_timer = MyMath::RandomRange(EnemyConstant::MIN_IDLE_TIME, EnemyConstant::MAX_IDLE_TIME);
+    this->idle_timer = MyMath::RandomFlaotRange(EnemyConstant::MIN_IDLE_TIME, EnemyConstant::MAX_IDLE_TIME);
 }
 
 const MyHash EnemyWanderingState::STATE_NAME = MyHash("EnemyWanderingState");
