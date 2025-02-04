@@ -424,7 +424,7 @@ void PlayerSpinAttackState::Start()
     if (player)
     {
         //player->SetInputMoveValidityFlag(false);
-        player->SetMoveRate(2.0f);
+        player->SetMoveRate(player->GetSpinAttackMoveRate());
     }
 
     // 攻撃判定オブジェクトを有効にする
