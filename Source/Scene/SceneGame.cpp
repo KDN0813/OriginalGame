@@ -105,6 +105,7 @@ void SceneGame::Initialize()
 			// パーティクル再生用オブジェクト
 			{
 				this->debug_Particle = object_manager.Create("Debug Particle");
+				this->debug_Particle->SetIsActive(false);
 
 				// transform
 				{

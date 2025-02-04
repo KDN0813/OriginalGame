@@ -39,7 +39,7 @@ void GameObject::AddCreateEnemy(float elapsed_time, ObjectManager& object_manage
         const size_t NOW_ENEMY_COUNT = this->GetEnemyWptPool().size();
         const size_t ENEMY_MAX = EnemyConstant::ENEMY_MAX;
 #ifdef _DEBUG
-        const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(10, 30);	// 1度に生成できるエネミーの最大数
+        const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(10, 20);	// 1度に生成できるエネミーの最大数
 #else
         const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(30, 100);	// 1度に生成できるエネミーの最大数
 #endif // _DEBUG

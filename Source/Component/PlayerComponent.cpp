@@ -93,10 +93,10 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 #ifdef _DEBUG
         if (Input::Instance input = Input::GetInstance(); input.Get())
         {
-            if (input->GetGamePad().GetTriggerL())
-            {
-                speed = debug_move_speed;
-            }
+            //if (input->GetGamePad().GetTriggerL())
+            //{
+            //    speed = debug_move_speed;
+            //}
         }
 #endif // DEBUG
 

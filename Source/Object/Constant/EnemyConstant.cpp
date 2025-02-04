@@ -33,6 +33,9 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 		EnemyComponent::EnemyParam param{};
 		param.spawn_point = spawn_point;
 		enemy_component = enemy->AddComponent<EnemyComponent>(param);
+#ifdef _DEBUG
+		enemy_component->SetIsDebugPrimitive(false);
+#endif
 	}
 	// ƒ€[ƒuƒƒ“ƒgİ’è
 	{
