@@ -110,6 +110,55 @@ private:
 	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
+// 回転攻撃開始ステート
+class PlayerSpinAttackStartState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	PlayerSpinAttackStartState();
+	~PlayerSpinAttackStartState() {}
+	// ステートに入った時のメソッド
+	void Start() override;
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override {};
+private:
+	State::ChangeState change_spin_attack_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<PlayerComponent> player_Wprt;
+	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
+};
+
+// 回転攻撃(ループ)
+class PlayerSpinAttackSpinLoopState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	PlayerSpinAttackSpinLoopState();
+	~PlayerSpinAttackSpinLoopState() {}
+	// ステートに入った時のメソッド
+	void Start() override;
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override;
+private:
+	State::ChangeState change_idle_state;
+	State::ChangeState change_dead_state;
+private:
+	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<PlayerComponent> player_Wprt;
+	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
+	std::weak_ptr<CharacterComponent> character_Wptr;
+};
+
 // 回転攻撃
 class PlayerSpinAttackState : public State
 {

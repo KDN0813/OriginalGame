@@ -21,7 +21,7 @@ PlayerIdleState::PlayerIdleState()
     this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
     this->change_damage_state.change_state_name = PlayerDamageState::STATE_NAME;
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
@@ -95,7 +95,7 @@ PlayerMoveState::PlayerMoveState()
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
     this->change_damage_state.change_state_name = PlayerDamageState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
@@ -402,7 +402,7 @@ PlayerAttackHoldState::PlayerAttackHoldState()
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
     this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
 }
 
 void PlayerAttackHoldState::Update(float elapsed_time)
@@ -456,6 +456,161 @@ void PlayerAttackHoldState::Update(float elapsed_time)
     }
 }
 
+const MyHash PlayerSpinAttackStartState::STATE_NAME = MyHash("PlayerSpinAttackStartState");
+PlayerSpinAttackStartState::PlayerSpinAttackStartState()
+    :State(STATE_NAME)
+{
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
+}
+
+void PlayerSpinAttackStartState::Start()
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    // アニメーションの再生
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (animation)
+        animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_START, false, 0.2f);
+}
+
+void PlayerSpinAttackStartState::Update(float elapsed_time)
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (!animation) return;
+
+
+    // アニメーション再生待ち
+    if (!animation->IsPlayAnimation())
+    {
+        // 回転
+        state_machine->ChangeState(this->change_spin_attack_state);
+        return;
+    }
+}
+
+
+const MyHash PlayerSpinAttackSpinLoopState::STATE_NAME = MyHash("PlayerSpinAttackSpinLoopState");
+PlayerSpinAttackSpinLoopState::PlayerSpinAttackSpinLoopState()
+    :State(STATE_NAME)
+{
+    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
+    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
+}
+
+void PlayerSpinAttackSpinLoopState::Start()
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+
+    // アニメーションの再生
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (animation)
+        animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_SPIN_LOOP, true, 0.0f);
+
+    // SE再生
+    if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+    {
+        AudioParam param{};
+        param.volume = 0.4f;
+        param.loop = false;
+        param.filename = "Data/Audio/SE_Slash02.wav";
+        audio->Play(param);
+    }
+
+    // プレイヤーの入力移動を無効にする
+    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (player)
+    {
+        //player->SetInputMoveValidityFlag(false);
+        player->SetMoveRate(player->GetSpinAttackMoveRate());
+    }
+
+    // 攻撃判定オブジェクトを有効にする
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (!collision) return;
+
+    collision->SetIsActive(true);  // コリジョンを有効にする
+    collision->EvaluateCollision();
+
+    // 無敵状態に設定
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(true);
+}
+
+void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
+    if (!state_machine) return;
+    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    if (!animation) return;
+
+    // 攻撃判定オブジェクトを有効にする
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (!collision) return;
+    collision->EvaluateCollision();
+
+    if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
+    {
+        // 死亡判定
+        if (!character->IsAlive())
+        {
+            // 被ダメステートに遷移
+            state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+    }
+
+    // 入力確認
+    if (Input::Instance input = Input::GetInstance(); input.Get())
+    {
+        GamePad& pad = input->GetGamePad();
+        // Yボタンを離したら
+        if (!(pad.GetButton() & GamePad::BTN_Y))
+        {
+            // 攻撃ステートへ遷移
+            state_machine->ChangeState(this->change_idle_state);
+            return;
+        }
+    }
+}
+
+void PlayerSpinAttackSpinLoopState::End()
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+
+    // プレイヤーの入力移動を有効にする
+    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (player)
+    {
+        player->SetInputMoveValidityFlag(true);
+        player->SetMoveRate(1.0f);
+    }
+
+    // 攻撃判定オブジェクトを無効にする
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (child_collision)
+        child_collision->SetIsActive(false);  // コリジョンを無効にする
+
+    // 無敵状態を解除
+    const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
+    if (!character) return;
+    character->SetInvincibleFlag(false);
+}
+
 const MyHash PlayerSpinAttackState::STATE_NAME = MyHash("PlayerSpinAttackState");
 PlayerSpinAttackState::PlayerSpinAttackState()
     :State(PlayerSpinAttackState::STATE_NAME)
@@ -472,7 +627,7 @@ void PlayerSpinAttackState::Start()
     // アニメーションの再生
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
-        animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK, false, 0.2f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK, false, 0.0f);
 
     // SE再生
     if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
@@ -576,7 +731,7 @@ PlayerDamageState::PlayerDamageState()
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
     this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackState::STATE_NAME;
+    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
