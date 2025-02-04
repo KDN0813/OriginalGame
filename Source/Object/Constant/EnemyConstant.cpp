@@ -88,6 +88,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 		auto state_machine = enemy->AddComponent<StateMachineComponent>();
 		{
 			// ステートの追加
+			state_machine->RegisterState<EnemySpawnState>();
 			state_machine->RegisterState<EnemyIdleState>();
 			state_machine->RegisterState<EnemyWanderingState>();
 			state_machine->RegisterState<EnemyChaseState>();
@@ -96,7 +97,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 			state_machine->RegisterState<EnemyDeadState>();
 			state_machine->RegisterState<EnemyDeadIdleState>();
 
-			state_machine->SetDefaultState(EnemyIdleState::STATE_NAME);	// デフォルトステートの設定
+			state_machine->SetDefaultState(EnemySpawnState::STATE_NAME);	// デフォルトステートの設定
 		}
 	}
 	// FinalUpdateEnemyComponent

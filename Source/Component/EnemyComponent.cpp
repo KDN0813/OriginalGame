@@ -82,10 +82,16 @@ void EnemyComponent::MoveToTarget(float elapsed_time, std::shared_ptr<Transform3
 
 void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
-	if (this->param.pending_removal_flag) return;	// íœ‘Ò‚¿‚Ìê‡return
+	if (this->param.pending_removal_flag) return;	// íœ‘Ò‚¿‚Ìê‡Return
+	if (this->param.pending_removal_flag) return;	// íœ‘Ò‚¿‚Ìê‡Return
 
 	const auto& owner = GetOwner();
 	if (!owner) return;
+
+	const auto& character = owner->GetComponent(this->character_Wptr);
+	if (!character) return;
+	if (character->GetInvincibleFlag()) return;	// –³“Gƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é‚Î‚çreturn
+
 	const auto collision = owner->GetComponent(circle_collision_Wptr);
 	if (!collision) return;
 
