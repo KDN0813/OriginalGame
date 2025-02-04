@@ -25,6 +25,7 @@ public:
 		int anime_speed = 1;
 		bool anime_loop = false;
 		bool anime_play = false;					// アニメーションが再生中であるか
+		DirectX::XMFLOAT4 base_color = { 1.0f,1.0f ,1.0f, 1.0f };
 	};
 public:
 	// 再生するアニメーションのパラメータ
@@ -57,11 +58,14 @@ public:
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
 	ModelResource* GetModelResource() { return this->model_resource.get(); }
 	UINT GetAnimeFrame();		// 現在の再生フレーム数を取得
+	DirectX::XMFLOAT4 GetBaseColor()const { return this->param.base_color; }
 	float GetCurrentAnimationSeconds() const { return this->param.current_animation_seconds; }
 	UINT GetAnimationStartOffset();	// 現在再生しているアニメーションのオフセット値を取得
 	int GetModelId();
 
 	std::vector<DirectX::BoundingBox> GetBoundingBoxs();
+
+	void GetBaseColor(const DirectX::XMFLOAT4 base_color) { this->param.base_color = base_color; }
 protected:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
 	std::shared_ptr<ModelResource> model_resource;

@@ -53,7 +53,8 @@ private:
 	{
 		UINT animation_start_offset = {};
 		UINT anime_frame = {};
-		DirectX::XMFLOAT4X4 world_transform = {};;
+		DirectX::XMFLOAT4X4 world_transform = {};
+		DirectX::XMFLOAT4 base_color = { 1.0f,1.0f ,1.0f, 1.0f };
 	};
 public:
 	InstancingModelShader();
@@ -70,7 +71,7 @@ public:
 	// インスタンシング描画修了
 	void InstancingEnd(ID3D11DeviceContext* dc, InstancedModelWithAnimationComponent* model);
 
-	// 描画するobjectのシェーダーを追加
+	// 描画するObjectのシェーダーを追加
 	void AddShaderComponent(InstancingModelShaderComponent* shader_component);
 
 	// objectのシェーダーを削除する

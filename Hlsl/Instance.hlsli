@@ -33,6 +33,7 @@ struct InstanceData
     uint animation_start_offset;    // バッファ内で使用するアニメーションの開始位置を示すオフセット値
     uint frame;                     // 現在のフレーム
     row_major float4x4 world_transform;
+    float4 base_color;
 };
 struct BoneTransform
 {

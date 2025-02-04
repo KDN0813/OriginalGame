@@ -216,7 +216,7 @@ void InstancingModelShader::Render()
 		dc->RSSetState(this->rasterizer_state.Get());
 		dc->PSSetSamplers(0, 1, this->sampler_state.GetAddressOf());
 
-		// ’è”bufferİ’è
+		// ’è”Bufferİ’è
 		ID3D11Buffer* constantBuffers[] =
 		{
 			this->scene_constant_buffer.Get(),
@@ -299,7 +299,8 @@ void InstancingModelShader::InstancingAdd(
 	{
 		model->GetAnimationStartOffset(),
 		model->GetAnimeFrame(),
-		transform->GetWolrdTransform()
+		transform->GetWolrdTransform(),
+		model->GetBaseColor(),
 	};
 	++this->instance_count;
 }

@@ -32,8 +32,12 @@ VsOut main(VsIn vs_in)
     float3 L = normalize(-directional_lights.direction.xyz);
     float d = dot(L, N);
     float power = max(0, d) * 0.5f + 0.5f;
-    vout.color.rgb = vs_in.color.rgb * material_color.rgb * power * ambient_color.rgb;
-    vout.color.a = vs_in.color.a * material_color.a * 2.0f;
+    
+    // ベースカラー取得
+    const float4 base_color = instance_data[vs_in.instance_id].base_color;
+    
+    vout.color.rgb = vs_in.color.rgb * material_color.rgb * power * ambient_color.rgb * base_color.rgb;
+    vout.color.a = vs_in.color.a * material_color.a * 2.0f * base_color.a;
     
     vout.texcoord = vs_in.texcoord;
     return vout;
