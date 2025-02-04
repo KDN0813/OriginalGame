@@ -49,6 +49,11 @@ private:
     PlayerParam param;
     PlayerParam default_param;
 
+public:
+    // HACK 変数名・変数の位置変更する
+    // この時間を超えると他ステートに遷移可能になる
+    float attack_end_point = 0.2f;
+    float attack_combo2_end_point = 0.25f;
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;

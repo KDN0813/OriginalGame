@@ -218,8 +218,10 @@ void PlayerAttackState::Update(float elapsed_time)
     if (!owner) return;
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
-    auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
+    const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (!player) return;
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
@@ -246,7 +248,7 @@ void PlayerAttackState::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (0.28f <= animation->GetCurrentAnimationSeconds())
+    if (player->attack_end_point <= animation->GetCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
         state_machine->ChangeState(this->change_attack_hold_state);
@@ -334,6 +336,8 @@ void PlayerAttackLCombo2State::Update(float elapsed_time)
     if (!state_machine) return;
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
+    const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
+    if (!player) return;
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
@@ -360,7 +364,7 @@ void PlayerAttackLCombo2State::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (0.28f <= animation->GetCurrentAnimationSeconds())
+    if (player->attack_combo2_end_point <= animation->GetCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
         state_machine->ChangeState(this->change_attack_hold_state);
@@ -421,15 +425,6 @@ void PlayerAttackHoldState::Update(float elapsed_time)
         }
     }
 
-    // 移動判定
-    auto movement = owner->GetComponent<MovementComponent>(this->movement_Wpt);
-    if (!movement) return;
-    if (movement->IsMoveXZAxis())
-    {
-        state_machine->ChangeState(this->change_move_state);
-        return;
-    }
-
     // 入力受付
     if (Input::Instance input = Input::GetInstance(); input.Get())
     {
@@ -441,6 +436,15 @@ void PlayerAttackHoldState::Update(float elapsed_time)
             state_machine->ChangeState(this->change_spin_attack_state);
             return;
         }
+    }
+
+    // 移動判定
+    auto movement = owner->GetComponent<MovementComponent>(this->movement_Wpt);
+    if (!movement) return;
+    if (movement->IsMoveXZAxis())
+    {
+        state_machine->ChangeState(this->change_move_state);
+        return;
     }
 
     // アニメーション再生待ち
