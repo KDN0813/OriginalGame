@@ -45,22 +45,21 @@ bool GridObjectManager::RegisterObject(const std::shared_ptr<Object>& object, Di
     if (!object) return false;
 
     const int cell_index = GetGridIndex(position);
-    if (IndexErrorCheck(cell_index)) return false;
-
-    // ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Ìê‡‚Í“o˜^Ž¸”s
-    if (cell_index >= static_cast<int>(this->grid_cells.size())) return false;
-
-    if (this->grid_cells[cell_index].contained_object.expired()) return false;
-
-    // ŠY“–ƒZƒ‹‚ÉƒIƒuƒWƒFƒNƒg‚ð“o˜^
-    this->grid_cells[cell_index].contained_object = object;
-    return true;
+    return RegisterObject(object, cell_index);
 }
 
 bool GridObjectManager::RegisterObject(const std::shared_ptr<Object>& object, int cell_index)
 {
+    // ƒIƒuƒWƒFƒNƒg‚Ü‚½‚Íƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ª–³Œø‚Èê‡‚Í“o˜^Ž¸”s
+    if (!object) return false;
+
     // ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Ìê‡‚Í“o˜^Ž¸”s
     if (IndexErrorCheck(cell_index)) return false;
+    // N“ü•s‰ÂƒGƒŠƒA‚Ìê‡‚Í“o˜^Ž¸”s
+    if (IsGridBlocked(cell_index)) return false;
+
+    // Šù‚É“o˜^‚³‚ê‚Ä‚¢‚½‚çŽ¸”s
+    if (!this->grid_cells[cell_index].contained_object.expired()) return false;
 
     // ŠY“–ƒZƒ‹‚ÉƒIƒuƒWƒFƒNƒg‚ð“o˜^
     this->grid_cells[cell_index].contained_object = object;
@@ -79,6 +78,19 @@ bool GridObjectManager::IsObjectInGrid(const std::shared_ptr<Object>& object, in
     if (IndexErrorCheck(cell_index)) return false;
 
     return this->grid_cells[cell_index].contained_object.lock() == object;
+}
+
+bool GridObjectManager::IsGridBlocked(const int cell_index)
+{
+    if ((cell_index / this->max_cells_per_row <= BLOCK_GRID_INDEX_Z1)
+        || (cell_index / this->max_cells_per_row >= BLOCK_GRID_INDEX_Z2)
+        || (cell_index % this->max_cells_per_row <= BLOCK_GRID_INDEX_X1)
+        || (cell_index % this->max_cells_per_row >= BLOCK_GRID_INDEX_X2)
+        )
+    {
+        return true;
+    }
+    return false;
 }
 
 int GridObjectManager::GetDistanceInGrid(const int cell_index_a, const int cell_index_b)
@@ -179,10 +191,10 @@ void GridObjectManager::ClearGridCell()
     for (auto& grid_cell : this->grid_cells)
     {
         // N“ü•s‰ÂƒGƒŠƒA‚ÌÝ’è
-        if ((count / this->max_cells_per_row == 5)
-            || (count / this->max_cells_per_row == 195)
-            || (count % this->max_cells_per_row == 5)
-            || (count % this->max_cells_per_row == 193)
+        if ((count / this->max_cells_per_row == BLOCK_GRID_INDEX_Z1)
+            || (count / this->max_cells_per_row == BLOCK_GRID_INDEX_Z2)
+            || (count % this->max_cells_per_row == BLOCK_GRID_INDEX_X1)
+            || (count % this->max_cells_per_row == BLOCK_GRID_INDEX_X2)
             )
         {
             grid_cell.contained_object = this->dummy_object;

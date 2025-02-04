@@ -88,6 +88,9 @@ const DirectX::XMFLOAT3 MyMath::GetNonOverlappingPointInRing(DirectX::XMFLOAT3 c
 		const int grid_index = grid_object_manager->GetGridIndex(point);
 		if (0 <= grid_index)
 		{
+			// 侵入不可エリアなら再計算
+			if (grid_object_manager->IsGridBlocked(grid_index)) continue;
+
 			// グリッド内にオブジェクト存在しないならループから抜ける
 			if (!grid_object_manager->IsObjectInGrid(grid_index)) break;
 

@@ -24,6 +24,11 @@ public:
     float stage_size{};                              // ステージ全体のサイズ
     int max_cells_per_row{};                         // ステージの1行あたりのセル数
 
+    // TODO 変数名変更する
+    const int BLOCK_GRID_INDEX_Z1 = 5;
+    const int BLOCK_GRID_INDEX_Z2 = 195;
+    const int BLOCK_GRID_INDEX_X1 = 5;
+    const int BLOCK_GRID_INDEX_X2 = 193;
 public:
     GridObjectManager();
     ~GridObjectManager() override{}
@@ -38,6 +43,8 @@ public:
     // グリッドに特定のオブジェクトが存在するか
     bool IsObjectInGrid(const std::shared_ptr<Object>& target_object, int cell_index);
 
+    // グリッドが侵入不可であるか
+    bool IsGridBlocked(const int cell_index);
 
     // グリッド間の距離を計算する関数
     int GetDistanceInGrid(const int cell_index_a, const int cell_index_b);
