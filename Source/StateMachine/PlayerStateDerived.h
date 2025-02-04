@@ -102,6 +102,7 @@ public:
 private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_dead_state;
+	State::ChangeState change_attack_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;

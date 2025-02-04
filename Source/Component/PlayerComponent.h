@@ -37,7 +37,7 @@ public:
     void OnCollision(const std::shared_ptr<Object>& hit_object)override;
 
     const float GetMoveRate()const { return this->param.move_rate; }
-    const float SetMoveRate(const float move_rate) { this->param.move_rate = move_rate; }
+    void SetMoveRate(const float move_rate) { this->param.move_rate = move_rate; }
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);

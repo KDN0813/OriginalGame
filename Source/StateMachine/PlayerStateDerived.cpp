@@ -283,6 +283,7 @@ PlayerAttackLCombo2State::PlayerAttackLCombo2State()
 {
     this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
+    this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
 }
 
 void PlayerAttackLCombo2State::Start()
@@ -341,6 +342,19 @@ void PlayerAttackLCombo2State::Update(float elapsed_time)
         {
             // 被ダメステートに遷移
             state_machine->ChangeState(this->change_dead_state);
+            return;
+        }
+    }
+
+    // 入力受付
+    if (Input::Instance input = Input::GetInstance(); input.Get())
+    {
+        GamePad& pad = input->GetGamePad();
+        // Xボタン
+        if (pad.GetButtonDown() & GamePad::BTN_X)
+        {
+            // 攻撃ステートへ遷移
+            state_machine->ChangeState(this->change_attack_state);
             return;
         }
     }
@@ -408,7 +422,10 @@ void PlayerSpinAttackState::Start()
     // プレイヤーの入力移動を無効にする
     auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
-        player->SetInputMoveValidityFlag(false);
+    {
+        //player->SetInputMoveValidityFlag(false);
+        player->SetMoveRate(2.0f);
+    }
 
     // 攻撃判定オブジェクトを有効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
@@ -462,7 +479,10 @@ void PlayerSpinAttackState::End()
     // プレイヤーの入力移動を有効にする
     auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
+    {
         player->SetInputMoveValidityFlag(true);
+        player->SetMoveRate(1.0f);
+    }
 
     // 攻撃判定オブジェクトを無効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
