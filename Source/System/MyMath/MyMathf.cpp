@@ -85,7 +85,7 @@ const DirectX::XMFLOAT3 MyMath::GetNonOverlappingPointInRing(DirectX::XMFLOAT3 c
 		point = GetRandomPointInRing(center_point, inner_radius, outer_radius);
 
 		GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
-		const int grid_index = grid_object_manager->GetGridlIndex(point);
+		const int grid_index = grid_object_manager->GetGridIndex(point);
 		if (0 <= grid_index)
 		{
 			// グリッド内にオブジェクト存在しないならループから抜ける

@@ -49,7 +49,7 @@ public:
 
     // グリッドインデックスを取得する
     // 取得に失敗すると-1が返ってくる
-    const int GetGridlIndex(const DirectX::XMFLOAT3 position);
+    const int GetGridIndex(const DirectX::XMFLOAT3 position);
 
     // グリッドの中心を取得
     const DirectX::XMFLOAT3 GetGridCenter(const DirectX::XMFLOAT3 position);

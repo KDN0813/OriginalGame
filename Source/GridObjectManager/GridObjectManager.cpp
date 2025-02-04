@@ -44,7 +44,7 @@ bool GridObjectManager::RegisterObject(const std::shared_ptr<Object>& object, Di
     // オブジェクトまたはトランスフォームが無効な場合は登録失敗
     if (!object) return false;
 
-    const int cell_index = GetGridlIndex(position);
+    const int cell_index = GetGridIndex(position);
     if (IndexErrorCheck(cell_index)) return false;
 
     // インデックスが範囲外の場合は登録失敗
@@ -100,14 +100,14 @@ int GridObjectManager::GetDistanceInGrid(const int cell_index_a, const int cell_
 
 int GridObjectManager::GetDistanceInGrid(const DirectX::XMFLOAT3 positon_a, const DirectX::XMFLOAT3 positon_b)
 {
-    return GetDistanceInGrid(GetGridlIndex(positon_a), GetGridlIndex(positon_b));
+    return GetDistanceInGrid(GetGridIndex(positon_a), GetGridIndex(positon_b));
 }
 
 const GridObjectManager::GridData& GridObjectManager::GetGridDataAtPosition(const DirectX::XMFLOAT3 position)
 {
     _ASSERT_EXPR_W(!this->grid_cells.size(), L"grid_cellsのサイズが0です");
 
-    const int cell_index = GetGridlIndex(position);
+    const int cell_index = GetGridIndex(position);
     if (cell_index < 0) return this->grid_cells[0];
 
     // インデックスが範囲外の場合は登録失敗
@@ -127,7 +127,7 @@ const GridObjectManager::GridData& GridObjectManager::GetGridDataAtPosition(cons
     return this->grid_cells[cell_index];
 }
 
-const int GridObjectManager::GetGridlIndex(const DirectX::XMFLOAT3 position)
+const int GridObjectManager::GetGridIndex(const DirectX::XMFLOAT3 position)
 {
     // グリッドの左上を基準にした座標計算
     const MYVECTOR3 grid_origin = this->grid_min_position;   // グリッドの左上座標
@@ -146,15 +146,14 @@ const int GridObjectManager::GetGridlIndex(const DirectX::XMFLOAT3 position)
 
     const int cell_index = cell_z * this->max_cells_per_row + cell_x;
     
-    _ASSERT_EXPR_W(!IndexErrorCheck(cell_index), L"cell_indexの値が異常です");
-    if (IndexErrorCheck(cell_index)) return 0;
+    if (IndexErrorCheck(cell_index)) return -1;
 
     return cell_index;
 }
 
 const DirectX::XMFLOAT3 GridObjectManager::GetGridCenter(const DirectX::XMFLOAT3 position)
 {
-    return GetGridCenter(GetGridlIndex(position));
+    return GetGridCenter(GetGridIndex(position));
 }
 
 const DirectX::XMFLOAT3 GridObjectManager::GetGridCenter(int cell_index)
@@ -199,7 +198,7 @@ void GridObjectManager::ClearGridCell()
 
 void GridObjectManager::ReleaseObject(const std::shared_ptr<Object>& object, DirectX::XMFLOAT3 position)
 {
-    ReleaseObject(object, GetGridlIndex(position));
+    ReleaseObject(object, GetGridIndex(position));
 }
 
 void GridObjectManager::ReleaseObject(const std::shared_ptr<Object>& object, const int cell_index)
@@ -249,7 +248,7 @@ void GridObjectManager::DrawDebugPrimitive()
     if (!player_transform) return;
 
     // プレイヤーのいるセルのインデックス
-    const int player_grid_index = GetGridlIndex(player_transform->GetWorldPosition());
+    const int player_grid_index = GetGridIndex(player_transform->GetWorldPosition());
 
     for (int i = 0; i < this->max_cells_per_row * this->max_cells_per_row; ++i)
     {

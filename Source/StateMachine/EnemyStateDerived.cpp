@@ -1,4 +1,5 @@
 #include "EnemyStateDerived.h"
+#include <cmath>
 #include "Object\Object.h"
 #include "Object\Constant\EnemyConstant.h"
 #include "System\MyMath\MyMathf.h"
@@ -458,14 +459,12 @@ const MyHash EnemySpawnState::STATE_NAME = MyHash("EnemySpawnState");
 EnemySpawnState::EnemySpawnState()
     :State(STATE_NAME)
 {
-    this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
+    this->change_chase_state.change_state_name = EnemyChaseState::STATE_NAME;
 }
 
 void EnemySpawnState::Start()
 {
-    // 待機時間設定
-    const float IDLE_TIME = 2.0f;
-    this->idle_timer = IDLE_TIME;
+    this->idle_timer = 0.0f;    // タイマーリセット
 
     const auto& owner = GetOwner();
     if (!owner)return;
@@ -473,6 +472,9 @@ void EnemySpawnState::Start()
     if (!animation)return;
     // アニメーション再生
     animation->PlayAnimation(EnemyConstant::IDLE_NORMAL, true);
+
+    // alpha値を0に設定
+    animation->SetAlpha(0.0f);
 
     // 無敵状態に設定
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
@@ -493,18 +495,26 @@ void EnemySpawnState::Update(float elapsed_time)
     if (!state_machine) return;
     const auto& enemy = owner->GetComponent<EnemyComponent>(this->enemy_Wptr);
     if (!enemy) return;
+    const auto& animation = owner->GetComponent(animation_Wprt);
+    if (!animation)return;
 
-    if (this->idle_timer > 0.0f)
+    // モデルの透明度設定
+    const float alpha = std::lerp(0.0f, 1.0f, this->idle_timer / this->IDLE_TIME);
+
+    if (this->idle_timer < this->IDLE_TIME)
     {
         // 待機タイマー更新
-        this->idle_timer -= elapsed_time;
+        this->idle_timer += elapsed_time;
     }
     else
     {
         // 待機時間が終了したら移動状態に遷移
-        state_machine->ChangeState(this->change_idle_state);
+        state_machine->ChangeState(this->change_chase_state);
+        animation->SetAlpha(1.0f);
         return;
     }
+
+    animation->SetAlpha(alpha);
 }
 
 void EnemySpawnState::End()

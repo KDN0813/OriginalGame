@@ -74,7 +74,7 @@ void MovementComponent::Update(float elapsed_time)
 	{
 		GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
 
-		this->current_cell_index = grid_object_manager->GetGridlIndex(transform->GetWorldPosition());
+		this->current_cell_index = grid_object_manager->GetGridIndex(transform->GetWorldPosition());
 		grid_object_manager->RegisterObject(owner, this->current_cell_index);
 
 		// 前回からセルを移動していたら登録を解除する
@@ -348,7 +348,7 @@ void MovementComponent::ResolveGridCellCollision(std::shared_ptr<Object> owner, 
 
 	GridObjectManager::Instance grid_object_manager = GridObjectManager::GetInstance();
 	
-	const int cell_index = grid_object_manager->GetGridlIndex(position_float3);
+	const int cell_index = grid_object_manager->GetGridIndex(position_float3);
 
 	if (cell_index != this->old_cell_index &&				// 前回と違うセルの場合
 		grid_object_manager->IsObjectInGrid(cell_index))	// 既にセルにオブジェクトが存在する

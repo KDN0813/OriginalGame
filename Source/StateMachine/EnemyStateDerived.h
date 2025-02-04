@@ -195,6 +195,8 @@ class EnemySpawnState : public State
 public:
 	static const MyHash STATE_NAME;
 public:
+	const float IDLE_TIME = 1.0f;
+public:
 	// コンストラクタ
 	EnemySpawnState();
 	~EnemySpawnState() {}
@@ -207,7 +209,7 @@ public:
 private:
 	float idle_timer = 0.0f;	// 待機時間
 private:
-	State::ChangeState change_idle_state;
+	State::ChangeState change_chase_state;
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;

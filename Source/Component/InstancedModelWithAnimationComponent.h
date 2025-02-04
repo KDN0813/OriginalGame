@@ -59,12 +59,14 @@ public:
 	ModelResource* GetModelResource() { return this->model_resource.get(); }
 	UINT GetAnimeFrame();		// 現在の再生フレーム数を取得
 	DirectX::XMFLOAT4 GetBaseColor()const { return this->param.base_color; }
+	float GetAlpha()const { return this->param.base_color.w; }
 	float GetCurrentAnimationSeconds() const { return this->param.current_animation_seconds; }
 	UINT GetAnimationStartOffset();	// 現在再生しているアニメーションのオフセット値を取得
 	int GetModelId();
 
 	std::vector<DirectX::BoundingBox> GetBoundingBoxs();
 
+	void SetAlpha(float a) { this->param.base_color.w = a; }
 	void GetBaseColor(const DirectX::XMFLOAT4 base_color) { this->param.base_color = base_color; }
 protected:
 	std::shared_ptr<InstancingModelResource> instancing_model_resource;
