@@ -107,7 +107,7 @@ float PlayerSpecialPointUIState::CalculateSpecialPointWidth()
         {
             if (const auto& player_component = player->GetComponent(this->player_Wptr))
             {
-                return static_cast<float>(player_component->GetSpecialPoint() / player_component->GetSpecialPointMax());
+                return player_component->GetSpecialPoint() / player_component->GetSpecialPointMax();
             }
         }
     }

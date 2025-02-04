@@ -283,6 +283,7 @@ void EnemyComponent::DrawDebugGUI()
 	ImGui::InputFloat("Idle Min Timer", &this->param.min_idle_time);
 	ImGui::InputFloat("Remove Timer", &this->param.remove_timer);
 	ImGui::InputFloat("Damage Effect Offset Up", &this->param.damage_effect_offset_up);
+	ImGui::InputFloat("Add Special Point", &this->param.add_special_point);
 	ImGui::Checkbox("Move Validity Flag", &this->param.move_validity_flag);
 	ImGui::Checkbox("Pending Removal Flag", &this->param.pending_removal_flag);
 }

@@ -32,6 +32,8 @@ public:
 
         float attack_range = 3.0f;    // 攻撃範囲
 
+        float add_special_point = 5;  // 撃破時追加されるスペシャルポイントの値
+        
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;
         float min_idle_time = 0.5f;
@@ -88,6 +90,7 @@ public:
     void SetIdleTime(float time) { this->param.idle_timer = time; }
     void SetMoveValidityFlag(bool flag) { this->param.move_validity_flag = flag; }
     void SetPendingRemovalFlag(bool flag) { this->param.pending_removal_flag = flag; }
+    float GetAddSpecialPoint()const { return this->param.add_special_point; }
 private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);

@@ -1,6 +1,7 @@
 #include "EnemyStateDerived.h"
 #include <cmath>
 #include "Object\Object.h"
+#include "Object\GameObject.h"
 #include "Object\Constant\EnemyConstant.h"
 #include "System\MyMath\MyMathf.h"
 #include "System\MyMath\MYVECTOR3.h"
@@ -12,6 +13,7 @@
 #include "Component\TransformComponent.h"
 #include "Component\CircleCollisionComponent.h"
 #include "Component\CharacterComponent.h"
+#include "Component\PlayerComponent.h"
 
 const MyHash EnemyIdleState::STATE_NAME = MyHash("EnemyIdleState");
 EnemyIdleState::EnemyIdleState()
@@ -446,11 +448,23 @@ void EnemyDeadIdleState::Update(float elapsed_time)
     }
     else
     {
-        if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+        const auto& enemy = owner->GetComponent<EnemyComponent>();
+        if (enemy)
         {
-            // スコア加算
-            game_data->AddScore(1);
+            GameObject::Instance game_object = GameObject::GetInstance();
+            if (const auto& player = game_object->GetPlayer())
+            {
+                if (const auto& player_component = player->GetComponent<PlayerComponent>())
+                {
+                    player_component->AddSpecialPoint(enemy->GetAddSpecialPoint());
+                }
+            }
         }
+            if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+            {
+                // スコア加算
+                game_data->AddScore(1);
+            }
         owner->SetIsRemove(true);   // 削除する
     }
 }

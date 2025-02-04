@@ -20,8 +20,8 @@ public:
         float move_rate = 1.0f; // 速度倍率
         float spin_attack_move_rate = 2.0f;
 
-        int special_point = 0;          // スペシャルポイント
-        int special_point_max = 100;    // スペシャルポイントの最大値
+        float special_point = 0.0f;          // スペシャルポイント
+        float special_point_max = 100.0f;    // スペシャルポイントの最大値
     };
 public:
     PlayerComponent(PlayerParam param);
@@ -44,10 +44,10 @@ public:
     const float GetSpinAttackMoveRate()const { return this->param.spin_attack_move_rate; }
     void SetMoveRate(const float move_rate) { this->param.move_rate = move_rate; }
 
-    void AddSpecialPoint(int point) { this->param.special_point = (std::min)(this->param.special_point + point, this->param.special_point_max); }
-    void SetSpecialPoint(int point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
-    const int GetSpecialPoint()const { return this->param.special_point; }
-    const int GetSpecialPointMax()const { return this->param.special_point_max; }
+    void AddSpecialPoint(float point) { this->param.special_point = (std::min)(this->param.special_point + point, this->param.special_point_max); }
+    void SetSpecialPoint(float point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
+    const float GetSpecialPoint()const { return this->param.special_point; }
+    const float GetSpecialPointMax()const { return this->param.special_point_max; }
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);

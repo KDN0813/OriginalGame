@@ -150,8 +150,8 @@ void PlayerComponent::DrawDebugGUI()
     ImGui::InputFloat("attack_end_point", &this->attack_end_point);
     ImGui::InputFloat("attack_combo2_end_point", &this->attack_combo2_end_point);
 
-    ImGui::SliderInt("Special Point", &this->param.special_point, 0, 100);
-    ImGui::InputInt("Special Point Max", &this->param.special_point_max);
+    ImGui::SliderFloat("Special Point", &this->param.special_point, 0, 100);
+    ImGui::InputFloat("Special Point Max", &this->param.special_point_max);
 }
 
 #endif // DEBUG
