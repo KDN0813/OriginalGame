@@ -113,7 +113,7 @@ void SceneResult::Initialize()
 					// TextNumberComponent
 					{
 						TextNumberComponent::TextParam param{};
-						param.color = { 0.0f,0.0f,0.0f ,1.0f };
+						param.color = { 1.0f,0.0f,0.0f ,1.0f };
 						param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
 						// ファイルパス設定する
 						param.font_name = "Data/Sprite/Numbers.png";
