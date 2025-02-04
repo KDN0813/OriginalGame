@@ -20,9 +20,9 @@ public:
 
 	// 円状のランダムな位置を取得
 	static const DirectX::XMFLOAT3 GetRandomPointInRing(float inner_radius, float outer_radius);
-	static const DirectX::XMFLOAT3 GetRandomPointInRing(DirectX::XMFLOAT3 spawn_point,float inner_radius, float outer_radius);
+	static const DirectX::XMFLOAT3 GetRandomPointInRing(DirectX::XMFLOAT3 center_point,float inner_radius, float outer_radius);
 	// 他オブジェクトと重ならない位置を取得
 	static const DirectX::XMFLOAT3 GetNonOverlappingPointInRing(float inner_radius, float outer_radius);
-	static const DirectX::XMFLOAT3 GetNonOverlappingPointInRing(DirectX::XMFLOAT3 spawn_point, float inner_radius, float outer_radius);
+	static const DirectX::XMFLOAT3 GetNonOverlappingPointInRing(DirectX::XMFLOAT3 center_point, float inner_radius, float outer_radius);
 };
 
