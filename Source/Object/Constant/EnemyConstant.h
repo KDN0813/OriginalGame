@@ -38,6 +38,12 @@ public:
     static constexpr float MIN_IDLE_TIME = 0.5f;
     static constexpr float MAX_IDLE_TIME = 5.0f;
     static constexpr float REMOVE_IDLE_TIME = 2.0f; // 死亡アニメーション再生終了から削除されるまでの時間
+
+#ifdef _DEBUG
+    static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // 敵の移動範囲
+#else
+    static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // 敵の移動範囲
+#endif // _DEBUG
 public:
     static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>&);

@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "DirectXMath.h"
+#include "Object\Constant\EnemyConstant.h"
 
 class Transform3DComponent;
 class MovementComponent;
@@ -10,13 +11,6 @@ class InstancedModelWithAnimationComponent;
 
 class EnemyComponent : public Component
 {
-public:
-#ifdef _DEBUG
-    static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
-#else
-    static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
-#endif // _DEBUG
-
 public:
     enum class STATE
     {
@@ -31,7 +25,7 @@ public:
     struct EnemyParam
     {
         DirectX::XMFLOAT3 target_position{};
-        float territory_range = EnemyComponent::DEFAULT_TERRITORY_RENGR;
+        float territory_range = EnemyConstant::DEFAULT_TERRITORY_RENGR;
         float radius = 0.1f;
         float move_speed = 5.0f;
         float speed_rate = 0.5f;
