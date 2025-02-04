@@ -2,6 +2,8 @@
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #endif // DEBUG
+#include "System\MyMath\MyMathf.h"
+#include "Object\Constant\EnemyConstant.h"
 
 GameObject::GameObject()
     :Singleton(this)
@@ -21,6 +23,32 @@ void GameObject::Update()
 }
 
 #ifdef _DEBUG
+
+void GameObject::AddCreateEnemy(float elapsed_time, ObjectManager& object_manager)
+{
+    // 敵の生成
+    this->create_enemy_cool_time -= elapsed_time;
+    if (create_enemy_cool_time <= 0.0f)
+    {
+        const size_t NOW_ENEMY_COUNT = this->GetEnemyWptPool().size();
+        const size_t ENEMY_MAX = EnemyConstant::ENEMY_MAX;
+        const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(30, 100);	// 1度に生成できるエネミーの最大数
+
+        for (int i = 0; i < ENEMY_MAX - NOW_ENEMY_COUNT; ++i)
+        {
+            if (CREATE_ENEMY_MAX <= i)break;
+
+            const float player_area_rage = 50.0f;
+            const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
+
+            const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create());
+            SetEnemy(enemy);
+        }
+
+        const float COOL_TIME = MyMath::RandomRange(1.0f, 3.0f);
+        create_enemy_cool_time = COOL_TIME;
+    }
+}
 
 void GameObject::DebugDrawGUI()
 {

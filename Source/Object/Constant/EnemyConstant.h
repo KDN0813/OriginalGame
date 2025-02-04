@@ -40,8 +40,10 @@ public:
     static constexpr float REMOVE_IDLE_TIME = 2.0f; // 死亡アニメーション再生終了から削除されるまでの時間
 
 #ifdef _DEBUG
+    static constexpr size_t ENEMY_MAX = 200;
     static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // 敵の移動範囲
 #else
+    static constexpr size_t ENEMY_MAX = 3000;
     static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // 敵の移動範囲
 #endif // _DEBUG
 public:

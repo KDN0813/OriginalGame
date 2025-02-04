@@ -14,19 +14,23 @@ public:
 
     // 各種設定・取得関数
     void SetPlayer(std::shared_ptr<Object> player) { this->player_Wptr = player; };
-    void SetStageFoor(std::shared_ptr<Object> stage) { this->stage_foor_Wptr = stage; };
+    void SetStageFloor(std::shared_ptr<Object> stage) { this->stage_foor_Wptr = stage; };
     void SetStageWall(std::shared_ptr<Object> stage) { this->stage_wall_Wptr = stage; };
     void SetEnemy(std::shared_ptr<Object> enenmy) { this->enemy_Wptr_pool.emplace_back(enenmy); };
     std::shared_ptr<Object> GetPlayer() const { return this->player_Wptr.lock(); }
     std::shared_ptr<Object> GetStageFoor() const { return this->stage_foor_Wptr.lock(); }
     std::shared_ptr<Object> GetStageWall() const { return this->stage_wall_Wptr.lock(); }
     const std::vector<std::weak_ptr<Object>>& GetEnemyWptPool() const { return this->enemy_Wptr_pool; };
+    
+    // 追加で敵を生成する
+    void AddCreateEnemy(float elapsed_time,ObjectManager& object_manager);
 private:
     std::weak_ptr<Object> player_Wptr;
     std::weak_ptr<Object> stage_foor_Wptr;
     std::weak_ptr<Object> stage_wall_Wptr;
     std::vector<std::weak_ptr<Object>> enemy_Wptr_pool;
 
+    float create_enemy_cool_time = 0.0f;    // 敵生成のクールタイム
 #ifdef _DEBUG
 public:
     void DebugDrawGUI();

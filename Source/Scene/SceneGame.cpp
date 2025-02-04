@@ -136,7 +136,7 @@ void SceneGame::Initialize()
 
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);
-				game_object->SetStageFoor(stage_foor);
+				game_object->SetStageFloor(stage_foor);
 				game_object->SetStageWall(stage_wall);
 			}
 		}
@@ -263,32 +263,11 @@ void SceneGame::Update(float elapsed_time)
 
 	if(GameObject::Instance game_object = GameObject::GetInstance() ; game_object.Get())
 	{
+		game_object->AddCreateEnemy(elapsed_time,this->object_manager);
+
 		// 更新処理
 		// 主に削除されたエネミーをリストから消す処理
 		game_object->Update();
-
-		// 敵の生成
-		create_enemy_cool_time -= elapsed_time;
-		if(create_enemy_cool_time <= 0.0f)
-		{
-			const size_t NOW_ENEMY_COUNT = game_object->GetEnemyWptPool().size();
-			const size_t ENEMY_MAX = this->enemy_max;
-			const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(30,100);	// 1度に生成できるエネミーの最大数
-
-			for (int i = 0; i < ENEMY_MAX - NOW_ENEMY_COUNT; ++i)
-			{
-				if (CREATE_ENEMY_MAX <= i)break;
-
-				const float player_area_rage = 50.0f;
-				const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
-				
-				const auto& enemy = EnemyConstant::CreateEnemy(spawn_point,object_manager.Create());
-				game_object->SetEnemy(enemy);
-			}
-
-			const float COOL_TIME = MyMath::RandomRange(1.0f, 3.0f);
-			create_enemy_cool_time = COOL_TIME;
-		}
 	}
 
 	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
@@ -385,7 +364,7 @@ void SceneGame::ReStart()
 	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
 		const size_t now_enemy_count = game_object->GetEnemyWptPool().size();
-		for (int i = 0; i < this->enemy_max - now_enemy_count; ++i)
+		for (int i = 0; i < EnemyConstant::ENEMY_MAX - now_enemy_count; ++i)
 		{
 			const float player_area_rage = 50.0f;
 			const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
