@@ -79,7 +79,7 @@ bool PlayerComponent::InputMove(float elapsed_time)
     DirectX::XMFLOAT3 moveVec = GetMoveVec();
 
     // 移動処理
-    Move(moveVec.x, moveVec.z, this->param.move_speed);
+    Move(moveVec.x, moveVec.z, this->param.move_speed * this->param.move_rate);
 
     return (moveVec.x + moveVec.z);
 }
@@ -153,9 +153,9 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
     // スティックの水平入力値をカメラ右方向に反映し、
     // スティックの垂直入力値をカメラ前方向に反映し、
     // 進行ベクトルを計算する
-    float vec_x = (camera_rightX * ax) + (camera_frontX * ay);
+    float vec_x = ((camera_rightX * ax) + (camera_frontX * ay));
     float vec_y = 0.0f;  // Y軸には移動しない
-    float vec_z = (camera_rightZ * ax) + (camera_frontZ * ay);
+    float vec_z = ((camera_rightZ * ax) + (camera_frontZ * ay));
     MYVECTOR3 Vec{ vec_x ,vec_y,vec_z };
     DirectX::XMFLOAT3 vec;
     Vec.Normalize().GetFlaot3(vec);
@@ -169,6 +169,7 @@ void PlayerComponent::DrawDebugGUI()
     ImGui::InputFloat("move_speed", &this->param.move_speed);
     ImGui::Checkbox("Input Move Validity Flag", &this->param.input_move_validity_flag);
     ImGui::InputFloat("Debug Move Speed", &this->debug_move_speed);
+    ImGui::InputFloat("Move Rate", &this->param.move_rate);
 }
 
 #endif // DEBUG

@@ -16,6 +16,8 @@ public:
         float move_speed = 10.0f;
         int damage_amount = 1;
         bool input_move_validity_flag = true;   // 入力による移動が有効であるかのフラグ
+    
+        float move_rate = 1.0f; // 速度倍率
     };
 public:
     PlayerComponent(PlayerParam param);
@@ -33,6 +35,9 @@ public:
 
     // 他オブジェクトに接触した時の処理
     void OnCollision(const std::shared_ptr<Object>& hit_object)override;
+
+    const float GetMoveRate()const { return this->param.move_rate; }
+    const float SetMoveRate(const float move_rate) { this->param.move_rate = move_rate; }
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
