@@ -273,7 +273,7 @@ void SceneGame::Update(float elapsed_time)
 		{
 			const size_t NOW_ENEMY_COUNT = game_object->GetEnemyWptPool().size();
 			const size_t ENEMY_MAX = this->enemy_max;
-			const size_t CREATE_ENEMY_MAX = 10;	// 1度に生成できるエネミーの最大数
+			const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(30,100);	// 1度に生成できるエネミーの最大数
 
 			for (int i = 0; i < ENEMY_MAX - NOW_ENEMY_COUNT; ++i)
 			{
@@ -286,7 +286,7 @@ void SceneGame::Update(float elapsed_time)
 				game_object->SetEnemy(enemy);
 			}
 
-			const float COOL_TIME = MyMath::RandomFlaotRange(1.0f, 3.0f);
+			const float COOL_TIME = MyMath::RandomRange(1.0f, 3.0f);
 			create_enemy_cool_time = COOL_TIME;
 		}
 	}
