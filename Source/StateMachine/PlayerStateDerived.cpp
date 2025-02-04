@@ -430,7 +430,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
     {
         GamePad& pad = input->GetGamePad();
         // Yƒ{ƒ^ƒ“
-        if (pad.GetButtonDown() & GamePad::BTN_Y)
+        if (pad.GetButton() & GamePad::BTN_Y)
         {
             // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
             state_machine->ChangeState(this->change_spin_attack_state);
