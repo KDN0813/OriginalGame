@@ -268,7 +268,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 					// スプライト読み込み
 					{
 						SpriteComponent::SpriteParam param{};
-						param.color = { 0.0f,1.0f, 0.0f, 1.0f };
+						param.color = PLAYER_HP_BAR_COLOR;
 						param.draw_priority = PRIORITY::DEFAULT;
 						param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
 						bar_object->AddComponent<SpriteComponent>(param);

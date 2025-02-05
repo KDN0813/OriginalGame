@@ -34,6 +34,8 @@ public:
     static const MyHash ATTACK02_OBJECT_NAME;
     static const MyHash DEFENSE_OBJECT_NAME;
     static const MyHash SPIN_ATTACK_OBJECT_NAME;
+
+    static constexpr float DAMAGE_FLASH_TIME = 0.1f;
 public:
     static const std::shared_ptr<Object>& CreatePlayer(const std::shared_ptr<Object>& object);
 };

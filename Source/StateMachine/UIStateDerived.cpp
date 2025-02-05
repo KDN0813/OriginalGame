@@ -1,6 +1,7 @@
 #include "UIStateDerived.h"
 #include "Object\Object.h"
 #include "Object\Constant\UIConstant.h"
+#include "Object\Constant\PlayerConstant.h"
 #include "Object\GameObject.h"
 #include "System\GameData.h"
 
@@ -59,28 +60,33 @@ PlayerHPBarUIState::PlayerHPBarUIState()
 
 void PlayerHPBarUIState::Update(float elapsed_time)
 {
-    if (const auto onwer = GetOwner())
-    {
-        if (const auto& sprite = onwer->GetComponent(this->sprite_Wptr))
-        {
-            sprite->SetDisplaySizeX(CalculateHealthBarWidth());
-        }
-    }
-}
+    const auto& owner = GetOwner();
+    if (!owner) return;
+    const auto& sprite = owner->GetComponent(this->sprite_Wptr);
+    if (!sprite) return;
 
-float PlayerHPBarUIState::CalculateHealthBarWidth()
-{
-    if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+    GameObject::Instance game_object = GameObject::GetInstance();
+    const auto player = game_object->GetPlayer();
+    if (!player) return;
+    const auto& player_health = player->GetComponent(this->player_health_Wptr);
+    if (!player_health) return;
+
+    if (player_health->IsDamage())
     {
-        if (const auto player = game_object->GetPlayer())
-        {
-            if (const auto& player_health = player->GetComponent(this->player_health_Wptr))
-            {
-                return player_health->GetHealthPercentage();
-            }
-        }
+        this->damage_flash_timer = PlayerConstant::DAMAGE_FLASH_TIME;
     }
-    return 1.0f;
+
+    this->damage_flash_timer -= elapsed_time;
+    if (this->damage_flash_timer <= 0.0f)
+    {
+        sprite->SetColor(UIConstant::PLAYER_HP_BAR_COLOR);
+    }
+    else
+    {
+        sprite->SetColor({ .0f,0.7f ,.0f ,1.0f });
+    }
+
+    sprite->SetDisplaySizeX(player_health->GetHealthPercentage());
 }
 
 const MyHash PlayerSpecialPointUIState::STATE_NAME = MyHash("PlayerSpecialPointUIState");

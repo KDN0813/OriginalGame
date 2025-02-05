@@ -44,7 +44,8 @@ private:
 	std::weak_ptr<TextNumberComponent> text_number_Wptr;
 };
 
-// 終了タイマーの通常ステート
+
+// プレイヤー体力
 class PlayerHPBarUIState : public State
 {
 public:
@@ -60,8 +61,7 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
-	// 体力バーの幅を計算する
-	float CalculateHealthBarWidth();
+	float damage_flash_timer = 0.0f;
 private:
 	std::weak_ptr<SpriteComponent> sprite_Wptr;
 	std::weak_ptr<CharacterComponent> player_health_Wptr;
