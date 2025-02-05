@@ -62,12 +62,14 @@ void PlayerIdleState::Update(float elapsed_time)
         }
 
         // 被ダメ判定
+#if 0
         if (character->IsDamage())
         {
             // 被ダメステートに遷移
             state_machine->ChangeState(this->change_damage_state);
             return;
         }
+#endif // 0
     }
 
     // 入力受付
@@ -141,12 +143,14 @@ void PlayerMoveState::Update(float elapsed_time)
         }
 
         // 被ダメ判定
+#if 0
         if (character->IsDamage())
         {
             // 被ダメステートに遷移
             state_machine->ChangeState(this->change_damage_state);
             return;
         }
+#endif // 0
     }
 
     // 入力受付
