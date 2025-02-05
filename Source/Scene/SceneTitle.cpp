@@ -5,6 +5,7 @@
 #include "Graphics/Graphics.h"
 #include "Input\Input.h"
 #include "System\GameData.h"
+#include "Audio\Audio.h"
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #endif // DEBUG
@@ -111,10 +112,24 @@ void SceneTitle::Initialize()
 			}
 		}
 	}
+
+	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+	{
+		AudioParam param{};
+		param.volume = 0.5f;
+		param.loop = true;
+		param.filename = "Data/Audio/BGM.wav";
+		audio->Play(param);
+	}
 }
 
 void SceneTitle::Finalize()
 {
+	// オーディオのリセット
+	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+	{
+		audio->AllClear();
+	}
 }
 
 void SceneTitle::Update(float elapsed_time)
