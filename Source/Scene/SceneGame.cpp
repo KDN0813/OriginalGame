@@ -94,8 +94,11 @@ void SceneGame::Initialize()
 		// プレイヤーのスペシャルゲージ
 		UIConstant::CreatePlayerSpecialBar(object_manager.Create("SpecialBar"));
 
+		// 操作説明UI
+		UIConstant::CreateDescriptionUI(object_manager.Create("DescriptionUI"));
+
 		// ステージ(床)
-		const auto& stage_foor = StageConstant::CreateStageFloor(object_manager.Create("StageFloor"));
+		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager.Create("StageFloor"));
 
 		// ステージ(壁)
 		const auto& stage_wall = StageConstant::CreateStageWall(object_manager.Create("StageWall"));
@@ -139,7 +142,7 @@ void SceneGame::Initialize()
 
 				// ゲームオブジェクト設定
 				game_object->SetPlayer(player);
-				game_object->SetStageFloor(stage_foor);
+				game_object->SetStageFloor(stage_floor);
 				game_object->SetStageWall(stage_wall);
 			}
 		}

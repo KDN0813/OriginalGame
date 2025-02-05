@@ -383,3 +383,69 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 
 	return special_bar;
 }
+
+const std::shared_ptr<Object>& UIConstant::CreateDescriptionUI(const std::shared_ptr<Object>& descriptionUI)
+{
+	// transform
+	{
+		Transform2DComponent::Transform2DParam paam{};
+		paam.local_position = { 0.0f, 0.55f };
+		descriptionUI->AddComponent<Transform2DComponent>(paam);
+	}
+
+	// 子オブジェクト
+	{
+		// 説明UI1
+		{
+			// DescriptionUI1
+			{
+				const auto description_UI1 = descriptionUI->CreateChildObject("DescriptionUI1");
+
+				// transform
+				{
+					Transform2DComponent::Transform2DParam paam{};
+					paam.local_scale = { 0.2f,0.2f };
+					description_UI1->AddComponent<Transform2DComponent>(paam);
+				}
+
+				// スプライト読み込み
+				{
+					SpriteComponent::SpriteParam param{};
+					param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+					param.filename = "Data/Sprite/DescriptionUI1.png";
+					param.draw_priority = PRIORITY::DEFAULT;
+					param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
+					const auto& sprite = description_UI1->AddComponent<SpriteComponent>(param);
+					sprite->AdjustDisplaySizeToSprite();
+				}
+			}
+
+			// DescriptionUI2
+			{
+				const auto description_UI2 = descriptionUI->CreateChildObject("DescriptionUI2");
+
+				// transform
+				{
+					Transform2DComponent::Transform2DParam param{};
+					param.local_position = { 0.0f,-0.084f };
+					param.local_scale = { 0.2f,0.2f };
+					description_UI2->AddComponent<Transform2DComponent>(param);
+				}
+
+				// スプライト読み込み
+				{
+					SpriteComponent::SpriteParam param{};
+					param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+					param.filename = "Data/Sprite/DescriptionUI2.png";
+					param.draw_priority = PRIORITY::DEFAULT;
+					param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
+					const auto& sprite = description_UI2->AddComponent<SpriteComponent>(param);
+
+					sprite->AdjustDisplaySizeToSprite();
+				}
+			}
+		}
+	}
+
+	return descriptionUI;
+}
