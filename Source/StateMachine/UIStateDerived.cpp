@@ -145,7 +145,7 @@ void SpinAttackDescriptionUIState::Update(float elapsed_time)
         // スキルが使用中の場合
         sprite->SetColor({ 1.0f,1.0f ,0.0f ,1.0f });
     }
-    else if(player_component->IsUseSpecialPoint(player_component->GetSpinAttackUsePoint()))
+    else if(player_component->IsUseSpecialGage(player_component->GetSpinAttackUseGageCount()))
     {
         // スキルが使用できる場合
         sprite->SetColor({ 1.0f,1.0f ,1.0f ,1.0f });

@@ -96,18 +96,18 @@ void PlayerComponent::AddSpecialPoint(float point)
     }
 }
 
-bool PlayerComponent::UseSpecialPoint(float use_point)
+bool PlayerComponent::UseSpecialGage(int use_gage)
 {
     // Žg—p—Ê‚ª’´‰ß‚µ‚Ä‚¢‚éê‡
-    if (!IsUseSpecialPoint(use_point)) return false;
+    if (!IsUseSpecialGage(use_gage)) return false;
 
-    this->param.special_point -= use_point;
+    this->param.gauge_count -= use_gage;
     return true;;
 }
 
-bool PlayerComponent::IsUseSpecialPoint(float use_point)
+bool PlayerComponent::IsUseSpecialGage(int use_gage)
 {
-    return (use_point <= this->param.special_point);
+    return (use_gage <= this->param.gauge_count);
 }
 
 bool PlayerComponent::InputMove(float elapsed_time)
@@ -216,7 +216,7 @@ void PlayerComponent::DrawDebugGUI()
     ImGui::InputFloat("Special Point Max", &this->param.special_point_max);
     ImGui::SliderInt("Gauge Count", &this->param.gauge_count, 0, this->param.gauge_count_max);
     ImGui::InputInt("Gauge Count Max", &this->param.gauge_count_max);
-    ImGui::InputFloat("Spin Attack Use Point", &this->param.spin_attack_use_point);
+    ImGui::InputInt("Spin Attack Use Point", &this->param.spin_attack_use_gage_count);
 }
 
 #endif // DEBUG

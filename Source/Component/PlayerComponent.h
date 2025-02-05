@@ -20,8 +20,9 @@ public:
         float move_rate = 1.0f; // 速度倍率
         float spin_attack_move_rate = 2.0f;
 
-        float spin_attack_use_point = 1.0f;     // 回転攻撃に必要なポイント(毎秒コスト必用)
+        int spin_attack_use_gage_count = 1;     // 回転攻撃に必要なゲージ数
         bool is_spin_attack = false;            // 回転攻撃中であるか
+        float spin_attack_time = 3.0f;          // 回転攻撃を行う時間
 
         float special_point = 0.0f;          // スペシャルポイント
         float special_point_max = 20.0f;    // スペシャルポイントの最大値
@@ -49,6 +50,8 @@ public:
     const float GetSpinAttackMoveRate()const { return this->param.spin_attack_move_rate; }
     void SetMoveRate(const float move_rate) { this->param.move_rate = move_rate; }
 
+    const float GetSpinAttackTime()const { return this->param.spin_attack_time; }
+
     void AddSpecialPoint(float point);
     void SetSpecialPoint(float point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
     const float GetSpecialPoint()const { return this->param.special_point; }
@@ -56,12 +59,12 @@ public:
     const bool GetIsSpinAttack()const { return this->param.is_spin_attack; }
     void SetIsSpinAttack(bool flag) { this->param.is_spin_attack = flag; }
 
-    const float GetSpinAttackUsePoint()const { return this->param.spin_attack_use_point; }
-    // スペシャルポイントを使用する
+    const int GetSpinAttackUseGageCount()const { return this->param.spin_attack_use_gage_count; }
+    // スペシャルゲージを使用する
     // 使用できたらTrueを返す
-    bool UseSpecialPoint(float use_point);
-    // ポイントを使用できるか判定する
-    bool IsUseSpecialPoint(float use_point);
+    bool UseSpecialGage(int use_gage);
+    // スペシャルゲージを使用できるか判定する
+    bool IsUseSpecialGage(int use_gage);
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);

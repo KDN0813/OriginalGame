@@ -84,7 +84,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		PlayerComponent::PlayerParam param{};
 		param.move_speed = 15.0f;
 		param.special_point_max = 10.0f;
-		param.spin_attack_use_point = 1.0f;
+		param.spin_attack_use_gage_count = 1;
 		player_component = player->AddComponent<PlayerComponent>(param);
 	}
 	// シェーダー設定

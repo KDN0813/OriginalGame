@@ -86,7 +86,7 @@ void PlayerIdleState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
             // 回転攻撃ステートに遷移
-            if (player->IsUseSpecialPoint(player->GetSpinAttackUsePoint()))
+            if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
                 state_machine->ChangeState(this->change_spin_attack_state);
                 return;
@@ -168,7 +168,7 @@ void PlayerMoveState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
             // 回転攻撃ステートに遷移
-            if (player->IsUseSpecialPoint(player->GetSpinAttackUsePoint()))
+            if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
                 state_machine->ChangeState(this->change_spin_attack_state);
                 return;
@@ -449,7 +449,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
         if (pad.GetButton() & GamePad::BTN_Y)
         {
             // 回転攻撃ステートに遷移
-            if (player->IsUseSpecialPoint(player->GetSpinAttackUsePoint()))
+            if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
                 state_machine->ChangeState(this->change_spin_attack_state);
                 return;
@@ -546,6 +546,7 @@ void PlayerSpinAttackSpinLoopState::Start()
     {
         player->SetIsSpinAttack(true);  // 回転攻撃フラグを立てる
         player->SetMoveRate(player->GetSpinAttackMoveRate());
+        this->attack_time = player->GetSpinAttackTime();    // 攻撃時間を設定
     }
 
     // 攻撃判定オブジェクトを有効にする
@@ -561,6 +562,11 @@ void PlayerSpinAttackSpinLoopState::Start()
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(true);
+
+    // ポイント消費
+    {
+        player->UseSpecialGage(player->GetSpinAttackUseGageCount());
+    }
 }
 
 void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
@@ -585,18 +591,6 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
         }
     }
 
-    // 入力確認
-    if (Input::Instance input = Input::GetInstance(); input.Get())
-    {
-        GamePad& pad = input->GetGamePad();
-        // Yボタンを離したら
-        if (!(pad.GetButton() & GamePad::BTN_Y))
-        {
-            state_machine->ChangeState(this->change_idle_state);
-            return;
-        }
-    }
-
     // 攻撃判定オブジェクトを有効にする
     {
         const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
@@ -606,14 +600,11 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
         collision->EvaluateCollision();
     }
 
-    // ポイント消費
+    this->attack_time -= elapsed_time;
+    if (this->attack_time <= 0.0f)
     {
-        if (!player->UseSpecialPoint(player->GetSpinAttackUsePoint() * elapsed_time))
-        {
-            // ポイントが使用できなければ待機ステートに遷移
-            state_machine->ChangeState(this->change_idle_state);
-            return;
-        }
+        // 攻撃時間が0になったら待機ステートに遷移
+        state_machine->ChangeState(this->change_idle_state);
     }
 }
 

@@ -152,6 +152,8 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
+	float attack_time = 0.0f;	// 回転攻撃を行う時間
+private:
 	State::ChangeState change_idle_state;
 	State::ChangeState change_dead_state;
 private:
