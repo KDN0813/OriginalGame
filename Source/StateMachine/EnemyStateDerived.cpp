@@ -440,6 +440,8 @@ void EnemyDeadIdleState::Update(float elapsed_time)
 {
     const auto& owner = GetOwner();
     if (!owner)return;
+    const auto& model = owner->GetComponent(animation_Wprt);
+    if (!model)return;
 
     if (this->remove_timer > 0.0f)
     {
@@ -448,8 +450,12 @@ void EnemyDeadIdleState::Update(float elapsed_time)
     }
     else
     {
+        model->SetAlpha(0.0f);
         owner->SetIsRemove(true);   // íœ‚·‚é
     }
+
+    const float alpha = std::lerp(1.0f, 0.0f, this->remove_timer / EnemyConstant::REMOVE_IDLE_TIME);
+    model->SetAlpha(1.0f - alpha);
 }
 
 const MyHash EnemySpawnState::STATE_NAME = MyHash("EnemySpawnState");
