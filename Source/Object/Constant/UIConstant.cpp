@@ -14,6 +14,8 @@
 
 #include "StateMachine\UIStateDerived.h"
 
+const MyHash UIConstant::SPIN_SPECIAL_GAGE_OBJECT_NAME = MyHash("SpecialGage");
+
 const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<Object>& score_object)
 {
 	// transform
@@ -375,11 +377,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 
 							// 子オブジェクト
 							{
-								DirectX::XMFLOAT2 offset_pos{ 0.0f,-1.42f };
-								const float offsetX = 0.2f;
+								DirectX::XMFLOAT2 offset_pos{ -0.02f,-1.190f };
+								const float offsetX = 0.37f;
 								for (int i = 0; i < PlayerConstant::SPECIAL_GAGE_MAX; ++i)
 								{
-									CreatePlayerSpecialGage(bar_object->CreateChildObject(("SpecialGage" + std::to_string(i)).c_str()), offset_pos);
+									CreatePlayerSpecialGage(bar_object->CreateChildObject((SPIN_SPECIAL_GAGE_OBJECT_NAME.GetString() + std::to_string(i)).c_str()), offset_pos);
 									offset_pos.x += offsetX;
 								}
 							}
@@ -399,6 +401,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialGage(const std::sh
 	{
 		Transform2DComponent::Transform2DParam param{};
 		param.local_position = pos;
+		param.local_scale = { 0.8f,3.0f };
 		object->AddComponent<Transform2DComponent>(param);
 	}
 
@@ -406,9 +409,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialGage(const std::sh
 	{
 		SpriteComponent::SpriteParam param{};
 		param.color = { 1.0f,1.0f, 0.0f, 1.0f };
+		param.filename = "Data/Sprite/SpecialGage.png";
 		param.draw_priority = PRIORITY::DEFAULT;
 		param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
-		object->AddComponent<SpriteComponent>(param);
+		const auto& sprite = object->AddComponent<SpriteComponent>(param);
+		sprite->AdjustDisplaySizeToSprite();
 	}
 
 	return object;
