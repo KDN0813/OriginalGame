@@ -540,7 +540,7 @@ void PlayerSpinAttackSpinLoopState::Start()
     auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
     {
-        //player->SetInputMoveValidityFlag(false);
+        player->SetIsSpinAttack(true);  // ‰ñ“]UŒ‚ƒtƒ‰ƒO‚ð—§‚Ä‚é
         player->SetMoveRate(player->GetSpinAttackMoveRate());
     }
 
@@ -622,6 +622,7 @@ void PlayerSpinAttackSpinLoopState::End()
     auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
     {
+        player->SetIsSpinAttack(false);  // ‰ñ“]UŒ‚ƒtƒ‰ƒO‚ðÜ‚é
         player->SetInputMoveValidityFlag(true);
         player->SetMoveRate(1.0f);
     }

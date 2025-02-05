@@ -134,7 +134,12 @@ void SpinAttackDescriptionUIState::Update(float elapsed_time)
     const auto& player_component = player->GetComponent(this->player_Wptr);
     if (!player_component)return;
 
-    if(player_component->IsUseSpecialPoint(player_component->GetSpinAttackUsePoint()))
+    if (player_component->GetIsSpinAttack())
+    {
+        // スキルが使用中の場合
+        sprite->SetColor({ 1.0f,1.0f ,0.0f ,1.0f });
+    }
+    else if(player_component->IsUseSpecialPoint(player_component->GetSpinAttackUsePoint()))
     {
         // スキルが使用できる場合
         sprite->SetColor({ 1.0f,1.0f ,1.0f ,1.0f });

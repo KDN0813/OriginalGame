@@ -21,6 +21,7 @@ public:
         float spin_attack_move_rate = 2.0f;
 
         float spin_attack_use_point = 1.0f;     // 回転攻撃に必要なポイント(毎秒コスト必用)
+        bool is_spin_attack = false;            // 回転攻撃中であるか
 
         float special_point = 0.0f;          // スペシャルポイント
         float special_point_max = 100.0f;    // スペシャルポイントの最大値
@@ -50,7 +51,9 @@ public:
     void SetSpecialPoint(float point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
     const float GetSpecialPoint()const { return this->param.special_point; }
     const float GetSpecialPointMax()const { return this->param.special_point_max; }
-    
+    const bool GetIsSpinAttack()const { return this->param.is_spin_attack; }
+    void SetIsSpinAttack(bool flag) { this->param.is_spin_attack = flag; }
+
     const float GetSpinAttackUsePoint()const { return this->param.spin_attack_use_point; }
     // スペシャルポイントを使用する
     // 使用できたらTrueを返す
