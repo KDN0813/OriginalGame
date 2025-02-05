@@ -547,6 +547,15 @@ void PlayerSpinAttackSpinLoopState::Start()
         player->SetIsSpinAttack(true);  // 回転攻撃フラグを立てる
         player->SetMoveRate(player->GetSpinAttackMoveRate());
         this->attack_time = player->GetSpinAttackTime();    // 攻撃時間を設定
+
+        // 回転攻撃の残り時間UIをアクティブ化する
+        if (const auto& player_owner = player->GetOwner())
+        {
+            if (const auto& spin_attack_ui_object = player_owner->FindChildObject(PlayerConstant::SPIN_ATTACK_TIME_UI_NAME))
+            {
+                spin_attack_ui_object->SetIsActive(true);
+            }
+        }
     }
 
     // 攻撃判定オブジェクトを有効にする
@@ -620,6 +629,15 @@ void PlayerSpinAttackSpinLoopState::End()
         player->SetIsSpinAttack(false);  // 回転攻撃フラグを折る
         player->SetInputMoveValidityFlag(true);
         player->SetMoveRate(1.0f);
+
+        // 回転攻撃の残り時間UIを非アクティブ化する
+        if (const auto& player_owner = player->GetOwner())
+        {
+            if (const auto& spin_attack_ui_object = player_owner->FindChildObject(PlayerConstant::SPIN_ATTACK_TIME_UI_NAME))
+            {
+                spin_attack_ui_object->SetIsActive(false);
+            }
+        }
     }
 
     // 攻撃判定オブジェクトを無効にする
