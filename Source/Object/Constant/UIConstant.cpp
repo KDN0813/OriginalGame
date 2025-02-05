@@ -37,7 +37,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 				SpriteComponent::SpriteParam param{};
 				param.display_size = { 0.144f,0.015f };
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-				param.draw_priority = PRIORITY::LOWEST;
+				param.draw_priority = PRIORITY::LOW;
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
 			}
@@ -182,7 +182,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				param.filename = "Data/Sprite/PauseUI.png";
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
-				param.draw_priority = PRIORITY::LOWEST;
+				param.draw_priority = PRIORITY::LOW;
 				auto sprite = pause_ui->AddComponent<SpriteComponent>(param);
 			}
 
@@ -211,8 +211,8 @@ const std::shared_ptr<Object>& UIConstant::CreateFadeObject(const std::shared_pt
 
 	// transform
 	{
-		Transform2DComponent::Transform2DParam paam{};
-		fade_object->AddComponent<Transform2DComponent>(paam);
+		Transform2DComponent::Transform2DParam param{};
+		fade_object->AddComponent<Transform2DComponent>(param);
 	}
 
 	// FadeControllerComponent
