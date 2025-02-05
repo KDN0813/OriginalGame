@@ -9,6 +9,7 @@
 #include "Component\StateMachineComponent.h"
 #include "Component\Transform2DComponent.h"
 #include "Component\FadeControllerComponent.h"
+#include "Component\SpecialGageComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -347,7 +348,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 
 					// 子オブジェクト
 					{
-						// 体力ゲージ
+						// スペシャルポイント
 						{
 							const auto bar_object = bg_frame_object->CreateChildObject("HpBer");
 
@@ -368,11 +369,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 
 							// 更新処理
 							{
-								auto state_machine = bar_object->AddComponent<StateMachineComponent>();
-
-								state_machine->RegisterState<PlayerSpecialPointUIState>();
-
-								state_machine->SetDefaultState(PlayerSpecialPointUIState::STATE_NAME);
+								const auto& special_gage = bar_object->AddComponent<SpecialGageComponent>();
 							}
 						}
 					}

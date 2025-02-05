@@ -152,6 +152,7 @@
     <ClInclude Include="Source\Component\InstancingModelShaderComponent.h" />
     <ClInclude Include="Source\Component\PlayerComponent.h" />
     <ClInclude Include="Source\Component\FinalUpdateEnemyComponent.h" />
+    <ClInclude Include="Source\Component\SpecialGageComponent.h" />
     <ClInclude Include="Source\Component\SpriteComponent.h" />
     <ClInclude Include="Source\Component\LegacyStateMachineComponent.h" />
     <ClInclude Include="Source\Component\StateMachineComponent.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp" />
     <ClCompile Include="Source\Component\PlayerComponent.cpp" />
     <ClCompile Include="Source\Component\FinalUpdateEnemyComponent.cpp" />
+    <ClCompile Include="Source\Component\SpecialGageComponent.cpp" />
     <ClCompile Include="Source\Component\SpriteComponent.cpp" />
     <ClCompile Include="Source\Component\LegacyStateMachineComponent.cpp" />
     <ClCompile Include="Source\Component\StateMachineComponent.cpp" />

@@ -573,6 +573,9 @@
     <ClInclude Include="Source\Component\DamageComponent.h">
       <Filter>Source\Component\Damage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\SpecialGageComponent.h">
+      <Filter>Source\Component\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -853,6 +856,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\DamageComponent.cpp">
       <Filter>Source\Component\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpecialGageComponent.cpp">
+      <Filter>Source\Component\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
