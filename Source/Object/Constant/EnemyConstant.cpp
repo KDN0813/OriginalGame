@@ -32,7 +32,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	{
 		EnemyComponent::EnemyParam param{};
 		param.spawn_point = spawn_point;
-		param.add_special_point = 1.0f;
+		param.add_special_point = 0.1f;
 		enemy_component = enemy->AddComponent<EnemyComponent>(param);
 #ifdef _DEBUG
 		enemy_component->SetIsDebugPrimitive(false);
