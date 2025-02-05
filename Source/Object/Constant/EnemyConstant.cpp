@@ -35,7 +35,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 		param.add_special_point = 0.1f;
 		enemy_component = enemy->AddComponent<EnemyComponent>(param);
 #ifdef _DEBUG
-		enemy_component->SetIsDebugPrimitive(false);
+		//enemy_component->SetIsDebugPrimitive(false);
 #endif
 	}
 	// ƒ€[ƒuƒƒ“ƒgİ’è
@@ -126,7 +126,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 			{
 				CircleCollisionComponent::CollisionParam param{};
 				param.collision_type = COLLISION_OBJECT_TYPE::ENEMY_ATTACK;
-				param.radius = 2.0f;
+				param.radius = 2.5f;
 				param.default_active_flag = false;
 				auto child_collision = enemy_attack_object->AddComponent<CircleCollisionComponent>(param);
 

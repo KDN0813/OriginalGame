@@ -213,8 +213,8 @@ void EnemyChaseState::Update(float elapsed_time)
     enemy->SetTargetPositionByPlayer();
 
     // 攻撃範囲にプレイヤーが存在するか
-#if 0   // 敵の重なりを防ぐ処理のため一時的に処理をスキップしてます
-    if (enemy->IsPlayerInAttaclArea())
+#if 1   // 敵の重なりを防ぐ処理のため一時的に処理をスキップしてます
+    if (enemy->IsPlayerInAttackArea())
     {
         // 範囲内にいるなら攻撃ステートに遷移
         state_machine->ChangeState(this->change_attack_state);
