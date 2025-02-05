@@ -114,6 +114,12 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 			if (const auto& damage = hit_object->GetComponent<DamageComponent>())
 			{
 				character->ApplyDamage(damage->GetDamageAmount(), damage->GetInvincibleTime());
+			
+				if (!character->IsAlive())
+				{
+					// €–S‚µ‚½ê‡
+					this->param.add_special_point *= damage->GetPointRate();
+				}
 			}
 		}
 		// aŒ‚EffectÄ¶

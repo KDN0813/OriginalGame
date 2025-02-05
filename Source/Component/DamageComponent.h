@@ -8,6 +8,7 @@ public:
     {
         int damage_amount = 1;          // ダメージ量
         float invincible_time = 0.0f;   // 無敵時間
+        int get_point_rate = 1;         // 取得ポイント倍率
     };
 public:
     DamageComponent(DamageParam param) : param(param) {};
@@ -29,6 +30,7 @@ public:
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
     int GetDamageAmount()const { return this->param.damage_amount; }
+    int GetPointRate()const { return this->param.get_point_rate; }
     float GetInvincibleTime()const { return this->param.invincible_time; }
 private:
     DamageParam param;
