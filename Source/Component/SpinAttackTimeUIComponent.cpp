@@ -18,5 +18,5 @@ void SpinAttackTimeUIComponent::Update(float elapsed_time)
     if (!player_component) return;
 
     // ポイントUIのサイズ更新
-    sprite->SetDisplaySizeX(player_component->GetSpecialPoint() / player_component->GetSpecialPointMax());
+    sprite->SetDisplaySizeX(player_component->GetSpinAttackTimer() / player_component->GetSpinAttackTime());
 }

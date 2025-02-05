@@ -22,6 +22,7 @@
 
 #include "Component/Transform2DComponent.h"
 #include "Component/SpriteComponent.h"
+#include "Component/SpinAttackTimeUIComponent.h"
 
 #include "StateMachine\PlayerStateDerived.h"
 
@@ -315,6 +316,10 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 				param.color = { 1.0f,1.0f, 0.0f, 1.0f };
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				const auto& sprite = spin_attack_time_UI_object->AddComponent<SpriteComponent>(param);
+			}
+			// UI‚ÌXVˆ—
+			{
+				spin_attack_time_UI_object->AddComponent<SpinAttackTimeUIComponent>();
 			}
 		}
 	}
