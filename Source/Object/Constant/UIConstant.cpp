@@ -1,5 +1,6 @@
 #include "UIConstant.h"
 #include "Object\Object.h"
+#include "Object\Constant\PlayerConstant.h"
 #include "Shader\SpriteShader.h"
 
 #include "Shader\SpriteShader.h"
@@ -371,6 +372,17 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 							{
 								const auto& special_gage = bar_object->AddComponent<SpecialGageComponent>();
 							}
+
+							// 子オブジェクト
+							{
+								DirectX::XMFLOAT2 offset_pos{ 0.0f,-1.42f };
+								const float offsetX = 0.2f;
+								for (int i = 0; i < PlayerConstant::SPECIAL_GAGE_MAX; ++i)
+								{
+									CreatePlayerSpecialGage(bar_object->CreateChildObject(("SpecialGage" + std::to_string(i)).c_str()), offset_pos);
+									offset_pos.x += offsetX;
+								}
+							}
 						}
 					}
 				}
@@ -379,6 +391,27 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 	}
 
 	return special_bar;
+}
+
+const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialGage(const std::shared_ptr<Object>& object, DirectX::XMFLOAT2 pos)
+{
+	// transform
+	{
+		Transform2DComponent::Transform2DParam param{};
+		param.local_position = pos;
+		object->AddComponent<Transform2DComponent>(param);
+	}
+
+	// スプライト読み込み
+	{
+		SpriteComponent::SpriteParam param{};
+		param.color = { 1.0f,1.0f, 0.0f, 1.0f };
+		param.draw_priority = PRIORITY::DEFAULT;
+		param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
+		object->AddComponent<SpriteComponent>(param);
+	}
+
+	return object;
 }
 
 const std::shared_ptr<Object>& UIConstant::CreateDescriptionUI(const std::shared_ptr<Object>& descriptionUI)

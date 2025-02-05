@@ -52,6 +52,9 @@ public:
 
     const float GetSpinAttackTime()const { return this->param.spin_attack_time; }
 
+    const int GetGageCount()const { return this->param.gauge_count; }
+    const int GetGageCountMax()const { return this->param.gauge_count_max; }
+
     void AddSpecialPoint(float point);
     void SetSpecialPoint(float point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
     const float GetSpecialPoint()const { return this->param.special_point; }

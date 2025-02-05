@@ -2,9 +2,14 @@
 
 #include "Object\Object.h"
 #include "Object\GameObject.h"
+#include "Object\Constant\UIConstant.h"
 
 #include "Component\SpriteComponent.h"
 #include "Component\PlayerComponent.h"
+
+void SpecialGageComponent::Start()
+{
+}
 
 void SpecialGageComponent::Update(float elapsed_time)
 {
