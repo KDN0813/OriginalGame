@@ -34,6 +34,7 @@ public:
     static const MyHash ATTACK02_OBJECT_NAME;
     static const MyHash DEFENSE_OBJECT_NAME;
     static const MyHash SPIN_ATTACK_OBJECT_NAME;
+    static const MyHash SPIN_ATTACK_TIME_UI_NAME;
 
     static constexpr int SPECIAL_GAGE_MAX = 3;
     static constexpr float DAMAGE_FLASH_TIME = 0.1f;

@@ -20,6 +20,9 @@
 #include "Component/CircleCollisionComponent.h"
 #include "Component/DamageComponent.h"
 
+#include "Component/Transform2DComponent.h"
+#include "Component/SpriteComponent.h"
+
 #include "StateMachine\PlayerStateDerived.h"
 
 const MyHash PlayerConstant::PLAYER_CAMERA_NAME = MyHash("PlayerCamera");
@@ -28,6 +31,7 @@ const MyHash PlayerConstant::ATTACK01_OBJECT_NAME = MyHash("Attack01Object");
 const MyHash PlayerConstant::ATTACK02_OBJECT_NAME = MyHash("Attack02Object");
 const MyHash PlayerConstant::DEFENSE_OBJECT_NAME = MyHash("DefenseObject");
 const MyHash PlayerConstant::SPIN_ATTACK_OBJECT_NAME = MyHash("SpinAttackObject");
+const MyHash PlayerConstant::SPIN_ATTACK_TIME_UI_NAME = MyHash("SpinAttackTimeUI");
 
 const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_ptr<Object>& player)
 {
@@ -100,6 +104,12 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		param.hp = 100;
 		param.radius = 1.5f;
 		player->AddComponent<CharacterComponent>(param);
+	}
+
+	// ゲージUI用2Dトランスフォーム
+	{
+		Transform2DComponent::Transform2DParam param{};
+		player->AddComponent<Transform2DComponent>(param);
 	}
 
 
@@ -284,6 +294,27 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 				{
 					child_collision->AddCollisionComponent(player_component);
 				}
+			}
+		}
+		// 回転攻撃時のゲージUI
+		{
+			std::shared_ptr<Object> spin_attack_time_UI_object = player->CreateChildObject(SPIN_ATTACK_TIME_UI_NAME.GetString().c_str());
+			spin_attack_time_UI_object->SetIsActive(false);
+
+			// トランスフォーム設定
+			{
+				Transform2DComponent::Transform2DParam param{};
+				param.local_position = DirectX::XMFLOAT2(0.501f, 0.425f);
+				param.local_scale = { 0.05f,0.01f };
+
+				auto child_transform = spin_attack_time_UI_object->AddComponent<Transform2DComponent>(param);
+			}
+			// スプライト
+			{
+				SpriteComponent::SpriteParam param{};
+				param.color = { 1.0f,1.0f, 0.0f, 1.0f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
+				const auto& sprite = spin_attack_time_UI_object->AddComponent<SpriteComponent>(param);
 			}
 		}
 	}
