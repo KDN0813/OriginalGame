@@ -96,26 +96,6 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 
 	// 子オブジェクト
 	{
-		// 背景
-		{
-			const auto bg_sprite = sprite_shader->CreateChildObject("BG_Sprite");
-
-			// transform
-			{
-				SpriteComponent::SpriteParam param{};
-				param.display_size = { 0.1f,0.1f };
-				param.color = { 1.0f,1.0f, 1.0f, 0.7f };
-				param.center_type = Sprite::CENTER_TYPE::CENTER;
-				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
-			}
-
-			// transform
-			{
-				Transform2DComponent::Transform2DParam param{};
-				bg_sprite->AddComponent<Transform2DComponent>(param);
-			}
-		}
-
 		// テキスト
 		{
 			const auto& text_sprite = sprite_shader->CreateChildObject("Text");
@@ -144,6 +124,26 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 				state_machine->RegisterState<EndTimerUIDefaultState>();
 
 				state_machine->SetDefaultState(EndTimerUIDefaultState::STATE_NAME);
+			}
+		}
+
+		// 背景
+		{
+			const auto bg_sprite = sprite_shader->CreateChildObject("BG_Sprite");
+
+			// transform
+			{
+				SpriteComponent::SpriteParam param{};
+				param.display_size = { 0.1f,0.1f };
+				param.color = { 1.0f,1.0f, 1.0f, 0.7f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
+				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam param{};
+				bg_sprite->AddComponent<Transform2DComponent>(param);
 			}
 		}
 	}
@@ -415,6 +415,8 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialGage(const std::sh
 		const auto& sprite = object->AddComponent<SpriteComponent>(param);
 		sprite->AdjustDisplaySizeToSprite();
 	}
+
+	object->SetIsActive(false);
 
 	return object;
 }

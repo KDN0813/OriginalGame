@@ -24,11 +24,24 @@ void SpecialGageComponent::Update(float elapsed_time)
     const auto& player_component = player->GetComponent(this->player_Wptr);
     if (!player_component) return;
 
-    if (const auto owner = GetOwner())
+    // ポイントUIのサイズ更新
+    sprite->SetDisplaySizeX(player_component->GetSpecialPoint() / player_component->GetSpecialPointMax());
+
+    // ゲージの更新
     {
-        if (const auto& sprite = owner->GetComponent(this->sprite_Wptr))
+        // 一度非アクティブにする
+        for (int i = 0; i < player_component->GetGageCountMax(); ++i)
         {
-            sprite->SetDisplaySizeX(player_component->GetSpecialPoint() / player_component->GetSpecialPointMax());
+            const auto& object = owner->FindChildObject(MyHash(UIConstant::SPIN_SPECIAL_GAGE_OBJECT_NAME.GetString() + std::to_string(i)));
+            if (!object) continue;
+            object->SetIsActive(false);
+        }
+        // ゲージの数だけアクティブ化する
+        for (int i = 0; i < player_component->GetGageCount(); ++i)
+        {
+            const auto& object = owner->FindChildObject(MyHash(UIConstant::SPIN_SPECIAL_GAGE_OBJECT_NAME.GetString() + std::to_string(i)));
+            if (!object) continue;
+            object->SetIsActive(true);
         }
     }
 }
