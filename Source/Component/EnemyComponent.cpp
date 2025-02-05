@@ -100,12 +100,6 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 	{
 	case COLLISION_ROLE::ATTACKER:	// 衝突を与えた時の処理
 	{
-		// ヒットしたオブジェクトにダメージを与える
-		const auto& hit_object_character = hit_object->GetComponent<CharacterComponent>();
-		if (hit_object_character)
-		{
-			hit_object_character->ApplyDamage(this->param.damage_amount, 0.0f);
-		}
 		break;
 	}
 	case COLLISION_ROLE::RECEIVER:	// 衝突を受けた時の処理

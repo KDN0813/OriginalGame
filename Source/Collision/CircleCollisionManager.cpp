@@ -109,7 +109,7 @@ void CircleCollisionManager::VsPlayer()
 				player_circle->SetHitResult(player_hit_result);
 
 				// ÚGˆ—
-				enemy_circle->OnCollision(player);
+				//enemy_circle->OnCollision(player);
 				player_circle->OnCollision(enemy_circle->GetOwner());
 			}
 		}

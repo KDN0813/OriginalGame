@@ -7,6 +7,7 @@
 #include "Object\Constant\StageConstant.h"
 
 #include "Component\EnemyComponent.h"
+#include "Component\DamageComponent.h"
 #include "Component\FinalUpdateEnemyComponent.h"
 #include "Component\MovementComponent.h"
 #include "Component\InstancedModelWithAnimationComponent.h"
@@ -134,6 +135,13 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 				{
 					child_collision->AddCollisionComponent(enemy_component);
 				}
+			}
+			// ダメージ用コンポーネント
+			{
+				DamageComponent::DamageParam param{};
+				param.damage_amount = 1;
+
+				enemy_attack_object->AddComponent<DamageComponent>(param);
 			}
 		}
 	}

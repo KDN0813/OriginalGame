@@ -7,6 +7,7 @@
 #include "Object\Constant\PlayerConstant.h"
 
 #include "Component/CameraComponent.h"
+#include "Component/DamageComponent.h"
 #include "Component/MovementComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/CharacterComponent.h"
@@ -46,6 +47,33 @@ void PlayerComponent::Update(float elapsed_time)
 
 void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 {
+    const auto& owner = GetOwner();
+    if (!owner) return;
+    const auto& character = owner->GetComponent(this->character_Wptr);
+    if (!character) return;
+
+    const auto& defense_object = owner->FindChildObject(PlayerConstant::DEFENSE_OBJECT_NAME);
+    if (!defense_object) return;
+    const auto collision = defense_object->GetComponent(circle_collision_Wptr);
+    if (!collision) return;
+
+
+    switch (collision->GetCircleHitResult().collision_role)
+    {
+    case COLLISION_ROLE::ATTACKER:	// Õ“Ë‚ð—^‚¦‚½Žž‚Ìˆ—
+    {
+    }
+    case COLLISION_ROLE::RECEIVER:	// Õ“Ë‚ðŽó‚¯‚½Žž‚Ìˆ—
+    {
+        // Damage‚ðŽó‚¯‚é
+        const auto& hit_object_damage = hit_object->GetComponent<DamageComponent>();
+        if (hit_object_damage)
+        {
+            character->ApplyDamage(hit_object_damage->GetDamageAmount(), hit_object_damage->GetInvincibleTime());
+        }
+        break;
+    }
+    }
 }
 
 bool PlayerComponent::UseSpecialPoint(float use_point)
