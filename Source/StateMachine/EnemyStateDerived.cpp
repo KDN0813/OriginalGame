@@ -406,6 +406,9 @@ void EnemyDeadState::Start()
 
     // 死亡待ちフラグを立てる
     enemy->SetPendingRemovalFlag(true);
+
+    // 削除までのタイムリミット設定
+    this->remove_timer = EnemyConstant::REMOVE_IDLE_TIME;
 }
 
 void EnemyDeadState::Update(float elapsed_time)
@@ -416,13 +419,22 @@ void EnemyDeadState::Update(float elapsed_time)
     if (!animation)return;
     const auto& state_machine = owner->GetComponent<StateMachineComponent>(this->state_machine_Wptr);
     if (!state_machine) return;
+    const auto& model = owner->GetComponent(animation_Wprt);
+    if (!model)return;
 
-    if (!animation->IsPlayAnime())
+    if (this->remove_timer > 0.0f)
     {
-        // アニメーションが終了待機状態に遷移
-        state_machine->ChangeState(this->change_deth_idle_state);
-        return;
+        // 削除タイマー更新
+        this->remove_timer -= elapsed_time;
     }
+    else
+    {
+        model->SetAlpha(0.0f);
+        owner->SetIsRemove(true);   // 削除する
+    }
+
+    const float alpha = std::lerp(1.0f, 0.0f, this->remove_timer / EnemyConstant::REMOVE_IDLE_TIME);
+    model->SetAlpha(1.0f - alpha);
 }
 
 const MyHash EnemyDeadIdleState::STATE_NAME = MyHash("EnemyDeadIdleState");

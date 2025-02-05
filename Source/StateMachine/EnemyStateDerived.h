@@ -162,6 +162,8 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
+	float remove_timer = {};
+private:
 	State::ChangeState change_deth_idle_state;
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
