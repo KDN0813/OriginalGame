@@ -15,6 +15,7 @@ public:
     
     static constexpr DirectX::XMFLOAT4 DEFAULT_SPIN_ATTACK_DESCRIPTION_UI_COLOR = DirectX::XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);      // 回転攻撃用説明UIの色
     static constexpr DirectX::XMFLOAT4 PLAYER_HP_BAR_COLOR = DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);      // 回転攻撃用説明UIの色
+    static constexpr DirectX::XMFLOAT4 PLAYER_SPECIAL_BAR_COLOR = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
 
     static const MyHash SPIN_SPECIAL_GAGE_OBJECT_NAME;
 public:

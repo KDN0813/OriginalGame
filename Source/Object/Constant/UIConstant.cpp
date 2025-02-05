@@ -364,7 +364,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 							// スプライト読み込み
 							{
 								SpriteComponent::SpriteParam param{};
-								param.color = { 1.0f,1.0f, 0.0f, 1.0f };
+								param.color = PLAYER_SPECIAL_BAR_COLOR;
 								param.draw_priority = PRIORITY::DEFAULT;
 								param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
 								bar_object->AddComponent<SpriteComponent>(param);
