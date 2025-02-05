@@ -50,9 +50,13 @@ public:
     void SetSpecialPoint(float point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
     const float GetSpecialPoint()const { return this->param.special_point; }
     const float GetSpecialPointMax()const { return this->param.special_point_max; }
+    
+    const float GetSpinAttackUsePoint()const { return this->param.spin_attack_use_point; }
     // スペシャルポイントを使用する
-    // 使用できたらtrueを返す
+    // 使用できたらTrueを返す
     bool UseSpecialPoint(float use_point);
+    // ポイントを使用できるか判定する
+    bool IsUseSpecialPoint(float use_point);
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);

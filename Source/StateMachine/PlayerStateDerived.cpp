@@ -84,7 +84,7 @@ void PlayerIdleState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
             // 回転攻撃ステートに遷移
-            if (0.0 < player->GetSpecialPoint())
+            if (player->IsUseSpecialPoint(player->GetSpinAttackUsePoint()))
             {
                 state_machine->ChangeState(this->change_spin_attack_state);
                 return;
@@ -164,7 +164,7 @@ void PlayerMoveState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
             // 回転攻撃ステートに遷移
-            if (0.0 < player->GetSpecialPoint())
+            if (player->IsUseSpecialPoint(player->GetSpinAttackUsePoint()))
             {
                 state_machine->ChangeState(this->change_spin_attack_state);
                 return;
@@ -445,7 +445,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
         if (pad.GetButton() & GamePad::BTN_Y)
         {
             // 回転攻撃ステートに遷移
-            if (0.0 < player->GetSpecialPoint())
+            if (player->IsUseSpecialPoint(player->GetSpinAttackUsePoint()))
             {
                 state_machine->ChangeState(this->change_spin_attack_state);
                 return;
@@ -604,7 +604,7 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
 
     // ポイント消費
     {
-        if (!player->UseSpecialPoint(1.0f * elapsed_time))
+        if (!player->UseSpecialPoint(player->GetSpinAttackUsePoint() * elapsed_time))
         {
             // ポイントが使用できなければ待機ステートに遷移
             state_machine->ChangeState(this->change_idle_state);

@@ -51,10 +51,15 @@ void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 bool PlayerComponent::UseSpecialPoint(float use_point)
 {
     // Žg—p—Ê‚ª’´‰ß‚µ‚Ä‚¢‚éê‡
-    if (this->param.special_point < use_point) return false;
+    if (!IsUseSpecialPoint(use_point)) return false;
 
     this->param.special_point -= use_point;
     return true;;
+}
+
+bool PlayerComponent::IsUseSpecialPoint(float use_point)
+{
+    return (use_point <= this->param.special_point);
 }
 
 bool PlayerComponent::InputMove(float elapsed_time)

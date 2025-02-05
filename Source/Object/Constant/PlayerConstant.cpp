@@ -82,6 +82,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	{
 		PlayerComponent::PlayerParam param{};
 		param.move_speed = 15.0f;
+		param.spin_attack_use_point = 10.0f;
 		player_component = player->AddComponent<PlayerComponent>(param);
 	}
 	// シェーダー設定
@@ -177,7 +178,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			{
 				CircleCollisionComponent::CollisionParam param{};
 				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
-				param.radius = 2.0f;
+				param.radius = 2.5f;
 				param.default_active_flag = false;
 				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 
