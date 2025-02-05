@@ -435,13 +435,21 @@ const std::shared_ptr<Object>& UIConstant::CreateDescriptionUI(const std::shared
 				// スプライト読み込み
 				{
 					SpriteComponent::SpriteParam param{};
-					param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+					param.color = DEFAULT_SPIN_ATTACK_DESCRIPTION_UI_COLOR;
 					param.filename = "Data/Sprite/DescriptionUI2.png";
 					param.draw_priority = PRIORITY::DEFAULT;
 					param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
 					const auto& sprite = description_UI2->AddComponent<SpriteComponent>(param);
 
 					sprite->AdjustDisplaySizeToSprite();
+				}
+
+				// 更新
+				{
+					const auto& state_machine = description_UI2->AddComponent<StateMachineComponent>();
+
+					state_machine->RegisterState<SpinAttackDescriptionUIState>();
+					state_machine->SetDefaultState(SpinAttackDescriptionUIState::STATE_NAME);
 				}
 			}
 		}

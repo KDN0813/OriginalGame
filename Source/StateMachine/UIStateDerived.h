@@ -88,3 +88,23 @@ private:
 	std::weak_ptr<SpriteComponent> sprite_Wptr;
 	std::weak_ptr<PlayerComponent> player_Wptr;
 };
+
+// 回転攻撃説明UI
+class SpinAttackDescriptionUIState : public State
+{
+public:
+	static const MyHash STATE_NAME;
+public:
+	// コンストラクタ
+	SpinAttackDescriptionUIState();
+	~SpinAttackDescriptionUIState() {}
+	// ステートに入った時のメソッド
+	void Start() override {};
+	// ステートで実行するメソッド
+	void Update(float elapsed_time) override;
+	// ステートから出ていくときのメソッド
+	void End() override {};
+private:
+	std::weak_ptr<SpriteComponent> sprite_Wptr;
+	std::weak_ptr<PlayerComponent> player_Wptr;
+};

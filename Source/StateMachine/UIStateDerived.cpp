@@ -1,5 +1,6 @@
 #include "UIStateDerived.h"
 #include "Object\Object.h"
+#include "Object\Constant\UIConstant.h"
 #include "Object\GameObject.h"
 #include "System\GameData.h"
 
@@ -112,4 +113,35 @@ float PlayerSpecialPointUIState::CalculateSpecialPointWidth()
         }
     }
     return 1.0f;
+}
+
+const MyHash SpinAttackDescriptionUIState::STATE_NAME = MyHash("SpinAttackDescriptionUIState");
+SpinAttackDescriptionUIState::SpinAttackDescriptionUIState()
+    :State(STATE_NAME)
+{
+}
+
+void SpinAttackDescriptionUIState::Update(float elapsed_time)
+{
+    const auto onwer = GetOwner();
+    if (!onwer)return;
+    const auto& sprite = onwer->GetComponent(this->sprite_Wptr);
+    if (!sprite)return;
+
+    GameObject::Instance game_object = GameObject::GetInstance();
+    const auto& player = game_object->GetPlayer();
+    if (!player)return;
+    const auto& player_component = player->GetComponent(this->player_Wptr);
+    if (!player_component)return;
+
+    if(player_component->IsUseSpecialPoint(player_component->GetSpinAttackUsePoint()))
+    {
+        // スキルが使用できる場合
+        sprite->SetColor({ 1.0f,1.0f ,1.0f ,1.0f });
+    }
+    else
+    {
+        // スキルが使用できない場合
+        sprite->SetColor(UIConstant::DEFAULT_SPIN_ATTACK_DESCRIPTION_UI_COLOR);
+    }
 }
