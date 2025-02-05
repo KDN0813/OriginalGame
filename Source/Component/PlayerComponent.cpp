@@ -215,8 +215,9 @@ void PlayerComponent::DrawDebugGUI()
     ImGui::SliderFloat("Special Point", &this->param.special_point, 0, this->param.special_point_max);
     ImGui::InputFloat("Special Point Max", &this->param.special_point_max);
     ImGui::SliderInt("Gauge Count", &this->param.gauge_count, 0, this->param.gauge_count_max);
-    ImGui::InputInt("Gauge Count Max", &this->param.gauge_count_max);
+    ImGui::InputInt("Gauge Count Max", &this->param.gauge_count_max - 1);
     ImGui::InputInt("Spin Attack Use Point", &this->param.spin_attack_use_gage_count);
+    ImGui::InputFloat("Spin Attack Timer", &this->param.spin_attack_timer);
 }
 
 #endif // DEBUG

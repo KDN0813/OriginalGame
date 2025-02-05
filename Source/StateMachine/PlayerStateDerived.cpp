@@ -546,7 +546,7 @@ void PlayerSpinAttackSpinLoopState::Start()
     {
         player->SetIsSpinAttack(true);  // ‰ñ“]UŒ‚ƒtƒ‰ƒO‚ð—§‚Ä‚é
         player->SetMoveRate(player->GetSpinAttackMoveRate());
-        this->attack_time = player->GetSpinAttackTime();    // UŒ‚ŽžŠÔ‚ðÝ’è
+        player->SetSpinAttackTimer(player->GetSpinAttackTime());
 
         // ‰ñ“]UŒ‚‚ÌŽc‚èŽžŠÔUI‚ðƒAƒNƒeƒBƒu‰»‚·‚é
         if (const auto& player_owner = player->GetOwner())
@@ -609,12 +609,13 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
         collision->EvaluateCollision();
     }
 
-    this->attack_time -= elapsed_time;
-    if (this->attack_time <= 0.0f)
+    float attack_time = player->GetSpinAttackTimer() - elapsed_time;
+    if (attack_time <= 0.0f)
     {
         // UŒ‚ŽžŠÔ‚ª0‚É‚È‚Á‚½‚ç‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
         state_machine->ChangeState(this->change_idle_state);
     }
+    player->SetSpinAttackTimer(attack_time);
 }
 
 void PlayerSpinAttackSpinLoopState::End()

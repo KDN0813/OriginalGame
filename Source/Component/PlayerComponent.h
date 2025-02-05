@@ -23,6 +23,7 @@ public:
         int spin_attack_use_gage_count = 1;     // 回転攻撃に必要なゲージ数
         bool is_spin_attack = false;            // 回転攻撃中であるか
         float spin_attack_time = 3.0f;          // 回転攻撃を行う時間
+        float spin_attack_timer = 0.0f;              // 回転攻撃を行う残り時間
 
         float special_point = 0.0f;          // スペシャルポイント
         float special_point_max = 20.0f;    // スペシャルポイントの最大値
@@ -54,6 +55,9 @@ public:
 
     const int GetGageCount()const { return this->param.gauge_count; }
     const int GetGageCountMax()const { return this->param.gauge_count_max; }
+
+    const float GetSpinAttackTimer() const { return this->param.spin_attack_timer; }
+    void SetSpinAttackTimer(float time) { this->param.spin_attack_timer = time; }
 
     void AddSpecialPoint(float point);
     void SetSpecialPoint(float point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
