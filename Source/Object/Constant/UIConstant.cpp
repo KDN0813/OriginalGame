@@ -329,7 +329,6 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 
 			// 子オブジェクト
 			{
-				// 体力ゲージ(フレーム)
 				{
 					const auto bg_frame_object = bg_object->CreateChildObject("HpFrameBer");
 
@@ -348,6 +347,14 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 						param.draw_priority = PRIORITY::DEFAULT;
 						param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
 						bg_frame_object->AddComponent<SpriteComponent>(param);
+					}
+
+					// 更新
+					{
+						const auto& state_machine = bg_frame_object->AddComponent<StateMachineComponent>();
+					
+						state_machine->RegisterState<PlayerSpecialPointFrameUIState>();
+						state_machine->SetDefaultState(PlayerSpecialPointFrameUIState::STATE_NAME);
 					}
 
 					// 子オブジェクト

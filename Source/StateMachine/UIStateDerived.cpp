@@ -121,6 +121,35 @@ float PlayerSpecialPointUIState::CalculateSpecialPointWidth()
     return 1.0f;
 }
 
+const MyHash PlayerSpecialPointFrameUIState::STATE_NAME = MyHash("PlayerSpecialPointFrameUIState");
+PlayerSpecialPointFrameUIState::PlayerSpecialPointFrameUIState()
+    :State(STATE_NAME)
+{
+}
+
+void PlayerSpecialPointFrameUIState::Update(float elapsed_time)
+{
+    const auto& owner = GetOwner();
+    if (!owner) return;
+    const auto& sprite = owner->GetComponent(this->sprite_Wptr);
+    if (!sprite) return;
+
+    GameObject::Instance game_object = GameObject::GetInstance();
+    const auto player = game_object->GetPlayer();
+    if (!player) return;
+    const auto& player_component = player->GetComponent(this->player_Wptr);
+    if (!player_component) return;
+
+    if (player_component->GetGageCountMax() <= player_component->GetGageCount())
+    {
+        sprite->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+    }
+    else
+    {
+        sprite->SetColor(UIConstant::DEFAULT_SPIN_ATTACK_DESCRIPTION_UI_COLOR);
+    }
+}
+
 const MyHash SpinAttackDescriptionUIState::STATE_NAME = MyHash("SpinAttackDescriptionUIState");
 SpinAttackDescriptionUIState::SpinAttackDescriptionUIState()
     :State(STATE_NAME)
