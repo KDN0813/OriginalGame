@@ -13,11 +13,22 @@ void SpecialGageComponent::Start()
 
 void SpecialGageComponent::Update(float elapsed_time)
 {
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& sprite = owner->GetComponent(this->sprite_Wptr);
+    if (!sprite)return;
+
+    GameObject::Instance game_object = GameObject::GetInstance();
+    const auto player = game_object->GetPlayer();
+    if (!player) return;
+    const auto& player_component = player->GetComponent(this->player_Wptr);
+    if (!player_component) return;
+
     if (const auto owner = GetOwner())
     {
         if (const auto& sprite = owner->GetComponent(this->sprite_Wptr))
         {
-            sprite->SetDisplaySizeX(CalculateSpecialPointWidth());
+            sprite->SetDisplaySizeX(player_component->GetSpecialPoint() / player_component->GetSpecialPointMax());
         }
     }
 }
