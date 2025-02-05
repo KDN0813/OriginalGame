@@ -76,6 +76,26 @@ void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
     }
 }
 
+void PlayerComponent::AddSpecialPoint(float point)
+{
+    if (this->param.gauge_count_max <= this->param.gauge_count) return; // ゲージが最大まで溜まっているなら追加しない
+
+    this->param.special_point += point;
+
+    // 最大値を超えた場合
+    if (this->param.special_point_max <= this->param.special_point)
+    {
+        this->param.special_point = this->param.special_point_max - this->param.special_point;
+        ++this->param.gauge_count;  // ゲージ数を増加
+
+        // ゲージが最大になったらポイントを0に設定
+        if (this->param.gauge_count_max <= this->param.gauge_count)
+        {
+            this->param.special_point = 0.0f;
+        }
+    }
+}
+
 bool PlayerComponent::UseSpecialPoint(float use_point)
 {
     // 使用量が超過している場合
@@ -192,8 +212,10 @@ void PlayerComponent::DrawDebugGUI()
     ImGui::InputFloat("attack_end_point", &this->attack_end_point);
     ImGui::InputFloat("attack_combo2_end_point", &this->attack_combo2_end_point);
 
-    ImGui::SliderFloat("Special Point", &this->param.special_point, 0, 100);
+    ImGui::SliderFloat("Special Point", &this->param.special_point, 0, this->param.special_point_max);
     ImGui::InputFloat("Special Point Max", &this->param.special_point_max);
+    ImGui::SliderInt("Gauge Count", &this->param.gauge_count, 0, this->param.gauge_count_max);
+    ImGui::InputInt("Gauge Count Max", &this->param.gauge_count_max);
     ImGui::InputFloat("Spin Attack Use Point", &this->param.spin_attack_use_point);
 }
 

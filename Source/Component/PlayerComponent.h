@@ -24,7 +24,9 @@ public:
         bool is_spin_attack = false;            // 回転攻撃中であるか
 
         float special_point = 0.0f;          // スペシャルポイント
-        float special_point_max = 100.0f;    // スペシャルポイントの最大値
+        float special_point_max = 20.0f;    // スペシャルポイントの最大値
+        int gauge_count = 0;
+        int gauge_count_max = 3;
     };
 public:
     PlayerComponent(PlayerParam param);
@@ -47,7 +49,7 @@ public:
     const float GetSpinAttackMoveRate()const { return this->param.spin_attack_move_rate; }
     void SetMoveRate(const float move_rate) { this->param.move_rate = move_rate; }
 
-    void AddSpecialPoint(float point) { this->param.special_point = (std::min)(this->param.special_point + point, this->param.special_point_max); }
+    void AddSpecialPoint(float point);
     void SetSpecialPoint(float point) { this->param.special_point = (std::min)(point, this->param.special_point_max); }
     const float GetSpecialPoint()const { return this->param.special_point; }
     const float GetSpecialPointMax()const { return this->param.special_point_max; }

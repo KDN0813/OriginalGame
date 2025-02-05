@@ -32,7 +32,7 @@ public:
 
         float attack_range = 3.0f;    // 攻撃範囲
 
-        float add_special_point = 5;  // 撃破時追加されるスペシャルポイントの値
+        float add_special_point = 1;  // 撃破時追加されるスペシャルポイントの値
         
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;
