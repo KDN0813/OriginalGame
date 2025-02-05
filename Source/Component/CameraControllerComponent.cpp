@@ -253,18 +253,22 @@ void CameraControllerDeathComponent::Update(float elapsed_time)
 	float range = camera->GetRange();
 	float rotateY = camera->GetRotateY();
 
-	// 回転処理
+	// カメラがアクティブなら動作する
+	if (camera->GetIsActive())
 	{
-		rotateY += this->param.rotation_speed * elapsed_time;
-		if (rotateY < -DirectX::XM_PI) rotateY += DirectX::XM_2PI;
-		if (rotateY > DirectX::XM_PI) rotateY -= DirectX::XM_2PI;
-		camera->SetRotateY(rotateY);
-	}
+		// 回転処理
+		{
+			rotateY += this->param.rotation_speed * elapsed_time;
+			if (rotateY < -DirectX::XM_PI) rotateY += DirectX::XM_2PI;
+			if (rotateY > DirectX::XM_PI) rotateY -= DirectX::XM_2PI;
+			camera->SetRotateY(rotateY);
+		}
 
-	// レンジ伸ばす処理
-	{
-		range+= this->param.range_move_speed * elapsed_time;
-		camera->SetRange(range);
+		// レンジ伸ばす処理
+		{
+			range += this->param.range_move_speed * elapsed_time;
+			camera->SetRange(range);
+		}
 	}
 
 	// focus設定
