@@ -20,6 +20,7 @@
 #include "Component/InstancedModelWithAnimationComponent.h"
 #include "Component\CameraComponent.h"
 #include "Component\DamageComponent.h"
+#include "Component\PlayerComponent.h"
 
 void EnemyComponent::Start()
 {
@@ -118,7 +119,24 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 				if (!character->IsAlive())
 				{
 					// 死亡した場合
-					this->param.add_special_point *= damage->GetPointRate();
+					{
+						// 増加するスペシャル倍率に適応させる
+						this->param.add_special_point *= damage->GetPointRate();
+
+						// スペシャルポイント増加
+						GameObject::Instance game_object = GameObject::GetInstance();
+						if (const auto& player = game_object->GetPlayer())
+						{
+							if (const auto& player_component = player->GetComponent<PlayerComponent>())
+							{
+								player_component->AddSpecialPoint(GetAddSpecialPoint());
+							}
+						}
+
+						// スコア加算
+						GameData::Instance game_data = GameData::GetInstance();
+						game_data->AddScore(1);
+					}
 				}
 			}
 		}

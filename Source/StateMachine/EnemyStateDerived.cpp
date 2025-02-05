@@ -448,23 +448,6 @@ void EnemyDeadIdleState::Update(float elapsed_time)
     }
     else
     {
-        const auto& enemy = owner->GetComponent<EnemyComponent>();
-        if (enemy)
-        {
-            GameObject::Instance game_object = GameObject::GetInstance();
-            if (const auto& player = game_object->GetPlayer())
-            {
-                if (const auto& player_component = player->GetComponent<PlayerComponent>())
-                {
-                    player_component->AddSpecialPoint(enemy->GetAddSpecialPoint());
-                }
-            }
-        }
-            if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-            {
-                // ƒXƒRƒA‰ÁZ
-                game_data->AddScore(1);
-            }
         owner->SetIsRemove(true);   // íœ‚·‚é
     }
 }
