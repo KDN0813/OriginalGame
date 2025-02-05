@@ -37,6 +37,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 				SpriteComponent::SpriteParam param{};
 				param.display_size = { 0.144f,0.015f };
 				param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+				param.draw_priority = PRIORITY::LOWEST;
 				param.center_type = Sprite::CENTER_TYPE::CENTER;
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
 			}
@@ -96,6 +97,26 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 
 	// 子オブジェクト
 	{
+		// 背景
+		{
+			const auto bg_sprite = sprite_shader->CreateChildObject("BG_Sprite");
+
+			// transform
+			{
+				SpriteComponent::SpriteParam param{};
+				param.display_size = { 0.1f,0.1f };
+				param.color = { 1.0f,1.0f, 1.0f, 0.7f };
+				param.center_type = Sprite::CENTER_TYPE::CENTER;
+				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
+			}
+
+			// transform
+			{
+				Transform2DComponent::Transform2DParam param{};
+				bg_sprite->AddComponent<Transform2DComponent>(param);
+			}
+		}
+
 		// テキスト
 		{
 			const auto& text_sprite = sprite_shader->CreateChildObject("Text");
@@ -126,26 +147,6 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 				state_machine->SetDefaultState(EndTimerUIDefaultState::STATE_NAME);
 			}
 		}
-
-		// 背景
-		{
-			const auto bg_sprite = sprite_shader->CreateChildObject("BG_Sprite");
-
-			// transform
-			{
-				SpriteComponent::SpriteParam param{};
-				param.display_size = { 0.1f,0.1f };
-				param.color = { 1.0f,1.0f, 1.0f, 0.7f };
-				param.center_type = Sprite::CENTER_TYPE::CENTER;
-				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(param);
-			}
-
-			// transform
-			{
-				Transform2DComponent::Transform2DParam param{};
-				bg_sprite->AddComponent<Transform2DComponent>(param);
-			}
-		}
 	}
 
 	return sprite_shader;
@@ -160,14 +161,14 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 		SpriteComponent::SpriteParam param{};
 		param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 		param.filename = "Data/Sprite/Pause.png";
-		param.draw_priority = PRIORITY::LOWEST;
+		param.draw_priority = PRIORITY::DEFAULT;
 		auto sprite = pause_object->AddComponent<SpriteComponent>(param);
 	}
 
 	// transform
 	{
-		Transform2DComponent::Transform2DParam paam{};
-		pause_object->AddComponent<Transform2DComponent>(paam);
+		Transform2DComponent::Transform2DParam param{};
+		pause_object->AddComponent<Transform2DComponent>(param);
 	}
 
 	// 子オブジェクト
