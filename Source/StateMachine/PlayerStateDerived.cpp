@@ -208,7 +208,7 @@ void PlayerAttackState::Start()
         player->SetInputMoveValidityFlag(false);
 
     // 攻撃判定オブジェクトを有効にする
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
@@ -277,7 +277,7 @@ void PlayerAttackState::End()
         player->SetInputMoveValidityFlag(true);
 
     // 攻撃判定オブジェクトを無効にする
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
@@ -324,7 +324,7 @@ void PlayerAttackLCombo2State::Start()
         player->SetInputMoveValidityFlag(false);
 
     // 攻撃判定オブジェクトを有効にする
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK02_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
@@ -393,7 +393,7 @@ void PlayerAttackLCombo2State::End()
         player->SetInputMoveValidityFlag(true);
 
     // 攻撃判定オブジェクトを無効にする
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK02_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
     auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)

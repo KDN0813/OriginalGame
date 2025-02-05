@@ -65,8 +65,8 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	// キャラクターステータス
 	{
 		CharacterComponent::CharacterParam param{};
-		param.max_hp = 10;
-		param.hp = 2;
+		param.max_hp = 5;
+		param.hp = 5;
 		param.radius = 1.5f;
 		enemy->AddComponent<CharacterComponent>(param);
 	}

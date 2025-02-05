@@ -30,7 +30,8 @@ public:
     static const MyHash MODEL_FILENAME;
     static const MyHash PLAYER_CAMERA_NAME;
     static const MyHash DEATH_CAMERA_NAME;
-    static const MyHash ATTACK_OBJECT_NAME;
+    static const MyHash ATTACK01_OBJECT_NAME;
+    static const MyHash ATTACK02_OBJECT_NAME;
     static const MyHash DEFENSE_OBJECT_NAME;
     static const MyHash SPIN_ATTACK_OBJECT_NAME;
 public:

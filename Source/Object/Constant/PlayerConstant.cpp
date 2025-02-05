@@ -24,7 +24,8 @@
 
 const MyHash PlayerConstant::PLAYER_CAMERA_NAME = MyHash("PlayerCamera");
 const MyHash PlayerConstant::DEATH_CAMERA_NAME = MyHash("DeathCamera");
-const MyHash PlayerConstant::ATTACK_OBJECT_NAME = MyHash("AttackObject");
+const MyHash PlayerConstant::ATTACK01_OBJECT_NAME = MyHash("Attack01Object");
+const MyHash PlayerConstant::ATTACK02_OBJECT_NAME = MyHash("Attack02Object");
 const MyHash PlayerConstant::DEFENSE_OBJECT_NAME = MyHash("DefenseObject");
 const MyHash PlayerConstant::SPIN_ATTACK_OBJECT_NAME = MyHash("SpinAttackObject");
 
@@ -82,7 +83,8 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	{
 		PlayerComponent::PlayerParam param{};
 		param.move_speed = 15.0f;
-		param.spin_attack_use_point = 10.0f;
+		param.special_point_max = 50.0f;
+		param.spin_attack_use_point = 30.0f;
 		player_component = player->AddComponent<PlayerComponent>(param);
 	}
 	// シェーダー設定
@@ -162,10 +164,10 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			}
 		}
 
-		// プレイヤーの攻撃判定用オブジェクト
+		// プレイヤーの攻撃01判定用オブジェクト
 		{
 			std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
-			player_attack_object->SetName(ATTACK_OBJECT_NAME.GetString().c_str());
+			player_attack_object->SetName(ATTACK01_OBJECT_NAME.GetString().c_str());
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
@@ -190,6 +192,39 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			// ダメージデータ
 			{
 				DamageComponent::DamageParam param{};
+				param.damage_amount = 2;
+				player_attack_object->AddComponent<DamageComponent>(param);
+			}
+		}
+		// プレイヤーの攻撃02判定用オブジェクト
+		{
+			std::shared_ptr<Object> player_attack_object = player->CreateChildObject();
+			player_attack_object->SetName(ATTACK02_OBJECT_NAME.GetString().c_str());
+			// トランスフォーム設定
+			{
+				Transform3DComponent::Transform3DParam param{};
+				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 100.0f);
+				param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
+
+				auto child_transform = player_attack_object->AddComponent<Transform3DComponent>(param);
+			}
+			// 円のコライダー
+			{
+				CircleCollisionComponent::CollisionParam param{};
+				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
+				param.radius = 2.5f;
+				param.default_active_flag = false;
+				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
+
+				// 接触時処理するコンポーネントの追加
+				{
+					child_collision->AddCollisionComponent(player_component);
+				}
+			}
+			// ダメージデータ
+			{
+				DamageComponent::DamageParam param{};
+				param.damage_amount = 3;
 				player_attack_object->AddComponent<DamageComponent>(param);
 			}
 		}
@@ -221,7 +256,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			// ダメージデータ
 			{
 				DamageComponent::DamageParam param{};
-				param.damage_amount = 1;
+				param.damage_amount = 2;
 				param.invincible_time = 1.0f;
 				player_attack_object->AddComponent<DamageComponent>(param);
 			}
