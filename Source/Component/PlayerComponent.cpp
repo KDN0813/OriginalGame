@@ -43,6 +43,8 @@ void PlayerComponent::Update(float elapsed_time)
     {
         InputMove(elapsed_time);
     }
+
+    this->param.old_special_point = this->param.special_point;
 }
 
 void PlayerComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
@@ -94,6 +96,11 @@ void PlayerComponent::AddSpecialPoint(float point)
             this->param.special_point = 0.0f;
         }
     }
+}
+
+bool PlayerComponent::IsAddSpecialPoint()
+{
+    return (this->param.old_special_point < this->param.special_point);
 }
 
 bool PlayerComponent::UseSpecialGage(int use_gage)

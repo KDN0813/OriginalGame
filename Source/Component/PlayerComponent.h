@@ -23,8 +23,9 @@ public:
         int spin_attack_use_gage_count = 1;     // 回転攻撃に必要なゲージ数
         bool is_spin_attack = false;            // 回転攻撃中であるか
         float spin_attack_time = 3.0f;          // 回転攻撃を行う時間
-        float spin_attack_timer = 0.0f;              // 回転攻撃を行う残り時間
+        float spin_attack_timer = 0.0f;         // 回転攻撃を行う残り時間
 
+        float old_special_point = 0.0f;          // 前回のスペシャルポイント
         float special_point = 0.0f;          // スペシャルポイント
         float special_point_max = 20.0f;    // スペシャルポイントの最大値
         int gauge_count = 0;
@@ -65,6 +66,9 @@ public:
     const float GetSpecialPointMax()const { return this->param.special_point_max; }
     const bool GetIsSpinAttack()const { return this->param.is_spin_attack; }
     void SetIsSpinAttack(bool flag) { this->param.is_spin_attack = flag; }
+
+    // スペシャルポイントが上昇したか
+    bool IsAddSpecialPoint();
 
     const int GetSpinAttackUseGageCount()const { return this->param.spin_attack_use_gage_count; }
     // スペシャルゲージを使用する

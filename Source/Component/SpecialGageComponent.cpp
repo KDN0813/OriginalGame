@@ -27,6 +27,21 @@ void SpecialGageComponent::Update(float elapsed_time)
     // ポイントUIのサイズ更新
     sprite->SetDisplaySizeX(player_component->GetSpecialPoint() / player_component->GetSpecialPointMax());
 
+    if (player_component->IsAddSpecialPoint())
+    {
+        this->flash_timer = UIConstant::SPECIAL_POINT_BAR_FLASH_TIME;
+    }
+
+    this->flash_timer -= elapsed_time;
+    if (this->flash_timer <= 0.0f)
+    {
+        sprite->SetColor(UIConstant::PLAYER_SPECIAL_BAR_COLOR);
+    }
+    else
+    {
+        sprite->SetColor(UIConstant::PLAYER_SPECIAL_BAR_FLASH_COLOR);
+    }
+
     // ゲージの更新
     {
         // 一度非アクティブにする

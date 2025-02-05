@@ -15,7 +15,7 @@ public:
     // 終了関数
     void End()  override {};
     // リスタート処理
-    void ReStart() override {};      // パラメータの初期化
+    void ReStart() override { this->flash_timer = 0.0f; };      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override;
 
@@ -27,6 +27,9 @@ public:
 
 private:
     float CalculateSpecialPointWidth();
+
+private:
+    float flash_timer = 0.0f;
 
 private:
     std::weak_ptr<SpriteComponent> sprite_Wptr;
