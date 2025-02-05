@@ -116,6 +116,7 @@ void CameraControllerDebug::Update(float elapsed_time)
 	auto camera = owner->GetComponent<CameraComponent>(this->camera_Wptr);
 	if (!camera) return;
 	if (!camera->GetIsActive()) return;
+	if (!camera->GetIsMainCamera()) return;
 
 	// マウス情報取得
 	Input::Instance input = Input::GetInstance();
@@ -254,7 +255,7 @@ void CameraControllerDeathComponent::Update(float elapsed_time)
 	float rotateY = camera->GetRotateY();
 
 	// カメラがアクティブなら動作する
-	if (camera->GetIsActive())
+	if (camera->GetIsMainCamera())
 	{
 		// 回転処理
 		{

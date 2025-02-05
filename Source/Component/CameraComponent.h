@@ -111,6 +111,9 @@ public:
 	void SetDefaultParam(CameraParam param) { this->default_param = param; this->camera_param = this->default_param; }
 	// Ž‹‘äŽæ“¾
 	DirectX::BoundingFrustum GetBoundingFrustum();
+
+	bool GetIsMainCamera()const { return this->is_main_camera; };
+	void SetIsMainCamera(bool flag) { this->is_main_camera = flag; };
 private:
 	// Žw’è•ûŒü‚ðŒü‚­
 	void SetLookAt(MYVECTOR3 Eye, MYVECTOR3 Focus, MYVECTOR3 Up);
@@ -123,6 +126,7 @@ private:
 	DirectX::XMFLOAT4X4	view_transform = {};
 	DirectX::XMFLOAT4X4	projection_transform = {};
 
+	bool is_main_camera = false;
 	bool change_value = true;
 	CAMERA_TYPE camera_type = CAMERA_TYPE::NONE;
 
