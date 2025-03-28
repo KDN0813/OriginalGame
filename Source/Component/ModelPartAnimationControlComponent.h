@@ -1,9 +1,9 @@
 #pragma once
 #include "Component.h"
 #include "Model/ModelCommonData.h"
+#include "Model\ModelResource.h"
 
 class ModelComponent;
-class ModelResource;
 
 // モデルクラスのアニメーションクラス
 // パーツ毎に別のアニメーションを再生できる

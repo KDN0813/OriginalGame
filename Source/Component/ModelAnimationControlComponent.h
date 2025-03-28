@@ -1,9 +1,9 @@
 #pragma once
 #include "Component.h"
 #include "Model/ModelCommonData.h"
+#include "Model\ModelResource.h"
 
 class ModelComponent;
-class ModelResource;
 
 // モデルクラスのアニメーションクラス
 // 外部からの指示でアニメーションを制御する
@@ -25,6 +25,12 @@ public:
 		bool animation_end_flag = 0;			// 終了フラグ
 		bool dummy[2]{};
 	};
+
+	struct PartsParam
+	{
+		AnimationParam anime_param;							// アニメーション情報
+		std::vector<ModelResource::NodeId> node_index_vec;	// 上記の情報で更新するノードのインデックス
+	};
 public:
 	ModelAnimationControlComponent(InitAnimeParam init_param);
 
@@ -35,22 +41,27 @@ public:
 	// 更新関数
 	void Update(float elapsed_time) override;
 	// 名前取得
-	const char* GetName()const override { return "ModelAnimationControlComponent"; };
+	const char* GetName()const override { return "ModelPartAnimationControlComponent"; };
 	// 優先度
 	const PRIORITY GetPriority()const noexcept override { return PRIORITY::MEDIUM; }
 
-	// アニメーション更新処理
-	void UpdateAnimation(float elapsed_time);
+	/**
+	 * アニメーション更新処理
+	 *
+	 * \param parts	更新するパーツの参照
+	 * \param elapsed_time 経過時間
+	 */
+	void UpdateAnimation(PartsParam& parts, float elapsed_time);
 	// アニメーション再生
 	void PlayAnimation(int index, bool loop, float blend_seconds = 0.2f);
 	// アニメーション再生中か
 	bool IsPlayAnimation()const;
 
-	// 各種データ取得
-	float GetCurrentAnimationSeconds()const { return this->param.current_animation_seconds; }
+	float GetCurrentAnimationSeconds()const { return this->main_parts.anime_param.current_animation_seconds; }
 private:
 	InitAnimeParam init_param;
-	AnimationParam param;
+
+	PartsParam main_parts;
 
 private:
 	std::weak_ptr<ModelComponent> model_Wptr;
