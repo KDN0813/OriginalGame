@@ -62,6 +62,7 @@ private:
 	InitAnimeParam init_param;
 
 	PartsParam main_parts;
+	//PartsParam sub_parts;
 
 private:
 	std::weak_ptr<ModelComponent> model_Wptr;
@@ -70,6 +71,7 @@ private:
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI() override;
+	void DrawPartsDebugGUI(std::string label,PartsParam& parts);
 private:
 	std::vector<std::string> animation_name_pool;
 #endif // _DEBUG
