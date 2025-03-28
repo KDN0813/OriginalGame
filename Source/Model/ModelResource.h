@@ -121,7 +121,7 @@ public:
 #pragma endregion ModelParam
 
 	// 各種データ取得
-	const std::vector<Mesh>& GetMeshes() const { return this->meshe_vec; }
+	const std::vector<Mesh>& GetMeshes() const { return this->mesh_vec; }
 	const std::vector<Node>& GetNodes() const { return this->node_vec; }
 	const std::vector<Animation>& GetAnimations() const { return this->animation_vec; }
 	const std::vector<Material>& GetMaterials() const { return this->material_vec; }
@@ -147,7 +147,7 @@ protected:
 protected:
 	std::vector<Node>		node_vec;
 	std::vector<Material>	material_vec;
-	std::vector<Mesh>		meshe_vec;
+	std::vector<Mesh>		mesh_vec;
 	std::vector<Animation>	animation_vec;
 
 	std::vector<DirectX::BoundingBox> default_bounding_box_vec;      // メッシュ毎のバンディングボックス 
