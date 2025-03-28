@@ -84,8 +84,8 @@ void ModelAnimationControlComponent::UpdateAnimation(float elapsed_time)
 
 	// キーフレーム取得
 	const std::vector<ModelResource::Keyframe>& keyframes = animation.keyframes;
-	int keyCount = static_cast<int>(keyframes.size());
-	for (int keyIndex = 0; keyIndex < keyCount - 1; ++keyIndex)
+	int key_count = static_cast<int>(keyframes.size());
+	for (int keyIndex = 0; keyIndex < key_count - 1; ++keyIndex)
 	{
 		// キーフレームの間にいるのか判定
 		const ModelResource::Keyframe& keyframe0 = keyframes.at(static_cast<size_t>(keyIndex));
@@ -99,14 +99,14 @@ void ModelAnimationControlComponent::UpdateAnimation(float elapsed_time)
 			float rate = (this->param.current_animation_seconds - keyframe0.seconds)
 				/ (keyframe1.seconds - keyframe0.seconds);
 
-			int nodeCount = static_cast<int>(node_vec.size());
+			int node_count = static_cast<int>(node_vec.size());
 
-			for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
+			for (int node_index = 0; node_index < node_count; ++node_index)
 			{
-				const ModelResource::NodeKeyData& key0 = keyframe0.node_keys.at(nodeIndex);
-				const ModelResource::NodeKeyData& key1 = keyframe1.node_keys.at(nodeIndex);
+				const ModelResource::NodeKeyData& key0 = keyframe0.node_keys.at(node_index);
+				const ModelResource::NodeKeyData& key1 = keyframe1.node_keys.at(node_index);
 
-				ModelComponent::Node& node = node_vec[nodeIndex];
+				ModelComponent::Node& node = node_vec[node_index];
 
 				// アニメーションブレンドするなら
 				if (blend_rate < 1.0f)
