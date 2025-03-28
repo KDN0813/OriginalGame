@@ -200,11 +200,11 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 
 	// バンディングボックス作成
 	{
-		this->default_bounding_box_vec.resize(this->meshe_vec.size());
+		this->default_bounding_box_vec.resize(this->mesh_vec.size());
 
-		for (size_t i = 0; i < this->meshe_vec.size(); ++i)
+		for (size_t i = 0; i < this->mesh_vec.size(); ++i)
 		{
-			const auto& mesh = this->meshe_vec[i];
+			const auto& mesh = this->mesh_vec[i];
 
 			MYVECTOR3 Center = (MYVECTOR3(mesh.bounds_min) + MYVECTOR3(mesh.bounds_max)) * 0.5f;
 			MYVECTOR3 Extents = (MYVECTOR3(mesh.bounds_max) - MYVECTOR3(mesh.bounds_min)) * 0.5f;
@@ -215,7 +215,7 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 			this->default_bounding_box_vec[i] = { center,extents };
 
 			MYMATRIX World_transform;
-			const auto& node = node_vec[meshe_vec[i].node_index];
+			const auto& node = node_vec[mesh_vec[i].node_index];
 			World_transform.SetLocalMatrix(node.scale, node.rotate, node.translate);
 
 			this->default_bounding_box_vec[i].Transform(this->default_bounding_box_vec[i], World_transform.GetMatrix());
@@ -311,7 +311,7 @@ void ModelResource::BuildModel(ID3D11Device* device, const char* dirname)
 		}
 	}
 
-	for (Mesh& mesh : meshe_vec)
+	for (Mesh& mesh : mesh_vec)
 	{
 		// サブセット
 		for (Subset& subset : mesh.subsets)
@@ -373,7 +373,7 @@ void ModelResource::Serialize(const char* filename)
 			archive(
 				CEREAL_NVP(node_vec),
 				CEREAL_NVP(material_vec),
-				CEREAL_NVP(meshe_vec),
+				CEREAL_NVP(mesh_vec),
 				CEREAL_NVP(animation_vec)
 			);
 		}
@@ -398,7 +398,7 @@ void ModelResource::Deserialize(const char* filename)
 			archive(
 				CEREAL_NVP(node_vec),
 				CEREAL_NVP(material_vec),
-				CEREAL_NVP(meshe_vec),
+				CEREAL_NVP(mesh_vec),
 				CEREAL_NVP(animation_vec)
 			);
 		}

@@ -147,6 +147,7 @@
     <ClInclude Include="Source\Component\ModelAnimationComponent.h" />
     <ClInclude Include="Source\Component\ModelAnimationControlComponent.h" />
     <ClInclude Include="Source\Component\ModelComponent.h" />
+    <ClInclude Include="Source\Component\ModelPartAnimationControlComponent.h" />
     <ClInclude Include="Source\Component\ModelShaderComponent.h" />
     <ClInclude Include="Source\Component\MovementComponent.h" />
     <ClInclude Include="Source\Component\InstancingModelShaderComponent.h" />
@@ -262,6 +263,7 @@
     <ClCompile Include="Source\Component\ModelAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\ModelAnimationControlComponent.cpp" />
     <ClCompile Include="Source\Component\ModelComponent.cpp" />
+    <ClCompile Include="Source\Component\ModelPartAnimationControlComponent.cpp" />
     <ClCompile Include="Source\Component\ModelShaderComponent.cpp" />
     <ClCompile Include="Source\Component\MovementComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp" />
