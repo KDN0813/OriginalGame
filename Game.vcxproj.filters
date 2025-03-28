@@ -576,6 +576,9 @@
     <ClInclude Include="Source\Component\SpecialGageComponent.h">
       <Filter>Source\Component\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\SpinAttackTimeUIComponent.h">
+      <Filter>Source\Component\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -858,6 +861,9 @@
       <Filter>Source\Component\Damage</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\SpecialGageComponent.cpp">
+      <Filter>Source\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpinAttackTimeUIComponent.cpp">
       <Filter>Source\Component\UI</Filter>
     </ClCompile>
   </ItemGroup>

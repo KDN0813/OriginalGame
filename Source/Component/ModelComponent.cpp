@@ -67,10 +67,9 @@ void ModelComponent::Update(float elapsed_time)
 	World_transform.SetIdentity();
 
 
-	auto owner = GetOwner();
-	if (owner)
+	if (const auto& owner = GetOwner())
 	{
-		if (auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
+		if (const auto& transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
 		{
 			World_transform = transform->GetWolrdTransform();
 		}

@@ -18,9 +18,9 @@ public:
 	struct AnimationParam
 	{
 		int current_animation_index = -1;		// 再生中のアニメーションのインデックス
-		float current_animation_seconds = 0;	// 現在の再生時間
-		float animation_blend_time = 0;			// アニメーションブレンドの経過時間
-		float animation_blend_seconds = 0;		// アニメーションブレンドの時間
+		float current_animation_seconds = 0.0f;	// 現在の再生時間
+		float animation_blend_time = 0.0f;			// アニメーションブレンドの経過時間
+		float animation_blend_seconds = 0.0f;		// アニメーションブレンドの時間
 		bool animation_loop_flag = 0;			// ループフラグ
 		bool animation_end_flag = 0;			// 終了フラグ
 		bool dummy[2]{};
