@@ -31,7 +31,7 @@ void PlayerIdleState::Start()
     if (!owner) return;
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
-    animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.2f);
+    animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.2f);
 }
 
 void PlayerIdleState::Update(float elapsed_time)
@@ -112,7 +112,7 @@ void PlayerMoveState::Start()
     if (!owner) return;
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
-    animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.2f);
+    animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.2f);
 }
 
 void PlayerMoveState::Update(float elapsed_time)
@@ -194,7 +194,7 @@ void PlayerAttackState::Start()
     // アニメーションの再生
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
-        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, false, 0.2f);
+        animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::ATTACK01, false, 0.2f);
 
     // SE再生
     if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
@@ -262,7 +262,7 @@ void PlayerAttackState::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (player->attack_end_point <= animation->GetCurrentAnimationSeconds())
+    if (player->attack_end_point <= animation->GetMainPartsCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
         state_machine->ChangeState(this->change_attack_hold_state);
@@ -310,7 +310,7 @@ void PlayerAttackLCombo2State::Start()
     // アニメーションの再生
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
-        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK02, false, 0.2f);
+        animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::ATTACK02, false, 0.2f);
 
     // SE再生
     if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
@@ -378,7 +378,7 @@ void PlayerAttackLCombo2State::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (player->attack_combo2_end_point <= animation->GetCurrentAnimationSeconds())
+    if (player->attack_combo2_end_point <= animation->GetMainPartsCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
         state_machine->ChangeState(this->change_attack_hold_state);
@@ -467,7 +467,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (!animation->IsPlayAnimation())
+    if (!animation->IsPlayMainPartsAnimation())
     {
         // 待機ステートに遷移
         state_machine->ChangeState(this->change_idle_state);
@@ -489,7 +489,7 @@ void PlayerSpinAttackStartState::Start()
     // アニメーションの再生
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
-        animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_START, false, 0.2f);
+        animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_START, false, 0.2f);
 }
 
 void PlayerSpinAttackStartState::Update(float elapsed_time)
@@ -503,7 +503,7 @@ void PlayerSpinAttackStartState::Update(float elapsed_time)
 
 
     // アニメーション再生待ち
-    if (!animation->IsPlayAnimation())
+    if (!animation->IsPlayMainPartsAnimation())
     {
         // 回転
         state_machine->ChangeState(this->change_spin_attack_state);
@@ -528,7 +528,7 @@ void PlayerSpinAttackSpinLoopState::Start()
     // アニメーションの再生
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
-        animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_SPIN_LOOP, true, 0.0f);
+        animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_SPIN_LOOP, true, 0.0f);
 
     // SE再生
     if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
@@ -670,7 +670,7 @@ void PlayerSpinAttackState::Start()
     // アニメーションの再生
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
-        animation->PlayAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK, false, 0.0f);
+        animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK, false, 0.0f);
 
     // SE再生
     if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
@@ -733,7 +733,7 @@ void PlayerSpinAttackState::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (!animation->IsPlayAnimation())
+    if (!animation->IsPlayMainPartsAnimation())
     {
         // 待機ステートに遷移
         state_machine->ChangeState(this->change_idle_state);
@@ -784,7 +784,7 @@ void PlayerDamageState::Start()
     if (!owner) return;
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
-    animation->PlayAnimation(PlayerConstant::ANIMATION::DAMAGE, false);
+    animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::DAMAGE, false);
 
     const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (!player)return;
@@ -812,7 +812,7 @@ void PlayerDamageState::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (!animation->IsPlayAnimation())
+    if (!animation->IsPlayMainPartsAnimation())
     {
         // 待機ステートに遷移
         state_machine->ChangeState(this->change_idle_state);
@@ -845,7 +845,7 @@ void PlayerDeadState::Start()
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::DEAD, false);
+        animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::DEAD, false);
     }
     // 入力受付をしないように設定
     const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
@@ -865,7 +865,7 @@ void PlayerDeadState::Update(float elapsed_time)
     if (!animation) return;
     
     // アニメーション再生待ち
-    if (!animation->IsPlayAnimation())
+    if (!animation->IsPlayMainPartsAnimation())
     {
         // 死亡待機ステートに遷移
         state_machine->ChangeState(this->change_dead_idle_state);
@@ -887,7 +887,7 @@ void PlayerDeadIdleState::Start()
     if (!owner) return;
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
-    animation->PlayAnimation(PlayerConstant::ANIMATION::DEAD_STAY, false);
+    animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::DEAD_STAY, false);
 
     // ゲームモードを設定
     if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())

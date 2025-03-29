@@ -78,7 +78,7 @@ void ModelAnimationControlComponent::Start()
 
 	if (0 <= this->init_param.init_anime_index)
 	{
-		PlayAnimation(this->init_param.init_anime_index, this->init_param.init_anime_loop, 0.0f);
+		PlayMainPartsAnimation(this->init_param.init_anime_index, this->init_param.init_anime_loop, 0.0f);
 		UpdateAnimation(this->main_parts, 0.0f);
 	}
 }
@@ -87,7 +87,7 @@ void ModelAnimationControlComponent::ReStart()
 {
 	if (0 <= this->init_param.init_anime_index)
 	{
-		PlayAnimation(this->init_param.init_anime_index, this->init_param.init_anime_loop, 0.0f);
+		PlayMainPartsAnimation(this->init_param.init_anime_index, this->init_param.init_anime_loop, 0.0f);
 	}
 }
 
@@ -99,7 +99,7 @@ void ModelAnimationControlComponent::Update(float elapsed_time)
 void ModelAnimationControlComponent::UpdateAnimation(PartsParam& parts, float elapsed_time)
 {
 	// Ä¶’†‚Å‚È‚¢‚È‚çXV‚µ‚È‚¢
-	if (!IsPlayAnimation()) return;
+	if (!IsPlayMainPartsAnimation()) return;
 
 	auto owner = GetOwner();
 	if (!owner) return;
@@ -229,7 +229,7 @@ void ModelAnimationControlComponent::UpdateAnimation(PartsParam& parts, float el
 	}
 }
 
-void ModelAnimationControlComponent::PlayAnimation(int index, bool loop, float blend_seconds)
+void ModelAnimationControlComponent::PlayMainPartsAnimation(int index, bool loop, float blend_seconds)
 {
 	this->main_parts.anime_param.current_animation_index = index;
 	this->main_parts.anime_param.current_animation_seconds = 0.0f;
@@ -241,11 +241,31 @@ void ModelAnimationControlComponent::PlayAnimation(int index, bool loop, float b
 	this->main_parts.anime_param.animation_blend_seconds = blend_seconds;
 }
 
-bool ModelAnimationControlComponent::IsPlayAnimation() const
+bool ModelAnimationControlComponent::IsPlayMainPartsAnimation() const
 {
 	if (this->main_parts.anime_param.current_animation_index < 0)return false;
 	if (this->main_parts.anime_param.current_animation_index >= this->animation_size) return false;
 	if (this->main_parts.anime_param.animation_end_flag) return false;
+	return true;
+}
+
+void ModelAnimationControlComponent::PlayMainPartsAnimation(int index, bool loop, float blend_seconds)
+{
+	this->sub_parts.anime_param.current_animation_index = index;
+	this->sub_parts.anime_param.current_animation_seconds = 0.0f;
+
+	this->sub_parts.anime_param.animation_loop_flag = loop;
+	this->sub_parts.anime_param.animation_end_flag = false;
+
+	this->sub_parts.anime_param.animation_blend_time = 0.0f;
+	this->sub_parts.anime_param.animation_blend_seconds = blend_seconds;
+}
+
+bool ModelAnimationControlComponent::IsPlayMainPartsAnimation() const
+{
+	if (this->sub_parts.anime_param.current_animation_index < 0)return false;
+	if (this->sub_parts.anime_param.current_animation_index >= this->animation_size) return false;
+	if (this->sub_parts.anime_param.animation_end_flag) return false;
 	return true;
 }
 
@@ -275,7 +295,7 @@ void ModelAnimationControlComponent::DrawPartsDebugGUI(std::string label,PartsPa
 				ImGui::SliderFloat("Current Animation Seconds", &parts.anime_param.current_animation_seconds, 0.0f, animation.seconds_length);
 				if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
 				{
-					PlayAnimation(anime_index, 0.0f, 0.0f);
+					PlayMainPartsAnimation(anime_index, 0.0f, 0.0f);
 				}
 				ImGui::Checkbox("Animation Loop Flag", &parts.anime_param.animation_loop_flag);
 

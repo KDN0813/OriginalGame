@@ -54,11 +54,16 @@ public:
 	 */
 	void UpdateAnimation(PartsParam& parts, float elapsed_time);
 	// アニメーション再生
-	void PlayAnimation(int index, bool loop, float blend_seconds = 0.2f);
+	void PlayMainPartsAnimation(int index, bool loop, float blend_seconds = 0.2f);
 	// アニメーション再生中か
-	bool IsPlayAnimation()const;
+	bool IsPlayMainPartsAnimation()const;
+	float GetMainPartsCurrentAnimationSeconds()const { return this->main_parts.anime_param.current_animation_seconds; }
 
-	float GetCurrentAnimationSeconds()const { return this->main_parts.anime_param.current_animation_seconds; }
+	// アニメーション再生
+	void PlaySubPartsAnimation(int index, bool loop, float blend_seconds = 0.2f);
+	// アニメーション再生中か
+	bool IsPlaySubPartsAnimation()const;
+	float GetSubPartsCurrentAnimationSeconds()const { return this->sub_parts.anime_param.current_animation_seconds; }
 private:
 	InitAnimeParam init_param;
 
