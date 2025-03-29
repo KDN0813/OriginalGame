@@ -94,6 +94,7 @@ void ModelAnimationControlComponent::ReStart()
 void ModelAnimationControlComponent::Update(float elapsed_time)
 {
 	UpdateAnimation(this->main_parts, elapsed_time);
+	UpdateAnimation(this->sub_parts, elapsed_time);
 }
 
 void ModelAnimationControlComponent::UpdateAnimation(PartsParam& parts, float elapsed_time)
@@ -249,7 +250,7 @@ bool ModelAnimationControlComponent::IsPlayMainPartsAnimation() const
 	return true;
 }
 
-void ModelAnimationControlComponent::PlayMainPartsAnimation(int index, bool loop, float blend_seconds)
+void ModelAnimationControlComponent::PlaySubPartsAnimation(int index, bool loop, float blend_seconds)
 {
 	this->sub_parts.anime_param.current_animation_index = index;
 	this->sub_parts.anime_param.current_animation_seconds = 0.0f;
@@ -261,7 +262,7 @@ void ModelAnimationControlComponent::PlayMainPartsAnimation(int index, bool loop
 	this->sub_parts.anime_param.animation_blend_seconds = blend_seconds;
 }
 
-bool ModelAnimationControlComponent::IsPlayMainPartsAnimation() const
+bool ModelAnimationControlComponent::IsPlaySubPartsAnimation() const
 {
 	if (this->sub_parts.anime_param.current_animation_index < 0)return false;
 	if (this->sub_parts.anime_param.current_animation_index >= this->animation_size) return false;

@@ -50,7 +50,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		param.init_anime_loop = true;
 		param.sub_part_root_name_vec.emplace_back("thigh_l");
 		param.sub_part_root_name_vec.emplace_back("thigh_r");
-		auto model_animation = player->AddComponent<ModelAnimationControlComponent>(param);
+		const auto& model_animation = player->AddComponent<ModelAnimationControlComponent>(param);
 	}
 	// ステートマシン設定
 	auto state_machine = player->AddComponent<StateMachineComponent>();
