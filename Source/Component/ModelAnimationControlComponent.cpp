@@ -100,7 +100,7 @@ void ModelAnimationControlComponent::Update(float elapsed_time)
 void ModelAnimationControlComponent::UpdateAnimation(PartsParam& parts, float elapsed_time)
 {
 	// çƒê∂íÜÇ≈Ç»Ç¢Ç»ÇÁçXêVÇµÇ»Ç¢
-	if (!IsPlayMainPartsAnimation()) return;
+	if (!IsPlayPartsAnimation(parts)) return;
 
 	auto owner = GetOwner();
 	if (!owner) return;
@@ -230,6 +230,14 @@ void ModelAnimationControlComponent::UpdateAnimation(PartsParam& parts, float el
 	}
 }
 
+bool ModelAnimationControlComponent::IsPlayPartsAnimation(const PartsParam& parts) const
+{
+	if (parts.anime_param.current_animation_index < 0)return false;
+	if (parts.anime_param.current_animation_index >= this->animation_size) return false;
+	if (parts.anime_param.animation_end_flag) return false;
+	return true;
+}
+
 void ModelAnimationControlComponent::PlayMainPartsAnimation(int index, bool loop, float blend_seconds)
 {
 	this->main_parts.anime_param.current_animation_index = index;
@@ -244,10 +252,7 @@ void ModelAnimationControlComponent::PlayMainPartsAnimation(int index, bool loop
 
 bool ModelAnimationControlComponent::IsPlayMainPartsAnimation() const
 {
-	if (this->main_parts.anime_param.current_animation_index < 0)return false;
-	if (this->main_parts.anime_param.current_animation_index >= this->animation_size) return false;
-	if (this->main_parts.anime_param.animation_end_flag) return false;
-	return true;
+	return IsPlayPartsAnimation(this->main_parts);
 }
 
 void ModelAnimationControlComponent::PlaySubPartsAnimation(int index, bool loop, float blend_seconds)
@@ -264,10 +269,7 @@ void ModelAnimationControlComponent::PlaySubPartsAnimation(int index, bool loop,
 
 bool ModelAnimationControlComponent::IsPlaySubPartsAnimation() const
 {
-	if (this->sub_parts.anime_param.current_animation_index < 0)return false;
-	if (this->sub_parts.anime_param.current_animation_index >= this->animation_size) return false;
-	if (this->sub_parts.anime_param.animation_end_flag) return false;
-	return true;
+	return IsPlayPartsAnimation(this->sub_parts);
 }
 
 #ifdef _DEBUG

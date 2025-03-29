@@ -206,11 +206,6 @@ void PlayerAttackState::Start()
         audio->Play(param);
     }
 
-    // プレイヤーの入力移動を無効にする
-    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
-    if (player)
-        player->SetInputMoveValidityFlag(false);
-
     // 攻撃判定オブジェクトを有効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
@@ -275,11 +270,6 @@ void PlayerAttackState::End()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // プレイヤーの入力移動を有効にする
-    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
-    if (player)
-        player->SetInputMoveValidityFlag(true);
-
     // 攻撃判定オブジェクトを無効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
@@ -321,11 +311,6 @@ void PlayerAttackLCombo2State::Start()
         param.filename = "Data/Audio/SE_Slash01.wav";
         audio->Play(param);
     }
-
-    // プレイヤーの入力移動を無効にする
-    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
-    if (player)
-        player->SetInputMoveValidityFlag(false);
 
     // 攻撃判定オブジェクトを有効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK02_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
@@ -390,11 +375,6 @@ void PlayerAttackLCombo2State::End()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-
-    // プレイヤーの入力移動を有効にする
-    auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
-    if (player)
-        player->SetInputMoveValidityFlag(true);
 
     // 攻撃判定オブジェクトを無効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK02_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得

@@ -53,12 +53,15 @@ public:
 	 * \param elapsed_time 経過時間
 	 */
 	void UpdateAnimation(PartsParam& parts, float elapsed_time);
+
+	// アニメーション再生中か
+	bool IsPlayPartsAnimation(const PartsParam& parts) const;
+
 	// アニメーション再生
 	void PlayMainPartsAnimation(int index, bool loop, float blend_seconds = 0.2f);
 	// アニメーション再生中か
 	bool IsPlayMainPartsAnimation()const;
 	float GetMainPartsCurrentAnimationSeconds()const { return this->main_parts.anime_param.current_animation_seconds; }
-
 	// アニメーション再生
 	void PlaySubPartsAnimation(int index, bool loop, float blend_seconds = 0.2f);
 	// アニメーション再生中か
