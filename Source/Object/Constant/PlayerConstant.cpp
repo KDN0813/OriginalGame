@@ -48,6 +48,8 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		ModelAnimationControlComponent::InitAnimeParam param{};
 		param.init_anime_index = PlayerConstant::IDLE;
 		param.init_anime_loop = true;
+		param.sub_part_root_name_vec.emplace_back("thigh_l");
+		param.sub_part_root_name_vec.emplace_back("thigh_r");
 		auto model_animation = player->AddComponent<ModelAnimationControlComponent>(param);
 	}
 	// ステートマシン設定

@@ -14,6 +14,7 @@ public:
 	{
 		int init_anime_index = -1;				// 最初に再生するアニメーションインデックス
 		bool init_anime_loop = false;			// 最初に再生するアニメーションのループフラグ
+		std::vector<std::string> sub_part_root_name_vec = {};	// サブパーツのルートノード名
 	};
 	struct AnimationParam
 	{
@@ -62,7 +63,7 @@ private:
 	InitAnimeParam init_param;
 
 	PartsParam main_parts;
-	//PartsParam sub_parts;
+	PartsParam sub_parts;
 
 private:
 	std::weak_ptr<ModelComponent> model_Wptr;

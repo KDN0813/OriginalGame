@@ -14,6 +14,22 @@ ModelAnimationControlComponent::ModelAnimationControlComponent(InitAnimeParam in
 	ID3D11Device* device = graphics->GetDevice();
 }
 
+bool FindName(const std::vector<ModelResource::Node>& nodes,ModelResource::Node node, std::string name)
+{
+	if (node.name == name) return true;
+
+	int parent_index = node.parent_index;
+	while (0 <= parent_index && parent_index < nodes.size())
+	{
+		if (nodes[parent_index].name == name)
+		{
+			return true;
+		}
+		parent_index = nodes[parent_index].parent_index;
+	}
+	return false;
+}
+
 void ModelAnimationControlComponent::Start()
 {
 	if (const auto& owner = GetOwner())
@@ -21,18 +37,42 @@ void ModelAnimationControlComponent::Start()
 		if (const auto& model = owner->GetComponent(this->model_Wptr))
 		{
 			this->animation_size = static_cast<int>(model->GetResource()->GetAnimations().size());
+			// メインパーツ情報設定
+			for (ModelResource::NodeId node_id = 0; node_id < static_cast<ModelResource::NodeId>(model->GetNodes().size()); ++node_id)
+			{
+				this->main_parts.node_index_vec.emplace_back(node_id);
+			}
+
+			// サブパーツ情報設定
+			for (const auto& name : this->init_param.sub_part_root_name_vec)
+			{
+				const auto& nodes = model->GetResource()->GetNodes();
+				// 名前検索
+				for (ModelResource::NodeId node_id = 0; node_id < nodes.size(); ++node_id)
+				{
+					if (FindName(nodes, nodes[node_id], name))
+					{
+						this->sub_parts.node_index_vec.emplace_back(node_id);
+					}
+				}
+			}
+
+			// サブに登録したインデックスを削除する
+			for (const auto& index : this->sub_parts.node_index_vec)
+			{
+				const auto& start_it = std::find(this->main_parts.node_index_vec.begin(), this->main_parts.node_index_vec.end(), index);
+				if (start_it != this->main_parts.node_index_vec.end())
+				{
+					this->main_parts.node_index_vec.erase(start_it);
+				}
+			}
+
 #ifdef _DEBUG
 			for (size_t i = 0; i < this->animation_size; ++i)
 			{
 				this->animation_name_pool.emplace_back(model->GetResource()->GetAnimations()[i].name);
 			}
 #endif // DEBUG
-
-			// メインパーツ情報設定
-			for (ModelResource::NodeId node_id = 0; node_id < static_cast<ModelResource::NodeId>(model->GetNodes().size()); ++node_id)
-			{
-				this->main_parts.node_index_vec.emplace_back(node_id);
-			}
 		}
 	}
 
@@ -105,9 +145,7 @@ void ModelAnimationControlComponent::UpdateAnimation(PartsParam& parts, float el
 			float rate = (parts.anime_param.current_animation_seconds - keyframe0.seconds)
 				/ (keyframe1.seconds - keyframe0.seconds);
 
-			int node_count = static_cast<int>(node_vec.size());
-
-			for (int node_index = 0; node_index < node_count; ++node_index)
+			for (int node_index : parts.node_index_vec)
 			{
 				const ModelResource::NodeKeyData& key0 = keyframe0.node_keys.at(node_index);
 				const ModelResource::NodeKeyData& key1 = keyframe1.node_keys.at(node_index);
