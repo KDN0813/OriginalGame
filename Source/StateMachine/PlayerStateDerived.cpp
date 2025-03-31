@@ -32,6 +32,7 @@ void PlayerIdleState::Start()
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.2f);
+    animation->PlaySubPartsAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.2f);
 }
 
 void PlayerIdleState::Update(float elapsed_time)

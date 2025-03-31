@@ -68,7 +68,7 @@ void MovementComponent::Update(float elapsed_time)
 
 	ResolveGridCellCollision(owner, transform,elapsed_time);
 
-	RaycasVsStage(owner, transform);
+	RaycastVsStage(owner, transform);
 
 	// ˆÚ“®Œã‚É‚à‚¤ˆê“x“o˜^‚·‚é
 	{
@@ -180,9 +180,9 @@ void MovementComponent::AddAccelerationZ(float z)
 	Acceleration.GetFlaot3(this->param.acceleration);
 }
 
-void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform)
+void MovementComponent::RaycastVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform)
 {
-	if (!this->param.is_stage_raycas)
+	if (!this->param.is_stage_raycast)
 	{
 		transform->AddLocalPosition(this->param.velocity);
 		return;
@@ -194,7 +194,7 @@ void MovementComponent::RaycasVsStage(std::shared_ptr<Object> owner,std::shared_
 	std::shared_ptr<ModelComponent> stage_foor_model = nullptr;
 	if (auto stage_foor_object = game_object->GetStageFoor())
 	{
-		stage_foor_model = stage_foor_object->GetComponent<ModelComponent>(this->stage_foor_model_Wptr);
+		stage_foor_model = stage_foor_object->GetComponent<ModelComponent>(this->stage_floor_model_Wptr);
 	}
 
 	std::shared_ptr<ModelComponent> stage_wall_model = nullptr;
@@ -366,8 +366,8 @@ void MovementComponent::DrawDebugGUI()
     ImGui::InputFloat("Max AccelerationXZ", &this->param.max_accelerationXZ);
 	ImGui::InputFloat3("Velocity", &this->param.velocity.x);
 	ImGui::InputFloat("Turn Speed", &this->param.turn_speed);
-	ImGui::Checkbox("Is Stage Raycast", &this->param.is_stage_raycas);
-	if (this->param.is_stage_raycas)
+	ImGui::Checkbox("Is Stage Raycast", &this->param.is_stage_raycast);
+	if (this->param.is_stage_raycast)
 	{
 		ImGui::InputFloat("Step Offset", &this->param.step_offset);
 	}

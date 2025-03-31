@@ -21,7 +21,7 @@ public:
         float step_offset = 1.0f;                   // レイの開始位置を足元より少し上に設定するためのオフセット
         float max_accelerationXZ = 5.0f;            // XZ軸の最大加速度
         float turn_speed = 15.0f;                   // 回転速度
-        bool is_stage_raycas = false;               // ステージとのレイキャストの有無
+        bool is_stage_raycast = false;              // ステージとのレイキャストの有無
 
         float push_rate = 1.0f;
     };
@@ -44,7 +44,7 @@ public:
     bool IsMoveXZAxis()  const;
 
     // 各種設定取得・関数
-    void SetIsStageRaycas(bool is_stage_raycas) { this->param.is_stage_raycas = is_stage_raycas; }
+    void SetIsStageRaycast(bool is_stage_raycast) { this->param.is_stage_raycast = is_stage_raycast; }
     void SetAdditionalVelocity(DirectX::XMFLOAT3 move_vec) { this->param.acceleration = move_vec; }
     void AddAcceleration(MYVECTOR3 Add_acc);
     void AddAccelerationXZ(float x, float z);
@@ -56,7 +56,7 @@ public:
     float GetMaxAccelerationXZ() const { return this->param.max_accelerationXZ; }
 
     // ステージとのレイキャスト
-    void RaycasVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform);
+    void RaycastVsStage(std::shared_ptr<Object> owner,std::shared_ptr<Transform3DComponent>& transform);
 
     // セルとの衝突判定を行う
     void ResolveGridCellCollision(std::shared_ptr<Object> owner, std::shared_ptr<Transform3DComponent>& transform,float elapsed_time);
@@ -70,7 +70,7 @@ private:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
     std::weak_ptr<GravityComponent> gravity_Wptr;
 
-    std::weak_ptr<ModelComponent> stage_foor_model_Wptr;     // ステージのモデル
+    std::weak_ptr<ModelComponent> stage_floor_model_Wptr;     // ステージのモデル
     std::weak_ptr<ModelComponent> stage_wall_model_Wptr;     // ステージのモデル
 #ifdef _DEBUG
 public:
@@ -95,4 +95,3 @@ private:
     SphereParam rayXZ_end_pos;    // 壁方向のレイキャストの終点
 #endif _DEBUG
 };
-
