@@ -7,6 +7,7 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include "System\Misc.h"
+#include "System\DataKey.h"
 
 class ModelResource
 {
@@ -149,6 +150,7 @@ protected:
 	std::vector<Material>	material_vec;
 	std::vector<Mesh>		mesh_vec;
 	std::vector<Animation>	animation_vec;
+	DataStore<Animation>	animation_store;
 
 	std::vector<DirectX::BoundingBox> default_bounding_box_vec;      // メッシュ毎のバンディングボックス 
 };

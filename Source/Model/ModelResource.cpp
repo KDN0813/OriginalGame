@@ -195,6 +195,12 @@ void ModelResource::Load(ID3D11Device* device, const char* filename)
 	// デシリアライズ
 	Deserialize(filename);
 
+	for (const auto animation : this->animation_vec)
+	{
+		MyHash name(animation.name);
+		this->animation_store.AddData(name, animation);
+	}
+
 	// モデル構築
 	BuildModel(device, dirname);
 
