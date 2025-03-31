@@ -421,7 +421,7 @@ void AnimatedMovementComponent::Update(float elapsed_time)
 
 	MYVECTOR3 Acceleration = this->param.acceleration;
 	float lengthXZ_sq = Acceleration.LengthXZSq();
-	if (lengthXZ_sq < 0.0f)
+	if (0.0f < lengthXZ_sq)
 	{
 		animation->PlaySubPartsAnimation(PlayerConstant::MOVE_FWD, true);
 	}
