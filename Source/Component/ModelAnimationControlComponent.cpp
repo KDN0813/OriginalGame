@@ -322,6 +322,7 @@ void ModelAnimationControlComponent::DrawPartsDebugGUI(std::string label,PartsPa
 void ModelAnimationControlComponent::DrawDebugGUI()
 {
 	DrawPartsDebugGUI("MainParts",this->main_parts);
+	DrawPartsDebugGUI("subParts",this->sub_parts);
 }
 
 #endif // DEBUG

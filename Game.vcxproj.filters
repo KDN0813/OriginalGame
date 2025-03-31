@@ -582,6 +582,9 @@
     <ClInclude Include="Source\Component\ModelPartAnimationControlComponent.h">
       <Filter>Source\Component\Model\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\DataKey.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
