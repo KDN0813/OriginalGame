@@ -26,6 +26,7 @@ public:
         float push_rate = 1.0f;
     };
 public:
+    MovementComponent() = delete;
     MovementComponent(MovementParam param);
 
     // リスタート処理
@@ -60,13 +61,13 @@ public:
 
     // セルとの衝突判定を行う
     void ResolveGridCellCollision(std::shared_ptr<Object> owner, std::shared_ptr<Transform3DComponent>& transform,float elapsed_time);
-private:
+protected:
     MovementParam param;
     MovementParam default_param;
 
     int old_cell_index = -1;            // 前フレームのセルインデックス
     int current_cell_index = -1;        // セルインデックス
-private:
+protected:
     std::weak_ptr<Transform3DComponent> transform_Wptr;
     std::weak_ptr<GravityComponent> gravity_Wptr;
 
@@ -95,3 +96,21 @@ private:
     SphereParam rayXZ_end_pos;    // 壁方向のレイキャストの終点
 #endif _DEBUG
 };
+
+class ModelAnimationControlComponent;
+
+// アニメーション付きの移動コンポーネント
+class AnimatedMovementComponent : public MovementComponent
+{
+public:
+    AnimatedMovementComponent() = delete;
+    AnimatedMovementComponent(MovementComponent::MovementParam param) :MovementComponent(param) {};
+
+    // 更新関数
+    void Update(float elapsed_time)override;
+    // 名前取得
+    const char* GetName()const override { return "AnimatedMovementComponent"; };
+private:
+    std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+};
+

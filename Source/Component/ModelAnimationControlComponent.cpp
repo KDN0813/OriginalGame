@@ -240,6 +240,10 @@ bool ModelAnimationControlComponent::IsPlayPartsAnimation(const PartsParam& part
 
 void ModelAnimationControlComponent::PlayMainPartsAnimation(int index, bool loop, float blend_seconds)
 {
+	// 再生中のアニメーションのリスタートを防ぐ
+	if (this->main_parts.anime_param.current_animation_index == index
+		&& !this->main_parts.anime_param.animation_end_flag) return;
+
 	this->main_parts.anime_param.current_animation_index = index;
 	this->main_parts.anime_param.current_animation_seconds = 0.0f;
 
@@ -257,6 +261,10 @@ bool ModelAnimationControlComponent::IsPlayMainPartsAnimation() const
 
 void ModelAnimationControlComponent::PlaySubPartsAnimation(int index, bool loop, float blend_seconds)
 {
+	// 再生中のアニメーションのリスタートを防ぐ
+	if (this->sub_parts.anime_param.current_animation_index == index
+		&& !this->sub_parts.anime_param.animation_end_flag) return;
+
 	this->sub_parts.anime_param.current_animation_index = index;
 	this->sub_parts.anime_param.current_animation_seconds = 0.0f;
 

@@ -4,6 +4,7 @@
 #include "Object/GameObject.h"
 #include "Collision/Collision.h"
 #include "GridObjectManager\GridObjectManager.h"
+#include "Object\Constant\PlayerConstant.h"
 
 #ifdef _DEBUG
 #include "Debug/DebugManager.h"
@@ -13,6 +14,7 @@
 
 #include "Component/TransformComponent.h"
 #include "Component/GravityComponent.h"
+#include "Component/ModelAnimationControlComponent.h"
 
 MovementComponent::MovementComponent(MovementParam param)
 	:param(param),default_param(param)
@@ -408,3 +410,25 @@ void MovementComponent::DrawDebugPrimitiveGUI()
 }
 
 #endif _DEBUG
+
+
+void AnimatedMovementComponent::Update(float elapsed_time)
+{
+	const auto& owner = GetOwner();
+	if (!owner) return;
+	const auto& animation = owner->GetComponent(this->animation_Wprt);
+	if (!animation) return;
+
+	MYVECTOR3 Acceleration = this->param.acceleration;
+	float lengthXZ_sq = Acceleration.LengthXZSq();
+	if (lengthXZ_sq < 0.0f)
+	{
+		animation->PlaySubPartsAnimation(PlayerConstant::MOVE_FWD, true);
+	}
+	else
+	{
+		animation->PlaySubPartsAnimation(PlayerConstant::IDLE, true);
+	}
+
+	MovementComponent::Update(elapsed_time);
+}

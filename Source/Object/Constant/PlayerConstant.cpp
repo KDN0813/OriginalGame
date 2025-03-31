@@ -84,7 +84,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		MovementComponent::MovementParam param{};
 		param.max_accelerationXZ = 100.0f;
 		param.is_stage_raycast = false;
-		auto movement = player->AddComponent<MovementComponent>(param);
+		auto movement = player->AddComponent<AnimatedMovementComponent>(param);
 	}
 	// プレイヤーコンポーネント作成
 	{
