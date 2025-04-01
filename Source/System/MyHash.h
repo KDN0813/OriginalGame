@@ -4,6 +4,7 @@
 #include <string>
 
 //std::stringとそのハッシュ値を所有するクラス
+//検索したい要素の中に名前が入っている際に使用する
 class MyHash final
 {
 public:

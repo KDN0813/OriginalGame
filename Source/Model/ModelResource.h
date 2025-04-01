@@ -125,6 +125,7 @@ public:
 	const std::vector<Mesh>& GetMeshes() const { return this->mesh_vec; }
 	const std::vector<Node>& GetNodes() const { return this->node_vec; }
 	const std::vector<Animation>& GetAnimations() const { return this->animation_vec; }
+	const DataStore<Animation>& GetAnimationStore() const { return this->animation_store; }
 	const std::vector<Material>& GetMaterials() const { return this->material_vec; }
 	std::vector<DirectX::BoundingBox> GetDefaultBoundingBoxs()const { return this->default_bounding_box_vec; }
 	DirectX::BoundingBox GetDefaultBoundingBox(size_t i)const;
