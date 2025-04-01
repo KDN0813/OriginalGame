@@ -19,7 +19,7 @@ const MyHash EnemyIdleState::STATE_NAME = MyHash("EnemyIdleState");
 EnemyIdleState::EnemyIdleState()
     :State(STATE_NAME)
 {
-    this->change_wandering_state.change_state_name = EnemyWanderingState::STATE_NAME;
+    this->change_wandering_state.change_state_name = EnemyWanderState::STATE_NAME;
     this->change_chase_state.change_state_name = EnemyChaseState::STATE_NAME;
     this->change_attack_state.change_state_name = EnemyAttackState::STATE_NAME;
     this->change_damage_state.change_state_name = EnemyDamageState::STATE_NAME;
@@ -92,8 +92,8 @@ void EnemyIdleState::SetRandomIdleTime()
     this->idle_timer = MyMath::RandomRange(EnemyConstant::MIN_IDLE_TIME, EnemyConstant::MAX_IDLE_TIME);
 }
 
-const MyHash EnemyWanderingState::STATE_NAME = MyHash("EnemyWanderingState");
-EnemyWanderingState::EnemyWanderingState()
+const MyHash EnemyWanderState::STATE_NAME = MyHash("EnemyWanderState");
+EnemyWanderState::EnemyWanderState()
     :State(STATE_NAME)
 {
     this->change_idle_state.change_state_name = EnemyIdleState::STATE_NAME;
@@ -103,7 +103,7 @@ EnemyWanderingState::EnemyWanderingState()
     this->change_deth_state.change_state_name = EnemyDeadState::STATE_NAME;
 }
 
-void EnemyWanderingState::Start()
+void EnemyWanderState::Start()
 {
     const auto& owner = GetOwner();
     if (!owner)return;
@@ -120,7 +120,7 @@ void EnemyWanderingState::Start()
     enemy->SetRandomTargetPosition();
 }
 
-void EnemyWanderingState::Update(float elapsed_time)
+void EnemyWanderState::Update(float elapsed_time)
 {
     const auto& owner = GetOwner();
     if (!owner)return;
@@ -163,7 +163,7 @@ void EnemyWanderingState::Update(float elapsed_time)
     }
 }
 
-void EnemyWanderingState::End()
+void EnemyWanderState::End()
 {
     const auto& owner = GetOwner();
     if (!owner)return;

@@ -94,7 +94,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 			// ステートの追加
 			state_machine->RegisterState<EnemySpawnState>();
 			state_machine->RegisterState<EnemyIdleState>();
-			state_machine->RegisterState<EnemyWanderingState>();
+			state_machine->RegisterState<EnemyWanderState>();
 			state_machine->RegisterState<EnemyChaseState>();
 			state_machine->RegisterState<EnemyAttackState>();
 			state_machine->RegisterState<EnemyDamageState>();

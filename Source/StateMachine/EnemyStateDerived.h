@@ -42,14 +42,14 @@ private:
 };
 
 // 徘徊ステート
-class EnemyWanderingState : public State
+class EnemyWanderState : public State
 {
 public:
 	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
-	EnemyWanderingState();
-	~EnemyWanderingState() {}
+	EnemyWanderState();
+	~EnemyWanderState() {}
 	// ステートに入った時のメソッド
 	void Start() override;
 	// ステートで実行するメソッド
