@@ -43,6 +43,7 @@ public:
         this->state_name_pool.emplace_back(state_key);
 #endif // _DEBUG
         this->state_pool[state_key] = std::make_unique<State>();
+        this->state_pool[state_key]->SetOwner(GetOwner());
     };
 private:
     State* current_state = nullptr;                                         // 現在のステート
