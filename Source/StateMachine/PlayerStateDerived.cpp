@@ -81,7 +81,7 @@ void PlayerIdleState::Update(float elapsed_time)
             // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
-                state_machine->ChangeState("SpinAttackState");
+                state_machine->ChangeState("SpinAttackStartState");
                 return;
             }
         }
@@ -156,7 +156,7 @@ void PlayerMoveState::Update(float elapsed_time)
             // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
-                state_machine->ChangeState("SpinAttackState");
+                state_machine->ChangeState("SpinAttackStartState");
                 return;
             }
         }
@@ -401,7 +401,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
             // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
-                state_machine->ChangeState("SpinAttackState");
+                state_machine->ChangeState("SpinAttackStartState");
                 return;
             }
         }
@@ -453,7 +453,7 @@ void PlayerSpinAttackStartState::Update(float elapsed_time)
     if (!animation->IsPlayMainPartsAnimation())
     {
         // ‰ñ“]
-        state_machine->ChangeState("SpinAttackState");
+        state_machine->ChangeState("SpinAttackSpinLoopState");
         return;
     }
 }
