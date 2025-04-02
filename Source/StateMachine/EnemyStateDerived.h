@@ -13,8 +13,6 @@ class CircleCollisionComponent;
 class EnemyIdleState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	EnemyIdleState();
 	~EnemyIdleState() {}
@@ -30,12 +28,6 @@ private:
 private:
 	float idle_timer = 0.0f;	// 待機時間
 private:
-	State::ChangeState change_wandering_state;
-	State::ChangeState change_chase_state;
-	State::ChangeState change_attack_state;
-	State::ChangeState change_damage_state;
-	State::ChangeState change_deth_state;
-private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
@@ -44,8 +36,6 @@ private:
 // 徘徊ステート
 class EnemyWanderState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	EnemyWanderState();
@@ -57,12 +47,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_chase_state;
-	State::ChangeState change_attack_state;
-	State::ChangeState change_damage_state;
-	State::ChangeState change_deth_state;
-private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<Transform3DComponent> transform_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
@@ -72,8 +56,6 @@ private:
 // 接近ステート
 class EnemyChaseState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	EnemyChaseState();
@@ -85,12 +67,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_chase_state;
-	State::ChangeState change_attack_state;
-	State::ChangeState change_damage_state;
-	State::ChangeState change_deth_state;
-private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
 	std::weak_ptr<CharacterComponent> character_Wptr;
@@ -99,8 +75,6 @@ private:
 // 攻撃ステート
 class EnemyAttackState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	EnemyAttackState();
@@ -112,11 +86,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_chase_state;
-	State::ChangeState change_damage_state;
-	State::ChangeState change_deth_state;
-private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
@@ -126,8 +95,6 @@ private:
 // ダメージステート
 class EnemyDamageState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	EnemyDamageState();
@@ -139,9 +106,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_deth_state;
-private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
 };
@@ -149,8 +113,6 @@ private:
 // 死亡ステート
 class EnemyDeadState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	EnemyDeadState();
@@ -164,8 +126,6 @@ public:
 private:
 	float remove_timer = {};
 private:
-	State::ChangeState change_deth_idle_state;
-private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;
 };
@@ -173,8 +133,6 @@ private:
 // 死亡待機ステート
 class EnemyDeadIdleState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	EnemyDeadIdleState();
@@ -195,8 +153,6 @@ private:
 class EnemySpawnState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	const float IDLE_TIME = 1.0f;
 public:
 	// コンストラクタ
@@ -210,8 +166,6 @@ public:
 	void End() override;
 private:
 	float idle_timer = 0.0f;	// 待機時間
-private:
-	State::ChangeState change_chase_state;
 private:
 	std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wprt;
 	std::weak_ptr<EnemyComponent> enemy_Wptr;

@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include "System/MyHash.h"
 
 class Object;
 class StateMachineComponent;
@@ -9,20 +8,8 @@ class StateMachineComponent;
 class State
 {
 public:
-	using StateIndex = size_t;
-	static const StateIndex INVALID_STATE_INDEX = SIZE_MAX;	// 無効なステートのインデックス(ステートのインデックスの初期値・エラーコードに使用する)
-
-	// ステートマシンでステートを切り替える際に使用する情報を保持する構造体。
-	// ステート名のハッシュ値（名前による検索用）と、ステートのインデックス（初回の検索後に使用）を保持する。
-	struct ChangeState
-	{
-		MyHash change_state_name;								// ステート名のハッシュ値。最初のステート検索時に使用される。
-		StateIndex change_state_index = INVALID_STATE_INDEX;	// ステートのインデックス。最初の検索後はこのインデックスでステートを参照する。(初期値は最大値)
-	};
-public:
 	// コンストラクタ
-	State() = delete;
-	State(MyHash name) : state_name(name) {}
+	State() = default;
 	virtual ~State() {}
 	// ステートに入った時のメソッド
 	virtual void Start() = 0;
@@ -31,13 +18,6 @@ public:
 	// ステートから出ていくときのメソッド
 	virtual void End() = 0;
 
-	// ハッシュの取得
-	MyHash GetHash() const { return this->state_name; }
-	// 自分を所有しているステートの配列の自身のインデックスの取得
-	StateIndex GetStateIndex() { return this->state_index; }
-	// 自分を所有しているステートの配列の自身のインデックスの設定
-	void SetStateIndex(StateIndex index) { this->state_index = index; }
-
 	// 所有者の設定
 	void SetOwner(const std::shared_ptr<Object>& owner) { this->owner = owner; }
 	// 所有者の取得
@@ -45,15 +25,13 @@ public:
 protected:
 	std::weak_ptr<Object> owner;								// 所有者のポインタ
 	std::weak_ptr<StateMachineComponent> state_machine_Wptr;	// 自分が所属しているステートマシンのポインタ
-	MyHash state_name;				// ハッシュ()
-	StateIndex state_index = INVALID_STATE_INDEX;				// 自分が所属しているステート配列のインデックス
 };
 
 class DefaultState : public State
 {
 public:
 	// コンストラクタ
-	DefaultState() :State(MyHash("DefaultState")) {};
+	DefaultState() {};
 	~DefaultState() {}
 	// ステートに入った時のメソッド
 	void Start() override{};
