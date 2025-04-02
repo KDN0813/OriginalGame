@@ -56,18 +56,18 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	auto state_machine = player->AddComponent<StateMachineComponent>();
 	{
 		// ステートの追加
-		state_machine->RegisterState<PlayerIdleState>();
-		state_machine->RegisterState<PlayerMoveState>();
-		state_machine->RegisterState<PlayerAttackState>();
-		state_machine->RegisterState<PlayerAttackComboState>();
-		state_machine->RegisterState<PlayerAttackHoldState>();
-		state_machine->RegisterState<PlayerSpinAttackStartState>();
-		state_machine->RegisterState<PlayerSpinAttackSpinLoopState>();
-		state_machine->RegisterState<PlayerDamageState>();
-		state_machine->RegisterState<PlayerDeadState>();
-		state_machine->RegisterState<PlayerDeadIdleState>();
+		state_machine->RegisterState<PlayerIdleState>("IdleState");
+		state_machine->RegisterState<PlayerMoveState>("MoveState");
+		state_machine->RegisterState<PlayerAttackState>("AttackState");
+		state_machine->RegisterState<PlayerAttackComboState>("AttackComboState");
+		state_machine->RegisterState<PlayerAttackHoldState>("AttackHoldState");
+		state_machine->RegisterState<PlayerSpinAttackStartState>("SpinAttackStartState");
+		state_machine->RegisterState<PlayerSpinAttackSpinLoopState>("SpinAttackSpinLoopState");
+		state_machine->RegisterState<PlayerDamageState>("DamageState");
+		state_machine->RegisterState<PlayerDeadState>("DeadState");
+		state_machine->RegisterState<PlayerDeadIdleState>("DeadIdleState");
 
-		state_machine->SetDefaultState(PlayerIdleState::STATE_NAME);	// デフォルトステートの設定
+		state_machine->SetDefaultState("IdleState");	// デフォルトステートの設定
 	}
 
 	// トランスフォーム設定

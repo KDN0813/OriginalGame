@@ -10,12 +10,12 @@ StateMachineComponent::StateMachineComponent()
 
 void StateMachineComponent::Start()
 {
-	ChangeState(default_state);
+	ChangeState(default_state_key);
 }
 
 void StateMachineComponent::ReStart()
 {
-	ChangeState(default_state);
+	ChangeState(default_state_key);
 }
 
 void StateMachineComponent::Update(float elapsed_time)
@@ -23,52 +23,31 @@ void StateMachineComponent::Update(float elapsed_time)
     this->current_state->Update(elapsed_time);
 }
 
-void StateMachineComponent::ChangeState(State::ChangeState& chage_state)
+void StateMachineComponent::ChangeState(std::string state_key)
 {
-	// 無効なインデックスの場合
-	if (chage_state.change_state_index == State::INVALID_STATE_INDEX)
-	{
-		// ステートのインデックスを名前検索する
-		size_t index = FindStateIndex(chage_state.change_state_name);
-		if (index == State::INVALID_STATE_INDEX) return;	// 無効な値ならreturn
-		chage_state.change_state_index = index;
-	}
-	if (this->state_pool.size() <= chage_state.change_state_index) return;	// 無効な値ならreturn
+	const auto& next_state = this->state_pool[state_key];
+	if (!next_state) return;
 
 	// 現在のステートの終了関数を実行
 	if (this->current_state) this->current_state->End();
 
 	// 新しいステートをセット
-	this->current_state = this->state_pool.at(chage_state.change_state_index).get();
+	this->current_state = next_state.get();
 
 	// 新しいステートの開始関数を呼び出す。
 	this->current_state->Start();
 }
 
-void StateMachineComponent::SetDefaultState(MyHash default_name)
+void StateMachineComponent::SetDefaultState(std::string default_state_key)
 {
-	this->default_state.change_state_name = default_name;
+	this->default_state_key = default_state_key;
 }
 
-State* StateMachineComponent::FindState(MyHash name)
+State* StateMachineComponent::FindState(std::string state_key)
 {
-	for (size_t i = 0; i < this->state_pool.size(); ++i)
-	{
-		State* state = this->state_pool[i].get();
-		if (state->GetHash().PerfectEqual(name))
-		{
-			return state;
-		}
-	}
-	return nullptr;
-}
-
-State::StateIndex StateMachineComponent::FindStateIndex(MyHash name)
-{
-	State* state = FindState(name);
-	_ASSERT_EXPR_W((state != nullptr), L"ステートが存在しません");
-	if (!state) return State::INVALID_STATE_INDEX;
-	return state->GetStateIndex();
+	const auto& next_state = this->state_pool[state_key];
+	if (!next_state) return nullptr;
+	return next_state.get();
 }
 
 #ifdef _DEBUG
@@ -81,7 +60,7 @@ void StateMachineComponent::DrawDebugGUI()
 	if (ImGui::ComboUI("State", current_state_name, this->state_name_pool, current_index_int))
 	{
 		current_state->End();
-		this->current_state = this->state_pool.at(static_cast<size_t>(current_index_int)).get();
+		this->current_state = this->state_pool[this->state_name_pool[(static_cast<size_t>(current_index_int))]].get();
 		current_state->Start();
 	}
 }

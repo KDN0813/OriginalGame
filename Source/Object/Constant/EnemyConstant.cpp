@@ -92,16 +92,16 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 		auto state_machine = enemy->AddComponent<StateMachineComponent>();
 		{
 			// ステートの追加
-			state_machine->RegisterState<EnemySpawnState>();
-			state_machine->RegisterState<EnemyIdleState>();
-			state_machine->RegisterState<EnemyWanderState>();
-			state_machine->RegisterState<EnemyChaseState>();
-			state_machine->RegisterState<EnemyAttackState>();
-			state_machine->RegisterState<EnemyDamageState>();
-			state_machine->RegisterState<EnemyDeadState>();
-			state_machine->RegisterState<EnemyDeadIdleState>();
+			state_machine->RegisterState<EnemySpawnState>("SpawnState");
+			state_machine->RegisterState<EnemyIdleState>("IdleState");
+			state_machine->RegisterState<EnemyWanderState>("WanderState");
+			state_machine->RegisterState<EnemyChaseState>("ChaseState");
+			state_machine->RegisterState<EnemyAttackState>("AttackState");
+			state_machine->RegisterState<EnemyDamageState>("DamageState");
+			state_machine->RegisterState<EnemyDeadState>("DeadState");
+			state_machine->RegisterState<EnemyDeadIdleState>("DeadIdleState");
 
-			state_machine->SetDefaultState(EnemySpawnState::STATE_NAME);	// デフォルトステートの設定
+			state_machine->SetDefaultState("SpawnState");	// デフォルトステートの設定
 		}
 	}
 	// FinalUpdateEnemyComponent

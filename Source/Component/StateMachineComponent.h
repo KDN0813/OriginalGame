@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <unordered_map>
 #include "Component.h"
 #include "StateMachine/StateBase.h"
 
@@ -28,31 +28,26 @@ public:
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::CRITICAL; };
 
     // ステート変更
-    void ChangeState(State::ChangeState& chage_state);
+    void ChangeState(std::string state_key);
     // デフォルトステートの設定
-    void SetDefaultState(MyHash default_name);
+    void SetDefaultState(std::string state_key);
 
     // ステートを名前検索する
-    State* FindState(MyHash name);
-    // ステートのインデックスを名前検索する
-    State::StateIndex FindStateIndex(MyHash name);
+    State* FindState(std::string state_key);
     
     // ステート登録
     template<is_State State>
-    void RegisterState()
+    void RegisterState(std::string state_key)
     {
-        std::unique_ptr<State> state = std::make_unique<State>();
-        state->SetOwner(GetOwner());
-        state->SetStateIndex(this->state_pool.size());
 #ifdef _DEBUG
-        this->state_name_pool.emplace_back(state->GetHash().GetString());
+        this->state_name_pool.emplace_back(state_key);
 #endif // _DEBUG
-        this->state_pool.emplace_back(std::move(state));
+        this->state_pool[state_key] = std::make_unique<State>();
     };
 private:
-    State* current_state = nullptr;                     // 現在のステート
-    std::vector<std::unique_ptr<State>> state_pool;     // 各ステートを保持する配列
-    State::ChangeState default_state;
+    State* current_state = nullptr;                                         // 現在のステート
+    std::unordered_map<std::string, std::unique_ptr<State>> state_pool;     // 各ステートを保持する配列
+    std::string default_state_key;
 
 #ifdef _DEBUG
 public:
