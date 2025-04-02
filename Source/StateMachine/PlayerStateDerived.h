@@ -87,14 +87,14 @@ private:
 	std::weak_ptr<CharacterComponent> character_Wptr;
 };
 
-class PlayerAttackLCombo2State : public State
+class PlayerAttackComboState : public State
 {
 public:
 	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
-	PlayerAttackLCombo2State();
-	~PlayerAttackLCombo2State() {}
+	PlayerAttackComboState();
+	~PlayerAttackComboState() {}
 	// ステートに入った時のメソッド
 	void Start() override;
 	// ステートで実行するメソッド

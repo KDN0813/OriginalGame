@@ -59,7 +59,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		state_machine->RegisterState<PlayerIdleState>();
 		state_machine->RegisterState<PlayerMoveState>();
 		state_machine->RegisterState<PlayerAttackState>();
-		state_machine->RegisterState<PlayerAttackLCombo2State>();
+		state_machine->RegisterState<PlayerAttackComboState>();
 		state_machine->RegisterState<PlayerAttackHoldState>();
 		state_machine->RegisterState<PlayerSpinAttackStartState>();
 		state_machine->RegisterState<PlayerSpinAttackSpinLoopState>();

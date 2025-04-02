@@ -182,7 +182,7 @@ PlayerAttackState::PlayerAttackState()
     : State(PlayerAttackState::STATE_NAME)
 {
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
-    this->change_attack_combo2_state.change_state_name = PlayerAttackLCombo2State::STATE_NAME;
+    this->change_attack_combo2_state.change_state_name = PlayerAttackComboState::STATE_NAME;
     this->change_attack_hold_state.change_state_name = PlayerAttackHoldState::STATE_NAME;
 }
 
@@ -283,16 +283,16 @@ void PlayerAttackState::End()
     character->SetInvincibleFlag(false);
 }
 
-const MyHash PlayerAttackLCombo2State::STATE_NAME = MyHash("PlayerAttackLCombo2State");
-PlayerAttackLCombo2State::PlayerAttackLCombo2State()
-    : State(PlayerAttackLCombo2State::STATE_NAME)
+const MyHash PlayerAttackComboState::STATE_NAME = MyHash("PlayerAttackLCombo2State");
+PlayerAttackComboState::PlayerAttackComboState()
+    : State(PlayerAttackComboState::STATE_NAME)
 {
     this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
     this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
     this->change_attack_hold_state.change_state_name = PlayerAttackHoldState::STATE_NAME;
 }
 
-void PlayerAttackLCombo2State::Start()
+void PlayerAttackComboState::Start()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -327,7 +327,7 @@ void PlayerAttackLCombo2State::Start()
     character->SetInvincibleFlag(true);
 }
 
-void PlayerAttackLCombo2State::Update(float elapsed_time)
+void PlayerAttackComboState::Update(float elapsed_time)
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
@@ -371,7 +371,7 @@ void PlayerAttackLCombo2State::Update(float elapsed_time)
     }
 }
 
-void PlayerAttackLCombo2State::End()
+void PlayerAttackComboState::End()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
