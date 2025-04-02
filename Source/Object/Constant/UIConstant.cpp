@@ -75,9 +75,9 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			{
 				auto state_machine = text_sprite->AddComponent<StateMachineComponent>();
 
-				state_machine->RegisterState<ScoreUIDefaultState>();
+				state_machine->RegisterState<ScoreUIDefaultState>("UIState");
 
-				state_machine->SetDefaultState(ScoreUIDefaultState::STATE_NAME);
+				state_machine->SetDefaultState("UIState");
 			}
 		}
 	}
@@ -142,9 +142,9 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 			{
 				auto state_machine = text_sprite->AddComponent<StateMachineComponent>();
 
-				state_machine->RegisterState<EndTimerUIDefaultState>();
+				state_machine->RegisterState<EndTimerUIDefaultState>("UIState");
 
-				state_machine->SetDefaultState(EndTimerUIDefaultState::STATE_NAME);
+				state_machine->SetDefaultState("UIState");
 			}
 		}
 	}
@@ -283,9 +283,9 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 					{
 						auto state_machine = bar_object->AddComponent<StateMachineComponent>();
 
-						state_machine->RegisterState<PlayerHPBarUIState>();
+						state_machine->RegisterState<PlayerHPBarUIState>("UIState");
 						
-						state_machine->SetDefaultState(PlayerHPBarUIState::STATE_NAME);
+						state_machine->SetDefaultState("UIState");
 					}
 				}
 			}
@@ -353,8 +353,8 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 					{
 						const auto& state_machine = bg_frame_object->AddComponent<StateMachineComponent>();
 					
-						state_machine->RegisterState<PlayerSpecialPointFrameUIState>();
-						state_machine->SetDefaultState(PlayerSpecialPointFrameUIState::STATE_NAME);
+						state_machine->RegisterState<PlayerSpecialPointFrameUIState>("UIState");
+						state_machine->SetDefaultState("UIState");
 					}
 
 					// 子オブジェクト
@@ -493,8 +493,8 @@ const std::shared_ptr<Object>& UIConstant::CreateDescriptionUI(const std::shared
 				{
 					const auto& state_machine = description_UI2->AddComponent<StateMachineComponent>();
 
-					state_machine->RegisterState<SpinAttackDescriptionUIState>();
-					state_machine->SetDefaultState(SpinAttackDescriptionUIState::STATE_NAME);
+					state_machine->RegisterState<SpinAttackDescriptionUIState>("UIState");
+					state_machine->SetDefaultState("UIState");
 				}
 			}
 		}

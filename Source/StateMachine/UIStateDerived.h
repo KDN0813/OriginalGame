@@ -10,8 +10,6 @@ class PlayerComponent;
 class ScoreUIDefaultState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	ScoreUIDefaultState();
 	~ScoreUIDefaultState() {}
@@ -28,8 +26,6 @@ private:
 // 終了タイマーの通常ステート
 class EndTimerUIDefaultState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	EndTimerUIDefaultState();
@@ -48,8 +44,6 @@ private:
 // プレイヤー体力
 class PlayerHPBarUIState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerHPBarUIState();
@@ -71,8 +65,6 @@ private:
 class PlayerSpecialPointUIState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	PlayerSpecialPointUIState();
 	~PlayerSpecialPointUIState() {}
@@ -93,8 +85,6 @@ private:
 class PlayerSpecialPointFrameUIState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	PlayerSpecialPointFrameUIState();
 	~PlayerSpecialPointFrameUIState() {}
@@ -112,8 +102,6 @@ private:
 // 回転攻撃説明UI
 class SpinAttackDescriptionUIState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	SpinAttackDescriptionUIState();

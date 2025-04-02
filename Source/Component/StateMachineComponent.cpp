@@ -54,15 +54,15 @@ State* StateMachineComponent::FindState(std::string state_key)
 
 void StateMachineComponent::DrawDebugGUI()
 {
-	State::StateIndex current_state_index = this->current_state->GetStateIndex();	// 現在のステートのインデックス
-	std::string current_state_name = this->state_name_pool[static_cast<size_t>(current_state_index)];	// 現在のステート名
-	int current_index_int = static_cast<int>(current_state_index);
-	if (ImGui::ComboUI("State", current_state_name, this->state_name_pool, current_index_int))
-	{
-		current_state->End();
-		this->current_state = this->state_pool[this->state_name_pool[(static_cast<size_t>(current_index_int))]].get();
-		current_state->Start();
-	}
+	//State::StateIndex current_state_index = this->current_state->GetStateIndex();	// 現在のステートのインデックス
+	//std::string current_state_name = this->state_name_pool[static_cast<size_t>(current_state_index)];	// 現在のステート名
+	//int current_index_int = static_cast<int>(current_state_index);
+	//if (ImGui::ComboUI("State", current_state_name, this->state_name_pool, current_index_int))
+	//{
+	//	current_state->End();
+	//	this->current_state = this->state_pool[this->state_name_pool[(static_cast<size_t>(current_index_int))]].get();
+	//	current_state->Start();
+	//}
 }
 
 #endif // DEBUG

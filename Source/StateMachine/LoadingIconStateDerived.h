@@ -6,8 +6,6 @@ class Transform2DComponent;
 class LoadingIconAnimationState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	LoadingIconAnimationState();
 	~LoadingIconAnimationState() {}

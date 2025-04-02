@@ -10,9 +10,7 @@
 #include "Component\CharacterComponent.h"
 #include "Component\PlayerComponent.h"
 
-const MyHash ScoreUIDefaultState::STATE_NAME = MyHash("ScoreUIDefaultState");
 ScoreUIDefaultState::ScoreUIDefaultState()
-    :State(ScoreUIDefaultState::STATE_NAME)
 {
 }
 
@@ -31,9 +29,7 @@ void ScoreUIDefaultState::Update(float elapsed_time)
     }
 }
 
-const MyHash EndTimerUIDefaultState::STATE_NAME = MyHash("EndTimerUIDefaultState");
 EndTimerUIDefaultState::EndTimerUIDefaultState()
-    : State(EndTimerUIDefaultState::STATE_NAME)
 {
 }
 
@@ -52,9 +48,7 @@ void EndTimerUIDefaultState::Update(float elapsed_time)
     }
 }
 
-const MyHash PlayerHPBarUIState::STATE_NAME = MyHash("PlayerHPBarUIState");
 PlayerHPBarUIState::PlayerHPBarUIState()
-    : State(PlayerHPBarUIState::STATE_NAME)
 {
 }
 
@@ -89,9 +83,7 @@ void PlayerHPBarUIState::Update(float elapsed_time)
     sprite->SetDisplaySizeX(player_health->GetHealthPercentage());
 }
 
-const MyHash PlayerSpecialPointUIState::STATE_NAME = MyHash("PlayerSpecialPointUIState");
 PlayerSpecialPointUIState::PlayerSpecialPointUIState()
-    :State(STATE_NAME)
 {
 }
 
@@ -121,9 +113,7 @@ float PlayerSpecialPointUIState::CalculateSpecialPointWidth()
     return 1.0f;
 }
 
-const MyHash PlayerSpecialPointFrameUIState::STATE_NAME = MyHash("PlayerSpecialPointFrameUIState");
 PlayerSpecialPointFrameUIState::PlayerSpecialPointFrameUIState()
-    :State(STATE_NAME)
 {
 }
 
@@ -150,9 +140,7 @@ void PlayerSpecialPointFrameUIState::Update(float elapsed_time)
     }
 }
 
-const MyHash SpinAttackDescriptionUIState::STATE_NAME = MyHash("SpinAttackDescriptionUIState");
 SpinAttackDescriptionUIState::SpinAttackDescriptionUIState()
-    :State(STATE_NAME)
 {
 }
 

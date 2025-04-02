@@ -132,9 +132,9 @@ void SceneResult::Initialize()
 					{
 						auto state_machine = score->AddComponent<StateMachineComponent>();
 
-						state_machine->RegisterState<ScoreUIDefaultState>();
+						state_machine->RegisterState<ScoreUIDefaultState>("UIState");
 
-						state_machine->SetDefaultState(ScoreUIDefaultState::STATE_NAME);
+						state_machine->SetDefaultState("UIState");
 					}
 				}
 			}

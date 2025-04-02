@@ -3,9 +3,7 @@
 
 #include "Component\Transform2DComponent.h"
 
-const MyHash LoadingIconAnimationState::STATE_NAME = MyHash("LoadingIconAnimationState");
 LoadingIconAnimationState::LoadingIconAnimationState()
-    :State(LoadingIconAnimationState::STATE_NAME)
 {
 }
 
