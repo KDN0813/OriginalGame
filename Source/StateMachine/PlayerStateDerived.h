@@ -11,8 +11,6 @@ class CharacterComponent;
 class PlayerIdleState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	PlayerIdleState();
 	~PlayerIdleState() {}
@@ -23,12 +21,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
-	State::ChangeState change_move_state;
-	State::ChangeState change_attack_state;
-	State::ChangeState change_damage_state;
-	State::ChangeState change_spin_attack_state;
-	State::ChangeState change_dead_state;
-private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
@@ -37,8 +29,6 @@ private:
 
 class PlayerMoveState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerMoveState();
@@ -50,12 +40,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_damage_state;
-	State::ChangeState change_attack_state;
-	State::ChangeState change_spin_attack_state;
-	State::ChangeState change_dead_state;
-private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<MovementComponent> movement_Wpt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
@@ -64,8 +48,6 @@ private:
 
 class PlayerAttackState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerAttackState();
@@ -77,10 +59,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
-	State::ChangeState change_dead_state;
-	State::ChangeState change_attack_combo2_state;
-	State::ChangeState change_attack_hold_state;
-private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
@@ -89,8 +67,6 @@ private:
 
 class PlayerAttackComboState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerAttackComboState();
@@ -102,10 +78,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
-	State::ChangeState change_dead_state;
-	State::ChangeState change_attack_state;
-	State::ChangeState change_attack_hold_state;
-private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
@@ -115,8 +87,6 @@ private:
 // 回転攻撃開始ステート
 class PlayerSpinAttackStartState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerSpinAttackStartState();
@@ -128,8 +98,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
-	State::ChangeState change_spin_attack_state;
-private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
@@ -140,8 +108,6 @@ private:
 class PlayerSpinAttackSpinLoopState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	PlayerSpinAttackSpinLoopState();
 	~PlayerSpinAttackSpinLoopState() {}
@@ -151,9 +117,6 @@ public:
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override;
-private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_dead_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
@@ -166,8 +129,6 @@ private:
 class PlayerSpinAttackState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	PlayerSpinAttackState();
 	~PlayerSpinAttackState() {}
@@ -177,9 +138,6 @@ public:
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override;
-private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_dead_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
@@ -191,8 +149,6 @@ private:
 class PlayerAttackHoldState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	PlayerAttackHoldState();
 	~PlayerAttackHoldState() {}
@@ -202,11 +158,6 @@ public:
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override {};
-private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_move_state;
-	State::ChangeState change_dead_state;
-	State::ChangeState change_spin_attack_state;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
@@ -220,8 +171,6 @@ private:
 class PlayerDamageState : public State
 {
 public:
-	static const MyHash STATE_NAME;
-public:
 	// コンストラクタ
 	PlayerDamageState();
 	~PlayerDamageState() {}
@@ -232,12 +181,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override;
 private:
-	State::ChangeState change_idle_state;
-	State::ChangeState change_move_state;
-	State::ChangeState change_attack_state;
-	State::ChangeState change_spin_attack_state;
-	State::ChangeState change_dead_state;
-private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
@@ -246,8 +189,6 @@ private:
 // 死亡ステート
 class PlayerDeadState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerDeadState();
@@ -259,8 +200,6 @@ public:
 	// ステートから出ていくときのメソッド
 	void End() override {};
 private:
-	State::ChangeState change_dead_idle_state;
-private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 };
@@ -268,8 +207,6 @@ private:
 // 死亡待機ステート
 class PlayerDeadIdleState : public State
 {
-public:
-	static const MyHash STATE_NAME;
 public:
 	// コンストラクタ
 	PlayerDeadIdleState();

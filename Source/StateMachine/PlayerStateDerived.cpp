@@ -14,15 +14,8 @@
 #include "Component/CircleCollisionComponent.h"
 #include "Component/CharacterComponent.h"
 
-const MyHash PlayerIdleState::STATE_NAME = MyHash("PlayerIdleState");
 PlayerIdleState::PlayerIdleState()
-    : State(PlayerIdleState::STATE_NAME)
 {
-    this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
-    this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
-    this->change_damage_state.change_state_name = PlayerDamageState::STATE_NAME;
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
-    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerIdleState::Start()
@@ -47,7 +40,7 @@ void PlayerIdleState::Update(float elapsed_time)
     if (!movement) return;
     if (movement->IsMoveXZAxis())
     {
-        state_machine->ChangeState(this->change_move_state);
+        state_machine->ChangeState("MoveState");
         return;
     }
 
@@ -57,7 +50,7 @@ void PlayerIdleState::Update(float elapsed_time)
         if (!character->IsAlive())
         {
             // 被ダメステートに遷移
-            state_machine->ChangeState(this->change_dead_state);
+            state_machine->ChangeState("DeadState");
             return;
         }
 
@@ -80,7 +73,7 @@ void PlayerIdleState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
             // 攻撃ステートへ遷移
-            state_machine->ChangeState(this->change_attack_state);
+            state_machine->ChangeState("AttackState");
         }
         // Yボタン
         if (pad.GetButtonDown() & GamePad::BTN_Y)
@@ -88,22 +81,15 @@ void PlayerIdleState::Update(float elapsed_time)
             // 回転攻撃ステートに遷移
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
-                state_machine->ChangeState(this->change_spin_attack_state);
+                state_machine->ChangeState("SpinAttackState");
                 return;
             }
         }
     }
 }
 
-const MyHash PlayerMoveState::STATE_NAME = MyHash("PlayerMoveState");
 PlayerMoveState::PlayerMoveState()
-    : State(PlayerMoveState::STATE_NAME)
 {
-    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
-    this->change_damage_state.change_state_name = PlayerDamageState::STATE_NAME;
-    this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
-    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerMoveState::Start()
@@ -128,7 +114,7 @@ void PlayerMoveState::Update(float elapsed_time)
     if (!movement) return;
     if (!movement->IsMoveXZAxis())
     {
-        state_machine->ChangeState(this->change_idle_state);
+        state_machine->ChangeState("IdleState");
         return;
     }
 
@@ -138,7 +124,7 @@ void PlayerMoveState::Update(float elapsed_time)
         if (!character->IsAlive())
         {
             // 被ダメステートに遷移
-            state_machine->ChangeState(this->change_dead_state);
+            state_machine->ChangeState("DeadState");
             return;
         }
 
@@ -161,7 +147,7 @@ void PlayerMoveState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
             // 攻撃ステートへ遷移
-            state_machine->ChangeState(this->change_attack_state);
+            state_machine->ChangeState("AttackState");
             return;
         }
         // Yボタン
@@ -170,20 +156,15 @@ void PlayerMoveState::Update(float elapsed_time)
             // 回転攻撃ステートに遷移
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
-                state_machine->ChangeState(this->change_spin_attack_state);
+                state_machine->ChangeState("SpinAttackState");
                 return;
             }
         }
     }
 }
 
-const MyHash PlayerAttackState::STATE_NAME = MyHash("PlayerAttackState");
 PlayerAttackState::PlayerAttackState()
-    : State(PlayerAttackState::STATE_NAME)
 {
-    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
-    this->change_attack_combo2_state.change_state_name = PlayerAttackComboState::STATE_NAME;
-    this->change_attack_hold_state.change_state_name = PlayerAttackHoldState::STATE_NAME;
 }
 
 void PlayerAttackState::Start()
@@ -238,7 +219,7 @@ void PlayerAttackState::Update(float elapsed_time)
         if (!character->IsAlive())
         {
             // 被ダメステートに遷移
-            state_machine->ChangeState(this->change_dead_state);
+            state_machine->ChangeState("DeadState");
             return;
         }
     }
@@ -251,7 +232,7 @@ void PlayerAttackState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
             // 攻撃ステートへ遷移
-            state_machine->ChangeState(this->change_attack_combo2_state);
+            state_machine->ChangeState("AttackComboState");
             return;
         }
     }
@@ -260,7 +241,7 @@ void PlayerAttackState::Update(float elapsed_time)
     if (player->attack_end_point <= animation->GetMainPartsCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
-        state_machine->ChangeState(this->change_attack_hold_state);
+        state_machine->ChangeState("AttackHoldState");
         return;
     }
 }
@@ -283,13 +264,8 @@ void PlayerAttackState::End()
     character->SetInvincibleFlag(false);
 }
 
-const MyHash PlayerAttackComboState::STATE_NAME = MyHash("PlayerAttackLCombo2State");
 PlayerAttackComboState::PlayerAttackComboState()
-    : State(PlayerAttackComboState::STATE_NAME)
 {
-    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
-    this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
-    this->change_attack_hold_state.change_state_name = PlayerAttackHoldState::STATE_NAME;
 }
 
 void PlayerAttackComboState::Start()
@@ -344,7 +320,7 @@ void PlayerAttackComboState::Update(float elapsed_time)
         if (!character->IsAlive())
         {
             // 被ダメステートに遷移
-            state_machine->ChangeState(this->change_dead_state);
+            state_machine->ChangeState("DeadState");
             return;
         }
     }
@@ -357,7 +333,7 @@ void PlayerAttackComboState::Update(float elapsed_time)
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
             // 攻撃ステートへ遷移
-            state_machine->ChangeState(this->change_attack_state);
+            state_machine->ChangeState("AttackState");
             return;
         }
     }
@@ -366,7 +342,7 @@ void PlayerAttackComboState::Update(float elapsed_time)
     if (player->attack_combo2_end_point <= animation->GetMainPartsCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
-        state_machine->ChangeState(this->change_attack_hold_state);
+        state_machine->ChangeState("AttackHoldState");
         return;
     }
 }
@@ -389,14 +365,8 @@ void PlayerAttackComboState::End()
     character->SetInvincibleFlag(false);
 }
 
-const MyHash PlayerAttackHoldState::STATE_NAME = MyHash("PlayerAttackHoldState");
 PlayerAttackHoldState::PlayerAttackHoldState()
-    :State(STATE_NAME)
 {
-    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
-    this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
-    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
 }
 
 void PlayerAttackHoldState::Update(float elapsed_time)
@@ -416,7 +386,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
         if (!character->IsAlive())
         {
             // 被ダメステートに遷移
-            state_machine->ChangeState(this->change_dead_state);
+            state_machine->ChangeState("DeadState");
             return;
         }
     }
@@ -431,7 +401,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
             // 回転攻撃ステートに遷移
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
-                state_machine->ChangeState(this->change_spin_attack_state);
+                state_machine->ChangeState("SpinAttackState");
                 return;
             }
         }
@@ -442,7 +412,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
     if (!movement) return;
     if (movement->IsMoveXZAxis())
     {
-        state_machine->ChangeState(this->change_move_state);
+        state_machine->ChangeState("MoveState");
         return;
     }
 
@@ -450,16 +420,13 @@ void PlayerAttackHoldState::Update(float elapsed_time)
     if (!animation->IsPlayMainPartsAnimation())
     {
         // 待機ステートに遷移
-        state_machine->ChangeState(this->change_idle_state);
+        state_machine->ChangeState("IdleState");
         return;
     }
 }
 
-const MyHash PlayerSpinAttackStartState::STATE_NAME = MyHash("PlayerSpinAttackStartState");
 PlayerSpinAttackStartState::PlayerSpinAttackStartState()
-    :State(STATE_NAME)
 {
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
 }
 
 void PlayerSpinAttackStartState::Start()
@@ -486,18 +453,13 @@ void PlayerSpinAttackStartState::Update(float elapsed_time)
     if (!animation->IsPlayMainPartsAnimation())
     {
         // 回転
-        state_machine->ChangeState(this->change_spin_attack_state);
+        state_machine->ChangeState("SpinAttackState");
         return;
     }
 }
 
-
-const MyHash PlayerSpinAttackSpinLoopState::STATE_NAME = MyHash("PlayerSpinAttackSpinLoopState");
 PlayerSpinAttackSpinLoopState::PlayerSpinAttackSpinLoopState()
-    :State(STATE_NAME)
 {
-    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
-    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerSpinAttackSpinLoopState::Start()
@@ -575,7 +537,7 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
         if (!character->IsAlive())
         {
             // 被ダメステートに遷移
-            state_machine->ChangeState(this->change_dead_state);
+            state_machine->ChangeState("DeadState");
             return;
         }
     }
@@ -593,7 +555,7 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
     if (attack_time <= 0.0f)
     {
         // 攻撃時間が0になったら待機ステートに遷移
-        state_machine->ChangeState(this->change_idle_state);
+        state_machine->ChangeState("IdleState");
     }
     player->SetSpinAttackTimer(attack_time);
 }
@@ -634,12 +596,8 @@ void PlayerSpinAttackSpinLoopState::End()
     character->SetInvincibleFlag(false);
 }
 
-const MyHash PlayerSpinAttackState::STATE_NAME = MyHash("PlayerSpinAttackState");
 PlayerSpinAttackState::PlayerSpinAttackState()
-    :State(PlayerSpinAttackState::STATE_NAME)
 {
-    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
-    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerSpinAttackState::Start()
@@ -707,7 +665,7 @@ void PlayerSpinAttackState::Update(float elapsed_time)
         if (!character->IsAlive())
         {
             // 被ダメステートに遷移
-            state_machine->ChangeState(this->change_dead_state);
+            state_machine->ChangeState("DeadState");
             return;
         }
     }
@@ -716,7 +674,7 @@ void PlayerSpinAttackState::Update(float elapsed_time)
     if (!animation->IsPlayMainPartsAnimation())
     {
         // 待機ステートに遷移
-        state_machine->ChangeState(this->change_idle_state);
+        state_machine->ChangeState("IdleState");
         return;
     }
 }
@@ -747,15 +705,8 @@ void PlayerSpinAttackState::End()
     character->SetInvincibleFlag(false);
 }
 
-const MyHash PlayerDamageState::STATE_NAME = MyHash("PlayerDamagekState");
 PlayerDamageState::PlayerDamageState()
-    :State(STATE_NAME)
 {
-    this->change_idle_state.change_state_name = PlayerIdleState::STATE_NAME;
-    this->change_move_state.change_state_name = PlayerMoveState::STATE_NAME;
-    this->change_attack_state.change_state_name = PlayerAttackState::STATE_NAME;
-    this->change_spin_attack_state.change_state_name = PlayerSpinAttackSpinLoopState::STATE_NAME;
-    this->change_dead_state.change_state_name = PlayerDeadState::STATE_NAME;
 }
 
 void PlayerDamageState::Start()
@@ -786,7 +737,7 @@ void PlayerDamageState::Update(float elapsed_time)
         if (!character->IsAlive())
         {
             // 被ダメステートに遷移
-            state_machine->ChangeState(this->change_dead_state);
+            state_machine->ChangeState("DeadState");
             return;
         }
     }
@@ -795,7 +746,7 @@ void PlayerDamageState::Update(float elapsed_time)
     if (!animation->IsPlayMainPartsAnimation())
     {
         // 待機ステートに遷移
-        state_machine->ChangeState(this->change_idle_state);
+        state_machine->ChangeState("IdleState");
         return;
     }
 }
@@ -809,12 +760,8 @@ void PlayerDamageState::End()
     player->SetInputMoveValidityFlag(true);
 }
 
-
-const MyHash PlayerDeadState::STATE_NAME = MyHash("PlayerDeadState");
 PlayerDeadState::PlayerDeadState()
-    :State(STATE_NAME)
 {
-    this->change_dead_idle_state.change_state_name = PlayerDeadIdleState::STATE_NAME;
 }
 
 void PlayerDeadState::Start()
@@ -848,15 +795,13 @@ void PlayerDeadState::Update(float elapsed_time)
     if (!animation->IsPlayMainPartsAnimation())
     {
         // 死亡待機ステートに遷移
-        state_machine->ChangeState(this->change_dead_idle_state);
+        state_machine->ChangeState("DeadIdleState");
         return;
     }
 }
 
 // 死亡ステート
-const MyHash PlayerDeadIdleState::STATE_NAME = MyHash("PlayerDeadIdleState");
 PlayerDeadIdleState::PlayerDeadIdleState()
-    :State(STATE_NAME)
 {
 }
 
