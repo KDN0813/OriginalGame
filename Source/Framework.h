@@ -14,6 +14,7 @@
 #include "Audio/Audio.h"
 #include "Audio/AudioResourceManager.h"
 #include "Shader\SpriteShader.h"
+#include "Effekseer\EffectManager.h"
 
 class Framework
 {
@@ -50,6 +51,7 @@ private:
 	GameData						game_data;
 	Audio							audio;
 	SpriteShader					sprite_shader;
+	EffectManager					effect_manager;
 
 	BOOL fullscreen_mode{ FALSE };
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)
