@@ -166,7 +166,7 @@ public:
 	// ステートで実行するメソッド
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
-	void End() override {};
+	void End() override;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;

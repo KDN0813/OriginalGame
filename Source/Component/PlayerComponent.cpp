@@ -215,6 +215,7 @@ void PlayerComponent::DrawDebugGUI()
     ImGui::InputFloat("Debug Move Speed", &this->debug_move_speed);
     ImGui::InputFloat("Move Rate", &this->param.move_rate);
     ImGui::InputFloat("Spin Attack Move Rate", &this->param.spin_attack_move_rate);
+    ImGui::InputFloat("Attack Move Rate", &this->param.attack_move_rate);
 
     ImGui::InputFloat("attack_end_point", &this->attack_end_point);
     ImGui::InputFloat("attack_combo2_end_point", &this->attack_combo2_end_point);

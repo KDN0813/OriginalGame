@@ -21,6 +21,7 @@ public:
         bool input_move_validity_flag = true;   // “ü—Í‚É‚æ‚éˆÚ“®‚ª—LŒø‚Å‚ ‚é‚©‚Ìƒtƒ‰ƒO
     
         float move_rate = 1.0f; // ‘¬“x”{—¦
+        float attack_move_rate = 0.5f;          // UŒ‚’†‚ÌˆÚ“®‘¬“x‚Ì”{—¦
         float spin_attack_move_rate = 2.0f;
 
         int spin_attack_use_gage_count = 1;     // ‰ñ“]UŒ‚‚É•K—v‚ÈƒQ[ƒW”
@@ -54,6 +55,7 @@ public:
     void OnCollision(const std::shared_ptr<Object>& hit_object)override;
 
     const float GetMoveRate()const { return this->param.move_rate; }
+    const float GetAttackMoveRate()const { return this->param.attack_move_rate; }
     const float GetSpinAttackMoveRate()const { return this->param.spin_attack_move_rate; }
     void SetMoveRate(const float move_rate) { this->param.move_rate = move_rate; }
 

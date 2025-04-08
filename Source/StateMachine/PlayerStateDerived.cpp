@@ -215,6 +215,11 @@ void PlayerAttackState::Start()
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(true);
+
+    const auto& player = owner->GetComponent(this->player_Wprt);
+    if (!player) return;
+    // ˆÚ“®‘¬“x‚Ì”{—¦•ÏX
+    player->SetMoveRate(player->GetAttackMoveRate());
 }
 
 void PlayerAttackState::Update(float elapsed_time)
@@ -329,6 +334,11 @@ void PlayerAttackComboState::Start()
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(true);
+
+    const auto& player = owner->GetComponent(this->player_Wprt);
+    if (!player) return;
+    // ˆÚ“®‘¬“x‚Ì”{—¦•ÏX
+    player->SetMoveRate(player->GetAttackMoveRate());
 }
 
 void PlayerAttackComboState::Update(float elapsed_time)
@@ -451,6 +461,16 @@ void PlayerAttackHoldState::Update(float elapsed_time)
         state_machine->ChangeState("IdleState");
         return;
     }
+}
+
+void PlayerAttackHoldState::End()
+{
+    const auto& owner = this->GetOwner();
+    if (!owner) return;
+    const auto& player = owner->GetComponent(this->player_Wprt);
+    if (!player) return;
+    // ˆÚ“®‘¬“x‚Ì”{—¦‚ðŒ³‚É–ß‚·
+    player->SetMoveRate(1.0f);
 }
 
 PlayerSpinAttackStartState::PlayerSpinAttackStartState()
