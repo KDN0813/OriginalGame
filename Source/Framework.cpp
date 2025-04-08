@@ -117,8 +117,9 @@ void Framework::Render(float elapsed_time)
 	}
 #endif // _DEBUG
 
-	UINT flags = (graphics.GetTearingSupported() && !this->fullscreen_mode && !this->sync_interval) ? DXGI_PRESENT_ALLOW_TEARING : 0;
-	graphics.GetSwapChain()->Present(this->sync_interval, flags);
+	const UINT sync_interval = static_cast<UINT>(game_timer.GetSyncInterval());
+	UINT flags = (graphics.GetTearingSupported() && !this->fullscreen_mode && !sync_interval) ? DXGI_PRESENT_ALLOW_TEARING : 0;
+	graphics.GetSwapChain()->Present(sync_interval, flags);
 }
 
 bool IsWindowActive(HWND hwnd)
@@ -259,7 +260,7 @@ void Framework::DrawDebugGUI()
 
 	// FPS
 	{
-		game_timer.DebugDrawGUI(this->sync_interval);
+		game_timer.DebugDrawGUI();
 	}
 }
 

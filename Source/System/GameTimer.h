@@ -111,6 +111,7 @@ public:
 	void SetGameSpeed(const float speed) { this->game_speed = speed; }
 	float GetGameSpeed() const { return this->game_speed; }
 
+	int GetSyncInterval() const { return this->sync_interval; }
 private:
 	double seconds_per_count;	// 1カウントあたりの秒数
 	double delta_time;			// 前フレームからの経過時間（秒）
@@ -125,12 +126,18 @@ private:
 
 	bool stopped;				// タイマーが停止中かどうかのフラグ
 
+	// 垂直同期間隔設定
+#if defined(_DEBUG) || defined(RELEASE_DEBUG)
+	int sync_interval = 0;
+#else
+	const int sync_interval = 1;
+#endif // _DEBUG || RELEASE_DEBUG
 #ifdef _DEBUG
 public:
 	// フレームレート計算
 	void CalculateFrameStats();
 
-	void DebugDrawGUI(int& sync_interval);
+	void DebugDrawGUI();
 
 private:
 	// フレームレート計算用変数

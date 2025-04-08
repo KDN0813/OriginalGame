@@ -22,13 +22,13 @@ void GameTimer::CalculateFrameStats()
 		OutputDebugStringA(str.c_str());
 	}
 }
-void GameTimer::DebugDrawGUI(int& sync_interval)
+void GameTimer::DebugDrawGUI()
 {
 	if (ImGui::Begin("GameTimer"))
 	{
-		ImGui::InputFloat("FPS", &fps);
-		ImGui::InputFloat("mspf", &mspf);
-		ImGui::SliderInt("SyncInterval", &sync_interval, 0, 1);
+		ImGui::InputFloat("FPS", &this->fps);
+		ImGui::InputFloat("mspf", &this->mspf);
+		ImGui::SliderInt("SyncInterval", &this->sync_interval, 0, 1);
 		ImGui::InputFloat("GameSpeed", &this->game_speed);
 	}
 	ImGui::End();
