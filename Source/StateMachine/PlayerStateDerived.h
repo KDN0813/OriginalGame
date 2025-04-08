@@ -7,6 +7,7 @@ class MovementComponent;
 class PlayerComponent;
 class CircleCollisionComponent;
 class CharacterComponent;
+class Transform3DComponent;
 
 class PlayerIdleState : public State
 {
@@ -63,6 +64,7 @@ private:
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
+	std::weak_ptr<Transform3DComponent> transform_Wptr;
 };
 
 class PlayerAttackComboState : public State

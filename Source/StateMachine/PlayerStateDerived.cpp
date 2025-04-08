@@ -14,6 +14,7 @@
 #include "Component/PlayerComponent.h"
 #include "Component/CircleCollisionComponent.h"
 #include "Component/CharacterComponent.h"
+#include "Component/TransformComponent.h"
 
 PlayerIdleState::PlayerIdleState()
 {
@@ -189,8 +190,10 @@ void PlayerAttackState::Start()
     }
 
     // 攻撃エフェクト再生
+    if(const auto& transform = owner->GetComponent(this->transform_Wptr))
     {
-        EffekseerSystem::GetInstance()->PlayEffect();
+        DirectX::XMFLOAT3 pos = transform->GetWorldPosition();
+        EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/Hit.efk", pos);
     }
 
     // 攻撃判定オブジェクトを有効にする
