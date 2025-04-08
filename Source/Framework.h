@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-#include "System/HighResolutionTimer.h"
+#include "System/GameTimer.h"
 #include "Graphics/Graphics.h"
 #include "Scene/SceneManager.h"
 #include "Input/Input.h"
@@ -30,8 +30,6 @@ private:
 	void Update(float elapsed_time);
 	void Render(float elapsed_time);
 
-	void CalculateFrameStats();
-
 	// ウィンドウ終了指示がきているか
 	bool IsWindowClose();
 	// ポーズキーが押されているか
@@ -40,7 +38,6 @@ private:
 	const HWND						hWnd;
 	HDC								hDC;
 
-	HighResolutionTimer				timer;
 	Graphics						graphics;
 	SceneManager					scene_manager;
 	Input							input;
@@ -60,11 +57,7 @@ private:
 	const int sync_interval = 1;	// 垂直同期間隔設定
 #endif // _DEBUG || RELEASE_DEBUG
 
-	// フレームレート計算用変数
-	int frames = 0;
-	float time_tlapsed = 0.0f;
-	float fps = 0.0f;
-	float mspf = 0.0f;
+	GameTimer				game_timer;
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI();

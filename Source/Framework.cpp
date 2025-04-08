@@ -87,7 +87,7 @@ void Framework::Update(float elapsed_time)
 #endif // _DEBUG
 
 	// フレームレート計算
-	CalculateFrameStats();
+	game_timer.CalculateFrameStats();
 
 	scene_manager.Update(elapsed_time);
 
@@ -126,27 +126,6 @@ bool IsWindowActive(HWND hwnd)
 	return (GetForegroundWindow() == hwnd);
 }
 
-// フレームレート計算
-void Framework::CalculateFrameStats()
-{
-	frames++;
-
-	if ((timer.TimeStamp() - time_tlapsed) >= 1.0f)
-	{
-		fps = static_cast<float>(frames); // fps = frameCnt / 1
-		mspf = 1000.0f / fps;
-		frames = 0;
-		time_tlapsed += 1.0f;
-		std::string str;
-		str = "Fps : ";
-		str += std::to_string(fps);
-		str += "mspf : ";
-		str += std::to_string(mspf);
-		str += "\n";
-		OutputDebugStringA(str.c_str());
-	}
-}
-
 bool Framework::IsWindowClose()
 {
 	GameData::Instance game_data = GameData::GetInstance();
@@ -172,7 +151,7 @@ int Framework::Run()
 		}
 		else
 		{
-			timer.Tick();
+			game_timer.Tick();
 			if (!IsWindowActive(hWnd)) continue;
 
 			if (IsPressedPauseKey())
@@ -187,7 +166,7 @@ int Framework::Run()
 				}
 			}
 
-			float elapsed_time = timer.TimeInterval();
+			float elapsed_time = game_timer.GetDeltaTime();
 			Update(elapsed_time);
 			Render(elapsed_time);
 		}
@@ -230,10 +209,10 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 	case WM_KEYDOWN:
 		break;
 	case WM_ENTERSIZEMOVE:
-		timer.Stop();
+		game_timer.Stop();
 		break;
 	case WM_EXITSIZEMOVE:
-		timer.Start();
+		game_timer.Start();
 		break;
 	case WM_MOUSEWHEEL:
 		if (Input::Instance input = Input::GetInstance(); input.Get())
@@ -280,15 +259,7 @@ void Framework::DrawDebugGUI()
 
 	// FPS
 	{
-#ifdef _DEBUG
-		if (ImGui::Begin("FPS"))
-		{
-			ImGui::InputFloat("FPS", &fps);
-			ImGui::InputFloat("mspf", &mspf);
-			ImGui::SliderInt("SyncInterval", &this->sync_interval, 0, 1);
-		}
-		ImGui::End();
-#endif // DEBUG
+		game_timer.DebugDrawGUI(this->sync_interval);
 	}
 }
 

@@ -222,7 +222,7 @@
     <ClInclude Include="Source\System\ClassBase\Singleton.h" />
     <ClInclude Include="Source\System\DataKey.h" />
     <ClInclude Include="Source\System\GameData.h" />
-    <ClInclude Include="Source\System\HighResolutionTimer.h" />
+    <ClInclude Include="Source\System\GameTimer.h" />
     <ClInclude Include="Source\System\Logger.h" />
     <ClInclude Include="Source\System\Misc.h" />
     <ClInclude Include="Source\System\MyHash.h" />
@@ -330,6 +330,7 @@
     <ClCompile Include="Source\StateMachine\PlayerStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\UIStateDerived.cpp" />
     <ClCompile Include="Source\System\GameData.cpp" />
+    <ClCompile Include="Source\System\GameTimer.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp" />
     <ClCompile Include="Source\Texture\Texture.cpp" />

@@ -228,7 +228,7 @@
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
       <Filter>External\DirectXTex</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\HighResolutionTimer.h">
+    <ClInclude Include="Source\System\GameTimer.h">
       <Filter>Source\System</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\Logger.h">
@@ -889,6 +889,9 @@
     </ClCompile>
     <ClCompile Include="Source\Effekseer\EffectManager.cpp">
       <Filter>Source\Effekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\GameTimer.cpp">
+      <Filter>Source\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
