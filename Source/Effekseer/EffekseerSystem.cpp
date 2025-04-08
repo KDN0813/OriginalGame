@@ -1,11 +1,11 @@
 #include "Graphics/Graphics.h"
-#include "MyEffekseerManager.h"
+#include "EffekseerSystem.h"
 #include "Camera\CameraManager.h"
 #include "System\GameTimer.h"
 
 #include "Component\CameraComponent.h"
 
-void MyEffekseerManager::Initialize()
+void EffekseerSystem::Initialize()
 {
     Graphics::Instance graphics = Graphics::GetInstance();
 
@@ -27,16 +27,16 @@ void MyEffekseerManager::Initialize()
     this->effekseer_manager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
 }
 
-void MyEffekseerManager::Finalize()
+void EffekseerSystem::Finalize()
 {
 }
 
-void MyEffekseerManager::Update(float elapsed_time)
+void EffekseerSystem::Update(float elapsed_time)
 {
     this->effekseer_manager->Update(1.0f);
 }
 
-void MyEffekseerManager::Render()
+void EffekseerSystem::Render()
 {
     DirectX::XMFLOAT4X4 view{};
     DirectX::XMFLOAT4X4 projection{};

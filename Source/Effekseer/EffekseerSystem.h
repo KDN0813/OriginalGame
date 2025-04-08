@@ -6,11 +6,11 @@
 
 #include "System\ClassBase\Singleton.h"
 
-class MyEffekseerManager : public Singleton<MyEffekseerManager>
+class EffekseerSystem : public Singleton<EffekseerSystem>
 {
 public:
-    MyEffekseerManager() :Singleton(this) {}
-    ~MyEffekseerManager(){}
+    EffekseerSystem() :Singleton(this) {}
+    ~EffekseerSystem(){}
 
     void Initialize();
 

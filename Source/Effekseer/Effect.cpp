@@ -1,12 +1,12 @@
 #include "Effect.h"
-#include "EffekseerManager.h"
+#include "EffekseerSystem.h"
 
 Effect::Effect(const char* filename)
 {
     char16_t utf16Filename[256];
     Effekseer::ConvertUtf8ToUtf16(utf16Filename, 256, filename);
 
-    Effekseer::ManagerRef effekseer_manager = EffekseerManager::GetInstance()->GetEffekseerManager();
+    Effekseer::ManagerRef effekseer_manager = EffekseerSystem::GetInstance()->GetEffekseerManager();
 
     this->effekseer_effect = Effekseer::Effect::Create(effekseer_manager, (EFK_CHAR*)utf16Filename);
 }
@@ -14,7 +14,7 @@ Effect::Effect(const char* filename)
 Effekseer::Handle Effect::Play(const DirectX::XMFLOAT3& position, float scale)
 {
     // EffekseerManager取得
-    Effekseer::ManagerRef effekseer_manager = EffekseerManager::GetInstance()->GetEffekseerManager();
+    Effekseer::ManagerRef effekseer_manager = EffekseerSystem::GetInstance()->GetEffekseerManager();
 
     // エフェクト再生
     Effekseer::Handle handle = effekseer_manager->Play(this->effekseer_effect, position.x, position.y,
@@ -31,7 +31,7 @@ Effekseer::Handle Effect::Play(const DirectX::XMFLOAT3& position, float scale)
 void Effect::Stop(Effekseer::Handle handle)
 {
     // EffekseerManager取得
-    Effekseer::ManagerRef effekseer_manager = EffekseerManager::GetInstance()->GetEffekseerManager();
+    Effekseer::ManagerRef effekseer_manager = EffekseerSystem::GetInstance()->GetEffekseerManager();
 
     // エフェクト停止
     effekseer_manager->StopEffect(handle);
@@ -41,7 +41,7 @@ void Effect::Stop(Effekseer::Handle handle)
 void Effect::SetPosition(Effekseer::Handle handle, const DirectX::XMFLOAT3& position)
 {
     // EffekseerManager取得
-    Effekseer::ManagerRef effekseer_manager = EffekseerManager::GetInstance()->GetEffekseerManager();
+    Effekseer::ManagerRef effekseer_manager = EffekseerSystem::GetInstance()->GetEffekseerManager();
 
     // 座標設定
     effekseer_manager->SetLocation(handle, position.x, position.y, position.z);
@@ -51,7 +51,7 @@ void Effect::SetPosition(Effekseer::Handle handle, const DirectX::XMFLOAT3& posi
 void Effect::SetScale(Effekseer::Handle handle, const DirectX::XMFLOAT3& scale)
 {
     // EffekseerManager取得
-    Effekseer::ManagerRef effekseer_manager = EffekseerManager::GetInstance()->GetEffekseerManager();
+    Effekseer::ManagerRef effekseer_manager = EffekseerSystem::GetInstance()->GetEffekseerManager();
 
     // スケール設定
     effekseer_manager->SetScale(handle, scale.x, scale.y, scale.z);
