@@ -297,7 +297,7 @@ void InstanceModelToonShader::InstancingAdd(
 	{
 		model->GetAnimationStartOffset(),
 		model->GetAnimeFrame(),
-		transform->GetWolrdTransform()
+		transform->GetWorldTransform()
 	};
 	++this->instance_count;
 }

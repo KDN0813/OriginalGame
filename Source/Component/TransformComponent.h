@@ -43,11 +43,11 @@ public:
     void UpdateWorldPosition();
     void UpdateWorldPosition(MYMATRIX Parent_transform);
 
-
 #pragma region set・get parame
     // ワールドパラメータの取得
-    const DirectX::XMFLOAT4X4& GetWolrdTransform();
+    const DirectX::XMFLOAT4X4& GetWorldTransform();
     DirectX::XMFLOAT3 GetWorldPosition();
+    DirectX::XMFLOAT3 GetWorldAngle();
 
     // ローカルパラメータの取得
     const DirectX::XMFLOAT4X4& GetLocalTransform();

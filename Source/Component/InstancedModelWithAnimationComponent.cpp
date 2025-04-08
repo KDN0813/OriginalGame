@@ -61,7 +61,7 @@ void InstancedModelWithAnimationComponent::Update(float elapsed_time)
     {
         if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
-            MYMATRIX World_transform = transform->GetWolrdTransform();
+            MYMATRIX World_transform = transform->GetWorldTransform();
 
             for (size_t i = 0; i < this->AABB_corners_vec.size(); ++i)
             {
@@ -147,7 +147,7 @@ std::vector<DirectX::BoundingBox> InstancedModelWithAnimationComponent::GetBound
     {
         if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
-            MYMATRIX World_transform = transform->GetWolrdTransform();
+            MYMATRIX World_transform = transform->GetWorldTransform();
 
             for (const auto& bounding_box : model_resource->GetDefaultBoundingBoxs())
             {

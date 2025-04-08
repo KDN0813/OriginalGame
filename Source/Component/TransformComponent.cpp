@@ -35,7 +35,7 @@ void Transform3DComponent::UpdateWorldParam()
 		{
 			if (auto parent_transform = parent->GetComponent(this->parent_ransform_Wptr))
 			{
-				Parent_transform = parent_transform->GetWolrdTransform();
+				Parent_transform = parent_transform->GetWorldTransform();
 			}
 		}
 	}
@@ -67,7 +67,7 @@ void Transform3DComponent::UpdateLocalParam()
 	this->local_dirty_flag = false;	// ƒtƒ‰ƒO‚ð‰ðœ
 }
 
-const DirectX::XMFLOAT4X4& Transform3DComponent::GetWolrdTransform()
+const DirectX::XMFLOAT4X4& Transform3DComponent::GetWorldTransform()
 {
 	if(this->world_dirty_flag) UpdateWorldParam();
 	return this->world_transform;
@@ -207,7 +207,7 @@ void Transform3DComponent::UpdateWorldPosition()
 		this->world_position = this->param.local_position;;
 		return;
 	}
-	Parent_transform = parent_ransform->GetWolrdTransform();
+	Parent_transform = parent_ransform->GetWorldTransform();
 	UpdateWorldPosition(Parent_transform);
 }
 

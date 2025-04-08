@@ -71,7 +71,7 @@ void ModelComponent::Update(float elapsed_time)
 	{
 		if (const auto& transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr))
 		{
-			World_transform = transform->GetWolrdTransform();
+			World_transform = transform->GetWorldTransform();
 		}
 	}
 

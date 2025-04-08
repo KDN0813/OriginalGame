@@ -189,13 +189,6 @@ void PlayerAttackState::Start()
         audio->Play(param);
     }
 
-    // 攻撃エフェクト再生
-    if(const auto& transform = owner->GetComponent(this->transform_Wptr))
-    {
-        DirectX::XMFLOAT3 pos = transform->GetWorldPosition();
-        EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/Hit.efk", pos);
-    }
-
     // 攻撃判定オブジェクトを有効にする
     const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
     if (!attack_object) return;
@@ -204,6 +197,19 @@ void PlayerAttackState::Start()
         collision->SetIsActive(true);  // コリジョンを有効にする
 
     collision->EvaluateCollision();
+
+    // 攻撃エフェクト再生
+    if (const auto& transform = owner->GetComponent(this->transform_Wptr))
+    {
+        if (const auto& attack_object_transform = attack_object->GetComponent(attack_object_transform_Wptr))
+        {
+            const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
+            const float effect_scale = 3.0f;
+            DirectX::XMFLOAT3 rotation{};
+            rotation.y = transform->GetLocalAngle().y;
+            EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/Attack1.efk", pos, effect_scale, rotation);
+        }
+    }
 
     // 無敵状態に設定
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
@@ -305,6 +311,19 @@ void PlayerAttackComboState::Start()
         collision->SetIsActive(true);  // コリジョンを有効にする
 
     collision->EvaluateCollision();
+
+    // 攻撃エフェクト再生
+    if (const auto& transform = owner->GetComponent(this->transform_Wptr))
+    {
+        if (const auto& attack_object_transform = attack_object->GetComponent(attack_object_transform_Wptr))
+        {
+            const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
+            const float effect_scale = 3.0f;
+            DirectX::XMFLOAT3 rotation{};
+            rotation.y = transform->GetLocalAngle().y;
+            EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/Attack2.efk", pos, effect_scale, rotation);
+        }
+    }
 
     // 無敵状態に設定
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);

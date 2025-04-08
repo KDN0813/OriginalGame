@@ -299,7 +299,7 @@ void InstancingModelShader::InstancingAdd(
 	{
 		model->GetAnimationStartOffset(),
 		model->GetAnimeFrame(),
-		transform->GetWolrdTransform(),
+		transform->GetWorldTransform(),
 		model->GetBaseColor(),
 	};
 	++this->instance_count;
