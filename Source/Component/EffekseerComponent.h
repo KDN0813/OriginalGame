@@ -8,8 +8,10 @@ class EffekseerComponent : public Component
 public:
     struct EffectParam
     {
-        std::string filename;   // ファイル名
-        std::string key;        // エフェクトを管理する時のキー
+        std::string filename;               // ファイル名
+        std::string key;                    // エフェクトを管理する時のキー
+        bool follow_position = true;         // エフェクトをオブジェクトの位置に追従させるかどうか
+        bool align_rotation = false;         // エフェクトをオブジェクトの向きに回転させるかどうか
     };
 public:
     EffekseerComponent() {};

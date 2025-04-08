@@ -42,6 +42,7 @@ public:
     // ワールドポジションの更新
     void UpdateWorldPosition();
     void UpdateWorldPosition(MYMATRIX Parent_transform);
+    void UpdateWorldAngle(MYMATRIX Parent_transform);
 
 #pragma region set・get parame
     // ワールドパラメータの取得
@@ -79,10 +80,11 @@ private:
     DirectX::XMFLOAT4X4 local_transform{};
     DirectX::XMFLOAT4X4 world_transform{};
     DirectX::XMFLOAT3 world_position{};
+    DirectX::XMFLOAT3 world_angle{};
     bool world_dirty_flag = true;  // ワールドパラメータの更新が必要かを示すフラグ
     bool local_dirty_flag = true;  // ローカルパラメータの更新が必要かを示すフラグ
 private:
-    std::weak_ptr<Transform3DComponent> parent_ransform_Wptr;
+    std::weak_ptr<Transform3DComponent> parent_transform_Wptr;
 
 #ifdef _DEBUG
     /**

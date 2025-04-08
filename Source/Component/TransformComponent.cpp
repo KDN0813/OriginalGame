@@ -1,5 +1,8 @@
 #include "TransformComponent.h"
+#ifdef _DEBUG
 #include <imgui.h>
+#endif // _DEBUG
+#include <cmath>
 #include "Object/Object.h"
 
 #include "Debug/DebugManager.h"
@@ -33,7 +36,7 @@ void Transform3DComponent::UpdateWorldParam()
 	{
 		if (const auto& parent = owner->GetParent())
 		{
-			if (auto parent_transform = parent->GetComponent(this->parent_ransform_Wptr))
+			if (auto parent_transform = parent->GetComponent(this->parent_transform_Wptr))
 			{
 				Parent_transform = parent_transform->GetWorldTransform();
 			}
@@ -52,6 +55,7 @@ void Transform3DComponent::UpdateWorldParam()
 	{
 		// ワールドポジションの設定
 		UpdateWorldPosition(Parent_transform);
+		UpdateWorldAngle(Parent_transform);
 	}
 
 	this->world_dirty_flag = false;	// フラグを解除
@@ -201,7 +205,7 @@ void Transform3DComponent::UpdateWorldPosition()
 		this->world_position = this->param.local_position;;
 		return;
 	};
-	auto parent_ransform = parent->GetComponent(this->parent_ransform_Wptr);
+	auto parent_ransform = parent->GetComponent(this->parent_transform_Wptr);
 	if (!parent_ransform)
 	{
 		this->world_position = this->param.local_position;;
@@ -217,6 +221,28 @@ void Transform3DComponent::UpdateWorldPosition(MYMATRIX Parent_transform)
 
 	MYVECTOR3 Worldl_position = Parent_transform.Vector3TransformCoord(Local_position);
 	Worldl_position.GetFlaot3(this->world_position);
+}
+
+void Transform3DComponent::UpdateWorldAngle(MYMATRIX Parent_transform)
+{
+	DirectX::XMMATRIX matrix = Parent_transform.GetMatrix();
+
+	DirectX::XMVECTOR scale, rotation_quat, translation;
+	DirectX::XMMatrixDecompose(&scale, &rotation_quat, &translation, matrix);
+
+	// クォータニオン → 回転行列に変換
+	DirectX::XMMATRIX rotMat = DirectX::XMMatrixRotationQuaternion(rotation_quat);
+
+	// 行列を XMFLOAT4X4 に変換
+	DirectX::XMFLOAT4X4 m;
+	DirectX::XMStoreFloat4x4(&m, rotMat);
+
+	// ピッチ（X軸回転）
+	this->world_angle.x = std::atan2(m._32, m._33);
+	// ヨー（Y軸回転）
+	this->world_angle.y = std::atan2(-m._31, std::sqrt(m._32 * m._32 + m._33 * m._33));
+	// ロール（Z軸回転）
+	this->world_angle.z = std::atan2(m._21, m._11);
 }
 
 #ifdef _DEBUG
@@ -257,6 +283,8 @@ void Transform3DComponent::DrawDebugGUI()
 
 	DirectX::XMFLOAT3 dummy_float3 = this->world_position;
 	ImGui::InputFloat3("World Position", &dummy_float3.x);
+	dummy_float3 = this->world_angle;
+	ImGui::InputFloat3("World Angle", &dummy_float3.x);
 }
 
 void Transform3DComponent::DrawDebugPrimitive()

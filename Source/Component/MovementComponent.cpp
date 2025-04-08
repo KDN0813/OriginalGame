@@ -132,10 +132,18 @@ void MovementComponent::FaceMovementDirection(float elapsed_time)
 		if (cross < 0.0f)
 		{
 			angle.y -= rot;
+			if (angle.y < 0.0f)
+			{
+				angle.y += DirectX::XM_2PI;
+			}
 		}
 		else
 		{
 			angle.y += rot;
+			if (DirectX::XM_2PI < angle.y)
+			{
+				angle.y -= DirectX::XM_2PI;
+			}
 		}
 
 		transform->SetLocalAngle(angle);
