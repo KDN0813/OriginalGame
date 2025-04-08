@@ -1,11 +1,11 @@
 #include "Graphics/Graphics.h"
-#include "EffectManager.h"
+#include "MyEffekseerManager.h"
 #include "Camera\CameraManager.h"
 #include "System\GameTimer.h"
 
 #include "Component\CameraComponent.h"
 
-void EffectManager::Initialize()
+void MyEffekseerManager::Initialize()
 {
     Graphics::Instance graphics = Graphics::GetInstance();
 
@@ -27,17 +27,16 @@ void EffectManager::Initialize()
     this->effekseer_manager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
 }
 
-void EffectManager::Finalize()
+void MyEffekseerManager::Finalize()
 {
 }
 
-void EffectManager::Update(float elapsed_time)
+void MyEffekseerManager::Update(float elapsed_time)
 {
-    // エフェクト更新処理(引数にはframeの経過時間を渡す)
-    this->effekseer_manager->Update(elapsed_time * 60.0f);
+    this->effekseer_manager->Update(1.0f);
 }
 
-void EffectManager::Render()
+void MyEffekseerManager::Render()
 {
     DirectX::XMFLOAT4X4 view{};
     DirectX::XMFLOAT4X4 projection{};

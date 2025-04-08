@@ -169,7 +169,7 @@
     <ClInclude Include="Source\Debug\DebugCereal.h" />
     <ClInclude Include="Source\Debug\LineRenderer.h" />
     <ClInclude Include="Source\Effekseer\Effect.h" />
-    <ClInclude Include="Source\Effekseer\EffectManager.h" />
+    <ClInclude Include="Source\Effekseer\MyEffekseerManager.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
     <ClInclude Include="Source\Graphics\RenderContext.h" />
@@ -287,7 +287,7 @@
     <ClCompile Include="Source\Debug\DebugCereal.cpp" />
     <ClCompile Include="Source\Debug\LineRenderer.cpp" />
     <ClCompile Include="Source\Effekseer\Effect.cpp" />
-    <ClCompile Include="Source\Effekseer\EffectManager.cpp" />
+    <ClCompile Include="Source\Effekseer\MyEffekseerManager.h.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />
     <ClCompile Include="Source\GridObjectManager\GridObjectManager.cpp" />

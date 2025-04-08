@@ -4,7 +4,7 @@
 #include "Graphics/Graphics.h"
 #include "System/Misc.h"
 #include "Camera/CameraManager.h"
-#include "Effekseer\EffectManager.h"
+#include "Effekseer\MyEffekseerManager.h"
 
 // シーン
 #include "Scene/SceneManager.h"
@@ -312,7 +312,7 @@ void SceneGame::Update(float elapsed_time)
 		particle_system->SetElapsedTime(elapsed_time);
 	}
 
-	EffectManager::GetInstance()->Update(elapsed_time);
+	MyEffekseerManager::GetInstance()->Update(elapsed_time);
 }
 
 void SceneGame::Render()
@@ -348,7 +348,7 @@ void SceneGame::Render()
 
 	// エフェクシアによるエフェクト描画
 	{
-		EffectManager::GetInstance()->Render();
+		MyEffekseerManager::GetInstance()->Render();
 	}
 
 	// 2Dスプライト描画

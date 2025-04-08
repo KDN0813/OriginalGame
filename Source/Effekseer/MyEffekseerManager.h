@@ -6,11 +6,11 @@
 
 #include "System\ClassBase\Singleton.h"
 
-class EffectManager : public Singleton<EffectManager>
+class MyEffekseerManager : public Singleton<MyEffekseerManager>
 {
 public:
-    EffectManager() :Singleton(this) {}
-    ~EffectManager(){}
+    MyEffekseerManager() :Singleton(this) {}
+    ~MyEffekseerManager(){}
 
     void Initialize();
 
