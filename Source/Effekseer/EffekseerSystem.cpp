@@ -78,7 +78,7 @@ Effekseer::EffectRef EffekseerSystem::EffetResourceManager::LoadEffectResource(c
     return this->effects[filename];
 }
 
-void EffekseerSystem::EffectPlay(const char* filename, const DirectX::XMFLOAT3& position, float scale)
+void EffekseerSystem::PlayEffect(const char* filename, const DirectX::XMFLOAT3& position, float scale)
 {
     // エフェクトリソース取得
     Effekseer::EffectRef effekseer_effect = this->resource_manager.LoadEffectResource(filename);
@@ -90,27 +90,27 @@ void EffekseerSystem::EffectPlay(const char* filename, const DirectX::XMFLOAT3& 
     this->effekseer_manager->SetScale(handle, scale, scale, scale);
 }
 
-void EffekseerSystem::EffectAllStop()
+void EffekseerSystem::AllStopEffect()
 {
     this->effekseer_manager->StopAllEffects();
 }
 
 // 停止
-void EffekseerSystem::EffectStop(Effekseer::Handle handle)
+void EffekseerSystem::StopEffect(Effekseer::Handle handle)
 {
     // エフェクト停止
     this->effekseer_manager->StopEffect(handle);
 }
 
 // 座標設定
-void EffekseerSystem::EffectSetPosition(Effekseer::Handle handle, const DirectX::XMFLOAT3& position)
+void EffekseerSystem::SetPositionEffect(Effekseer::Handle handle, const DirectX::XMFLOAT3& position)
 {
     // 座標設定
     this->effekseer_manager->SetLocation(handle, position.x, position.y, position.z);
 }
 
 // スケール変更
-void EffekseerSystem::EffectSetScale(Effekseer::Handle handle, const DirectX::XMFLOAT3& scale)
+void EffekseerSystem::SetScaleEffect(Effekseer::Handle handle, const DirectX::XMFLOAT3& scale)
 {
     // スケール設定
     this->effekseer_manager->SetScale(handle, scale.x, scale.y, scale.z);

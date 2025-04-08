@@ -4,6 +4,7 @@
 #include "Object\Constant\PlayerConstant.h"
 #include "Audio\Audio.h"
 #include "System\GameData.h"
+#include "Effekseer\EffekseerSystem.h"
 
 #include "Object\Constant\PlayerConstant.h"
 
@@ -185,6 +186,11 @@ void PlayerAttackState::Start()
         param.loop = false;
         param.filename = "Data/Audio/SE_Slash01.wav";
         audio->Play(param);
+    }
+
+    // 攻撃エフェクト再生
+    {
+        EffekseerSystem::GetInstance()->PlayEffect();
     }
 
     // 攻撃判定オブジェクトを有効にする

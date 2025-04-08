@@ -37,11 +37,11 @@ public:
     Effekseer::ManagerRef GetEffekseerManager() { return effekseer_manager; }
 
     // エフェクト再生
-    void EffectPlay(const char* filename, const DirectX::XMFLOAT3& position, float scale = 1.0f);
-    void EffectAllStop();
-    void EffectStop(Effekseer::Handle handle);
-    void EffectSetPosition(Effekseer::Handle handle, const DirectX::XMFLOAT3& position);
-    void EffectSetScale(Effekseer::Handle, const DirectX::XMFLOAT3& scale);
+    void PlayEffect(const char* filename, const DirectX::XMFLOAT3& position, float scale = 1.0f);
+    void AllStopEffect();
+    void StopEffect(Effekseer::Handle handle);
+    void SetPositionEffect(Effekseer::Handle handle, const DirectX::XMFLOAT3& position);
+    void SetScaleEffect(Effekseer::Handle, const DirectX::XMFLOAT3& scale);
 private:
     Effekseer::ManagerRef           effekseer_manager;
     EffekseerRenderer::RendererRef  effekseer_render;
