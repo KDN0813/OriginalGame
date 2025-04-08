@@ -33,7 +33,7 @@ void EffekseerSystem::Finalize()
 
 void EffekseerSystem::Update(float elapsed_time)
 {
-    this->effekseer_manager->Update(1.0f);
+    this->effekseer_manager->Update(elapsed_time * 60.0f);
 }
 
 void EffekseerSystem::Render()
