@@ -1,12 +1,14 @@
 #pragma once
 
 #include <windows.h>
+#include "System\ClassBase\Singleton.h"
 
-class GameTimer
+class GameTimer : public Singleton<GameTimer>
 {
 public:
 	GameTimer()
-		: delta_time(-1.0)
+		: Singleton(this)
+		, delta_time(-1.0)
 		, paused_count(0)
 		, stop_count()
 		, game_speed(1.0f)
@@ -49,7 +51,7 @@ public:
 	}
 
 	// タイマーをリセット（初期化）する
-	void Reset()
+	void TimerReset()
 	{
 		QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&this->this_count));
 		this->base_count = this->this_count;
@@ -60,7 +62,7 @@ public:
 	}
 
 	// 停止していたタイマーを再開する
-	void Start()
+	void TimerStart()
 	{
 		LONGLONG start_time;
 		QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&start_time));
@@ -76,7 +78,7 @@ public:
 	}
 
 	// タイマーを停止する
-	void Stop()
+	void TimerStop()
 	{
 		if (!this->stopped)
 		{
@@ -105,6 +107,9 @@ public:
 			this->delta_time = 0.0;
 		}
 	}
+
+	void SetGameSpeed(const float speed) { this->game_speed = speed; }
+	float GetGameSpeed() const { return this->game_speed; }
 
 private:
 	double seconds_per_count;	// 1カウントあたりの秒数

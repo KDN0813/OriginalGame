@@ -209,10 +209,10 @@ LRESULT CALLBACK Framework::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LP
 	case WM_KEYDOWN:
 		break;
 	case WM_ENTERSIZEMOVE:
-		game_timer.Stop();
+		game_timer.TimerStop();
 		break;
 	case WM_EXITSIZEMOVE:
-		game_timer.Start();
+		game_timer.TimerStart();
 		break;
 	case WM_MOUSEWHEEL:
 		if (Input::Instance input = Input::GetInstance(); input.Get())
