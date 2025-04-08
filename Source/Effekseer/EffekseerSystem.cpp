@@ -78,7 +78,7 @@ Effekseer::EffectRef EffekseerSystem::EffetResourceManager::LoadEffectResource(c
     return this->effects[filename];
 }
 
-void EffekseerSystem::PlayEffect(const char* filename, const DirectX::XMFLOAT3& position, float scale, DirectX::XMFLOAT3 rotation)
+Effekseer::Handle EffekseerSystem::PlayEffect(const char* filename, const DirectX::XMFLOAT3& position, float scale, DirectX::XMFLOAT3 rotation)
 {
     // エフェクトリソース取得
     Effekseer::EffectRef effekseer_effect = this->resource_manager.LoadEffectResource(filename);
@@ -91,6 +91,8 @@ void EffekseerSystem::PlayEffect(const char* filename, const DirectX::XMFLOAT3& 
 
     // 角度設定
     this->effekseer_manager->SetRotation(handle, rotation.x, rotation.y, rotation.z);
+
+    return handle;
 }
 
 void EffekseerSystem::AllStopEffect()

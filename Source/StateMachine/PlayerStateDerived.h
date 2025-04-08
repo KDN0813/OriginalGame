@@ -2,6 +2,9 @@
 #include <memory>
 #include "StateBase.h"
 
+#include <Effekseer.h>
+#include <EffekseerRendererDX11.h>
+
 class ModelAnimationControlComponent;
 class MovementComponent;
 class PlayerComponent;
@@ -122,6 +125,8 @@ public:
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override;
+private:
+	Effekseer::Handle handle;
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;

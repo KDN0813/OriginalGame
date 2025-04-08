@@ -37,7 +37,7 @@ public:
     Effekseer::ManagerRef GetEffekseerManager() { return effekseer_manager; }
 
     // エフェクト再生
-    void PlayEffect(const char* filename, const DirectX::XMFLOAT3& position, float scale = 1.0f, DirectX::XMFLOAT3 rotation = { 0.0f,0.0f,0.0f });
+    Effekseer::Handle PlayEffect(const char* filename, const DirectX::XMFLOAT3& position, float scale = 1.0f, DirectX::XMFLOAT3 rotation = { 0.0f,0.0f,0.0f });
     void AllStopEffect();
     void StopEffect(Effekseer::Handle handle);
     void SetPositionEffect(Effekseer::Handle handle, const DirectX::XMFLOAT3& position);

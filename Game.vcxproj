@@ -133,6 +133,7 @@
     <ClInclude Include="Source\Component\BaseSpriteComponent.h" />
     <ClInclude Include="Source\Component\DamageComponent.h" />
     <ClInclude Include="Source\Component\DebugParticle.h" />
+    <ClInclude Include="Source\Component\EffekseerComponent.h" />
     <ClInclude Include="Source\Component\FadeControllerComponent.h" />
     <ClInclude Include="Source\Component\InstancedModelWithAnimationComponent.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />

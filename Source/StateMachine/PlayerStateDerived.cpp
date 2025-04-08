@@ -543,10 +543,11 @@ void PlayerSpinAttackSpinLoopState::Start()
         if (const auto& attack_object_transform = attack_object->GetComponent(this->attack_object_transform_Wptr))
         {
             const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
-            const float effect_scale = 3.0f;
+            const float effect_scale = 5.0f;
             DirectX::XMFLOAT3 rotation{};
             rotation.y = transform->GetLocalAngle().y;
-            EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/SpinAttack.efk", pos, effect_scale, rotation);
+            
+            this->handle = EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/SpinAttack.efk", pos, effect_scale, rotation);
         }
     }
 
@@ -571,6 +572,14 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
     if (!animation) return;
     const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wptr);
     if (!player) return;
+    const auto& transform = owner->GetComponent(this->transform_Wptr);
+    if (!transform) return;
+
+    // 攻撃エフェクトの位置更新
+    {
+        const DirectX::XMFLOAT3 pos = transform->GetWorldPosition();
+        EffekseerSystem::GetInstance()->SetPositionEffect(this->handle, pos);
+    }
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
@@ -635,6 +644,11 @@ void PlayerSpinAttackSpinLoopState::End()
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(false);
+
+    // エフェクト停止
+    {
+        EffekseerSystem::GetInstance()->StopEffect(this->handle);
+    }
 }
 
 PlayerSpinAttackState::PlayerSpinAttackState()
