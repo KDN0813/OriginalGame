@@ -168,7 +168,6 @@
     <ClInclude Include="Source\Debug\ImGuiRenderer.h" />
     <ClInclude Include="Source\Debug\DebugCereal.h" />
     <ClInclude Include="Source\Debug\LineRenderer.h" />
-    <ClInclude Include="Source\Effekseer\Effect.h" />
     <ClInclude Include="Source\Effekseer\EffekseerSystem.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\Graphics\Graphics.h" />
@@ -286,7 +285,6 @@
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp" />
     <ClCompile Include="Source\Debug\DebugCereal.cpp" />
     <ClCompile Include="Source\Debug\LineRenderer.cpp" />
-    <ClCompile Include="Source\Effekseer\Effect.cpp" />
     <ClCompile Include="Source\Effekseer\EffekseerSystem.cpp" />
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\Graphics\Graphics.cpp" />

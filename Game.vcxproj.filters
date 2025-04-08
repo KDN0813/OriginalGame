@@ -588,9 +588,6 @@
     <ClInclude Include="Source\System\DataKey.h">
       <Filter>Source\System</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Effekseer\Effect.h">
-      <Filter>Source\Effekseer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Effekseer\EffekseerSystem.h">
       <Filter>Source\Effekseer</Filter>
     </ClInclude>
@@ -883,9 +880,6 @@
     </ClCompile>
     <ClCompile Include="Source\Component\ModelPartAnimationControlComponent.cpp">
       <Filter>Source\Component\Model\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Effekseer\Effect.cpp">
-      <Filter>Source\Effekseer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Effekseer\EffekseerSystem.cpp">
       <Filter>Source\Effekseer</Filter>
