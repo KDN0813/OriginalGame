@@ -537,6 +537,19 @@ void PlayerSpinAttackSpinLoopState::Start()
     collision->SetIsActive(true);  // コリジョンを有効にする
     collision->EvaluateCollision();
 
+    // 攻撃エフェクト再生
+    if (const auto& transform = owner->GetComponent(this->transform_Wptr))
+    {
+        if (const auto& attack_object_transform = attack_object->GetComponent(this->attack_object_transform_Wptr))
+        {
+            const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
+            const float effect_scale = 3.0f;
+            DirectX::XMFLOAT3 rotation{};
+            rotation.y = transform->GetLocalAngle().y;
+            EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/SpinAttack.efk", pos, effect_scale, rotation);
+        }
+    }
+
     // 無敵状態に設定
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;

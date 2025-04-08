@@ -128,6 +128,8 @@ private:
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
 	std::weak_ptr<PlayerComponent> player_Wptr;
+	std::weak_ptr<Transform3DComponent> transform_Wptr;
+	std::weak_ptr<Transform3DComponent> attack_object_transform_Wptr;
 };
 
 // ‰ñ“]UŒ‚
