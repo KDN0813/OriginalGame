@@ -2,9 +2,6 @@
 #include <memory>
 #include "StateBase.h"
 
-#include <Effekseer.h>
-#include <EffekseerRendererDX11.h>
-
 class ModelAnimationControlComponent;
 class MovementComponent;
 class PlayerComponent;
@@ -110,6 +107,8 @@ private:
 	std::weak_ptr<PlayerComponent> player_Wprt;
 	std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;
 	std::weak_ptr<CharacterComponent> character_Wptr;
+	std::weak_ptr<Transform3DComponent> transform_Wptr;
+	std::weak_ptr<Transform3DComponent> attack_object_transform_Wptr;
 };
 
 // 回転攻撃(ループ)
@@ -125,8 +124,7 @@ public:
 	void Update(float elapsed_time) override;
 	// ステートから出ていくときのメソッド
 	void End() override;
-private:
-	Effekseer::Handle handle;
+
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
@@ -134,7 +132,6 @@ private:
 	std::weak_ptr<CharacterComponent> character_Wptr;
 	std::weak_ptr<PlayerComponent> player_Wptr;
 	std::weak_ptr<Transform3DComponent> transform_Wptr;
-	std::weak_ptr<Transform3DComponent> attack_object_transform_Wptr;
 };
 
 // 回転攻撃

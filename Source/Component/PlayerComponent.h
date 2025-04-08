@@ -1,5 +1,8 @@
 #pragma once
 #include <DirectXMath.h>
+#include <Effekseer.h>
+#include <EffekseerRendererDX11.h>
+
 #include "Component.h"
 
 class MovementComponent;
@@ -30,6 +33,8 @@ public:
         float special_point_max = 20.0f;    // スペシャルポイントの最大値
         int gauge_count = 0;
         int gauge_count_max = 3;
+
+        Effekseer::Handle spin_attack_effect_handle = -1;
     };
 public:
     PlayerComponent(PlayerParam param);
@@ -76,6 +81,9 @@ public:
     bool UseSpecialGage(int use_gage);
     // スペシャルゲージを使用できるか判定する
     bool IsUseSpecialGage(int use_gage);
+
+    void SetSpinAttackEffectHandle(Effekseer::Handle handle) { this->param.spin_attack_effect_handle = handle; }
+    Effekseer::Handle GetSpinAttackEffectHandle()const { return this->param.spin_attack_effect_handle; }
 private:
     bool InputMove(float elapsed_time);
     void Move(float vx, float vz, float speed);
