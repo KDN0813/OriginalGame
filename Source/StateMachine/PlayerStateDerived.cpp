@@ -204,7 +204,7 @@ void PlayerAttackState::Start()
         if (const auto& attack_object_transform = attack_object->GetComponent(attack_object_transform_Wptr))
         {
             const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
-            const float effect_scale = 3.0f;
+            const float effect_scale = 4.0f;
             DirectX::XMFLOAT3 rotation{};
             rotation.y = transform->GetLocalAngle().y;
             EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/Attack1.efk", pos, effect_scale, rotation);
@@ -323,7 +323,7 @@ void PlayerAttackComboState::Start()
         if (const auto& attack_object_transform = attack_object->GetComponent(attack_object_transform_Wptr))
         {
             const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
-            const float effect_scale = 3.0f;
+            const float effect_scale = 6.0f;
             DirectX::XMFLOAT3 rotation{};
             rotation.y = transform->GetLocalAngle().y;
             EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/Attack2.efk", pos, effect_scale, rotation);
@@ -498,7 +498,7 @@ void PlayerSpinAttackStartState::Start()
         if (const auto& attack_object_transform = attack_object->GetComponent(this->attack_object_transform_Wptr))
         {
             const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
-            const float effect_scale = 5.0f;
+            const float effect_scale = 8.0f;
             DirectX::XMFLOAT3 rotation{};
             rotation.y = transform->GetLocalAngle().y;
 

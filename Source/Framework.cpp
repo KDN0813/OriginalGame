@@ -84,10 +84,9 @@ void Framework::Update(float elapsed_time)
 		}
 	}
 
-#endif // _DEBUG
-
 	// フレームレート計算
 	game_timer.CalculateFrameStats();
+#endif // _DEBUG
 
 	scene_manager.Update(elapsed_time);
 

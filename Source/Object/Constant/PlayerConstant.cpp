@@ -195,7 +195,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			{
 				CircleCollisionComponent::CollisionParam param{};
 				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
-				param.radius = 2.5f;
+				param.radius = 6.5f;
 				param.default_active_flag = false;
 				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 
@@ -218,7 +218,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 300.0f);
+				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 400.0f);
 				param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 				auto child_transform = player_attack_object->AddComponent<Transform3DComponent>(param);
@@ -227,7 +227,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			{
 				CircleCollisionComponent::CollisionParam param{};
 				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
-				param.radius = 3.0f;
+				param.radius = 7.0f;
 				param.default_active_flag = false;
 				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 
@@ -259,7 +259,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			{
 				CircleCollisionComponent::CollisionParam param{};
 				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
-				param.radius = 5.0f;
+				param.radius = 18.0f;
 				param.default_active_flag = false;
 				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 
@@ -271,7 +271,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			// ダメージデータ
 			{
 				DamageComponent::DamageParam param{};
-				param.damage_amount = 2;
+				param.damage_amount = 4;
 				param.invincible_time = 1.0f;
 				param.get_point_rate = 0;
 				player_attack_object->AddComponent<DamageComponent>(param);

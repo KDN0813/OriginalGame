@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_map>
+#include <string>
 #include "Component.h"
 #include "StateMachine/StateBase.h"
 

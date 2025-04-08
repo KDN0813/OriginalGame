@@ -178,6 +178,8 @@ void SceneGame::Finalize()
 	// ポーズオブジェクトを非アクティブに設定
 	SceneManager::Instance scene_manager = SceneManager::GetInstance();;
 	scene_manager->GetPauseObject()->SetIsActive(false);
+
+	EffekseerSystem::GetInstance()->AllStopEffect();
 }
 
 void SceneGame::Update(float elapsed_time)
