@@ -501,6 +501,7 @@ void PlayerSpinAttackStartState::Start()
             const float effect_scale = 8.0f;
             DirectX::XMFLOAT3 rotation{};
             rotation.y = transform->GetLocalAngle().y;
+            //rotation.z = .0f;
 
             player->SetSpinAttackEffectHandle(EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/SpinAttack.efk", pos, effect_scale, rotation));
         }

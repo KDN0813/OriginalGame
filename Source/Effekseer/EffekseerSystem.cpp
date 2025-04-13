@@ -41,7 +41,7 @@ void EffekseerSystem::Render()
     DirectX::XMFLOAT4X4 view{};
     DirectX::XMFLOAT4X4 projection{};
     {
-        const auto& camera = CameraManager::GetInstance()->GetCamera(CAMERA_TYPE::MAIN);
+        const auto& camera = CameraManager::GetInstance()->GetCurrentCamera();
         view = camera->GetViewTransform();
         projection = camera->GetProjectionTransform();
     }
