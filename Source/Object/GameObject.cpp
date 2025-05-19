@@ -26,37 +26,44 @@ void GameObject::Update()
 
 void GameObject::AddCreateEnemy(float elapsed_time, ObjectManager& object_manager)
 {
+    if (!this->is_create_enemy) return;
+
+    // 敵の生成
+    this->create_enemy_cool_time -= elapsed_time;
+    if (create_enemy_cool_time <= 0.0f)
+    {
+        AddCreateEnemy(object_manager);
+
+        const float COOL_TIME = MyMath::RandomRange(3.0f, 5.0f);
+        create_enemy_cool_time = COOL_TIME;
+    }
+}
+
+void GameObject::AddCreateEnemy(ObjectManager& object_manager)
+{
     const auto& player = GetPlayer();
     if (!player) return;
     const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
     if (!player_transform) return;
     const DirectX::XMFLOAT3 PLAYER_POS = player_transform->GetWorldPosition();
 
-    // 敵の生成
-    this->create_enemy_cool_time -= elapsed_time;
-    if (create_enemy_cool_time <= 0.0f)
-    {
-        const size_t NOW_ENEMY_COUNT = this->GetEnemyWptPool().size();
-        const size_t ENEMY_MAX = EnemyConstant::ENEMY_MAX;
+    const size_t NOW_ENEMY_COUNT = this->GetEnemyWptPool().size();
+    const size_t ENEMY_MAX = EnemyConstant::ENEMY_MAX;
 #ifdef _DEBUG
-        const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(10, 20);	// 1度に生成できるエネミーの最大数
+    const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(10, 20);	// 1度に生成できるエネミーの最大数
 #else
-        const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(80, 150);	// 1度に生成できるエネミーの最大数
+    const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(80, 150);	// 1度に生成できるエネミーの最大数
 #endif // _DEBUG
 
-        for (int i = 0; i < ENEMY_MAX - NOW_ENEMY_COUNT; ++i)
-        {
-            if (CREATE_ENEMY_MAX <= i)break;
+    for (int i = 0; i < ENEMY_MAX - NOW_ENEMY_COUNT; ++i)
+    {
+        if (CREATE_ENEMY_MAX <= i)break;
 
-            const float player_area_rage = 20.0f;
-            const DirectX::XMFLOAT3 spawn_point = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, player_area_rage, EnemyConstant::NEAR_PLAYER_TERRITORY_RENGR);
+        const float player_area_rage = 20.0f;
+        const DirectX::XMFLOAT3 spawn_point = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, player_area_rage, EnemyConstant::NEAR_PLAYER_TERRITORY_RENGR);
 
-            const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create());
-            SetEnemy(enemy);
-        }
-
-        const float COOL_TIME = MyMath::RandomRange(3.0f, 5.0f);
-        create_enemy_cool_time = COOL_TIME;
+        const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create());
+        SetEnemy(enemy);
     }
 }
 
@@ -105,6 +112,8 @@ void GameObject::DebugDrawGUI()
 
         if (ImGui::CollapsingHeader("Enemy##GameObject"))
         {
+            ImGui::Checkbox("Is Create Enemy", &this->is_create_enemy);
+
             size_t enemy_count = this->enemy_Wptr_pool.size();
             ImGui::InputSize_t("Enemy Count", enemy_count);
 

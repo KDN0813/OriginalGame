@@ -28,6 +28,7 @@ public:
     void EnemyAllClear();
     // 追加で敵を生成する
     void AddCreateEnemy(float elapsed_time,ObjectManager& object_manager);
+    void AddCreateEnemy(ObjectManager& object_manager);
 private:
     std::weak_ptr<Object> player_Wptr;
     std::weak_ptr<Transform3DComponent> player_transform_Wptr;
@@ -36,6 +37,12 @@ private:
     std::vector<std::weak_ptr<Object>> enemy_Wptr_pool;
 
     float create_enemy_cool_time = 0.0f;    // 敵生成のクールタイム
+#ifdef _DEBUG
+    bool is_create_enemy = false;           // 敵を生成するフラグ
+#else
+    bool is_create_enemy = true;            // 敵を生成するフラグ
+#endif // _DEBUG
+
 #ifdef _DEBUG
 public:
     void DebugDrawGUI();
