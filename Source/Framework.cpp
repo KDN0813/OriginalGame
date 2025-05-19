@@ -81,6 +81,11 @@ void Framework::Update(float elapsed_time)
 			{
 				game_data->CloseWindow();
 			}
+			// タイマーの停止
+			if (GamePad::BTN_DEBUG_STOP_TIMER & game_pad.GetButtonDown())
+			{
+				game_data->SetIsStopTimer(!game_data->GetIsStopTimer());
+			}
 		}
 	}
 

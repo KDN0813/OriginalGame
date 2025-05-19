@@ -40,7 +40,13 @@ public:
     bool IsCurrentGameState(GameStatus status) { return (this->param.game_status == status); };
 
     // ゲーム終了タイマーの更新
-    void UpdateGameEndTimer(float elapsed_time) { this->param.game_end_timer -= elapsed_time; }
+    void UpdateGameEndTimer(float elapsed_time) 
+    {
+#ifdef _DEBUG
+        if (this->is_stop_timer) return;
+#endif // _DEBUG
+        this->param.game_end_timer -= elapsed_time; 
+    }
 
     // タイムアップ状態であるか
     bool IsTimeUp()const { return(this->param.game_end_timer <= 0.0f); };
@@ -71,11 +77,14 @@ public:
     void SetDrawImguiFlag(bool flag) { this->draw_imgui_flag = flag; }
     bool GetDrawDebugPrimitiveFlag() const { return this->draw_debug_primitive_flag; }
     void SetDrawDebugPrimitiveFlag(bool flag) { this->draw_debug_primitive_flag = flag; }
+    bool GetIsStopTimer() { return this->is_stop_timer; }
+    void SetIsStopTimer(bool flag) { this->is_stop_timer = flag; }
 private:
     std::vector<std::string> game_status_name_pool;
     int select_game_status_index = 0;
     bool draw_imgui_flag = true; // ImGuiの表示フラグ
     bool draw_debug_primitive_flag = true; // デバッグプリミティブの表示フラグ
+    bool is_stop_timer = false;     // タイマーを停止するフラグ
 
 #endif // _DEBUG
 };
