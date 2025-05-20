@@ -68,8 +68,8 @@ void PlayerIdleState::Update(float elapsed_time)
     }
 
     // 入力受付
-    if (Input::Instance input = Input::GetInstance(); input.Get())
     {
+        Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
         // Xボタン
         if (pad.GetButtonDown() & GamePad::BTN_X)
@@ -142,8 +142,8 @@ void PlayerMoveState::Update(float elapsed_time)
     }
 
     // 入力受付
-    if (Input::Instance input = Input::GetInstance(); input.Get())
     {
+        Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
         // Xボタン
         if (pad.GetButtonDown() & GamePad::BTN_X)
@@ -180,8 +180,8 @@ void PlayerAttackState::Start()
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::ATTACK01, false, 0.2f);
 
     // SE再生
-    if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
     {
+        Audio::Instance audio = Audio::GetInstance();
         AudioParam param{};
         param.volume = 0.5f;
         param.loop = false;
@@ -245,8 +245,8 @@ void PlayerAttackState::Update(float elapsed_time)
     }
 
     // 入力受付
-    if (Input::Instance input = Input::GetInstance(); input.Get())
     {
+        Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
         // Xボタン
         if (pad.GetButtonDown() & GamePad::BTN_X)
@@ -299,8 +299,8 @@ void PlayerAttackComboState::Start()
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::ATTACK02, false, 0.2f);
 
     // SE再生
-    if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
     {
+        Audio::Instance audio = Audio::GetInstance();
         AudioParam param{};
         param.volume = 0.5f;
         param.loop = false;
@@ -364,8 +364,8 @@ void PlayerAttackComboState::Update(float elapsed_time)
     }
 
     // 入力受付
-    if (Input::Instance input = Input::GetInstance(); input.Get())
     {
+        Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
         // Xボタン
         if (pad.GetButtonDown() & GamePad::BTN_X)
@@ -430,8 +430,8 @@ void PlayerAttackHoldState::Update(float elapsed_time)
     }
 
     // 入力受付
-    if (Input::Instance input = Input::GetInstance(); input.Get())
     {
+        Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
         // Yボタン
         if (pad.GetButton() & GamePad::BTN_Y)
@@ -542,8 +542,8 @@ void PlayerSpinAttackSpinLoopState::Start()
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_SPIN_LOOP, true, 0.0f);
 
     // SE再生
-    if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
     {
+        Audio::Instance audio = Audio::GetInstance();
         AudioParam param{};
         param.volume = 0.4f;
         param.loop = false;
@@ -697,8 +697,8 @@ void PlayerSpinAttackState::Start()
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK, false, 0.0f);
 
     // SE再生
-    if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
     {
+        Audio::Instance audio = Audio::GetInstance();
         AudioParam param{};
         param.volume = 0.4f;
         param.loop = false;
@@ -901,8 +901,8 @@ void PlayerDeadIdleState::Start()
     animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::DEAD_STAY, false);
 
     // ゲームモードを設定
-    if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
     {
+        GameData::Instance game_data = GameData::GetInstance();
         // 敗北状態に変更
         game_data->SetGameStatus(GameData::GameStatus::DEFEAT);
     }

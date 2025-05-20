@@ -18,7 +18,7 @@ public:
     void Render() override;
 
 private:
-    static void LoadingThred(SceneLoading* scene);
+    static void LoadingThread(SceneLoading* scene);
 
 private:
     ObjectManager object_manager;

@@ -15,7 +15,6 @@ ModelShader::ModelShader()
 	:Singleton(this)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	HRESULT hr{};
@@ -149,14 +148,12 @@ ModelShader::ModelShader()
 void ModelShader::Render()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 	RenderContext rc{};
 
 	// RenderContext設定
 	{
 		CameraManager::Instance camera_manager = CameraManager::GetInstance();
-		if (!camera_manager.Get()) return;
 		std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
 		if (camera)
 		{
@@ -208,8 +205,8 @@ void ModelShader::Begin(ID3D11DeviceContext* dc, const RenderContext& rc)
 
 	// ライト用定数バッファ更新
 	LightConstantBuffer light_CB{};
-	if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
 	{
+		LightManager::Instance light_manager = LightManager::GetInstance();
 		light_CB.ambient_color = light_manager->GetAmbientColor();
 		light_CB.directional_lights = light_manager->GetLightDirection();
 
@@ -225,8 +222,8 @@ void ModelShader::Draw(ID3D11DeviceContext* dc, ModelComponent* model)
 	const std::vector<ModelComponent::Node>& node_vec = model->GetNodes();
 
 	DirectX::BoundingFrustum BoundingFrustum{};
-	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
 		BoundingFrustum = camera_manager->GetBoundingFrustum();
 	}
 

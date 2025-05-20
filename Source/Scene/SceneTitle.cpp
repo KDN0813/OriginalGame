@@ -18,8 +18,8 @@
 void SceneTitle::Initialize()
 {
 	// ゲーム状態を設定
-	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
+		GameData::Instance game_data = GameData::GetInstance();
 		game_data->SetGameStatus(GameData::GameStatus::TITLE);
 	}
 
@@ -113,8 +113,9 @@ void SceneTitle::Initialize()
 		}
 	}
 
-	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
+	// オーディオ再生
 	{
+		Audio::Instance audio = Audio::GetInstance();
 		AudioParam param{};
 		param.volume = 0.5f;
 		param.loop = true;
@@ -126,8 +127,8 @@ void SceneTitle::Initialize()
 void SceneTitle::Finalize()
 {
 	// オーディオのリセット
-	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 	{
+		Audio::Instance audio = Audio::GetInstance();
 		audio->AllClear();
 	}
 }
@@ -136,18 +137,16 @@ void SceneTitle::Update(float elapsed_time)
 {
 	object_manager.Update(elapsed_time);
 
-	// スペースキーでゲーム画面に遷移(仮)
-	if (Input::Instance input = Input::GetInstance(); input.Get())
+	// シーン遷移
 	{
+		Input::Instance input = Input::GetInstance();
 		const auto& game_pad = input->GetGamePad();
 
 		// Xボタンが押されたら
 		if (GamePad::BTN_X & game_pad.GetButtonDown())
 		{
-			if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
-			{
-				scene_manager->ChangeScene(new SceneLoading(new SceneGame()));
-			}
+			SceneManager::Instance scene_manager = SceneManager::GetInstance();
+			scene_manager->ChangeScene(new SceneLoading(new SceneGame()));
 		}
 		// [Yボタン/ESCキー] が押されたら
 		else if((GamePad::BTN_Y | GamePad::BTN_EXIT) & game_pad.GetButtonDown())
@@ -163,12 +162,11 @@ void SceneTitle::Render()
 {
 	// 描画準備
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	graphics->PrepareRenderTargets();
 
 	// 2Dスプライト描画
-	if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
 	{
+		SpriteShader::Instance sprite_shader = SpriteShader::GetInstance();
 		sprite_shader->Render();
 	}
 }
@@ -189,10 +187,8 @@ void SceneTitle::DebugDrawGUI()
 	{
 		if (ImGui::Begin("Sahder"))
 		{
-			if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
-			{
-				sprite_shader->DrawDebugGUI();
-			}
+			SpriteShader::Instance sprite_shader = SpriteShader::GetInstance();
+			sprite_shader->DrawDebugGUI();
 		}
 		ImGui::End();
 	}

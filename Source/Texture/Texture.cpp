@@ -6,7 +6,6 @@
 Texture::Texture(const char* filename)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	// テクスチャの生成

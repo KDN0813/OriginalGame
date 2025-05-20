@@ -18,7 +18,6 @@ InstancingModelShader::InstancingModelShader()
 	:Singleton(this)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	HRESULT hr{};
@@ -186,21 +185,17 @@ InstancingModelShader::InstancingModelShader()
 void InstancingModelShader::Render()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 	RenderContext rc{};
 
 	// RenderContext設定
 	{
 		CameraManager::Instance camera_manager = CameraManager::GetInstance();
-		if (camera_manager.Get())
+		std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
+		if (camera)
 		{
-			std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
-			if (camera)
-			{
-				rc.view = camera->GetViewTransform();
-				rc.projection = camera->GetProjectionTransform();
-			}
+			rc.view = camera->GetViewTransform();
+			rc.projection = camera->GetProjectionTransform();
 		}
 	}
 
@@ -237,8 +232,9 @@ void InstancingModelShader::Render()
 
 		// ライト用定数バッファ更新
 		LightConstantBuffer light_cb{};
-		if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
 		{
+			LightManager::Instance light_manager = LightManager::GetInstance();
+
 			light_cb.ambient_color = light_manager->GetAmbientColor();
 			light_cb.directional_lights = light_manager->GetLightDirection();
 		}

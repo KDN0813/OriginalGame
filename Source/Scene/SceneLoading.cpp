@@ -18,7 +18,7 @@
 void SceneLoading::Initialize()
 {
     // スレッド作成
-    this->thread = std::make_unique<std::thread>(LoadingThred, this);
+    this->thread = std::make_unique<std::thread>(LoadingThread, this);
 
     // オブジェクト作成
     {
@@ -59,11 +59,9 @@ void SceneLoading::Finalize()
 {
     this->thread->join();
 
-    if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-    {
-        // ロード中フラグ解除
-        game_data->SetIsLoading(false);
-    }
+    // ロード中フラグ解除
+    GameData::Instance game_data = GameData::GetInstance();
+    game_data->SetIsLoading(false);
 }
 
 void SceneLoading::Update(float elapsed_time)
@@ -72,10 +70,8 @@ void SceneLoading::Update(float elapsed_time)
 
     if (next_scene->IsReady())
     {
-        if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
-        {
-            scene_manager->ChangeScene(next_scene);
-        }
+        SceneManager::Instance scene_manager = SceneManager::GetInstance();
+        scene_manager->ChangeScene(next_scene);
     }
 }
 
@@ -83,17 +79,17 @@ void SceneLoading::Render()
 {
     // 描画準備
     Graphics::Instance graphics = Graphics::GetInstance();
-    if (!graphics.Get()) return; 
+    if (!graphics.Get()) return;
     graphics->PrepareRenderTargets();
 
     // 2Dスプライト描画
-    if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
     {
+        SpriteShader::Instance sprite_shader = SpriteShader::GetInstance();
         sprite_shader->Render();
     }
 }
 
-void SceneLoading::LoadingThred(SceneLoading* scene)
+void SceneLoading::LoadingThread(SceneLoading* scene)
 {
     HRESULT hr = S_OK;
     hr = CoInitialize(nullptr);

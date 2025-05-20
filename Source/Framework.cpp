@@ -250,12 +250,6 @@ void Framework::DrawDebugGUI()
 		game_data->DebugDrawGUI();
 	}
 
-	// ゲームオブジェクト
-	{
-		GameObject::Instance game_object = GameObject::GetInstance();
-		game_object->DebugDrawGUI();
-	}
-
 	// FPS
 	{
 		game_timer.DebugDrawGUI();

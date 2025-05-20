@@ -11,7 +11,6 @@
 SkyBox::SkyBox()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	HRESULT hr{};
@@ -126,7 +125,6 @@ void SkyBox::Render()
 	if (!texture) return;
 
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11DeviceContext* dc = graphics->GetDeviceContext();
 
 	dc->VSSetShader(this->vertex_shader.Get(), nullptr, 0);
@@ -153,7 +151,6 @@ void SkyBox::Render()
 	// RenderContextİ’è
 	{
 		CameraManager::Instance camera_manager = CameraManager::GetInstance();
-		if (!camera_manager.Get()) return;
 		std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
 		if (camera)
 		{

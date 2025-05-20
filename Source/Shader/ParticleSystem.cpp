@@ -16,7 +16,6 @@ ParticleSystem::ParticleSystem()
 	, particle_data_pool()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (graphics.Get() == nullptr)return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	HRESULT hr;
@@ -398,7 +397,6 @@ ParticleSystem::~ParticleSystem()
 void ParticleSystem::Update()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (graphics.Get() == nullptr)return;
 	ID3D11DeviceContext* immediate_context = graphics->GetDeviceContext();
 
 	immediate_context->CSSetShader(this->compute_shader.Get(), 0, 0);
@@ -472,21 +470,17 @@ void ParticleSystem::Update()
 void ParticleSystem::Render()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (graphics.Get() == nullptr)return;
 	ID3D11DeviceContext* immediate_context = graphics->GetDeviceContext();
 
 	RenderContext rc{};
 	// RenderContextê›íË
 	{
 		CameraManager::Instance camera_manager = CameraManager::GetInstance();
-		if (camera_manager.Get())
+		std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
+		if (camera)
 		{
-			std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
-			if (camera)
-			{
-				rc.view = camera->GetViewTransform();
-				rc.projection = camera->GetProjectionTransform();
-			}
+			rc.view = camera->GetViewTransform();
+			rc.projection = camera->GetProjectionTransform();
 		}
 	}
 

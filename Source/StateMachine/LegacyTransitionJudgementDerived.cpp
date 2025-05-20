@@ -44,7 +44,6 @@ bool Judgement_Move::CheckTransitionCondition()
 bool Judgement_ButtonDown::CheckTransitionCondition()
 {
 	Input::Instance input = Input::GetInstance();
-	if (!input.Get()) return true;	// input‚ªnull‚È‚ç¬Œ÷”»’è‚ð•Ô‚·
 
 	GamePad& pad = input->GetGamePad();
 	return (pad.GetButtonDown() & GamePad::BTN_X);

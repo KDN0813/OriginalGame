@@ -219,12 +219,11 @@ void SceneResult::Render()
 {
 	// •`‰æ€”õ
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	graphics->PrepareRenderTargets();
 
 	// 2DƒXƒvƒ‰ƒCƒg•`‰æ
-	if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
 	{
+		SpriteShader::Instance sprite_shader = SpriteShader::GetInstance();
 		sprite_shader->Render();
 	}
 }

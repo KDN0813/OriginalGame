@@ -402,10 +402,10 @@ void SceneGame::ProcessGameState()
 			case CHANGE_SCENE_STATE::START:
 			{
 				// フェードイン準備
-				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
+				if (const auto& fade_controller = scene_manager->GetFadeControlle(); fade_controller.get())
 				{
-					fead_controlle->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::PLAYER_DEFEAT_FEAD_DURATION);
-					fead_controlle->FeadStart();
+					fade_controller->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::PLAYER_DEFEAT_FEAD_DURATION);
+					fade_controller->FeadStart();
 				}
 
 				// デスカメラに遷移
@@ -437,8 +437,8 @@ void SceneGame::ProcessGameState()
 	}
 	case GameData::GameStatus::VICTORY:	// プレイヤーの勝利
 	{
-		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
 		{
+			SceneManager::Instance scene_manager = SceneManager::GetInstance();
 			switch (this->change_state)
 			{
 			case CHANGE_SCENE_STATE::START:	// フェードイン準備
@@ -471,10 +471,8 @@ void SceneGame::ProcessGameState()
 	}
 	case GameData::GameStatus::RETURN_TO_TITLE: // タイトルに戻る
 	{
-		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
-		{
-			scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
-		}
+		SceneManager::Instance scene_manager = SceneManager::GetInstance();
+		scene_manager->ChangeScene(new SceneLoading(new SceneTitle));
 		break;
 	}
 	case GameData::GameStatus::RESTART:	// リスタート
@@ -494,6 +492,12 @@ void SceneGame::DebugDrawGUI()
 
 	// シェーダー
 	DrawShaderImGui();
+
+	// ゲームオブジェクト
+	{
+		GameObject::Instance game_object = GameObject::GetInstance();
+		game_object->DebugDrawGUI();
+	}
 
 	// ライトマネージャー
 	{

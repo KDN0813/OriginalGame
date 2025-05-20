@@ -46,7 +46,6 @@ Sprite::Sprite(const char* filename)
 	:texture(std::make_unique<Texture>(filename))
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	HRESULT hr = S_OK;

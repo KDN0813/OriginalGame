@@ -16,15 +16,13 @@ ScoreUIDefaultState::ScoreUIDefaultState()
 
 void ScoreUIDefaultState::Update(float elapsed_time)
 {
-    if (const auto onwer = GetOwner())
+    if (const auto owner = GetOwner())
     {
-        if (const auto& text_number = onwer->GetComponent(this->text_number_Wptr))
+        if (const auto& text_number = owner->GetComponent(this->text_number_Wptr))
         {
-            if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-            {
-                // ゲームデータのスコアを設定する
-                text_number->SetDrawValue(game_data->GetScore());
-            }
+            GameData::Instance game_data = GameData::GetInstance();
+            // ゲームデータのスコアを設定する
+            text_number->SetDrawValue(game_data->GetScore());
         }
     }
 }
@@ -39,11 +37,9 @@ void EndTimerUIDefaultState::Update(float elapsed_time)
     {
         if (const auto& text_number = onwer->GetComponent(this->text_number_Wptr))
         {
-            if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-            {
-                // ゲームデータのゲーム終了時間を設定する
-                text_number->SetDrawValue(static_cast<int>(game_data->GetGameEndTimer()));
-            }
+            GameData::Instance game_data = GameData::GetInstance();
+            // ゲームデータのゲーム終了時間を設定する
+            text_number->SetDrawValue(static_cast<int>(game_data->GetGameEndTimer()));
         }
     }
 }
@@ -100,16 +96,15 @@ void PlayerSpecialPointUIState::Update(float elapsed_time)
 
 float PlayerSpecialPointUIState::CalculateSpecialPointWidth()
 {
-    if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
+    GameObject::Instance game_object = GameObject::GetInstance();
+    if (const auto player = game_object->GetPlayer())
     {
-        if (const auto player = game_object->GetPlayer())
+        if (const auto& player_component = player->GetComponent(this->player_Wptr))
         {
-            if (const auto& player_component = player->GetComponent(this->player_Wptr))
-            {
-                return player_component->GetSpecialPoint() / player_component->GetSpecialPointMax();
-            }
+            return player_component->GetSpecialPoint() / player_component->GetSpecialPointMax();
         }
     }
+
     return 1.0f;
 }
 

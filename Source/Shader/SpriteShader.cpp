@@ -12,7 +12,6 @@ SpriteShader::SpriteShader()
 	:Singleton(this)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (graphics.Get() == nullptr)return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	HRESULT hr;
@@ -85,7 +84,6 @@ SpriteShader::SpriteShader()
 void SpriteShader::Render()
 {
     Graphics::Instance graphics = Graphics::GetInstance();
-    if (!graphics.Get()) return;
     ID3D11DeviceContext* const dc = graphics->GetDeviceContext();
 	if (!dc) return;
 
