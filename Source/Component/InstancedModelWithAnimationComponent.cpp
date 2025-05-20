@@ -200,7 +200,6 @@ void InstancedModelWithAnimationComponent::DrawDebugAnimationGUI()
 void InstancedModelWithAnimationComponent::DrawDebugPrimitive()
 {
     DebugManager::Instance debug_manager = DebugManager::GetInstance();
-    if (!debug_manager.Get()) return;
     DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();;
     
     for (auto& AABB_corners : AABB_corners_vec)

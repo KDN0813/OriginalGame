@@ -226,7 +226,6 @@ DebugPrimitiveRenderer::DebugPrimitiveRenderer(ID3D11Device* device)
 void DebugPrimitiveRenderer::Render()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11DeviceContext* context = graphics->GetDeviceContext();
 
 	// シェーダー設定
@@ -247,8 +246,8 @@ void DebugPrimitiveRenderer::Render()
 	// ビュープロジェクション行列作成
 	MYMATRIX View_projection{};
 
-	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
 		View_projection = camera_manager->GetViewProjectionMatrix();
 	}
 

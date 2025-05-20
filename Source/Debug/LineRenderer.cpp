@@ -148,10 +148,8 @@ LineRenderer::LineRenderer(ID3D11Device* device, UINT vertexCount)
 void LineRenderer::Render()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11DeviceContext* context = graphics->GetDeviceContext();
 	CameraManager::Instance camera_manager = CameraManager::GetInstance();
-	if (!camera_manager.Get()) return;
 
 	// シェーダー設定
 	context->VSSetShader(vertexShader.Get(), nullptr, 0);
@@ -160,7 +158,6 @@ void LineRenderer::Render()
 
 	// 定数バッファ設定
 	context->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
-	//context->PSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
 
 	// レンダーステート設定
 	const float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };

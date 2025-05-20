@@ -10,12 +10,10 @@ ModelAnimationComponent::ModelAnimationComponent(AnimationParam param , const ch
 	:param(param),default_param(param)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
 	// ƒŠƒ\[ƒX“Ç‚Ýž‚Ý
 	ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance();
-	if (!model_resource_manager.Get()) return;
 	auto model_resource = model_resource_manager->LoadModelResource(device, filename);
 	this->model_resource_Wptr = model_resource;
 

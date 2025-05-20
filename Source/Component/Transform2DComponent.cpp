@@ -296,7 +296,6 @@ void Transform2DComponent::DrawDebugGUI()
 void Transform2DComponent::DrawDebugPrimitive()
 {
 	DebugManager::Instance debug_manager = DebugManager::GetInstance();
-	if (!debug_manager.Get()) return;
 	DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();
 	this->sphere_world_position.SetCenter({ GetWorldPosition().x,GetWorldPosition().y,0.0f });
 	debug_render->DrawSphere(this->sphere_world_position);

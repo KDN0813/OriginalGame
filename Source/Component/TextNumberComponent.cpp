@@ -24,8 +24,8 @@ void TextNumberComponent::Start()
         
         float screen_width = {};
         float screen_height = {};
-        if (Graphics::Instance graphics = Graphics::GetInstance(); graphics.Get())
         {
+            Graphics::Instance graphics = Graphics::GetInstance();
             screen_width = graphics->GetScreenWidth();
             screen_height = graphics->GetScreenHeight();
         }
@@ -108,8 +108,8 @@ void TextNumberComponent::DrawDebugGUI()
     if (ImGui::InputInt("Draw Priority", &priority))
     {
         this->draw_priority = static_cast<PRIORITY>((priority < 0) ? 0 : priority);
-        if (SpriteShader::Instance manager = SpriteShader::GetInstance(); manager.Get())
         {
+            SpriteShader::Instance manager = SpriteShader::GetInstance();
             manager->SetShouldSort(true);
         }
     }

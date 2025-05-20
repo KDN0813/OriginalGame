@@ -10,7 +10,6 @@ ModelAnimationControlComponent::ModelAnimationControlComponent(InitAnimeParam in
 	:init_param(init_param), main_parts()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 }
 

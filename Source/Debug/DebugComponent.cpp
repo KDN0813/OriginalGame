@@ -30,7 +30,6 @@ void DebugComponent::DrawDebugPrimitive()
     if (!transform) return;
 
     DebugManager::Instance debug_manager = DebugManager::GetInstance();
-    if (!debug_manager.Get()) return;
     DebugPrimitiveRenderer* debug_primitive_render = debug_manager->GetDebugPrimitiveRenderer();
     if (!debug_primitive_render) return;
     debug_primitive_render->DrawSphere(transform->GetWorldPosition(), 1.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));

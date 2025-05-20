@@ -15,13 +15,11 @@
 ModelComponent::ModelComponent( const char* filename)
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 
-	// リソース読み込み
-	ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance();
-	if (model_resource_manager.Get())
+	// リソース読み込み	
 	{
+		ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance();
 		this->resource = model_resource_manager->LoadModelResource(device, filename);
 	}
 
@@ -153,7 +151,6 @@ void ModelComponent::DrawDebugGUI()
 void ModelComponent::DrawDebugPrimitive()
 {
 	DebugManager::Instance debug_manager = DebugManager::GetInstance();
-	if (!debug_manager.Get()) return;
 	DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer();;
 	for (auto& AABB_corners : AABB_corners_vec)
 	{

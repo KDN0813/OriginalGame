@@ -43,8 +43,8 @@ void InstancingModelShaderComponent::InstancingAdd()
     auto transform
         = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 
-    if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
     {
+        CameraManager::Instance camera_manager = CameraManager::GetInstance();
         const bool is_off_screen = (!camera_manager->IsAnyMeshAABBVisible(instancing_model->GetBoundingBoxs()));
         owner->SetIsOffScreen(is_off_screen);
         if (is_off_screen) return;

@@ -63,8 +63,8 @@ void SpecialGageComponent::Update(float elapsed_time)
 
 float SpecialGageComponent::CalculateSpecialPointWidth()
 {
-    if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
     {
+        GameObject::Instance game_object = GameObject::GetInstance();
         if (const auto player = game_object->GetPlayer())
         {
             if (const auto& player_component = player->GetComponent(this->player_Wptr))

@@ -29,11 +29,6 @@ PlayerComponent::PlayerComponent(PlayerParam param)
 
 PlayerComponent::~PlayerComponent()
 {
-    // 体力が実装できたら削除する
-    if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-    {
-        game_data->SetGameStatus(GameData::GameStatus::DEFEAT);
-    }
 }
 
 void PlayerComponent::Update(float elapsed_time)
@@ -134,16 +129,6 @@ void PlayerComponent::Move(float vx, float vz, float speed)
 
     if (auto movement = owner->GetComponent<MovementComponent>(movement_Wptr))
     {
-#ifdef _DEBUG
-        if (Input::Instance input = Input::GetInstance(); input.Get())
-        {
-            //if (input->GetGamePad().GetTriggerL())
-            //{
-            //    speed = debug_move_speed;
-            //}
-        }
-#endif // DEBUG
-
         movement->AddAccelerationXZ(vx * speed, vz * speed);
     }
 }
@@ -163,8 +148,8 @@ DirectX::XMFLOAT3 PlayerComponent::GetMoveVec() const
     // カメラ方向とスティックの入力値によって進行方向を計算する
     MYVECTOR3 Camera_right;
     MYVECTOR3 Camera_front;
-    if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
     {
+        CameraManager::Instance camera_manager = CameraManager::GetInstance();
         std::shared_ptr<CameraComponent> camera = camera_manager->GetCurrentCamera();
         Camera_right = camera->GetRight();
         Camera_front = camera->GetForward();

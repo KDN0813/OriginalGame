@@ -51,41 +51,37 @@ void Framework::Update(float elapsed_time)
 
 #ifdef _DEBUG
 	// キー入力によるデバッグ用機能
-	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
-		if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
-		{
-			const auto& game_pad = input->GetGamePad();
+		Input::Instance input = Input::GetInstance();
+		GameData::Instance game_data = GameData::GetInstance();
+		const auto& game_pad = input->GetGamePad();
 
-			// ImGui表示・非表示ボタン制御
-			if (GamePad::BTN_DEBUG_IMGUI & game_pad.GetButtonDown())
-			{
-				game_data->SetDrawImguiFlag(!game_data->GetDrawImguiFlag());
-			}
-			// デバッグプリミティブ表示・非表示ボタン制御
-			if (GamePad::BTN_DEBUG_PRIMITIVE & game_pad.GetButtonDown())
-			{
-				game_data->SetDrawDebugPrimitiveFlag(!game_data->GetDrawDebugPrimitiveFlag());
-			}
-			// タイトルに戻るボタン制御
-			if (GamePad::BTN_DEBUG_RETURN_TO_TITLE & game_pad.GetButtonDown())
-			{
-				// ただじ、ロード画面なら遷移しない
-				if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); (scene_manager.Get()&& !game_data->GetIsLoading()))
-				{
-					scene_manager->ChangeScene(new SceneTitle);
-				}
-			}
-			// 強制ゲーム終了ボタン
-			if (GamePad::BTN_DEBUG_FORCE_EXIT & game_pad.GetButtonDown())
-			{
-				game_data->CloseWindow();
-			}
-			// タイマーの停止
-			if (GamePad::BTN_DEBUG_STOP_TIMER & game_pad.GetButtonDown())
-			{
-				game_data->SetIsStopTimer(!game_data->GetIsStopTimer());
-			}
+		// ImGui表示・非表示ボタン制御
+		if (GamePad::BTN_DEBUG_IMGUI & game_pad.GetButtonDown())
+		{
+			game_data->SetDrawImguiFlag(!game_data->GetDrawImguiFlag());
+		}
+		// デバッグプリミティブ表示・非表示ボタン制御
+		if (GamePad::BTN_DEBUG_PRIMITIVE & game_pad.GetButtonDown())
+		{
+			game_data->SetDrawDebugPrimitiveFlag(!game_data->GetDrawDebugPrimitiveFlag());
+		}
+		// タイトルに戻るボタン制御
+		if (GamePad::BTN_DEBUG_RETURN_TO_TITLE & game_pad.GetButtonDown())
+		{
+			// ただじ、ロード画面なら遷移しない
+			SceneManager::Instance scene_manager = SceneManager::GetInstance();
+			scene_manager->ChangeScene(new SceneTitle);
+		}
+		// 強制ゲーム終了ボタン
+		if (GamePad::BTN_DEBUG_FORCE_EXIT & game_pad.GetButtonDown())
+		{
+			game_data->CloseWindow();
+		}
+		// タイマーの停止
+		if (GamePad::BTN_DEBUG_STOP_TIMER & game_pad.GetButtonDown())
+		{
+			game_data->SetIsStopTimer(!game_data->GetIsStopTimer());
 		}
 	}
 
@@ -105,7 +101,7 @@ void Framework::Update(float elapsed_time)
 void Framework::Render(float elapsed_time)
 {
 #ifdef _DEBUG
-	if (GameData::Instance game_data = GameData::GetInstance(); (game_data.Get() && game_data->GetDrawImguiFlag()))
+	if (GameData::Instance game_data = GameData::GetInstance(); (game_data->GetDrawImguiFlag()))
 	{
 		debug_manager.GetImGuiRenderer()->NewFrame();
 	}
@@ -114,7 +110,7 @@ void Framework::Render(float elapsed_time)
 	scene_manager.Render();
 
 #ifdef _DEBUG
-	if (GameData::Instance game_data = GameData::GetInstance(); (game_data.Get() && game_data->GetDrawImguiFlag()))
+	if (GameData::Instance game_data = GameData::GetInstance(); (game_data->GetDrawImguiFlag()))
 	{
 		DrawDebugGUI();
 		debug_manager.GetImGuiRenderer()->Render();
@@ -161,13 +157,11 @@ int Framework::Run()
 
 			if (IsPressedPauseKey())
 			{
-				if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
+				GameData::Instance game_data = GameData::GetInstance();
+				if (game_data->GetGameStatus() == GameData::GameStatus::GAME)
 				{
-					if (game_data->GetGameStatus() == GameData::GameStatus::GAME)
-					{
-						game_data->SetIsPause(!game_data->GetIsPause());
-						this->scene_manager.GetPauseObject()->SetIsActive(game_data->GetIsPause());	// pause用オブジェクトの(非)アクティブ化
-					}
+					game_data->SetIsPause(!game_data->GetIsPause());
+					this->scene_manager.GetPauseObject()->SetIsActive(game_data->GetIsPause());	// pause用オブジェクトの(非)アクティブ化
 				}
 			}
 

@@ -40,8 +40,8 @@ void MovementComponent::Update(float elapsed_time)
 	float lengthXZ_sq = Acceleration.LengthXZSq();
 	float max_accelerationXZ_sq = this->param.max_accelerationXZ * this->param.max_accelerationXZ;
 #ifdef _DEBUG
-	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
+		Input::Instance input = Input::GetInstance();
 		if (input->GetGamePad().GetTriggerL())
 		{
 			max_accelerationXZ_sq = PlayerComponent::debug_move_speed * PlayerComponent::debug_move_speed;
@@ -198,8 +198,6 @@ void MovementComponent::RaycastVsStage(std::shared_ptr<Object> owner,std::shared
 		return;
 	}
 	GameObject::Instance game_object = GameObject::GetInstance();
-	if (!game_object.Get()) return;
-
 	
 	std::shared_ptr<ModelComponent> stage_foor_model = nullptr;
 	if (auto stage_foor_object = game_object->GetStageFoor())

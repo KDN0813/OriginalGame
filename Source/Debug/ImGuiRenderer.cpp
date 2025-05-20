@@ -285,16 +285,11 @@ void ImGuiRenderer::NewFrame()
 void ImGuiRenderer::Render()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11DeviceContext* context = graphics->GetDeviceContext();
 
 	ImGui::Render();
 
 	ImDrawData* draw_data = ImGui::GetDrawData();
-
-	//UINT scissor_rects_count = D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
-	//D3D11_RECT scissor_rects[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
-	//context->RSGetScissorRects(&scissor_rects_count, scissor_rects);
 
 	// 頂点バッファ構築
 	if (vertex_buffer == nullptr || vertex_count < draw_data->TotalVtxCount)
