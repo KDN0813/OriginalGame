@@ -4,8 +4,6 @@
 
 void BaseSpriteComponent::Start()
 {
-    if (SpriteShader::Instance manager = SpriteShader::GetInstance(); manager.Get())
-    {
-        manager->AddSprite(shared_from_this());
-    }
+    SpriteShader::Instance manager = SpriteShader::GetInstance();
+    manager->AddSprite(shared_from_this());
 }

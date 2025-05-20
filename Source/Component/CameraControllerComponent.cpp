@@ -60,8 +60,8 @@ void CameraControllerGamepad::Update(float elapsed_time)
 	// 入力情報を取り出す
 	float ax{};
 	float ay{};
-	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
+		Input::Instance input = Input::GetInstance();	// 入力情報取得
 		GamePad& gamePad = input->GetGamePad();
 		ax = gamePad.GetAxisRX();
 		if (gamePad.GetTriggerR())
@@ -120,7 +120,6 @@ void CameraControllerDebug::Update(float elapsed_time)
 
 	// マウス情報取得
 	Input::Instance input = Input::GetInstance();
-	if (!input.Get()) return;
 	Mouse& mouse = input->GetMouse();
 	float moveX = (mouse.GetPositionX() - mouse.GetOldPositionX()) * 0.02f;
 	float moveY = (mouse.GetPositionY() - mouse.GetOldPositionY()) * 0.02f;

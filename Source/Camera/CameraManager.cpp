@@ -22,8 +22,8 @@ CameraManager::CameraManager()
     CameraComponent::CameraParam camera_param{};
     camera_param.fovY = DirectX::XMConvertToRadians(45.0f);
     // グラフィックスからアスペクト比を計算
-    if (Graphics::Instance graphics = Graphics::GetInstance(); graphics.Get())
     {
+        Graphics::Instance graphics = Graphics::GetInstance();
         camera_param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
     }
     camera_param.nearZ = 0.1f;
@@ -102,8 +102,8 @@ void CameraManager::Update(float elapsed_time)
 {
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)
     // デバッグカメラの切り替え
-    if (Input::Instance input = Input::GetInstance(); input.Get())
     {
+        Input::Instance input = Input::GetInstance();   // 入力情報取得
         auto mouse = input->GetMouse();
         if ((Mouse::BTN_MIDDLE & mouse.GetButtonDown()) && !(GetKeyState(VK_CONTROL) & 0x8000))
         {

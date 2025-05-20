@@ -4,7 +4,6 @@
 #include <vector>   // デバッグ時しか使用していない
 #endif // _DEBUG
 
-
 class GameData : public Singleton<GameData>
 {
 public:

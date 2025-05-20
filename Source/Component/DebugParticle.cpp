@@ -50,16 +50,16 @@ void DebugParticle::Update(float elapsed_time)
 void DebugParticle::PlayEffect(int type)
 {
     DirectX::XMFLOAT3 direction{};
-    if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
     {
+        CameraManager::Instance camera_manager = CameraManager::GetInstance();
         if (const auto& camera = camera_manager->GetCurrentCamera())
         {
             direction = camera->GetForward();
         }
     }
 
-    if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
     {
+        ParticleSystem::Instance particle_system = ParticleSystem::GetInstance();
         const float theta = MyMath::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
         const float range = MyMath::RandomRange(0.0f, this->effect_area_radius);
         const float height = MyMath::RandomRange(0.0f, this->effect_area_height);
@@ -124,8 +124,8 @@ void DebugParticle::DrawDebugGUI()
 
 void DebugParticle::DrawDebugPrimitive()
 {
-    if (DebugManager::Instance debug_manager = DebugManager::GetInstance(); debug_manager.Get())
     {
+        DebugManager::Instance debug_manager = DebugManager::GetInstance();
         if (DebugPrimitiveRenderer* debug_render = debug_manager->GetDebugPrimitiveRenderer())
         {
             debug_render->DrawCylinder(this->debug_cylinder_effect_area);

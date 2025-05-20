@@ -28,7 +28,6 @@ void CircleCollisionManager::EvaluateCollision(const std::shared_ptr<CircleColli
 void CircleCollisionManager::VsEnemy()
 {
 	GameObject::Instance game_object = GameObject::GetInstance();
-	if (!game_object.Get()) return;
 
 	// エネミーと接触判定を行うコリジョンの取得
 	for (const auto& collision_Wptr : this->vs_enemy_collision_Wptr_pool)
@@ -77,7 +76,6 @@ void CircleCollisionManager::VsEnemy()
 void CircleCollisionManager::VsPlayer()
 {
 	GameObject::Instance game_object = GameObject::GetInstance();
-	if (!game_object.Get()) return;
 
 	// プレイヤーと接触判定を行うコリジョンの取得
 	for (const auto& collision_Wptr : this->vs_player_collision_Wptr_pool)

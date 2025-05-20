@@ -48,9 +48,9 @@ private:
 	GameData						game_data;
 	Audio							audio;
 	SpriteShader					sprite_shader;
-	EffekseerSystem				effekseer_manager;
-	BOOL fullscreen_mode{ FALSE };
-	GameTimer				game_timer;
+	EffekseerSystem					effekseer_manager;
+	BOOL							fullscreen_mode{ FALSE };
+	GameTimer						game_timer;
 #ifdef _DEBUG
 public:
 	void DrawDebugGUI();

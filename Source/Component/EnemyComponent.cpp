@@ -151,8 +151,8 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 				// カメラの向取得
 				MYVECTOR3 Forward = MYVECTOR3(1.0f, 0.0f, 0.0f);
 				MYVECTOR3 Up = MYVECTOR3(0.0f, 1.0f, 0.0f);
-				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 				{
+					CameraManager::Instance camera_manager = CameraManager::GetInstance();
 					if (const auto& camera = camera_manager->GetCamera(CAMERA_TYPE::MAIN))
 					{
 						Forward = camera->GetForward();
@@ -166,8 +166,8 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 			}
 
 			// エフェクト再生
-			if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 			{
+				ParticleSystem::Instance particle_system = ParticleSystem::GetInstance();
 				particle_system->PlayEffect(
 					EFFECT_HIT,
 					pos,
@@ -194,8 +194,8 @@ void EnemyComponent::SetRandomTargetPosition()
 
 void EnemyComponent::SetTargetPositionByPlayer()
 {
-	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
+		GameObject::Instance game_object = GameObject::GetInstance();
 		const auto& player = game_object->GetPlayer();
 		if (!player) return;
 		const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
@@ -236,7 +236,6 @@ bool EnemyComponent::IsPlayerInMovementArea()
 
 	// プレイヤー取得
 	GameObject::Instance game_object = GameObject::GetInstance();
-	if (!game_object.Get()) return false;
 	const auto& player = game_object->GetPlayer();
 	if (!player) return false;
 
@@ -261,7 +260,6 @@ bool EnemyComponent::IsPlayerInAttackArea()
 
 	// プレイヤー取得
 	GameObject::Instance game_object = GameObject::GetInstance();
-	if (!game_object.Get()) return false;
 	const auto& player = game_object->GetPlayer();
 	if (!player) return false;
 	MYVECTOR3 Player_position{};
@@ -309,7 +307,6 @@ void EnemyComponent::DrawDebugGUI()
 void EnemyComponent::DrawDebugPrimitive()
 {
 	DebugManager::Instance debug_manager = DebugManager::GetInstance();
-	if (!debug_manager.Get()) return;
 	auto debug_render = debug_manager->GetDebugPrimitiveRenderer();
 
 	const auto& owner = GetOwner();
@@ -317,18 +314,9 @@ void EnemyComponent::DrawDebugPrimitive()
 	auto transform = owner->GetComponent<Transform3DComponent>(this->transform_Wptr);
 	if (!transform) return;
 	MYVECTOR3 Position = transform->GetWorldPosition();
-
-	// 目的地
-	//if (debug_render && !this->IsAtTarget())
-	//{
-	//	debug_render->DrawSphere(this->param.target_position, 1.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
-	//}
 	
 	if (debug_render)
-	{
-		// 移動範囲描画
-		//debug_render->DrawCylinder(this->param.spawn_point, this->param.territory_range, 2.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-		
+	{		
 		if (IsPlayerInMovementArea())
 		{
 			// 攻撃範囲

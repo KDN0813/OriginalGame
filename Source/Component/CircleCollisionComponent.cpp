@@ -76,10 +76,8 @@ void CircleCollisionComponent::Update(float elapsed_time)
 
 void CircleCollisionComponent::EvaluateCollision()
 {
-    if (CircleCollisionManager::Instance manager = CircleCollisionManager::GetInstance(); manager.Get())
-    {
-        manager->EvaluateCollision(shared_from_this());
-    }
+    CircleCollisionManager::Instance manager = CircleCollisionManager::GetInstance();
+    manager->EvaluateCollision(shared_from_this());
 }
 
 void CircleCollisionComponent::OnCollision(const std::shared_ptr<Object>& hit_object)

@@ -15,9 +15,11 @@
 InstancedModelWithAnimationComponent::InstancedModelWithAnimationComponent(InstancedModelParam param, const char* filename)
     :param(param), default_param(param)
 {
-    Graphics::Instance graphics = Graphics::GetInstance();
-    if (!graphics.Get()) return;
-    ID3D11Device* device = graphics->GetDevice();
+    ID3D11Device* device = nullptr;
+    {
+        Graphics::Instance graphics = Graphics::GetInstance();
+        device = graphics->GetDevice();
+    }
 
     if (ModelResourceManager::Instance model_resource_manager = ModelResourceManager::GetInstance(); model_resource_manager.Get())
     {
