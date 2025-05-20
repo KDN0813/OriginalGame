@@ -11,7 +11,7 @@
 #ifdef _DEBUG
 #include "Debug\DebugManager.h"
 #include "Debug\ImGuiHelper.h"
-#include "Object\GameObject.h"
+#include "Object\GameObjectRegistry.h"
 #endif // _DEBUG
 
 
@@ -253,7 +253,7 @@ void GridObjectManager::DrawDebugPrimitive()
     if (!debug_primitive_render) return;
 
     // ƒvƒŒƒCƒ„[Žæ“¾
-    GameObject::Instance game_object = GameObject::GetInstance();
+    GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
     const auto& player = game_object->GetPlayer();
     if (!player) return;
     const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);

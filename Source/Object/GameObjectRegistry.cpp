@@ -1,4 +1,4 @@
-#include "GameObject.h"
+#include "GameObjectRegistry.h"
 #ifdef _DEBUG
 #include "Debug/ImGuiHelper.h"
 #endif // DEBUG
@@ -7,12 +7,12 @@
 
 #include "Component\TransformComponent.h"
 
-GameObject::GameObject()
+GameObjectRegistry::GameObjectRegistry()
     :Singleton(this)
 {
 }
 
-void GameObject::Update()
+void GameObjectRegistry::Update()
 {
     // —LŒø‚Å‚È‚¢weak_ptr‚ðœ‹Ž‚·‚é
     this->enemy_Wptr_pool.erase(
@@ -24,7 +24,7 @@ void GameObject::Update()
         this->enemy_Wptr_pool.end());
 }
 
-void GameObject::AddCreateEnemy(float elapsed_time, ObjectManager& object_manager)
+void GameObjectRegistry::AddCreateEnemy(float elapsed_time, ObjectManager& object_manager)
 {
     if (!this->is_create_enemy) return;
 
@@ -39,7 +39,7 @@ void GameObject::AddCreateEnemy(float elapsed_time, ObjectManager& object_manage
     }
 }
 
-void GameObject::AddCreateEnemy(ObjectManager& object_manager)
+void GameObjectRegistry::AddCreateEnemy(ObjectManager& object_manager)
 {
     const auto& player = GetPlayer();
     if (!player) return;
@@ -67,7 +67,7 @@ void GameObject::AddCreateEnemy(ObjectManager& object_manager)
     }
 }
 
-void GameObject::EnemyAllClear()
+void GameObjectRegistry::EnemyAllClear()
 {
     for (auto& enemy_Wptr : this->enemy_Wptr_pool)
     {
@@ -79,7 +79,7 @@ void GameObject::EnemyAllClear()
 
 #ifdef _DEBUG
 
-void GameObject::DebugDrawGUI()
+void GameObjectRegistry::DebugDrawGUI()
 {
     if (ImGui::Begin("GameObject"))
     {

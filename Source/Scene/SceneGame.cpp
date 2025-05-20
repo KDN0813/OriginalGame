@@ -130,7 +130,7 @@ void SceneGame::Initialize()
 
 		// 敵
 		{
-			GameObject::Instance game_object = GameObject::GetInstance();
+			GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 			// ゲームオブジェクト設定
 			game_object->SetPlayer(player);
 			game_object->SetStageFloor(stage_floor);
@@ -259,7 +259,7 @@ void SceneGame::Update(float elapsed_time)
 	object_manager.Update(elapsed_time);
 
 	{
-		GameObject::Instance game_object = GameObject::GetInstance();
+		GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 		game_object->AddCreateEnemy(elapsed_time,this->object_manager);
 
 		// 更新処理
@@ -365,7 +365,7 @@ void SceneGame::ReStart()
 
 	// エネミーの削除
 	{
-		GameObject::Instance game_object = GameObject::GetInstance();
+		GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 		game_object->EnemyAllClear();
 	}
 
@@ -495,7 +495,7 @@ void SceneGame::DebugDrawGUI()
 
 	// ゲームオブジェクト
 	{
-		GameObject::Instance game_object = GameObject::GetInstance();
+		GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 		game_object->DebugDrawGUI();
 	}
 

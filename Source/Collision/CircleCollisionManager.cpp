@@ -1,5 +1,5 @@
 #include "CircleCollisionManager.h"
-#include "Object/GameObject.h"
+#include "Object/GameObjectRegistry.h"
 #include "Collision/CollisionParam.h"
 #include "Collision/Collision.h"
 #include "Object\Constant\PlayerConstant.h"
@@ -27,7 +27,7 @@ void CircleCollisionManager::EvaluateCollision(const std::shared_ptr<CircleColli
 
 void CircleCollisionManager::VsEnemy()
 {
-	GameObject::Instance game_object = GameObject::GetInstance();
+	GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 
 	// エネミーと接触判定を行うコリジョンの取得
 	for (const auto& collision_Wptr : this->vs_enemy_collision_Wptr_pool)
@@ -75,7 +75,7 @@ void CircleCollisionManager::VsEnemy()
 
 void CircleCollisionManager::VsPlayer()
 {
-	GameObject::Instance game_object = GameObject::GetInstance();
+	GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 
 	// プレイヤーと接触判定を行うコリジョンの取得
 	for (const auto& collision_Wptr : this->vs_player_collision_Wptr_pool)

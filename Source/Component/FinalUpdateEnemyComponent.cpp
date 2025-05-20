@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include "System\MyMath\MYVECTOR3.h"
-#include "Object\GameObject.h"
+#include "Object\GameObjectRegistry.h"
 #include "Object\Constant\StageConstant.h"
 #include "GridObjectManager\GridObjectManager.h"
 
@@ -20,7 +20,7 @@ void FinalUpdateEnemyComponent::Start()
     const float radius = character->GetRadius();
 
     // プレイヤーの半径取得
-    GameObject::Instance game_object = GameObject::GetInstance();
+    GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
     const auto& player = game_object->GetPlayer();
     if (!player) return;
     const auto& player_character = player->GetComponent<CharacterComponent>(this->player_character_Wptr);
@@ -43,7 +43,7 @@ void FinalUpdateEnemyComponent::Update(float elapsed_time)
     const float radius = character->GetRadius();
 
     // プレイヤー取得
-    GameObject::Instance game_object = GameObject::GetInstance();
+    GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
     const auto& player = game_object->GetPlayer();
     if (!player) return;
     // プレイヤーのトランスフォーム取得

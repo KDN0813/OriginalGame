@@ -2,7 +2,7 @@
 #include "Object\Object.h"
 #include "Object\Constant\UIConstant.h"
 #include "Object\Constant\PlayerConstant.h"
-#include "Object\GameObject.h"
+#include "Object\GameObjectRegistry.h"
 #include "System\GameData.h"
 
 #include "Component\TextNumberComponent.h"
@@ -55,7 +55,7 @@ void PlayerHPBarUIState::Update(float elapsed_time)
     const auto& sprite = owner->GetComponent(this->sprite_Wptr);
     if (!sprite) return;
 
-    GameObject::Instance game_object = GameObject::GetInstance();
+    GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
     const auto player = game_object->GetPlayer();
     if (!player) return;
     const auto& player_health = player->GetComponent(this->player_health_Wptr);
@@ -96,7 +96,7 @@ void PlayerSpecialPointUIState::Update(float elapsed_time)
 
 float PlayerSpecialPointUIState::CalculateSpecialPointWidth()
 {
-    GameObject::Instance game_object = GameObject::GetInstance();
+    GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
     if (const auto player = game_object->GetPlayer())
     {
         if (const auto& player_component = player->GetComponent(this->player_Wptr))
@@ -119,7 +119,7 @@ void PlayerSpecialPointFrameUIState::Update(float elapsed_time)
     const auto& sprite = owner->GetComponent(this->sprite_Wptr);
     if (!sprite) return;
 
-    GameObject::Instance game_object = GameObject::GetInstance();
+    GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
     const auto player = game_object->GetPlayer();
     if (!player) return;
     const auto& player_component = player->GetComponent(this->player_Wptr);
@@ -146,7 +146,7 @@ void SpinAttackDescriptionUIState::Update(float elapsed_time)
     const auto& sprite = onwer->GetComponent(this->sprite_Wptr);
     if (!sprite)return;
 
-    GameObject::Instance game_object = GameObject::GetInstance();
+    GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
     const auto& player = game_object->GetPlayer();
     if (!player)return;
     const auto& player_component = player->GetComponent(this->player_Wptr);

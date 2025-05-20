@@ -4,11 +4,12 @@
 
 class Transform3DComponent;
 
-class GameObject : public Singleton<GameObject>
+// ゲーム内の重要なオブジェクトを登録・参照するためのクラス
+class GameObjectRegistry : public Singleton<GameObjectRegistry>
 {
 public:
-    GameObject();
-    ~GameObject() {};
+    GameObjectRegistry();
+    ~GameObjectRegistry() {};
 
     // 更新処理
     // 主に削除されたエネミーをリストから消す処理

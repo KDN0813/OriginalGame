@@ -10,7 +10,7 @@
 #include "Shader\ParticleSystem.h"
 #include "Camera\CameraManager.h"
 #include "System\GameData.h"
-#include "Object\GameObject.h"
+#include "Object\GameObjectRegistry.h"
 #include "Object\Constant\EnemyConstant.h"
 
 #include "Component/TransformComponent.h"
@@ -118,7 +118,7 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 						this->param.add_special_point *= damage->GetPointRate();
 
 						// スペシャルポイント増加
-						GameObject::Instance game_object = GameObject::GetInstance();
+						GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 						if (const auto& player = game_object->GetPlayer())
 						{
 							if (const auto& player_component = player->GetComponent<PlayerComponent>())
@@ -195,7 +195,7 @@ void EnemyComponent::SetRandomTargetPosition()
 void EnemyComponent::SetTargetPositionByPlayer()
 {
 	{
-		GameObject::Instance game_object = GameObject::GetInstance();
+		GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 		const auto& player = game_object->GetPlayer();
 		if (!player) return;
 		const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
@@ -235,7 +235,7 @@ bool EnemyComponent::IsPlayerInMovementArea()
 	MYVECTOR3 Player_position{};					// プレイヤーの位置
 
 	// プレイヤー取得
-	GameObject::Instance game_object = GameObject::GetInstance();
+	GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 	const auto& player = game_object->GetPlayer();
 	if (!player) return false;
 
@@ -259,7 +259,7 @@ bool EnemyComponent::IsPlayerInAttackArea()
 	MYVECTOR3 Position = transform->GetWorldPosition();
 
 	// プレイヤー取得
-	GameObject::Instance game_object = GameObject::GetInstance();
+	GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 	const auto& player = game_object->GetPlayer();
 	if (!player) return false;
 	MYVECTOR3 Player_position{};

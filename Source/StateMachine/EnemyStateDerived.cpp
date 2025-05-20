@@ -1,7 +1,7 @@
 #include "EnemyStateDerived.h"
 #include <cmath>
 #include "Object\Object.h"
-#include "Object\GameObject.h"
+#include "Object\GameObjectRegistry.h"
 #include "Object\Constant\EnemyConstant.h"
 #include "System\MyMath\MyMathf.h"
 #include "System\MyMath\MYVECTOR3.h"

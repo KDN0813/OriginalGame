@@ -318,7 +318,7 @@
     <ClInclude Include="Source\Model\ModelCommonData.h">
       <Filter>Source\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Object\GameObject.h">
+    <ClInclude Include="Source\Object\GameObjectRegistry.h">
       <Filter>Source\Object</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\Collision.h">
@@ -656,7 +656,7 @@
     <ClCompile Include="Source\Input\Mouse.cpp">
       <Filter>Source\input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Object\GameObject.cpp">
+    <ClCompile Include="Source\Object\GameObjectRegistry.cpp">
       <Filter>Source\Object</Filter>
     </ClCompile>
     <ClCompile Include="Source\Debug\DebugPrimitiveRenderer.cpp">

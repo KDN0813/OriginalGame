@@ -1,7 +1,7 @@
 #include "SpecialGageComponent.h"
 
 #include "Object\Object.h"
-#include "Object\GameObject.h"
+#include "Object\GameObjectRegistry.h"
 #include "Object\Constant\UIConstant.h"
 
 #include "Component\SpriteComponent.h"
@@ -18,7 +18,7 @@ void SpecialGageComponent::Update(float elapsed_time)
     const auto& sprite = owner->GetComponent(this->sprite_Wptr);
     if (!sprite)return;
 
-    GameObject::Instance game_object = GameObject::GetInstance();
+    GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
     const auto player = game_object->GetPlayer();
     if (!player) return;
     const auto& player_component = player->GetComponent(this->player_Wptr);
@@ -64,7 +64,7 @@ void SpecialGageComponent::Update(float elapsed_time)
 float SpecialGageComponent::CalculateSpecialPointWidth()
 {
     {
-        GameObject::Instance game_object = GameObject::GetInstance();
+        GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
         if (const auto player = game_object->GetPlayer())
         {
             if (const auto& player_component = player->GetComponent(this->player_Wptr))

@@ -1,7 +1,7 @@
 #include <imgui.h>
 #include "MovementComponent.h"
 #include "Object/Object.h"
-#include "Object/GameObject.h"
+#include "Object/GameObjectRegistry.h"
 #include "Collision/Collision.h"
 #include "GridObjectManager\GridObjectManager.h"
 #include "Object\Constant\PlayerConstant.h"
@@ -197,7 +197,7 @@ void MovementComponent::RaycastVsStage(std::shared_ptr<Object> owner,std::shared
 		transform->AddLocalPosition(this->param.velocity);
 		return;
 	}
-	GameObject::Instance game_object = GameObject::GetInstance();
+	GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 	
 	std::shared_ptr<ModelComponent> stage_foor_model = nullptr;
 	if (auto stage_foor_object = game_object->GetStageFoor())
