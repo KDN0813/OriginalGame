@@ -62,8 +62,8 @@ void SceneGame::Initialize()
 	this->change_state = CHANGE_SCENE_STATE::START;
 
 	// ゲーム状態を設定
-	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
+		GameData::Instance game_data = GameData::GetInstance();
 		game_data->SetGameStatus(GameData::GameStatus::GAME);
 		game_data->SetScore(0);
 		game_data->RestGameTime();
@@ -130,22 +130,11 @@ void SceneGame::Initialize()
 
 		// 敵
 		{
-			if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
-			{
-				//for (int i = 0; i < EnemyConstant::ENEMY_MAX; ++i)
-				//{
-				//	const float player_area_rage = 50.0f;
-				//	const DirectX::XMFLOAT3 spawn_point = MyMath::GetRandomPointInRing(player_area_rage, EnemyConstant::DEFAULT_TERRITORY_RENGR);
-				//	const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, object_manager.Create(("enemy" + std::to_string(i)).c_str()));
-
-				//	game_object->SetEnemy(enemy);
-				//}
-
-				// ゲームオブジェクト設定
-				game_object->SetPlayer(player);
-				game_object->SetStageFloor(stage_floor);
-				game_object->SetStageWall(stage_wall);
-			}
+			GameObject::Instance game_object = GameObject::GetInstance();
+			// ゲームオブジェクト設定
+			game_object->SetPlayer(player);
+			game_object->SetStageFloor(stage_floor);
+			game_object->SetStageWall(stage_wall);
 		}
 
 		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
@@ -164,14 +153,14 @@ void SceneGame::Initialize()
 void SceneGame::Finalize()
 {
 	// オーディオのリセット
-	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 	{
+		Audio::Instance audio = Audio::GetInstance();
 		audio->AllClear();
 	}
 
 	// カメラのリセット
-	if(CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
 		camera_manager->Reset();
 	}
 
@@ -186,12 +175,12 @@ void SceneGame::Update(float elapsed_time)
 {
 	// ポーズ処理
 	{
-		if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 		{
+			GameData::Instance game_data = GameData::GetInstance();
 			if (game_data->GetIsPause())
 			{
-				if (Input::Instance input = Input::GetInstance(); input.Get())
 				{
+					Input::Instance input = Input::GetInstance();
 					const auto& game_pad = input->GetGamePad();
 
 					// (X)ゲームに戻る
@@ -240,8 +229,8 @@ void SceneGame::Update(float elapsed_time)
 	}
 
 #ifdef _DEBUG
-	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
+		Input::Instance input = Input::GetInstance();
 		const auto& game_pad = input->GetGamePad();
 
 		// デモ状態の設定・解除
@@ -269,9 +258,8 @@ void SceneGame::Update(float elapsed_time)
 
 	object_manager.Update(elapsed_time);
 
-
-	if(GameObject::Instance game_object = GameObject::GetInstance() ; game_object.Get())
 	{
+		GameObject::Instance game_object = GameObject::GetInstance();
 		game_object->AddCreateEnemy(elapsed_time,this->object_manager);
 
 		// 更新処理
@@ -279,25 +267,25 @@ void SceneGame::Update(float elapsed_time)
 		game_object->Update();
 	}
 
-	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
 		camera_manager->Update(elapsed_time);
 	}
 
-	if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 	{
+		Audio::Instance audio = Audio::GetInstance();
 		audio->Update();
 	}
 
-	if (CircleCollisionManager::Instance collision_manager = CircleCollisionManager::GetInstance(); collision_manager.Get())
 	{
+		CircleCollisionManager::Instance collision_manager = CircleCollisionManager::GetInstance();
 		collision_manager->VsEnemy();
 		collision_manager->VsPlayer();
 	}
 
 #ifdef _DEBUG
-	if (Input::Instance input = Input::GetInstance(); input.Get())
 	{
+		Input::Instance input = Input::GetInstance();
 		GamePad& game_pad = input->GetGamePad();
 		if (GamePad::BTN_DEBUG_GAME_RESET & game_pad.GetButtonDown())
 		{
@@ -309,8 +297,8 @@ void SceneGame::Update(float elapsed_time)
 	// ゲーム状態を処理する
 	ProcessGameState();
 
-	if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 	{
+		ParticleSystem::Instance particle_system = ParticleSystem::GetInstance();
 		particle_system->SetElapsedTime(elapsed_time);
 	}
 
@@ -319,9 +307,8 @@ void SceneGame::Update(float elapsed_time)
 
 void SceneGame::Render()
 {
-	Graphics::Instance graphics = Graphics::GetInstance();
-	if (graphics.Get())
 	{
+		Graphics::Instance graphics = Graphics::GetInstance();
 		graphics->PrepareRenderTargets(DirectX::XMFLOAT4(0.5f, 1.0f, 0.5f, 1.0f));
 	}
 
@@ -336,11 +323,11 @@ void SceneGame::Render()
 
 #ifdef _DEBUG
 	// 3Dデバッグ描画
-	if (GameData::Instance game_data = GameData::GetInstance(); (game_data.Get() && game_data->GetDrawDebugPrimitiveFlag()))
+	if (GameData::Instance game_data = GameData::GetInstance(); (game_data->GetDrawDebugPrimitiveFlag()))
 	{
 		object_manager.DrawDebugPrimitive();
-		if (DebugManager::Instance debug_manager = DebugManager::GetInstance(); debug_manager.Get())
 		{
+			DebugManager::Instance debug_manager = DebugManager::GetInstance();
 			debug_manager->GetDebugPrimitiveRenderer()->Render();
 		}
 	}
@@ -355,15 +342,15 @@ void SceneGame::Render()
 
 	// 2Dスプライト描画
 	{
-		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 		{
+			ParticleSystem::Instance particle_system = ParticleSystem::GetInstance();
 			particle_system->Update();
 			particle_system->Render();
 		}
 
 		// 2Dスプライト描画
-		if (SpriteShader::Instance sprite_shader = SpriteShader::GetInstance(); sprite_shader.Get())
 		{
+			SpriteShader::Instance sprite_shader = SpriteShader::GetInstance();
 			sprite_shader->Render();
 		}
 	}
@@ -377,21 +364,22 @@ void SceneGame::ReStart()
 	object_manager.ReStart();
 
 	// エネミーの削除
-	if (GameObject::Instance game_object = GameObject::GetInstance(); game_object.Get())
 	{
+		GameObject::Instance game_object = GameObject::GetInstance();
 		game_object->EnemyAllClear();
 	}
 
 	// ゲーム状態をデフォルトに設定
-	if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get())
 	{
+		GameData::Instance game_data = GameData::GetInstance();
 		game_data->SetGameStatus(GameData::GameStatus::GAME);
 		game_data->SetScore(0);			// スコアリセット
 		game_data->RestGameTime();		// 制限時間リセット
 	}
 
-	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+	// カメラをリセット
 	{
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
 		camera_manager->Reset();
 	}
 }
@@ -399,7 +387,6 @@ void SceneGame::ReStart()
 void SceneGame::ProcessGameState()
 {
 	GameData::Instance game_data = GameData::GetInstance();
-	if (!game_data.Get()) return;
 
 	// ゲーム状態を取得
 	const GameData::GameStatus& game_status = game_data->GetGameStatus();
@@ -408,8 +395,8 @@ void SceneGame::ProcessGameState()
 	{
 	case GameData::GameStatus::DEFEAT:	// プレイヤーの敗北
 	{
-		if (SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
 		{
+			SceneManager::Instance scene_manager = SceneManager::GetInstance();
 			switch (this->change_state)
 			{
 			case CHANGE_SCENE_STATE::START:
@@ -422,8 +409,8 @@ void SceneGame::ProcessGameState()
 				}
 
 				// デスカメラに遷移
-				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 				{
+					CameraManager::Instance camera_manager = CameraManager::GetInstance();
 					camera_manager->SetCurrentCamera(CAMERA_TYPE::DEATH);
 				}
 
@@ -432,10 +419,10 @@ void SceneGame::ProcessGameState()
 			break;
 			case CHANGE_SCENE_STATE::RUN:	// フェードイン待機
 			{
-				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
+				if (const auto& fade_controller = scene_manager->GetFadeControlle(); fade_controller.get())
 				{
-					// フェード中ならreturn
-					if (fead_controlle->GetIsActive()) return;
+					// フェード中なら return
+					if (fade_controller->GetIsActive()) return;
 
 					// シーン切り替え
 					scene_manager->ChangeScene(new SceneResult);
@@ -456,20 +443,20 @@ void SceneGame::ProcessGameState()
 			{
 			case CHANGE_SCENE_STATE::START:	// フェードイン準備
 			{
-				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
+				if (const auto& fade_controller = scene_manager->GetFadeControlle(); fade_controller.get())
 				{
-					fead_controlle->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::DEFAULT_FEAD_DURATION);
-					fead_controlle->FeadStart();
+					fade_controller->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::DEFAULT_FEAD_DURATION);
+					fade_controller->FeadStart();
 				}
 				this->change_state = CHANGE_SCENE_STATE::RUN;
 			}
 				break;
 			case CHANGE_SCENE_STATE::RUN:	// フェードイン待機
 			{
-				if (const auto& fead_controlle = scene_manager->GetFadeControlle(); fead_controlle.get())
+				if (const auto& fade_controller = scene_manager->GetFadeControlle(); fade_controller.get())
 				{
-					// フェード中ならreturn
-					if (fead_controlle->GetIsActive()) return;
+					// フェード中なら return
+					if (fade_controller->GetIsActive()) return;
 
 					// シーン切り替え
 					scene_manager->ChangeScene(new SceneResult);
@@ -509,14 +496,14 @@ void SceneGame::DebugDrawGUI()
 	DrawShaderImGui();
 
 	// ライトマネージャー
-	if (LightManager::Instance light_manager = LightManager::GetInstance(); light_manager.Get())
 	{
+		LightManager::Instance light_manager = LightManager::GetInstance();
 		light_manager->DrawDebugGUI();
 	}
 
 	// パーティクルシステム
-	if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 	{
+		ParticleSystem::Instance particle_system = ParticleSystem::GetInstance();
 		particle_system->DebugDrawGUI();
 	}
 

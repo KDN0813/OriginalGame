@@ -73,9 +73,9 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	}
 
 	// シェーダー設定
-	if (InstancingModelShader::Instance instancing_model_shader = InstancingModelShader::GetInstance(); instancing_model_shader.Get())
 	{
-		auto shader_component =
+		InstancingModelShader::Instance instancing_model_shader = InstancingModelShader::GetInstance();
+		const auto& shader_component =
 			enemy->AddComponent<InstancingModelShaderComponent>(instancing_model_shader.Get());
 	}
 

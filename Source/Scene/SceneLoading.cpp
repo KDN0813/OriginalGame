@@ -41,17 +41,17 @@ void SceneLoading::Initialize()
         }
     }
 
-    if (GameData::Instance game_data = GameData::GetInstance(); game_data.Get() != nullptr)
+    // ロード中フラグ立てる
     {
-        // ロード中フラグ立てる
+        GameData::Instance game_data = GameData::GetInstance();
         game_data->SetIsLoading(true);
     }
 
     // フェードを解除する
-    if(SceneManager::Instance scene_manager = SceneManager::GetInstance(); scene_manager.Get())
     {
-        if (const auto fade_controlle = scene_manager->GetFadeControlle())
-            fade_controlle->ClearFade();
+        SceneManager::Instance scene_manager = SceneManager::GetInstance();
+        if (const auto fade_controller = scene_manager->GetFadeControlle())
+            fade_controller->ClearFade();
     }
 }
 

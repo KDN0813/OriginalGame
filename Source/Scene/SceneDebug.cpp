@@ -22,7 +22,6 @@ SceneDebug::SceneDebug()
 void SceneDebug::Initialize()
 {
 	Graphics::Instance graphics = Graphics::GetInstance();
-	if (!graphics.Get()) return;
 	ID3D11Device* device = graphics->GetDevice();
 	// シェーダーの作成
 	{
@@ -58,13 +57,12 @@ void SceneDebug::Update(float elapsed_time)
 {
 	object_manager.Update(elapsed_time);
 
-	if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 	{
+		CameraManager::Instance camera_manager = CameraManager::GetInstance();
 		camera_manager->Update(elapsed_time);
 	}
-
-	if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
 	{
+		ParticleSystem::Instance particle_system = ParticleSystem::GetInstance();
 		particle_system->SetElapsedTime(elapsed_time);
 	}
 }
@@ -74,7 +72,6 @@ void SceneDebug::Render()
 	// 画面のクリア
 	{
 		Graphics::Instance graphics = Graphics::GetInstance();
-		if (!graphics.Get()) return;
 		graphics->PrepareRenderTargets();
 	}
 
@@ -90,11 +87,9 @@ void SceneDebug::Render()
 
 	// 2Dスプライト描画
 	{
-		if (ParticleSystem::Instance particle_system = ParticleSystem::GetInstance(); particle_system.Get())
-		{
-			particle_system->Update();
-			particle_system->Render();
-		}
+		ParticleSystem::Instance particle_system = ParticleSystem::GetInstance();
+		particle_system->Update();
+		particle_system->Render();
 	}
 }
 

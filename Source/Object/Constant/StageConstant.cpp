@@ -20,9 +20,9 @@ const std::shared_ptr<Object>& StageConstant::CreateStageFloor(const std::shared
 		auto transform = stage->AddComponent<Transform3DComponent>(param);
 	}
 	// シェーダー設定
-	if(ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())
 	{
-		auto shader_component =
+		ModelShader::Instance model_shader = ModelShader::GetInstance();
+		const auto& shader_component =
 			stage->AddComponent<ModelShaderComponent>(model_shader.Get());
 	}
 
@@ -41,9 +41,9 @@ const std::shared_ptr<Object>& StageConstant::CreateStageWall(const std::shared_
 		auto transform = object->AddComponent<Transform3DComponent>(param);
 	}
 	// シェーダー設定
-	if (ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())
 	{
-		auto shader_component =
+		ModelShader::Instance model_shader = ModelShader::GetInstance();
+		const auto& shader_component =
 			object->AddComponent<ModelShaderComponent>(model_shader.Get());
 	}
 

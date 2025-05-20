@@ -97,9 +97,9 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		player_component = player->AddComponent<PlayerComponent>(param);
 	}
 	// シェーダー設定
-	if (ModelShader::Instance model_shader = ModelShader::GetInstance(); model_shader.Get())
 	{
-			auto shader_component = player->AddComponent<ModelShaderComponent>(model_shader.Get());
+		ModelShader::Instance model_shader = ModelShader::GetInstance();
+		const auto& shader_component = player->AddComponent<ModelShaderComponent>(model_shader.Get());
 	}
 	// キャラクターステータス
 	{
@@ -124,23 +124,21 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			std::shared_ptr<Object> player_camera_object = player->CreateChildObject(PLAYER_CAMERA_NAME.GetString().c_str());
 			// カメラ設定
 			{
-				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
+				CameraManager::Instance camera_manager = CameraManager::GetInstance();
+				auto camera = player_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
+
+				CameraComponent::CameraParam param{};
+				param.rotateX = 0.8f;
+				param.range = 40.0f;
+				param.fovY = DirectX::XMConvertToRadians(45.0f);
+				// グラフィックスからアスペクト比を計算
 				{
-					auto camera = player_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::MAIN));
-				
-					CameraComponent::CameraParam param{};
-					param.rotateX = 0.8f;
-					param.range = 40.0f;
-					param.fovY = DirectX::XMConvertToRadians(45.0f);
-					// グラフィックスからアスペクト比を計算
-					if (Graphics::Instance graphics = Graphics::GetInstance(); graphics.Get())
-					{
-						param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
-					}
-					param.nearZ = 0.1f;
-					param.farZ = 1000.0f;
-					camera->SetDefaultParam(param);
+					Graphics::Instance graphics = Graphics::GetInstance();
+					param.aspect = graphics->GetScreenWidth() / graphics->GetScreenHeight();
 				}
+				param.nearZ = 0.1f;
+				param.farZ = 1000.0f;
+				camera->SetDefaultParam(param);
 			}
 			// カメラコントローラー設定
 			{
@@ -158,8 +156,8 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 
 			// カメラ設定
 			{
-				if (CameraManager::Instance camera_manager = CameraManager::GetInstance(); camera_manager.Get())
 				{
+					CameraManager::Instance camera_manager = CameraManager::GetInstance();
 					const auto camera_component = death_camera_object->AddComponent<CameraComponent>(camera_manager->GetCamera(CAMERA_TYPE::DEATH));
 				
 					camera_component->SetRange(15.0f);
