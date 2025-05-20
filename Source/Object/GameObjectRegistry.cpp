@@ -96,7 +96,7 @@ void GameObjectRegistry::DebugDrawGUI()
         if (ImGui::CollapsingHeader("Stage##GameObject"))
         {
             std::string object_name = "Not Object";
-            if (std::shared_ptr<Object> stage = this->stage_foor_Wptr.lock())
+            if (std::shared_ptr<Object> stage = this->stage_floor_Wptr.lock())
             {
                 object_name = stage->GetName();
             }

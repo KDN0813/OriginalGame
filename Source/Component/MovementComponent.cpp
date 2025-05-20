@@ -200,7 +200,7 @@ void MovementComponent::RaycastVsStage(std::shared_ptr<Object> owner,std::shared
 	GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
 	
 	std::shared_ptr<ModelComponent> stage_foor_model = nullptr;
-	if (auto stage_foor_object = game_object->GetStageFoor())
+	if (auto stage_foor_object = game_object->GetStageFloor())
 	{
 		stage_foor_model = stage_foor_object->GetComponent<ModelComponent>(this->stage_floor_model_Wptr);
 	}

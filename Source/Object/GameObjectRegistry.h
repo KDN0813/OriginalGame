@@ -17,11 +17,11 @@ public:
 
     // Šeíİ’èEæ“¾ŠÖ”
     void SetPlayer(std::shared_ptr<Object> player) { this->player_Wptr = player; };
-    void SetStageFloor(std::shared_ptr<Object> stage) { this->stage_foor_Wptr = stage; };
+    void SetStageFloor(std::shared_ptr<Object> stage) { this->stage_floor_Wptr = stage; };
     void SetStageWall(std::shared_ptr<Object> stage) { this->stage_wall_Wptr = stage; };
-    void SetEnemy(std::shared_ptr<Object> enenmy) { this->enemy_Wptr_pool.emplace_back(enenmy); };
+    void SetEnemy(std::shared_ptr<Object> enemy) { this->enemy_Wptr_pool.emplace_back(enemy); };
     std::shared_ptr<Object> GetPlayer() const { return this->player_Wptr.lock(); }
-    std::shared_ptr<Object> GetStageFoor() const { return this->stage_foor_Wptr.lock(); }
+    std::shared_ptr<Object> GetStageFloor() const { return this->stage_floor_Wptr.lock(); }
     std::shared_ptr<Object> GetStageWall() const { return this->stage_wall_Wptr.lock(); }
     const std::vector<std::weak_ptr<Object>>& GetEnemyWptPool() const { return this->enemy_Wptr_pool; };
     
@@ -33,7 +33,7 @@ public:
 private:
     std::weak_ptr<Object> player_Wptr;
     std::weak_ptr<Transform3DComponent> player_transform_Wptr;
-    std::weak_ptr<Object> stage_foor_Wptr;
+    std::weak_ptr<Object> stage_floor_Wptr;
     std::weak_ptr<Object> stage_wall_Wptr;
     std::vector<std::weak_ptr<Object>> enemy_Wptr_pool;
 
