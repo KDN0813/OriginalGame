@@ -10,7 +10,16 @@ class Transform3DComponent;
 class EnemySpawnerComponent : public Component
 {
 public:
-    EnemySpawnerComponent(const std::shared_ptr<ObjectManager>& manager);
+    struct Param
+    {
+        float create_cool_time_max;
+        float create_cool_time_min;
+        float create_cool_timer;    // 生成のクールタイム
+        bool is_create_enemy;
+    };
+
+public:
+    EnemySpawnerComponent(Param param);
     ~EnemySpawnerComponent() {};
 
     // 開始関数
@@ -18,7 +27,7 @@ public:
     // 終了関数
     void End()  override {};
     // リスタート処理
-    void ReStart() override {};      // パラメータの初期化
+    void ReStart() override { this->param = this->default_param; };      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override;
 
@@ -27,13 +36,14 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+    void SetObjectManager(const std::shared_ptr<ObjectManager>& manager) { this->object_manager_Wptr = manager; }
+private:
     void AddCreateEnemy(const std::shared_ptr<ObjectManager>& manager);
+    
 private:
     std::weak_ptr<ObjectManager> object_manager_Wptr;
-    float create_cool_time_max;
-    float create_cool_time_min;
-    float create_cool_timer;    // 生成のクールタイム
-    bool is_create_enemy;
+    Param param;
+    Param default_param;
 
 private:
     std::weak_ptr<Object> player_Wptr;

@@ -9,34 +9,24 @@
 
 #include "Component\TransformComponent.h"
 
-EnemySpawnerComponent::EnemySpawnerComponent(const std::shared_ptr<ObjectManager>& manager)
-    :object_manager_Wptr(manager)
-    , create_cool_time_max(3.0f)
-    , create_cool_time_min(5.0f)
-    , create_cool_timer()
-    , is_create_enemy
-    (
-#ifdef _DEBUG
-        true
-#else
-        true
-#endif // _DEBUG
-    )
+EnemySpawnerComponent::EnemySpawnerComponent(Param param)
+    : param(param)
+    , default_param(param)
 {
 }
 
 void EnemySpawnerComponent::Update(float elapsed_time)
 {
-    if (!this->is_create_enemy) return;
+    if (!this->param.is_create_enemy) return;
 
     // “G‚Ì¶¬
-    this->create_cool_timer -= elapsed_time;
-    if (this->create_cool_timer <= 0.0f)
+    this->param.create_cool_timer -= elapsed_time;
+    if (this->param.create_cool_timer <= 0.0f)
     {
         AddCreateEnemy(this->object_manager_Wptr.lock());
 
-        const float COOL_TIME = MyMath::RandomRange(this->create_cool_time_min, this->create_cool_time_max);
-        this->create_cool_timer = COOL_TIME;
+        const float COOL_TIME = MyMath::RandomRange(this->param.create_cool_time_min, this->param.create_cool_time_max);
+        this->param.create_cool_timer = COOL_TIME;
     }
 }
 

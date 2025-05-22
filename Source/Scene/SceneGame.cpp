@@ -103,6 +103,9 @@ void SceneGame::Initialize()
 		// 操作説明UI
 		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
+		// エネミースポナー作成
+		EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager);
+
 		// ステージ(床)
 		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));
 
@@ -111,9 +114,6 @@ void SceneGame::Initialize()
 
 		// プレイヤー
 		const auto& player = PlayerConstant::CreatePlayer(object_manager->Create("Player"));
-
-		// エネミースポナー作成
-		EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"),this->object_manager);
 
 #ifdef _DEBUG	// デバッグ用オブジェクト
 		{
