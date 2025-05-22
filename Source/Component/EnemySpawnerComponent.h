@@ -12,10 +12,9 @@ class EnemySpawnerComponent : public Component
 public:
     struct Param
     {
-        float create_cool_time_max;
-        float create_cool_time_min;
+        float create_cool_time_max; // 生成のクールタイム(最大値)
+        float create_cool_time_min; // 生成のクールタイム(最低値)
         float create_cool_timer;    // 生成のクールタイム
-        bool is_create_enemy;
     };
 
 public:
@@ -57,7 +56,7 @@ public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI()  override {};
+    void DrawDebugGUI()  override;
     /**
      * デバックの情報を3D画面上に出力する関数
      */

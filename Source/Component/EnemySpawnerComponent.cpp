@@ -1,5 +1,8 @@
 #include "EnemySpawnerComponent.h"
 
+#ifdef _DEBUG
+#include <imgui.h>
+#endif // _DEBUG
 #include "Object\Object.h"
 #include "Object\GameObjectRegistry.h"
 
@@ -17,8 +20,6 @@ EnemySpawnerComponent::EnemySpawnerComponent(Param param)
 
 void EnemySpawnerComponent::Update(float elapsed_time)
 {
-    if (!this->param.is_create_enemy) return;
-
     // “G‚Ì¶¬
     this->param.create_cool_timer -= elapsed_time;
     if (this->param.create_cool_timer <= 0.0f)
@@ -66,3 +67,20 @@ void EnemySpawnerComponent::AddCreateEnemy(const std::shared_ptr<ObjectManager>&
     }
 
 }
+
+#ifdef _DEBUG
+
+void EnemySpawnerComponent::DrawDebugGUI()
+{
+    if (ImGui::InputFloat("Create Cool Time Max", &this->param.create_cool_time_max))
+    {
+        this->param.create_cool_time_max = (std::min)(this->param.create_cool_time_max, 0.0f);
+    }
+    if (ImGui::InputFloat("Create Cool Time Min", &this->param.create_cool_time_min))
+    {
+        this->param.create_cool_time_min = (std::min)(this->param.create_cool_time_min, 0.0f);
+    }
+    ImGui::SliderFloat("Cool Time", &this->param.create_cool_timer, 0.0f, this->param.create_cool_time_max);
+}
+
+#endif // _DEBUG
