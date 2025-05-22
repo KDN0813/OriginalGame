@@ -134,6 +134,7 @@
     <ClInclude Include="Source\Component\DamageComponent.h" />
     <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Component\EffekseerComponent.h" />
+    <ClInclude Include="Source\Component\EnemySpawnerComponent.h" />
     <ClInclude Include="Source\Component\FadeControllerComponent.h" />
     <ClInclude Include="Source\Component\InstancedModelWithAnimationComponent.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
@@ -232,7 +233,6 @@
     <ClInclude Include="Source\System\MyMath\MYVECTOR3.h" />
     <ClInclude Include="Source\System\MyMath\MYVECTOR4.h" />
     <ClInclude Include="Source\System\MySequenceVector.h" />
-    <ClInclude Include="Source\System\PauseManager.h" />
     <ClInclude Include="Source\Texture\Texture.h" />
   </ItemGroup>
   <ItemGroup>
@@ -254,6 +254,7 @@
     <ClCompile Include="Source\Component\BaseSpriteComponent.cpp" />
     <ClCompile Include="Source\Component\DamageComponent.cpp" />
     <ClCompile Include="Source\Component\DebugParticle.cpp" />
+    <ClCompile Include="Source\Component\EnemySpawner.cpp" />
     <ClCompile Include="Source\Component\FadeControllerComponent.cpp" />
     <ClCompile Include="Source\Component\InstancedModelWithAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
@@ -333,7 +334,6 @@
     <ClCompile Include="Source\System\GameTimer.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp" />
-    <ClCompile Include="Source\System\PauseManager.cpp" />
     <ClCompile Include="Source\Texture\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -226,6 +226,9 @@
     <Filter Include="Source\Component\Effekseer">
       <UniqueIdentifier>{e482852e-ebae-40ac-8d0f-61b74cfe86e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\Enemy\Spawner">
+      <UniqueIdentifier>{240f7812-f691-4ec7-af73-debd0573dddd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -597,7 +600,7 @@
     <ClInclude Include="Source\Component\EffekseerComponent.h">
       <Filter>Source\Component\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\PauseManager.h" />
+    <ClInclude Include="Source\Component\EnemySpawnerComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -894,7 +897,7 @@
     <ClCompile Include="Source\System\GameTimer.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\PauseManager.cpp">
+    <ClCompile Include="Source\Component\EnemySpawner.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
