@@ -254,7 +254,7 @@
     <ClCompile Include="Source\Component\BaseSpriteComponent.cpp" />
     <ClCompile Include="Source\Component\DamageComponent.cpp" />
     <ClCompile Include="Source\Component\DebugParticle.cpp" />
-    <ClCompile Include="Source\Component\EnemySpawner.cpp" />
+    <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp" />
     <ClCompile Include="Source\Component\FadeControllerComponent.cpp" />
     <ClCompile Include="Source\Component\InstancedModelWithAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />

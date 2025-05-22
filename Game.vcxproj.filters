@@ -600,7 +600,9 @@
     <ClInclude Include="Source\Component\EffekseerComponent.h">
       <Filter>Source\Component\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\EnemySpawnerComponent.h" />
+    <ClInclude Include="Source\Component\EnemySpawnerComponent.h">
+      <Filter>Source\Component\Enemy\Spawner</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -897,8 +899,8 @@
     <ClCompile Include="Source\System\GameTimer.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\EnemySpawner.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp">
+      <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

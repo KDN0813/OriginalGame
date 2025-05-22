@@ -16,6 +16,7 @@
 #include "Component\InstancingModelShaderComponent.h"
 #include "Component\CircleCollisionComponent.h"
 #include "Component\StateMachineComponent.h"
+#include "Component\EnemySpawnerComponent.h"
 
 const MyHash EnemyConstant::ATTACK_OBJECT_NAME = MyHash("EnemyAttackObject");
 
@@ -147,4 +148,19 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	}
 
 	return enemy;
+}
+
+const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shared_ptr<Object>& object, const std::shared_ptr<ObjectManager>& object_manager)
+{
+	// Transform3DComponent
+	{
+		Transform3DComponent::Transform3DParam param{};
+		object->AddComponent<Transform3DComponent>(param);
+	}
+	// EnemySpawnerComponent
+	{
+		object->AddComponent<EnemySpawnerComponent>(object_manager);
+	}
+
+	return object;
 }

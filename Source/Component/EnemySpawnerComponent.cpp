@@ -17,7 +17,7 @@ EnemySpawnerComponent::EnemySpawnerComponent(const std::shared_ptr<ObjectManager
     , is_create_enemy
     (
 #ifdef _DEBUG
-        false
+        true
 #else
         true
 #endif // _DEBUG

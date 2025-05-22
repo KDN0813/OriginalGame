@@ -71,47 +71,55 @@ void SceneGame::Initialize()
 
 	// シェーダーの作成
 	{
-		instancing_model_shader = std::make_unique<InstancingModelShader>();
-		model_shader = std::make_unique<ModelShader>();
-		sky_box = std::make_unique<SkyBox>();
+		this->instancing_model_shader = std::make_unique<InstancingModelShader>();
+		this->model_shader = std::make_unique<ModelShader>();
+		this->sky_box = std::make_unique<SkyBox>();
 	}
 
 	// パーティクルシステムのテクスチャロード
 	{
-		particle_system.LoadTexture("Data/Effect/Texture/particle.png");
+		this->particle_system.LoadTexture("Data/Effect/Texture/particle.png");
+	}
+
+	// object_managerの作成
+	{
+		this->object_manager = std::make_unique<ObjectManager>();
 	}
 
 	// オブジェクト作成
 	{
 		// スコア表示用オブジェクト
-		UIConstant::CreateScoreUI(object_manager.Create("Score"));
+		UIConstant::CreateScoreUI(object_manager->Create("Score"));
 
 		// ゲーム時間表示オブジェクト
-		UIConstant::CreateGameTimerUI(object_manager.Create("GameTimer"));
+		UIConstant::CreateGameTimerUI(object_manager->Create("GameTimer"));
 
 		// プレイヤー体力ゲージオブジェクト
-		UIConstant::CreatePlayerHpBarUI(object_manager.Create("PlayerHpBar"));
+		UIConstant::CreatePlayerHpBarUI(object_manager->Create("PlayerHpBar"));
 
 		// プレイヤーのスペシャルゲージ
-		UIConstant::CreatePlayerSpecialBar(object_manager.Create("SpecialBar"));
+		UIConstant::CreatePlayerSpecialBar(object_manager->Create("SpecialBar"));
 
 		// 操作説明UI
-		UIConstant::CreateDescriptionUI(object_manager.Create("DescriptionUI"));
+		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
 		// ステージ(床)
-		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager.Create("StageFloor"));
+		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));
 
 		// ステージ(壁)
-		const auto& stage_wall = StageConstant::CreateStageWall(object_manager.Create("StageWall"));
+		const auto& stage_wall = StageConstant::CreateStageWall(object_manager->Create("StageWall"));
 
 		// プレイヤー
-		const auto& player = PlayerConstant::CreatePlayer(object_manager.Create("Player"));
+		const auto& player = PlayerConstant::CreatePlayer(object_manager->Create("Player"));
+
+		// エネミースポナー作成
+		EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"),this->object_manager);
 
 #ifdef _DEBUG	// デバッグ用オブジェクト
 		{
 			// パーティクル再生用オブジェクト
 			{
-				this->debug_Particle = object_manager.Create("Debug Particle");
+				this->debug_Particle = object_manager->Create("Debug Particle");
 				this->debug_Particle->SetIsActive(false);
 
 				// transform
@@ -128,10 +136,9 @@ void SceneGame::Initialize()
 		}
 #endif // _DEBUG
 
-		// 敵
+		// GameObjectRegistryに設定
 		{
 			GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
-			// ゲームオブジェクト設定
 			game_object->SetPlayer(player);
 			game_object->SetStageFloor(stage_floor);
 			game_object->SetStageWall(stage_wall);
@@ -256,11 +263,11 @@ void SceneGame::Update(float elapsed_time)
 		}
 	}
 
-	object_manager.Update(elapsed_time);
+	object_manager->Update(elapsed_time);
 
 	{
 		GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
-		game_object->AddCreateEnemy(elapsed_time,this->object_manager);
+		//game_object->AddCreateEnemy(elapsed_time,this->object_manager);
 
 		// 更新処理
 		// 主に削除されたエネミーをリストから消す処理
@@ -325,7 +332,7 @@ void SceneGame::Render()
 	// 3Dデバッグ描画
 	if (GameData::Instance game_data = GameData::GetInstance(); (game_data->GetDrawDebugPrimitiveFlag()))
 	{
-		object_manager.DrawDebugPrimitive();
+		object_manager->DrawDebugPrimitive();
 		{
 			DebugManager::Instance debug_manager = DebugManager::GetInstance();
 			debug_manager->GetDebugPrimitiveRenderer()->Render();
@@ -361,7 +368,7 @@ void SceneGame::ReStart()
 	// シーン遷移用ステート変数の初期化
 	this->change_state = CHANGE_SCENE_STATE::START;
 
-	object_manager.ReStart();
+	object_manager->ReStart();
 
 	// エネミーの削除
 	{
@@ -488,7 +495,7 @@ void SceneGame::ProcessGameState()
 
 void SceneGame::DebugDrawGUI()
 {
-	this->object_manager.DrawDebugGUI();
+	this->object_manager->DrawDebugGUI();
 
 	// シェーダー
 	DrawShaderImGui();
