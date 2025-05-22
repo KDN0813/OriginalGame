@@ -597,6 +597,7 @@
     <ClInclude Include="Source\Component\EffekseerComponent.h">
       <Filter>Source\Component\Effekseer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\PauseManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -892,6 +893,9 @@
     </ClCompile>
     <ClCompile Include="Source\System\GameTimer.cpp">
       <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\PauseManager.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

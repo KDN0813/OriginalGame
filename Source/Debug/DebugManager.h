@@ -14,6 +14,9 @@ public:
 
     ImGuiRenderer* GetImGuiRenderer() const { return this->imGui_renderer.get(); }
     DebugPrimitiveRenderer* GetDebugPrimitiveRenderer() const { return this->debug_primitive_renderer.get(); }
+
+    // キー入力によるデバッグ用機能
+    void HandleFunctionKeyDebug();
 private:
     std::unique_ptr<ImGuiRenderer> imGui_renderer;
     std::unique_ptr<DebugPrimitiveRenderer> debug_primitive_renderer;

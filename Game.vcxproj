@@ -232,6 +232,7 @@
     <ClInclude Include="Source\System\MyMath\MYVECTOR3.h" />
     <ClInclude Include="Source\System\MyMath\MYVECTOR4.h" />
     <ClInclude Include="Source\System\MySequenceVector.h" />
+    <ClInclude Include="Source\System\PauseManager.h" />
     <ClInclude Include="Source\Texture\Texture.h" />
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +333,7 @@
     <ClCompile Include="Source\System\GameTimer.cpp" />
     <ClCompile Include="Source\System\Logger.cpp" />
     <ClCompile Include="Source\System\MyMath\MyMathf.cpp" />
+    <ClCompile Include="Source\System\PauseManager.cpp" />
     <ClCompile Include="Source\Texture\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
