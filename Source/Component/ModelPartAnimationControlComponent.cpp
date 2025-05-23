@@ -79,7 +79,6 @@ void ModelPartAnimationControlComponent::UpdateAnimation(PartsParam& parts, floa
 		}
 		//　ブレンド率計算
 		blend_rate = parts.anime_param.animation_blend_time / parts.anime_param.animation_blend_seconds;
-		blend_rate *= blend_rate;
 	}
 
 	const std::vector<ModelResource::Animation>& animations = model_resource->GetAnimations();
