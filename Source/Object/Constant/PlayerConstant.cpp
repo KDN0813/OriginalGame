@@ -26,6 +26,10 @@
 
 #include "StateMachine\PlayerStateDerived.h"
 
+// TODO ハイプロ用
+#include "Component\DebugCharacterComponent.h"
+#include "Component\ModelPartAnimationControlComponent.h"
+
 const MyHash PlayerConstant::PLAYER_CAMERA_NAME = MyHash("PlayerCamera");
 const MyHash PlayerConstant::DEATH_CAMERA_NAME = MyHash("DeathCamera");
 const MyHash PlayerConstant::ATTACK01_OBJECT_NAME = MyHash("Attack01Object");
@@ -326,4 +330,39 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	}
 
 	return player;
+}
+
+const std::shared_ptr<Object>& PlayerConstant::CreateDebugPlayer(const std::shared_ptr<Object>& object)
+{
+	// トランスフォーム設定
+	{
+		const float half_cell_size = GridObjectManager::HALF_CELL_SIZE;
+
+		Transform3DComponent::Transform3DParam param{};
+		param.local_scale = DirectX::XMFLOAT3(0.036f, 0.036f, 0.036f);
+		param.local_position = DirectX::XMFLOAT3(6.0f, StageConstant::STAGE_FLOOR_Y, 0.0f);
+		param.local_angle = {};
+		const auto& transform = object->AddComponent<Transform3DComponent>(param);
+	}
+	// シェーダー設定
+	{
+		ModelShader::Instance model_shader = ModelShader::GetInstance();
+		const auto& shader_component = object->AddComponent<ModelShaderComponent>(model_shader.Get());
+	}
+	// モデル設定
+	{
+		auto model = object->AddComponent<ModelComponent>("Data/Model/Player/Player.mdl");
+	}
+	// アニメーション設定
+	{
+		ModelPartAnimationControlComponent::InitAnimeParam param{};
+		param.init_anime_index = PlayerConstant::IDLE;
+		param.init_anime_loop = true;
+		const auto& model_animation = object->AddComponent<ModelPartAnimationControlComponent>(param);
+	}
+	// DebugCharacterComponent
+	{
+		object->AddComponent<DebugCharacterComponent>();
+	}
+	return object;
 }

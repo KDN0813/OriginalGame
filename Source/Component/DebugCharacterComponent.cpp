@@ -8,9 +8,9 @@
 void DebugCharacterComponent::Update(float elapsed_time)
 {
     const auto& owner = GetOwner();
-    if (owner)return;
+    if (!owner)return;
     const auto& animation = owner->GetComponent(this->animation_Wptr);
-    if (animation)return;
+    if (!animation)return;
 
     // ˆÚ“®ƒAƒjƒÄ¶
     if (GetKeyState('I') & 0x8000)

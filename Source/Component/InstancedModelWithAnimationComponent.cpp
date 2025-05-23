@@ -82,7 +82,7 @@ void InstancedModelWithAnimationComponent::PlayAnimation(int animeIndex, bool lo
 {
     if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
 
-    // ハイプロ用
+    // TODO ハイプロ用
     if (this->param.anime_index == animeIndex)return;
 
     this->param.current_animation_seconds = 0;;

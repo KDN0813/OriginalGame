@@ -54,7 +54,7 @@ public:
     static const std::shared_ptr<Object>& CreateEnemySpawner(const std::shared_ptr<Object>&, const std::shared_ptr<ObjectManager>& object_manager);
 
 #ifdef _DEBUG
-    // ハイプロ用デバッグエネミー
+    // TODO ハイプロ用デバッグエネミー
     static const std::shared_ptr<Object>& CreateDebugEnemy(const std::shared_ptr<Object>&);
 #endif // _DEBUG
 };

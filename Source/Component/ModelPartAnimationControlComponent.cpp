@@ -192,6 +192,9 @@ void ModelPartAnimationControlComponent::UpdateAnimation(PartsParam& parts, floa
 
 void ModelPartAnimationControlComponent::PlayAnimation(int index, bool loop, float blend_seconds)
 {
+	// TODO ハイプロ用
+	if (index == this->main_parts.anime_param.current_animation_index) return;
+
 	this->main_parts.anime_param.current_animation_index = index;
 	this->main_parts.anime_param.current_animation_seconds = 0.0f;
 

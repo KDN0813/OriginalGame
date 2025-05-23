@@ -40,4 +40,10 @@ public:
     static constexpr float DAMAGE_FLASH_TIME = 0.1f;
 public:
     static const std::shared_ptr<Object>& CreatePlayer(const std::shared_ptr<Object>& object);
+    
+#ifdef _DEBUG
+    // TODO ハイプロ用
+    static const std::shared_ptr<Object>& CreateDebugPlayer(const std::shared_ptr<Object>& object);
+#endif // _DEBUG
+
 };

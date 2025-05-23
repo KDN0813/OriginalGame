@@ -19,6 +19,7 @@
 #include "Component\EnemySpawnerComponent.h"
 
 #ifdef _DEBUG
+// TODO ハイプロ用
 #include "Component\DebugCharacterComponent.h"
 #endif // _DEBUG
 
