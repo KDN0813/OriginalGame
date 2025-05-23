@@ -22,6 +22,8 @@ public:
 	{
 		UINT anime_index = 0;
 		float current_animation_seconds = 0.0f;		// 現在の再生時間
+		UINT old_anime_index = 0;
+		float old_current_animation_seconds = 0.0f;	// 前回の再生時間
 		int anime_speed = 1;
 		bool anime_loop = false;
 		bool anime_play = false;					// アニメーションが再生中であるか
