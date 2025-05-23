@@ -141,13 +141,19 @@ UINT InstancedModelWithAnimationComponent::GetAnimeFrame()
 
 UINT InstancedModelWithAnimationComponent::GetOldAnimeFrame()
 {
-    const auto& animation = this->model_resource->GetAnimations()[this->param.old_anime_index];
-    const UINT animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.old_anime_index];
+    // TODO ハイプロ 改善できそう
+    // ブレンドしない場合は現在のフレーム送る
+    const int anime_index = (this->param.animation_blend_time <= 0.0f) ? this->param.anime_index : this->param.old_anime_index;
+
+    const auto& animation = this->model_resource->GetAnimations()[anime_index];
+    const UINT animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[anime_index];
     const float animation_frame_max_float = static_cast<float>(animation_frame_max);
     const float animation_length = animation.seconds_length;
-    const float old_current_seconds = (std::min)(this->param.old_current_animation_seconds, animation_length);
+    
+    float current_seconds = (this->param.animation_blend_time <= 0.0f) ? this->param.current_animation_seconds : this->param.old_current_animation_seconds;
+    current_seconds = (std::min)(this->param.old_current_animation_seconds, animation_length);
 
-    return static_cast<UINT>(animation_frame_max_float * (old_current_seconds / animation_length));
+    return static_cast<UINT>(animation_frame_max_float * (current_seconds / animation_length));
 }
 
 UINT InstancedModelWithAnimationComponent::GetAnimationStartOffset()
@@ -157,7 +163,9 @@ UINT InstancedModelWithAnimationComponent::GetAnimationStartOffset()
 
 UINT InstancedModelWithAnimationComponent::GetOldAnimationStartOffset()
 {
-    return this->instancing_model_resource->GetAnimationOffsets()[this->param.old_anime_index];
+    // TODO ハイプロ 改善できそう
+    // ブレンドしない場合は現在のアニメのoffset送る
+    return this->instancing_model_resource->GetAnimationOffsets()[(this->param.animation_blend_time <= 0.0f) ? this->param.anime_index : this->param.old_anime_index];
 }
 
 int InstancedModelWithAnimationComponent::GetModelId()
