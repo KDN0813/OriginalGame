@@ -82,6 +82,9 @@ void InstancedModelWithAnimationComponent::PlayAnimation(int animeIndex, bool lo
 {
     if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
 
+    // ハイプロ用
+    if (this->param.anime_index == animeIndex)return;
+
     this->param.current_animation_seconds = 0;;
     this->param.anime_index = animeIndex;
     this->param.anime_loop = loop;

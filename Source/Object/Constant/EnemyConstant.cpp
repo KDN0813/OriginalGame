@@ -18,6 +18,11 @@
 #include "Component\StateMachineComponent.h"
 #include "Component\EnemySpawnerComponent.h"
 
+#ifdef _DEBUG
+#include "Component\DebugCharacterComponent.h"
+#endif // _DEBUG
+
+
 const MyHash EnemyConstant::ATTACK_OBJECT_NAME = MyHash("EnemyAttackObject");
 
 const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<Object>& enemy)
@@ -150,6 +155,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	return enemy;
 }
 
+#include "Object\Constant\PlayerConstant.h"
 const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shared_ptr<Object>& object, const std::shared_ptr<ObjectManager>& object_manager)
 {
 	// Transform3DComponent
@@ -169,6 +175,38 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shar
 #ifdef _DEBUG
 	object->SetIsActive(false);
 #endif // _DEBUG
+
+	return object;
+}
+
+const std::shared_ptr<Object>& EnemyConstant::CreateDebugEnemy(const std::shared_ptr<Object>& object)
+{
+	// Transform3DComponent
+	{
+		Transform3DComponent::Transform3DParam param{};
+		param.local_position = DirectX::XMFLOAT3(0.0f, StageConstant::STAGE_FLOOR_Y, 0.0f);
+		param.local_scale = DirectX::XMFLOAT3(0.036f, 0.036f, 0.036f);
+		object->AddComponent<Transform3DComponent>(param);
+	} 
+	// DebugCharacterComponent
+	{
+		object->AddComponent<DebugCharacterComponent_I>();
+	}
+	// モデル設定
+	{
+		InstancedModelWithAnimationComponent::InstancedModelParam param;
+		param.anime_index = PlayerConstant::ANIMATION::IDLE;
+		param.anime_loop = true;
+		param.anime_play = true;
+
+		object->AddComponent<InstancedModelWithAnimationComponent>(param, "Data/Model/Player/Player.mdl");
+	}
+	// シェーダー設定
+	{
+		InstancingModelShader::Instance instancing_model_shader = InstancingModelShader::GetInstance();
+		const auto& shader_component =
+			object->AddComponent<InstancingModelShaderComponent>(instancing_model_shader.Get());
+	}
 
 	return object;
 }

@@ -52,4 +52,9 @@ public:
     static const std::shared_ptr<Object>& CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>&);
 
     static const std::shared_ptr<Object>& CreateEnemySpawner(const std::shared_ptr<Object>&, const std::shared_ptr<ObjectManager>& object_manager);
+
+#ifdef _DEBUG
+    // ハイプロ用デバッグエネミー
+    static const std::shared_ptr<Object>& CreateDebugEnemy(const std::shared_ptr<Object>&);
+#endif // _DEBUG
 };

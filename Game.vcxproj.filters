@@ -603,6 +603,9 @@
     <ClInclude Include="Source\Component\EnemySpawnerComponent.h">
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\DebugCharacterComponent.h">
+      <Filter>Source\Component\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -901,6 +904,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp">
       <Filter>Source\Component\Enemy\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\DebugCharacterComponent.cpp">
+      <Filter>Source\Component\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

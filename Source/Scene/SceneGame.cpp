@@ -114,6 +114,10 @@ void SceneGame::Initialize()
 
 		// プレイヤー
 		const auto& player = PlayerConstant::CreatePlayer(object_manager->Create("Player"));
+#ifdef _DEBUG
+		// ハイプロ用デバッグObject作成
+		EnemyConstant::CreateDebugEnemy(object_manager->Create("DebugEnemy_Model"));
+#endif // _DEBUG
 
 #ifdef _DEBUG	// デバッグ用オブジェクト
 		{
