@@ -24,6 +24,8 @@ public:
 		float current_animation_seconds = 0.0f;		// 現在の再生時間
 		UINT old_anime_index = 0;
 		float old_current_animation_seconds = 0.0f;	// 前回の再生時間
+		float animation_blend_time = 0.0f;			// アニメーションブレンドの経過時間
+		float animation_blend_seconds = 0.0f;		// アニメーションブレンドの時間
 		int anime_speed = 1;
 		bool anime_loop = false;
 		bool anime_play = false;					// アニメーションが再生中であるか
@@ -48,7 +50,7 @@ public:
 	// 優先度
 	const PRIORITY GetPriority()const noexcept override { return PRIORITY::LOW; }
 
-	void PlayAnimation(int animeIndex, bool loop = true);
+	void PlayAnimation(int animeIndex, bool loop = true, float blend_time = 0.2f);
 
 	void UpdateAnimation(float elapsed_time);
 
@@ -66,6 +68,7 @@ public:
 	UINT GetAnimationStartOffset();	// 現在再生しているアニメーションのオフセット値を取得
 	UINT GetOldAnimationStartOffset();	// 前回再生していたアニメーションのオフセット値を取得
 	int GetModelId();
+	float GetAnimationBlendRate();	// アニメーションの補間率を取得
 
 	std::vector<DirectX::BoundingBox> GetBoundingBoxs();
 

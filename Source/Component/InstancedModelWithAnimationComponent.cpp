@@ -78,7 +78,7 @@ void InstancedModelWithAnimationComponent::Update(float elapsed_time)
 #endif // _DEBUG
 }
 
-void InstancedModelWithAnimationComponent::PlayAnimation(int animeIndex, bool loop)
+void InstancedModelWithAnimationComponent::PlayAnimation(int animeIndex, bool loop, float blend_time)
 {
     if (animeIndex < 0 || animeIndex >= this->model_resource->GetAnimations().size()) return;
 
@@ -89,10 +89,13 @@ void InstancedModelWithAnimationComponent::PlayAnimation(int animeIndex, bool lo
     this->param.old_current_animation_seconds = this->param.current_animation_seconds;
     this->param.old_anime_index = this->param.anime_index;
 
-    this->param.current_animation_seconds = 0;
+    this->param.current_animation_seconds = 0.0f;
     this->param.anime_index = animeIndex;
     this->param.anime_loop = loop;
     this->param.anime_play = true;
+
+    this->param.animation_blend_time = blend_time;
+    this->param.animation_blend_seconds = 0.0f;
 }
 
 void InstancedModelWithAnimationComponent::UpdateAnimation(float elapsed_time)
@@ -117,6 +120,11 @@ void InstancedModelWithAnimationComponent::UpdateAnimation(float elapsed_time)
             this->param.current_animation_seconds = animation_length;
             this->param.anime_play = false;
         }
+    }
+
+    // ブレンドタイマーの更新
+    {
+        this->param.animation_blend_time = (std::min)(this->param.animation_blend_seconds + elapsed_time, this->param.animation_blend_time);
     }
 }
 
@@ -155,6 +163,13 @@ UINT InstancedModelWithAnimationComponent::GetOldAnimationStartOffset()
 int InstancedModelWithAnimationComponent::GetModelId()
 {
     return this->instancing_model_resource->GetModelId();
+}
+
+float InstancedModelWithAnimationComponent::GetAnimationBlendRate()
+{
+    if (this->param.animation_blend_time <= 0.0f) return 1.0f;
+
+    return (this->param.animation_blend_seconds / this->param.animation_blend_time);
 }
 
 std::vector<DirectX::BoundingBox> InstancedModelWithAnimationComponent::GetBoundingBoxs()
