@@ -151,7 +151,7 @@ UINT InstancedModelWithAnimationComponent::GetAnimationStartOffset()
 
 UINT InstancedModelWithAnimationComponent::GetOldAnimationStartOffset()
 {
-    return this->instancing_model_resource->GetAnimationOffsets()[this->param.anime_index]
+    return this->instancing_model_resource->GetAnimationOffsets()[this->param.anime_index];
 }
 
 int InstancedModelWithAnimationComponent::GetModelId()
