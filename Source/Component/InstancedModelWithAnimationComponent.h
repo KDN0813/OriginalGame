@@ -49,7 +49,6 @@ public:
 	const PRIORITY GetPriority()const noexcept override { return PRIORITY::LOW; }
 
 	void PlayAnimation(int animeIndex, bool loop = true);
-	void PlayAnimation(const PlayAnimeParam& play_anime_param);
 
 	void UpdateAnimation(float elapsed_time);
 

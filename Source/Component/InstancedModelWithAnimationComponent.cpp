@@ -85,17 +85,13 @@ void InstancedModelWithAnimationComponent::PlayAnimation(int animeIndex, bool lo
     // TODO ハイプロ用
     if (this->param.anime_index == animeIndex)return;
 
-    this->param.current_animation_seconds = 0;;
+    // 前回のアニメ情報保存
+    this->param.old_current_animation_seconds = this->param.current_animation_seconds;
+    this->param.old_anime_index = this->param.anime_index;
+
+    this->param.current_animation_seconds = 0;
     this->param.anime_index = animeIndex;
     this->param.anime_loop = loop;
-    this->param.anime_play = true;
-}
-
-void InstancedModelWithAnimationComponent::PlayAnimation(const PlayAnimeParam& play_anime_param)
-{
-    this->param.current_animation_seconds = 0;;
-    this->param.anime_index = static_cast<UINT>(play_anime_param.anime_index);
-    this->param.anime_loop = play_anime_param.loop;
     this->param.anime_play = true;
 }
 
@@ -130,8 +126,9 @@ UINT InstancedModelWithAnimationComponent::GetAnimeFrame()
     const UINT animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
     const float animation_frame_max_float = static_cast<float>(animation_frame_max);
     const float animation_length = animation.seconds_length;
+    const float current_seconds = (std::min)(this->param.current_animation_seconds, animation_length);
 
-    return static_cast<UINT>(animation_frame_max_float * (this->param.current_animation_seconds / animation_length));
+    return static_cast<UINT>(animation_frame_max_float * (current_seconds / animation_length));
 }
 
 UINT InstancedModelWithAnimationComponent::GetOldAnimeFrame()
@@ -140,8 +137,9 @@ UINT InstancedModelWithAnimationComponent::GetOldAnimeFrame()
     const UINT animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.old_anime_index];
     const float animation_frame_max_float = static_cast<float>(animation_frame_max);
     const float animation_length = animation.seconds_length;
+    const float old_current_seconds = (std::min)(this->param.old_current_animation_seconds, animation_length);
 
-    return static_cast<UINT>(animation_frame_max_float * (this->param.old_current_animation_seconds / animation_length));
+    return static_cast<UINT>(animation_frame_max_float * (old_current_seconds / animation_length));
 }
 
 UINT InstancedModelWithAnimationComponent::GetAnimationStartOffset()
