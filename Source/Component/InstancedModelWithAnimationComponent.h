@@ -57,11 +57,13 @@ public:
 	// 各取得・設定関数
 	InstancingModelResource* GetInstancingModelResource() { return this->instancing_model_resource.get(); }
 	ModelResource* GetModelResource() { return this->model_resource.get(); }
-	UINT GetAnimeFrame();		// 現在の再生フレーム数を取得
+	UINT GetAnimeFrame();			// 現在の再生フレーム数を取得
+	UINT GetOldAnimeFrame();		// 前回のアニメの再生フレーム数を取得
 	DirectX::XMFLOAT4 GetBaseColor()const { return this->param.base_color; }
 	float GetAlpha()const { return this->param.base_color.w; }
 	float GetCurrentAnimationSeconds() const { return this->param.current_animation_seconds; }
 	UINT GetAnimationStartOffset();	// 現在再生しているアニメーションのオフセット値を取得
+	UINT GetOldAnimationStartOffset();	// 前回再生していたアニメーションのオフセット値を取得
 	int GetModelId();
 
 	std::vector<DirectX::BoundingBox> GetBoundingBoxs();

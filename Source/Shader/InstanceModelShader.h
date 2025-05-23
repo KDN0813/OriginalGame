@@ -47,12 +47,16 @@ private:
 	*
 	* \param animation_start_offset バッファ内で使用するアニメーションの開始位置を示すオフセット値
 	* \param anime_frame 現在のフレーム
+	* \param old_animation_start_offset 前回のアニメーションのバッファ内で使用するアニメーションの開始位置を示すオフセット値
+	* \param old_anime_frame 前回のアニメーションのフレーム
 	* \param world_transform ワールドトランスフォーム
 	*/
 	struct InstanceData
 	{
 		UINT animation_start_offset = {};
 		UINT anime_frame = {};
+		UINT old_animation_start_offset = {};
+		UINT old_anime_frame = {};
 		DirectX::XMFLOAT4X4 world_transform = {};
 		DirectX::XMFLOAT4 base_color = { 1.0f,1.0f ,1.0f, 1.0f };
 	};

@@ -134,9 +134,24 @@ UINT InstancedModelWithAnimationComponent::GetAnimeFrame()
     return static_cast<UINT>(animation_frame_max_float * (this->param.current_animation_seconds / animation_length));
 }
 
+UINT InstancedModelWithAnimationComponent::GetOldAnimeFrame()
+{
+    const auto& animation = this->model_resource->GetAnimations()[this->param.anime_index];
+    const UINT animation_frame_max = this->instancing_model_resource->GetAnimationLengths()[this->param.anime_index];
+    const float animation_frame_max_float = static_cast<float>(animation_frame_max);
+    const float animation_length = animation.seconds_length;
+
+    return static_cast<UINT>(animation_frame_max_float * (this->param.current_animation_seconds / animation_length));
+}
+
 UINT InstancedModelWithAnimationComponent::GetAnimationStartOffset()
 {
     return this->instancing_model_resource->GetAnimationOffsets()[this->param.anime_index];
+}
+
+UINT InstancedModelWithAnimationComponent::GetOldAnimationStartOffset()
+{
+    return this->instancing_model_resource->GetAnimationOffsets()[this->param.anime_index]
 }
 
 int InstancedModelWithAnimationComponent::GetModelId()
