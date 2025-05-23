@@ -27,13 +27,14 @@ VsOut main(VsIn vs_in)
         start_offset + vs_in.bone_indices[3],
     };
     
+    const float animation_blend_rate = instance_data[vs_in.instance_id].animation_blend_rate;
     float3 p = { 0, 0, 0 };
     float3 n = { 0, 0, 0 };
     for (int i = 0; i < 4; i++)
     {
         // ボーン行列の取得
         // 線形補間を行う
-        float4x4 bone_transform = bone_transform_texture[transform_index[i]].bone_transform;
+        float4x4 bone_transform = lerp(bone_transform_texture[old_transform_index[i]].bone_transform, bone_transform_texture[transform_index[i]].bone_transform, animation_blend_rate);
         
         p += (vs_in.bone_weights[i] * mul(vs_in.position, bone_transform)).xyz;
         n += (vs_in.bone_weights[i] * mul(float4(vs_in.normal.xyz, 0), bone_transform)).xyz;
