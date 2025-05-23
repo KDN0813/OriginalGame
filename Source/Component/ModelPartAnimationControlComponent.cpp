@@ -217,34 +217,34 @@ bool ModelPartAnimationControlComponent::IsPlayAnimation() const
 
 void ModelPartAnimationControlComponent::DrawDebugGUI()
 {
-	//if (const auto& onwer = GetOwner())
-	//{
-	//	if (const auto& model = onwer->GetComponent(this->model_Wptr))
-	//	{
-	//		auto model_resource = model->GetResource();
-	//		if (!model_resource) return;
+	if (const auto& owner = GetOwner())
+	{
+		if (const auto& model = owner->GetComponent(this->model_Wptr))
+		{
+			auto model_resource = model->GetResource();
+			if (!model_resource) return;
 
-	//		int& anime_index = this->param.current_animation_index;
-	//		if (anime_index < 0) return;
+			int& anime_index = this->main_parts.anime_param.current_animation_index;
+			if (anime_index < 0) return;
 
-	//		if (model_resource->GetAnimations().size())
-	//		{
-	//			const auto& animation = model_resource->GetAnimations()[anime_index];
+			if (model_resource->GetAnimations().size())
+			{
+				const auto& animation = model_resource->GetAnimations()[anime_index];
 
-	//			std::string play_anime_name = this->animation_name_pool[anime_index];
-	//			ImGui::SliderFloat("Current Animation Seconds", &this->param.current_animation_seconds, 0.0f, animation.seconds_length);
-	//			if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
-	//			{
-	//				PlayAnimation(anime_index, 0.0f, 0.0f);
-	//			}
-	//			ImGui::Checkbox("Animation Loop Flag", &this->param.animation_loop_flag);
+				std::string play_anime_name = this->animation_name_pool[anime_index];
+				ImGui::SliderFloat("Current Animation Seconds", &this->main_parts.anime_param.current_animation_seconds, 0.0f, animation.seconds_length);
+				if (ImGui::ComboUI("Animation", play_anime_name, this->animation_name_pool, anime_index))
+				{
+					PlayAnimation(anime_index, 0.0f, 0.0f);
+				}
+				ImGui::Checkbox("Animation Loop Flag", &this->main_parts.anime_param.animation_loop_flag);
 
-	//			ImGui::InputFloat("Animation Blend Seconds", &this->param.animation_blend_seconds);
-	//			ImGui::SliderFloat("Animation Blend Time", &this->param.animation_blend_time, 0.0f, this->param.animation_blend_seconds);
-	//			ImGui::Checkbox("Animation End Flag", &this->param.animation_end_flag);
-	//		}
-	//	}
-	//}
+				ImGui::InputFloat("Animation Blend Seconds", &this->main_parts.anime_param.animation_blend_seconds);
+				ImGui::SliderFloat("Animation Blend Time", &this->main_parts.anime_param.animation_blend_time, 0.0f, this->main_parts.anime_param.animation_blend_seconds);
+				ImGui::Checkbox("Animation End Flag", &this->main_parts.anime_param.animation_end_flag);
+			}
+		}
+	}
 }
 
 #endif // DEBUG

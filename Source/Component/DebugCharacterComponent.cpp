@@ -15,17 +15,17 @@ void DebugCharacterComponent::Update(float elapsed_time)
     // 移動アニメ再生
     if (GetKeyState('I') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 1.0f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.3f);
     }
     // 待機アニメ再生
     else if (GetKeyState('O') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 1.0f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.3f);
     }
     // 攻撃アニメ再生
     else if (GetKeyState('P') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, true, 1.0f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, true, 0.3f);
     }
 }
 
@@ -39,16 +39,16 @@ void DebugCharacterComponent_I::Update(float elapsed_time)
     // 移動アニメ再生
     if (GetKeyState('I') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 1.0f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.3f);
     }
     // 待機アニメ再生
     else if (!this->is_on_key && GetKeyState('O') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 1.0f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.3f);
     }
     // 攻撃アニメ再生
     else if (!this->is_on_key && GetKeyState('P') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, true, 1.0f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, true, 0.3f);
     }
 }
