@@ -34,6 +34,7 @@ struct InstanceData
     uint frame;                     // 現在のフレーム
     uint old_animation_start_offset;    // 前回のアニメーションのバッファ内で使用するアニメーションの開始位置を示すオフセット値
     uint old_frame;                     // 前回のアニメーションのフレーム
+    float animation_blend_rate;     // アニメーションブレンド率
     row_major float4x4 world_transform;
     float4 base_color;
 };

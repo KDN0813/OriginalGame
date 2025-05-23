@@ -297,6 +297,7 @@ void InstancingModelShader::InstancingAdd(
 		model->GetAnimeFrame(),
 		model->GetAnimationStartOffset(),
 		model->GetOldAnimeFrame(),
+		model->GetAnimationBlendRate(),
 		transform->GetWorldTransform(),
 		model->GetBaseColor(),
 	};

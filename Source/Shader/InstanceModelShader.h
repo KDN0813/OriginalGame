@@ -57,6 +57,7 @@ private:
 		UINT anime_frame = {};
 		UINT old_animation_start_offset = {};
 		UINT old_anime_frame = {};
+		float animation_blend_rate;
 		DirectX::XMFLOAT4X4 world_transform = {};
 		DirectX::XMFLOAT4 base_color = { 1.0f,1.0f ,1.0f, 1.0f };
 	};
