@@ -124,7 +124,7 @@ void InstancedModelWithAnimationComponent::UpdateAnimation(float elapsed_time)
 
     // ブレンドタイマーの更新
     {
-        this->param.animation_blend_time = (std::min)(this->param.animation_blend_seconds + elapsed_time, this->param.animation_blend_time);
+        this->param.animation_blend_seconds = (std::min)(this->param.animation_blend_seconds + elapsed_time, this->param.animation_blend_time);
     }
 }
 
