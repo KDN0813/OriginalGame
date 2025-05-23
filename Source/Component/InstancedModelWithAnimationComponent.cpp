@@ -211,6 +211,15 @@ void InstancedModelWithAnimationComponent::DrawDebugAnimationGUI()
         PlayAnimation(anime_index_int);
     }
     ImGui::Checkbox("Animation Loop Flag", &this->param.anime_loop);
+
+    // ‘O‰ñ‚ÌƒAƒjƒî•ñ
+    int old_anime_index_int = static_cast<int>(this->param.old_anime_index);
+    if (old_anime_index_int < 0) return;
+    {
+        ImGui::InputFloat("Old Current Animation Seconds", &this->param.old_current_animation_seconds, 0.0f);
+        int old = GetOldAnimeFrame();
+        ImGui::InputInt("Old Anime Index", &old_anime_index_int);
+    }
 }
 
 void InstancedModelWithAnimationComponent::DrawDebugPrimitive()
