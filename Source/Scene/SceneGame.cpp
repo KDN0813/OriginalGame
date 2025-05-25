@@ -117,6 +117,7 @@ void SceneGame::Initialize()
 #ifdef _DEBUG
 		// TODO ハイプロ用デバッグObject作成
 		EnemyConstant::CreateDebugEnemy(object_manager->Create("DebugEnemy_Instance"));
+		EnemyConstant::CreateDebugEnemy(object_manager->Create("DebugEnemy_Instance_NotBlend"), false);
 		PlayerConstant::CreateDebugPlayer(object_manager->Create("DebugEnemy_Model"));
 #endif // _DEBUG
 

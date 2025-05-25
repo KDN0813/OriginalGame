@@ -180,18 +180,33 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shar
 	return object;
 }
 
-const std::shared_ptr<Object>& EnemyConstant::CreateDebugEnemy(const std::shared_ptr<Object>& object)
+const std::shared_ptr<Object>& EnemyConstant::CreateDebugEnemy(const std::shared_ptr<Object>& object,bool is_blend)
 {
 	// Transform3DComponent
 	{
+		DirectX::XMFLOAT3 pos{};
+		if (is_blend)
+		{
+			pos = DirectX::XMFLOAT3(0.0f, StageConstant::STAGE_FLOOR_Y, 0.0f);
+		}
+		else
+		{
+			pos = DirectX::XMFLOAT3(-6.0f, StageConstant::STAGE_FLOOR_Y, 0.0f);
+		}
+
 		Transform3DComponent::Transform3DParam param{};
-		param.local_position = DirectX::XMFLOAT3(0.0f, StageConstant::STAGE_FLOOR_Y, 0.0f);
+		param.local_position = pos;
 		param.local_scale = DirectX::XMFLOAT3(0.036f, 0.036f, 0.036f);
 		object->AddComponent<Transform3DComponent>(param);
 	} 
 	// DebugCharacterComponent
 	{
-		object->AddComponent<DebugCharacterComponent_I>();
+		const auto& debug = object->AddComponent<DebugCharacterComponent_I>();
+
+		if (is_blend)
+		{
+			debug->SetBlendTime(0.3f);
+		}
 	}
 	// ƒ‚ƒfƒ‹İ’è
 	{

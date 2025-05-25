@@ -74,7 +74,7 @@ public:
 
     void SetBlendTime(const float time) { this->blend_time = time; }
 private:
-    float blend_time = 0.3f;
+    float blend_time = 0.0f;
 
 private:
     std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wptr;

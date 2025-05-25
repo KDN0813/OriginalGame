@@ -55,6 +55,6 @@ public:
 
 #ifdef _DEBUG
     // TODO ハイプロ用デバッグエネミー
-    static const std::shared_ptr<Object>& CreateDebugEnemy(const std::shared_ptr<Object>&);
+    static const std::shared_ptr<Object>& CreateDebugEnemy(const std::shared_ptr<Object>&, bool is_blend = true);
 #endif // _DEBUG
 };
