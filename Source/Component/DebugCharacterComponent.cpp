@@ -1,5 +1,9 @@
 #include "DebugCharacterComponent.h"
 
+#ifdef _DEBUG
+#include <imgui.h>
+#endif // _DEBUG
+
 #include "Object\Object.h"
 #include "Component\ModelPartAnimationControlComponent.h"
 #include "Component\InstancedModelWithAnimationComponent.h"
@@ -15,19 +19,26 @@ void DebugCharacterComponent::Update(float elapsed_time)
     // 移動アニメ再生
     if (GetKeyState('I') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.3f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, blend_time);
     }
     // 待機アニメ再生
     else if (GetKeyState('O') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.3f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, blend_time);
     }
     // 攻撃アニメ再生
     else if (GetKeyState('P') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, true, 0.3f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, true, blend_time);
     }
 }
+
+#ifdef _DEBUG
+void DebugCharacterComponent::DrawDebugGUI()
+{
+    ImGui::InputFloat("blend_time", &this->blend_time);
+}
+#endif // _DEBUG
 
 void DebugCharacterComponent_I::Update(float elapsed_time)
 {
@@ -39,16 +50,25 @@ void DebugCharacterComponent_I::Update(float elapsed_time)
     // 移動アニメ再生
     if (GetKeyState('I') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, 0.3f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::MOVE_FWD, true, blend_time);
     }
     // 待機アニメ再生
-    else if (!this->is_on_key && GetKeyState('O') & 0x8000)
+    else if (GetKeyState('O') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, 0.3f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::IDLE, true, blend_time);
     }
     // 攻撃アニメ再生
-    else if (!this->is_on_key && GetKeyState('P') & 0x8000)
+    else if (GetKeyState('P') & 0x8000)
     {
-        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, true, 0.3f);
+        animation->PlayAnimation(PlayerConstant::ANIMATION::ATTACK01, true, blend_time);
     }
 }
+
+#ifdef _DEBUG
+
+void DebugCharacterComponent_I::DrawDebugGUI()
+{
+    ImGui::InputFloat("blend_time", &this->blend_time);
+}
+
+#endif // _DEBUG

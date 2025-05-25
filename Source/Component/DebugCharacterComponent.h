@@ -26,6 +26,10 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+    void SetBlendTime(const float time) { this->blend_time = time; }
+private:
+    float blend_time = 0.3f;
+
 private:
     std::weak_ptr<ModelPartAnimationControlComponent> animation_Wptr;
 
@@ -34,7 +38,7 @@ public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI()  override {};
+    void DrawDebugGUI()  override ;
     /**
      * デバックの情報を3D画面上に出力する関数
      */
@@ -68,8 +72,9 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+    void SetBlendTime(const float time) { this->blend_time = time; }
 private:
-    bool is_on_key = false;
+    float blend_time = 0.3f;
 
 private:
     std::weak_ptr<InstancedModelWithAnimationComponent> animation_Wptr;
@@ -79,7 +84,7 @@ public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI()  override {};
+    void DrawDebugGUI()  override;
     /**
      * デバックの情報を3D画面上に出力する関数
      */
