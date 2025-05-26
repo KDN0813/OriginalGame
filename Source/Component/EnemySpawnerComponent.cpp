@@ -18,17 +18,31 @@ EnemySpawnerComponent::EnemySpawnerComponent(Param param)
 {
 }
 
+void EnemySpawnerComponent::Start()
+{
+}
+
+bool is_one = false;
+
 void EnemySpawnerComponent::Update(float elapsed_time)
 {
-    // “G‚Ì¶¬
-    this->param.create_cool_timer -= elapsed_time;
-    if (this->param.create_cool_timer <= 0.0f)
+    if (is_one) return;
+
+    for (int i = 0; i < 4000; ++i)
     {
         AddCreateEnemy(this->object_manager_Wptr.lock());
-
-        const float COOL_TIME = MyMath::RandomRange(this->param.create_cool_time_min, this->param.create_cool_time_max);
-        this->param.create_cool_timer = COOL_TIME;
     }
+    is_one = true;
+
+    // “G‚Ì¶¬
+    //this->param.create_cool_timer -= elapsed_time;
+    //if (this->param.create_cool_timer <= 0.0f)
+    //{
+    //    AddCreateEnemy(this->object_manager_Wptr.lock());
+
+    //    const float COOL_TIME = MyMath::RandomRange(this->param.create_cool_time_min, this->param.create_cool_time_max);
+    //    this->param.create_cool_timer = COOL_TIME;
+    //}
 }
 
 void EnemySpawnerComponent::AddCreateEnemy(const std::shared_ptr<ObjectManager>& manager)

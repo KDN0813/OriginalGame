@@ -130,14 +130,15 @@ private:
 #if defined(_DEBUG) || defined(RELEASE_DEBUG)
 	int sync_interval = 0;
 #else
-	const int sync_interval = 1;
+	const int sync_interval = 0;
 #endif // _DEBUG || RELEASE_DEBUG
-#ifdef _DEBUG
 public:
 	// フレームレート計算
 	void CalculateFrameStats();
+#ifdef _DEBUG
 
 	void DebugDrawGUI();
+#endif // _DEBUG
 
 private:
 	// フレームレート計算用変数
@@ -146,5 +147,4 @@ private:
 	float fps = 0.0f;
 	float mspf = 0.0f;
 
-#endif // _DEBUG
 };

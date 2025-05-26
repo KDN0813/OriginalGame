@@ -2,7 +2,6 @@
 #include <imgui.h>
 #include "GameTimer.h"
 
-#ifdef _DEBUG
 void GameTimer::CalculateFrameStats()
 {
 	this->frames++;
@@ -22,6 +21,7 @@ void GameTimer::CalculateFrameStats()
 		OutputDebugStringA(str.c_str());
 	}
 }
+#ifdef _DEBUG
 void GameTimer::DebugDrawGUI()
 {
 	if (ImGui::Begin("GameTimer"))

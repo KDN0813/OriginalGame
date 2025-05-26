@@ -54,8 +54,8 @@ void Framework::Update(float elapsed_time)
 	DebugManager::GetInstance()->HandleFunctionKeyDebug();
 
 	// フレームレート計算
-	game_timer.CalculateFrameStats();
 #endif // _DEBUG
+	game_timer.CalculateFrameStats();
 
 	scene_manager.Update(elapsed_time);
 
