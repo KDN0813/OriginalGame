@@ -87,7 +87,7 @@ void ModelPartAnimationControlComponent::UpdateAnimation(PartsParam& parts, floa
 #ifdef _DEBUG
 		const auto& debug_primitive_renderer = DebugManager::GetInstance()->GetDebugPrimitiveRenderer();
 		// TODO ハイプロ用 アニメーションblendのタイミング調べる
-		debug_primitive_renderer->DrawSphere(DirectX::XMFLOAT3(6.0f, 0.0f, 0.0f),3.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+		//debug_primitive_renderer->DrawSphere(DirectX::XMFLOAT3(6.0f, 0.0f, 0.0f),3.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
 #endif // _DEBUG
 	}
 

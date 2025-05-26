@@ -131,7 +131,7 @@ void InstancedModelWithAnimationComponent::UpdateAnimation(float elapsed_time)
         {
             // TODO ハイプロ用 アニメーションblendのタイミング調べる
             const auto& debug_primitive_renderer = DebugManager::GetInstance()->GetDebugPrimitiveRenderer();
-            debug_primitive_renderer->DrawSphere(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 3.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+            //debug_primitive_renderer->DrawSphere(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 3.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
         }
 #endif // _DEBUG
     }
