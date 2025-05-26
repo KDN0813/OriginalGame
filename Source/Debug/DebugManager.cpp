@@ -24,6 +24,7 @@ void DebugManager::HandleFunctionKeyDebug()
 	GameData::Instance game_data = GameData::GetInstance();
 	const auto& game_pad = input->GetGamePad();
 
+#ifdef _DEBUG
 	// ImGui表示・非表示ボタン制御
 	if (GamePad::BTN_DEBUG_IMGUI & game_pad.GetButtonDown())
 	{
@@ -51,4 +52,5 @@ void DebugManager::HandleFunctionKeyDebug()
 	{
 		game_data->SetIsStopTimer(!game_data->GetIsStopTimer());
 	}
+#endif // DEBUG
 }

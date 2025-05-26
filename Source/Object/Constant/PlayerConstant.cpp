@@ -332,6 +332,10 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 	return player;
 }
 
+#ifdef _DEBUG
+
+
+
 const std::shared_ptr<Object>& PlayerConstant::CreateDebugPlayer(const std::shared_ptr<Object>& object)
 {
 	// トランスフォーム設定
@@ -366,3 +370,5 @@ const std::shared_ptr<Object>& PlayerConstant::CreateDebugPlayer(const std::shar
 	}
 	return object;
 }
+
+#endif // _DEBUG

@@ -180,6 +180,9 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shar
 	return object;
 }
 
+#ifdef _DEBUG
+
+
 const std::shared_ptr<Object>& EnemyConstant::CreateDebugEnemy(const std::shared_ptr<Object>& object,bool is_blend)
 {
 	// Transform3DComponent
@@ -226,3 +229,5 @@ const std::shared_ptr<Object>& EnemyConstant::CreateDebugEnemy(const std::shared
 
 	return object;
 }
+
+#endif // _DEBUG
