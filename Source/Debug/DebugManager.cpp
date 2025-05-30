@@ -17,6 +17,8 @@ DebugManager::DebugManager(HWND hWnd)
     this->debug_primitive_renderer = std::make_unique<DebugPrimitiveRenderer>(device);
 }
 
+#ifdef _DEBUG
+
 // キー入力によるデバッグ用機能
 void DebugManager::HandleFunctionKeyDebug()
 {
@@ -52,3 +54,5 @@ void DebugManager::HandleFunctionKeyDebug()
 		game_data->SetIsStopTimer(!game_data->GetIsStopTimer());
 	}
 }
+
+#endif // _DEBUG
