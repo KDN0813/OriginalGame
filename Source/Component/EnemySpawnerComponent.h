@@ -2,6 +2,9 @@
 #include "Component.h"
 #include <DirectXMath.h>
 #include <vector>
+#ifdef _DEBUG
+#include "Debug\DebugPrimitiveRenderer.h"
+#endif // _DEBUG
 
 class Object;
 class ObjectManager;
@@ -26,7 +29,7 @@ public:
     ~EnemySpawnerComponent() {};
 
     // 開始関数
-    void Start()  override {};
+    void Start()  override;
     // 終了関数
     void End()  override {};
     // リスタート処理
@@ -65,12 +68,15 @@ public:
     /**
      * デバックの情報を3D画面上に出力する関数
      */
-    void DrawDebugPrimitive()  override {};
+    void DrawDebugPrimitive()  override;
     /**
      * デバッグプリミティブ表示用ImGui
      */
-    void DrawDebugPrimitiveGUI()  override {};
-    bool IsDebugPrimitive() override { return false; }   // DebugPrimitiveが存在するか
+    void DrawDebugPrimitiveGUI()  override;
+    bool IsDebugPrimitive() override { return true; }   // DebugPrimitiveが存在するか
+private:
+    CylinderParam min_spawn_area;
+    CylinderParam max_spawn_area;
 #endif // DEBUG
 };
 

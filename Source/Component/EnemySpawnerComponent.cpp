@@ -2,6 +2,7 @@
 
 #ifdef _DEBUG
 #include <imgui.h>
+#include "Debug\DebugManager.h"
 #endif // _DEBUG
 #include "Object\Object.h"
 #include "Object\GameObjectRegistry.h"
@@ -18,6 +19,18 @@ EnemySpawnerComponent::EnemySpawnerComponent(Param param)
 {
 }
 
+void EnemySpawnerComponent::Start()
+{
+#ifdef _DEBUG
+    this->min_spawn_area.SetRadius(this->param.min_spawn_dist);
+    this->min_spawn_area.SetHeight(4.0f);
+    this->min_spawn_area.SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
+    this->max_spawn_area.SetRadius(this->param.max_spawn_dist);
+    this->max_spawn_area.SetHeight(4.0f);
+    this->max_spawn_area.SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
+#endif // _DEBUG
+}
+
 void EnemySpawnerComponent::Update(float elapsed_time)
 {
     // 敵の生成
@@ -29,6 +42,18 @@ void EnemySpawnerComponent::Update(float elapsed_time)
         const float COOL_TIME = MyMath::RandomRange(this->param.create_cool_time_min, this->param.create_cool_time_max);
         this->param.create_cool_timer = COOL_TIME;
     }
+
+#ifdef _DEBUG   // 生成範囲を示すプリミティブの位置を更新
+    GameObjectRegistry::Instance object_registry = GameObjectRegistry::GetInstance();
+
+    const auto& player = object_registry->GetPlayer();
+    if (!player) return;
+    const auto& player_transform = player->GetComponent<Transform3DComponent>(this->player_transform_Wptr);
+    if (!player_transform) return;
+
+    this->min_spawn_area.SetPosition(player_transform->GetWorldPosition());
+    this->max_spawn_area.SetPosition(player_transform->GetWorldPosition());
+#endif // _DEBUG
 }
 
 void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManager>& manager)
@@ -91,6 +116,28 @@ void EnemySpawnerComponent::DrawDebugGUI()
     {
         CreateEnemy(this->object_manager_Wptr.lock(), DirectX::XMFLOAT3());
     }
+
+    if (ImGui::InputFloat("Min Spawn Dist", &this->param.min_spawn_dist))
+    {
+        this->min_spawn_area.SetRadius(this->param.min_spawn_dist);
+    }
+    if (ImGui::InputFloat("Max Spawn Dist", &this->param.max_spawn_dist))
+    {
+        this->max_spawn_area.SetRadius(this->param.max_spawn_dist);
+    }
+}
+
+void EnemySpawnerComponent::DrawDebugPrimitive()
+{
+    const auto& debug_primitive_render = DebugManager::GetInstance()->GetDebugPrimitiveRenderer();
+    debug_primitive_render->DrawCylinder(this->min_spawn_area);
+    debug_primitive_render->DrawCylinder(this->max_spawn_area);
+}
+
+void EnemySpawnerComponent::DrawDebugPrimitiveGUI()
+{
+    this->min_spawn_area.DrawDebugGUI("Min Spawn Area");
+    this->max_spawn_area.DrawDebugGUI("Max Spawn Area");
 }
 
 #endif // _DEBUG
