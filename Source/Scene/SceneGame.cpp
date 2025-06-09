@@ -43,6 +43,7 @@
 #ifdef _DEBUG
 #include "Component\ModelShaderComponent.h"
 #include "Component\DebugParticle.h"
+#include "Component\CharacterComponent.h"
 #endif // DEBUG
 
 
@@ -240,12 +241,26 @@ void SceneGame::Update(float elapsed_time)
 		Input::Instance input = Input::GetInstance();
 		const auto& game_pad = input->GetGamePad();
 
-		// デモ状態の設定・解除
+		// パーティクルデモのON・OFF
 		if (GamePad::BTN_DEBUG_DEMO & game_pad.GetButtonDown())
 		{
 			if (const auto& particle = this->debug_Particle->GetComponent<DebugParticle>())
 			{
 				particle->ReverseEffectLooping();
+			}
+		}
+		if (GamePad::BTN_DEBUG_PLAYER_INVINCIBLE & game_pad.GetButtonDown())
+		{
+			GameObjectRegistry::Instance fame_object_registry = GameObjectRegistry::GetInstance();
+			const auto& player = fame_object_registry->GetPlayer();
+
+			std::shared_ptr<CharacterComponent> player_character;
+			if (player)
+			{
+				if (std::shared_ptr<CharacterComponent> player_character = player->GetComponent<CharacterComponent>())
+				{
+					player_character->SetInvincibleFlag(!player_character->GetInvincibleFlag());
+				}
 			}
 		}
 	}
@@ -266,10 +281,10 @@ void SceneGame::Update(float elapsed_time)
 	object_manager->Update(elapsed_time);
 
 	{
-		GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
+		GameObjectRegistry::Instance fame_object_registry = GameObjectRegistry::GetInstance();
 		// 更新処理
 		// 主に削除されたエネミーをリストから消す処理
-		game_object->Update();
+		fame_object_registry->Update();
 	}
 
 	{
