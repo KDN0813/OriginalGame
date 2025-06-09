@@ -312,6 +312,14 @@ void EnemyAttackState::Update(float elapsed_time)
 
 void EnemyAttackState::End()
 {
+    // 攻撃判定オブジェクトを無効にする
+    const auto& owner = GetOwner();
+    if (!owner)return;
+    const auto& attack_object = owner->FindChildObject(EnemyConstant::ATTACK_OBJECT_NAME);  // 子オブジェクト(攻撃用オブジェクト)取得
+    if (!attack_object) return;
+    const auto& collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
+    if (collision)
+        collision->SetIsActive(false);  // コリジョンを有効にする
 }
 
 EnemyDamageState::EnemyDamageState()
