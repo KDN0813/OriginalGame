@@ -34,7 +34,7 @@ public:
 	 * @fn GetComponentID
 	 * @brief コンポーネントIDを取得
 	 * 
-	 * @tparam コンポーネントの型
+	 * @param コンポーネントの型
 	 * @return コンポーネントID
 	 */
 	template<is_Component ComponentType>
@@ -47,7 +47,7 @@ public:
 	/**
 	 * @fn GetComponent
 	 * @brief コンポーネントを取得する
-	 * @tparam ComponentType 取得コンポーネントの型
+	 * @param ComponentType 取得コンポーネントの型
 	 * 
 	 * \return コンポーネントのシェアドポインタを返す
 	 */
@@ -70,7 +70,7 @@ public:
 	 * @brief コンポーネントが有効であるか確認する
 	 * 引数のweak_ptrのリンクが切れていなければlock関数を用いて値を返す
 	 * 切れていた場合は総当たりで検索する
-	 * @tparam ComponentType 取得コンポーネントの型
+	 * @param ComponentType 取得コンポーネントの型
 	 * 
 	 * \param componentWptr リンク切れを確認するweak_ptr
 	 * \return コンポーネントのシェアドポインタを返す
@@ -95,8 +95,8 @@ public:
 	 * @fn AddComponent
 	 * @brief コンポーネント追加関数。
 	 * 
-	 * @tparam ComponentType 追加するコンポーネントの型
-	 * @tparam Arguments 可変長引数型種
+	 * @param ComponentType 追加するコンポーネントの型
+	 * @param Arguments 可変長引数型種
 	 * \return 追加したコンポーネントのポインタを返す
 	 */
 	template<is_Component	ComponentType, typename ... Arguments>
@@ -106,13 +106,14 @@ public:
 		component->SetOwner(shared_from_this());
 		component->SetComponentID(GetComponentID<ComponentType>());
 		component_vec.emplace_back(component);
+		this->is_sort_pending = true;
 		return component;
 	}
 	/**
 	* @fn AddComponent
 	* @brief コンポーネント追加関数。
 	*
-	* @tparam ComponentType 追加するコンポーネントの型
+	* @param ComponentType 追加するコンポーネントの型
 	* @param component 追加するコンポーネントのシェアドポインタ
 	* \return 追加したコンポーネントのポインタを返す
 	*/
@@ -125,6 +126,7 @@ public:
 		component->SetOwner(shared_from_this());
 		component->SetComponentID(GetComponentID<ComponentType>());
 		component_vec.emplace_back(component);
+		this->is_sort_pending = true;
 		return component;
 	}
 
@@ -186,6 +188,7 @@ private:
 	bool is_active = true;
 	bool is_remove = false;
 	bool is_off_screen = false;	// オブジェクト画面外にいるか
+	bool is_sort_pending = false;	// コンポーネントのソートが必用か
 	using ComponentVector = std::vector<std::shared_ptr<Component>>;
 	ComponentVector component_vec;
 	std::vector<std::shared_ptr<Object>> children;

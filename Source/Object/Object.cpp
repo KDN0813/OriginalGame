@@ -40,7 +40,6 @@ std::shared_ptr<Object> Object::FindChildObject(MyHash name)
 
 void Object::Update(float elapsedTime)
 {
-    // Hack(meayama) コンポーネント追加・削除があったときだけ実行するようにする
     sortComponentsByPriority();
     
 #ifdef _DEBUG
@@ -109,12 +108,16 @@ const bool Object::GetIsActive()
 }
 void Object::sortComponentsByPriority()
 {
+    if (!this->is_sort_pending) return;
+
     auto sort_func = [](std::shared_ptr<Component>& lhs, std::shared_ptr<Component>& rhs) -> bool
         {
             return lhs->GetPriority() > rhs->GetPriority();
         };
 
     std::sort(component_vec.begin(), component_vec.end(), sort_func);
+
+    this->is_sort_pending = false;
 }
 
 #ifdef _DEBUG
