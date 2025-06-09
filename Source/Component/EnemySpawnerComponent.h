@@ -16,6 +16,9 @@ public:
         float create_cool_time_max; // 生成のクールタイム(最大値)
         float create_cool_time_min; // 生成のクールタイム(最低値)
         float create_cool_timer;    // 生成のクールタイム
+
+        float min_spawn_dist;   // 生成範囲の最小
+        float max_spawn_dist;   // 生成範囲の最小
     };
 
 public:

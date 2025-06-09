@@ -57,10 +57,9 @@ void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManag
     {
         if (CREATE_ENEMY_MAX <= i)break;
 
-        const float player_area_rage = 20.0f;
-        const DirectX::XMFLOAT3 spawn_point = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, player_area_rage, EnemyConstant::NEAR_PLAYER_TERRITORY_RENGR);
+        const DirectX::XMFLOAT3 SPAWN_POINT = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, this->param.min_spawn_dist, this->param.max_spawn_dist);
 
-        CreateEnemy(manager, spawn_point);
+        CreateEnemy(manager, SPAWN_POINT);
     }
 
 }

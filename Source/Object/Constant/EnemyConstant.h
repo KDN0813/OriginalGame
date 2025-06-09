@@ -46,7 +46,6 @@ public:
     static constexpr size_t ENEMY_MAX = 3000;
     static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // 敵の移動範囲
 #endif // _DEBUG
-    static constexpr float NEAR_PLAYER_TERRITORY_RENGR = 100.0f;     // プレイヤー付近に生成する時の範囲
 public:
     static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>&);
