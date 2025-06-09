@@ -70,7 +70,7 @@ public:
     void ReleaseObject(const std::shared_ptr<Object>&, const int cell_index);
 
     // インデックスのエラーチェック
-    // 値が異常ならtrueを返す
+    // 値が異常なら true を返す
     bool IndexErrorCheck(const int cell_index);
 private:
     DirectX::XMFLOAT3 grid_min_position;   // ステージ全体の左上のワールド座標
