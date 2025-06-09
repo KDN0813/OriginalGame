@@ -45,7 +45,7 @@ private:
 
     int model_id = -1;  // モデルのID
 
-    // Hack(meayama) 外部で生成して読み込むようにする
+    // Hack(meayama) 外部ファイル読み込むようにする
 #pragma region    ボーントランスフォームテクスチャ作成用
 private:
     struct Node

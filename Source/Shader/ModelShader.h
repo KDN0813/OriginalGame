@@ -29,7 +29,6 @@ private:
 	{
 		DirectX::XMFLOAT4	material_color;
 
-		// Hack(meayama) 地形モデルを変更したら削除する
 		float tile_count = 1.0f;
 		DirectX::XMFLOAT3 dummy;
 	};

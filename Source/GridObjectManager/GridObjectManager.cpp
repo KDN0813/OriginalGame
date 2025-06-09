@@ -82,10 +82,10 @@ bool GridObjectManager::IsObjectInGrid(const std::shared_ptr<Object>& object, in
 
 bool GridObjectManager::IsGridBlocked(const int cell_index)
 {
-    if ((cell_index / this->max_cells_per_row <= BLOCK_GRID_INDEX_Z1)
-        || (cell_index / this->max_cells_per_row >= BLOCK_GRID_INDEX_Z2)
-        || (cell_index % this->max_cells_per_row <= BLOCK_GRID_INDEX_X1)
-        || (cell_index % this->max_cells_per_row >= BLOCK_GRID_INDEX_X2)
+    if ((cell_index / this->max_cells_per_row <= GRID_BLOCK_MIN_Z)
+        || (cell_index / this->max_cells_per_row >= GRID_BLOCK_MAX_Z)
+        || (cell_index % this->max_cells_per_row <= GRID_BLOCK_MIN_X)
+        || (cell_index % this->max_cells_per_row >= GRID_BLOCK_MAX_X)
         )
     {
         return true;
@@ -191,10 +191,10 @@ void GridObjectManager::ClearGridCell()
     for (auto& grid_cell : this->grid_cells)
     {
         // N“ü•s‰ÂƒGƒŠƒA‚ÌÝ’è
-        if ((count / this->max_cells_per_row == BLOCK_GRID_INDEX_Z1)
-            || (count / this->max_cells_per_row == BLOCK_GRID_INDEX_Z2)
-            || (count % this->max_cells_per_row == BLOCK_GRID_INDEX_X1)
-            || (count % this->max_cells_per_row == BLOCK_GRID_INDEX_X2)
+        if ((count / this->max_cells_per_row == GRID_BLOCK_MIN_Z)
+            || (count / this->max_cells_per_row == GRID_BLOCK_MAX_Z)
+            || (count % this->max_cells_per_row == GRID_BLOCK_MIN_X)
+            || (count % this->max_cells_per_row == GRID_BLOCK_MAX_X)
             )
         {
             grid_cell.contained_object = this->dummy_object;

@@ -24,11 +24,11 @@ public:
     float stage_size{};                              // ステージ全体のサイズ
     int max_cells_per_row{};                         // ステージの1行あたりのセル数
 
-    // TODO 変数名変更する
-    const int BLOCK_GRID_INDEX_Z1 = 5;
-    const int BLOCK_GRID_INDEX_Z2 = 195;
-    const int BLOCK_GRID_INDEX_X1 = 5;
-    const int BLOCK_GRID_INDEX_X2 = 193;
+    // グリッド上で移動不可能なインデックス
+    const int GRID_BLOCK_MIN_Z = 5;
+    const int GRID_BLOCK_MAX_Z = 195;
+    const int GRID_BLOCK_MIN_X = 5;
+    const int GRID_BLOCK_MAX_X = 193;
 public:
     GridObjectManager();
     ~GridObjectManager() override{}
