@@ -319,8 +319,8 @@ void EnemyComponent::DrawDebugPrimitive()
 	{		
 		if (IsPlayerInMovementArea())
 		{
-			// UŒ‚”ÍˆÍ
-			debug_render->DrawCylinder(transform->GetWorldPosition(), this->param.attack_range, 2.0f, DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+			// UŒ‚‰Â”\”ÍˆÍ
+			debug_render->DrawCylinder(transform->GetWorldPosition(), this->param.attack_range, 2.0f, DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
 		}
 	}
 }
