@@ -29,7 +29,7 @@ public:
     const std::vector<UINT>& GetAnimationLengths() { return this->animation_lengths; }
     const std::vector<UINT>& GetAnimationOffsets() { return this->animation_offsets; }
     ID3D11ShaderResourceView*const* GetBoneTransformTexture() { return this->bone_transform_texture.GetAddressOf(); }
-    const int GetModelId() { return this->model_id; }
+    const int GetModelId() const { return this->model_id; }
     void SetModelId(int model_id) { this->model_id = model_id; }
 
 private:
