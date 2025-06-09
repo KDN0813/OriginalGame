@@ -35,6 +35,10 @@ public:
         int gauge_count = 0;
         int gauge_count_max = 3;
 
+        // この時間を超えると他ステートに遷移可能になる
+        float attack_end_point = 0.2f;
+        float attack_combo2_end_point = 0.25f;
+
         Effekseer::Handle spin_attack_effect_handle = -1;
     };
 public:
@@ -74,6 +78,9 @@ public:
     const bool GetIsSpinAttack()const { return this->param.is_spin_attack; }
     void SetIsSpinAttack(bool flag) { this->param.is_spin_attack = flag; }
 
+    const float GetAttackEndPoint() const { return this->param.attack_end_point; }
+    const float GetAttackCombo2EndPoint() const { return this->param.attack_combo2_end_point; }
+
     // スペシャルポイントが上昇したか
     bool IsAddSpecialPoint();
 
@@ -95,11 +102,6 @@ private:
     PlayerParam param;
     PlayerParam default_param;
 
-public:
-    // HACK 変数名・変数の位置変更する
-    // この時間を超えると他ステートに遷移可能になる
-    float attack_end_point = 0.2f;
-    float attack_combo2_end_point = 0.25f;
 private:
     std::weak_ptr<MovementComponent> movement_Wptr;
     std::weak_ptr<Transform3DComponent> transform_Wptr;

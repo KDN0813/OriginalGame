@@ -258,7 +258,7 @@ void PlayerAttackState::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (player->attack_end_point <= animation->GetMainPartsCurrentAnimationSeconds())
+    if (player->GetAttackEndPoint() <= animation->GetMainPartsCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
         state_machine->ChangeState("AttackHoldState");
@@ -377,7 +377,7 @@ void PlayerAttackComboState::Update(float elapsed_time)
     }
 
     // アニメーション再生待ち
-    if (player->attack_combo2_end_point <= animation->GetMainPartsCurrentAnimationSeconds())
+    if (player->GetAttackCombo2EndPoint() <= animation->GetMainPartsCurrentAnimationSeconds())
     {
         // 待機ステートに遷移
         state_machine->ChangeState("AttackHoldState");
