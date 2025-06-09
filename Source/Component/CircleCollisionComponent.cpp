@@ -145,7 +145,7 @@ void CircleCollisionComponent::DrawDebugPrimitive()
 void CircleCollisionComponent::DrawDebugPrimitiveGUI()
 {
     if (this->param.collision_type >= COLLISION_OBJECT_TYPE::MAX) return;    // ƒ^ƒCƒv‚ªˆÈã‚È‚çˆ—‚µ‚È‚¢
-    circle_collsion_primitive.DrawDebugGUI("Circle Collsion");
+    circle_collsion_primitive.DrawDebugGUI("Circle Collision");
 }
 
 #endif // DEBUG
