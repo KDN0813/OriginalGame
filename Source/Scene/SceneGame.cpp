@@ -267,8 +267,6 @@ void SceneGame::Update(float elapsed_time)
 
 	{
 		GameObjectRegistry::Instance game_object = GameObjectRegistry::GetInstance();
-		//game_object->AddCreateEnemy(elapsed_time,this->object_manager);
-
 		// 更新処理
 		// 主に削除されたエネミーをリストから消す処理
 		game_object->Update();
