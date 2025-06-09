@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include <DirectXMath.h>
 #include <vector>
 
 class Object;
@@ -37,7 +38,8 @@ public:
 
     void SetObjectManager(const std::shared_ptr<ObjectManager>& manager) { this->object_manager_Wptr = manager; }
 private:
-    void AddCreateEnemy(const std::shared_ptr<ObjectManager>& manager);
+    void UpdateEnemySpawner(const std::shared_ptr<ObjectManager>& manager);
+    void CreateEnemy(const std::shared_ptr<ObjectManager>& manager, DirectX::XMFLOAT3 spawn_point);
     
 private:
     std::weak_ptr<ObjectManager> object_manager_Wptr;

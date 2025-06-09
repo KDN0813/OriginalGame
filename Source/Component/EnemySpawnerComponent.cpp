@@ -24,14 +24,14 @@ void EnemySpawnerComponent::Update(float elapsed_time)
     this->param.create_cool_timer -= elapsed_time;
     if (this->param.create_cool_timer <= 0.0f)
     {
-        AddCreateEnemy(this->object_manager_Wptr.lock());
+        UpdateEnemySpawner(this->object_manager_Wptr.lock());
 
         const float COOL_TIME = MyMath::RandomRange(this->param.create_cool_time_min, this->param.create_cool_time_max);
         this->param.create_cool_timer = COOL_TIME;
     }
 }
 
-void EnemySpawnerComponent::AddCreateEnemy(const std::shared_ptr<ObjectManager>& manager)
+void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManager>& manager)
 {
     if (manager == nullptr) return;
 
@@ -60,12 +60,18 @@ void EnemySpawnerComponent::AddCreateEnemy(const std::shared_ptr<ObjectManager>&
         const float player_area_rage = 20.0f;
         const DirectX::XMFLOAT3 spawn_point = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, player_area_rage, EnemyConstant::NEAR_PLAYER_TERRITORY_RENGR);
 
-        // “G‚Ì¶¬
-        const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, manager->Create());
-        // “G‚ðGameObjectRegistry‚ÉÝ’è
-        object_registry->SetEnemy(enemy);
+        CreateEnemy(manager, spawn_point);
     }
 
+}
+
+void EnemySpawnerComponent::CreateEnemy(const std::shared_ptr<ObjectManager>& manager, DirectX::XMFLOAT3 spawn_point)
+{
+    GameObjectRegistry::Instance object_registry = GameObjectRegistry::GetInstance();
+    // “G‚Ì¶¬
+    const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, manager->Create());
+    // “G‚ðGameObjectRegistry‚ÉÝ’è
+    object_registry->SetEnemy(enemy);
 }
 
 #ifdef _DEBUG
@@ -81,6 +87,11 @@ void EnemySpawnerComponent::DrawDebugGUI()
         this->param.create_cool_time_min = (std::min)(this->param.create_cool_time_min, 0.0f);
     }
     ImGui::SliderFloat("Cool Time", &this->param.create_cool_timer, 0.0f, this->param.create_cool_time_max);
+
+    if (ImGui::Button("Create Enemy"))
+    {
+        CreateEnemy(this->object_manager_Wptr.lock(), DirectX::XMFLOAT3());
+    }
 }
 
 #endif // _DEBUG
