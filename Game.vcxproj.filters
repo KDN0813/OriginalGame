@@ -220,9 +220,6 @@
     <Filter Include="Source\Effekseer">
       <UniqueIdentifier>{b9d37510-54f3-42d7-8c91-e495934c0db6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Component\Effekseer">
-      <UniqueIdentifier>{e482852e-ebae-40ac-8d0f-61b74cfe86e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Component\Enemy\Spawner">
       <UniqueIdentifier>{240f7812-f691-4ec7-af73-debd0573dddd}</UniqueIdentifier>
     </Filter>
@@ -587,9 +584,6 @@
     </ClInclude>
     <ClInclude Include="Source\Effekseer\EffekseerSystem.h">
       <Filter>Source\Effekseer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\EffekseerComponent.h">
-      <Filter>Source\Component\Effekseer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\EnemySpawnerComponent.h">
       <Filter>Source\Component\Enemy\Spawner</Filter>
