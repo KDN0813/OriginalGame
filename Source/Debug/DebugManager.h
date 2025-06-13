@@ -4,7 +4,6 @@
 #include "System/ClassBase/Singleton.h"
 #include "Debug/ImGuiRenderer.h"
 #include "Debug/DebugPrimitiveRenderer.h"
-#include "Debug/LineRenderer.h"
 
 class DebugManager : public Singleton<DebugManager>
 {
