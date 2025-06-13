@@ -6,7 +6,6 @@
 class ModelComponent;
 
 // モデルクラスのアニメーションクラス
-// 外部からの指示でアニメーションを制御する
 class ModelAnimationControlComponent : public Component
 {
 public:

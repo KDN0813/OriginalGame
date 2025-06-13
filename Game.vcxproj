@@ -143,9 +143,7 @@
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\EnemyComponent.h" />
     <ClInclude Include="Source\Component\GravityComponent.h" />
-    <ClInclude Include="Source\Component\InstancedModelWithStateAnimationComponent.h" />
     <ClInclude Include="Source\Component\InstancingModelToonShaderComponent.h" />
-    <ClInclude Include="Source\Component\ModelAnimationComponent.h" />
     <ClInclude Include="Source\Component\ModelAnimationControlComponent.h" />
     <ClInclude Include="Source\Component\ModelComponent.h" />
     <ClInclude Include="Source\Component\ModelPartAnimationControlComponent.h" />
@@ -157,7 +155,6 @@
     <ClInclude Include="Source\Component\SpecialGageComponent.h" />
     <ClInclude Include="Source\Component\SpinAttackTimeUIComponent.h" />
     <ClInclude Include="Source\Component\SpriteComponent.h" />
-    <ClInclude Include="Source\Component\LegacyStateMachineComponent.h" />
     <ClInclude Include="Source\Component\StateMachineComponent.h" />
     <ClInclude Include="Source\Component\Transform2DComponent.h" />
     <ClInclude Include="Source\Component\TransformComponent.h" />
@@ -206,10 +203,6 @@
     <ClInclude Include="Source\Shader\SpriteShader.h" />
     <ClInclude Include="Source\Sprite\Sprite.h" />
     <ClInclude Include="Source\StateMachine\EnemyStateDerived.h" />
-    <ClInclude Include="Source\StateMachine\LegacyState.h" />
-    <ClInclude Include="Source\StateMachine\LegacyStateDerived.h" />
-    <ClInclude Include="Source\StateMachine\LegacyTransitionJudgement.h" />
-    <ClInclude Include="Source\StateMachine\LegacyTransitionJudgementDerived.h" />
     <ClInclude Include="Source\StateMachine\LoadingIconStateDerived.h" />
     <ClInclude Include="Source\StateMachine\StateBase.h" />
     <ClInclude Include="Source\StateMachine\PlayerStateDerived.h" />
@@ -259,9 +252,7 @@
     <ClCompile Include="Source\Component\CircleCollisionComponent.cpp" />
     <ClCompile Include="Source\Component\EnemyComponent.cpp" />
     <ClCompile Include="Source\Component\GravityComponent.cpp" />
-    <ClCompile Include="Source\Component\InstancedModelWithStateAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\InstancingModelToonShaderComponent.cpp" />
-    <ClCompile Include="Source\Component\ModelAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\ModelAnimationControlComponent.cpp" />
     <ClCompile Include="Source\Component\ModelComponent.cpp" />
     <ClCompile Include="Source\Component\ModelPartAnimationControlComponent.cpp" />
@@ -273,7 +264,6 @@
     <ClCompile Include="Source\Component\SpecialGageComponent.cpp" />
     <ClCompile Include="Source\Component\SpinAttackTimeUIComponent.cpp" />
     <ClCompile Include="Source\Component\SpriteComponent.cpp" />
-    <ClCompile Include="Source\Component\LegacyStateMachineComponent.cpp" />
     <ClCompile Include="Source\Component\StateMachineComponent.cpp" />
     <ClCompile Include="Source\Component\TextNumberComponent.cpp" />
     <ClCompile Include="Source\Component\Transform2DComponent.cpp" />
@@ -316,10 +306,6 @@
     <ClCompile Include="Source\Shader\SpriteShader.cpp" />
     <ClCompile Include="Source\Sprite\Sprite.cpp" />
     <ClCompile Include="Source\StateMachine\EnemyStateDerived.cpp" />
-    <ClCompile Include="Source\StateMachine\LegacyState.cpp" />
-    <ClCompile Include="Source\StateMachine\LegacyStateDerived.cpp" />
-    <ClCompile Include="Source\StateMachine\LegacyTransitionJudgement.cpp" />
-    <ClCompile Include="Source\StateMachine\LegacyTransitionJudgementDerived.cpp" />
     <ClCompile Include="Source\StateMachine\LoadingIconStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\PlayerStateDerived.cpp" />
     <ClCompile Include="Source\StateMachine\UIStateDerived.cpp" />

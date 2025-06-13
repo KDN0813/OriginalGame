@@ -45,16 +45,8 @@
 #include "Component\CharacterComponent.h"
 #endif // DEBUG
 
-
-#pragma region LegacyComponent(旧コンポーネント)
-#include "Component/LegacyStateMachineComponent.h"
-#pragma endregion LegacyComponent(旧コンポーネント)
-
-#include "StateMachine/LegacyTransitionJudgementDerived.h"
-#include "StateMachine/LegacyStateDerived.h"
 #include "StateMachine/PlayerStateDerived.h"
 #include "StateMachine/UIStateDerived.h"
-
 
 void SceneGame::Initialize()
 {

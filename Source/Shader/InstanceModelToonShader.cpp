@@ -10,7 +10,7 @@
 #include "Model/ModelResource.h"
 #include "Shader\LightManager.h"
 
-#include "Component/InstancedModelWithStateAnimationComponent.h"
+#include "Component/InstancedModelWithAnimationComponent.h"
 #include "Component/TransformComponent.h"
 #include "Component/CameraComponent.h"
 
