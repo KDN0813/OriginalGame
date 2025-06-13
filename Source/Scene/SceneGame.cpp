@@ -17,7 +17,6 @@
 #ifdef _DEBUG
 #include <imgui.h>
 #include "Debug/DebugManager.h"
-#include "Debug/DebugComponent.h"
 #endif // _DEBUG
 
 #include "Input/Input.h"

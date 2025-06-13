@@ -184,9 +184,6 @@
     <Filter Include="Source\StateMachine\LoadingIcon">
       <UniqueIdentifier>{812fa681-36aa-4795-a8b1-321316cd4751}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Debug\Graphics">
-      <UniqueIdentifier>{2ac7cb79-cb10-43d1-856f-e51f0f698e73}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\StateMachine\UI">
       <UniqueIdentifier>{b0abbb1b-b0b6-4055-a1bc-2457b22e4998}</UniqueIdentifier>
     </Filter>
@@ -229,6 +226,9 @@
     <Filter Include="Source\Component\Enemy\Spawner">
       <UniqueIdentifier>{240f7812-f691-4ec7-af73-debd0573dddd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics">
+      <UniqueIdentifier>{2ac7cb79-cb10-43d1-856f-e51f0f698e73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -258,9 +258,6 @@
     <ClInclude Include="Source\Scene\SceneTitle.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Debug\DebugCereal.h">
-      <Filter>Source\Debug</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\ClassBase\CopyDisable.h">
       <Filter>Source\System\ClassBase</Filter>
     </ClInclude>
@@ -271,10 +268,10 @@
       <Filter>Source\Model</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\RenderContext.h">
-      <Filter>Source\Debug\Graphics</Filter>
+      <Filter>Source\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Graphics.h">
-      <Filter>Source\Debug\Graphics</Filter>
+      <Filter>Source\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Debug\ImGuiRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
@@ -296,9 +293,6 @@
     </ClInclude>
     <ClInclude Include="Source\Component\Component.h">
       <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneDebug.h">
-      <Filter>Source\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Model\InstancingModelResource.h">
       <Filter>Source\Model</Filter>
@@ -350,9 +344,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework.h">
       <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Debug\DebugComponent.h">
-      <Filter>Source\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\CollisionParam.h">
       <Filter>Source\Collision</Filter>
@@ -623,14 +614,11 @@
     <ClCompile Include="Source\Scene\SceneTitle.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Debug\DebugCereal.cpp">
-      <Filter>Source\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Model\ModelResource.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\Graphics.cpp">
-      <Filter>Source\Debug\Graphics</Filter>
+      <Filter>Source\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Debug\ImGuiRenderer.cpp">
       <Filter>Source\Debug\Renderer</Filter>
@@ -646,9 +634,6 @@
     </ClCompile>
     <ClCompile Include="Source\Input\Input.cpp">
       <Filter>Source\input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\SceneDebug.cpp">
-      <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model\InstancingModelResource.cpp">
       <Filter>Source\Model</Filter>
@@ -679,9 +664,6 @@
     </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Debug\DebugComponent.cpp">
-      <Filter>Source\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Source\Sprite\Sprite.cpp">
       <Filter>Source\Sprite</Filter>
