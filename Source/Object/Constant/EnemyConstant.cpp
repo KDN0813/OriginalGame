@@ -169,9 +169,5 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shar
 		const auto& enemy_spawner = object->AddComponent<EnemySpawnerComponent>(param);
 		enemy_spawner->SetObjectManager(object_manager);
 	}
-#ifdef _DEBUG
-	object->SetIsActive(false);
-#endif // _DEBUG
-
 	return object;
 }
