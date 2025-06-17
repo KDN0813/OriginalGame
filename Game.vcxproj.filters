@@ -142,9 +142,6 @@
     <Filter Include="Source\Shader\Sprite">
       <UniqueIdentifier>{edd5686b-f3be-4bb7-b7a0-5a40af2f5c1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HLSL\SkyBox">
-      <UniqueIdentifier>{59a9c379-17cf-4ece-98c8-928c26843b8c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Shader\SkyBox">
       <UniqueIdentifier>{65de1dea-6f3e-4110-a68f-ea942ad5f602}</UniqueIdentifier>
     </Filter>
@@ -159,9 +156,6 @@
     </Filter>
     <Filter Include="Source\Shader\Light">
       <UniqueIdentifier>{8f40ade9-b854-4d75-ae59-d5532c0b687a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HLSL\Instance\Toon">
-      <UniqueIdentifier>{6a496320-f32a-4b8f-9e87-9141f750f854}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Shader\InstanceModel\Toon">
       <UniqueIdentifier>{ff2d8e65-d027-470a-b2ba-4f3184a2b1f8}</UniqueIdentifier>
@@ -417,12 +411,6 @@
     <ClInclude Include="Source\Component\GravityComponent.h">
       <Filter>Source\Component\Gravity</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\InstancedModelWithStateAnimationComponent.h">
-      <Filter>Source\Component\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\ModelAnimationComponent.h">
-      <Filter>Source\Component\Model\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\ModelComponent.h">
       <Filter>Source\Component\Model</Filter>
     </ClInclude>
@@ -437,21 +425,6 @@
     </ClInclude>
     <ClInclude Include="Source\Component\TransformComponent.h">
       <Filter>Source\Component\Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\LegacyStateMachineComponent.h">
-      <Filter>Source\Component\StateMachine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMachine\LegacyTransitionJudgementDerived.h">
-      <Filter>Source\StateMachine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMachine\LegacyState.h">
-      <Filter>Source\StateMachine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMachine\LegacyStateDerived.h">
-      <Filter>Source\StateMachine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StateMachine\LegacyTransitionJudgement.h">
-      <Filter>Source\StateMachine\Legacy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\StateMachineComponent.h">
       <Filter>Source\Component\StateMachine</Filter>
@@ -722,12 +695,6 @@
     <ClCompile Include="Source\Component\GravityComponent.cpp">
       <Filter>Source\Component\Gravity</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\InstancedModelWithStateAnimationComponent.cpp">
-      <Filter>Source\Component\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\ModelAnimationComponent.cpp">
-      <Filter>Source\Component\Model\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\ModelComponent.cpp">
       <Filter>Source\Component\Model</Filter>
     </ClCompile>
@@ -742,21 +709,6 @@
     </ClCompile>
     <ClCompile Include="Source\Component\TransformComponent.cpp">
       <Filter>Source\Component\Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\LegacyStateMachineComponent.cpp">
-      <Filter>Source\Component\StateMachine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMachine\LegacyState.cpp">
-      <Filter>Source\StateMachine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMachine\LegacyStateDerived.cpp">
-      <Filter>Source\StateMachine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMachine\LegacyTransitionJudgement.cpp">
-      <Filter>Source\StateMachine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StateMachine\LegacyTransitionJudgementDerived.cpp">
-      <Filter>Source\StateMachine\Legacy</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\StateMachineComponent.cpp">
       <Filter>Source\Component\StateMachine</Filter>
@@ -880,9 +832,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Hlsl\MatrixDecompose.hlsli">
-      <Filter>HLSL</Filter>
-    </None>
     <None Include="Hlsl\Debug.hlsli">
       <Filter>HLSL\Debug</Filter>
     </None>
@@ -904,14 +853,8 @@
     <None Include="Hlsl\EasingFunctions.hlsli">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="Hlsl\SkyBox.hlsli">
-      <Filter>HLSL\SkyBox</Filter>
-    </None>
     <None Include="Hlsl\Line.hlsli">
       <Filter>HLSL\Debug\Line</Filter>
-    </None>
-    <None Include="Hlsl\InstanceToon.hlsli">
-      <Filter>HLSL\Instance\Toon</Filter>
     </None>
     <None Include="Hlsl\Lights.hlsli">
       <Filter>HLSL\Light</Filter>
@@ -960,23 +903,11 @@
     <FxCompile Include="Hlsl\GeometryParticle_cs.hlsl">
       <Filter>HLSL\GeometryParticle</Filter>
     </FxCompile>
-    <FxCompile Include="Hlsl\SkyBoxPS.hlsl">
-      <Filter>HLSL\SkyBox</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\SkyBoxVS.hlsl">
-      <Filter>HLSL\SkyBox</Filter>
-    </FxCompile>
     <FxCompile Include="Hlsl\LinePS.hlsl">
       <Filter>HLSL\Debug\Line</Filter>
     </FxCompile>
     <FxCompile Include="Hlsl\LineVS.hlsl">
       <Filter>HLSL\Debug\Line</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\InstanceToonPS.hlsl">
-      <Filter>HLSL\Instance\Toon</Filter>
-    </FxCompile>
-    <FxCompile Include="Hlsl\InstanceToonVS.hlsl">
-      <Filter>HLSL\Instance\Toon</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

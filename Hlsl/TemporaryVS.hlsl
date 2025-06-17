@@ -1,7 +1,5 @@
 #include "Temporary.hlsli"
 
-// ランバードシェーダーの計算こっちでやってるぽい
-// →色の計算をこっちで行ってる
 VsOut main(VsIn vs_in)
 {
 	float3 p = { 0, 0, 0 };
