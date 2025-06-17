@@ -199,7 +199,6 @@
     <ClInclude Include="Source\Shader\Shader.h" />
     <ClInclude Include="Source\Shader\InstanceModelShader.h" />
     <ClInclude Include="Source\Shader\ShaderLoader.h" />
-    <ClInclude Include="Source\Shader\SkyBox.h" />
     <ClInclude Include="Source\Shader\SpriteShader.h" />
     <ClInclude Include="Source\Sprite\Sprite.h" />
     <ClInclude Include="Source\StateMachine\EnemyStateDerived.h" />
@@ -302,7 +301,6 @@
     <ClCompile Include="Source\Shader\ModelShader.cpp" />
     <ClCompile Include="Source\Shader\ParticleSystem.cpp" />
     <ClCompile Include="Source\Shader\ShaderLoader.cpp" />
-    <ClCompile Include="Source\Shader\SkyBox.cpp" />
     <ClCompile Include="Source\Shader\SpriteShader.cpp" />
     <ClCompile Include="Source\Sprite\Sprite.cpp" />
     <ClCompile Include="Source\StateMachine\EnemyStateDerived.cpp" />

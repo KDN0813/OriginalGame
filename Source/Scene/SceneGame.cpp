@@ -65,7 +65,6 @@ void SceneGame::Initialize()
 	{
 		this->instancing_model_shader = std::make_unique<InstancingModelShader>();
 		this->model_shader = std::make_unique<ModelShader>();
-		this->sky_box = std::make_unique<SkyBox>();
 	}
 
 	// パーティクルシステムのテクスチャロード

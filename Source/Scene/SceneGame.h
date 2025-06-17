@@ -13,7 +13,6 @@
 #include "Shader/ModelShader.h"
 #include "Shader/ParticleSystem.h"
 #include "Shader\LightManager.h"
-#include "Shader\SkyBox.h"
 
 class SceneGame : public Scene 
 {
@@ -42,7 +41,6 @@ private:
     // シェーダー
     std::unique_ptr<InstancingModelShader> instancing_model_shader;
     std::unique_ptr<ModelShader> model_shader;
-    std::unique_ptr<SkyBox> sky_box;
 
     std::shared_ptr<ObjectManager> object_manager;
     GameObjectRegistry game_object;
