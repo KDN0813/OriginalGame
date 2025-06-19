@@ -859,6 +859,7 @@ void PlayerDeadState::Start()
     if (animation)
     {
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::DEAD, false);
+        animation->PlaySubPartsAnimation(PlayerConstant::ANIMATION::DEAD, false);
     }
     // “ü—ÍŽó•t‚ð‚µ‚È‚¢‚æ‚¤‚ÉÝ’è
     const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
