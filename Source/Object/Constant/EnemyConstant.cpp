@@ -20,12 +20,7 @@
 
 const MyHash EnemyConstant::ATTACK_OBJECT_NAME = MyHash("EnemyAttackObject");
 
-const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<Object>& enemy)
-{
-	return CreateEnemy({}, enemy);
-}
-
-const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>& enemy)
+const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<Object>& enemy, const EnemyConfig& config)
 {
 	// コリジョンに設定するコンポーネントは事前に作成しておく
 	std::shared_ptr<EnemyComponent> enemy_component;
@@ -33,7 +28,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	// エネミーコンポーネント設定
 	{
 		EnemyComponent::EnemyParam param{};
-		param.spawn_point = spawn_point;
+		param.spawn_point = config.spawn_point;
 		param.add_special_point = 1.0f;
 		enemy_component = enemy->AddComponent<EnemyComponent>(param);
 #ifdef _DEBUG
@@ -58,7 +53,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const DirectX::XMFLOAT
 	// トランスフォーム設定
 	{
 		Transform3DComponent::Transform3DParam param{};
-		param.local_position = spawn_point;
+		param.local_position = config.spawn_point;
 		param.local_scale = DirectX::XMFLOAT3(0.015f, 0.015f, 0.015f);
 
 		auto transform = enemy->AddComponent<Transform3DComponent>(param);

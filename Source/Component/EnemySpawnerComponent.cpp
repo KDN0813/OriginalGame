@@ -84,16 +84,18 @@ void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManag
 
         const DirectX::XMFLOAT3 SPAWN_POINT = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, this->param.min_spawn_dist, this->param.max_spawn_dist);
 
-        CreateEnemy(manager, SPAWN_POINT);
+        EnemyConfig config;
+        config.spawn_point = SPAWN_POINT;
+        CreateEnemy(manager, config);
     }
 
 }
 
-void EnemySpawnerComponent::CreateEnemy(const std::shared_ptr<ObjectManager>& manager, DirectX::XMFLOAT3 spawn_point)
+void EnemySpawnerComponent::CreateEnemy(const std::shared_ptr<ObjectManager>& manager, const EnemyConfig& config)
 {
     GameObjectRegistry::Instance object_registry = GameObjectRegistry::GetInstance();
     // “G‚Ì¶¬
-    const auto& enemy = EnemyConstant::CreateEnemy(spawn_point, manager->Create());
+    const auto& enemy = EnemyConstant::CreateEnemy(manager->Create(), config);
     // “G‚ðGameObjectRegistry‚ÉÝ’è
     object_registry->SetEnemy(enemy);
 }
@@ -114,7 +116,9 @@ void EnemySpawnerComponent::DrawDebugGUI()
 
     if (ImGui::Button("Create Enemy"))
     {
-        CreateEnemy(this->object_manager_Wptr.lock(), DirectX::XMFLOAT3());
+        EnemyConfig config;
+        config.spawn_point = DirectX::XMFLOAT3();
+        CreateEnemy(this->object_manager_Wptr.lock(), config);
     }
 
     if (ImGui::InputFloat("Min Spawn Dist", &this->param.min_spawn_dist))

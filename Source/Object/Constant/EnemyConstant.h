@@ -6,6 +6,12 @@
 
 #include "Object\Object.h"
 
+// “GƒLƒƒƒ‰‚Ì\¬
+struct EnemyConfig
+{
+    DirectX::XMFLOAT3 spawn_point;  // ¶¬ˆÊ’u
+};
+
 class EnemyConstant
 {
 public:
@@ -47,8 +53,7 @@ public:
     static constexpr float DEFAULT_TERRITORY_RENGR = 185.0f;    // “G‚ÌˆÚ“®”ÍˆÍ
 #endif // _DEBUG
 public:
-    static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&);
-    static const std::shared_ptr<Object>& CreateEnemy(const DirectX::XMFLOAT3 spawn_point, const std::shared_ptr<Object>&);
+    static const std::shared_ptr<Object>& CreateEnemy(const std::shared_ptr<Object>&, const EnemyConfig&);
 
     static const std::shared_ptr<Object>& CreateEnemySpawner(const std::shared_ptr<Object>&, const std::shared_ptr<ObjectManager>& object_manager);
 };

@@ -10,6 +10,8 @@ class Object;
 class ObjectManager;
 class Transform3DComponent;
 
+class EnemyConfig;
+
 // エネミーの生成を行うコンポーネント
 class EnemySpawnerComponent : public Component
 {
@@ -45,7 +47,7 @@ public:
     void SetObjectManager(const std::shared_ptr<ObjectManager>& manager) { this->object_manager_Wptr = manager; }
 private:
     void UpdateEnemySpawner(const std::shared_ptr<ObjectManager>& manager);
-    void CreateEnemy(const std::shared_ptr<ObjectManager>& manager, DirectX::XMFLOAT3 spawn_point);
+    void CreateEnemy(const std::shared_ptr<ObjectManager>& manager, const EnemyConfig& config);
     
 private:
     std::weak_ptr<ObjectManager> object_manager_Wptr;
