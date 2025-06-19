@@ -24,6 +24,9 @@ public:
 
         float min_spawn_dist;   // 生成範囲の最小
         float max_spawn_dist;   // 生成範囲の最小
+
+        int min_enemies_per_spawn;  // 一度に生成する敵の最低値
+        int max_enemies_per_spawn;  // 一度に生成する敵の最大値
     };
 
 public:

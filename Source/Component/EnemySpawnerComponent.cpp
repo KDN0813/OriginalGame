@@ -72,11 +72,7 @@ void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManag
 
     const size_t NOW_ENEMY_COUNT = enemy_Wptr_pool.size();  // 現在の敵の数
     const size_t ENEMY_MAX = EnemyConstant::ENEMY_MAX;      // 敵の最大値
-#ifdef _DEBUG
-    const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(10, 20);	// 1度に生成できるエネミーの最大数
-#else
-    const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(80, 150);	// 1度に生成できるエネミーの最大数
-#endif // _DEBUG
+    const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(this->param.min_enemies_per_spawn, this->param.max_enemies_per_spawn);	// 1度に生成するエネミーの数
 
     for (int i = 0; i < ENEMY_MAX - NOW_ENEMY_COUNT; ++i)
     {
@@ -113,6 +109,9 @@ void EnemySpawnerComponent::DrawDebugGUI()
         this->param.create_cool_time_min = (std::min)(this->param.create_cool_time_min, 0.0f);
     }
     ImGui::SliderFloat("Cool Time", &this->param.create_cool_timer, 0.0f, this->param.create_cool_time_max);
+
+    ImGui::InputInt("Min Enemies Per Spawn", &this->param.min_enemies_per_spawn);
+    ImGui::InputInt("Max Enemies Per Spawn", &this->param.max_enemies_per_spawn);
 
     if (ImGui::Button("Create Enemy"))
     {
