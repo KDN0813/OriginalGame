@@ -47,6 +47,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 		param.anime_index = ANIMATION::IDLE_BATTLE;
 		param.anime_loop = true;
 		param.anime_play = true;
+		param.base_color = config.base_color;
 
 		auto model = enemy->AddComponent<InstancedModelWithAnimationComponent>(param, "Data/Model/ChestMonster/ChestMonster.mdl");
 	}

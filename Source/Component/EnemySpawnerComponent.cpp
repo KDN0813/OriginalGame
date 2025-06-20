@@ -82,6 +82,7 @@ void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManag
 
         EnemyConfig config;
         config.spawn_point = SPAWN_POINT;
+        config.base_color = { 1.0f,1.0f, 1.0f, 1.0f };
         CreateEnemy(manager, config);
     }
 

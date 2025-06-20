@@ -10,7 +10,7 @@ class Object;
 class ObjectManager;
 class Transform3DComponent;
 
-class EnemyConfig;
+struct EnemyConfig;
 
 // エネミーの生成を行うコンポーネント
 class EnemySpawnerComponent : public Component

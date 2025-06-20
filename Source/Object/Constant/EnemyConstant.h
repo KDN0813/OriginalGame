@@ -10,6 +10,7 @@
 struct EnemyConfig
 {
     DirectX::XMFLOAT3 spawn_point;  // 生成位置
+    DirectX::XMFLOAT4 base_color;   // ベースカラー
 };
 
 class EnemyConstant

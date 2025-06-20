@@ -42,7 +42,7 @@ public:
 	void ReStart() override;      // パラメータの初期化
 	void Update(float elapsed_time) override;
 
-	const char* GetName()const override { return "AnimatedInstancedModelComponent"; }
+	const char* GetName()const override { return "InstancedModelWithAnimationComponent"; }
 	// 優先度
 	const PRIORITY GetPriority()const noexcept override { return PRIORITY::LOW; }
 
