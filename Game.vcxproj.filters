@@ -142,9 +142,6 @@
     <Filter Include="Source\Shader\Sprite">
       <UniqueIdentifier>{edd5686b-f3be-4bb7-b7a0-5a40af2f5c1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Shader\SkyBox">
-      <UniqueIdentifier>{65de1dea-6f3e-4110-a68f-ea942ad5f602}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HLSL\Debug\ImGui">
       <UniqueIdentifier>{8e363695-7ee0-4d1b-846d-5969427be6c8}</UniqueIdentifier>
     </Filter>
@@ -156,9 +153,6 @@
     </Filter>
     <Filter Include="Source\Shader\Light">
       <UniqueIdentifier>{8f40ade9-b854-4d75-ae59-d5532c0b687a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Shader\InstanceModel\Toon">
-      <UniqueIdentifier>{ff2d8e65-d027-470a-b2ba-4f3184a2b1f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="HLSL\Light">
       <UniqueIdentifier>{8961a7c9-eb0c-45fa-94fb-3453748b1c7a}</UniqueIdentifier>
@@ -465,9 +459,6 @@
     <ClInclude Include="Hlsl\ParticleDisp.h">
       <Filter>HLSL\GeometryParticle</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shader\SkyBox.h">
-      <Filter>Source\Shader\SkyBox</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Debug\LineRenderer.h">
       <Filter>Source\Debug\Renderer</Filter>
     </ClInclude>
@@ -476,9 +467,6 @@
     </ClInclude>
     <ClInclude Include="Source\Shader\LightManager.h">
       <Filter>Source\Shader\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Shader\InstanceModelToonShader.h">
-      <Filter>Source\Shader\InstanceModel\Toon</Filter>
     </ClInclude>
     <ClInclude Include="Source\Model\InstancingConstants.h">
       <Filter>Source\Model</Filter>
@@ -740,9 +728,6 @@
     <ClCompile Include="Source\Shader\SpriteShader.cpp">
       <Filter>Source\Shader\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shader\SkyBox.cpp">
-      <Filter>Source\Shader\SkyBox</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Debug\LineRenderer.cpp">
       <Filter>Source\Debug\Renderer</Filter>
     </ClCompile>
@@ -751,9 +736,6 @@
     </ClCompile>
     <ClCompile Include="Source\Shader\LightManager.cpp">
       <Filter>Source\Shader\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Shader\InstanceModelToonShader.cpp">
-      <Filter>Source\Shader\InstanceModel\Toon</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp">
       <Filter>Source\Component\Shader\Instancing</Filter>
