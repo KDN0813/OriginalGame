@@ -16,6 +16,12 @@ struct EnemyConfig;
 class EnemySpawnerComponent : public Component
 {
 public:
+    enum EyemyType
+    {
+        Normal = 0,
+        Max,
+    };
+
     struct Param
     {
         float create_cool_time_max; // 生成のクールタイム(最大値)
@@ -56,6 +62,8 @@ private:
     std::weak_ptr<ObjectManager> object_manager_Wptr;
     Param param;
     Param default_param;
+
+    std::vector<EnemyConfig> enemy_config_pool;
 
 private:
     std::weak_ptr<Object> player_Wptr;

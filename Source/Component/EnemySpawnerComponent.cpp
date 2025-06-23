@@ -17,6 +17,11 @@ EnemySpawnerComponent::EnemySpawnerComponent(Param param)
     : param(param)
     , default_param(param)
 {
+    this->enemy_config_pool.resize(EyemyType::Max);
+    auto& enemy_type1 = this->enemy_config_pool.at(EyemyType::Normal);
+    enemy_type1.spawn_point = {};
+    enemy_type1.base_color = { 1.0f,1.0f, 1.0f, 1.0f };
+    enemy_type1.move_speed = 5.0f;
 }
 
 void EnemySpawnerComponent::Start()
@@ -80,10 +85,8 @@ void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManag
 
         const DirectX::XMFLOAT3 SPAWN_POINT = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, this->param.min_spawn_dist, this->param.max_spawn_dist);
 
-        EnemyConfig config;
+        EnemyConfig config = this->enemy_config_pool.at(EyemyType::Normal);
         config.spawn_point = SPAWN_POINT;
-        config.base_color = { 1.0f,1.0f, 1.0f, 1.0f };
-        config.move_speed = 5.0f;
         CreateEnemy(manager, config);
     }
 
@@ -117,10 +120,7 @@ void EnemySpawnerComponent::DrawDebugGUI()
 
     if (ImGui::Button("Create Enemy"))
     {
-        EnemyConfig config;
-        config.spawn_point = DirectX::XMFLOAT3();
-        config.base_color = { 1.0f,1.0f ,1.0f ,1.0f };
-        config.move_speed = 5.0f;
+        EnemyConfig config = this->enemy_config_pool.at(EyemyType::Normal);
         CreateEnemy(this->object_manager_Wptr.lock(), config);
     }
 
