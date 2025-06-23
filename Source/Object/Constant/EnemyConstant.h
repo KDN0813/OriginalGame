@@ -11,6 +11,7 @@ struct EnemyConfig
 {
     DirectX::XMFLOAT3 spawn_point;  // 生成位置
     DirectX::XMFLOAT4 base_color;   // ベースカラー
+    float move_speed;               // 移動速度
 };
 
 class EnemyConstant

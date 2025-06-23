@@ -30,6 +30,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 		EnemyComponent::EnemyParam param{};
 		param.spawn_point = config.spawn_point;
 		param.add_special_point = 1.0f;
+		param.move_speed = config.move_speed;
 		enemy_component = enemy->AddComponent<EnemyComponent>(param);
 #ifdef _DEBUG
 		//enemy_component->SetIsDebugPrimitive(false);

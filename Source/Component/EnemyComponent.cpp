@@ -61,7 +61,7 @@ void EnemyComponent::Update(float elapsed_time)
 
 void EnemyComponent::Move(float vx, float vz, float speed)
 {
-	auto owner = GetOwner();
+	const auto& owner = GetOwner();
 
 	if (auto movement = owner->GetComponent<MovementComponent>(movement_Wptr))
 	{
