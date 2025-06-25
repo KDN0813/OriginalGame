@@ -867,6 +867,13 @@ void PlayerDeadState::Start()
     {
         player->SetInputMoveValidityFlag(false);
     }
+
+    // 下半身のアニメーション管理を停止させる
+    const auto& animated_movement = owner->GetComponent(this->animated_movement_Wprt);
+    if (animated_movement)
+    {
+        animated_movement->SetIsActive(false);
+    }
 }
 
 void PlayerDeadState::Update(float elapsed_time)

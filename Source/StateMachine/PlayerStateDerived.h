@@ -4,6 +4,7 @@
 
 class ModelAnimationControlComponent;
 class MovementComponent;
+class AnimatedMovementComponent;
 class PlayerComponent;
 class CircleCollisionComponent;
 class CharacterComponent;
@@ -210,6 +211,7 @@ public:
 	void End() override {};
 private:
 	std::weak_ptr<ModelAnimationControlComponent> animation_Wprt;
+	std::weak_ptr<AnimatedMovementComponent> animated_movement_Wprt;
 	std::weak_ptr<PlayerComponent> player_Wprt;
 };
 
