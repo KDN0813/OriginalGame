@@ -140,15 +140,14 @@ void Object::DrawDebugGUI()
 
     ImGui::Separator();
 
-    // 名前検索
+    // Componentの名前検索
 
-    // 検索する値のリセット
     if (ImGui::Button("clear##:component_search_name Reset"))
     {
-        this->component_search_name = "";
+        this->component_search_name.clear();
     }
     ImGui::SameLine();
-    // 検索する値入力
+    // 入力バッファ
     char buffer2[1024];
     ::strncpy_s(buffer2, sizeof(buffer2), this->component_search_name.c_str(), sizeof(buffer2));
     if (ImGui::InputText("Search Component", buffer2, sizeof(buffer2), ImGuiInputTextFlags_EnterReturnsTrue))
@@ -162,25 +161,12 @@ void Object::DrawDebugGUI()
     int priority = 0;
     for (const std::shared_ptr<Component>& component : component_vec)
     {
-        bool is_draw = true;
-        if (this->component_search_name != "")
+        if (!this->component_search_name.empty())
         {
-            const size_t component_len = strlen(component->GetName());
-            for (size_t i = 0; i < this->component_search_name.size(); ++i)
+            if (!std::string(component->GetName()).starts_with(this->component_search_name)) 
             {
-                // 文字数最大値超えないように制限
-                if (component_len <= i)
-                {
-                    break;
-                }
-
-                if (this->component_search_name[i] != component->GetName()[i])
-                {
-                    is_draw = false;
-                    break;
-                }
+                continue;
             }
-            if (!is_draw) continue;
         }
 
         bool component_is_active = component->GetIsActive();
