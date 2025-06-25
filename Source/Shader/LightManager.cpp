@@ -13,7 +13,7 @@ void LightManager::DrawDebugGUI()
         if (ImGui::CollapsingHeader("Direction Light"))
         {
             ImGui::DragFloat4("Direction##DirectionLight", &this->direction_light.direction.x, 0.1f);
-            ImGui::ColorEdit4("Color##DirectionLight", &this->direction_light.color.x, 0.1f);
+            ImGui::ColorEdit4("Color##DirectionLight", &this->direction_light.color.x);
         }
     }
     ImGui::End();

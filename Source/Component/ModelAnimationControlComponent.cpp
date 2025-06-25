@@ -145,7 +145,7 @@ void ModelAnimationControlComponent::UpdateAnimation(PartsParam& parts, float el
 			float rate = (parts.anime_param.current_animation_seconds - keyframe0.seconds)
 				/ (keyframe1.seconds - keyframe0.seconds);
 
-			for (int node_index : parts.node_index_vec)
+			for (auto node_index : parts.node_index_vec)
 			{
 				const ModelResource::NodeKeyData& key0 = keyframe0.node_keys.at(node_index);
 				const ModelResource::NodeKeyData& key1 = keyframe1.node_keys.at(node_index);
