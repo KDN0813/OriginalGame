@@ -167,7 +167,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shar
 #ifdef _DEBUG
 		param.min_enemies_per_spawn = 10;
 		param.max_enemies_per_spawn = 20;
-#elif
+#else
 		param.min_enemies_per_spawn = 80;
 		param.max_enemies_per_spawn = 150;
 #endif // _DEBUG
