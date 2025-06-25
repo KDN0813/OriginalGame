@@ -204,6 +204,9 @@ public:
 	 * デバックの情報を3D画面上に出力する関数
 	 */
 	void DrawDebugPrimitive();
+
+private:
+	std::string component_search_name;
 #endif // _DEBUG
 };
 
