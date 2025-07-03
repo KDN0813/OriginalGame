@@ -211,6 +211,9 @@
     <Filter Include="Source\Graphics">
       <UniqueIdentifier>{2ac7cb79-cb10-43d1-856f-e51f0f698e73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External\Icon">
+      <UniqueIdentifier>{282c78bc-3a2d-4a1a-ab48-e8cc8d2f41f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -546,6 +549,10 @@
     <ClInclude Include="Source\Component\EnemySpawnerComponent.h">
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Resource\resource.h">
+      <Filter>External\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -888,5 +895,15 @@
     <FxCompile Include="Hlsl\LineVS.hlsl">
       <Filter>HLSL\Debug\Line</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Survivor.rc">
+      <Filter>External\Icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Data\Icon\Iocn.ico">
+      <Filter>External\Icon</Filter>
+    </Image>
   </ItemGroup>
 </Project>

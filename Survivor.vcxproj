@@ -121,6 +121,7 @@
     <ClInclude Include="External\imgui\imstb_textedit.h" />
     <ClInclude Include="External\imgui\imstb_truetype.h" />
     <ClInclude Include="Hlsl\ParticleDisp.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioParam.h" />
     <ClInclude Include="Source\Audio\AudioResource.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Source\Object\Constant\UIConstant.h" />
     <ClInclude Include="Source\Object\GameObjectRegistry.h" />
     <ClInclude Include="Source\Object\Object.h" />
+    <ClInclude Include="Source\Resource\resource.h" />
     <ClInclude Include="Source\Scene\SceneResult.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\Scene\SceneGame.h" />
@@ -392,6 +394,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Survivor.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Data\Icon\Iocn.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

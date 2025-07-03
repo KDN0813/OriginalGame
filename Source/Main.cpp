@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <tchar.h>
 
+#include "Resource\resource.h"
 #include "Framework.h"
 
 const LONG SCREEN_WIDTH = 1920;
@@ -28,7 +29,8 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_  HINSTANCE prev_instance, _
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = instance;
-	wcex.hIcon = 0;
+	wcex.hIcon = (HICON)LoadImage(wcex.hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), 0);;
+	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wcex.lpszMenuName = NULL;
@@ -39,7 +41,7 @@ int WINAPI WinMain(_In_ HINSTANCE instance, _In_opt_  HINSTANCE prev_instance, _
 	DWORD windowStyle = WS_BORDER;
 	RECT rc = { 0,0,GetSystemMetrics(SM_CXSCREEN),GetSystemMetrics(SM_CYSCREEN) };
 	AdjustWindowRect(&rc, windowStyle, FALSE);
-	HWND hWnd = CreateWindow(_T("Game"), _T(""), windowStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, instance, NULL);
+	HWND hWnd = CreateWindow(_T("Game"), _T("Survivor"), windowStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, instance, NULL);
 	SetWindowLongPtr(hWnd, GWL_STYLE, WS_POPUP);
 	SetWindowPos(hWnd, NULL, 0, 0, rc.right, rc.bottom, SWP_FRAMECHANGED);
 	ShowWindow(hWnd, cmd_show);
