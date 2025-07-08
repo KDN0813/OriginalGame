@@ -52,7 +52,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 
 		// テキスト
 		{
-			const auto text_sprite = score_object->CreateChildObject("Text");
+			const auto& text_sprite = score_object->CreateChildObject("Text");
 
 			// TextNumberComponent
 			{
@@ -501,4 +501,26 @@ const std::shared_ptr<Object>& UIConstant::CreateDescriptionUI(const std::shared
 	}
 
 	return descriptionUI;
+}
+
+const std::shared_ptr<Object>& UIConstant::CreateChainKillCounterUI(const std::shared_ptr<Object>& object)
+{
+	// transform
+	{
+		Transform2DComponent::Transform2DParam paam{};
+		paam.local_position = { 0.5f, 0.0f };
+		object->AddComponent<Transform2DComponent>(paam);
+	}
+
+	// 数値表示オブジェクト
+	{
+		TextNumberComponent::TextParam param{};
+		param.color = { 1.0,1.0f,1.0f ,1.0f };
+		param.center_type = Sprite::CENTER_TYPE::TOP_CENTER;
+		// ファイルパス設定する
+		param.font_name = "Data/Sprite/Numbers.png";
+		auto text_number = object->AddComponent<TextNumberComponent>(param);
+	}
+
+	return object;
 }

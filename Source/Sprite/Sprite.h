@@ -15,6 +15,7 @@ public:
 	{
 		TOP_LEFT = 0,
 		TOP_RIGHT,
+		TOP_CENTER,
 		CENTER,
 		CENTER_LEFT,
 		CENTER_RIGHT,

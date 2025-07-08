@@ -30,4 +30,5 @@ public:
     static const std::shared_ptr<Object>& CreatePlayerSpecialBar(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreatePlayerSpecialGage(const std::shared_ptr<Object>&, DirectX::XMFLOAT2 pos);
     static const std::shared_ptr<Object>& CreateDescriptionUI(const std::shared_ptr<Object>&);
+    static const std::shared_ptr<Object>& CreateChainKillCounterUI(const std::shared_ptr<Object>&);
 };

@@ -14,6 +14,10 @@ void Sprite::GetCenterTypeRate(float& rateX, float& rateY, CENTER_TYPE type)
 		rateX = 1.0f;
 		rateY = 0.0f;
 		break;
+	case Sprite::CENTER_TYPE::TOP_CENTER:
+		rateX = 0.5f;
+		rateY = 0.0f;
+		break;
 	case Sprite::CENTER_TYPE::CENTER:
 		rateX = 0.5f;
 		rateY = 0.5f;
