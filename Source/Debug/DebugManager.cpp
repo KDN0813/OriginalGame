@@ -4,6 +4,7 @@
 #include "Input\Input.h"
 #include "System\GameData.h"
 #include "Scene\SceneManager.h"
+#include "System\GameTimer.h"
 
 #include "Scene\/SceneTitle.h"
 
@@ -52,6 +53,12 @@ void DebugManager::HandleFunctionKeyDebug()
 	if (GamePad::BTN_DEBUG_STOP_TIMER & game_pad.GetButtonDown())
 	{
 		game_data->SetIsStopTimer(!game_data->GetIsStopTimer());
+	}
+	// ゲームスピードを0（停止）と1（通常）で切り替える
+	if (GamePad::BTN_DEBUG_GAME_SPEED_TOGGLE & game_pad.GetButtonDown())
+	{
+		GameTimer::Instance game_timer = GameTimer::GetInstance();
+		game_timer->SetGameSpeed(game_timer->GetGameSpeed() <= 0.0f ? 1.0f : 0.0f);
 	}
 }
 

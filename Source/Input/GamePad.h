@@ -32,6 +32,7 @@ public:
 	static const GamePadButton BTN_DEBUG_FORCE_EXIT			= (1 << 22);	// デバッグ用の強制終了ボタン
 	static const GamePadButton BTN_DEBUG_PLAYER_INVINCIBLE	= (1 << 24);	// デバッグ用のプレイヤー無敵時間
 	static const GamePadButton BTN_DEBUG_STOP_TIMER			= (1 << 25);	// デバッグ用のタイマーの停止
+	static const GamePadButton BTN_DEBUG_GAME_SPEED_TOGGLE	= (1 << 26);	// ゲームスピードを0（停止）と1（通常）で切り替える
 #endif // _DEBUG
 
 public:

@@ -167,6 +167,7 @@ void GamePad::Update()
 			new_button_state |= BTN_DEBUG_PLAYER_INVINCIBLE;
 			new_button_state |= BTN_DEBUG_STOP_TIMER;
 		}
+		if (GetAsyncKeyState(VK_F9) & 0x8000)	new_button_state |= BTN_DEBUG_GAME_SPEED_TOGGLE;
 #endif // _DEBUG
 
 #if 1
