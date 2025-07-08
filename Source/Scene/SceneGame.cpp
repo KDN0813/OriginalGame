@@ -95,7 +95,11 @@ void SceneGame::Initialize()
 		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
 		// エネミースポナー作成
-		EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager);
+		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager);
+#ifdef _DEBUG
+		enemy_spwner->SetIsActive(false);
+#endif // _DEBUG
+
 
 		// ステージ(床)
 		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));
