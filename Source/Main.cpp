@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <tchar.h>
 
-#include "Resource\resource.h"
+#include "../resource.h"
 #include "Framework.h"
 
 const LONG SCREEN_WIDTH = 1920;
