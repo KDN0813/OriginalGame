@@ -96,10 +96,6 @@ void SceneGame::Initialize()
 
 		// エネミースポナー作成
 		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager);
-#ifdef _DEBUG
-		enemy_spwner->SetIsActive(false);
-#endif // _DEBUG
-
 
 		// ステージ(床)
 		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));
@@ -254,6 +250,27 @@ void SceneGame::Update(float elapsed_time)
 				if (std::shared_ptr<CharacterComponent> player_character = player->GetComponent<CharacterComponent>())
 				{
 					player_character->SetInvincibleFlag(!player_character->GetInvincibleFlag());
+				}
+			}
+		}
+		if (GamePad::BTN_DEBUG_TOGGLE_INVINCIBLE_AND_TIMER & game_pad.GetButtonDown())
+		{
+			// タイマー停止
+			GameData::Instance game_data = game_data->GetInstance();
+			const bool flag = !game_data->GetIsStopTimer();		// タイマー停止、無敵化で共通するフラグ
+			game_data->SetIsStopTimer(flag);
+
+
+			// プレイヤーの無敵化
+			GameObjectRegistry::Instance fame_object_registry = GameObjectRegistry::GetInstance();
+			const auto& player = fame_object_registry->GetPlayer();
+
+			std::shared_ptr<CharacterComponent> player_character;
+			if (player)
+			{
+				if (std::shared_ptr<CharacterComponent> player_character = player->GetComponent<CharacterComponent>())
+				{
+					player_character->SetInvincibleFlag(flag);
 				}
 			}
 		}
