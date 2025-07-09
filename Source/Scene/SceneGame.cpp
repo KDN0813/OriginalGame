@@ -303,6 +303,8 @@ void SceneGame::Update(float elapsed_time)
 		GamePad& game_pad = input->GetGamePad();
 		if (GamePad::BTN_DEBUG_GAME_RESET & game_pad.GetButtonDown())
 		{
+			
+			GameData::GetInstance()->SetIsStopTimer(false);
 			ReStart();
 		}
 	}
