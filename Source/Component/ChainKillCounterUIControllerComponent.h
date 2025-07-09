@@ -5,7 +5,13 @@
 class ChainKillCounterUIControllerComponent : public Component
 {
 public:
-    ChainKillCounterUIControllerComponent() {};
+    struct Param
+    {
+        float chain_kill_timer;     // 連続撃破の残り猶予時間
+        float chain_kill_timer_max; // 連続撃破の猶予時間の最大値
+    };
+public:
+    ChainKillCounterUIControllerComponent(Param param) : param(param) {};
     ~ChainKillCounterUIControllerComponent() {};
 
     // 開始関数
@@ -13,9 +19,9 @@ public:
     // 終了関数
     void End()  override {};
     // リスタート処理
-    void ReStart() override {};      // パラメータの初期化
+    void ReStart() override;      // パラメータの初期化
     // 更新関数
-    void Update(float elapsed_time) override {};
+    void Update(float elapsed_time) override;
 
     // 名前取得
     const char* GetName()const  override {};
@@ -23,12 +29,15 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+private:
+    Param param;
+
 #ifdef _DEBUG
 public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI()  override {};
+    void DrawDebugGUI()  override;
     /**
      * デバックの情報を3D画面上に出力する関数
      */
