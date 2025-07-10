@@ -237,6 +237,7 @@ void SceneGame::Update(float elapsed_time)
 			if (const auto& particle = this->debug_Particle->GetComponent<DebugParticle>())
 			{
 				particle->ReverseEffectLooping();
+				debug_Particle->SetIsActive(particle->GetEffectLooping());
 			}
 		}
 		if (GamePad::BTN_DEBUG_PLAYER_INVINCIBLE & game_pad.GetButtonDown())
