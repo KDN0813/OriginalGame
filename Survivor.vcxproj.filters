@@ -549,9 +549,6 @@
     <ClInclude Include="Source\Component\EnemySpawnerComponent.h">
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Resource\resource.h">
-      <Filter>External\Icon</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

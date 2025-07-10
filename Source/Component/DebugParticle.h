@@ -33,6 +33,8 @@ public:
     // エフェクトループフラグの反転させる
     void ReverseEffectLooping() { this->effect_looping = !this->effect_looping; }
 
+    bool GetEffectLooping() const { return this->effect_looping; }
+
 private:
     // 範囲内のランダムな位置にエフェクトを再生させる
     void PlayEffect(int type);

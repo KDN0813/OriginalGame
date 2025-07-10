@@ -27,12 +27,13 @@ public:
 	static const GamePadButton BTN_DEBUG_IMGUI				= (1 << 17);	// IMGUIの表示・非表示に使うボタン
 	static const GamePadButton BTN_DEBUG_PRIMITIVE			= (1 << 18);	// デバッグプリミティブの表示・非表示に使うボタン
 	static const GamePadButton BTN_DEBUG_RETURN_TO_TITLE	= (1 << 19);	// デバッグ用のタイトルに戻るボタン
-	static const GamePadButton BTN_DEBUG_GAME_RESET			= (1 << 20);	// デバッグ用のタイトルに戻るボタン
+	static const GamePadButton BTN_DEBUG_GAME_RESET			= (1 << 20);	// デバッグ用のゲームリセットボタン
 	static const GamePadButton BTN_DEBUG_DEMO				= (1 << 21);	// デバッグ用のデモ状態を変更するフラグ
 	static const GamePadButton BTN_DEBUG_FORCE_EXIT			= (1 << 22);	// デバッグ用の強制終了ボタン
 	static const GamePadButton BTN_DEBUG_PLAYER_INVINCIBLE	= (1 << 24);	// デバッグ用のプレイヤー無敵時間
 	static const GamePadButton BTN_DEBUG_STOP_TIMER			= (1 << 25);	// デバッグ用のタイマーの停止
-	static const GamePadButton BTN_DEBUG_GAME_SPEED_TOGGLE	= (1 << 26);	// ゲームスピードを0（停止）と1（通常）で切り替える
+	static const GamePadButton BTN_DEBUG_TOGGLE_INVINCIBLE_AND_TIMER = (1 << 26); // プレイヤーの無敵モードとゲームタイマーの停止を同時に切り替える。 F6（無敵）+ F7（タイマー停止）を同時に押した場合と同じ動作。
+	static const GamePadButton BTN_DEBUG_GAME_SPEED_TOGGLE	= (1 << 27);	// ゲームスピードを0（停止）と1（通常）で切り替える
 #endif // _DEBUG
 
 public:
