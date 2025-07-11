@@ -10,14 +10,7 @@ class Transform2DComponent;
 class SpriteComponent : public BaseSpriteComponent
 {
 public:
-    struct AddParam
-    {
-        DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
-        DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
-        DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
-    };
-public:
-    SpriteComponent(const BaseSpriteComponent::SpriteParam&,const AddParam&);
+    SpriteComponent(const BaseSpriteComponent::SpriteParam&);
     virtual ~SpriteComponent() {};
 
     // 終了関数
@@ -36,15 +29,13 @@ public:
     // 描画処理
     void Render(ID3D11DeviceContext* dc) override;
 
-    void SetDisplaySize(const DirectX::XMFLOAT2 size) { this->param.display_size = size; };
-    void SetDisplaySizeX(const float sizeX) { this->param.display_size.x = sizeX; };
-    void SetDisplaySizeY(const float sizeY) { this->param.display_size.y = sizeY; };
+    void SetDisplaySize(const DirectX::XMFLOAT2 size) { this->sprite_param.display_size = size; };
+    void SetDisplaySizeX(const float sizeX) { this->sprite_param.display_size.x = sizeX; };
+    void SetDisplaySizeY(const float sizeY) { this->sprite_param.display_size.y = sizeY; };
     // 表示サイズをスプライトサイズに合わせる
     void AdjustDisplaySizeToSprite();
 private:
     std::unique_ptr<Sprite> sprite;
-    AddParam param;
-    AddParam default_param;
 private:
     std::weak_ptr<Transform2DComponent> transform_Wptr;
 

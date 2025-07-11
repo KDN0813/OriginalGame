@@ -35,7 +35,7 @@ void TextNumberComponent::Start()
     }
 
     // 切り抜きサイズ設定
-    this->clip_size = { FONT_WIGTH,1.0f };
+    this->sprite_param.clip_size = { FONT_WIGTH,1.0f };
 
 #ifdef _DEBUG
     // CENTER_TYPE 列挙型の各値に対応する名前を取得して格納する
@@ -48,7 +48,7 @@ void TextNumberComponent::Start()
 
 void TextNumberComponent::ReStart()
 {
-    this->param = this->default_param;
+    this->text_number_param = this->default_text_number_param;
     this->sprite_param = this->default_sprite_param;
 }
 
@@ -68,39 +68,39 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     }
 
     // 桁数取得
-    std::string numeral_str = std::to_string(this->param.value);
+    std::string numeral_str = std::to_string(this->text_number_param.value);
     int Digits; // 桁数
     Digits = static_cast<int>(numeral_str.size());
 
     // 描画サイズ更新
-    this->display_size = { this->font_draw_size.x * scale.x,this->font_draw_size.y * scale.y };
+    this->sprite_param.display_size = { this->font_draw_size.x * scale.x,this->font_draw_size.y * scale.y };
 
     // 中心位置へのオフセット値取得
     float rateX, rateY;
     Sprite::GetCenterTypeRate(rateX, rateY, this->sprite_param.center_type);
 
     // 位置設定
-    pos.x -= this->display_size.x * static_cast<float>(Digits - 1) * rateX;
+    pos.x -= this->sprite_param.display_size.x * static_cast<float>(Digits - 1) * rateX;
 
     // 桁数分描画を行う
     for (int i = 0; i < Digits; ++i)
     {        
 
         int n = std::stoi(numeral_str.substr(i, 1));
-        this->clip_pos = { FONT_WIGTH * static_cast<float>(n),0.0f};
+        this->sprite_param.clip_pos = { FONT_WIGTH * static_cast<float>(n),0.0f};
 
         this->sprite->Render(dc,
             pos,
-            this->display_size,
-            this->clip_pos,
-            this->clip_size,
+            this->sprite_param.display_size,
+            this->sprite_param.clip_pos,
+            this->sprite_param.clip_size,
             angle,
             this->sprite_param.color,
             this->sprite_param.center_type
         );
 
         // 描画位置更新
-        pos.x += this->display_size.x;
+        pos.x += this->sprite_param.display_size.x;
     }
 }
 
@@ -120,7 +120,7 @@ void TextNumberComponent::DrawDebugGUI()
         }
     }
 
-    int value = this->param.value;
+    int value = this->text_number_param.value;
     if (ImGui::InputInt("Value", &value))
     {
         SetDrawValue(value);

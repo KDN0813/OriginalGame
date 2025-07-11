@@ -11,6 +11,9 @@ public:
     struct SpriteParam
     {
         std::string filename = {};
+        DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
+        DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
+        DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
         PRIORITY draw_priority = PRIORITY::DEFAULT;
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;

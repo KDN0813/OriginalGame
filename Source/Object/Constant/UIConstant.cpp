@@ -36,13 +36,12 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 
 			// 背景画像
 			{
-				SpriteComponent::AddParam param{};
-				param.display_size = { 0.144f,0.015f };
 				BaseSpriteComponent::SpriteParam sprite_param{};
+				sprite_param.display_size = { 0.144f,0.015f };
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.draw_priority = PRIORITY::LOW;
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
-				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(sprite_param,param);
+				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(sprite_param);
 			}
 
 			// transform
@@ -59,7 +58,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 
 			// TextNumberComponent
 			{
-				TextNumberComponent::TextParam param{};
+				TextNumberComponent::TextNumberParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,0.0f,0.0f ,1.0f };
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
@@ -107,12 +106,11 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 
 			// transform
 			{
-				SpriteComponent::AddParam param{};
-				param.display_size = { 0.1f,0.1f };
 				BaseSpriteComponent::SpriteParam sprite_param{};
+				sprite_param.display_size = { 0.1f,0.1f };
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 0.7f };
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
-				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(sprite_param,param);
+				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(sprite_param);
 			}
 
 			// transform
@@ -128,7 +126,7 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 
 			// TextNumberComponent
 			{
-				TextNumberComponent::TextParam param{};
+				TextNumberComponent::TextNumberParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,0.0f,0.0f ,0.7f };
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
@@ -164,12 +162,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 
 	// スプライト読み込み
 	{
-		SpriteComponent::AddParam param{};
 		BaseSpriteComponent::SpriteParam sprite_param{};
 		sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 		sprite_param.filename = "Data/Sprite/Pause.png";
 		sprite_param.draw_priority = PRIORITY::DEFAULT;
-		auto sprite = pause_object->AddComponent<SpriteComponent>(sprite_param,param);
+		auto sprite = pause_object->AddComponent<SpriteComponent>(sprite_param);
 	}
 
 	// transform
@@ -185,13 +182,12 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 			const auto& pause_ui = pause_object->CreateChildObject("Pause UI");
 			// スプライト読み込み
 			{
-				SpriteComponent::AddParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.filename = "Data/Sprite/PauseUI.png";
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
 				sprite_param.draw_priority = PRIORITY::LOW;
-				auto sprite = pause_ui->AddComponent<SpriteComponent>(sprite_param,param);
+				auto sprite = pause_ui->AddComponent<SpriteComponent>(sprite_param);
 			}
 
 			// transform
@@ -211,11 +207,10 @@ const std::shared_ptr<Object>& UIConstant::CreateFadeObject(const std::shared_pt
 {
 	// スプライト読み込み
 	{
-		SpriteComponent::AddParam param{};
 		BaseSpriteComponent::SpriteParam sprite_param{};
 		sprite_param.color = { 0.0f,0.0f, 0.0f, 0.0f };
 		sprite_param.draw_priority = PRIORITY::LOWEST;
-		auto sprite = fade_object->AddComponent<SpriteComponent>(sprite_param,param);
+		auto sprite = fade_object->AddComponent<SpriteComponent>(sprite_param);
 	}
 
 	// transform
@@ -252,12 +247,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 
 			// スプライト読み込み
 			{
-				SpriteComponent::AddParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 0.0f,0.0f, 0.0f, 1.0f };
 				sprite_param.draw_priority = PRIORITY::DEFAULT;
 				sprite_param.center_type = Sprite::CENTER_TYPE::BOTTOM_LEFT;
-				bg_object->AddComponent<SpriteComponent>(sprite_param,param);
+				bg_object->AddComponent<SpriteComponent>(sprite_param);
 			}
 
 			// transform
@@ -282,12 +276,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 
 					// スプライト読み込み
 					{
-						SpriteComponent::AddParam param{};
 						BaseSpriteComponent::SpriteParam sprite_param{};
 						sprite_param.color = PLAYER_HP_BAR_COLOR;
 						sprite_param.draw_priority = PRIORITY::DEFAULT;
 						sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
-						bar_object->AddComponent<SpriteComponent>(sprite_param,param);
+						bar_object->AddComponent<SpriteComponent>(sprite_param);
 					}
 
 					// 更新処理
@@ -324,12 +317,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 
 			// スプライト読み込み
 			{
-				SpriteComponent::AddParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 0.0f,0.0f, 0.0f, 1.0f };
 				sprite_param.draw_priority = PRIORITY::DEFAULT;
 				sprite_param.center_type = Sprite::CENTER_TYPE::BOTTOM_LEFT;
-				bg_object->AddComponent<SpriteComponent>(sprite_param,param);
+				bg_object->AddComponent<SpriteComponent>(sprite_param);
 			}
 
 			// transform
@@ -354,12 +346,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 
 					// スプライト読み込み
 					{
-						SpriteComponent::AddParam param{};
 						BaseSpriteComponent::SpriteParam sprite_param{};
 						sprite_param.color = DEFAULT_SPIN_ATTACK_DESCRIPTION_UI_COLOR;
 						sprite_param.draw_priority = PRIORITY::DEFAULT;
 						sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
-						bg_frame_object->AddComponent<SpriteComponent>(sprite_param,param);
+						bg_frame_object->AddComponent<SpriteComponent>(sprite_param);
 					}
 
 					// 更新
@@ -384,12 +375,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialBar(const std::sha
 
 							// スプライト読み込み
 							{
-								SpriteComponent::AddParam param{};
 								BaseSpriteComponent::SpriteParam sprite_param{};
 								sprite_param.color = PLAYER_SPECIAL_BAR_COLOR;
 								sprite_param.draw_priority = PRIORITY::DEFAULT;
 								sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
-								bar_object->AddComponent<SpriteComponent>(sprite_param,param);
+								bar_object->AddComponent<SpriteComponent>(sprite_param);
 							}
 
 							// 更新処理
@@ -429,13 +419,12 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerSpecialGage(const std::sh
 
 	// スプライト読み込み
 	{
-		SpriteComponent::AddParam param{};
 		BaseSpriteComponent::SpriteParam sprite_param{};
 		sprite_param.color = { 1.0f,1.0f, 0.0f, 1.0f };
 		sprite_param.filename = "Data/Sprite/SpecialGage.png";
 		sprite_param.draw_priority = PRIORITY::DEFAULT;
 		sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
-		const auto& sprite = object->AddComponent<SpriteComponent>(sprite_param,param);
+		const auto& sprite = object->AddComponent<SpriteComponent>(sprite_param);
 		sprite->AdjustDisplaySizeToSprite();
 	}
 
@@ -470,13 +459,12 @@ const std::shared_ptr<Object>& UIConstant::CreateDescriptionUI(const std::shared
 
 				// スプライト読み込み
 				{
-					SpriteComponent::AddParam param{};
 					BaseSpriteComponent::SpriteParam sprite_param{};
 					sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 					sprite_param.filename = "Data/Sprite/DescriptionUI1.png";
 					sprite_param.draw_priority = PRIORITY::DEFAULT;
 					sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
-					const auto& sprite = description_UI1->AddComponent<SpriteComponent>(sprite_param,param);
+					const auto& sprite = description_UI1->AddComponent<SpriteComponent>(sprite_param);
 					sprite->AdjustDisplaySizeToSprite();
 				}
 			}
@@ -495,13 +483,12 @@ const std::shared_ptr<Object>& UIConstant::CreateDescriptionUI(const std::shared
 
 				// スプライト読み込み
 				{
-					SpriteComponent::AddParam param{};
 					BaseSpriteComponent::SpriteParam sprite_param{};
 					sprite_param.color = DEFAULT_SPIN_ATTACK_DESCRIPTION_UI_COLOR;
 					sprite_param.filename = "Data/Sprite/DescriptionUI2.png";
 					sprite_param.draw_priority = PRIORITY::DEFAULT;
 					sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_LEFT;
-					const auto& sprite = description_UI2->AddComponent<SpriteComponent>(sprite_param,param);
+					const auto& sprite = description_UI2->AddComponent<SpriteComponent>(sprite_param);
 
 					sprite->AdjustDisplaySizeToSprite();
 				}
@@ -564,7 +551,7 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 
 	// 数値表示オブジェクト
 	{
-		TextNumberComponent::TextParam param{};
+		TextNumberComponent::TextNumberParam param{};
 		BaseSpriteComponent::SpriteParam sprite_param{};
 		sprite_param.color = { 1.0,1.0f,1.0f ,0.0f };
 		sprite_param.center_type = Sprite::CENTER_TYPE::TOP_CENTER;

@@ -11,8 +11,8 @@
 
 #include "Component\Transform2DComponent.h"
 
-SpriteComponent::SpriteComponent(const BaseSpriteComponent::SpriteParam& sprite_param, const AddParam& param)
-    :BaseSpriteComponent(sprite_param), param(param), default_param(param)
+SpriteComponent::SpriteComponent(const BaseSpriteComponent::SpriteParam& sprite_param)
+    :BaseSpriteComponent(sprite_param)
 {
     this->sprite = std::make_unique<Sprite>(sprite_param.filename.size() ? this->sprite_param.filename.c_str() : nullptr);
 
@@ -27,7 +27,6 @@ SpriteComponent::SpriteComponent(const BaseSpriteComponent::SpriteParam& sprite_
 
 void SpriteComponent::ReStart()
 {
-    this->param = this->default_param;
     this->sprite_param = this->default_sprite_param;
 }
 
@@ -47,13 +46,13 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
         }
     }
 
-    display_size = { this->param.display_size.x * scale.x ,this->param.display_size.y * scale.y };
+    display_size = { this->sprite_param.display_size.x * scale.x ,this->sprite_param.display_size.y * scale.y };
 
     this->sprite->Render(dc,
         display_pos,
         display_size,
-        this->param.clip_pos,
-        this->param.clip_size,
+        this->sprite_param.clip_pos,
+        this->sprite_param.clip_size,
         angle,
         this->sprite_param.color,
         this->sprite_param.center_type
@@ -72,10 +71,10 @@ void SpriteComponent::AdjustDisplaySizeToSprite()
     const float SCREEN_HEIGHT = graphics->GetScreenHeight();
 
     // 表示サイズ設定
-    this->default_param.display_size.x = SPRITE_WIDTH / SCREEN_WIDTH;
-    this->default_param.display_size.y = SPRITE_HEIGHT / SCREEN_HEIGHT;
+    this->sprite_param.display_size.x = SPRITE_WIDTH / SCREEN_WIDTH;
+    this->sprite_param.display_size.y = SPRITE_HEIGHT / SCREEN_HEIGHT;
 
-    this->param.display_size = this->default_param.display_size;
+    this->sprite_param.display_size = this->sprite_param.display_size;
 }
 
 #ifdef _DEBUG
@@ -94,9 +93,9 @@ void SpriteComponent::DrawDebugGUI()
         }
     }
 
-    ImGui::SliderFloat2("Display Size", &this->param.display_size.x, 0.0f, 1.0f);
-    ImGui::SliderFloat2("Clip Pos", &this->param.clip_pos.x, 0.0f, 1.0f);
-    ImGui::SliderFloat2("Clip Size", &this->param.clip_size.x, 0.0f, 1.0f);
+    ImGui::SliderFloat2("Display Size", &this->sprite_param.display_size.x, 0.0f, 1.0f);
+    ImGui::SliderFloat2("Clip Pos", &this->sprite_param.clip_pos.x, 0.0f, 1.0f);
+    ImGui::SliderFloat2("Clip Size", &this->sprite_param.clip_size.x, 0.0f, 1.0f);
     ImGui::ColorEdit4("Sprite Color", &this->sprite_param.color.x);
 
     // 中心位置の設定

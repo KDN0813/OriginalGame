@@ -31,11 +31,10 @@ void SceneTitle::Initialize()
 
 			// スプライト読み込み
 			{
-				SpriteComponent::AddParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.filename = "Data/Sprite/TitleBack.png";
-				auto sprite = sprite_bg->AddComponent<SpriteComponent>(sprite_param,param);
+				auto sprite = sprite_bg->AddComponent<SpriteComponent>(sprite_param);
 			}
 
 			// transform
@@ -52,13 +51,12 @@ void SceneTitle::Initialize()
 
 			// スプライト読み込み
 			{
-				SpriteComponent::AddParam param{};
-				param.display_size = { 0.55f,0.35f };
 				BaseSpriteComponent::SpriteParam sprite_param{};
+				sprite_param.display_size = { 0.55f,0.35f };
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.filename = "Data/Sprite/TitleLogo.png";
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
-				auto sprite = sprite_logo->AddComponent<SpriteComponent>(sprite_param,param);
+				auto sprite = sprite_logo->AddComponent<SpriteComponent>(sprite_param);
 				sprite->AdjustDisplaySizeToSprite();
 			}
 
@@ -75,12 +73,11 @@ void SceneTitle::Initialize()
 		{
 			auto sprite_bg = object_manager.Create("Game Staet Text");
 			{
-				SpriteComponent::AddParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
 				sprite_param.filename = "Data/Sprite/TitleGameStartText.png";
-				auto sprite = sprite_bg->AddComponent<SpriteComponent>(sprite_param,param);
+				auto sprite = sprite_bg->AddComponent<SpriteComponent>(sprite_param);
 				sprite->AdjustDisplaySizeToSprite();
 
 			}
@@ -98,12 +95,11 @@ void SceneTitle::Initialize()
 		{
 			auto sprite_bg = object_manager.Create("Game Staet End");
 			{
-				SpriteComponent::AddParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
 				sprite_param.filename = "Data/Sprite/TitleGameEndText.png";
-				auto sprite = sprite_bg->AddComponent<SpriteComponent>(sprite_param,param);
+				auto sprite = sprite_bg->AddComponent<SpriteComponent>(sprite_param);
 				sprite->AdjustDisplaySizeToSprite();
 			}
 

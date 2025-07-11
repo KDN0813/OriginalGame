@@ -12,12 +12,12 @@ public:
     const float NUMBER_COUNT = 10;                  // 数字の数(0～9までの整数)
     const float FONT_WIGTH = 1.0f / NUMBER_COUNT;   // フォントの幅
 public:
-    struct TextParam
+    struct TextNumberParam
     {
         int value = 0;  // 表示する値
     };
 public:
-    TextNumberComponent(const BaseSpriteComponent::SpriteParam& sprite_param, const TextParam& param) : BaseSpriteComponent(sprite_param), param(param), default_param(param) {};
+    TextNumberComponent(const BaseSpriteComponent::SpriteParam& sprite_param, const TextNumberParam& param) : BaseSpriteComponent(sprite_param), text_number_param(param), default_text_number_param(param) {};
     ~TextNumberComponent() {};
 
     // 開始関数
@@ -39,18 +39,15 @@ public:
     void Render(ID3D11DeviceContext* dc) override;
 
     // 取得・設定関数
-    int GetDrawValue()const { return this->param.value; }
-    void SetDrawValue(const int v) { this->param.value = (std::max)(v, 0); }
+    int GetDrawValue()const { return this->text_number_param.value; }
+    void SetDrawValue(const int v) { this->text_number_param.value = (std::max)(v, 0); }
 
 private:
     std::unique_ptr<Sprite> sprite;
-    TextParam param;
-    TextParam default_param;
+    TextNumberParam text_number_param;
+    TextNumberParam default_text_number_param;
 
     DirectX::XMFLOAT2 font_draw_size = {};  // １文字あたりの描画サイズ
-    DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
-    DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
-    DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
 
 private:
     std::weak_ptr<Transform2DComponent> transform_Wptr;

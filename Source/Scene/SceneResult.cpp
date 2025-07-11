@@ -46,10 +46,9 @@ void SceneResult::Initialize()
 					const auto& BG = sprite_bg->CreateChildObject("BG");
 					// スプライト
 					{
-						SpriteComponent::AddParam param{};
 						BaseSpriteComponent::SpriteParam sprite_param{};
 						sprite_param.filename = "Data/Sprite/TitleBack.png";
-						auto sprite = BG->AddComponent<SpriteComponent>(sprite_param,param);
+						auto sprite = BG->AddComponent<SpriteComponent>(sprite_param);
 					}
 					// transform
 					{
@@ -62,10 +61,9 @@ void SceneResult::Initialize()
 					const auto& frame = sprite_bg->CreateChildObject("Frame");
 					// スプライト
 					{
-						SpriteComponent::AddParam param{};
 						BaseSpriteComponent::SpriteParam sprite_param{};
 						sprite_param.filename = "Data/Sprite/ResultBack.png";
-						auto sprite = frame->AddComponent<SpriteComponent>(sprite_param,param);
+						auto sprite = frame->AddComponent<SpriteComponent>(sprite_param);
 					}
 					// transform
 					{
@@ -93,11 +91,10 @@ void SceneResult::Initialize()
 					const auto& score_text = scoreUI->CreateChildObject("Text");
 					// スプライト
 					{
-						SpriteComponent::AddParam param{};
 						BaseSpriteComponent::SpriteParam sprite_param{};
 						sprite_param.filename = "Data/Sprite/ResultText.png";
 						sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
-						auto sprite = score_text->AddComponent<SpriteComponent>(sprite_param,param);
+						auto sprite = score_text->AddComponent<SpriteComponent>(sprite_param);
 						sprite->AdjustDisplaySizeToSprite();
 					}
 					// transform
@@ -115,7 +112,7 @@ void SceneResult::Initialize()
 
 					// TextNumberComponent
 					{
-						TextNumberComponent::TextParam param{};
+						TextNumberComponent::TextNumberParam param{};
 						BaseSpriteComponent::SpriteParam sprite_param{};
 						sprite_param.color = { 1.0f,0.0f,0.0f ,1.0f };
 						sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
@@ -149,11 +146,10 @@ void SceneResult::Initialize()
 			auto score_text = object_manager.Create("Score Text");
 			// スプライト
 			{
-				SpriteComponent::AddParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.filename = "Data/Sprite/ScoreText.png";
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
-				auto sprite = score_text->AddComponent<SpriteComponent>(sprite_param,param);
+				auto sprite = score_text->AddComponent<SpriteComponent>(sprite_param);
 				sprite->AdjustDisplaySizeToSprite();
 			}
 			// transform
@@ -170,11 +166,10 @@ void SceneResult::Initialize()
 			auto resultUI = object_manager.Create("Result UI");
 			// スプライト
 			{
-				SpriteComponent::AddParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.filename = "Data/Sprite/ResultUI.png";
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
-				auto sprite = resultUI->AddComponent<SpriteComponent>(sprite_param,param);
+				auto sprite = resultUI->AddComponent<SpriteComponent>(sprite_param);
 				sprite->AdjustDisplaySizeToSprite();
 			}
 			// transform
