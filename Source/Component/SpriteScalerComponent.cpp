@@ -115,25 +115,29 @@ void SpriteScalerComponent::CommandClear()
 
 void SpriteScalerComponent::DrawDebugGUI()
 {
-    ImGui::DragFloat("Debug Change Scale", &this->debug_change_scale);
-    ImGui::DragFloat("Debug Transition Duration", &this->debug_transition_duration);
+    ImGui::DragFloat("Debug Change Pos", &this->debug_change_scale);
+    ImGui::DragFloat("Debug Transition Duration##SpriteScalerComponent", &this->debug_transition_duration);
 
-    if (ImGui::Button("PushFrontCommand"))
+    if (ImGui::Button("PushFrontCommand##SpriteScalerComponent"))
     {
         PushFrontCommand(this->debug_change_scale, this->debug_transition_duration);
     }
-    if (ImGui::Button("PushBackCommand"))
+    if (ImGui::Button("PushBackCommand##SpriteScalerComponent"))
     {
         PushBackCommand(this->debug_change_scale, this->debug_transition_duration);
     }
+    if (ImGui::Button("CommandClear##SpriteScalerComponent"))
+    {
+        CommandClear();
+    }
 
-    if (ImGui::TreeNodeEx("Commands"))
+    if (ImGui::TreeNodeEx("Commands##SpriteScalerComponent"))
     {
         int count = 0;
         for (auto command : this->command_pool)
         {
-            ImGui::InputFloat2(std::string("Target Scale##" + std::to_string(count)).c_str(), &command.target_scale.x);
-            ImGui::InputFloat2(std::string("Transition Duration##" + std::to_string(count)).c_str(), &command.transition_duration);
+            ImGui::InputFloat2(std::string("Target Scale##SpriteScalerComponent" + std::to_string(count)).c_str(), &command.target_scale.x);
+            ImGui::InputFloat2(std::string("Transition Duration##SpriteScalerComponent" + std::to_string(count)).c_str(), &command.transition_duration);
 
             ImGui::Spacing();
         }

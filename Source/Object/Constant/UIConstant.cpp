@@ -14,6 +14,7 @@
 #include "Component\ChainScoreCounterComponent.h"
 #include "Component\ChainScoreUIControllerComponent.h"
 #include "Component\SpriteScalerComponent.h"
+#include "Component\SpriteMoverComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -517,6 +518,9 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 
 	// SpriteScalerComponent
 	object->AddComponent<SpriteScalerComponent>();
+
+	// SpriteMoverComponent
+	object->AddComponent<SpriteMoverComponent>();
 
 	// チェインスコアUIコントローラー
 	ChainScoreUIControllerComponent::Param param{};

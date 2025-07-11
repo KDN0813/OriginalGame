@@ -6,8 +6,7 @@
 class BaseSpriteComponent;
 class Transform2DComponent;
 
-// スプライトの拡大・縮小処理を行う
-class SpriteScalerComponent : public Component
+class SpriteMoverComponent : public Component
 {
 public:
     enum class State
@@ -19,12 +18,12 @@ public:
 
     struct ScaleCommand
     {
-        DirectX::XMFLOAT2 target_scale;
+        DirectX::XMFLOAT2 target_pos;
         float transition_duration;
     };
 public:
-    SpriteScalerComponent() : command_pool(){};
-    ~SpriteScalerComponent() {};
+    SpriteMoverComponent() : command_pool() {};
+    ~SpriteMoverComponent() {};
 
     // 開始関数
     void Start()  override {};
@@ -36,7 +35,7 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override { return "SpriteScalerComponente"; };
+    const char* GetName()const  override { return "SpriteMoverComponent"; };
 
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
@@ -44,11 +43,9 @@ public:
     // 命令を先頭にに追加
     void PushFrontCommand(const ScaleCommand& command);
     void PushFrontCommand(DirectX::XMFLOAT2 target_scale, float transition_duration);
-    void PushFrontCommand(float target_scale, float transition_duration);
     // 命令を最後尾に追加
     void PushBackCommand(const ScaleCommand& command);
     void PushBackCommand(DirectX::XMFLOAT2 target_scale, float transition_duration);
-    void PushBackCommand(float target_scale, float transition_duration);
 
     // コマンドを空にする
     void CommandClear();
@@ -62,7 +59,7 @@ private:
 
     float interpolation_timer = 0.0f;   // 補間に使うタイマー
     State state = State::Start;
-    DirectX::XMFLOAT2 start_scale{};    // 補間開始時のスケール
+    DirectX::XMFLOAT2 start_pos{};    // 補間開始時のスケール
 #ifdef _DEBUG
 public:
     /**
@@ -79,9 +76,8 @@ public:
     void DrawDebugPrimitiveGUI()  override {};
     bool IsDebugPrimitive() override { return false; }   // DebugPrimitiveが存在するか
 private:
-    float debug_change_scale = 1.0f;
+    DirectX::XMFLOAT2 debug_change_pos = {};
     float debug_transition_duration = 1.0f;
 
 #endif // DEBUG
 };
-
