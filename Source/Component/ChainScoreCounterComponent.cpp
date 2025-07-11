@@ -32,20 +32,29 @@ void ChainScoreCounterComponent::ChainEnd()
 {
     this->param.chain_score = 0;
     this->param.is_reset = true;
-    if (onKillCountReset)
+    if (OnScoreChainEnd)
     {
-        onKillCountReset();
+        OnScoreChainEnd();
     }
 }
 
 void ChainScoreCounterComponent::AddChain(int add_score)
 {
-    this->param.chain_timer = this->param.chain_timer_max;    // タイマーの設定
-    this->param.chain_score += add_score;;
-
-    if (onKillCountAdded)
+    // 連鎖中でないなら
+    if (this->param.chain_timer <= 0.0f)
     {
-        onKillCountAdded(this->param.chain_score);
+        if (OnScoreChainStart)
+        {
+            OnScoreChainStart();
+        }
+    }
+
+    this->param.chain_timer = this->param.chain_timer_max;    // タイマーの設定
+    this->param.chain_score += add_score;
+
+    if (OnScoreAdded)
+    {
+        OnScoreAdded(this->param.chain_score);
     }
 }
 

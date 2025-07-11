@@ -21,18 +21,24 @@ void ChainScoreUIControllerComponent::OnScoreAdded(int value)
     const auto& text_numbe = owner->GetComponent(this->text_number_Wptr);
     if (!text_numbe) return;
     text_numbe->SetDrawValue(value);
-    const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
-    if (!text_numbe) return;
-    fade_controller->FeadStart(FEAD_TYPE::FEAD_IN, this->param.fead_in_time);
 }
 
-void ChainScoreUIControllerComponent::OnScoreChainEnded()
+void ChainScoreUIControllerComponent::OnScoreChainStart()
 {
     const auto& owner = GetOwner();
     if (!owner) return;
-    const auto& text_numbe = owner->GetComponent(this->text_number_Wptr);
-    if (!text_numbe) return;
-    text_numbe->SetDrawValue(0);
+    const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
+    if (!fade_controller) return;
+    fade_controller->FeadStart(FEAD_TYPE::FEAD_IN, this->param.fead_in_time);
+}
+
+void ChainScoreUIControllerComponent::OnScoreChainEnd()
+{
+    const auto& owner = GetOwner();
+    if (!owner) return;
+    const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
+    if (!fade_controller) return;
+    fade_controller->FeadStart(FEAD_TYPE::FEAD_OUT, this->param.fead_in_time);
 }
 
 #ifdef _DEBUG

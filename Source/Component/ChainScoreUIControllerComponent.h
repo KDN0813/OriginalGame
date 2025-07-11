@@ -11,6 +11,7 @@ public:
     struct Param
     {
         float fead_in_time = 1.0f;
+        float fead_out_time = 1.0f;
     };
 public:
     ChainScoreUIControllerComponent(Param p) : param(p){};
@@ -31,9 +32,13 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+    // 表示するスコアが増価した時に実行する関数
     void OnScoreAdded(int);
 
-    void OnScoreChainEnded();
+    // スコアチェイン開始に実行する関数
+    void OnScoreChainStart();
+    // スコアチェイン終了時に実行する関数
+    void OnScoreChainEnd();
 
 private:
     Param param;

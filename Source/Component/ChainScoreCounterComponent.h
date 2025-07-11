@@ -34,16 +34,18 @@ public:
 
     void ChainEnd();
 
-    void SetOnScoreAdded(const std::function<void(int)>& function) { this->onKillCountAdded = function; };  // キルカウントの増価
-    void SetOnScoreChainEnded(const std::function<void()>& function) { this->onKillCountReset = function; };     // キルカウント終了
+    void SetOnScoreAdded(const std::function<void(int)>& function) { this->OnScoreAdded = function; };   
+    void SetOnScoreChainStart(const std::function<void()>& function) { this->OnScoreChainStart = function; };
+    void SetOnScoreChainEnd(const std::function<void()>& function) { this->OnScoreChainEnd = function; };
 
     // スコアを加算する
     void AddChain(int add_score);
 private:
     Param param;
 
-    std::function<void(int)> onKillCountAdded;
-    std::function<void()> onKillCountReset;
+    std::function<void(int)> OnScoreAdded;
+    std::function<void()> OnScoreChainStart;
+    std::function<void()> OnScoreChainEnd;
 #ifdef _DEBUG
 public:
     /**
