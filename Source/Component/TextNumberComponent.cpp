@@ -48,7 +48,6 @@ void TextNumberComponent::Start()
 
 void TextNumberComponent::ReStart()
 {
-    this->text_number_param = this->default_text_number_param;
     this->sprite_param = this->default_sprite_param;
 }
 
@@ -68,7 +67,7 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     }
 
     // Œ…”æ“¾
-    std::string numeral_str = std::to_string(this->text_number_param.value);
+    std::string numeral_str = std::to_string(this->value);
     int Digits; // Œ…”
     Digits = static_cast<int>(numeral_str.size());
 
@@ -120,7 +119,7 @@ void TextNumberComponent::DrawDebugGUI()
         }
     }
 
-    int value = this->text_number_param.value;
+    int value = this->value;
     if (ImGui::InputInt("Value", &value))
     {
         SetDrawValue(value);

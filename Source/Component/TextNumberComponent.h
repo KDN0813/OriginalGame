@@ -12,12 +12,7 @@ public:
     const float NUMBER_COUNT = 10;                  // 数字の数(0～9までの整数)
     const float FONT_WIGTH = 1.0f / NUMBER_COUNT;   // フォントの幅
 public:
-    struct TextNumberParam
-    {
-        int value = 0;  // 表示する値
-    };
-public:
-    TextNumberComponent(const BaseSpriteComponent::SpriteParam& sprite_param, const TextNumberParam& param) : BaseSpriteComponent(sprite_param), text_number_param(param), default_text_number_param(param) {};
+    TextNumberComponent(const BaseSpriteComponent::SpriteParam& sprite_param) : BaseSpriteComponent(sprite_param) {};
     ~TextNumberComponent() {};
 
     // 開始関数
@@ -39,15 +34,14 @@ public:
     void Render(ID3D11DeviceContext* dc) override;
 
     // 取得・設定関数
-    int GetDrawValue()const { return this->text_number_param.value; }
-    void SetDrawValue(const int v) { this->text_number_param.value = (std::max)(v, 0); }
+    int GetDrawValue()const { return this->value; }
+    void SetDrawValue(const int v) { this->value = (std::max)(v, 0); }
 
 private:
     std::unique_ptr<Sprite> sprite;
-    TextNumberParam text_number_param;
-    TextNumberParam default_text_number_param;
 
     DirectX::XMFLOAT2 font_draw_size = {};  // １文字あたりの描画サイズ
+    int value = 0;  // 表示する値
 
 private:
     std::weak_ptr<Transform2DComponent> transform_Wptr;

@@ -112,13 +112,12 @@ void SceneResult::Initialize()
 
 					// TextNumberComponent
 					{
-						TextNumberComponent::TextNumberParam param{};
 						BaseSpriteComponent::SpriteParam sprite_param{};
 						sprite_param.color = { 1.0f,0.0f,0.0f ,1.0f };
 						sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
 						// ファイルパス設定する
 						sprite_param.filename = "Data/Sprite/Numbers.png";
-						auto text_number = score->AddComponent<TextNumberComponent>(sprite_param,param);
+						auto text_number = score->AddComponent<TextNumberComponent>(sprite_param);
 					}
 
 					// transform

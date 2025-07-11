@@ -58,13 +58,12 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 
 			// TextNumberComponent
 			{
-				TextNumberComponent::TextNumberParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,0.0f,0.0f ,1.0f };
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
 				// ファイルパス設定する
 				sprite_param.filename = "Data/Sprite/Numbers.png";
-				auto text_number = text_sprite->AddComponent<TextNumberComponent>(sprite_param,param);
+				auto text_number = text_sprite->AddComponent<TextNumberComponent>(sprite_param);
 			}
 
 			// transform
@@ -126,13 +125,12 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 
 			// TextNumberComponent
 			{
-				TextNumberComponent::TextNumberParam param{};
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,0.0f,0.0f ,0.7f };
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
 				// ファイルパス設定する
 				sprite_param.filename = "Data/Sprite/Numbers.png";
-				auto text_number = text_sprite->AddComponent<TextNumberComponent>(sprite_param,param);
+				auto text_number = text_sprite->AddComponent<TextNumberComponent>(sprite_param);
 			}
 
 			// transform
@@ -551,13 +549,12 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 
 	// 数値表示オブジェクト
 	{
-		TextNumberComponent::TextNumberParam param{};
 		BaseSpriteComponent::SpriteParam sprite_param{};
 		sprite_param.color = { 1.0,1.0f,1.0f ,0.0f };
 		sprite_param.center_type = Sprite::CENTER_TYPE::TOP_CENTER;
 		// ファイルパス設定する
 		sprite_param.filename = "Data/Sprite/Numbers.png";
-		const auto& text_number = object->AddComponent<TextNumberComponent>(sprite_param,param);
+		const auto& text_number = object->AddComponent<TextNumberComponent>(sprite_param);
 	}
 
 	return object;
