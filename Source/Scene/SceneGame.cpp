@@ -94,11 +94,11 @@ void SceneGame::Initialize()
 		// 操作説明UI
 		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
-		// 連続撃破数を表示するUI
-		UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScoreCounterUI"));
+		// チェインスコアを表示するオブジェクト
+		const auto& chain_score_counter = UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScoreCounterUI"));
 
 		// エネミースポナー作成
-		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager);
+		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager, chain_score_counter);
 
 		// ステージ(床)
 		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));

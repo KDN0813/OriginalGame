@@ -2,7 +2,7 @@
 #include "Component.h"
 #include <functional>
 
-// 連続撃破数を制御するコンポーネント
+// 連続取得スコアを制御するコンポーネント
 class ChainScoreCounterComponent : public Component
 {
 public:

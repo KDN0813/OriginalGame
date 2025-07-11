@@ -21,6 +21,7 @@
 #include "Component\CameraComponent.h"
 #include "Component\DamageComponent.h"
 #include "Component\PlayerComponent.h"
+#include "Component\ChainScoreCounterComponent.h"
 
 void EnemyComponent::Start()
 {
@@ -128,8 +129,13 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 						}
 
 						// ƒXƒRƒA‰ÁŽZ
-						GameData::Instance game_data = GameData::GetInstance();
-						game_data->AddScore(1);
+						if (const auto& chain_score_counter_object = chain_score_counter_object_Wptr.lock())
+						{
+							if (const auto& chain_score_counter = chain_score_counter_object->GetComponent(this->chain_score_counter_Wptr))
+							{
+								chain_score_counter->AddChain(this->param.add_score);
+							}
+						}
 					}
 				}
 			}
@@ -299,6 +305,7 @@ void EnemyComponent::DrawDebugGUI()
 	ImGui::InputFloat("Idle Min Timer", &this->param.min_idle_time);
 	ImGui::InputFloat("Remove Timer", &this->param.remove_timer);
 	ImGui::InputFloat("Damage Effect Offset Up", &this->param.damage_effect_offset_up);
+	ImGui::InputInt("Add Score", &this->param.add_score);
 	ImGui::InputFloat("Add Special Point", &this->param.add_special_point);
 	ImGui::Checkbox("Move Validity Flag", &this->param.move_validity_flag);
 	ImGui::Checkbox("Pending Removal Flag", &this->param.pending_removal_flag);

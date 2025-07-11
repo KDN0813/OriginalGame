@@ -8,6 +8,9 @@ class MovementComponent;
 class CircleCollisionComponent;
 class CharacterComponent;
 class InstancedModelWithAnimationComponent;
+class ChainScoreCounterComponent;
+
+class Object;
 
 class EnemyComponent : public Component
 {
@@ -32,8 +35,9 @@ public:
 
         float attack_range = 3.0f;    // 攻撃範囲
 
-        float add_special_point = 1;  // 撃破時追加されるスペシャルポイントの値
-        
+        float add_special_point = 1;    // 撃破時追加されるスペシャルポイントの値
+        int add_score = 1;              // 撃破時追加されるスコアの値
+
         float idle_timer = 0.0f;    // 待機時間
         float max_idle_time = 5.0f;
         float min_idle_time = 0.5f;
@@ -91,6 +95,8 @@ public:
     void SetMoveValidityFlag(bool flag) { this->param.move_validity_flag = flag; }
     void SetPendingRemovalFlag(bool flag) { this->param.pending_removal_flag = flag; }
     float GetAddSpecialPoint()const { return this->param.add_special_point; }
+
+    void SetChainScoreCounterObject(const std::shared_ptr<Object>& object) { chain_score_counter_object_Wptr = object; };
 private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);
@@ -110,6 +116,9 @@ private:
     std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;   // 攻撃用のコリジョン
 
     std::weak_ptr<Transform3DComponent> player_transform_Wptr;
+
+    std::weak_ptr<Object> chain_score_counter_object_Wptr;
+    std::weak_ptr<ChainScoreCounterComponent> chain_score_counter_Wptr;
 #ifdef _DEBUG
 public:
     /**
