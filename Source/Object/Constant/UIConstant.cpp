@@ -11,6 +11,8 @@
 #include "Component\Transform2DComponent.h"
 #include "Component\FadeControllerComponent.h"
 #include "Component\SpecialGageComponent.h"
+#include "Component\ChainKillUIControllerComponent.h"
+#include "Component\ChainKillCounterComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -512,6 +514,32 @@ const std::shared_ptr<Object>& UIConstant::CreateChainKillCounterUI(const std::s
 		object->AddComponent<Transform2DComponent>(paam);
 	}
 
+	// 連続撃破UI用コントローラー
+	const auto& chain_kill_UI_controller = object->AddComponent<ChainKillUIControllerComponent>();
+	
+	// 連続撃破カウンター
+	{
+		ChainKillCounterComponent::Param param{};
+		param.chain_kill_timer_max = 5.0f;
+
+		const auto& chain_kill_counter = object->AddComponent<ChainKillCounterComponent>(param);
+	
+		chain_kill_counter->SetOnKillCountAdded(
+			[chain_kill_UI_controller](int value) {
+				if (chain_kill_UI_controller) {
+					chain_kill_UI_controller->OnKillCountAdded(value);
+				}
+			}
+		);
+		chain_kill_counter->SetOnChainKillEnded(
+			[chain_kill_UI_controller]() {
+				if (chain_kill_UI_controller) {
+					chain_kill_UI_controller->OnChainKillEnded();
+				}
+			}
+		);
+	}
+
 	// 数値表示オブジェクト
 	{
 		TextNumberComponent::TextParam param{};
@@ -519,7 +547,7 @@ const std::shared_ptr<Object>& UIConstant::CreateChainKillCounterUI(const std::s
 		param.center_type = Sprite::CENTER_TYPE::TOP_CENTER;
 		// ファイルパス設定する
 		param.font_name = "Data/Sprite/Numbers.png";
-		auto text_number = object->AddComponent<TextNumberComponent>(param);
+		const auto& text_number = object->AddComponent<TextNumberComponent>(param);
 	}
 
 	return object;

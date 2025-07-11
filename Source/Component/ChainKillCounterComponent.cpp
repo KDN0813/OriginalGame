@@ -16,14 +16,9 @@ void ChainKillCounterComponent::Update(float elapsed_time)
 {
     if (this->param.chain_kill_timer <= 0.0f)
     {
-        if (this->param.is_reset)
+        if (!this->param.is_reset)
         {
-            this->param.chain_kill_count = 0;
-            this->param.is_reset = true;
-            if (onKillCountReset)
-            {
-                onKillCountReset();
-            }
+            CountReset();
         }
     }
     else
@@ -33,12 +28,14 @@ void ChainKillCounterComponent::Update(float elapsed_time)
     this->param.chain_kill_timer -= elapsed_time;   // タイマー更新
 }
 
-void ChainKillCounterComponent::SetOnKillCountAdded(const std::function<void(int)>&)
+void ChainKillCounterComponent::CountReset()
 {
-}
-
-void ChainKillCounterComponent::SetOnKillCountReset(const std::function<void()>&)
-{
+    this->param.chain_kill_count = 0;
+    this->param.is_reset = true;
+    if (onKillCountReset)
+    {
+        onKillCountReset();
+    }
 }
 
 void ChainKillCounterComponent::AddChainKill()
@@ -61,6 +58,7 @@ void ChainKillCounterComponent::DrawDebugGUI()
     ImGui::Text(std::string("Chain Count" + std::to_string(this->param.chain_kill_count)).c_str());
 
     if (ImGui::Button("AddChain")) AddChainKill();
+    if (ImGui::Button("CountReset")) CountReset();
 }
 
 #endif // _DEBUG

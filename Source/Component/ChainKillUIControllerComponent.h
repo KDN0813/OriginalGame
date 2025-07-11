@@ -1,16 +1,13 @@
 #pragma once
 #include "Component.h"
 
+class TextNumberComponent;
+
 // 連続撃破数のUIを制御するコンポーネント
 class ChainKillUIControllerComponent : public Component
 {
 public:
-    struct Param
-    {
-        int draw_chain_kill_count = 0;           // 描画用の連続撃破数
-    };
-public:
-    ChainKillUIControllerComponent(Param param) : param(param) {};
+    ChainKillUIControllerComponent(){};
     ~ChainKillUIControllerComponent() {};
 
     // 開始関数
@@ -23,13 +20,18 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override {};
+    const char* GetName()const  override { return "ChainKillUIControllerComponent"; };
 
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+    void OnKillCountAdded(int);
+
+    void OnChainKillEnded();
+
 private:
-    Param param;
+    std::weak_ptr<TextNumberComponent> text_numbe_Wptr;
+
 #ifdef _DEBUG
 public:
     /**

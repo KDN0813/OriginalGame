@@ -27,13 +27,15 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override {};
+    const char* GetName()const  override { return "ChainKillCounterComponent"; };
 
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    void SetOnKillCountAdded(const std::function<void(int)>& function) { this->onKillCountAdded = function; };
-    void SetOnKillCountReset(const std::function<void()>& function) { this->onKillCountReset = function; };
+    void CountReset();
+
+    void SetOnKillCountAdded(const std::function<void(int)>& function) { this->onKillCountAdded = function; };  // キルカウントの増価
+    void SetOnChainKillEnded(const std::function<void()>& function) { this->onKillCountReset = function; };     // キルカウント終了
 
     // 連続撃破数を加算する
     void AddChainKill();
