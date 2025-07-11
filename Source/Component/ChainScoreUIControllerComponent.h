@@ -3,6 +3,7 @@
 
 class TextNumberComponent;
 class FadeControllerComponent;
+class SpriteScalerComponent;
 
 // 連続スコア取得のUIを制御するコンポーネント
 class ChainScoreUIControllerComponent : public Component
@@ -12,6 +13,12 @@ public:
     {
         float fead_in_time = 1.0f;
         float fead_out_time = 1.0f;
+
+        float expanded_scale = 2.5f;    // 拡大時のスケール
+        float shrink_scale = 0.5f;      // 縮小時のスケール
+        float time_to_expand = 1.0f;    // 拡大にかかる時間
+        float time_to_shrink = 1.0f;    // 縮小にかかる時間
+
         bool is_chain_end_direction = false;   // 連鎖終了演出フラグ
     };
 public:
@@ -47,6 +54,7 @@ private:
 private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
     std::weak_ptr<FadeControllerComponent> fade_controller_Wptr;
+    std::weak_ptr<SpriteScalerComponent> sprite_scaler_Wptr;
 
 #ifdef _DEBUG
 public:

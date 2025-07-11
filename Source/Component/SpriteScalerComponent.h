@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <DirectXMath.h>
-#include <queue>
+#include <deque>
 
 class BaseSpriteComponent;
 class Transform2DComponent;
@@ -41,12 +41,20 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    void PushCommand(const ScaleCommand& command);
-    void PushCommand(DirectX::XMFLOAT2 target_scale, float transition_duration);
-    void PushCommand(float target_scale, float transition_duration);
+    // 命令を先頭にに追加
+    void PushFrontCommand(const ScaleCommand& command);
+    void PushFrontCommand(DirectX::XMFLOAT2 target_scale, float transition_duration);
+    void PushFrontCommand(float target_scale, float transition_duration);
+    // 命令を最後尾に追加
+    void PushBackCommand(const ScaleCommand& command);
+    void PushBackCommand(DirectX::XMFLOAT2 target_scale, float transition_duration);
+    void PushBackCommand(float target_scale, float transition_duration);
+
+    // コマンドを空にする
+    void CommandClear();
 
 private:
-    std::queue<ScaleCommand> command_pool;
+    std::deque<ScaleCommand> command_pool;
 
 private:
     std::weak_ptr<BaseSpriteComponent> sprite_Wptr;

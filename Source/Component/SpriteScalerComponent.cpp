@@ -13,10 +13,7 @@ void SpriteScalerComponent::ReStart()
 {
     this->interpolation_timer = 0.0f;
     this->state = State::Start;
-    while (!this->command_pool.empty()) 
-    {
-        this->command_pool.pop();
-    }
+    CommandClear();
 }
 
 void SpriteScalerComponent::Update(float elapsed_time)
@@ -64,7 +61,7 @@ void SpriteScalerComponent::Update(float elapsed_time)
     case State::End:
     {
         // C—¹
-        this->command_pool.pop();   // —v‘f‚ðíœ
+        this->command_pool.pop_front();   // —v‘f‚ðíœ
         this->state = State::Start;
         break;
     }
@@ -75,19 +72,43 @@ void SpriteScalerComponent::Update(float elapsed_time)
     this->interpolation_timer += elapsed_time;
 }
 
-void SpriteScalerComponent::PushCommand(const ScaleCommand& command)
+void SpriteScalerComponent::PushFrontCommand(const ScaleCommand& command)
 {
-    this->command_pool.push(command);
+    this->state = State::Start;
+    this->command_pool.push_front(command);
 }
 
-void SpriteScalerComponent::PushCommand(DirectX::XMFLOAT2 target_scale, float transition_duration)
+void SpriteScalerComponent::PushFrontCommand(DirectX::XMFLOAT2 target_scale, float transition_duration)
 {
-    PushCommand(ScaleCommand(target_scale, transition_duration));
+    PushFrontCommand(ScaleCommand(target_scale, transition_duration));
 }
 
-void SpriteScalerComponent::PushCommand(float target_scale, float transition_duration)
+void SpriteScalerComponent::PushFrontCommand(float target_scale, float transition_duration)
 {
-    PushCommand(ScaleCommand({ target_scale ,target_scale }, transition_duration));
+    PushFrontCommand(ScaleCommand({ target_scale ,target_scale }, transition_duration));
+}
+
+void SpriteScalerComponent::PushBackCommand(const ScaleCommand& command)
+{
+    this->command_pool.push_back(command);
+}
+
+void SpriteScalerComponent::PushBackCommand(DirectX::XMFLOAT2 target_scale, float transition_duration)
+{
+    PushBackCommand(ScaleCommand(target_scale, transition_duration));
+}
+
+void SpriteScalerComponent::PushBackCommand(float target_scale, float transition_duration)
+{
+    PushBackCommand(ScaleCommand({ target_scale ,target_scale }, transition_duration));
+}
+
+void SpriteScalerComponent::CommandClear()
+{
+    while (!this->command_pool.empty())
+    {
+        this->command_pool.pop_front();
+    }
 }
 
 #ifdef _DEBUG
@@ -97,9 +118,26 @@ void SpriteScalerComponent::DrawDebugGUI()
     ImGui::DragFloat("Debug Change Scale", &this->debug_change_scale);
     ImGui::DragFloat("Debug Transition Duration", &this->debug_transition_duration);
 
-    if (ImGui::Button("PushCommand"))
+    if (ImGui::Button("PushFrontCommand"))
     {
-        PushCommand(this->debug_change_scale, this->debug_transition_duration);
+        PushFrontCommand(this->debug_change_scale, this->debug_transition_duration);
+    }
+    if (ImGui::Button("PushBackCommand"))
+    {
+        PushBackCommand(this->debug_change_scale, this->debug_transition_duration);
+    }
+
+    if (ImGui::TreeNodeEx("Commands"))
+    {
+        int count = 0;
+        for (auto command : this->command_pool)
+        {
+            ImGui::InputFloat2(std::string("Target Scale##" + std::to_string(count)).c_str(), &command.target_scale.x);
+            ImGui::InputFloat2(std::string("Transition Duration##" + std::to_string(count)).c_str(), &command.transition_duration);
+
+            ImGui::Spacing();
+        }
+        ImGui::TreePop();
     }
 }
 
