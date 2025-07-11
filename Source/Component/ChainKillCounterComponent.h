@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include <functional>
 
 // 連続撃破数を制御するコンポーネント
 class ChainKillCounterComponent : public Component
@@ -10,6 +11,7 @@ public:
         int chain_kill_count = 0;           // 連続撃破数
         float chain_kill_timer = 0.0f;      // 連続撃破の残り猶予時間
         float chain_kill_timer_max = 0.0f;  // 連続撃破の猶予時間の最大値
+        bool is_reset = false;              // カウントリセットが1度だけ実行されるよう制御するフラグ
     };
 public:
     ChainKillCounterComponent(Param param) : param(param) {};
@@ -30,11 +32,16 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+    void SetOnKillCountAdded(const std::function<void(int)>& function) { this->onKillCountAdded = function; };
+    void SetOnKillCountReset(const std::function<void()>& function) { this->onKillCountReset = function; };
+
     // 連続撃破数を加算する
     void AddChainKill();
 private:
     Param param;
 
+    std::function<void(int)> onKillCountAdded;
+    std::function<void()> onKillCountReset;
 #ifdef _DEBUG
 public:
     /**

@@ -30,7 +30,6 @@ public:
 
 private:
     Param param;
-
 #ifdef _DEBUG
 public:
     /**
