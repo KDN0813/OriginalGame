@@ -19,11 +19,11 @@ void FadeControllerComponent::Update(float elapsed_time)
     switch (this->param.state)
     {
     case FADE_STATE::START:
-        this->param.fade_time = this->param.fade_duration;
+        this->param.fade_time = 0.0f;
         this->param.state = FADE_STATE::RUN;
         break;
     case FADE_STATE::RUN:
-        this->param.fade_time -= elapsed_time;
+        this->param.fade_time += elapsed_time;
 
         switch (this->param.fead_type)
         {
@@ -37,7 +37,7 @@ void FadeControllerComponent::Update(float elapsed_time)
             break;
         }
 
-        if (this->param.fade_time <= 0)
+        if (this->param.fade_duration <= this->param.fade_time)
         {
             this->param.state = FADE_STATE::END;
             this->SetIsActive(false);
@@ -63,7 +63,6 @@ void FadeControllerComponent::ClearFade()
     {
         if (const auto& sprite = owner->GetComponent(this->sprite_Wptr))
         {
-            const float t = this->param.fade_time / this->param.fade_duration;
             sprite->SetAlpha(0.0f);
         }
     }

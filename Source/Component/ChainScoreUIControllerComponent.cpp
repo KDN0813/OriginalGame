@@ -1,5 +1,7 @@
 #include "ChainScoreUIControllerComponent.h"
 
+#include <imgui.h>
+
 #include "Object/Object.h"
 #include "TextNumberComponent.h"
 #include "FadeControllerComponent.h"
@@ -21,7 +23,7 @@ void ChainScoreUIControllerComponent::OnScoreAdded(int value)
     text_numbe->SetDrawValue(value);
     const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
     if (!text_numbe) return;
-    fade_controller->FeadStart(FEAD_TYPE::FEAD_IN, 0.5f);
+    fade_controller->FeadStart(FEAD_TYPE::FEAD_IN, this->param.fead_in_time);
 }
 
 void ChainScoreUIControllerComponent::OnScoreChainEnded()
@@ -37,6 +39,7 @@ void ChainScoreUIControllerComponent::OnScoreChainEnded()
 
 void ChainScoreUIControllerComponent::DrawDebugGUI()
 {
+    ImGui::InputFloat("Fead In Time", &this->param.fead_in_time);
 }
 
 #endif // _DEBUG

@@ -8,7 +8,12 @@ class FadeControllerComponent;
 class ChainScoreUIControllerComponent : public Component
 {
 public:
-    ChainScoreUIControllerComponent(){};
+    struct Param
+    {
+        float fead_in_time = 1.0f;
+    };
+public:
+    ChainScoreUIControllerComponent(Param p) : param(p){};
     ~ChainScoreUIControllerComponent() {};
 
     // äJénä÷êî
@@ -29,6 +34,9 @@ public:
     void OnScoreAdded(int);
 
     void OnScoreChainEnded();
+
+private:
+    Param param;
 
 private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
