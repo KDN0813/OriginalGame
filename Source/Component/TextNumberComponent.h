@@ -14,14 +14,10 @@ public:
 public:
     struct TextParam
     {
-        std::string font_name = {};
         int value = 0;  // 表示する値
-        DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
-        PRIORITY draw_priority = PRIORITY::DEFAULT;
-        Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
 public:
-    TextNumberComponent(TextParam param) : BaseSpriteComponent(param.draw_priority), param(param), default_param(param) {};
+    TextNumberComponent(const BaseSpriteComponent::SpriteParam& sprite_param, const TextParam& param) : BaseSpriteComponent(sprite_param), param(param), default_param(param) {};
     ~TextNumberComponent() {};
 
     // 開始関数
@@ -29,7 +25,7 @@ public:
     // 終了関数
     void End()  override {};
     // リスタート処理
-    void ReStart() override {};      // パラメータの初期化
+    void ReStart() override;      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override {};
 

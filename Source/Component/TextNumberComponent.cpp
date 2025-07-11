@@ -15,7 +15,7 @@ void TextNumberComponent::Start()
     BaseSpriteComponent::Start();
 
     // フォント用スプライト読み込み
-    this->sprite = std::make_unique<Sprite>(this->param.font_name.c_str());
+    this->sprite = std::make_unique<Sprite>(this->sprite_param.filename.c_str());
 
     // フォントサイズ設定
     {
@@ -46,6 +46,12 @@ void TextNumberComponent::Start()
 #endif // _DEBUG
 }
 
+void TextNumberComponent::ReStart()
+{
+    this->param = this->default_param;
+    this->sprite_param = this->default_sprite_param;
+}
+
 void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 {
     DirectX::XMFLOAT2 pos{};
@@ -71,7 +77,7 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 
     // 中心位置へのオフセット値取得
     float rateX, rateY;
-    Sprite::GetCenterTypeRate(rateX, rateY, this->param.center_type);
+    Sprite::GetCenterTypeRate(rateX, rateY, this->sprite_param.center_type);
 
     // 位置設定
     pos.x -= this->display_size.x * static_cast<float>(Digits - 1) * rateX;
@@ -89,8 +95,8 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
             this->clip_pos,
             this->clip_size,
             angle,
-            this->param.color,
-            this->param.center_type
+            this->sprite_param.color,
+            this->sprite_param.center_type
         );
 
         // 描画位置更新
@@ -102,12 +108,12 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 
 void TextNumberComponent::DrawDebugGUI()
 {
-    ImGui::InputTextString("Font Name", this->param.font_name);
+    ImGui::InputTextString("Font Name", this->sprite_param.filename);
 
-    int priority = static_cast<int>(this->draw_priority);
+    int priority = static_cast<int>(this->sprite_param.draw_priority);
     if (ImGui::InputInt("Draw Priority", &priority))
     {
-        this->draw_priority = static_cast<PRIORITY>((priority < 0) ? 0 : priority);
+        this->sprite_param.draw_priority = static_cast<PRIORITY>((priority < 0) ? 0 : priority);
         {
             SpriteShader::Instance manager = SpriteShader::GetInstance();
             manager->SetShouldSort(true);
@@ -119,16 +125,16 @@ void TextNumberComponent::DrawDebugGUI()
     {
         SetDrawValue(value);
     }
-    ImGui::ColorEdit4("Sprite Color", &this->param.color.x);
+    ImGui::ColorEdit4("Sprite Color", &this->sprite_param.color.x);
 
     // 中心位置の設定
-    int center_type_index = static_cast<int>(this->param.center_type);
+    int center_type_index = static_cast<int>(this->sprite_param.center_type);
     std::string now_name{};
-    now_name = magic_enum::enum_name(this->param.center_type);
-    this->param.center_type;
+    now_name = magic_enum::enum_name(this->sprite_param.center_type);
+    this->sprite_param.center_type;
     if (ImGui::ComboUI("CenterType", now_name, this->center_type_name_pool, center_type_index))
     {
-        this->param.center_type = static_cast<Sprite::CENTER_TYPE>(center_type_index);
+        this->sprite_param.center_type = static_cast<Sprite::CENTER_TYPE>(center_type_index);
     }
 }
 

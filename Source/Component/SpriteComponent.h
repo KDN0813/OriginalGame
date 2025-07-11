@@ -3,7 +3,6 @@
 #include <DirectXMath.h>
 #include <vector>
 #include "Component/BaseSpriteComponent.h"
-#include "Sprite/Sprite.h"
 #include "System\MyMath\MyMathf.h"
 
 class Transform2DComponent;
@@ -11,24 +10,20 @@ class Transform2DComponent;
 class SpriteComponent : public BaseSpriteComponent
 {
 public:
-    struct SpriteParam
+    struct AddParam
     {
-        std::string filename = {};
         DirectX::XMFLOAT2 display_size = { 1.0f,1.0f };
         DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
         DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
-        DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
-        PRIORITY draw_priority = PRIORITY::DEFAULT;
-        Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
 public:
-    SpriteComponent(const SpriteParam&);
+    SpriteComponent(const BaseSpriteComponent::SpriteParam&,const AddParam&);
     virtual ~SpriteComponent() {};
 
     // 終了関数
     void End()  override {};
     // リスタート処理
-    void ReStart() override { this->param = this->default_param; };      // パラメータの初期化
+    void ReStart() override;      // パラメータの初期化
     // 更新関数
     void Update(float elapsed_time) override {};
 
@@ -41,8 +36,6 @@ public:
     // 描画処理
     void Render(ID3D11DeviceContext* dc) override;
 
-    void SetColor(DirectX::XMFLOAT4 color) { this->param.color = color; };
-    void SetAlpha(float a) { this->param.color.w = a; };
     void SetDisplaySize(const DirectX::XMFLOAT2 size) { this->param.display_size = size; };
     void SetDisplaySizeX(const float sizeX) { this->param.display_size.x = sizeX; };
     void SetDisplaySizeY(const float sizeY) { this->param.display_size.y = sizeY; };
@@ -50,8 +43,8 @@ public:
     void AdjustDisplaySizeToSprite();
 private:
     std::unique_ptr<Sprite> sprite;
-    SpriteParam param;
-    SpriteParam default_param;
+    AddParam param;
+    AddParam default_param;
 private:
     std::weak_ptr<Transform2DComponent> transform_Wptr;
 

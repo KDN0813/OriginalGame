@@ -8,7 +8,7 @@
 #include "System\MyMath\MyMathf.h"
 
 #include "Object\Object.h"
-#include "Component\SpriteComponent.h"
+#include "Component\BaseSpriteComponent.h"
 
 void FadeControllerComponent::Start()
 {

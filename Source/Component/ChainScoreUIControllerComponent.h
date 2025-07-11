@@ -2,6 +2,7 @@
 #include "Component.h"
 
 class TextNumberComponent;
+class FadeControllerComponent;
 
 // 連続スコア取得のUIを制御するコンポーネント
 class ChainScoreUIControllerComponent : public Component
@@ -31,6 +32,7 @@ public:
 
 private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
+    std::weak_ptr<FadeControllerComponent> fade_controller_Wptr;
 
 #ifdef _DEBUG
 public:

@@ -11,10 +11,10 @@
 
 #include "Component\Transform2DComponent.h"
 
-SpriteComponent::SpriteComponent(const SpriteParam& param)
-    :BaseSpriteComponent(param.draw_priority), param(param), default_param(param)
+SpriteComponent::SpriteComponent(const BaseSpriteComponent::SpriteParam& sprite_param, const AddParam& param)
+    :BaseSpriteComponent(sprite_param), param(param), default_param(param)
 {
-    this->sprite = std::make_unique<Sprite>(param.filename.size() ? this->param.filename.c_str() : nullptr);
+    this->sprite = std::make_unique<Sprite>(sprite_param.filename.size() ? this->sprite_param.filename.c_str() : nullptr);
 
 #ifdef _DEBUG
     // CENTER_TYPE —ñ‹“Œ^‚ÌŠe’l‚É‘Î‰‚·‚é–¼‘O‚ğæ“¾‚µ‚ÄŠi”[‚·‚é
@@ -23,6 +23,12 @@ SpriteComponent::SpriteComponent(const SpriteParam& param)
         this->center_type_name_pool.emplace_back(magic_enum::enum_name(static_cast<Sprite::CENTER_TYPE>(i)));
     }
 #endif // _DEBUG
+}
+
+void SpriteComponent::ReStart()
+{
+    this->param = this->default_param;
+    this->sprite_param = this->default_sprite_param;
 }
 
 void SpriteComponent::Render(ID3D11DeviceContext* dc)
@@ -49,8 +55,8 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
         this->param.clip_pos,
         this->param.clip_size,
         angle,
-        this->param.color,
-        this->param.center_type
+        this->sprite_param.color,
+        this->sprite_param.center_type
     );
 }
 
@@ -76,12 +82,12 @@ void SpriteComponent::AdjustDisplaySizeToSprite()
 
 void SpriteComponent::DrawDebugGUI()
 {
-    ImGui::InputTextString("Sprite Name", this->param.filename);
+    ImGui::InputTextString("Sprite Name", this->sprite_param.filename);
 
-    int priority = static_cast<int>(this->draw_priority);
+    int priority = static_cast<int>(this->sprite_param.draw_priority);
     if (ImGui::InputInt("Draw Priority", &priority))
     {
-        this->draw_priority = static_cast<PRIORITY>((priority < 0) ? 0 : priority);
+        this->sprite_param.draw_priority = static_cast<PRIORITY>((priority < 0) ? 0 : priority);
         {
             SpriteShader::Instance manager = SpriteShader::GetInstance();
             manager->SetShouldSort(true);
@@ -91,16 +97,16 @@ void SpriteComponent::DrawDebugGUI()
     ImGui::SliderFloat2("Display Size", &this->param.display_size.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Pos", &this->param.clip_pos.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Size", &this->param.clip_size.x, 0.0f, 1.0f);
-    ImGui::ColorEdit4("Sprite Color", &this->param.color.x);
+    ImGui::ColorEdit4("Sprite Color", &this->sprite_param.color.x);
 
     // ’†SˆÊ’u‚Ìİ’è
-    int center_type_index = static_cast<int>(this->param.center_type);
+    int center_type_index = static_cast<int>(this->sprite_param.center_type);
     std::string now_name{};
-    now_name = magic_enum::enum_name(this->param.center_type);
-    this->param.center_type;
+    now_name = magic_enum::enum_name(this->sprite_param.center_type);
+    this->sprite_param.center_type;
     if (ImGui::ComboUI("CenterType", now_name, this->center_type_name_pool, center_type_index))
     {
-        this->param.center_type = static_cast<Sprite::CENTER_TYPE>(center_type_index);
+        this->sprite_param.center_type = static_cast<Sprite::CENTER_TYPE>(center_type_index);
     }
     if (ImGui::Button("AdjustDisplaySizeToSprite"))
     {

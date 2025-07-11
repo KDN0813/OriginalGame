@@ -313,10 +313,11 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			}
 			// スプライト
 			{
-				SpriteComponent::SpriteParam param{};
-				param.color = { 1.0f,0.0f, 0.0f, 1.0f };
-				param.center_type = Sprite::CENTER_TYPE::CENTER;
-				const auto& sprite = spin_attack_time_UI_object->AddComponent<SpriteComponent>(param);
+				SpriteComponent::AddParam param{};
+				BaseSpriteComponent::SpriteParam sprite_param{};
+				sprite_param.color = { 1.0f,0.0f, 0.0f, 1.0f };
+				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
+				const auto& sprite = spin_attack_time_UI_object->AddComponent<SpriteComponent>(sprite_param,param);
 			}
 			// UIの更新処理
 			{
