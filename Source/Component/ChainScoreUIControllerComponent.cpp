@@ -33,7 +33,7 @@ void ChainScoreUIControllerComponent::OnScoreAdded(int value)
 
     const auto& sprite_scaler = owner->GetComponent(this->sprite_scaler_Wptr);
     if (!sprite_scaler) return;
-    sprite_scaler->ReStart();
+    sprite_scaler->CommandClear();
     sprite_scaler->PushBackCommand(this->param.expanded_scale,this->param.time_to_expand);// スプライトの拡大指示
     sprite_scaler->PushBackCommand(this->param.shrink_scale, this->param.time_to_shrink);// スプライトの縮小指示
 

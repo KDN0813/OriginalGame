@@ -12,7 +12,6 @@
 void SpriteScalerComponent::ReStart()
 {
     this->interpolation_timer = 0.0f;
-    this->state = State::Start;
     CommandClear();
 }
 
@@ -109,6 +108,7 @@ void SpriteScalerComponent::CommandClear()
     {
         this->command_pool.pop_front();
     }
+    this->state = State::Start;
 }
 
 #ifdef _DEBUG
