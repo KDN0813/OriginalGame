@@ -3,19 +3,19 @@
 #include <functional>
 
 // 連続撃破数を制御するコンポーネント
-class ChainKillCounterComponent : public Component
+class ChainScoreCounterComponent : public Component
 {
 public:
     struct Param
     {
-        int chain_kill_count = 0;           // 連続撃破数
-        float chain_kill_timer = 0.0f;      // 連続撃破の残り猶予時間
-        float chain_kill_timer_max = 0.0f;  // 連続撃破の猶予時間の最大値
+        int chain_score = 0;           
+        float chain_timer = 0.0f;      
+        float chain_timer_max = 0.0f;  
         bool is_reset = false;              // カウントリセットが1度だけ実行されるよう制御するフラグ
     };
 public:
-    ChainKillCounterComponent(Param param) : param(param) {};
-    ~ChainKillCounterComponent() {};
+    ChainScoreCounterComponent(Param param) : param(param) {};
+    ~ChainScoreCounterComponent() {};
 
     // 開始関数
     void Start()  override {};
@@ -27,18 +27,18 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override { return "ChainKillCounterComponent"; };
+    const char* GetName()const  override { return "ChainScoreCounterComponent"; };
 
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    void CountReset();
+    void ChainEnd();
 
-    void SetOnKillCountAdded(const std::function<void(int)>& function) { this->onKillCountAdded = function; };  // キルカウントの増価
-    void SetOnChainKillEnded(const std::function<void()>& function) { this->onKillCountReset = function; };     // キルカウント終了
+    void SetOnScoreAdded(const std::function<void(int)>& function) { this->onKillCountAdded = function; };  // キルカウントの増価
+    void SetOnScoreChainEnded(const std::function<void()>& function) { this->onKillCountReset = function; };     // キルカウント終了
 
-    // 連続撃破数を加算する
-    void AddChainKill();
+    // スコアを加算する
+    void AddChain(int add_score);
 private:
     Param param;
 

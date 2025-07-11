@@ -95,7 +95,7 @@ void SceneGame::Initialize()
 		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
 		// 連続撃破数を表示するUI
-		UIConstant::CreateChainKillCounterUI(object_manager->Create("ChainKillCounterUI"));
+		UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScoreCounterUI"));
 
 		// エネミースポナー作成
 		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager);

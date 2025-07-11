@@ -3,12 +3,12 @@
 
 class TextNumberComponent;
 
-// 連続撃破数のUIを制御するコンポーネント
-class ChainKillUIControllerComponent : public Component
+// 連続スコア取得のUIを制御するコンポーネント
+class ChainScoreUIControllerComponent : public Component
 {
 public:
-    ChainKillUIControllerComponent(){};
-    ~ChainKillUIControllerComponent() {};
+    ChainScoreUIControllerComponent(){};
+    ~ChainScoreUIControllerComponent() {};
 
     // 開始関数
     void Start()  override {};
@@ -20,17 +20,17 @@ public:
     void Update(float elapsed_time) override;
 
     // 名前取得
-    const char* GetName()const  override { return "ChainKillUIControllerComponent"; };
+    const char* GetName()const  override { return "ChainScoreUIControllerComponent"; };
 
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    void OnKillCountAdded(int);
+    void OnScoreAdded(int);
 
-    void OnChainKillEnded();
+    void OnScoreChainEnded();
 
 private:
-    std::weak_ptr<TextNumberComponent> text_numbe_Wptr;
+    std::weak_ptr<TextNumberComponent> text_number_Wptr;
 
 #ifdef _DEBUG
 public:

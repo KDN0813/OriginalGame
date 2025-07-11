@@ -11,8 +11,8 @@
 #include "Component\Transform2DComponent.h"
 #include "Component\FadeControllerComponent.h"
 #include "Component\SpecialGageComponent.h"
-#include "Component\ChainKillUIControllerComponent.h"
-#include "Component\ChainKillCounterComponent.h"
+#include "Component\ChainScoreCounterComponent.h"
+#include "Component\ChainScoreUIControllerComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -505,7 +505,7 @@ const std::shared_ptr<Object>& UIConstant::CreateDescriptionUI(const std::shared
 	return descriptionUI;
 }
 
-const std::shared_ptr<Object>& UIConstant::CreateChainKillCounterUI(const std::shared_ptr<Object>& object)
+const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::shared_ptr<Object>& object)
 {
 	// transform
 	{
@@ -514,27 +514,27 @@ const std::shared_ptr<Object>& UIConstant::CreateChainKillCounterUI(const std::s
 		object->AddComponent<Transform2DComponent>(paam);
 	}
 
-	// 連続撃破UI用コントローラー
-	const auto& chain_kill_UI_controller = object->AddComponent<ChainKillUIControllerComponent>();
+	// チェインスコアUIコントローラー
+	const auto& chain_kill_UI_controller = object->AddComponent<ChainScoreUIControllerComponent>();
 	
-	// 連続撃破カウンター
+	// チェインスコアを管理するコンポーネント
 	{
-		ChainKillCounterComponent::Param param{};
-		param.chain_kill_timer_max = 5.0f;
+		ChainScoreCounterComponent::Param param{};
+		param.chain_timer_max = 5.0f;
 
-		const auto& chain_kill_counter = object->AddComponent<ChainKillCounterComponent>(param);
+		const auto& chain_kill_counter = object->AddComponent<ChainScoreCounterComponent>(param);
 	
-		chain_kill_counter->SetOnKillCountAdded(
+		chain_kill_counter->SetOnScoreAdded(
 			[chain_kill_UI_controller](int value) {
 				if (chain_kill_UI_controller) {
-					chain_kill_UI_controller->OnKillCountAdded(value);
+					chain_kill_UI_controller->OnScoreAdded(value);
 				}
 			}
 		);
-		chain_kill_counter->SetOnChainKillEnded(
+		chain_kill_counter->SetOnScoreChainEnded(
 			[chain_kill_UI_controller]() {
 				if (chain_kill_UI_controller) {
-					chain_kill_UI_controller->OnChainKillEnded();
+					chain_kill_UI_controller->OnScoreChainEnded();
 				}
 			}
 		);

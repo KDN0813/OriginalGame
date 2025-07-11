@@ -556,10 +556,10 @@
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Source\Component\ChainKillUIControllerComponent.h">
+    <ClInclude Include="Source\Component\ChainScoreUIControllerComponent.h">
       <Filter>Source\Component\Sprite\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\ChainKillCounterComponent.h">
+    <ClInclude Include="Source\Component\ChainScoreCounterComponent.h">
       <Filter>Source\Component\Score</Filter>
     </ClInclude>
   </ItemGroup>
@@ -825,10 +825,10 @@
     <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp">
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\ChainKillUIControllerComponent.cpp">
+    <ClCompile Include="Source\Component\ChainScoreUIControllerComponent.cpp">
       <Filter>Source\Component\Sprite\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\ChainKillCounterComponent.cpp">
+    <ClCompile Include="Source\Component\ChainScoreCounterComponent.cpp">
       <Filter>Source\Component\Score</Filter>
     </ClCompile>
   </ItemGroup>
