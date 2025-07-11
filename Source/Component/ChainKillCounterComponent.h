@@ -1,18 +1,19 @@
 #pragma once
 #include "Component.h"
 
-// ˜A‘±Œ‚”j”‚ÌUI‚ğ§Œä‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg
-class ChainKillCounterUIControllerComponent : public Component
+// ˜A‘±Œ‚”j”‚ğ§Œä‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg
+class ChainKillCounterComponent : public Component
 {
 public:
     struct Param
     {
-        float chain_kill_timer;     // ˜A‘±Œ‚”j‚Ìc‚è—P—\ŠÔ
-        float chain_kill_timer_max; // ˜A‘±Œ‚”j‚Ì—P—\ŠÔ‚ÌÅ‘å’l
+        int chain_kill_count = 0;           // ˜A‘±Œ‚”j”
+        float chain_kill_timer = 0.0f;      // ˜A‘±Œ‚”j‚Ìc‚è—P—\ŠÔ
+        float chain_kill_timer_max = 0.0f;  // ˜A‘±Œ‚”j‚Ì—P—\ŠÔ‚ÌÅ‘å’l
     };
 public:
-    ChainKillCounterUIControllerComponent(Param param) : param(param) {};
-    ~ChainKillCounterUIControllerComponent() {};
+    ChainKillCounterComponent(Param param) : param(param) {};
+    ~ChainKillCounterComponent() {};
 
     // ŠJnŠÖ”
     void Start()  override {};
@@ -29,6 +30,8 @@ public:
     // —Dæ“x
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+    // ˜A‘±Œ‚”j”‚ğ‰ÁZ‚·‚é
+    void AddChainKill();
 private:
     Param param;
 

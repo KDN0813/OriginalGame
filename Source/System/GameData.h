@@ -23,7 +23,7 @@ public:
     struct GameParam
     {
         int score = 0;                                   // スコア
-        float game_end_timer = 60.0f;                   // ゲーム終了までの時間
+        float game_end_timer = 60.0f;                    // ゲーム終了までの時間
         bool is_loading = false;                         // ロード中であるか
         bool is_pause = false;                           // ポーズ中であるか
         bool is_close_window = false;                    // ウィンドウの終了フラグ
