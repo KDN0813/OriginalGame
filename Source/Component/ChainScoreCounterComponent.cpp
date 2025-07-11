@@ -24,8 +24,8 @@ void ChainScoreCounterComponent::Update(float elapsed_time)
     else
     {
         this->param.is_reset = false;
+        this->param.chain_timer -= elapsed_time;   // タイマー更新
     }
-    this->param.chain_timer -= elapsed_time;   // タイマー更新
 }
 
 void ChainScoreCounterComponent::ChainEnd()

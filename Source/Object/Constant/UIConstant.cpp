@@ -530,7 +530,8 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 	}
 
 	// チェインスコアUIコントローラー
-	const auto& chain_kill_UI_controller = object->AddComponent<ChainScoreUIControllerComponent>();
+	ChainScoreUIControllerComponent::Param param{};
+	const auto& chain_kill_UI_controller = object->AddComponent<ChainScoreUIControllerComponent>(param);
 	
 	// チェインスコアを管理するコンポーネント
 	{

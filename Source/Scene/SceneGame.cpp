@@ -80,19 +80,19 @@ void SceneGame::Initialize()
 	// オブジェクト作成
 	{
 		// スコア表示用オブジェクト
-		UIConstant::CreateScoreUI(object_manager->Create("Score"));
+		//::CreateScoreUI(object_manager->Create("Score"));
 
 		// ゲーム時間表示オブジェクト
-		UIConstant::CreateGameTimerUI(object_manager->Create("GameTimer"));
+		//UIConstant::CreateGameTimerUI(object_manager->Create("GameTimer"));
 
 		// プレイヤー体力ゲージオブジェクト
-		UIConstant::CreatePlayerHpBarUI(object_manager->Create("PlayerHpBar"));
+		//UIConstant::CreatePlayerHpBarUI(object_manager->Create("PlayerHpBar"));
 
 		// プレイヤーのスペシャルゲージ
-		UIConstant::CreatePlayerSpecialBar(object_manager->Create("SpecialBar"));
+		//UIConstant::CreatePlayerSpecialBar(object_manager->Create("SpecialBar"));
 
 		// 操作説明UI
-		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
+		//UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
 		// チェインスコアを表示するオブジェクト
 		const auto& chain_score_counter = UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScoreCounterUI"));

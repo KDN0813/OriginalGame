@@ -12,6 +12,7 @@
 
 void FadeControllerComponent::Start()
 {
+    SetIsActive(false);
 }
 
 void FadeControllerComponent::Update(float elapsed_time)
