@@ -214,9 +214,6 @@
     <Filter Include="External\Icon">
       <UniqueIdentifier>{282c78bc-3a2d-4a1a-ab48-e8cc8d2f41f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Component\Sprite\Controller">
-      <UniqueIdentifier>{bb908c39-f98c-4870-b3d7-6e590919cdac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Component\Score">
       <UniqueIdentifier>{61e0f6f6-5faa-4d85-bbe1-274985eccdda}</UniqueIdentifier>
     </Filter>
@@ -556,11 +553,11 @@
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Source\Component\ChainScoreUIControllerComponent.h">
-      <Filter>Source\Component\Sprite\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\ChainScoreCounterComponent.h">
       <Filter>Source\Component\Score</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ChainScoreUIControllerComponent.h">
+      <Filter>Source\Component\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -825,11 +822,11 @@
     <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp">
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\ChainScoreUIControllerComponent.cpp">
-      <Filter>Source\Component\Sprite\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\ChainScoreCounterComponent.cpp">
       <Filter>Source\Component\Score</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ChainScoreUIControllerComponent.cpp">
+      <Filter>Source\Component\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

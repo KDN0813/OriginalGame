@@ -12,6 +12,7 @@ public:
     {
         float fead_in_time = 1.0f;
         float fead_out_time = 1.0f;
+        bool is_chain_end_direction = false;   // 連鎖終了演出フラグ
     };
 public:
     ChainScoreUIControllerComponent(Param p) : param(p){};
