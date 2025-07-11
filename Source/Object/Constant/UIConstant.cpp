@@ -13,6 +13,7 @@
 #include "Component\SpecialGageComponent.h"
 #include "Component\ChainScoreCounterComponent.h"
 #include "Component\ChainScoreUIControllerComponent.h"
+#include "Component\SpriteScalerComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -513,6 +514,9 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 		paam.local_position = { 0.5f, 0.0f };
 		object->AddComponent<Transform2DComponent>(paam);
 	}
+
+	// SpriteScalerComponent
+	object->AddComponent<SpriteScalerComponent>();
 
 	// チェインスコアUIコントローラー
 	ChainScoreUIControllerComponent::Param param{};

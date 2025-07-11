@@ -559,6 +559,9 @@
     <ClInclude Include="Source\Component\ChainScoreUIControllerComponent.h">
       <Filter>Source\Component\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\SpriteScalerComponent.h">
+      <Filter>Source\Component\Sprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -827,6 +830,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\ChainScoreUIControllerComponent.cpp">
       <Filter>Source\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpriteScalerComponent.cpp">
+      <Filter>Source\Component\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

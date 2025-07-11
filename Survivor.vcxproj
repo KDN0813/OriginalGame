@@ -159,6 +159,7 @@
     <ClInclude Include="Source\Component\SpecialGageComponent.h" />
     <ClInclude Include="Source\Component\SpinAttackTimeUIComponent.h" />
     <ClInclude Include="Source\Component\SpriteComponent.h" />
+    <ClInclude Include="Source\Component\SpriteScalerComponent.h" />
     <ClInclude Include="Source\Component\StateMachineComponent.h" />
     <ClInclude Include="Source\Component\Transform2DComponent.h" />
     <ClInclude Include="Source\Component\TransformComponent.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="Source\Component\SpecialGageComponent.cpp" />
     <ClCompile Include="Source\Component\SpinAttackTimeUIComponent.cpp" />
     <ClCompile Include="Source\Component\SpriteComponent.cpp" />
+    <ClCompile Include="Source\Component\SpriteScalerComponent.cpp" />
     <ClCompile Include="Source\Component\StateMachineComponent.cpp" />
     <ClCompile Include="Source\Component\TextNumberComponent.cpp" />
     <ClCompile Include="Source\Component\Transform2DComponent.cpp" />
