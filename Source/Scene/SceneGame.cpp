@@ -441,8 +441,7 @@ void SceneGame::ProcessGameState()
 				// フェードイン準備
 				if (const auto& fade_controller = scene_manager->GetFadeControlle(); fade_controller.get())
 				{
-					fade_controller->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::PLAYER_DEFEAT_FEAD_DURATION);
-					fade_controller->FeadStart();
+					fade_controller->FeadStart(FEAD_TYPE::FEAD_OUT, UIConstant::PLAYER_DEFEAT_FEAD_DURATION);
 				}
 
 				// デスカメラに遷移
@@ -482,8 +481,7 @@ void SceneGame::ProcessGameState()
 			{
 				if (const auto& fade_controller = scene_manager->GetFadeControlle(); fade_controller.get())
 				{
-					fade_controller->SetFead(FEAD_TYPE::FEAD_OUT, UIConstant::DEFAULT_FEAD_DURATION);
-					fade_controller->FeadStart();
+					fade_controller->FeadStart(FEAD_TYPE::FEAD_OUT, UIConstant::DEFAULT_FEAD_DURATION);
 				}
 				this->change_state = CHANGE_SCENE_STATE::RUN;
 			}

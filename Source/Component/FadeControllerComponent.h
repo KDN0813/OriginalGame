@@ -53,12 +53,12 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    void SetFead(FEAD_TYPE type, float fade_duration);
     /**
      * フェードを開始する
      * 自身をアクティブ化させる
      */
-    void FeadStart();
+    void FeadStart(FEAD_TYPE type, float fade_duration);
+    
 
     /**
      * フェードを解除する

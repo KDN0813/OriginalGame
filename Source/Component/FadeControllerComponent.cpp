@@ -47,14 +47,10 @@ void FadeControllerComponent::Update(float elapsed_time)
     }
 }
 
-void FadeControllerComponent::SetFead(FEAD_TYPE type, float fade_duration)
+void FadeControllerComponent::FeadStart(FEAD_TYPE type, float fade_duration)
 {
     this->param.fead_type = type;
-    this->param.fade_duration = (std::max)(fade_duration, 0.2f);
-}
-
-void FadeControllerComponent::FeadStart()
-{
+    this->param.fade_duration = fade_duration;
     this->SetIsActive(true);
     this->param.fade_time = this->param.fade_duration;
     this->param.state = FADE_STATE::START;
@@ -103,13 +99,11 @@ void FadeControllerComponent::DrawDebugGUI()
 {
     if (ImGui::Button("FeadIn"))
     {
-        this->param.fead_type = FEAD_TYPE::FEAD_IN;
-        FeadStart();
+        FeadStart(FEAD_TYPE::FEAD_IN, 0.2f);
     }
     if (ImGui::Button("FeadOut"))
     {
-        this->param.fead_type = FEAD_TYPE::FEAD_OUT;
-        FeadStart();
+        FeadStart(FEAD_TYPE::FEAD_OUT, 0.2f);
     }
 
     ImGui::InputFloat("Fade Duration", &this->param.fade_duration);
