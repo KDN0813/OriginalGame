@@ -591,16 +591,20 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 	pop_ui_object->AddComponent<SpriteScalerComponent>();
 
 	// 連鎖スコアUIの出現演出を管理
+
+	const float EXPANDED_RATIO = 0.2f;
+	const float SHRINK_RATIO = 1.0f - EXPANDED_RATIO;
+
 	ChainScorePopAnimationComponent::Param chain_score_pop_animation_param{};
-	chain_score_pop_animation_param.fead_in_time = 0.5f;
+	chain_score_pop_animation_param.fead_in_time = 0.3;
+	chain_score_pop_animation_param.scale_transition_total_time = CHAIN_TIMER_MAX;
 	chain_score_pop_animation_param.expanded.target_scale = { 2.5f,2.5f };
-	chain_score_pop_animation_param.expanded.time = 0.5f;
+	chain_score_pop_animation_param.expanded.ratio = EXPANDED_RATIO;
 	chain_score_pop_animation_param.shrink.target_scale = INITIAL_SCALE;
-	chain_score_pop_animation_param.shrink.time = CHAIN_TIMER_MAX;
+	chain_score_pop_animation_param.shrink.ratio = SHRINK_RATIO;
 	const auto& chain_score_pop_animation = pop_ui_object->AddComponent<ChainScorePopAnimationComponent>(chain_score_pop_animation_param);
 	
 	// チェインスコアを管理するコンポーネント
-
 	ChainScoreCounterComponent::Param param{};
 	param.chain_timer_max = CHAIN_TIMER_MAX;
 	const auto& chain_score_counter = pop_ui_object->AddComponent<ChainScoreCounterComponent>(param);

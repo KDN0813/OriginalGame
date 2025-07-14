@@ -15,15 +15,16 @@ public:
     struct ScaleParam
     {
         DirectX::XMFLOAT2 target_scale;  // 目的のスケール
-        float time;          // 目的のスケールになるまでの時間
+        float ratio;                     // 拡大・縮小に使う割合（合計1.0になるように設定）
     };
 
     struct Param
     {
-        float fead_in_time = 1.0f;
+        float fead_in_time = 1.0f;                  // フェードインにかかる時間
+        float scale_transition_total_time = 1.0f;   // 拡大→縮小の全体の所要時間
 
-        ScaleParam expanded;            // 拡大時のパラメータ
-        ScaleParam shrink;              // 縮小時のパラメータ
+        ScaleParam expanded;  // 拡大時のスケールと割合
+        ScaleParam shrink;    // 縮小時のスケールと割合
     };
 public:
     ChainScorePopAnimationComponent(Param p) : param(p){};

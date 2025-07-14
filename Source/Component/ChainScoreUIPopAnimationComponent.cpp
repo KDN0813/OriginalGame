@@ -22,8 +22,8 @@ void ChainScorePopAnimationComponent::OnScoreAdded(int value)
     const auto& sprite_scaler = owner->GetComponent(this->sprite_scaler_Wptr);
     if (!sprite_scaler) return;
     sprite_scaler->CommandClear();
-    sprite_scaler->PushBackCommand(this->param.expanded.target_scale,this->param.expanded.time);// スプライトの拡大指示
-    sprite_scaler->PushBackCommand(this->param.shrink.target_scale, this->param.shrink.time);// スプライトの縮小指示
+    sprite_scaler->PushBackCommand(this->param.expanded.target_scale,this->param.scale_transition_total_time * this->param.expanded.ratio);// スプライトの拡大指示
+    sprite_scaler->PushBackCommand(this->param.shrink.target_scale, this->param.scale_transition_total_time * this->param.shrink.ratio);// スプライトの縮小指示
 }
 
 void ChainScorePopAnimationComponent::OnScoreChainStart()
@@ -51,12 +51,19 @@ void ChainScorePopAnimationComponent::OnScoreChainEnd()
 void ChainScorePopAnimationComponent::DrawDebugGUI()
 {
     ImGui::InputFloat("Fead In Time", &this->param.fead_in_time);
+    ImGui::InputFloat("Scale Transition Total Time", &this->param.scale_transition_total_time);
     
     ImGui::InputFloat2("Expanded Scale", &this->param.expanded.target_scale.x);
-    ImGui::InputFloat("Expanded Time", &this->param.expanded.time);
+    if (ImGui::InputFloat("Expanded Ratio", &this->param.expanded.ratio))
+    {
+        this->param.shrink.ratio = 1.0f - this->param.expanded.ratio;
+    }
 
     ImGui::InputFloat2("Shrink Scale", &this->param.shrink.target_scale.x);
-    ImGui::InputFloat("Shrink Time", &this->param.shrink.time);
+    if (ImGui::InputFloat("Shrink Ratio", &this->param.shrink.ratio))
+    {
+        this->param.expanded.ratio = 1.0f - this->param.shrink.ratio;
+    }
 
     if (ImGui::Button("ScoreChainStart"))
     {
