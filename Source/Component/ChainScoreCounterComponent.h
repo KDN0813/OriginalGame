@@ -11,14 +11,13 @@ public:
         int chain_score = 0;           
         float chain_timer = 0.0f;      
         float chain_timer_max = 0.0f;  
-        bool is_reset = false;              // カウントリセットが1度だけ実行されるよう制御するフラグ
     };
 public:
     ChainScoreCounterComponent(Param param) : param(param) {};
     ~ChainScoreCounterComponent() {};
 
     // 開始関数
-    void Start()  override {};
+    void Start()  override;
     // 終了関数
     void End()  override {};
     // リスタート処理

@@ -5,33 +5,31 @@
 #include <Imgui.h>
 #endif // _DEBUG
 
+void ChainScoreCounterComponent::Start()
+{
+    SetIsActive(false);
+}
+
 void ChainScoreCounterComponent::ReStart()
 {
     this->param.chain_score = 0;
     this->param.chain_timer = 0.0f;
-    this->param.is_reset = false;
+    SetIsActive(false);
 }
 
 void ChainScoreCounterComponent::Update(float elapsed_time)
 {
     if (this->param.chain_timer <= 0.0f)
     {
-        if (!this->param.is_reset)
-        {
-            ChainEnd();
-        }
+        ChainEnd();
     }
-    else
-    {
-        this->param.is_reset = false;
-        this->param.chain_timer -= elapsed_time;   // タイマー更新
-    }
+    this->param.chain_timer -= elapsed_time;   // タイマー更新
 }
 
 void ChainScoreCounterComponent::ChainEnd()
 {
     this->param.chain_score = 0;
-    this->param.is_reset = true;
+    SetIsActive(false);
     if (OnScoreChainEnd)
     {
         OnScoreChainEnd();
@@ -41,7 +39,7 @@ void ChainScoreCounterComponent::ChainEnd()
 void ChainScoreCounterComponent::AddChain(int add_score)
 {
     // 連鎖中でないなら
-    if (this->param.chain_timer <= 0.0f)
+    if (0.0f >= this->param.chain_timer)
     {
         if (OnScoreChainStart)
         {
@@ -51,6 +49,7 @@ void ChainScoreCounterComponent::AddChain(int add_score)
 
     this->param.chain_timer = this->param.chain_timer_max;    // タイマーの設定
     this->param.chain_score += add_score;
+    SetIsActive(true);
 
     if (OnScoreAdded)
     {

@@ -141,7 +141,12 @@ void SceneGame::Initialize()
 		if (Audio::Instance audio = Audio::GetInstance(); audio.Get())
 		{
 			AudioParam param{};
+#ifdef _DEBUG
+			param.volume = 0.0f;
+#else
 			param.volume = 0.5f;
+#endif // _DEBUG
+
 			param.loop = true;
 			param.filename = "Data/Audio/BGM.wav";
 			audio->Play(param);

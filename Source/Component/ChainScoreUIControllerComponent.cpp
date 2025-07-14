@@ -9,6 +9,7 @@
 #include "TextNumberComponent.h"
 #include "FadeControllerComponent.h"
 #include "SpriteScalerComponent.h"
+#include "SpriteMoverComponent.h"
 
 void ChainScoreUIControllerComponent::ReStart()
 {
@@ -16,10 +17,6 @@ void ChainScoreUIControllerComponent::ReStart()
 
 void ChainScoreUIControllerComponent::Update(float elapsed_time)
 {
-    if (this->param.is_chain_end_direction)
-    {
-
-    }
 }
 
 void ChainScoreUIControllerComponent::OnScoreAdded(int value)
@@ -53,10 +50,15 @@ void ChainScoreUIControllerComponent::OnScoreChainEnd()
 {
     const auto& owner = GetOwner();
     if (!owner) return;
+
     const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
     if (!fade_controller) return;
     fade_controller->FeadStart(FEAD_TYPE::FEAD_OUT, this->param.fead_in_time);
     this->param.is_chain_end_direction = true;
+
+    const auto& sprite_mover = owner->GetComponent(this->sprite_mover_Wptr);
+    if (!sprite_mover) return;
+    sprite_mover->PushFrontCommand(this->param.target_pos, this->param.fead_out_time);
 }
 
 #ifdef _DEBUG

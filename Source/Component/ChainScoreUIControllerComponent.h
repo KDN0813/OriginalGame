@@ -1,9 +1,12 @@
 #pragma once
 #include "Component.h"
 
+#include <DirectXMath.h>
+
 class TextNumberComponent;
 class FadeControllerComponent;
 class SpriteScalerComponent;
+class SpriteMoverComponent;
 
 // 連続スコア取得のUIを制御するコンポーネント
 class ChainScoreUIControllerComponent : public Component
@@ -18,6 +21,8 @@ public:
         float shrink_scale = 0.5f;      // 縮小時のスケール
         float time_to_expand = 1.0f;    // 拡大にかかる時間
         float time_to_shrink = 1.0f;    // 縮小にかかる時間
+
+        DirectX::XMFLOAT2 target_pos = {};
 
         bool is_chain_end_direction = false;   // 連鎖終了演出フラグ
     };
@@ -55,6 +60,7 @@ private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
     std::weak_ptr<FadeControllerComponent> fade_controller_Wptr;
     std::weak_ptr<SpriteScalerComponent> sprite_scaler_Wptr;
+    std::weak_ptr<SpriteMoverComponent> sprite_mover_Wptr;
 
 #ifdef _DEBUG
 public:

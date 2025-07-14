@@ -526,6 +526,7 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 	ChainScoreUIControllerComponent::Param param{};
 	param.fead_in_time = 0.5f;
 	param.fead_out_time = 1.0f;
+	param.target_pos = { 0.95f, 0.0f };
 	const auto& chain_kill_UI_controller = object->AddComponent<ChainScoreUIControllerComponent>(param);
 	
 	// チェインスコアを管理するコンポーネント
@@ -536,22 +537,28 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 		const auto& chain_kill_counter = object->AddComponent<ChainScoreCounterComponent>(param);
 	
 		chain_kill_counter->SetOnScoreAdded(
-			[chain_kill_UI_controller](int value) {
-				if (chain_kill_UI_controller) {
+			[chain_kill_UI_controller](int value) 
+			{
+				if (chain_kill_UI_controller) 
+				{
 					chain_kill_UI_controller->OnScoreAdded(value);
 				}
 			}
 		);
 		chain_kill_counter->SetOnScoreChainStart(
-			[chain_kill_UI_controller]() {
-				if (chain_kill_UI_controller) {
+			[chain_kill_UI_controller]() 
+			{
+				if (chain_kill_UI_controller) 
+				{
 					chain_kill_UI_controller->OnScoreChainStart();
 				}
 			}
 		);
 		chain_kill_counter->SetOnScoreChainEnd(
-			[chain_kill_UI_controller]() {
-				if (chain_kill_UI_controller) {
+			[chain_kill_UI_controller]() 
+			{
+				if (chain_kill_UI_controller) 
+				{
 					chain_kill_UI_controller->OnScoreChainEnd();
 				}
 			}
