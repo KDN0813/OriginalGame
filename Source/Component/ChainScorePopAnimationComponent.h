@@ -8,8 +8,8 @@ class FadeControllerComponent;
 class SpriteScalerComponent;
 class SpriteMoverComponent;
 
-// 連続スコア取得のUIを制御するコンポーネント
-class ChainScoreUIControllerComponent : public Component
+// 連鎖スコアUIの出現演出と拡大・縮小アニメーションを制御するコンポーネント
+class ChainScorePopAnimationComponent : public Component
 {
 public:
     struct Param
@@ -28,8 +28,8 @@ public:
         bool is_chain_end_direction = false;   // 連鎖終了演出フラグ
     };
 public:
-    ChainScoreUIControllerComponent(Param p) : param(p){};
-    ~ChainScoreUIControllerComponent() {};
+    ChainScorePopAnimationComponent(Param p) : param(p){};
+    ~ChainScorePopAnimationComponent() {};
 
     // 開始関数
     void Start()  override {};

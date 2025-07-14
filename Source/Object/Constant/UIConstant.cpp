@@ -12,7 +12,7 @@
 #include "Component\FadeControllerComponent.h"
 #include "Component\SpecialGageComponent.h"
 #include "Component\ChainScoreCounterComponent.h"
-#include "Component\ChainScoreUIControllerComponent.h"
+#include "Component\ChainScorePopAnimationComponent.h"
 #include "Component\SpriteScalerComponent.h"
 #include "Component\SpriteMoverComponent.h"
 
@@ -523,12 +523,12 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 	object->AddComponent<SpriteMoverComponent>();
 
 	// チェインスコアUIコントローラー
-	ChainScoreUIControllerComponent::Param param{};
+	ChainScorePopAnimationComponent::Param param{};
 	param.fead_in_time = 0.5f;
 	param.fead_out_time = 1.0f;
 	param.target_pos = { 0.95f, 0.0f };
 	param.initial_pos = { 0.5f, 0.0f };
-	const auto& chain_kill_UI_controller = object->AddComponent<ChainScoreUIControllerComponent>(param);
+	const auto& chain_kill_UI_controller = object->AddComponent<ChainScorePopAnimationComponent>(param);
 	
 	// チェインスコアを管理するコンポーネント
 	{

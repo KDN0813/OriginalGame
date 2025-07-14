@@ -1,4 +1,4 @@
-#include "ChainScoreUIControllerComponent.h"
+#include "ChainScorePopAnimationComponent.h"
 
 #ifdef _DEBUG
 #include <imgui.h>
@@ -11,15 +11,15 @@
 #include "SpriteScalerComponent.h"
 #include "SpriteMoverComponent.h"
 
-void ChainScoreUIControllerComponent::ReStart()
+void ChainScorePopAnimationComponent::ReStart()
 {
 }
 
-void ChainScoreUIControllerComponent::Update(float elapsed_time)
+void ChainScorePopAnimationComponent::Update(float elapsed_time)
 {
 }
 
-void ChainScoreUIControllerComponent::OnScoreAdded(int value)
+void ChainScorePopAnimationComponent::OnScoreAdded(int value)
 {
     const auto& owner = GetOwner();
     if (!owner) return;
@@ -36,7 +36,7 @@ void ChainScoreUIControllerComponent::OnScoreAdded(int value)
 
 }
 
-void ChainScoreUIControllerComponent::OnScoreChainStart()
+void ChainScorePopAnimationComponent::OnScoreChainStart()
 {
     const auto& owner = GetOwner();
     if (!owner) return;
@@ -46,14 +46,14 @@ void ChainScoreUIControllerComponent::OnScoreChainStart()
     const auto& sprite_scaler = owner->GetComponent(this->sprite_scaler_Wptr);
 }
 
-void ChainScoreUIControllerComponent::OnScoreChainEnd()
+void ChainScorePopAnimationComponent::OnScoreChainEnd()
 {
     const auto& owner = GetOwner();
     if (!owner) return;
 
     const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
     if (!fade_controller) return;
-    fade_controller->FeadStart(FEAD_TYPE::FEAD_OUT, this->param.fead_in_time);
+    fade_controller->FeadStart(FEAD_TYPE::FEAD_OUT, this->param.fead_out_time);
     this->param.is_chain_end_direction = true;
 
     const auto& sprite_mover = owner->GetComponent(this->sprite_mover_Wptr);
@@ -64,7 +64,7 @@ void ChainScoreUIControllerComponent::OnScoreChainEnd()
 
 #ifdef _DEBUG
 
-void ChainScoreUIControllerComponent::DrawDebugGUI()
+void ChainScorePopAnimationComponent::DrawDebugGUI()
 {
     ImGui::InputFloat("Fead In Time", &this->param.fead_in_time);
     std::string text = "Is Chain End Direction:";
