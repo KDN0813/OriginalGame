@@ -32,7 +32,7 @@ void TextNumberValueInterpolatorComponent::Update(float elapsed_time)
     case State::Start:
     {
         // ‰Šú‰»
-        text_number->SetDrawValue(current_command.start_value);
+        this->start_value = text_number->GetDrawValue();
         this->interpolation_timer = 0.0f;
         this->state = State::Run;
         break;
@@ -52,9 +52,9 @@ void TextNumberValueInterpolatorComponent::Update(float elapsed_time)
             this->interpolation_timer / current_command.transition_duration, 0.0f, 1.0f);
 
         // üŒ`•âŠÔ
-        const int interpolated_value = std::lerp(current_command.start_value, current_command.target_value, t);
+        const int interpolated_value = std::lerp(this->start_value, current_command.target_value, t);
 
-        text_number->SetDrawValue(current_command.target_value);
+        text_number->SetDrawValue(interpolated_value);
 
         // •âŠÔŽžŠÔ‚ð’´‚¦‚½‚çI—¹
         if (this->interpolation_timer >= current_command.transition_duration)
@@ -92,9 +92,9 @@ void TextNumberValueInterpolatorComponent::PushFrontCommand(const Command& comma
     this->command_pool.push_front(command);
 }
 
-void TextNumberValueInterpolatorComponent::PushFrontCommand(int start_value, int target_value, float transition_duration)
+void TextNumberValueInterpolatorComponent::PushFrontCommand(int target_value, float transition_duration)
 {
-    PushFrontCommand({ start_value ,target_value ,transition_duration });
+    PushFrontCommand({ target_value ,transition_duration });
 }
 
 void TextNumberValueInterpolatorComponent::PushBackCommand(const Command& command)
@@ -102,9 +102,9 @@ void TextNumberValueInterpolatorComponent::PushBackCommand(const Command& comman
     this->command_pool.push_back(command);
 }
 
-void TextNumberValueInterpolatorComponent::PushBackCommand(int start_value, int target_value, float transition_duration)
+void TextNumberValueInterpolatorComponent::PushBackCommand(int target_value, float transition_duration)
 {
-    PushBackCommand({ start_value ,target_value ,transition_duration });
+    PushBackCommand({ target_value ,transition_duration });
 }
 
 #ifdef _DEBUG
@@ -121,7 +121,6 @@ void TextNumberValueInterpolatorComponent::DrawDebugGUI()
         int count = 0;
         for (auto command : this->command_pool)
         {
-            ImGui::InputInt(std::string("Start Value##ValueInterpolator" + std::to_string(count)).c_str(), &command.start_value);
             ImGui::InputInt(std::string("Target Value##ValueInterpolator" + std::to_string(count)).c_str(), &command.target_value);
             ImGui::InputFloat(std::string("Transition Duration##ValueInterpolator" + std::to_string(count)).c_str(), &command.transition_duration);
 

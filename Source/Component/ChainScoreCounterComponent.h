@@ -7,8 +7,6 @@
 class ChainScoreCounterComponent : public Component
 {
 public:
-    
-
     struct Param
     {
         int chain_score = 0;           

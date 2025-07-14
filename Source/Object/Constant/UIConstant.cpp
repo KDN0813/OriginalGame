@@ -16,6 +16,8 @@
 #include "Component\SpriteScalerComponent.h"
 #include "Component\SpriteMoverComponent.h"
 #include "Component\ChainScoreUIMoveAnimationComponent.h"
+#include "Component\ScoreUIValueAnimatorComponent.h"
+#include "Component\TextNumberValueInterpolatorComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -77,11 +79,14 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 
 			// 更新処理
 			{
-				auto state_machine = text_sprite->AddComponent<StateMachineComponent>();
+				ScoreUIValueAnimatorComponent::Param param{};
+				param.animetion_time = 1.0f;
+				const auto& score_UI_value_animator = text_sprite->AddComponent<ScoreUIValueAnimatorComponent>(param);
+			}
 
-				state_machine->RegisterState<ScoreUIDefaultState>("UIState");
-
-				state_machine->SetDefaultState("UIState");
+			// テキストの値を補間するコンポーネント
+			{
+				text_sprite->AddComponent<TextNumberValueInterpolatorComponent>();
 			}
 		}
 	}

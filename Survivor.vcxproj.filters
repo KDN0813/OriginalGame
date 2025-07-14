@@ -553,9 +553,6 @@
     <ClInclude Include="Source\Component\ChainScoreCounterComponent.h">
       <Filter>Source\Component\Score</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\ChainScoreUIControllerComponent.h">
-      <Filter>Source\Component\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\SpriteScalerComponent.h">
       <Filter>Source\Component\Sprite</Filter>
     </ClInclude>
@@ -564,6 +561,18 @@
     </ClInclude>
     <ClInclude Include="Source\Component\SpriteMoverComponent.h">
       <Filter>Source\Component\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ScoreUIValueAnimatorComponent.h">
+      <Filter>Source\Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ChainScoreUIPopAnimationComponent.h">
+      <Filter>Source\Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ChainScoreUIMoveAnimationComponent.h">
+      <Filter>Source\Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\TextNumberValueInterpolatorComponent.h">
+      <Filter>Source\Component\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -828,9 +837,6 @@
     <ClCompile Include="Source\Component\ChainScoreCounterComponent.cpp">
       <Filter>Source\Component\Score</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\ChainScoreUIControllerComponent.cpp">
-      <Filter>Source\Component\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\SpriteScalerComponent.cpp">
       <Filter>Source\Component\Sprite</Filter>
     </ClCompile>
@@ -839,6 +845,18 @@
     </ClCompile>
     <ClCompile Include="Source\Component\SpriteMoverComponent.cpp">
       <Filter>Source\Component\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ChainScoreUIPopAnimationComponent.cpp">
+      <Filter>Source\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ChainScoreUIMoveAnimationComponent.cpp">
+      <Filter>Source\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ScoreUIValueAnimatorComponent.cpp">
+      <Filter>Source\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\TextNumberValueInterpolatorComponent.cpp">
+      <Filter>Source\Component\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

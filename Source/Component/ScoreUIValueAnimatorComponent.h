@@ -1,13 +1,18 @@
 #pragma once
 #include "Component.h"
 
-class TextNumberComponent;
+class TextNumberValueInterpolatorComponent;
 
 // スコアUIの値をアニメーション管理するコンポーネント
 class ScoreUIValueAnimatorComponent : public Component
 {
 public:
-    ScoreUIValueAnimatorComponent() {};
+    struct Param
+    {
+        float animetion_time;   // 
+    };
+public:
+    ScoreUIValueAnimatorComponent(Param param):param(param){};
     ~ScoreUIValueAnimatorComponent() {};
 
     // 開始関数
@@ -25,15 +30,20 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
+    // スコアチェイン終了時に実行する関数
+    void ScoreChainEnd();
 private:
-    std::weak_ptr<TextNumberComponent> text_number_Wptr;
+    Param param;
+
+private:
+    std::weak_ptr<TextNumberValueInterpolatorComponent> value_interpolator_Wptr;
 
 #ifdef _DEBUG
 public:
     /**
      * デバックの情報を2D画面に出力する関数
      */
-    void DrawDebugGUI()  override {};
+    void DrawDebugGUI()  override;
     /**
      * デバックの情報を3D画面上に出力する関数
      */

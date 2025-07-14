@@ -17,7 +17,6 @@ public:
 
     struct Command
     {
-        int start_value;            // 補間前の値
         int target_value;           // 補間語の値
         float transition_duration;  // 補間時間
     };
@@ -25,8 +24,9 @@ public:
 public:
     TextNumberValueInterpolatorComponent()
         :command_pool()
-        ,state(State::Start)
+        , state(State::Start)
         , interpolation_timer()
+        , start_value()
     {};
     ~TextNumberValueInterpolatorComponent() {};
 
@@ -49,14 +49,15 @@ public:
     void CommandClear();
 
     void PushFrontCommand(const Command& command);
-    void PushFrontCommand(int start_value, int target_value, float transition_duration);
+    void PushFrontCommand(int target_value, float transition_duration);
     // 命令を最後尾に追加
     void PushBackCommand(const Command& command);
-    void PushBackCommand(int start_value, int target_value, float transition_duration);
+    void PushBackCommand(int target_value, float transition_duration);
 private:
     std::deque<Command> command_pool;
     State state;
     float interpolation_timer;   // 補間に使うタイマー
+    float start_value;
 
 private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
