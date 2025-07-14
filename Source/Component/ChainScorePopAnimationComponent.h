@@ -59,7 +59,7 @@ private:
 
     std::function<void(int)> on_score_added;        // 連鎖スコアが加算された時のコールバック変数
     std::function<void()> on_score_chain_start;     // 連鎖が開始した時のコールバック変数
-    std::function<void()> on_score_chain_end;       // 連鎖が修了した時のコールバック変数
+    std::function<void()> on_score_chain_end;       // 連鎖が終了した時のコールバック変数
 private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
     std::weak_ptr<FadeControllerComponent> fade_controller_Wptr;

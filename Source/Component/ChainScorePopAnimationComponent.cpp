@@ -61,12 +61,12 @@ void ChainScorePopAnimationComponent::OnScoreChainEnd()
 
     const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
     if (!fade_controller) return;
-    fade_controller->FeadStart(FEAD_TYPE::FEAD_OUT, this->param.fead_out_time);
+    fade_controller->SetAlpha(0.0f);
     this->param.is_chain_end_direction = true;
 
     if (this->on_score_chain_end)
     {
-        this->on_score_chain_start();
+        this->on_score_chain_end();
     }
 }
 

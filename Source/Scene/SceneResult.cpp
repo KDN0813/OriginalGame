@@ -24,7 +24,7 @@ void SceneResult::Initialize()
 	// フェード解除
 	{
 		const auto& fade_controlle = SceneManager::GetInstance()->GetFadeControlle();
-		fade_controlle->ClearFade();
+		fade_controlle->SetAlpha(0.0f);
 	}
 
 	// オブジェクト作成

@@ -51,7 +51,7 @@ void SceneLoading::Initialize()
     {
         SceneManager::Instance scene_manager = SceneManager::GetInstance();
         if (const auto fade_controller = scene_manager->GetFadeControlle())
-            fade_controller->ClearFade();
+            fade_controller->SetAlpha(0.0f);
     }
 }
 

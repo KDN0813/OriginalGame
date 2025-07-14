@@ -15,6 +15,7 @@
 #include "Component\ChainScorePopAnimationComponent.h"
 #include "Component\SpriteScalerComponent.h"
 #include "Component\SpriteMoverComponent.h"
+#include "Component\ChainScoreMoveAnimationComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -518,16 +519,13 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 
 	// SpriteScalerComponent
 	object->AddComponent<SpriteScalerComponent>();
-
-	// SpriteMoverComponent
-	object->AddComponent<SpriteMoverComponent>();
-
-	// チェインスコアUIコントローラー
-	ChainScorePopAnimationComponent::Param param{};
-	param.fead_in_time = 0.5f;
-	param.fead_out_time = 1.0f;
-	const auto& chain_kill_UI_controller = object->AddComponent<ChainScorePopAnimationComponent>(param);
 	
+	// 連鎖スコアUIの出現演出を管理
+	ChainScorePopAnimationComponent::Param chain_score_pop_animation_param{};
+	chain_score_pop_animation_param.fead_in_time = 0.5f;
+	chain_score_pop_animation_param.fead_out_time = 1.0f;
+	const auto& chain_score_pop_animation = object->AddComponent<ChainScorePopAnimationComponent>(chain_score_pop_animation_param);
+
 	// チェインスコアを管理するコンポーネント
 	{
 		ChainScoreCounterComponent::Param param{};
@@ -535,30 +533,33 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 
 		const auto& chain_kill_counter = object->AddComponent<ChainScoreCounterComponent>(param);
 	
+		// 連鎖スコアが加算された時のコールバックの設定
 		chain_kill_counter->SetOnScoreAdded(
-			[chain_kill_UI_controller](int value) 
+			[chain_score_pop_animation](int value) 
 			{
-				if (chain_kill_UI_controller) 
+				if (chain_score_pop_animation) 
 				{
-					chain_kill_UI_controller->OnScoreAdded(value);
+					chain_score_pop_animation->OnScoreAdded(value);
 				}
 			}
 		);
+		// 連鎖が開始した時のコールバック変数の設定
 		chain_kill_counter->SetOnScoreChainStart(
-			[chain_kill_UI_controller]() 
+			[chain_score_pop_animation]() 
 			{
-				if (chain_kill_UI_controller) 
+				if (chain_score_pop_animation) 
 				{
-					chain_kill_UI_controller->OnScoreChainStart();
+					chain_score_pop_animation->OnScoreChainStart();
 				}
 			}
 		);
+		// 連鎖が終了した時のコールバック変数の設定
 		chain_kill_counter->SetOnScoreChainEnd(
-			[chain_kill_UI_controller]() 
+			[chain_score_pop_animation]() 
 			{
-				if (chain_kill_UI_controller) 
+				if (chain_score_pop_animation) 
 				{
-					chain_kill_UI_controller->OnScoreChainEnd();
+					chain_score_pop_animation->OnScoreChainEnd();
 				}
 			}
 		);
@@ -578,6 +579,53 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 		// ファイルパス設定する
 		sprite_param.filename = "Data/Sprite/Numbers.png";
 		const auto& text_number = object->AddComponent<TextNumberComponent>(sprite_param);
+	}
+
+	// 総スコアの方に移動させるUI(子)オブジェクト
+	{
+		const auto& child_object = object->CreateChildObject("ChainScoreMoveUI");
+
+		// transform
+		{
+			Transform2DComponent::Transform2DParam paam{};
+			child_object->AddComponent<Transform2DComponent>(paam);
+		}
+
+		// SpriteMoverComponent
+		child_object->AddComponent<SpriteMoverComponent>();
+
+		// 連鎖スコアUIを合計スコアへ移動させるコンポーネント
+		ChainScoreMoveAnimationComponent::Param chain_score_move_animation_param{};
+		chain_score_move_animation_param.target_pos = { 0.95f, 0.0f };
+		const auto& chain_score_move_animation = child_object->AddComponent<ChainScoreMoveAnimationComponent>(chain_score_move_animation_param);
+
+		// 連鎖スコアUIの出現演出コンポーネントの
+		// 連鎖が終了した時のコールバック変数の設定
+		chain_score_pop_animation->SetOnScoreChainEnd(
+			[chain_score_move_animation]()
+			{
+				if (chain_score_move_animation)
+				{
+					chain_score_move_animation->OnScoreChainEnd();
+				}
+			}
+		);
+
+		// フェード管理コンポーネント
+		{
+			FadeControllerComponent::FadeControllerParam param{};
+			child_object->AddComponent<FadeControllerComponent>(param);
+		}
+
+		// 数値表示オブジェクト
+		{
+			BaseSpriteComponent::SpriteParam sprite_param{};
+			sprite_param.color = { 1.0,1.0f,1.0f ,0.0f };
+			sprite_param.center_type = Sprite::CENTER_TYPE::TOP_CENTER;
+			// ファイルパス設定する
+			sprite_param.filename = "Data/Sprite/Numbers.png";
+			const auto& text_number = child_object->AddComponent<TextNumberComponent>(sprite_param);
+		}
 	}
 
 	return object;

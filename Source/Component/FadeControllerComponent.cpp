@@ -57,14 +57,13 @@ void FadeControllerComponent::FeadStart(FEAD_TYPE type, float fade_duration)
     this->param.state = FADE_STATE::START;
 }
 
-void FadeControllerComponent::ClearFade()
+void FadeControllerComponent::SetAlpha(float a)
 {
-    this->SetIsActive(false);
     if (const auto& owner = GetOwner())
     {
         if (const auto& sprite = owner->GetComponent(this->sprite_Wptr))
         {
-            sprite->SetAlpha(0.0f);
+            sprite->SetAlpha(a);
         }
     }
 }
