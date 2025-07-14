@@ -9,6 +9,12 @@ class Object;
 class UIConstant
 {
 public:
+    struct ChainScoreUIGroup
+    {
+        std::shared_ptr<Object> pop_ui_object;   // 出現UI
+        std::shared_ptr<Object> move_ui_object;  // 移動UI
+    };
+public:
     // FadeObject用
     static constexpr float DEFAULT_FEAD_DURATION = 2.0f;            // 通常のフェードにかかる時間
     static constexpr float PLAYER_DEFEAT_FEAD_DURATION = 3.0f;      // 敗北時のフェードにかかる時間
@@ -30,5 +36,5 @@ public:
     static const std::shared_ptr<Object>& CreatePlayerSpecialBar(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreatePlayerSpecialGage(const std::shared_ptr<Object>&, DirectX::XMFLOAT2 pos);
     static const std::shared_ptr<Object>& CreateDescriptionUI(const std::shared_ptr<Object>&);
-    static const std::shared_ptr<Object>& CreateChainScoreCounterUI(const std::shared_ptr<Object>&);
+    static ChainScoreUIGroup CreateChainScoreCounterUI(const std::shared_ptr<Object>&, const std::shared_ptr<Object>&);
 };

@@ -53,7 +53,7 @@ public:
     // óDêÊìx
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    void SetChainScoreCounterObject(const std::shared_ptr<Object>& object) { chain_score_counter_object_Wptr = object; };
+    void SetChainScoreCounterObject(const std::shared_ptr<Object>& object) { this->chain_score_counter_object_Wptr = object; };
     void SetObjectManager(const std::shared_ptr<ObjectManager>& manager) { this->object_manager_Wptr = manager; }
 private:
     void UpdateEnemySpawner(const std::shared_ptr<ObjectManager>& manager);

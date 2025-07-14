@@ -95,10 +95,10 @@ void SceneGame::Initialize()
 		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
 		// チェインスコアを表示するオブジェクト
-		const auto& chain_score_counter = UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScoreCounterUI"));
+		UIConstant::ChainScoreUIGroup chain_score_ui_group = UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScore Pop UI"), object_manager->Create("ChainScore Move UI"));
 
 		// エネミースポナー作成
-		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager, chain_score_counter);
+		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager, chain_score_ui_group.pop_ui_object);
 
 		// ステージ(床)
 		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));
