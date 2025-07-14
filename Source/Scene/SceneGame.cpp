@@ -95,7 +95,7 @@ void SceneGame::Initialize()
 		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
 		// チェインスコアを表示するオブジェクト
-		UIConstant::ChainScoreUIGroup chain_score_ui_group = UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScore Pop UI"), object_manager->Create("ChainScore Move UI"));
+		const UIConstant::ChainScoreUIGroup chain_score_ui_group = UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScore Pop UI"), object_manager->Create("ChainScore Move UI"));
 
 		// エネミースポナー作成
 		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager, chain_score_ui_group.pop_ui_object);
