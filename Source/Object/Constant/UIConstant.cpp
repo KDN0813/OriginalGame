@@ -516,6 +516,8 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 	ui_group.move_ui_object = move_ui_object;
 
 	const DirectX::XMFLOAT2 INITIAL_POSITION = { 0.5f, 0.0f };
+	const DirectX::XMFLOAT2 INITIAL_SCALE = { 1.0f, 1.0f };
+	const float CHAIN_TIMER_MAX = 2.0f;	// スコア連鎖の猶予時間
 
 	// =========================================
 	// 出現UIオブジェクト
@@ -525,6 +527,7 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 	{
 		Transform2DComponent::Transform2DParam paam{};
 		paam.local_position = INITIAL_POSITION;
+		paam.local_scale = INITIAL_SCALE;
 		pop_ui_object->AddComponent<Transform2DComponent>(paam);
 	}
 
@@ -534,13 +537,16 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 	// 連鎖スコアUIの出現演出を管理
 	ChainScorePopAnimationComponent::Param chain_score_pop_animation_param{};
 	chain_score_pop_animation_param.fead_in_time = 0.5f;
-	chain_score_pop_animation_param.fead_out_time = 1.0f;
+	chain_score_pop_animation_param.expanded.target_scale = { 2.5f,2.5f };
+	chain_score_pop_animation_param.expanded.time = 0.5f;
+	chain_score_pop_animation_param.shrink.target_scale = INITIAL_SCALE;
+	chain_score_pop_animation_param.shrink.time = CHAIN_TIMER_MAX;
 	const auto& chain_score_pop_animation = pop_ui_object->AddComponent<ChainScorePopAnimationComponent>(chain_score_pop_animation_param);
 
 	// チェインスコアを管理するコンポーネント
 	{
 		ChainScoreCounterComponent::Param param{};
-		param.chain_timer_max = 2.0f;
+		param.chain_timer_max = CHAIN_TIMER_MAX;
 
 		const auto& chain_kill_counter = pop_ui_object->AddComponent<ChainScoreCounterComponent>(param);
 
@@ -600,6 +606,7 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 	{
 		Transform2DComponent::Transform2DParam param{};
 		param.local_position = INITIAL_POSITION;
+		param.local_scale = INITIAL_SCALE;
 		move_ui_object->AddComponent<Transform2DComponent>(param);
 	}
 

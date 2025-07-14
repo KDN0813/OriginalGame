@@ -12,15 +12,19 @@ class SpriteScalerComponent;
 class ChainScorePopAnimationComponent : public Component
 {
 public:
+    // スケーリングのパラメータ
+    struct ScaleParam
+    {
+        DirectX::XMFLOAT2 target_scale;  // 目的のスケール
+        float time;          // 目的のスケールになるまでの時間
+    };
+
     struct Param
     {
         float fead_in_time = 1.0f;
-        float fead_out_time = 1.0f;
 
-        float expanded_scale = 2.5f;    // 拡大時のスケール
-        float shrink_scale = 0.5f;      // 縮小時のスケール
-        float time_to_expand = 1.0f;    // 拡大にかかる時間
-        float time_to_shrink = 1.0f;    // 縮小にかかる時間
+        ScaleParam expanded;            // 拡大時のパラメータ
+        ScaleParam shrink;              // 縮小時のパラメータ
     };
 public:
     ChainScorePopAnimationComponent(Param p) : param(p){};

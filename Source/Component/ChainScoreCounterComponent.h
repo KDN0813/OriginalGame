@@ -10,7 +10,7 @@ public:
     {
         int chain_score = 0;           
         float chain_timer = 0.0f;      
-        float chain_timer_max = 0.0f;  
+        float chain_timer_max = 0.0f;  // ˜A½‚Ì—P—\ŠÔ
     };
 public:
     ChainScoreCounterComponent(Param param) : param(param) {};
