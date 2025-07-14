@@ -62,7 +62,6 @@ void ChainScorePopAnimationComponent::OnScoreChainEnd()
     const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
     if (!fade_controller) return;
     fade_controller->SetAlpha(0.0f);
-    this->param.is_chain_end_direction = true;
 
     if (this->on_score_chain_end)
     {
@@ -75,9 +74,6 @@ void ChainScorePopAnimationComponent::OnScoreChainEnd()
 void ChainScorePopAnimationComponent::DrawDebugGUI()
 {
     ImGui::InputFloat("Fead In Time", &this->param.fead_in_time);
-    std::string text = "Is Chain End Direction:";
-    text += (this->param.is_chain_end_direction ? "TRUE" : "FALSE");
-    ImGui::Text(text.c_str());
     if (ImGui::Button("ScoreChainStart"))
     {
         on_score_chain_start();

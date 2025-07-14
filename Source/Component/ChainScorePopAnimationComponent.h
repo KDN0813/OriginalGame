@@ -21,8 +21,6 @@ public:
         float shrink_scale = 0.5f;      // 縮小時のスケール
         float time_to_expand = 1.0f;    // 拡大にかかる時間
         float time_to_shrink = 1.0f;    // 縮小にかかる時間
-
-        bool is_chain_end_direction = false;   // 連鎖終了演出フラグ
     };
 public:
     ChainScorePopAnimationComponent(Param p) : param(p){};
