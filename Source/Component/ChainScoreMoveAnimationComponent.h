@@ -4,6 +4,7 @@
 
 class FadeControllerComponent;
 class SpriteMoverComponent;
+class TextNumberComponent;
 
 // 連鎖スコアUIを合計スコアへ移動させるアニメーションを制御するコンポーネント
 class ChainScoreMoveAnimationComponent : public Component
@@ -35,7 +36,9 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    // スコアチェイン終了時に実行する関数
+    // 連鎖連鎖が加算された時に実行する関数
+    void OnScoreAdded(int);
+    // スコアの連鎖終了時に実行する関数
     void OnScoreChainEnd();
 
 private:
@@ -44,6 +47,7 @@ private:
 private:
     std::weak_ptr<FadeControllerComponent> fade_controller_Wptr;
     std::weak_ptr<SpriteMoverComponent> sprite_mover_Wptr;
+    std::weak_ptr<TextNumberComponent> text_number_Wptr;
 
 #ifdef _DEBUG
 public:

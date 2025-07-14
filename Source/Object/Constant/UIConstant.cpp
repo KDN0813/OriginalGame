@@ -544,43 +544,43 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 	const auto& chain_score_pop_animation = pop_ui_object->AddComponent<ChainScorePopAnimationComponent>(chain_score_pop_animation_param);
 
 	// チェインスコアを管理するコンポーネント
-	{
-		ChainScoreCounterComponent::Param param{};
-		param.chain_timer_max = CHAIN_TIMER_MAX;
 
-		const auto& chain_score_counter = pop_ui_object->AddComponent<ChainScoreCounterComponent>(param);
+	ChainScoreCounterComponent::Param param{};
+	param.chain_timer_max = CHAIN_TIMER_MAX;
 
-		// 連鎖スコアが加算された時のコールバックの設定
-		chain_score_counter->SetOnScoreAdded(
-			[chain_score_pop_animation](int value)
+	const auto& chain_score_counter = pop_ui_object->AddComponent<ChainScoreCounterComponent>(param);
+
+	// 連鎖スコアが加算された時のコールバックの設定
+	chain_score_counter->AddOnScoreAdded(
+		[chain_score_pop_animation](int value)
+		{
+			if (chain_score_pop_animation)
 			{
-				if (chain_score_pop_animation)
-				{
-					chain_score_pop_animation->OnScoreAdded(value);
-				}
+				chain_score_pop_animation->OnScoreAdded(value);
 			}
-		);
-		// 連鎖が開始した時のコールバック変数の設定
-		chain_score_counter->SetOnScoreChainStart(
-			[chain_score_pop_animation]()
+		}
+	);
+	// 連鎖が開始した時のコールバック変数の設定
+	chain_score_counter->AddOnScoreChainStart(
+		[chain_score_pop_animation]()
+		{
+			if (chain_score_pop_animation)
 			{
-				if (chain_score_pop_animation)
-				{
-					chain_score_pop_animation->OnScoreChainStart();
-				}
+				chain_score_pop_animation->OnScoreChainStart();
 			}
-		);
-		// 連鎖が終了した時のコールバック変数の設定
-		chain_score_counter->SetOnScoreChainEnd(
-			[chain_score_pop_animation]()
+		}
+	);
+	// 連鎖が終了した時のコールバック変数の設定
+	chain_score_counter->AddOnScoreChainEnd(
+		[chain_score_pop_animation]()
+		{
+			if (chain_score_pop_animation)
 			{
-				if (chain_score_pop_animation)
-				{
-					chain_score_pop_animation->OnScoreChainEnd();
-				}
+				chain_score_pop_animation->OnScoreChainEnd();
 			}
-		);
-	}
+		}
+	);
+
 
 	// フェード管理コンポーネント
 	{
@@ -619,14 +619,26 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 	chain_score_move_animation_param.initial_pos = INITIAL_POSITION;
 	const auto& chain_score_move_animation = move_ui_object->AddComponent<ChainScoreMoveAnimationComponent>(chain_score_move_animation_param);
 
-	// 連鎖スコアUIの出現演出コンポーネントの
+	// chain_score_counterコンポーネントの
 	// 連鎖が終了した時のコールバック変数の設定
-	chain_score_pop_animation->SetOnScoreChainEnd(
+	chain_score_counter->AddOnScoreChainEnd(
 		[chain_score_move_animation]()
 		{
 			if (chain_score_move_animation)
 			{
 				chain_score_move_animation->OnScoreChainEnd();
+			}
+		}
+	);
+
+	// chain_score_counterコンポーネントの
+	// 連鎖スコアが増加した時のコールバック変数の設定
+	chain_score_counter->AddOnScoreAdded(
+		[chain_score_move_animation](int value)
+		{
+			if (chain_score_move_animation)
+			{
+				chain_score_move_animation->OnScoreAdded(value);
 			}
 		}
 	);

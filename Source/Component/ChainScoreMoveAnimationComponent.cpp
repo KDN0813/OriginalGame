@@ -7,6 +7,16 @@
 #include "Object/Object.h"
 #include "SpriteMoverComponent.h"
 #include "FadeControllerComponent.h"
+#include "TextNumberComponent.h"
+
+void ChainScoreMoveAnimationComponent::OnScoreAdded(int value)
+{
+    const auto& owner = GetOwner();
+    if (!owner) return;
+    const auto& text_numbe = owner->GetComponent(this->text_number_Wptr);
+    if (!text_numbe) return;
+    text_numbe->SetDrawValue(value);
+}
 
 void ChainScoreMoveAnimationComponent::OnScoreChainEnd()
 {

@@ -30,9 +30,13 @@ void ChainScoreCounterComponent::ChainEnd()
 {
     this->param.chain_score = 0;
     SetIsActive(false);
-    if (on_score_chain_end)
+
+    for (const auto& on_score_chain_end : on_score_chain_end_pool)
     {
-        on_score_chain_end();
+        if (on_score_chain_end)
+        {
+            on_score_chain_end();
+        }
     }
 }
 
@@ -41,9 +45,12 @@ void ChainScoreCounterComponent::AddChain(int add_score)
     // ˜A½’†‚Å‚È‚¢‚È‚ç
     if (0.0f >= this->param.chain_timer)
     {
-        if (on_score_chain_start)
+        for (const auto& on_score_chain_start : on_score_chain_start_pool)
         {
-            on_score_chain_start();
+            if (on_score_chain_start)
+            {
+                on_score_chain_start();
+            }
         }
     }
 
@@ -51,9 +58,12 @@ void ChainScoreCounterComponent::AddChain(int add_score)
     this->param.chain_score += add_score;
     SetIsActive(true);
 
-    if (on_score_added)
+    for (const auto& on_score_added : on_score_added_pool)
     {
-        on_score_added(this->param.chain_score);
+        if (on_score_added)
+        {
+            on_score_added(this->param.chain_score);
+        }
     }
 }
 

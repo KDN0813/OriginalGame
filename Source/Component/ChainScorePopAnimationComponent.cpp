@@ -32,11 +32,6 @@ void ChainScorePopAnimationComponent::OnScoreAdded(int value)
     sprite_scaler->CommandClear();
     sprite_scaler->PushBackCommand(this->param.expanded.target_scale,this->param.expanded.time);// スプライトの拡大指示
     sprite_scaler->PushBackCommand(this->param.shrink.target_scale, this->param.shrink.time);// スプライトの縮小指示
-
-    if (this->on_score_added)
-    {
-        this->on_score_added(value);
-    }
 }
 
 void ChainScorePopAnimationComponent::OnScoreChainStart()
@@ -47,11 +42,6 @@ void ChainScorePopAnimationComponent::OnScoreChainStart()
     if (!fade_controller) return;
     fade_controller->FeadStart(FEAD_TYPE::FEAD_IN, this->param.fead_in_time);
     const auto& sprite_scaler = owner->GetComponent(this->sprite_scaler_Wptr);
-
-    if (this->on_score_chain_start)
-    {
-        this->on_score_chain_start();
-    }
 }
 
 void ChainScorePopAnimationComponent::OnScoreChainEnd()
@@ -62,11 +52,6 @@ void ChainScorePopAnimationComponent::OnScoreChainEnd()
     const auto& fade_controller = owner->GetComponent(this->fade_controller_Wptr);
     if (!fade_controller) return;
     fade_controller->SetAlpha(0.0f);
-
-    if (this->on_score_chain_end)
-    {
-        this->on_score_chain_end();
-    }
 }
 
 #ifdef _DEBUG

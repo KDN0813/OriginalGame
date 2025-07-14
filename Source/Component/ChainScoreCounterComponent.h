@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <functional>
+#include <vector>
 
 // 連続取得スコアを制御するコンポーネント
 class ChainScoreCounterComponent : public Component
@@ -33,18 +34,18 @@ public:
 
     void ChainEnd();
 
-    void SetOnScoreAdded(const std::function<void(int)>& function) { this->on_score_added = function; };   
-    void SetOnScoreChainStart(const std::function<void()>& function) { this->on_score_chain_start = function; };
-    void SetOnScoreChainEnd(const std::function<void()>& function) { this->on_score_chain_end = function; };
+    void AddOnScoreAdded(const std::function<void(int)>& function) { this->on_score_added_pool.emplace_back(function); };
+    void AddOnScoreChainStart(const std::function<void()>& function) { this->on_score_chain_start_pool.emplace_back(function); };
+    void AddOnScoreChainEnd(const std::function<void()>& function) { this->on_score_chain_end_pool.emplace_back(function); };
 
     // スコアを加算する
     void AddChain(int add_score);
 private:
     Param param;
 
-    std::function<void(int)> on_score_added;        // 連鎖スコアが加算された時のコールバック変数
-    std::function<void()> on_score_chain_start;     // 連鎖が開始した時のコールバック変数
-    std::function<void()> on_score_chain_end;       // 連鎖が終了した時のコールバック変数
+    std::vector<std::function<void(int)>> on_score_added_pool;        // 連鎖スコアが加算された時のコールバック変数
+    std::vector<std::function<void()>> on_score_chain_start_pool;     // 連鎖が開始した時のコールバック変数
+    std::vector<std::function<void()>> on_score_chain_end_pool;       // 連鎖が終了した時のコールバック変数
 #ifdef _DEBUG
 public:
     /**

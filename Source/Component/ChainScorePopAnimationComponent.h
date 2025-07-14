@@ -2,7 +2,6 @@
 #include "Component.h"
 
 #include <DirectXMath.h>
-#include <functional>
 
 class TextNumberComponent;
 class FadeControllerComponent;
@@ -45,7 +44,7 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    // 表示するスコアが増価した時に実行する関数
+    // 表示するスコアが増加した時に実行する関数
     void OnScoreAdded(int);
 
     // スコアチェイン開始に実行する関数
@@ -53,15 +52,9 @@ public:
     // スコアチェイン終了時に実行する関数
     void OnScoreChainEnd();
 
-    void SetOnScoreAdded(const std::function<void(int)>& function) { this->on_score_added = function; };
-    void SetOnScoreChainStart(const std::function<void()>& function) { this->on_score_chain_start = function; };
-    void SetOnScoreChainEnd(const std::function<void()>& function) { this->on_score_chain_end = function; };
 private:
     Param param;
 
-    std::function<void(int)> on_score_added;        // 連鎖スコアが加算された時のコールバック変数
-    std::function<void()> on_score_chain_start;     // 連鎖が開始した時のコールバック変数
-    std::function<void()> on_score_chain_end;       // 連鎖が終了した時のコールバック変数
 private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
     std::weak_ptr<FadeControllerComponent> fade_controller_Wptr;
