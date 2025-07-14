@@ -26,8 +26,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 	// transform
 	{
 		Transform2DComponent::Transform2DParam param{};
-		param.local_position = { 0.86f,0.110f };
-		param.local_scale = { 2.5f,1.5f };
+		param.local_position = { 0.97f,0.015f };
 		score_object->AddComponent<Transform2DComponent>(param);
 	}
 
@@ -40,17 +39,17 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			// 背景画像
 			{
 				BaseSpriteComponent::SpriteParam sprite_param{};
-				sprite_param.display_size = { 0.144f,0.015f };
+				sprite_param.display_size = { 0.215f,0.015f };
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.draw_priority = PRIORITY::LOW;
-				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
+				sprite_param.center_type = Sprite::CENTER_TYPE::TOP_RIGHT;
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(sprite_param);
 			}
 
 			// transform
 			{
 				Transform2DComponent::Transform2DParam param{};
-				param.local_position = { 0.0f,0.039f };
+				param.local_position = { 0.015f,0.16f };
 				bg_sprite->AddComponent<Transform2DComponent>(param);
 			}
 		}
@@ -63,7 +62,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			{
 				BaseSpriteComponent::SpriteParam sprite_param{};
 				sprite_param.color = { 1.0f,0.0f,0.0f ,1.0f };
-				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER_RIGHT;
+				sprite_param.center_type = Sprite::CENTER_TYPE::TOP_RIGHT;
 				// ファイルパス設定する
 				sprite_param.filename = "Data/Sprite/Numbers.png";
 				auto text_number = text_sprite->AddComponent<TextNumberComponent>(sprite_param);
@@ -72,7 +71,7 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUI(const std::shared_ptr<O
 			// transform
 			{
 				Transform2DComponent::Transform2DParam param{};
-				param.local_position = { 0.055f,0.0f };
+				param.local_scale = { 2.0f,2.0f };
 				text_sprite->AddComponent<Transform2DComponent>(param);
 			}
 
