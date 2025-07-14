@@ -9,7 +9,6 @@
 #include "TextNumberComponent.h"
 #include "FadeControllerComponent.h"
 #include "SpriteScalerComponent.h"
-#include "SpriteMoverComponent.h"
 
 void ChainScorePopAnimationComponent::ReStart()
 {
@@ -34,6 +33,10 @@ void ChainScorePopAnimationComponent::OnScoreAdded(int value)
     sprite_scaler->PushBackCommand(this->param.expanded_scale,this->param.time_to_expand);// スプライトの拡大指示
     sprite_scaler->PushBackCommand(this->param.shrink_scale, this->param.time_to_shrink);// スプライトの縮小指示
 
+    if (this->on_score_added)
+    {
+        this->on_score_added(value);
+    }
 }
 
 void ChainScorePopAnimationComponent::OnScoreChainStart()
@@ -44,6 +47,11 @@ void ChainScorePopAnimationComponent::OnScoreChainStart()
     if (!fade_controller) return;
     fade_controller->FeadStart(FEAD_TYPE::FEAD_IN, this->param.fead_in_time);
     const auto& sprite_scaler = owner->GetComponent(this->sprite_scaler_Wptr);
+
+    if (this->on_score_chain_start)
+    {
+        this->on_score_chain_start();
+    }
 }
 
 void ChainScorePopAnimationComponent::OnScoreChainEnd()
@@ -56,10 +64,10 @@ void ChainScorePopAnimationComponent::OnScoreChainEnd()
     fade_controller->FeadStart(FEAD_TYPE::FEAD_OUT, this->param.fead_out_time);
     this->param.is_chain_end_direction = true;
 
-    const auto& sprite_mover = owner->GetComponent(this->sprite_mover_Wptr);
-    if (!sprite_mover) return;
-    sprite_mover->PushFrontCommand(this->param.target_pos, this->param.fead_out_time);
-    sprite_mover->PushBackCommand(this->param.initial_pos, 0.0f);
+    if (this->on_score_chain_end)
+    {
+        this->on_score_chain_start();
+    }
 }
 
 #ifdef _DEBUG
@@ -72,11 +80,11 @@ void ChainScorePopAnimationComponent::DrawDebugGUI()
     ImGui::Text(text.c_str());
     if (ImGui::Button("ScoreChainStart"))
     {
-        OnScoreChainStart();
+        on_score_chain_start();
     }
     if (ImGui::Button("ScoreChainEnd"))
     {
-        OnScoreChainEnd();
+        on_score_chain_end();
     }
 }
 

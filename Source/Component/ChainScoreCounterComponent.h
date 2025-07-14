@@ -33,18 +33,18 @@ public:
 
     void ChainEnd();
 
-    void SetOnScoreAdded(const std::function<void(int)>& function) { this->OnScoreAdded = function; };   
-    void SetOnScoreChainStart(const std::function<void()>& function) { this->OnScoreChainStart = function; };
-    void SetOnScoreChainEnd(const std::function<void()>& function) { this->OnScoreChainEnd = function; };
+    void SetOnScoreAdded(const std::function<void(int)>& function) { this->on_score_added = function; };   
+    void SetOnScoreChainStart(const std::function<void()>& function) { this->on_score_chain_start = function; };
+    void SetOnScoreChainEnd(const std::function<void()>& function) { this->on_score_chain_end = function; };
 
     // スコアを加算する
     void AddChain(int add_score);
 private:
     Param param;
 
-    std::function<void(int)> OnScoreAdded;
-    std::function<void()> OnScoreChainStart;
-    std::function<void()> OnScoreChainEnd;
+    std::function<void(int)> on_score_added;        // 連鎖スコアが加算された時のコールバック変数
+    std::function<void()> on_score_chain_start;     // 連鎖が開始した時のコールバック変数
+    std::function<void()> on_score_chain_end;       // 連鎖が修了した時のコールバック変数
 #ifdef _DEBUG
 public:
     /**

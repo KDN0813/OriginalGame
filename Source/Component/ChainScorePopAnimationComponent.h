@@ -2,11 +2,11 @@
 #include "Component.h"
 
 #include <DirectXMath.h>
+#include <functional>
 
 class TextNumberComponent;
 class FadeControllerComponent;
 class SpriteScalerComponent;
-class SpriteMoverComponent;
 
 // 連鎖スコアUIの出現演出と拡大・縮小アニメーションを制御するコンポーネント
 class ChainScorePopAnimationComponent : public Component
@@ -21,9 +21,6 @@ public:
         float shrink_scale = 0.5f;      // 縮小時のスケール
         float time_to_expand = 1.0f;    // 拡大にかかる時間
         float time_to_shrink = 1.0f;    // 縮小にかかる時間
-
-        DirectX::XMFLOAT2 initial_pos = {}; // 初期位置
-        DirectX::XMFLOAT2 target_pos = {};  // 移動先の位置
 
         bool is_chain_end_direction = false;   // 連鎖終了演出フラグ
     };
@@ -54,14 +51,19 @@ public:
     // スコアチェイン終了時に実行する関数
     void OnScoreChainEnd();
 
+    void SetOnScoreAdded(const std::function<void(int)>& function) { this->on_score_added = function; };
+    void SetOnScoreChainStart(const std::function<void()>& function) { this->on_score_chain_start = function; };
+    void SetOnScoreChainEnd(const std::function<void()>& function) { this->on_score_chain_end = function; };
 private:
     Param param;
 
+    std::function<void(int)> on_score_added;        // 連鎖スコアが加算された時のコールバック変数
+    std::function<void()> on_score_chain_start;     // 連鎖が開始した時のコールバック変数
+    std::function<void()> on_score_chain_end;       // 連鎖が修了した時のコールバック変数
 private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
     std::weak_ptr<FadeControllerComponent> fade_controller_Wptr;
     std::weak_ptr<SpriteScalerComponent> sprite_scaler_Wptr;
-    std::weak_ptr<SpriteMoverComponent> sprite_mover_Wptr;
 
 #ifdef _DEBUG
 public:
