@@ -12,10 +12,10 @@
 #include "Component\FadeControllerComponent.h"
 #include "Component\SpecialGageComponent.h"
 #include "Component\ChainScoreCounterComponent.h"
-#include "Component\ChainScorePopAnimationComponent.h"
+#include "Component\ChainScoreUIPopAnimationComponent.h"
 #include "Component\SpriteScalerComponent.h"
 #include "Component\SpriteMoverComponent.h"
-#include "Component\ChainScoreMoveAnimationComponent.h"
+#include "Component\ChainScoreUIMoveAnimationComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 

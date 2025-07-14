@@ -134,8 +134,8 @@
     <ClInclude Include="Source\Collision\CollisionParam.h" />
     <ClInclude Include="Source\Component\BaseSpriteComponent.h" />
     <ClInclude Include="Source\Component\ChainScoreCounterComponent.h" />
-    <ClInclude Include="Source\Component\ChainScoreMoveAnimationComponent.h" />
-    <ClInclude Include="Source\Component\ChainScorePopAnimationComponent.h" />
+    <ClInclude Include="Source\Component\ChainScoreUIMoveAnimationComponent.h" />
+    <ClInclude Include="Source\Component\ChainScoreUIPopAnimationComponent.h" />
     <ClInclude Include="Source\Component\DamageComponent.h" />
     <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Component\EnemySpawnerComponent.h" />
@@ -157,6 +157,7 @@
     <ClInclude Include="Source\Component\InstancingModelShaderComponent.h" />
     <ClInclude Include="Source\Component\PlayerComponent.h" />
     <ClInclude Include="Source\Component\FinalUpdateEnemyComponent.h" />
+    <ClInclude Include="Source\Component\ScoreUIValueAnimatorComponent.h" />
     <ClInclude Include="Source\Component\SpecialGageComponent.h" />
     <ClInclude Include="Source\Component\SpinAttackTimeUIComponent.h" />
     <ClInclude Include="Source\Component\SpriteComponent.h" />
@@ -247,8 +248,8 @@
     <ClCompile Include="Source\Collision\CircleCollisionManager.cpp" />
     <ClCompile Include="Source\Component\BaseSpriteComponent.cpp" />
     <ClCompile Include="Source\Component\ChainScoreCounterComponent.cpp" />
-    <ClCompile Include="Source\Component\ChainScoreMoveAnimationComponent.cpp" />
-    <ClCompile Include="Source\Component\ChainScorePopAnimationComponent.cpp" />
+    <ClCompile Include="Source\Component\ChainScoreUIMoveAnimationComponent.cpp" />
+    <ClCompile Include="Source\Component\ChainScoreUIPopAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\DamageComponent.cpp" />
     <ClCompile Include="Source\Component\DebugParticle.cpp" />
     <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp" />
@@ -269,6 +270,7 @@
     <ClCompile Include="Source\Component\InstancingModelShaderComponent.cpp" />
     <ClCompile Include="Source\Component\PlayerComponent.cpp" />
     <ClCompile Include="Source\Component\FinalUpdateEnemyComponent.cpp" />
+    <ClCompile Include="Source\Component\ScoreUIValueAnimatorComponent.cpp" />
     <ClCompile Include="Source\Component\SpecialGageComponent.cpp" />
     <ClCompile Include="Source\Component\SpinAttackTimeUIComponent.cpp" />
     <ClCompile Include="Source\Component\SpriteComponent.cpp" />

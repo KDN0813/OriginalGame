@@ -1,4 +1,4 @@
-#include "ChainScorePopAnimationComponent.h"
+#include "ChainScoreUIPopAnimationComponent.h"
 
 #ifdef _DEBUG
 #include <imgui.h>
