@@ -5,6 +5,8 @@
 #include <Imgui.h>
 #endif // _DEBUG
 
+#include "System/GameData.h"
+
 void ChainScoreCounterComponent::Start()
 {
     SetIsActive(false);
@@ -28,6 +30,10 @@ void ChainScoreCounterComponent::Update(float elapsed_time)
 
 void ChainScoreCounterComponent::ChainEnd()
 {
+    // 総スコアに連鎖スコアを加算する
+    GameData::Instance game_data = GameData::GetInstance();
+    game_data->AddScore(this->param.chain_score);
+
     this->param.chain_score = 0;
     SetIsActive(false);
 

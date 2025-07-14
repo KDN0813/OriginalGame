@@ -10,14 +10,6 @@
 #include "FadeControllerComponent.h"
 #include "SpriteScalerComponent.h"
 
-void ChainScorePopAnimationComponent::ReStart()
-{
-}
-
-void ChainScorePopAnimationComponent::Update(float elapsed_time)
-{
-}
-
 void ChainScorePopAnimationComponent::OnScoreAdded(int value)
 {
     const auto& owner = GetOwner();

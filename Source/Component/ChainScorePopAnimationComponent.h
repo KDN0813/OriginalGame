@@ -34,9 +34,9 @@ public:
     // 終了関数
     void End()  override {};
     // リスタート処理
-    void ReStart() override;      // パラメータの初期化
+    void ReStart() override {};
     // 更新関数
-    void Update(float elapsed_time) override;
+    void Update(float elapsed_time) override {};
 
     // 名前取得
     const char* GetName()const  override { return "ChainScorePopAnimationComponent"; };
