@@ -3,10 +3,12 @@
 #include <functional>
 #include <vector>
 
-// 連続取得スコアを制御するコンポーネント
+// 連鎖スコアを制御するコンポーネント
 class ChainScoreCounterComponent : public Component
 {
 public:
+    
+
     struct Param
     {
         int chain_score = 0;           
