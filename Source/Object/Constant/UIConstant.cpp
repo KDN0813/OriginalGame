@@ -548,10 +548,10 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 		ChainScoreCounterComponent::Param param{};
 		param.chain_timer_max = CHAIN_TIMER_MAX;
 
-		const auto& chain_kill_counter = pop_ui_object->AddComponent<ChainScoreCounterComponent>(param);
+		const auto& chain_score_counter = pop_ui_object->AddComponent<ChainScoreCounterComponent>(param);
 
 		// 連鎖スコアが加算された時のコールバックの設定
-		chain_kill_counter->SetOnScoreAdded(
+		chain_score_counter->SetOnScoreAdded(
 			[chain_score_pop_animation](int value)
 			{
 				if (chain_score_pop_animation)
@@ -561,7 +561,7 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 			}
 		);
 		// 連鎖が開始した時のコールバック変数の設定
-		chain_kill_counter->SetOnScoreChainStart(
+		chain_score_counter->SetOnScoreChainStart(
 			[chain_score_pop_animation]()
 			{
 				if (chain_score_pop_animation)
@@ -571,7 +571,7 @@ UIConstant::ChainScoreUIGroup UIConstant::CreateChainScoreCounterUI(const std::s
 			}
 		);
 		// 連鎖が終了した時のコールバック変数の設定
-		chain_kill_counter->SetOnScoreChainEnd(
+		chain_score_counter->SetOnScoreChainEnd(
 			[chain_score_pop_animation]()
 			{
 				if (chain_score_pop_animation)

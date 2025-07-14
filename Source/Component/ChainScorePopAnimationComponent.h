@@ -40,7 +40,7 @@ public:
     void Update(float elapsed_time) override;
 
     // –¼‘Oæ“¾
-    const char* GetName()const  override { return "ChainScoreUIControllerComponent"; };
+    const char* GetName()const  override { return "ChainScorePopAnimationComponent"; };
 
     // —Dæ“x
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
