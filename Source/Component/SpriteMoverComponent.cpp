@@ -5,6 +5,7 @@
 #endif // _DEBUG
 
 #include <cmath>
+#include <algorithm>
 #include "Object/Object.h"
 #include "Component/BaseSpriteComponent.h"
 #include "Component/Transform2DComponent.h"
@@ -42,16 +43,29 @@ void SpriteMoverComponent::Update(float elapsed_time)
     }
     case State::Run:
     {
-        // 更新
-        DirectX::XMFLOAT2 pos{};
-        const float t = this->interpolation_timer / current_command.transition_duration;
-        pos.x = std::lerp(this->start_pos.x, current_command.target_pos.x, t);
-        pos.y = std::lerp(this->start_pos.y, current_command.target_pos.y, t);
+        // 補間時間が0以下なら即移動して終了
+        if (current_command.transition_duration <= 0.0f)
+        {
+            transform->SetLocalPosition(current_command.target_pos);
+            this->state = State::End;
+            break;
+        }
 
-        transform->SetLocalPosition(pos);
+        // t:補間係数
+        const float t = std::clamp(
+            this->interpolation_timer / current_command.transition_duration, 0.0f, 1.0f);
 
-        // 修了判定
-        if (current_command.transition_duration <= this->interpolation_timer)
+        // 線形補間
+        const DirectX::XMFLOAT2 interpolated_pos
+        {
+            std::lerp(this->start_pos.x, current_command.target_pos.x, t),
+            std::lerp(this->start_pos.y, current_command.target_pos.y, t)
+        };
+
+        transform->SetLocalPosition(interpolated_pos);
+
+        // 補間時間を超えたら終了
+        if (this->interpolation_timer >= current_command.transition_duration)
         {
             this->state = State::End;
         }
@@ -59,7 +73,7 @@ void SpriteMoverComponent::Update(float elapsed_time)
     }
     case State::End:
     {
-        // 修了
+        // 終了
         this->command_pool.pop_front();   // 要素を削除
         this->state = State::Start;
         break;

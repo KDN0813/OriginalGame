@@ -22,7 +22,8 @@ public:
         float time_to_expand = 1.0f;    // 拡大にかかる時間
         float time_to_shrink = 1.0f;    // 縮小にかかる時間
 
-        DirectX::XMFLOAT2 target_pos = {};
+        DirectX::XMFLOAT2 initial_pos = {}; // 初期位置
+        DirectX::XMFLOAT2 target_pos = {};  // 移動先の位置
 
         bool is_chain_end_direction = false;   // 連鎖終了演出フラグ
     };

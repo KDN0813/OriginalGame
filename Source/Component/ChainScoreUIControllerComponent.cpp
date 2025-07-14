@@ -59,6 +59,7 @@ void ChainScoreUIControllerComponent::OnScoreChainEnd()
     const auto& sprite_mover = owner->GetComponent(this->sprite_mover_Wptr);
     if (!sprite_mover) return;
     sprite_mover->PushFrontCommand(this->param.target_pos, this->param.fead_out_time);
+    sprite_mover->PushBackCommand(this->param.initial_pos, 0.0f);
 }
 
 #ifdef _DEBUG

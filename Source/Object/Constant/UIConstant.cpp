@@ -527,6 +527,7 @@ const std::shared_ptr<Object>& UIConstant::CreateChainScoreCounterUI(const std::
 	param.fead_in_time = 0.5f;
 	param.fead_out_time = 1.0f;
 	param.target_pos = { 0.95f, 0.0f };
+	param.initial_pos = { 0.5f, 0.0f };
 	const auto& chain_kill_UI_controller = object->AddComponent<ChainScoreUIControllerComponent>(param);
 	
 	// チェインスコアを管理するコンポーネント

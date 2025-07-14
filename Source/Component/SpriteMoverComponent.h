@@ -19,7 +19,7 @@ public:
     struct ScaleCommand
     {
         DirectX::XMFLOAT2 target_pos;
-        float transition_duration;
+        float transition_duration; // •âŠÔŽžŠÔ
     };
 public:
     SpriteMoverComponent() : command_pool() {};
