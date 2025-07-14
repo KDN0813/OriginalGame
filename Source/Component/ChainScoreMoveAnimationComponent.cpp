@@ -1,5 +1,9 @@
 #include "ChainScoreMoveAnimationComponent.h"
 
+#ifdef _DEBUG
+#include <imgui.h>
+#endif // _DEBUG
+
 #include "Object/Object.h"
 #include "SpriteMoverComponent.h"
 #include "FadeControllerComponent.h"
@@ -20,4 +24,16 @@ void ChainScoreMoveAnimationComponent::OnScoreChainEnd()
     sprite_mover->PushBackCommand(this->param.initial_pos, 0.0f);
     sprite_mover->PushBackCommand(this->param.target_pos, this->param.fead_out_time);
     sprite_mover->PushBackCommand(this->param.initial_pos, 0.0f);
+}
+
+void ChainScoreMoveAnimationComponent::DrawDebugGUI()
+{
+    ImGui::InputFloat("Fead Out Time", &this->param.fead_out_time);
+    ImGui::InputFloat2("Initial Pos", &this->param.initial_pos.x);
+    ImGui::InputFloat2("Target Pos", &this->param.target_pos.x);
+
+    if (ImGui::Button("OnScoreChainEnd"))
+    {
+        OnScoreChainEnd();
+    }
 }

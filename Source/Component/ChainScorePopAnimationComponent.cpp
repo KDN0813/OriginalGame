@@ -83,11 +83,11 @@ void ChainScorePopAnimationComponent::DrawDebugGUI()
 
     if (ImGui::Button("ScoreChainStart"))
     {
-        on_score_chain_start();
+        OnScoreChainStart();
     }
     if (ImGui::Button("ScoreChainEnd"))
     {
-        on_score_chain_end();
+        OnScoreChainEnd();
     }
 }
 
