@@ -509,8 +509,9 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 	ui_group.chain_pop_ui_object = chain_pop_ui_object;
 	ui_group.chain_move_ui_object = chain_move_ui_object;
 
-	const DirectX::XMFLOAT2 INITIAL_POSITION = { 0.5f, 0.0f };
-	const DirectX::XMFLOAT2 INITIAL_SCALE = { 1.0f, 1.0f };
+	const DirectX::XMFLOAT2 CHAIN_SCORE_INITIAL_POSITION = { 0.5f, 0.0f };
+	const DirectX::XMFLOAT2 CHAIN_SCORE_INITIAL_SCALE = { 1.0f, 1.0f };
+	const DirectX::XMFLOAT2 SCORE_TEXT_INITIAL_SCALE = { 2.0f,2.0f };
 	const float CHAIN_TIMER_MAX = 2.0f;	// スコア連鎖の猶予時間
 
 	// =========================================
@@ -525,27 +526,6 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 	}
 
 	// 【子オブジェクト】
-
-	// [背景]
-	const auto bg_sprite = total_ui_object->CreateChildObject("BG_Sprite");
-
-	// 背景画像
-	{
-		BaseSpriteComponent::SpriteParam sprite_param{};
-		sprite_param.display_size = { 0.215f,0.015f };
-		sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
-		sprite_param.draw_priority = PRIORITY::LOW;
-		sprite_param.center_type = Sprite::CENTER_TYPE::TOP_RIGHT;
-		const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(sprite_param);
-	}
-
-	// transform
-	{
-		Transform2DComponent::Transform2DParam param{};
-		param.local_position = { 0.015f,0.16f };
-		bg_sprite->AddComponent<Transform2DComponent>(param);
-	}
-
 
 	// [テキスト]
 
@@ -564,15 +544,21 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 	// transform
 	{
 		Transform2DComponent::Transform2DParam param{};
-		param.local_scale = { 2.0f,2.0f };
+		param.local_scale = SCORE_TEXT_INITIAL_SCALE;
 		text_sprite->AddComponent<Transform2DComponent>(param);
 	}
 
 	// 更新処理
-	
-		ScoreUIValueAnimatorComponent::Param UI_value_animator_param{};
-		UI_value_animator_param.animetion_time = 1.0f;
-		const auto& score_UI_value_animator = text_sprite->AddComponent<ScoreUIValueAnimatorComponent>(UI_value_animator_param);
+	const float SCORE_TEXT_EXPANDED_RATIO = 0.7f;
+	const float SCORE_TEXT_SHRINK_RATIO = 1.0f - SCORE_TEXT_EXPANDED_RATIO;
+
+	ScoreUIValueAnimatorComponent::Param UI_value_animator_param{};
+	UI_value_animator_param.animetion_total_time = 0.7f;
+	UI_value_animator_param.expanded.ratio = SCORE_TEXT_EXPANDED_RATIO;
+	UI_value_animator_param.expanded.target_scale = { 3.0f,3.0f };
+	UI_value_animator_param.shrink.ratio = SCORE_TEXT_SHRINK_RATIO;
+	UI_value_animator_param.shrink.target_scale = SCORE_TEXT_INITIAL_SCALE;
+	const auto& score_UI_value_animator = text_sprite->AddComponent<ScoreUIValueAnimatorComponent>(UI_value_animator_param);
 	
 
 	// テキストの値を補間するコンポーネント
@@ -580,6 +566,31 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 		text_sprite->AddComponent<TextNumberValueInterpolatorComponent>();
 	}
 
+	// SpriteScalerComponent
+	text_sprite->AddComponent<SpriteScalerComponent>();
+
+	// 【子オブジェクト】
+
+	// [背景]
+	const auto bg_sprite = text_sprite->CreateChildObject("BG_Sprite");
+
+	// 背景画像
+	{
+		BaseSpriteComponent::SpriteParam sprite_param{};
+		sprite_param.display_size = { 0.215f,0.015f };
+		sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
+		sprite_param.draw_priority = PRIORITY::LOW;
+		sprite_param.center_type = Sprite::CENTER_TYPE::TOP_RIGHT;
+		const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(sprite_param);
+	}
+
+	// transform
+	{
+		Transform2DComponent::Transform2DParam param{};
+		param.local_position = { 0.0f,0.085f };
+		param.local_scale = { 0.5f,0.5f };
+		bg_sprite->AddComponent<Transform2DComponent>(param);
+	}
 
 
 	// =========================================
@@ -589,8 +600,8 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 	// transform
 	{
 		Transform2DComponent::Transform2DParam param{};
-		param.local_position = INITIAL_POSITION;
-		param.local_scale = INITIAL_SCALE;
+		param.local_position = CHAIN_SCORE_INITIAL_POSITION;
+		param.local_scale = CHAIN_SCORE_INITIAL_SCALE;
 		chain_pop_ui_object->AddComponent<Transform2DComponent>(param);
 	}
 
@@ -599,16 +610,16 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 
 	// 連鎖スコアUIの出現演出を管理
 
-	const float EXPANDED_RATIO = 0.2f;
-	const float SHRINK_RATIO = 1.0f - EXPANDED_RATIO;
+	const float CHAIN_SCORE_POP_EXPANDED_RATIO = 0.2f;
+	const float CHAIN_SCORE_POP_SHRINK_RATIO = 1.0f - CHAIN_SCORE_POP_EXPANDED_RATIO;
 
 	ChainScorePopAnimationComponent::Param chain_score_pop_animation_param{};
 	chain_score_pop_animation_param.fead_in_time = 0.3f;
 	chain_score_pop_animation_param.scale_transition_total_time = CHAIN_TIMER_MAX;
 	chain_score_pop_animation_param.expanded.target_scale = { 2.5f,2.5f };
-	chain_score_pop_animation_param.expanded.ratio = EXPANDED_RATIO;
-	chain_score_pop_animation_param.shrink.target_scale = INITIAL_SCALE;
-	chain_score_pop_animation_param.shrink.ratio = SHRINK_RATIO;
+	chain_score_pop_animation_param.expanded.ratio = CHAIN_SCORE_POP_EXPANDED_RATIO;
+	chain_score_pop_animation_param.shrink.target_scale = CHAIN_SCORE_INITIAL_SCALE;
+	chain_score_pop_animation_param.shrink.ratio = CHAIN_SCORE_POP_SHRINK_RATIO;
 	const auto& chain_score_pop_animation = chain_pop_ui_object->AddComponent<ChainScorePopAnimationComponent>(chain_score_pop_animation_param);
 
 	// チェインスコアを管理するコンポーネント
@@ -640,8 +651,8 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 	// transform
 	{
 		Transform2DComponent::Transform2DParam param{};
-		param.local_position = INITIAL_POSITION;
-		param.local_scale = INITIAL_SCALE;
+		param.local_position = CHAIN_SCORE_INITIAL_POSITION;
+		param.local_scale = CHAIN_SCORE_INITIAL_SCALE;
 		chain_move_ui_object->AddComponent<Transform2DComponent>(param);
 	}
 
@@ -651,7 +662,7 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 	// 連鎖スコアUIを合計スコアへ移動させるコンポーネント
 	ChainScoreMoveAnimationComponent::Param chain_score_move_animation_param{};
 	chain_score_move_animation_param.target_pos = { 0.95f, 0.0f };
-	chain_score_move_animation_param.initial_pos = INITIAL_POSITION;
+	chain_score_move_animation_param.initial_pos = CHAIN_SCORE_INITIAL_POSITION;
 	const auto& chain_score_move_animation = chain_move_ui_object->AddComponent<ChainScoreMoveAnimationComponent>(chain_score_move_animation_param);
 
 	// フェード管理コンポーネント

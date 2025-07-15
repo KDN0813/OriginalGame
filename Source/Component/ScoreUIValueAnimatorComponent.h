@@ -1,15 +1,26 @@
 #pragma once
 #include "Component.h"
 
+#include <DirectXMath.h>
+
 class TextNumberValueInterpolatorComponent;
+class SpriteScalerComponent;
 
 // スコアUIの値をアニメーション管理するコンポーネント
 class ScoreUIValueAnimatorComponent : public Component
 {
 public:
+    // スケーリングのパラメータ
+    struct ScaleParam
+    {
+        DirectX::XMFLOAT2 target_scale;  // 目的のスケール
+        float ratio;                     // 拡大・縮小に使う割合（合計1.0になるように設定）
+    };
     struct Param
     {
-        float animetion_time;   // 
+        float animetion_total_time;     // スコアが増加アニメーションの総時間
+        ScaleParam expanded;  // 拡大時のスケールと割合
+        ScaleParam shrink;    // 縮小時のスケールと割合
     };
 public:
     ScoreUIValueAnimatorComponent(Param param):param(param){};
@@ -37,6 +48,7 @@ private:
 
 private:
     std::weak_ptr<TextNumberValueInterpolatorComponent> value_interpolator_Wptr;
+    std::weak_ptr<SpriteScalerComponent> sprite_scaler_Wptr;
 
 #ifdef _DEBUG
 public:
