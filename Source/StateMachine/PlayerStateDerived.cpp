@@ -244,19 +244,6 @@ void PlayerAttackState::Update(float elapsed_time)
         }
     }
 
-    // 入力受付
-    {
-        Input::Instance input = Input::GetInstance();
-        GamePad& pad = input->GetGamePad();
-        // Xボタン
-        if (pad.GetButtonDown() & GamePad::BTN_X)
-        {
-            // 攻撃ステートへ遷移
-            state_machine->ChangeState("AttackComboState");
-            return;
-        }
-    }
-
     // アニメーション再生待ち
     if (player->GetAttackEndPoint() <= animation->GetMainPartsCurrentAnimationSeconds())
     {
