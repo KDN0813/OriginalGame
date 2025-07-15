@@ -52,7 +52,7 @@ void TextNumberValueInterpolatorComponent::Update(float elapsed_time)
             this->interpolation_timer / current_command.transition_duration, 0.0f, 1.0f);
 
         // üŒ`•âŠÔ
-        const int interpolated_value = std::lerp(this->start_value, current_command.target_value, t);
+        const int interpolated_value = static_cast<int>(std::lerp(static_cast<float>(this->start_value), static_cast<float>(current_command.target_value), t));
 
         text_number->SetDrawValue(interpolated_value);
 
