@@ -57,7 +57,7 @@ private:
     std::deque<Command> command_pool;
     State state;
     float interpolation_timer;   // 補間に使うタイマー
-    float start_value;
+    int start_value;
 
 private:
     std::weak_ptr<TextNumberComponent> text_number_Wptr;
