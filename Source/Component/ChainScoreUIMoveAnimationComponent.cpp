@@ -36,6 +36,8 @@ void ChainScoreMoveAnimationComponent::OnScoreChainEnd()
     sprite_mover->PushBackCommand(this->param.initial_pos, 0.0f);
 }
 
+#ifdef _DEBUG
+
 void ChainScoreMoveAnimationComponent::DrawDebugGUI()
 {
     ImGui::InputFloat("Fead Out Time", &this->param.fead_out_time);
@@ -47,3 +49,5 @@ void ChainScoreMoveAnimationComponent::DrawDebugGUI()
         OnScoreChainEnd();
     }
 }
+
+#endif // _DEBUG
