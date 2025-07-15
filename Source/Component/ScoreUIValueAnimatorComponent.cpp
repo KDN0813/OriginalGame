@@ -8,7 +8,7 @@
 #include "Object/Object.h"
 #include "TextNumberValueInterpolatorComponent.h"
 
-void ScoreUIValueAnimatorComponent::ScoreChainEnd()
+void ScoreUIValueAnimatorComponent::OnScoreChainEnd()
 {
     const auto& owner = GetOwner();
     if (!owner) return;
@@ -29,7 +29,7 @@ void ScoreUIValueAnimatorComponent::DrawDebugGUI()
 
     if (ImGui::Button("ScoreChainEnd"))
     {
-        ScoreChainEnd();
+        OnScoreChainEnd();
     }
 }
 

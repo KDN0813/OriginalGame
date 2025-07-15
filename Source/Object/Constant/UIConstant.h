@@ -9,10 +9,11 @@ class Object;
 class UIConstant
 {
 public:
-    struct ChainScoreUIGroup
+    struct ScoreUIGroup
     {
-        std::shared_ptr<Object> pop_ui_object;   // 出現UI
-        std::shared_ptr<Object> move_ui_object;  // 移動UI
+        std::shared_ptr<Object> total_ui_object;        // 総スコア()
+        std::shared_ptr<Object> chain_pop_ui_object;    // 連鎖スコア出現UI
+        std::shared_ptr<Object> chain_move_ui_object;   // 連鎖スコア移動UI
     };
 public:
     // FadeObject用
@@ -28,7 +29,6 @@ public:
     
     static constexpr float SPECIAL_POINT_BAR_FLASH_TIME = 0.1f;
 public:
-    static const std::shared_ptr<Object>& CreateScoreUI(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreateGameTimerUI(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreatePause(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreateFadeObject(const std::shared_ptr<Object>&);
@@ -36,5 +36,5 @@ public:
     static const std::shared_ptr<Object>& CreatePlayerSpecialBar(const std::shared_ptr<Object>&);
     static const std::shared_ptr<Object>& CreatePlayerSpecialGage(const std::shared_ptr<Object>&, DirectX::XMFLOAT2 pos);
     static const std::shared_ptr<Object>& CreateDescriptionUI(const std::shared_ptr<Object>&);
-    static ChainScoreUIGroup CreateChainScoreCounterUI(const std::shared_ptr<Object>&, const std::shared_ptr<Object>&);
+    static ScoreUIGroup CreateScoreUIs(const std::shared_ptr<Object>& ,const std::shared_ptr<Object>&, const std::shared_ptr<Object>&);
 };

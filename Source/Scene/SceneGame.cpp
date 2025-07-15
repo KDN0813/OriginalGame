@@ -79,9 +79,6 @@ void SceneGame::Initialize()
 
 	// オブジェクト作成
 	{
-		// スコア表示用オブジェクト
-		UIConstant::CreateScoreUI(object_manager->Create("Score"));
-
 		// ゲーム時間表示オブジェクト
 		UIConstant::CreateGameTimerUI(object_manager->Create("GameTimer"));
 
@@ -94,11 +91,11 @@ void SceneGame::Initialize()
 		// 操作説明UI
 		UIConstant::CreateDescriptionUI(object_manager->Create("DescriptionUI"));
 
-		// チェインスコアを表示するオブジェクト
-		const UIConstant::ChainScoreUIGroup chain_score_ui_group = UIConstant::CreateChainScoreCounterUI(object_manager->Create("ChainScore Pop UI"), object_manager->Create("ChainScore Move UI"));
+		// スコアオブジェクトを作成
+		const UIConstant::ScoreUIGroup chain_score_ui_group = UIConstant::CreateScoreUIs(object_manager->Create("Total Score"),object_manager->Create("ChainScore Pop UI"), object_manager->Create("ChainScore Move UI"));
 
 		// エネミースポナー作成
-		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager, chain_score_ui_group.pop_ui_object);
+		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager, chain_score_ui_group.chain_pop_ui_object);
 
 		// ステージ(床)
 		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));
