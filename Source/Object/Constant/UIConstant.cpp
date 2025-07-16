@@ -494,14 +494,11 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUIs(const std::shared_ptr<
 	}
 
 	// XVˆ—
-	const float SCORE_TEXT_EXPANDED_RATIO = 0.7f;
-	const float SCORE_TEXT_SHRINK_RATIO = 1.0f - SCORE_TEXT_EXPANDED_RATIO;
-
 	ScoreUIValueAnimatorComponent::Param UI_value_animator_param{};
-	UI_value_animator_param.animetion_total_time = 0.7f;
-	UI_value_animator_param.expanded.ratio = SCORE_TEXT_EXPANDED_RATIO;
+	UI_value_animator_param.animetion_total_time = 0.2f;
+	UI_value_animator_param.expanded.time = 0.5f;
 	UI_value_animator_param.expanded.target_scale = { 3.0f,3.0f };
-	UI_value_animator_param.shrink.ratio = SCORE_TEXT_SHRINK_RATIO;
+	UI_value_animator_param.shrink.time = 0.2f;
 	UI_value_animator_param.shrink.target_scale = SCORE_TEXT_INITIAL_SCALE;
 	const auto& score_UI_value_animator = text_sprite->AddComponent<ScoreUIValueAnimatorComponent>(UI_value_animator_param);
 	

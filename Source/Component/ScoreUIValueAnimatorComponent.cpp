@@ -25,8 +25,8 @@ void ScoreUIValueAnimatorComponent::OnChangeScore()
     if (!sprite_scaler) return;
 
     sprite_scaler->CommandClear();
-    sprite_scaler->PushBackCommand(this->param.expanded.target_scale, this->param.animetion_total_time * this->param.expanded.ratio);// スプライトの拡大指示
-    sprite_scaler->PushBackCommand(this->param.shrink.target_scale, this->param.animetion_total_time * this->param.shrink.ratio);// スプライトの縮小指示
+    sprite_scaler->PushBackCommand(this->param.expanded.target_scale, this->param.expanded.time);// スプライトの拡大指示
+    sprite_scaler->PushBackCommand(this->param.shrink.target_scale, this->param.shrink.time);// スプライトの縮小指示
 }
 
 #ifdef _DEBUG
@@ -36,16 +36,10 @@ void ScoreUIValueAnimatorComponent::DrawDebugGUI()
     ImGui::InputFloat("Animation Time",&this->param.animetion_total_time);
 
     ImGui::InputFloat2("Expanded Scale", &this->param.expanded.target_scale.x);
-    if (ImGui::InputFloat("Expanded Ratio", &this->param.expanded.ratio))
-    {
-        this->param.shrink.ratio = 1.0f - this->param.expanded.ratio;
-    }
+    ImGui::InputFloat("Expanded Time", &this->param.expanded.time);
 
     ImGui::InputFloat2("Shrink Scale", &this->param.shrink.target_scale.x);
-    if (ImGui::InputFloat("Shrink Ratio", &this->param.shrink.ratio))
-    {
-        this->param.expanded.ratio = 1.0f - this->param.shrink.ratio;
-    }
+    ImGui::InputFloat("Shrink Time", &this->param.shrink.time);
 
     if (ImGui::Button("ScoreChainEnd"))
     {

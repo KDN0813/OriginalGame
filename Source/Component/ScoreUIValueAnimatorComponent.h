@@ -14,11 +14,11 @@ public:
     struct ScaleParam
     {
         DirectX::XMFLOAT2 target_scale;  // 目的のスケール
-        float ratio;                     // 拡大・縮小に使う割合（合計1.0になるように設定）
+        float time;                      // 拡大・縮小にかかる時間
     };
     struct Param
     {
-        float animetion_total_time;     // スコアが増加アニメーションの総時間
+        float animetion_total_time;      // スコアが増加アニメーションの時間
         ScaleParam expanded;  // 拡大時のスケールと割合
         ScaleParam shrink;    // 縮小時のスケールと割合
     };
@@ -41,7 +41,7 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    // スコアチェイン終了時に実行する関数
+    // スコアが変化した時に実行する
     void OnChangeScore();
 private:
     Param param;
