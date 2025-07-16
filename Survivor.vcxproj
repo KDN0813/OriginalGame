@@ -133,9 +133,6 @@
     <ClInclude Include="Source\Collision\CircleCollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionParam.h" />
     <ClInclude Include="Source\Component\BaseSpriteComponent.h" />
-    <ClInclude Include="Source\Component\ChainScoreCounterComponent.h" />
-    <ClInclude Include="Source\Component\ChainScoreUIMoveAnimationComponent.h" />
-    <ClInclude Include="Source\Component\ChainScoreUIPopAnimationComponent.h" />
     <ClInclude Include="Source\Component\DamageComponent.h" />
     <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Component\EnemySpawnerComponent.h" />
@@ -249,9 +246,6 @@
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Collision\CircleCollisionManager.cpp" />
     <ClCompile Include="Source\Component\BaseSpriteComponent.cpp" />
-    <ClCompile Include="Source\Component\ChainScoreCounterComponent.cpp" />
-    <ClCompile Include="Source\Component\ChainScoreUIMoveAnimationComponent.cpp" />
-    <ClCompile Include="Source\Component\ChainScoreUIPopAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\DamageComponent.cpp" />
     <ClCompile Include="Source\Component\DebugParticle.cpp" />
     <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp" />

@@ -19,6 +19,7 @@ void ScoreUIValueAnimatorComponent::OnChangeScore()
     const auto& value_interpolator = owner->GetComponent(this->value_interpolator_Wptr);
     if (!value_interpolator) return;
 
+    value_interpolator->CommandClear();
     value_interpolator->PushBackCommand(game_data->GetScore(), this->param.animetion_total_time);
 
     const auto& sprite_scaler = owner->GetComponent(this->sprite_scaler_Wptr);

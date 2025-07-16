@@ -21,7 +21,6 @@
 #include "Component\CameraComponent.h"
 #include "Component\DamageComponent.h"
 #include "Component\PlayerComponent.h"
-#include "Component\ChainScoreCounterComponent.h"
 
 void EnemyComponent::Start()
 {

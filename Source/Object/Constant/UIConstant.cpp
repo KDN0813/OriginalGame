@@ -11,11 +11,8 @@
 #include "Component\Transform2DComponent.h"
 #include "Component\FadeControllerComponent.h"
 #include "Component\SpecialGageComponent.h"
-#include "Component\ChainScoreCounterComponent.h"
-#include "Component\ChainScoreUIPopAnimationComponent.h"
 #include "Component\SpriteScalerComponent.h"
 #include "Component\SpriteMoverComponent.h"
-#include "Component\ChainScoreUIMoveAnimationComponent.h"
 #include "Component\ScoreUIValueAnimatorComponent.h"
 #include "Component\TextNumberValueInterpolatorComponent.h"
 
@@ -495,8 +492,8 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUIs(const std::shared_ptr<
 
 	// XVˆ—
 	ScoreUIValueAnimatorComponent::Param UI_value_animator_param{};
-	UI_value_animator_param.animetion_total_time = 0.2f;
-	UI_value_animator_param.expanded.time = 0.5f;
+	UI_value_animator_param.animetion_total_time = 0.1f;
+	UI_value_animator_param.expanded.time = 0.3f;
 	UI_value_animator_param.expanded.target_scale = { 3.0f,3.0f };
 	UI_value_animator_param.shrink.time = 0.2f;
 	UI_value_animator_param.shrink.target_scale = SCORE_TEXT_INITIAL_SCALE;
