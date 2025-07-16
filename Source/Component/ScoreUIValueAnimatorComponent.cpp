@@ -9,7 +9,7 @@
 #include "TextNumberValueInterpolatorComponent.h"
 #include "SpriteScalerComponent.h"
 
-void ScoreUIValueAnimatorComponent::OnScoreChainEnd()
+void ScoreUIValueAnimatorComponent::OnChangeScore()
 {
     const auto& owner = GetOwner();
     if (!owner) return;
@@ -49,7 +49,7 @@ void ScoreUIValueAnimatorComponent::DrawDebugGUI()
 
     if (ImGui::Button("ScoreChainEnd"))
     {
-        OnScoreChainEnd();
+        OnChangeScore();
     }
 }
 

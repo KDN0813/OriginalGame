@@ -3,7 +3,7 @@
 #include "Object\Constant\PlayerConstant.h"
 #include "Shader\SpriteShader.h"
 
-#include "Shader\SpriteShader.h"
+#include "System/GameData.h"
 
 #include "Component\TextNumberComponent.h"
 #include "Component\SpriteComponent.h"
@@ -452,63 +452,8 @@ void CallIfValid(const std::weak_ptr<T>& wptr, Func&& func)
 	}
 }
 
-// UIConstant::CreateChainScoreCounterUIで使用する
-// ChainScoreCounterComponent に対して、連鎖スコア演出用のコールバックをまとめて設定する関数
-void SetChainScoreCallbacks(
-	const std::shared_ptr<ChainScoreCounterComponent>& counter,
-	const std::weak_ptr<ScoreUIValueAnimatorComponent>& total,
-	const std::weak_ptr<ChainScorePopAnimationComponent>& chain_pop_anim,
-	const std::weak_ptr<ChainScoreMoveAnimationComponent>& chain_move_anim)
+const std::shared_ptr<Object>& UIConstant::CreateScoreUIs(const std::shared_ptr<Object>& total_ui_object)
 {
-	if (!counter) return;
-
-	// 総スコアのイベント
-	counter->AddOnScoreChainEnd(
-		[total]()
-		{
-			CallIfValid(total, [](auto& com) { com.OnScoreChainEnd(); });
-		});
-
-	// 連鎖スコアpopのイベント
-	counter->AddOnScoreAdded(
-		[chain_pop_anim](int value)
-		{
-			CallIfValid(chain_pop_anim, [value](auto& com) { com.OnScoreAdded(value); });
-		});
-
-	counter->AddOnScoreChainStart(
-		[chain_pop_anim]()
-		{
-			CallIfValid(chain_pop_anim, [](auto& com) { com.OnScoreChainStart(); });
-		});
-
-	counter->AddOnScoreChainEnd(
-		[chain_pop_anim]()
-		{
-			CallIfValid(chain_pop_anim, [](auto& com) { com.OnScoreChainEnd(); });
-		});
-
-	// 連鎖スコアmoveのイベント
-	counter->AddOnScoreAdded(
-		[chain_move_anim](int value)
-		{
-			CallIfValid(chain_move_anim, [value](auto& com) { com.OnScoreAdded(value); });
-		});
-	counter->AddOnScoreChainEnd(
-		[chain_move_anim]()
-		{
-			CallIfValid(chain_move_anim, [](auto& com) { com.OnScoreChainEnd(); });
-		});
-}
-
-UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object>& total_ui_object, const std::shared_ptr<Object>& chain_pop_ui_object, const std::shared_ptr<Object>& chain_move_ui_object)
-{
-	UIConstant::ScoreUIGroup ui_group{};
-
-	ui_group.total_ui_object = total_ui_object;
-	ui_group.chain_pop_ui_object = chain_pop_ui_object;
-	ui_group.chain_move_ui_object = chain_move_ui_object;
-
 	const DirectX::XMFLOAT2 CHAIN_SCORE_INITIAL_POSITION = { 0.5f, 0.0f };
 	const DirectX::XMFLOAT2 CHAIN_SCORE_INITIAL_SCALE = { 1.0f, 1.0f };
 	const DirectX::XMFLOAT2 SCORE_TEXT_INITIAL_SCALE = { 2.0f,2.0f };
@@ -592,100 +537,16 @@ UIConstant::ScoreUIGroup UIConstant::CreateScoreUIs(const std::shared_ptr<Object
 		bg_sprite->AddComponent<Transform2DComponent>(param);
 	}
 
-
 	// =========================================
-	// 連鎖スコア移動UIオブジェクト
+	//  スコアの値が変化した時のコールバック変数を設定
 	// =========================================
+	std::weak_ptr<ScoreUIValueAnimatorComponent> score_UI_value_animator_Wptr = score_UI_value_animator;
+	GameData::GetInstance()->AddOnChangeScore(
+		[score_UI_value_animator_Wptr]()
+		{
+			CallIfValid(score_UI_value_animator_Wptr, [](auto& com) { com.OnChangeScore(); });
+		}
+	);
 
-	// transform
-	{
-		Transform2DComponent::Transform2DParam param{};
-		param.local_position = CHAIN_SCORE_INITIAL_POSITION;
-		param.local_scale = CHAIN_SCORE_INITIAL_SCALE;
-		chain_pop_ui_object->AddComponent<Transform2DComponent>(param);
-	}
-
-	// SpriteScalerComponent
-	chain_pop_ui_object->AddComponent<SpriteScalerComponent>();
-
-	// 連鎖スコアUIの出現演出を管理
-
-	const float CHAIN_SCORE_POP_EXPANDED_RATIO = 0.2f;
-	const float CHAIN_SCORE_POP_SHRINK_RATIO = 1.0f - CHAIN_SCORE_POP_EXPANDED_RATIO;
-
-	ChainScorePopAnimationComponent::Param chain_score_pop_animation_param{};
-	chain_score_pop_animation_param.fead_in_time = 0.3f;
-	chain_score_pop_animation_param.scale_transition_total_time = CHAIN_TIMER_MAX;
-	chain_score_pop_animation_param.expanded.target_scale = { 2.5f,2.5f };
-	chain_score_pop_animation_param.expanded.ratio = CHAIN_SCORE_POP_EXPANDED_RATIO;
-	chain_score_pop_animation_param.shrink.target_scale = CHAIN_SCORE_INITIAL_SCALE;
-	chain_score_pop_animation_param.shrink.ratio = CHAIN_SCORE_POP_SHRINK_RATIO;
-	const auto& chain_score_pop_animation = chain_pop_ui_object->AddComponent<ChainScorePopAnimationComponent>(chain_score_pop_animation_param);
-
-	// チェインスコアを管理するコンポーネント
-	ChainScoreCounterComponent::Param param{};
-	param.chain_timer_max = CHAIN_TIMER_MAX;
-	const auto& chain_score_counter = chain_pop_ui_object->AddComponent<ChainScoreCounterComponent>(param);
-
-
-	// フェード管理コンポーネント
-	{
-		FadeControllerComponent::FadeControllerParam param{};
-		chain_pop_ui_object->AddComponent<FadeControllerComponent>(param);
-	}
-
-	// 数値表示オブジェクト
-	{
-		BaseSpriteComponent::SpriteParam sprite_param{};
-		sprite_param.color = { 1.0,1.0f,1.0f ,0.0f };
-		sprite_param.center_type = Sprite::CENTER_TYPE::TOP_CENTER;
-		// ファイルパス設定する
-		sprite_param.filename = "Data/Sprite/Numbers.png";
-		const auto& text_number = chain_pop_ui_object->AddComponent<TextNumberComponent>(sprite_param);
-	}
-
-	// =========================================
-	// 連鎖スコア移動UIオブジェクト
-	// =========================================
-
-	// transform
-	{
-		Transform2DComponent::Transform2DParam param{};
-		param.local_position = CHAIN_SCORE_INITIAL_POSITION;
-		param.local_scale = CHAIN_SCORE_INITIAL_SCALE;
-		chain_move_ui_object->AddComponent<Transform2DComponent>(param);
-	}
-
-	// SpriteMoverComponent
-	chain_move_ui_object->AddComponent<SpriteMoverComponent>();
-
-	// 連鎖スコアUIを合計スコアへ移動させるコンポーネント
-	ChainScoreMoveAnimationComponent::Param chain_score_move_animation_param{};
-	chain_score_move_animation_param.target_pos = { 0.95f, 0.0f };
-	chain_score_move_animation_param.initial_pos = CHAIN_SCORE_INITIAL_POSITION;
-	const auto& chain_score_move_animation = chain_move_ui_object->AddComponent<ChainScoreMoveAnimationComponent>(chain_score_move_animation_param);
-
-	// フェード管理コンポーネント
-	{
-		FadeControllerComponent::FadeControllerParam param{};
-		chain_move_ui_object->AddComponent<FadeControllerComponent>(param);
-	}
-
-	// 数値表示オブジェクト
-	{
-		BaseSpriteComponent::SpriteParam sprite_param{};
-		sprite_param.color = { 1.0,1.0f,1.0f ,0.0f };
-		sprite_param.center_type = Sprite::CENTER_TYPE::TOP_CENTER;
-		// ファイルパス設定する
-		sprite_param.filename = "Data/Sprite/Numbers.png";
-		const auto& text_number = chain_move_ui_object->AddComponent<TextNumberComponent>(sprite_param);
-	}
-
-
-	// =========================================
-	//  ChainScoreCounterComponentのコールバック変数を設定する
-	// =========================================
-	SetChainScoreCallbacks(chain_score_counter, score_UI_value_animator, chain_score_pop_animation, chain_score_move_animation);
-
-	return ui_group;
+	return total_ui_object;
 }

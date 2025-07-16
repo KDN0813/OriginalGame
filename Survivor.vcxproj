@@ -200,6 +200,7 @@
     <ClInclude Include="Source\Scene\SceneLoading.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
     <ClInclude Include="Source\Scene\SceneTitle.h" />
+    <ClInclude Include="Source\Score\TotalScoreCounter.h" />
     <ClInclude Include="Source\Shader\LightManager.h" />
     <ClInclude Include="Source\Shader\LightParam.h" />
     <ClInclude Include="Source\Shader\ModelShader.h" />
@@ -310,6 +311,7 @@
     <ClCompile Include="Source\Scene\SceneLoading.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
+    <ClCompile Include="Source\Score\TotalScoreCounter.cpp" />
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
     <ClCompile Include="Source\Shader\LightManager.cpp" />
     <ClCompile Include="Source\Shader\ModelShader.cpp" />

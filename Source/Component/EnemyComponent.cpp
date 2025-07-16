@@ -129,13 +129,7 @@ void EnemyComponent::OnCollision(const std::shared_ptr<Object>& hit_object)
 						}
 
 						// ƒXƒRƒA‰ÁŽZ
-						if (const auto& chain_score_counter_object = chain_score_counter_object_Wptr.lock())
-						{
-							if (const auto& chain_score_counter = chain_score_counter_object->GetComponent(this->chain_score_counter_Wptr))
-							{
-								chain_score_counter->AddChain(this->param.add_score);
-							}
-						}
+						GameData::GetInstance()->AddScore(this->param.add_score);
 					}
 				}
 			}

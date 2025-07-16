@@ -42,7 +42,7 @@ public:
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
     // スコアチェイン終了時に実行する関数
-    void OnScoreChainEnd();
+    void OnChangeScore();
 private:
     Param param;
 

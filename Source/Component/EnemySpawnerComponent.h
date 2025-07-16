@@ -53,7 +53,6 @@ public:
     // óDêÊìx
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    void SetChainScoreCounterObject(const std::shared_ptr<Object>& object) { this->chain_score_counter_object_Wptr = object; };
     void SetObjectManager(const std::shared_ptr<ObjectManager>& manager) { this->object_manager_Wptr = manager; }
 private:
     void UpdateEnemySpawner(const std::shared_ptr<ObjectManager>& manager);
@@ -73,7 +72,6 @@ private:
     std::weak_ptr<Object> stage_wall_Wptr;
     std::vector<std::weak_ptr<Object>> enemy_Wptr_pool;
 
-    std::weak_ptr<Object> chain_score_counter_object_Wptr;
 #ifdef _DEBUG
 public:
     /**
