@@ -163,7 +163,9 @@ void GamePad::Update()
 		if (GetAsyncKeyState(VK_F6) & 0x8000)	new_button_state |= BTN_DEBUG_PLAYER_INVINCIBLE;
 		if (GetAsyncKeyState(VK_F7) & 0x8000)	new_button_state |= BTN_DEBUG_STOP_TIMER;
 		if (GetAsyncKeyState(VK_F8) & 0x8000) new_button_state |= BTN_DEBUG_TOGGLE_INVINCIBLE_AND_TIMER;
-		if (GetAsyncKeyState(VK_F9) & 0x8000)	new_button_state |= BTN_DEBUG_GAME_SPEED_TOGGLE;
+		if (GetAsyncKeyState(VK_F9) & 0x8000)	new_button_state |= BTN_DEBUG_TOGGLE_ENEMY_SPAWN;
+		if (GetAsyncKeyState(VK_F10) & 0x8000)	new_button_state |= BTN_DEBUG_REMOVE_ALL_ENEMIES;
+		if (GetAsyncKeyState(VK_F11) & 0x8000)	new_button_state |= BTN_DEBUG_GAME_SPEED_TOGGLE;
 #endif // _DEBUG
 
 #if 1

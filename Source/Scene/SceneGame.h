@@ -52,6 +52,7 @@ private:
     CHANGE_SCENE_STATE change_state = CHANGE_SCENE_STATE::START;    // シーン遷移用ステート
 #ifdef _DEBUG
     std::shared_ptr<Object> debug_Particle;
+    std::weak_ptr<Object> enemy_spwner_Wptr;
 #endif // _DEBUG
 #ifdef _DEBUG
     void DebugDrawGUI();

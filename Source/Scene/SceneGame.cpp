@@ -96,6 +96,10 @@ void SceneGame::Initialize()
 
 		// エネミースポナー作成
 		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager, chain_score_ui_group.chain_pop_ui_object);
+#ifdef _DEBUG
+		this->enemy_spwner_Wptr = enemy_spwner;
+#endif // _DEBUG
+
 
 		// ステージ(床)
 		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));
@@ -277,6 +281,29 @@ void SceneGame::Update(float elapsed_time)
 				if (std::shared_ptr<CharacterComponent> player_character = player->GetComponent<CharacterComponent>())
 				{
 					player_character->SetInvincibleFlag(flag);
+				}
+			}
+		}
+		// 敵生成のON・OFF
+		if (GamePad::BTN_DEBUG_TOGGLE_ENEMY_SPAWN & game_pad.GetButtonDown())
+		{
+			const auto& enemy_spwner = this->enemy_spwner_Wptr.lock();
+			if (enemy_spwner)
+			{
+				enemy_spwner->SetIsActive(!enemy_spwner->GetIsActive());
+			}
+		}
+		// 敵の全削除
+		if (GamePad::BTN_DEBUG_REMOVE_ALL_ENEMIES & game_pad.GetButtonDown())
+		{
+			GameObjectRegistry::Instance object_registry = GameObjectRegistry::GetInstance();
+			const auto& enemyWpt_pool = object_registry->GetEnemyWptPool();
+
+			for (const auto& enemy_Wptr : enemyWpt_pool)
+			{
+				if (const auto& enemy = enemy_Wptr.lock())
+				{
+					enemy->SetIsRemove(true);
 				}
 			}
 		}
