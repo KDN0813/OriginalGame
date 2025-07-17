@@ -139,6 +139,21 @@ namespace ImGui
 		}
 		return false;
 	}
+
+	/**
+	* DirectX::XMFLOAT3‚ðImVec4‚É•ÏŠ·‚·‚é
+	*/
+	static ImVec4 GetImVec4(DirectX::XMFLOAT3 float3)
+	{
+		return ImVec4(float3.x, float3.y, float3.z, 1.0f);
+	};
+	/**
+	* DirectX::XMFLOAT4‚ðImVec4‚É•ÏŠ·‚·‚é
+	*/
+	static ImVec4 GetImVec4(DirectX::XMFLOAT4 float4)
+	{
+		return ImVec4(float4.x, float4.y, float4.z, float4.w);
+	};
 };
 
 #endif // _DEBUG

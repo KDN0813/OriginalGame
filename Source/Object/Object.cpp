@@ -1,5 +1,5 @@
-#include <imgui.h>
 #ifdef _DEBUG
+#include "Debug/ImGuiHelper.h"
 #include <magic_enum.hpp>
 #endif // _DEBUG
 
@@ -8,6 +8,10 @@
 #include <string>
 #include "System/Misc.h"
 #include "Component/Component.h"
+
+#ifdef _DEBUG
+DirectX::XMFLOAT4 ObjectManager::imgui_not_active_color = { 0.7f, 0.7f, 0.7f, 1.0f };
+#endif // _DEBUG
 
 std::shared_ptr<Object> Object::CreateChildObject()
 {
@@ -129,7 +133,7 @@ void Object::DrawDebugGUI()
     ImGui::SameLine();
 
     // 非アクティブのオブジェクトは灰色に表示させる
-    if (!this->is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+    if (!this->is_active) ImGui::PushStyleColor(ImGuiCol_Text, { ImGui::GetImVec4(ObjectManager::GetImguiNotActiveColor())});
 
     char buffer[1024];
     ::strncpy_s(buffer, sizeof(buffer), GetNameCStr(), sizeof(buffer));
@@ -181,7 +185,7 @@ void Object::DrawDebugGUI()
         ImGui::SameLine();
 
         // 非アクティブのオブジェクトは灰色に表示させる
-        if (!component_is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+        if (!component_is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetImVec4(ObjectManager::GetImguiNotActiveColor()));
 
         if (ImGui::CollapsingHeader(component->GetName(), ImGuiTreeNodeFlags_DefaultOpen))
         {            
@@ -209,7 +213,7 @@ void Object::DrawDebugGUI()
                 }
                 ImGui::SameLine();
                 
-                if (!is_debug_primitive) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+                if (!is_debug_primitive) ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetImVec4(ObjectManager::GetImguiNotActiveColor()));
 
                 label = "PrimitiveGUI##" + std::to_string(component->GetComponentID());
                 if (ImGui::CollapsingHeader(label.c_str()))
@@ -353,6 +357,13 @@ void ObjectManager::DrawDebugGUI()
 {
     DrawLister();
     DrawDetail();
+
+    // ObjectManagerのパラメータを表示する
+    if (ImGui::Begin("ObjectManager"))
+    {
+        ImGui::ColorEdit4("Imgui Not Active Color", &this->imgui_not_active_color.x);
+    }
+    ImGui::End();
 }
 
 void ObjectManager::DrawDebugPrimitive()
@@ -380,6 +391,7 @@ void ObjectManager::DrawDetail()
     ImGui::Begin("Object Detail", nullptr, ImGuiWindowFlags_None);
 
     std::shared_ptr<Object> last_selected = selection_object_vec.empty() ? nullptr : *selection_object_vec.rbegin();
+    
     if (last_selected != nullptr)
     {
         last_selected->DrawDebugGUI();
@@ -400,7 +412,7 @@ void ObjectManager::DrawDebugNode(const std::shared_ptr<Object>& object)
 
     // 非アクティブのオブジェクトは灰色に表示させる
     bool is_active = (!object->GetIsActive());
-    if (is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));// 灰色
+    if (is_active) ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetImVec4(ObjectManager::GetImguiNotActiveColor()));// 灰色
 
     ImGui::TreeNodeEx(object.get(), nodeFlags, object->GetNameCStr());
 

@@ -7,6 +7,9 @@
 #include "System/Misc.h"
 #include "Component/Component.h"
 #include "System/MyHash.h"
+#ifdef _DEBUG
+#include <DirectXMath.h>
+#endif // _DEBUG
 
 template <class T>
 concept is_Component = requires{ std::is_base_of_v<Component, T>; };
@@ -250,7 +253,13 @@ private:
 	
 	// objectの詳細表示
 	void DrawDetail();
+
+public:
+	static DirectX::XMFLOAT4 GetImguiNotActiveColor() { return imgui_not_active_color; }
+
 private:
 	std::set<std::shared_ptr<Object>> selection_object_vec;
+
+	static DirectX::XMFLOAT4 imgui_not_active_color;	// ImGuiの非アクティブオブジェクトのUIの色
 #endif _DEBUG
 };
