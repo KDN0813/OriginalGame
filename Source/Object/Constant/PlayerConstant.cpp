@@ -216,7 +216,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			// トランスフォーム設定
 			{
 				Transform3DComponent::Transform3DParam param{};
-				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 400.0f);
+				param.local_position = DirectX::XMFLOAT3(0.0f, 0.0f, 236.0f);
 				param.local_scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 				auto child_transform = player_attack_object->AddComponent<Transform3DComponent>(param);
@@ -225,7 +225,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			{
 				CircleCollisionComponent::CollisionParam param{};
 				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
-				param.radius = 7.0f;
+				param.radius = 3.5f;
 				param.default_active_flag = false;
 				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 

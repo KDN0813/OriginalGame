@@ -1,4 +1,4 @@
-#include "PlayerStateDerived.h"
+ï»¿#include "PlayerStateDerived.h"
 #include "Input/Input.h"
 #include "Object/Object.h"
 #include "Object\Constant\PlayerConstant.h"
@@ -48,39 +48,39 @@ void PlayerIdleState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // Ž€–S”»’è
+        // æ­»äº¡åˆ¤å®š
         if (!character->IsAlive())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState("DeadState");
             return;
         }
 
-        // ”íƒ_ƒ”»’è
+        // è¢«ãƒ€ãƒ¡åˆ¤å®š
 #if 0
         if (character->IsDamage())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState(this->change_damage_state);
             return;
         }
 #endif // 0
     }
 
-    // “ü—ÍŽó•t
+    // å…¥åŠ›å—ä»˜
     {
         Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
-        // Xƒ{ƒ^ƒ“
+        // Xãƒœã‚¿ãƒ³
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
-            // UŒ‚ƒXƒe[ƒg‚Ö‘JˆÚ
+            // æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
             state_machine->ChangeState("AttackState");
         }
-        // Yƒ{ƒ^ƒ“
+        // Yãƒœã‚¿ãƒ³
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
-            // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
+            // å›žè»¢æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
                 state_machine->ChangeState("SpinAttackStartState");
@@ -122,40 +122,40 @@ void PlayerMoveState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // Ž€–S”»’è
+        // æ­»äº¡åˆ¤å®š
         if (!character->IsAlive())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState("DeadState");
             return;
         }
 
-        // ”íƒ_ƒ”»’è
+        // è¢«ãƒ€ãƒ¡åˆ¤å®š
 #if 0
         if (character->IsDamage())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState(this->change_damage_state);
             return;
         }
 #endif // 0
     }
 
-    // “ü—ÍŽó•t
+    // å…¥åŠ›å—ä»˜
     {
         Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
-        // Xƒ{ƒ^ƒ“
+        // Xãƒœã‚¿ãƒ³
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
-            // UŒ‚ƒXƒe[ƒg‚Ö‘JˆÚ
+            // æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
             state_machine->ChangeState("AttackState");
             return;
         }
-        // Yƒ{ƒ^ƒ“
+        // Yãƒœã‚¿ãƒ³
         if (pad.GetButtonDown() & GamePad::BTN_Y)
         {
-            // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
+            // å›žè»¢æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
                 state_machine->ChangeState("SpinAttackStartState");
@@ -174,12 +174,12 @@ void PlayerAttackState::Start()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿ
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::ATTACK01, false, 0.2f);
 
-    // SEÄ¶
+    // SEå†ç”Ÿ
     {
         Audio::Instance audio = Audio::GetInstance();
         AudioParam param{};
@@ -189,16 +189,16 @@ void PlayerAttackState::Start()
         audio->Play(param);
     }
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð—LŒø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
-        collision->SetIsActive(true);  // ƒRƒŠƒWƒ‡ƒ“‚ð—LŒø‚É‚·‚é
+        collision->SetIsActive(true);  // ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 
     collision->EvaluateCollision();
 
-    // UŒ‚ƒGƒtƒFƒNƒgÄ¶
+    // æ”»æ’ƒã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
     if (const auto& transform = owner->GetComponent(this->transform_Wptr))
     {
         if (const auto& attack_object_transform = attack_object->GetComponent(attack_object_transform_Wptr))
@@ -211,14 +211,14 @@ void PlayerAttackState::Start()
         }
     }
 
-    // –³“Gó‘Ô‚ÉÝ’è
+    // ç„¡æ•µçŠ¶æ…‹ã«è¨­å®š
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(true);
 
     const auto& player = owner->GetComponent(this->player_Wprt);
     if (!player) return;
-    // ˆÚ“®‘¬“x‚Ì”{—¦•ÏX
+    // ç§»å‹•é€Ÿåº¦ã®å€çŽ‡å¤‰æ›´
     player->SetMoveRate(player->GetAttackMoveRate());
 }
 
@@ -235,19 +235,31 @@ void PlayerAttackState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // Ž€–S”»’è
+        // æ­»äº¡åˆ¤å®š
         if (!character->IsAlive())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState("DeadState");
             return;
         }
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‘Ò‚¿
+    {
+        Input::Instance input = Input::GetInstance();
+        GamePad& pad = input->GetGamePad();
+        // Xï¿½{ï¿½^ï¿½ï¿½
+        if (pad.GetButtonDown() & GamePad::BTN_X)
+        {
+            // ï¿½Uï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½gï¿½Ö‘Jï¿½ï¿½
+            state_machine->ChangeState("AttackComboState");
+            return;
+        }
+    }
+
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿå¾…ã¡
     if (player->GetAttackEndPoint() <= animation->GetMainPartsCurrentAnimationSeconds())
     {
-        // ‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
+        // å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
         state_machine->ChangeState("AttackHoldState");
         return;
     }
@@ -258,14 +270,14 @@ void PlayerAttackState::End()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð–³Œø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç„¡åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK01_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
-        child_collision->SetIsActive(false);  // ƒRƒŠƒWƒ‡ƒ“‚ð–³Œø‚É‚·‚é
+        child_collision->SetIsActive(false);  // ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 
-    // –³“Gó‘Ô‚ð‰ðœ
+    // ç„¡æ•µçŠ¶æ…‹ã‚’è§£é™¤
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(false);
@@ -280,12 +292,12 @@ void PlayerAttackComboState::Start()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿ
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::ATTACK02, false, 0.2f);
 
-    // SEÄ¶
+    // SEå†ç”Ÿ
     {
         Audio::Instance audio = Audio::GetInstance();
         AudioParam param{};
@@ -295,16 +307,16 @@ void PlayerAttackComboState::Start()
         audio->Play(param);
     }
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð—LŒø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK02_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK02_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (collision)
-        collision->SetIsActive(true);  // ƒRƒŠƒWƒ‡ƒ“‚ð—LŒø‚É‚·‚é
+        collision->SetIsActive(true);  // ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 
     collision->EvaluateCollision();
 
-    // UŒ‚ƒGƒtƒFƒNƒgÄ¶
+    // æ”»æ’ƒã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
     if (const auto& transform = owner->GetComponent(this->transform_Wptr))
     {
         if (const auto& attack_object_transform = attack_object->GetComponent(attack_object_transform_Wptr))
@@ -317,14 +329,14 @@ void PlayerAttackComboState::Start()
         }
     }
 
-    // –³“Gó‘Ô‚ÉÝ’è
+    // ç„¡æ•µçŠ¶æ…‹ã«è¨­å®š
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(true);
 
     const auto& player = owner->GetComponent(this->player_Wprt);
     if (!player) return;
-    // ˆÚ“®‘¬“x‚Ì”{—¦•ÏX
+    // ç§»å‹•é€Ÿåº¦ã®å€çŽ‡å¤‰æ›´
     player->SetMoveRate(player->GetAttackMoveRate());
 }
 
@@ -341,32 +353,32 @@ void PlayerAttackComboState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // Ž€–S”»’è
+        // æ­»äº¡åˆ¤å®š
         if (!character->IsAlive())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState("DeadState");
             return;
         }
     }
 
-    // “ü—ÍŽó•t
+    // å…¥åŠ›å—ä»˜
     {
         Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
-        // Xƒ{ƒ^ƒ“
+        // Xãƒœã‚¿ãƒ³
         if (pad.GetButtonDown() & GamePad::BTN_X)
         {
-            // UŒ‚ƒXƒe[ƒg‚Ö‘JˆÚ
+            // æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
             state_machine->ChangeState("AttackState");
             return;
         }
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‘Ò‚¿
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿå¾…ã¡
     if (player->GetAttackCombo2EndPoint() <= animation->GetMainPartsCurrentAnimationSeconds())
     {
-        // ‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
+        // å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
         state_machine->ChangeState("AttackHoldState");
         return;
     }
@@ -377,14 +389,14 @@ void PlayerAttackComboState::End()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð–³Œø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK02_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç„¡åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::ATTACK02_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
-        child_collision->SetIsActive(false);  // ƒRƒŠƒWƒ‡ƒ“‚ð–³Œø‚É‚·‚é
+        child_collision->SetIsActive(false);  // ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 
-    // –³“Gó‘Ô‚ð‰ðœ
+    // ç„¡æ•µçŠ¶æ…‹ã‚’è§£é™¤
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(false);
@@ -407,23 +419,23 @@ void PlayerAttackHoldState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // Ž€–S”»’è
+        // æ­»äº¡åˆ¤å®š
         if (!character->IsAlive())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState("DeadState");
             return;
         }
     }
 
-    // “ü—ÍŽó•t
+    // å…¥åŠ›å—ä»˜
     {
         Input::Instance input = Input::GetInstance();
         GamePad& pad = input->GetGamePad();
-        // Yƒ{ƒ^ƒ“
+        // Yãƒœã‚¿ãƒ³
         if (pad.GetButton() & GamePad::BTN_Y)
         {
-            // ‰ñ“]UŒ‚ƒXƒe[ƒg‚É‘JˆÚ
+            // å›žè»¢æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             if (player->IsUseSpecialGage(player->GetSpinAttackUseGageCount()))
             {
                 state_machine->ChangeState("SpinAttackStartState");
@@ -432,7 +444,7 @@ void PlayerAttackHoldState::Update(float elapsed_time)
         }
     }
 
-    // ˆÚ“®”»’è
+    // ç§»å‹•åˆ¤å®š
     auto movement = owner->GetComponent<MovementComponent>(this->movement_Wpt);
     if (!movement) return;
     if (movement->IsMoveXZAxis())
@@ -441,10 +453,10 @@ void PlayerAttackHoldState::Update(float elapsed_time)
         return;
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‘Ò‚¿
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿå¾…ã¡
     if (!animation->IsPlayMainPartsAnimation())
     {
-        // ‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
+        // å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
         state_machine->ChangeState("IdleState");
         return;
     }
@@ -456,7 +468,7 @@ void PlayerAttackHoldState::End()
     if (!owner) return;
     const auto& player = owner->GetComponent(this->player_Wprt);
     if (!player) return;
-    // ˆÚ“®‘¬“x‚Ì”{—¦‚ðŒ³‚É–ß‚·
+    // ç§»å‹•é€Ÿåº¦ã®å€çŽ‡ã‚’å…ƒã«æˆ»ã™
     player->SetMoveRate(1.0f);
 }
 
@@ -468,7 +480,7 @@ void PlayerSpinAttackStartState::Start()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿ
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation)return;
     animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_START, false, 0.2f);
@@ -476,10 +488,10 @@ void PlayerSpinAttackStartState::Start()
     const auto& player = owner->GetComponent(this->player_Wprt);
     if (!player) return;
 
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
 
-    // UŒ‚ƒGƒtƒFƒNƒgÄ¶
+    // æ”»æ’ƒã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
     if (const auto& transform = owner->GetComponent(this->transform_Wptr))
     {
         if (const auto& attack_object_transform = attack_object->GetComponent(this->attack_object_transform_Wptr))
@@ -505,10 +517,10 @@ void PlayerSpinAttackStartState::Update(float elapsed_time)
     if (!animation) return;
 
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‘Ò‚¿
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿå¾…ã¡
     if (!animation->IsPlayMainPartsAnimation())
     {
-        // ‰ñ“]
+        // å›žè»¢
         state_machine->ChangeState("SpinAttackSpinLoopState");
         return;
     }
@@ -523,12 +535,12 @@ void PlayerSpinAttackSpinLoopState::Start()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿ
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK_SPIN_LOOP, true, 0.0f);
 
-    // SEÄ¶
+    // SEå†ç”Ÿ
     {
         Audio::Instance audio = Audio::GetInstance();
         AudioParam param{};
@@ -538,15 +550,15 @@ void PlayerSpinAttackSpinLoopState::Start()
         audio->Play(param);
     }
 
-    // ƒvƒŒƒCƒ„[‚Ì“ü—ÍˆÚ“®‚ð–³Œø‚É‚·‚é
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ç§»å‹•ã‚’ç„¡åŠ¹ã«ã™ã‚‹
     auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
     {
-        player->SetIsSpinAttack(true);  // ‰ñ“]UŒ‚ƒtƒ‰ƒO‚ð—§‚Ä‚é
+        player->SetIsSpinAttack(true);  // å›žè»¢æ”»æ’ƒãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
         player->SetMoveRate(player->GetSpinAttackMoveRate());
         player->SetSpinAttackTimer(player->GetSpinAttackTime());
 
-        // ‰ñ“]UŒ‚‚ÌŽc‚èŽžŠÔUI‚ðƒAƒNƒeƒBƒu‰»‚·‚é
+        // å›žè»¢æ”»æ’ƒã®æ®‹ã‚Šæ™‚é–“UIã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–ã™ã‚‹
         if (const auto& player_owner = player->GetOwner())
         {
             if (const auto& spin_attack_ui_object = player_owner->FindChildObject(PlayerConstant::SPIN_ATTACK_TIME_UI_NAME))
@@ -556,21 +568,21 @@ void PlayerSpinAttackSpinLoopState::Start()
         }
     }
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð—LŒø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (!collision) return;
 
-    collision->SetIsActive(true);  // ƒRƒŠƒWƒ‡ƒ“‚ð—LŒø‚É‚·‚é
+    collision->SetIsActive(true);  // ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’æœ‰åŠ¹ã«ã™ã‚‹
     collision->EvaluateCollision();
 
-    // –³“Gó‘Ô‚ÉÝ’è
+    // ç„¡æ•µçŠ¶æ…‹ã«è¨­å®š
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(true);
 
-    // ƒ|ƒCƒ“ƒgÁ”ï
+    // ãƒã‚¤ãƒ³ãƒˆæ¶ˆè²»
     {
         player->UseSpecialGage(player->GetSpinAttackUseGageCount());
     }
@@ -589,7 +601,7 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
     const auto& transform = owner->GetComponent(this->transform_Wptr);
     if (!transform) return;
 
-    // UŒ‚ƒGƒtƒFƒNƒg‚ÌˆÊ’uXV
+    // æ”»æ’ƒã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä½ç½®æ›´æ–°
     {
         const DirectX::XMFLOAT3 pos = transform->GetWorldPosition();
         const Effekseer::Handle handle =player->GetSpinAttackEffectHandle();
@@ -599,18 +611,18 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // Ž€–S”»’è
+        // æ­»äº¡åˆ¤å®š
         if (!character->IsAlive())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState("DeadState");
             return;
         }
     }
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð—LŒø‚É‚·‚é
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹
     {
-        const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+        const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
         if (!attack_object) return;
         auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
         if (!collision) return;
@@ -620,7 +632,7 @@ void PlayerSpinAttackSpinLoopState::Update(float elapsed_time)
     float attack_time = player->GetSpinAttackTimer() - elapsed_time;
     if (attack_time <= 0.0f)
     {
-        // UŒ‚ŽžŠÔ‚ª0‚É‚È‚Á‚½‚ç‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
+        // æ”»æ’ƒæ™‚é–“ãŒ0ã«ãªã£ãŸã‚‰å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
         state_machine->ChangeState("IdleState");
     }
     player->SetSpinAttackTimer(attack_time);
@@ -631,15 +643,15 @@ void PlayerSpinAttackSpinLoopState::End()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // ƒvƒŒƒCƒ„[‚Ì“ü—ÍˆÚ“®‚ð—LŒø‚É‚·‚é
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ç§»å‹•ã‚’æœ‰åŠ¹ã«ã™ã‚‹
     auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
     {
-        player->SetIsSpinAttack(false);  // ‰ñ“]UŒ‚ƒtƒ‰ƒO‚ðÜ‚é
+        player->SetIsSpinAttack(false);  // å›žè»¢æ”»æ’ƒãƒ•ãƒ©ã‚°ã‚’æŠ˜ã‚‹
         player->SetInputMoveValidityFlag(true);
         player->SetMoveRate(1.0f);
 
-        // ‰ñ“]UŒ‚‚ÌŽc‚èŽžŠÔUI‚ð”ñƒAƒNƒeƒBƒu‰»‚·‚é
+        // å›žè»¢æ”»æ’ƒã®æ®‹ã‚Šæ™‚é–“UIã‚’éžã‚¢ã‚¯ãƒ†ã‚£ãƒ–åŒ–ã™ã‚‹
         if (const auto& player_owner = player->GetOwner())
         {
             if (const auto& spin_attack_ui_object = player_owner->FindChildObject(PlayerConstant::SPIN_ATTACK_TIME_UI_NAME))
@@ -649,19 +661,19 @@ void PlayerSpinAttackSpinLoopState::End()
         }
     }
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð–³Œø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç„¡åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
-        child_collision->SetIsActive(false);  // ƒRƒŠƒWƒ‡ƒ“‚ð–³Œø‚É‚·‚é
+        child_collision->SetIsActive(false);  // ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 
-    // –³“Gó‘Ô‚ð‰ðœ
+    // ç„¡æ•µçŠ¶æ…‹ã‚’è§£é™¤
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(false);
 
-    // ƒGƒtƒFƒNƒg’âŽ~
+    // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆåœæ­¢
     {
         const Effekseer::Handle handle = player->GetSpinAttackEffectHandle();
 
@@ -678,12 +690,12 @@ void PlayerSpinAttackState::Start()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿ
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::SPIN_ATTACK, false, 0.0f);
 
-    // SEÄ¶
+    // SEå†ç”Ÿ
     {
         Audio::Instance audio = Audio::GetInstance();
         AudioParam param{};
@@ -693,7 +705,7 @@ void PlayerSpinAttackState::Start()
         audio->Play(param);
     }
 
-    // ƒvƒŒƒCƒ„[‚Ì“ü—ÍˆÚ“®‚ð–³Œø‚É‚·‚é
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ç§»å‹•ã‚’ç„¡åŠ¹ã«ã™ã‚‹
     auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
     {
@@ -701,16 +713,16 @@ void PlayerSpinAttackState::Start()
         player->SetMoveRate(player->GetSpinAttackMoveRate());
     }
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð—LŒø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (!collision) return;
         
-    collision->SetIsActive(true);  // ƒRƒŠƒWƒ‡ƒ“‚ð—LŒø‚É‚·‚é
+    collision->SetIsActive(true);  // ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’æœ‰åŠ¹ã«ã™ã‚‹
     collision->EvaluateCollision();
 
-    // –³“Gó‘Ô‚ÉÝ’è
+    // ç„¡æ•µçŠ¶æ…‹ã«è¨­å®š
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(true);
@@ -725,8 +737,8 @@ void PlayerSpinAttackState::Update(float elapsed_time)
     auto animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð—LŒø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (!collision) return;
@@ -734,19 +746,19 @@ void PlayerSpinAttackState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // Ž€–S”»’è
+        // æ­»äº¡åˆ¤å®š
         if (!character->IsAlive())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState("DeadState");
             return;
         }
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‘Ò‚¿
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿå¾…ã¡
     if (!animation->IsPlayMainPartsAnimation())
     {
-        // ‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
+        // å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
         state_machine->ChangeState("IdleState");
         return;
     }
@@ -757,7 +769,7 @@ void PlayerSpinAttackState::End()
     const auto& owner = this->GetOwner();
     if (!owner) return;
 
-    // ƒvƒŒƒCƒ„[‚Ì“ü—ÍˆÚ“®‚ð—LŒø‚É‚·‚é
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ç§»å‹•ã‚’æœ‰åŠ¹ã«ã™ã‚‹
     auto player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
     {
@@ -765,14 +777,14 @@ void PlayerSpinAttackState::End()
         player->SetMoveRate(1.0f);
     }
 
-    // UŒ‚”»’èƒIƒuƒWƒFƒNƒg‚ð–³Œø‚É‚·‚é
-    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // ŽqƒIƒuƒWƒFƒNƒg(UŒ‚—pƒIƒuƒWƒFƒNƒg)Žæ“¾
+    // æ”»æ’ƒåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç„¡åŠ¹ã«ã™ã‚‹
+    const auto& attack_object = owner->FindChildObject(PlayerConstant::SPIN_ATTACK_OBJECT_NAME);  // å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(æ”»æ’ƒç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)å–å¾—
     if (!attack_object) return;
     auto child_collision = attack_object->GetComponent<CircleCollisionComponent>(this->child_collision_Wprt);
     if (child_collision)
-        child_collision->SetIsActive(false);  // ƒRƒŠƒWƒ‡ƒ“‚ð–³Œø‚É‚·‚é
+        child_collision->SetIsActive(false);  // ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 
-    // –³“Gó‘Ô‚ð‰ðœ
+    // ç„¡æ•µçŠ¶æ…‹ã‚’è§£é™¤
     const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr);
     if (!character) return;
     character->SetInvincibleFlag(false);
@@ -806,19 +818,19 @@ void PlayerDamageState::Update(float elapsed_time)
 
     if (const auto& character = owner->GetComponent<CharacterComponent>(this->character_Wptr); character.get())
     {
-        // Ž€–S”»’è
+        // æ­»äº¡åˆ¤å®š
         if (!character->IsAlive())
         {
-            // ”íƒ_ƒƒXƒe[ƒg‚É‘JˆÚ
+            // è¢«ãƒ€ãƒ¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
             state_machine->ChangeState("DeadState");
             return;
         }
     }
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‘Ò‚¿
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿå¾…ã¡
     if (!animation->IsPlayMainPartsAnimation())
     {
-        // ‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
+        // å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
         state_machine->ChangeState("IdleState");
         return;
     }
@@ -841,21 +853,21 @@ void PlayerDeadState::Start()
 {
     const auto& owner = this->GetOwner();
     if (!owner) return;
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿ
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (animation)
     {
         animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::DEAD, false);
         animation->PlaySubPartsAnimation(PlayerConstant::ANIMATION::DEAD, false);
     }
-    // “ü—ÍŽó•t‚ð‚µ‚È‚¢‚æ‚¤‚ÉÝ’è
+    // å…¥åŠ›å—ä»˜ã‚’ã—ãªã„ã‚ˆã†ã«è¨­å®š
     const auto& player = owner->GetComponent<PlayerComponent>(this->player_Wprt);
     if (player)
     {
         player->SetInputMoveValidityFlag(false);
     }
 
-    // ‰º”¼g‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ŠÇ—‚ð’âŽ~‚³‚¹‚é
+    // ä¸‹åŠèº«ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç®¡ç†ã‚’åœæ­¢ã•ã›ã‚‹
     const auto& animated_movement = owner->GetComponent(this->animated_movement_Wprt);
     if (animated_movement)
     {
@@ -872,33 +884,33 @@ void PlayerDeadState::Update(float elapsed_time)
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶‘Ò‚¿
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿå¾…ã¡
     if (!animation->IsPlayMainPartsAnimation())
     {
-        // Ž€–S‘Ò‹@ƒXƒe[ƒg‚É‘JˆÚ
+        // æ­»äº¡å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
         state_machine->ChangeState("DeadIdleState");
         return;
     }
 }
 
-// Ž€–SƒXƒe[ƒg
+// æ­»äº¡ã‚¹ãƒ†ãƒ¼ãƒˆ
 PlayerDeadIdleState::PlayerDeadIdleState()
 {
 }
 
 void PlayerDeadIdleState::Start()
 {
-    // ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿ
     const auto& owner = this->GetOwner();
     if (!owner) return;
     const auto& animation = owner->GetComponent<ModelAnimationControlComponent>(this->animation_Wprt);
     if (!animation) return;
     animation->PlayMainPartsAnimation(PlayerConstant::ANIMATION::DEAD_STAY, false);
 
-    // ƒQ[ƒ€ƒ‚[ƒh‚ðÝ’è
+    // ã‚²ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®š
     {
         GameData::Instance game_data = GameData::GetInstance();
-        // ”s–kó‘Ô‚É•ÏX
+        // æ•—åŒ—çŠ¶æ…‹ã«å¤‰æ›´
         game_data->SetGameStatus(GameData::GameStatus::DEFEAT);
     }
 }

@@ -21,7 +21,7 @@ EnemySpawnerComponent::EnemySpawnerComponent(Param param)
     auto& enemy_type1 = this->enemy_config_pool.at(EyemyType::Normal);
     enemy_type1.spawn_point = {};
     enemy_type1.base_color = { 1.0f,1.0f, 1.0f, 1.0f };
-    enemy_type1.move_speed = 5.0f;
+    enemy_type1.move_speed = 8.0f;
 }
 
 void EnemySpawnerComponent::Start()
@@ -124,7 +124,7 @@ void EnemySpawnerComponent::DrawDebugGUI()
     ImGui::InputInt("Max Enemies Per Spawn", &this->param.max_enemies_per_spawn);
 
 
-    if (ImGui::InputInt("Spawn Offset Interval", &this->debug_spawn_count))
+    if (ImGui::InputInt("Debug Spawn Count", &this->debug_spawn_count))
     {
         this->spawn_area.SetRadius(this->param.spawn_offset_interval * this->debug_spawn_count);
     }
