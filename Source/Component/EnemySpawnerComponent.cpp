@@ -112,11 +112,11 @@ void EnemySpawnerComponent::DrawDebugGUI()
 {
     if (ImGui::InputFloat("Create Cool Time Max", &this->param.create_cool_time_max))
     {
-        this->param.create_cool_time_max = (std::min)(this->param.create_cool_time_max, 0.0f);
+        this->param.create_cool_time_max = (std::max)(this->param.create_cool_time_max, 0.0f);
     }
     if (ImGui::InputFloat("Create Cool Time Min", &this->param.create_cool_time_min))
     {
-        this->param.create_cool_time_min = (std::min)(this->param.create_cool_time_min, 0.0f);
+        this->param.create_cool_time_min = (std::max)(this->param.create_cool_time_min, 0.0f);
     }
     ImGui::SliderFloat("Cool Time", &this->param.create_cool_timer, 0.0f, this->param.create_cool_time_max);
 
