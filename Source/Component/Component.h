@@ -56,17 +56,6 @@ public:
     void SetIsActive(const bool is_active) 
     {
         this->is_active = is_active; 
-#ifdef _DEBUG
-        if (is_active)
-        {
-            this->is_draw_debug_primitive = this->is_old_draw_debug_primitive;
-        }
-        else
-        {
-            this->is_old_draw_debug_primitive = this->is_draw_debug_primitive;
-            this->is_draw_debug_primitive = is_active;
-        }
-#endif // _DEBUG
     }
     bool IsOwner() const { return (this->owner_Wptr.lock() != nullptr); }   // Š—LÒ‚ª‘¶İ‚·‚é‚©
 private:
@@ -96,7 +85,6 @@ public:
 
 protected:
     bool is_draw_debug_primitive = true;
-    bool is_old_draw_debug_primitive = true;
 #endif // _DEBUG
 #ifdef RELEASE_DEBUG
 public:
