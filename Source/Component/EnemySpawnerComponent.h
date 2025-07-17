@@ -33,6 +33,8 @@ public:
 
         int min_enemies_per_spawn;  // 一度に生成する敵の最低値
         int max_enemies_per_spawn;  // 一度に生成する敵の最大値
+
+        float spawn_offset_interval = 2.0f; // 各スポーン地点のばらけ幅
     };
 
 public:
@@ -92,6 +94,8 @@ public:
 private:
     CylinderParam min_spawn_area;
     CylinderParam max_spawn_area;
+    CylinderParam spawn_area;
+    int debug_spawn_count = 0;      // ImGuiで敵を生成する時の数
 #endif // DEBUG
 };
 

@@ -33,6 +33,10 @@ void EnemySpawnerComponent::Start()
     this->max_spawn_area.SetRadius(this->param.max_spawn_dist);
     this->max_spawn_area.SetHeight(4.0f);
     this->max_spawn_area.SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
+
+    this->spawn_area.SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+    this->spawn_area.SetRadius(this->param.spawn_offset_interval * this->debug_spawn_count);
+    this->spawn_area.SetHeight(4.0f);
 #endif // _DEBUG
 }
 
@@ -80,18 +84,17 @@ void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManag
     const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(this->param.min_enemies_per_spawn, this->param.max_enemies_per_spawn);	// 1度に生成するエネミーの数
 
     // TODO [07/07]ここから
-    const DirectX::XMFLOAT3 STANDARD_POINT = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, this->param.min_spawn_dist, this->param.max_spawn_dist);
+    const DirectX::XMFLOAT3 BASE_SPAWN_CENTER = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, this->param.min_spawn_dist, this->param.max_spawn_dist);
     for (int i = 0; i < ENEMY_MAX - NOW_ENEMY_COUNT; ++i)
     {
         if (CREATE_ENEMY_MAX <= i)break;
 
-        const DirectX::XMFLOAT3 SPAWN_POINT = MyMath::GetNonOverlappingPointInRing(STANDARD_POINT, 0, CREATE_ENEMY_MAX * 2.0f);
+        const DirectX::XMFLOAT3 SPAWN_POINT = MyMath::GetNonOverlappingPointInRing(BASE_SPAWN_CENTER, 0, CREATE_ENEMY_MAX * this->param.spawn_offset_interval);
 
         EnemyConfig config = this->enemy_config_pool.at(EyemyType::Normal);
         config.spawn_point = SPAWN_POINT;
         CreateEnemy(manager, config);
     }
-
 }
 
 void EnemySpawnerComponent::CreateEnemy(const std::shared_ptr<ObjectManager>& manager, const EnemyConfig& config)
@@ -120,6 +123,17 @@ void EnemySpawnerComponent::DrawDebugGUI()
     ImGui::InputInt("Min Enemies Per Spawn", &this->param.min_enemies_per_spawn);
     ImGui::InputInt("Max Enemies Per Spawn", &this->param.max_enemies_per_spawn);
 
+
+    if (ImGui::InputInt("Spawn Offset Interval", &this->debug_spawn_count))
+    {
+        this->spawn_area.SetRadius(this->param.spawn_offset_interval * this->debug_spawn_count);
+    }
+
+    if(ImGui::InputFloat("Spawn Offset Interval", &this->param.spawn_offset_interval))
+    {
+        this->spawn_area.SetRadius(this->param.spawn_offset_interval * this->debug_spawn_count);
+    }
+
     if (ImGui::Button("Create Enemy"))
     {
         EnemyConfig config = this->enemy_config_pool.at(EyemyType::Normal);
@@ -141,10 +155,12 @@ void EnemySpawnerComponent::DrawDebugPrimitive()
     const auto& debug_primitive_render = DebugManager::GetInstance()->GetDebugPrimitiveRenderer();
     debug_primitive_render->DrawCylinder(this->min_spawn_area);
     debug_primitive_render->DrawCylinder(this->max_spawn_area);
+    debug_primitive_render->DrawCylinder(this->spawn_area);
 }
 
 void EnemySpawnerComponent::DrawDebugPrimitiveGUI()
 {
+    this->spawn_area.DrawDebugGUI("Spawn Area");
     this->min_spawn_area.DrawDebugGUI("Min Spawn Area");
     this->max_spawn_area.DrawDebugGUI("Max Spawn Area");
 }
