@@ -204,7 +204,7 @@ void PlayerAttackState::Start()
         if (const auto& attack_object_transform = attack_object->GetComponent(attack_object_transform_Wptr))
         {
             const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
-            const float effect_scale = 4.0f;
+            const float effect_scale = collision->GetRadius();
             DirectX::XMFLOAT3 rotation{};
             rotation.y = transform->GetLocalAngle().y;
             EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/Attack1.efk", pos, effect_scale, rotation);
@@ -244,17 +244,18 @@ void PlayerAttackState::Update(float elapsed_time)
         }
     }
 
-    {
-        Input::Instance input = Input::GetInstance();
-        GamePad& pad = input->GetGamePad();
-        // X�{�^��
-        if (pad.GetButtonDown() & GamePad::BTN_X)
-        {
-            // �U���X�e�[�g�֑J��
-            state_machine->ChangeState("AttackComboState");
-            return;
-        }
-    }
+    // 入力受付
+    //{
+    //    Input::Instance input = Input::GetInstance();
+    //    GamePad& pad = input->GetGamePad();
+    //    // Xボタン
+    //    if (pad.GetButtonDown() & GamePad::BTN_X)
+    //    {
+    //        // コンボ攻撃ステートに遷移
+    //        state_machine->ChangeState("AttackComboState");
+    //        return;
+    //    }
+    //}
 
     // アニメーション再生待ち
     if (player->GetAttackEndPoint() <= animation->GetMainPartsCurrentAnimationSeconds())
@@ -322,7 +323,7 @@ void PlayerAttackComboState::Start()
         if (const auto& attack_object_transform = attack_object->GetComponent(attack_object_transform_Wptr))
         {
             const DirectX::XMFLOAT3 pos = attack_object_transform->GetWorldPosition();
-            const float effect_scale = 6.0f;
+            const float effect_scale = collision->GetRadius();
             DirectX::XMFLOAT3 rotation{};
             rotation.y = transform->GetLocalAngle().y;
             EffekseerSystem::GetInstance()->PlayEffect("Data/Effect/Effekseer/Attack2.efk", pos, effect_scale, rotation);

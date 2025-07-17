@@ -94,6 +94,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		param.special_point_max = 25.0f;
 		param.spin_attack_use_gage_count = 1;
 		param.gauge_count_max = SPECIAL_GAGE_MAX;
+		param.attack_move_rate = 0.3f;
 		player_component = player->AddComponent<PlayerComponent>(param);
 	}
 	// シェーダー設定
@@ -257,7 +258,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 			{
 				CircleCollisionComponent::CollisionParam param{};
 				param.collision_type = COLLISION_OBJECT_TYPE::PLAYER_ATTACK;
-				param.radius = 18.0f;
+				param.radius = 5.0f;
 				param.default_active_flag = false;
 				auto child_collision = player_attack_object->AddComponent<CircleCollisionComponent>(param);
 
