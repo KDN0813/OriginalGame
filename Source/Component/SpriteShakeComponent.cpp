@@ -7,12 +7,13 @@
 #include <cmath>
 #include <algorithm>
 #include "Object/Object.h"
+#include "System/MyMath/MyMathf.h"
 #include "Component/BaseSpriteComponent.h"
 #include "Component/Transform2DComponent.h"
 
 void SpriteShakeComponent::ReStart()
 {
-    this->interpolation_timer = 0.0f;
+    this->tiemr = 0.0f;
     CommandClear();
 }
 
@@ -30,59 +31,25 @@ void SpriteShakeComponent::Update(float elapsed_time)
     const auto& transform = owner->GetComponent(this->transform_Wptr);
     if (!transform) return;
 
-    // 初期設定
-    switch (this->state)
+    if (current_command.end_time > 0.0f)
     {
-    case State::Start:
-    {
-        // 初期化
-        this->start_scale = transform->GetLocalScale();
-        this->interpolation_timer = 0.0f;
-        this->state = State::Run;
-        break;
-    }
-    case State::Run:
-    {
-        // 補間時間が0以下なら即移動して終了
-        if (current_command.transition_duration <= 0.0f)
+        // シェイク量をランダム計算
+        const float TIME_RATE = this->tiemr / current_command.end_time;
+        const DirectX::XMFLOAT2 movement = 
         {
-            transform->SetLocalPosition(current_command.target_scale);
-            this->state = State::End;
-            break;
+            current_command.force.x - (current_command.force.x * TIME_RATE),
+            current_command.force.x - (current_command.force.y * TIME_RATE)
+        } ;
+        current_command.shake_movement.x = MyMath::RandomRange(-movement.x, +movement.x);
+        current_command.shake_movement.y = MyMath::RandomRange(-movement.y, +movement.y);
+
+        //　タイマー更新
+        this->tiemr = (std::min)(current_command.end_time, this->tiemr + elapsed_time);
+        if (this->tiemr >= current_command.end_time) 
+        { 
+            this->command_pool.pop_front(); // 先頭の要素を削除
         }
-
-        // t:補間係数
-        const float t = std::clamp(
-            this->interpolation_timer / current_command.transition_duration, 0.0f, 1.0f);
-
-        // 線形補間
-        const DirectX::XMFLOAT2 interpolated_scale
-        {
-            std::lerp(this->start_scale.x, current_command.target_scale.x, t),
-            std::lerp(this->start_scale.y, current_command.target_scale.y, t)
-        };
-
-        transform->SetLocalScale(interpolated_scale);
-
-        // 補間時間を超えたら終了
-        if (current_command.transition_duration <= this->interpolation_timer)
-        {
-            this->state = State::End;
-        }
-        break;
     }
-    case State::End:
-    {
-        // 終了
-        this->command_pool.pop_front();   // 要素を削除
-        this->state = State::Start;
-        break;
-    }
-    default:
-        break;
-    }
-
-    this->interpolation_timer += elapsed_time;
 }
 
 void SpriteShakeComponent::PushFrontCommand(const ShakeCommand& command)
@@ -91,9 +58,9 @@ void SpriteShakeComponent::PushFrontCommand(const ShakeCommand& command)
     this->command_pool.push_front(command);
 }
 
-void SpriteShakeComponent::PushFrontCommand(DirectX::XMFLOAT2 target_scale, float transition_duration)
+void SpriteShakeComponent::PushFrontCommand(DirectX::XMFLOAT2 force, DirectX::XMFLOAT2 shake_movement, float shake_time)
 {
-    PushFrontCommand(ShakeCommand(target_scale, transition_duration));
+    PushFrontCommand(ShakeCommand(force, shake_movement, shake_time));
 }
 
 void SpriteShakeComponent::PushBackCommand(const ShakeCommand& command)
@@ -101,9 +68,9 @@ void SpriteShakeComponent::PushBackCommand(const ShakeCommand& command)
     this->command_pool.push_back(command);
 }
 
-void SpriteShakeComponent::PushBackCommand(DirectX::XMFLOAT2 target_scale, float transition_duration)
+void SpriteShakeComponent::PushBackCommand(DirectX::XMFLOAT2 force, DirectX::XMFLOAT2 shake_movement, float shake_time)
 {
-    PushBackCommand(ShakeCommand(target_scale, transition_duration));
+    PushFrontCommand(ShakeCommand(force, shake_movement, shake_time));
 }
 
 void SpriteShakeComponent::CommandClear()

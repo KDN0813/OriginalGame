@@ -15,6 +15,7 @@ public:
         DirectX::XMFLOAT2 clip_pos = { 0.0f,0.0f };
         DirectX::XMFLOAT2 clip_size = { 1.0f,1.0f };
         DirectX::XMFLOAT4 color = { 1.0f,1.0f ,1.0f ,1.0f };
+        DirectX::XMFLOAT2 offset = { 0.0f,0.0f };
         PRIORITY draw_priority = PRIORITY::DEFAULT;
         Sprite::CENTER_TYPE center_type = Sprite::CENTER_TYPE::TOP_LEFT;
     };
@@ -29,8 +30,13 @@ public:
 
     PRIORITY GetDrawPriority() { return this->sprite_param.draw_priority; }
 
-    void SetColor(DirectX::XMFLOAT4 color) { this->sprite_param.color = color; };
-    void SetAlpha(float a) { this->sprite_param.color.w = a; };
+    void SetColor(const DirectX::XMFLOAT4 color) { this->sprite_param.color = color; this->default_sprite_param.color = color;};
+    void SetAlpha(const float a) { this->sprite_param.color.w = a; this->default_sprite_param.color.w = a; };
+    void SetOffset(const DirectX::XMFLOAT2 offset) { this->sprite_param.offset = offset; this->default_sprite_param.offset = offset; }
+
+    // ’²®‚³‚ê‚½ˆÊ’u‚ÌŒvZ
+    DirectX::XMFLOAT2 CalcModifiedPos(const DirectX::XMFLOAT2 display_pos);
+
 protected:
     SpriteParam sprite_param;
     SpriteParam default_sprite_param;

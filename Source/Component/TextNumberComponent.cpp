@@ -53,15 +53,15 @@ void TextNumberComponent::ReStart()
 
 void TextNumberComponent::Render(ID3D11DeviceContext* dc)
 {
-    DirectX::XMFLOAT2 pos{};
-    DirectX::XMFLOAT2 scale{};
+    DirectX::XMFLOAT2 display_pos{};
+    DirectX::XMFLOAT2 display_size{};
     float angle{};
     if (const auto& owner = GetOwner())
     {
         if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
-            pos = transform->GetWorldPosition();
-            scale = transform->GetWorldScale();
+            display_pos = CalcModifiedPos(transform->GetWorldPosition());
+            display_size = transform->GetWorldScale();
             angle = transform->GetWorldAngle();
         }
     }
@@ -72,14 +72,14 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     Digits = static_cast<int>(numeral_str.size());
 
     // 描画サイズ更新
-    this->sprite_param.display_size = { this->font_draw_size.x * scale.x,this->font_draw_size.y * scale.y };
+    this->sprite_param.display_size = { this->font_draw_size.x * display_size.x,this->font_draw_size.y * display_size.y };
 
     // 中心位置へのオフセット値取得
     float rateX, rateY;
     Sprite::GetCenterTypeRate(rateX, rateY, this->sprite_param.center_type);
 
     // 位置設定
-    pos.x -= this->sprite_param.display_size.x * static_cast<float>(Digits - 1) * rateX;
+    display_pos.x -= this->sprite_param.display_size.x * static_cast<float>(Digits - 1) * rateX;
 
     // 桁数分描画を行う
     for (int i = 0; i < Digits; ++i)
@@ -89,7 +89,7 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
         this->sprite_param.clip_pos = { FONT_WIGTH * static_cast<float>(n),0.0f};
 
         this->sprite->Render(dc,
-            pos,
+            display_pos,
             this->sprite_param.display_size,
             this->sprite_param.clip_pos,
             this->sprite_param.clip_size,
@@ -99,7 +99,7 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
         );
 
         // 描画位置更新
-        pos.x += this->sprite_param.display_size.x;
+        display_pos.x += this->sprite_param.display_size.x;
     }
 }
 
@@ -125,6 +125,7 @@ void TextNumberComponent::DrawDebugGUI()
         SetDrawValue(value);
     }
     ImGui::ColorEdit4("Sprite Color", &this->sprite_param.color.x);
+    ImGui::DragFloat2("Sprite Offset", &this->sprite_param.offset.x,0.01f);
 
     // 中心位置の設定
     int center_type_index = static_cast<int>(this->sprite_param.center_type);

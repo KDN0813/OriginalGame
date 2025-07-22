@@ -19,8 +19,9 @@ public:
 
     struct ShakeCommand
     {
-        DirectX::XMFLOAT2 target_scale;
-        float transition_duration;
+        DirectX::XMFLOAT2 force = {};           // 入力されるシェイクの強さ
+        DirectX::XMFLOAT2 shake_movement = {};  // シェイク量
+        float end_time = 0.0f;                  
     };
 public:
     SpriteShakeComponent() : command_pool() {};
@@ -43,11 +44,11 @@ public:
 
     // 命令を先頭にに追加
     void PushFrontCommand(const ShakeCommand& command);
-    void PushFrontCommand(DirectX::XMFLOAT2 target_scale, float transition_duration);
+    void PushFrontCommand(DirectX::XMFLOAT2 force, DirectX::XMFLOAT2 shake_movement, float shake_time);
     void PushFrontCommand(float target_scale, float transition_duration);
     // 命令を最後尾に追加
     void PushBackCommand(const ShakeCommand& command);
-    void PushBackCommand(DirectX::XMFLOAT2 target_scale, float transition_duration);
+    void PushBackCommand(DirectX::XMFLOAT2 force, DirectX::XMFLOAT2 shake_movement, float shake_time);
     void PushBackCommand(float target_scale, float transition_duration);
 
     // コマンドを空にする
@@ -55,8 +56,8 @@ public:
 
 private:
     std::deque<ShakeCommand> command_pool;
+    float tiemr = 0.0f;
 
-    float interpolation_timer = 0.0f;   // 補間に使うタイマー
     State state = State::Start;
 private:
     std::weak_ptr<BaseSpriteComponent> sprite_Wptr;

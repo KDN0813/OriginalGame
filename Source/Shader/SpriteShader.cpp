@@ -123,7 +123,7 @@ void SpriteShader::Render()
 
     for (const auto& sprite_Wptr : this->sprite_pool)
     {
-        auto sprite = sprite_Wptr.lock();
+        const auto& sprite = sprite_Wptr.lock();
         if (!sprite) continue;
         if (!sprite->GetIsActive())continue;
         if (sprite->GetOwner() && !sprite->GetOwner()->GetIsActive())continue;

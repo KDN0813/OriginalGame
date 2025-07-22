@@ -40,7 +40,7 @@ void SpriteComponent::Render(ID3D11DeviceContext* dc)
     {
         if (const auto& transform = owner->GetComponent(this->transform_Wptr))
         {
-            display_pos = transform->GetWorldPosition();
+            display_pos = CalcModifiedPos(transform->GetWorldPosition());
             angle = transform->GetWorldAngle();
             scale = transform->GetWorldScale();
         }
@@ -97,6 +97,7 @@ void SpriteComponent::DrawDebugGUI()
     ImGui::SliderFloat2("Clip Pos", &this->sprite_param.clip_pos.x, 0.0f, 1.0f);
     ImGui::SliderFloat2("Clip Size", &this->sprite_param.clip_size.x, 0.0f, 1.0f);
     ImGui::ColorEdit4("Sprite Color", &this->sprite_param.color.x);
+    ImGui::DragFloat2("Sprite Offset", &this->sprite_param.offset.x, 0.01f);
 
     // ’†SˆÊ’u‚Ìİ’è
     int center_type_index = static_cast<int>(this->sprite_param.center_type);
