@@ -9,7 +9,7 @@
 #include "Component\SpriteComponent.h"
 #include "Component\StateMachineComponent.h"
 #include "Component\Transform2DComponent.h"
-#include "Component\FadeControllerComponent.h"
+#include "Component\SpriteFadeControllerComponent.h"
 #include "Component\SpecialGageComponent.h"
 #include "Component\SpriteScalerComponent.h"
 #include "Component\SpriteMoverComponent.h"
@@ -152,8 +152,8 @@ const std::shared_ptr<Object>& UIConstant::CreateFadeObject(const std::shared_pt
 
 	// FadeControllerComponent
 	{
-		FadeControllerComponent::FadeControllerParam param{};
-		const auto fade_controller = fade_object->AddComponent<FadeControllerComponent>(param);
+		SpriteFadeControllerComponent::FadeControllerParam param{};
+		const auto fade_controller = fade_object->AddComponent<SpriteFadeControllerComponent>(param);
 		fade_controller->SetIsActive(false);
 	}
 

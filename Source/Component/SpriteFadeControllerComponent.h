@@ -12,7 +12,7 @@ enum class FEAD_TYPE
 };
 
 // スプライトのフェードアニメーションを行う
-class FadeControllerComponent : public Component
+class SpriteFadeControllerComponent : public Component
 {
 public:
     enum class FADE_STATE
@@ -30,9 +30,9 @@ public:
         FADE_STATE state = FADE_STATE::START;
     };
 public:
-    FadeControllerComponent() = delete;
-    FadeControllerComponent(FadeControllerParam param) :param(param){};
-    ~FadeControllerComponent() {};
+    SpriteFadeControllerComponent() = delete;
+    SpriteFadeControllerComponent(FadeControllerParam param) :param(param){};
+    ~SpriteFadeControllerComponent() {};
 
     // 開始関数
     void Start()  override;

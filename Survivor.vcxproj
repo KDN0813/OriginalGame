@@ -136,7 +136,7 @@
     <ClInclude Include="Source\Component\DamageComponent.h" />
     <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Component\EnemySpawnerComponent.h" />
-    <ClInclude Include="Source\Component\FadeControllerComponent.h" />
+    <ClInclude Include="Source\Component\SpriteFadeControllerComponent.h" />
     <ClInclude Include="Source\Component\InstancedModelWithAnimationComponent.h" />
     <ClInclude Include="Source\Component\CameraComponent.h" />
     <ClInclude Include="Source\Component\CameraControllerComponent.h" />
@@ -249,7 +249,7 @@
     <ClCompile Include="Source\Component\DamageComponent.cpp" />
     <ClCompile Include="Source\Component\DebugParticle.cpp" />
     <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp" />
-    <ClCompile Include="Source\Component\FadeControllerComponent.cpp" />
+    <ClCompile Include="Source\Component\SpriteFadeControllerComponent.cpp" />
     <ClCompile Include="Source\Component\InstancedModelWithAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\CameraComponent.cpp" />
     <ClCompile Include="Source\Component\CameraControllerComponent.cpp" />

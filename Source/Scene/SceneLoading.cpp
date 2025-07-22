@@ -13,7 +13,7 @@
 #include "Component/SpriteComponent.h"
 #include "Component/StateMachineComponent.h"
 #include "Component/Transform2DComponent.h"
-#include "Component\FadeControllerComponent.h"
+#include "Component\SpriteFadeControllerComponent.h"
 
 void SceneLoading::Initialize()
 {

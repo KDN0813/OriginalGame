@@ -10,7 +10,7 @@
 #endif // DEBUG
 
 #include "Object\Constant\UIConstant.h"
-#include "Component\FadeControllerComponent.h"
+#include "Component\SpriteFadeControllerComponent.h"
 
 void SceneManager::Initialize()
 {
@@ -19,7 +19,7 @@ void SceneManager::Initialize()
     this->fade_object = UIConstant::CreateFadeObject(this->common_object_manager.Create("FadeObject"));
 
     // フェードコントローラ取得
-    this->fade_controller_Wptr = this->fade_object->GetComponent<FadeControllerComponent>();
+    this->fade_controller_Wptr = this->fade_object->GetComponent<SpriteFadeControllerComponent>();
 }
 
 void SceneManager::Update(float elpsed_time)

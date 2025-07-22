@@ -38,7 +38,7 @@
 #include "Component\InstancedModelWithAnimationComponent.h"
 #include "Component\CircleCollisionComponent.h"
 #include "Component\CameraComponent.h"
-#include "Component\FadeControllerComponent.h"
+#include "Component\SpriteFadeControllerComponent.h"
 #ifdef _DEBUG
 #include "Component\ModelShaderComponent.h"
 #include "Component\DebugParticle.h"

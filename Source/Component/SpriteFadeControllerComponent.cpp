@@ -1,4 +1,4 @@
-#include "FadeControllerComponent.h"
+#include "SpriteFadeControllerComponent.h"
 
 #ifdef _DEBUG
 #include <imgui.h>
@@ -10,12 +10,12 @@
 #include "Object\Object.h"
 #include "Component\BaseSpriteComponent.h"
 
-void FadeControllerComponent::Start()
+void SpriteFadeControllerComponent::Start()
 {
     SetIsActive(false);
 }
 
-void FadeControllerComponent::Update(float elapsed_time)
+void SpriteFadeControllerComponent::Update(float elapsed_time)
 {
     switch (this->param.state)
     {
@@ -48,7 +48,7 @@ void FadeControllerComponent::Update(float elapsed_time)
     }
 }
 
-void FadeControllerComponent::FeadStart(FEAD_TYPE type, float fade_duration)
+void SpriteFadeControllerComponent::FeadStart(FEAD_TYPE type, float fade_duration)
 {
     this->param.fead_type = type;
     this->param.fade_duration = fade_duration;
@@ -57,7 +57,7 @@ void FadeControllerComponent::FeadStart(FEAD_TYPE type, float fade_duration)
     this->param.state = FADE_STATE::START;
 }
 
-void FadeControllerComponent::SetAlpha(float a)
+void SpriteFadeControllerComponent::SetAlpha(float a)
 {
     if (const auto& owner = GetOwner())
     {
@@ -68,7 +68,7 @@ void FadeControllerComponent::SetAlpha(float a)
     }
 }
 
-void FadeControllerComponent::FeadIn()
+void SpriteFadeControllerComponent::FeadIn()
 {
     if (const auto& owner = GetOwner())
     {
@@ -80,7 +80,7 @@ void FadeControllerComponent::FeadIn()
     }
 }
 
-void FadeControllerComponent::FeadOut()
+void SpriteFadeControllerComponent::FeadOut()
 {
     if (const auto& owner = GetOwner())
     {
@@ -94,7 +94,7 @@ void FadeControllerComponent::FeadOut()
 
 #ifdef _DEBUG
 
-void FadeControllerComponent::DrawDebugGUI() 
+void SpriteFadeControllerComponent::DrawDebugGUI() 
 {
     if (ImGui::Button("FeadIn"))
     {

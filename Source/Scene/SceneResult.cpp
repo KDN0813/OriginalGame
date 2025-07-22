@@ -15,7 +15,7 @@
 #include "Component/Transform2DComponent.h"
 #include "Component/TextNumberComponent.h"
 #include "Component/StateMachineComponent.h"
-#include "Component/FadeControllerComponent.h"
+#include "Component/SpriteFadeControllerComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 

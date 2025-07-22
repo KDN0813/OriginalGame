@@ -568,7 +568,7 @@
     <ClInclude Include="Source\Component\SpriteMoverComponent.h">
       <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\FadeControllerComponent.h">
+    <ClInclude Include="Source\Component\SpriteFadeControllerComponent.h">
       <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
     </ClInclude>
   </ItemGroup>
@@ -846,7 +846,7 @@
     <ClCompile Include="Source\Component\SpriteMoverComponent.cpp">
       <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\FadeControllerComponent.cpp">
+    <ClCompile Include="Source\Component\SpriteFadeControllerComponent.cpp">
       <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
     </ClCompile>
   </ItemGroup>
