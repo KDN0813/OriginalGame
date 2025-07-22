@@ -6,7 +6,7 @@
 class BaseSpriteComponent;
 class Transform2DComponent;
 
-// スプライトの拡大・縮小処理を行う
+// スプライトの拡大・縮小アニメーションを行う
 class SpriteScalerComponent : public Component
 {
 public:

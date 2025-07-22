@@ -83,7 +83,6 @@ void EnemySpawnerComponent::UpdateEnemySpawner(const std::shared_ptr<ObjectManag
     const size_t ENEMY_MAX = EnemyConstant::ENEMY_MAX;      // 敵の最大値
     const size_t CREATE_ENEMY_MAX = MyMath::RandomRange(this->param.min_enemies_per_spawn, this->param.max_enemies_per_spawn);	// 1度に生成するエネミーの数
 
-    // TODO [07/07]ここから
     const DirectX::XMFLOAT3 BASE_SPAWN_CENTER = MyMath::GetNonOverlappingPointInRing(PLAYER_POS, this->param.min_spawn_dist, this->param.max_spawn_dist);
     for (int i = 0; i < ENEMY_MAX - NOW_ENEMY_COUNT; ++i)
     {

@@ -11,11 +11,7 @@ enum class FEAD_TYPE
     MAX,
 };
 
-/**
- * フェード用オブジェクトを更新するためのクラス
- * 
- * 使用するときのみアクティブ化する
- */
+// スプライトのフェードアニメーションを行う
 class FadeControllerComponent : public Component
 {
 public:

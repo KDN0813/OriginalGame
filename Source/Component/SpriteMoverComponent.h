@@ -6,6 +6,7 @@
 class BaseSpriteComponent;
 class Transform2DComponent;
 
+// スプライトの移動アニメーションを行う
 class SpriteMoverComponent : public Component
 {
 public:
