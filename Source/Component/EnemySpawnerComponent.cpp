@@ -101,7 +101,7 @@ void EnemySpawnerComponent::CreateEnemy(const std::shared_ptr<ObjectManager>& ma
 {
     GameObjectRegistry::Instance object_registry = GameObjectRegistry::GetInstance();
     // “G‚Ì¶¬
-    const auto& enemy = EnemyConstant::CreateEnemy(manager->Create(), chain_score_counter_object_Wptr.lock(), config);
+    const auto& enemy = EnemyConstant::CreateEnemy(manager->Create(), config);
     // “G‚ðGameObjectRegistry‚ÉÝ’è
     object_registry->SetEnemy(enemy);
 }

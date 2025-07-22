@@ -133,9 +133,6 @@
     <ClInclude Include="Source\Collision\CircleCollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionParam.h" />
     <ClInclude Include="Source\Component\BaseSpriteComponent.h" />
-    <ClInclude Include="Source\Component\ChainScoreCounterComponent.h" />
-    <ClInclude Include="Source\Component\ChainScoreUIMoveAnimationComponent.h" />
-    <ClInclude Include="Source\Component\ChainScoreUIPopAnimationComponent.h" />
     <ClInclude Include="Source\Component\DamageComponent.h" />
     <ClInclude Include="Source\Component\DebugParticle.h" />
     <ClInclude Include="Source\Component\EnemySpawnerComponent.h" />
@@ -200,6 +197,7 @@
     <ClInclude Include="Source\Scene\SceneLoading.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
     <ClInclude Include="Source\Scene\SceneTitle.h" />
+    <ClInclude Include="Source\Score\TotalScoreCounter.h" />
     <ClInclude Include="Source\Shader\LightManager.h" />
     <ClInclude Include="Source\Shader\LightParam.h" />
     <ClInclude Include="Source\Shader\ModelShader.h" />
@@ -248,9 +246,6 @@
     <ClCompile Include="Source\Collision\Collision.cpp" />
     <ClCompile Include="Source\Collision\CircleCollisionManager.cpp" />
     <ClCompile Include="Source\Component\BaseSpriteComponent.cpp" />
-    <ClCompile Include="Source\Component\ChainScoreCounterComponent.cpp" />
-    <ClCompile Include="Source\Component\ChainScoreUIMoveAnimationComponent.cpp" />
-    <ClCompile Include="Source\Component\ChainScoreUIPopAnimationComponent.cpp" />
     <ClCompile Include="Source\Component\DamageComponent.cpp" />
     <ClCompile Include="Source\Component\DebugParticle.cpp" />
     <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp" />
@@ -310,6 +305,7 @@
     <ClCompile Include="Source\Scene\SceneLoading.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneTitle.cpp" />
+    <ClCompile Include="Source\Score\TotalScoreCounter.cpp" />
     <ClCompile Include="Source\Shader\InstanceModelShader.cpp" />
     <ClCompile Include="Source\Shader\LightManager.cpp" />
     <ClCompile Include="Source\Shader\ModelShader.cpp" />

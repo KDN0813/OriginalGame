@@ -1,5 +1,7 @@
 #pragma once
 #include "System/ClassBase/Singleton.h"
+#include "Score/TotalScoreCounter.h"
+
 #ifdef _DEBUG
 #include <vector>   // デバッグ時しか使用していない
 #endif // _DEBUG
@@ -22,7 +24,7 @@ public:
 public:
     struct GameParam
     {
-        int score = 0;                                   // スコア
+        TotalScoreCounter score;
         float game_end_timer = 60.0f;                    // ゲーム終了までの時間
         bool is_loading = false;                         // ロード中であるか
         bool is_pause = false;                           // ポーズ中であるか
@@ -51,13 +53,14 @@ public:
     bool IsTimeUp()const { return(this->param.game_end_timer <= 0.0f); };
 
     // 各種取得・設定関数
-    int GetScore()const { return this->param.score; }
+    int GetScore()const { return this->param.score.GetScore(); }
     float GetGameEndTimer()const { return this->param.game_end_timer; }
     bool GetIsLoading()const { return this->param.is_loading; }
     bool GetIsPause()const { return this->param.is_pause; }
     GameStatus GetGameStatus()const { return this->param.game_status; }
-    void SetScore(int score) { this->param.score = score; }
-    void AddScore(int score) { this->param.score += score; }
+    void SetScore(int score) { this->param.score.SetScore(score); }
+    void AddScore(int score) { this->param.score.AddScore(score); }
+    void AddOnChangeScore(const std::function<void()>& function) { this->param.score.AddOnChangeScore(function); }
     void RestGameTime() { this->param.game_end_timer = GameParam().game_end_timer; }
     void SetGameElapsedTime(float game_elapsed_time) { this->param.game_end_timer = game_elapsed_time; }
     void SetIsLoading(bool is_loading) { this->param.is_loading = is_loading; }

@@ -20,7 +20,7 @@
 
 const MyHash EnemyConstant::ATTACK_OBJECT_NAME = MyHash("EnemyAttackObject");
 
-const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<Object>& enemy, const std::shared_ptr<Object>& chain_score_counter_object, const EnemyConfig& config)
+const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<Object>& enemy,const EnemyConfig& config)
 {
 	// コリジョンに設定するコンポーネントは事前に作成しておく
 	std::shared_ptr<EnemyComponent> enemy_component;
@@ -33,8 +33,6 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 		param.move_speed = config.move_speed;
 		param.add_score = 1;
 		enemy_component = enemy->AddComponent<EnemyComponent>(param);
-
-		enemy_component->SetChainScoreCounterObject(chain_score_counter_object);
 	}
 	// ムーブメント設定
 	{
@@ -147,7 +145,7 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemy(const std::shared_ptr<
 	return enemy;
 }
 
-const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shared_ptr<Object>& object, const std::shared_ptr<ObjectManager>& object_manager, const std::shared_ptr<Object>& chain_score_counter_object)
+const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shared_ptr<Object>& object, const std::shared_ptr<ObjectManager>& object_manager)
 {
 	// Transform3DComponent
 	{
@@ -169,7 +167,6 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shar
 
 		const auto& enemy_spawner = object->AddComponent<EnemySpawnerComponent>(param);
 		enemy_spawner->SetObjectManager(object_manager);
-		enemy_spawner->SetChainScoreCounterObject(chain_score_counter_object);
 	}
 	return object;
 }

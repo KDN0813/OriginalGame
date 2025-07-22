@@ -22,7 +22,11 @@ void GameData::DebugDrawGUI()
 {
     if (ImGui::Begin("GameData"))
     {
-        ImGui::InputInt("Score##GameData", &this->param.score);
+        int score = this->param.score.GetScore();
+        if (ImGui::InputInt("Score##GameData", &score))
+        {
+            this->param.score.SetScore(score);
+        }
         ImGui::InputFloat("Game ENd Timer##GameData", &this->param.game_end_timer);
         ImGui::Checkbox("Is Loading##GameData", &this->param.is_loading);
         ImGui::SameLine();

@@ -96,7 +96,6 @@ public:
     void SetPendingRemovalFlag(bool flag) { this->param.pending_removal_flag = flag; }
     float GetAddSpecialPoint()const { return this->param.add_special_point; }
 
-    void SetChainScoreCounterObject(const std::shared_ptr<Object>& object) { chain_score_counter_object_Wptr = object; };
 private:
     void Move(float vx, float vz, float speed);
     void MoveToTarget(float elapsed_time, std::shared_ptr<Transform3DComponent>& transform, float speed_rate);
@@ -116,9 +115,6 @@ private:
     std::weak_ptr<CircleCollisionComponent> child_collision_Wprt;   // UŒ‚—p‚ÌƒRƒŠƒWƒ‡ƒ“
 
     std::weak_ptr<Transform3DComponent> player_transform_Wptr;
-
-    std::weak_ptr<Object> chain_score_counter_object_Wptr;
-    std::weak_ptr<ChainScoreCounterComponent> chain_score_counter_Wptr;
 #ifdef _DEBUG
 public:
     /**
