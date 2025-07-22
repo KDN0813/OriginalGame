@@ -9,12 +9,15 @@
 #include "Object/Object.h"
 #include "System/MyMath/MyMathf.h"
 #include "Component/BaseSpriteComponent.h"
-#include "Component/Transform2DComponent.h"
 
 void SpriteShakeComponent::ReStart()
 {
     this->tiemr = 0.0f;
-    CommandClear();
+    this->shake_movement = {};
+    while (!this->command_pool.empty())
+    {
+        this->command_pool.pop_front();
+    }
 }
 
 void SpriteShakeComponent::Update(float elapsed_time)
@@ -28,8 +31,6 @@ void SpriteShakeComponent::Update(float elapsed_time)
     if (!owner) return;
     const auto& sprite = owner->GetComponent(this->sprite_Wptr);
     if (!sprite) return;
-    const auto& transform = owner->GetComponent(this->transform_Wptr);
-    if (!transform) return;
 
     if (current_command.end_time > 0.0f)
     {
@@ -40,27 +41,31 @@ void SpriteShakeComponent::Update(float elapsed_time)
             current_command.force.x - (current_command.force.x * TIME_RATE),
             current_command.force.x - (current_command.force.y * TIME_RATE)
         } ;
-        current_command.shake_movement.x = MyMath::RandomRange(-movement.x, +movement.x);
-        current_command.shake_movement.y = MyMath::RandomRange(-movement.y, +movement.y);
+        this->shake_movement.x = MyMath::RandomRange(-movement.x, +movement.x);
+        this->shake_movement.y = MyMath::RandomRange(-movement.y, +movement.y);
+
+        sprite->SetOffset(this->shake_movement);
 
         //　タイマー更新
         this->tiemr = (std::min)(current_command.end_time, this->tiemr + elapsed_time);
         if (this->tiemr >= current_command.end_time) 
         { 
-            this->command_pool.pop_front(); // 先頭の要素を削除
+            this->command_pool.pop_front();     // 先頭の要素を削除
+            this->tiemr = 0.0f;
+            sprite->SetOffset({ 0.0f ,0.0f });  // offset初期化
         }
     }
 }
 
 void SpriteShakeComponent::PushFrontCommand(const ShakeCommand& command)
 {
-    this->state = State::Start;
+    this->tiemr = 0.0f;
     this->command_pool.push_front(command);
 }
 
-void SpriteShakeComponent::PushFrontCommand(DirectX::XMFLOAT2 force, DirectX::XMFLOAT2 shake_movement, float shake_time)
+void SpriteShakeComponent::PushFrontCommand(DirectX::XMFLOAT2 force, float shake_time)
 {
-    PushFrontCommand(ShakeCommand(force, shake_movement, shake_time));
+    PushFrontCommand(ShakeCommand(force, shake_time));
 }
 
 void SpriteShakeComponent::PushBackCommand(const ShakeCommand& command)
@@ -68,24 +73,30 @@ void SpriteShakeComponent::PushBackCommand(const ShakeCommand& command)
     this->command_pool.push_back(command);
 }
 
-void SpriteShakeComponent::PushBackCommand(DirectX::XMFLOAT2 force, DirectX::XMFLOAT2 shake_movement, float shake_time)
+void SpriteShakeComponent::PushBackCommand(DirectX::XMFLOAT2 force, float shake_time)
 {
-    PushFrontCommand(ShakeCommand(force, shake_movement, shake_time));
-}
-
-void SpriteShakeComponent::CommandClear()
-{
-    while (!this->command_pool.empty())
-    {
-        this->command_pool.pop_front();
-    }
-    this->state = State::Start;
+    PushFrontCommand(ShakeCommand(force, shake_time));
 }
 
 #ifdef _DEBUG
 
 void SpriteShakeComponent::DrawDebugGUI()
 {
+    ImGui::DragFloat2("Debug Force", &this->debug_force.x);
+    ImGui::DragFloat2("Debug End Time", &this->debug_end_time);
+
+    if (ImGui::Button("PushFrontCommand##SpriteShakeComponent"))
+    {
+        PushFrontCommand(this->debug_force, this->debug_end_time);
+    }
+    if (ImGui::Button("PushBackCommand##SpriteShakeComponent"))
+    {
+        PushBackCommand(this->debug_force, this->debug_end_time);
+    }
+    if (ImGui::Button("CommandClear##SpriteShakeComponent"))
+    {
+        ReStart();
+    }
 }
 
 #endif // _DEBUG

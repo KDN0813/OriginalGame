@@ -15,6 +15,7 @@
 #include "Component\SpriteMoverComponent.h"
 #include "Component\ScoreUIValueAnimatorComponent.h"
 #include "Component\TextNumberValueInterpolatorComponent.h"
+#include "Component\SpriteShakeComponent.h"
 
 #include "StateMachine\UIStateDerived.h"
 
@@ -189,6 +190,11 @@ const std::shared_ptr<Object>& UIConstant::CreatePlayerHpBarUI(const std::shared
 			{
 				Transform2DComponent::Transform2DParam paam{};
 				bg_object->AddComponent<Transform2DComponent>(paam);
+			}
+
+			// スプライトの振動アニメーションを行うコンポーネント
+			{
+				bg_object->AddComponent<SpriteShakeComponent>();
 			}
 
 			// 子オブジェクト

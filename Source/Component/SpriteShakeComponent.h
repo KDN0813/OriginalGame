@@ -4,23 +4,14 @@
 #include <deque>
 
 class BaseSpriteComponent;
-class Transform2DComponent;
 
 // スプライトの振動アニメーションを行う
 class SpriteShakeComponent : public Component
 {
 public:
-    enum class State
-    {
-        Start = 0,
-        Run,
-        End
-    };
-
     struct ShakeCommand
     {
         DirectX::XMFLOAT2 force = {};           // 入力されるシェイクの強さ
-        DirectX::XMFLOAT2 shake_movement = {};  // シェイク量
         float end_time = 0.0f;                  
     };
 public:
@@ -44,24 +35,17 @@ public:
 
     // 命令を先頭にに追加
     void PushFrontCommand(const ShakeCommand& command);
-    void PushFrontCommand(DirectX::XMFLOAT2 force, DirectX::XMFLOAT2 shake_movement, float shake_time);
-    void PushFrontCommand(float target_scale, float transition_duration);
+    void PushFrontCommand(DirectX::XMFLOAT2 force, float shake_time);
     // 命令を最後尾に追加
     void PushBackCommand(const ShakeCommand& command);
-    void PushBackCommand(DirectX::XMFLOAT2 force, DirectX::XMFLOAT2 shake_movement, float shake_time);
-    void PushBackCommand(float target_scale, float transition_duration);
-
-    // コマンドを空にする
-    void CommandClear();
+    void PushBackCommand(DirectX::XMFLOAT2 force, float shake_time);
 
 private:
     std::deque<ShakeCommand> command_pool;
+    DirectX::XMFLOAT2 shake_movement = {};           //  シェイク量
     float tiemr = 0.0f;
-
-    State state = State::Start;
 private:
     std::weak_ptr<BaseSpriteComponent> sprite_Wptr;
-    std::weak_ptr<Transform2DComponent> transform_Wptr;
 
 #ifdef _DEBUG
 public:
@@ -79,8 +63,9 @@ public:
     void DrawDebugPrimitiveGUI()  override {};
     bool IsDebugPrimitive() override { return false; }   // DebugPrimitiveが存在するか
 private:
-    float debug_change_scale = 1.0f;
-    float debug_transition_duration = 1.0f;
+    // デバッグ時にシェイクさせるための値
+    DirectX::XMFLOAT2 debug_force = {};
+    float debug_end_time = 0.0f;
 
 #endif // DEBUG
 };
