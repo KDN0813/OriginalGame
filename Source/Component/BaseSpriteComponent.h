@@ -32,7 +32,7 @@ public:
 
     void SetColor(const DirectX::XMFLOAT4 color) { this->sprite_param.color = color; this->default_sprite_param.color = color;};
     void SetAlpha(const float a) { this->sprite_param.color.w = a; this->default_sprite_param.color.w = a; };
-    void SetOffset(const DirectX::XMFLOAT2 offset) { this->sprite_param.offset = offset; this->default_sprite_param.offset = offset; }
+    void SetOffset(const DirectX::XMFLOAT2 offset) { this->sprite_param.offset = offset; }
 
     // ’²®‚³‚ê‚½ˆÊ’u‚ÌŒvZ
     DirectX::XMFLOAT2 CalcModifiedPos(const DirectX::XMFLOAT2 display_pos);
