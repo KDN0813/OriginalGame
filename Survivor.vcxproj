@@ -160,6 +160,7 @@
     <ClInclude Include="Source\Component\SpriteComponent.h" />
     <ClInclude Include="Source\Component\SpriteMoverComponent.h" />
     <ClInclude Include="Source\Component\SpriteScalerComponent.h" />
+    <ClInclude Include="Source\Component\SpriteShakeComponent.h" />
     <ClInclude Include="Source\Component\StateMachineComponent.h" />
     <ClInclude Include="Source\Component\TextNumberValueInterpolatorComponent.h" />
     <ClInclude Include="Source\Component\Transform2DComponent.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="Source\Component\SpriteComponent.cpp" />
     <ClCompile Include="Source\Component\SpriteMoverComponent.cpp" />
     <ClCompile Include="Source\Component\SpriteScalerComponent.cpp" />
+    <ClCompile Include="Source\Component\SpriteShakeComponent.cpp" />
     <ClCompile Include="Source\Component\StateMachineComponent.cpp" />
     <ClCompile Include="Source\Component\TextNumberComponent.cpp" />
     <ClCompile Include="Source\Component\TextNumberValueInterpolatorComponent.cpp" />

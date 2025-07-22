@@ -571,6 +571,9 @@
     <ClInclude Include="Source\Component\SpriteFadeControllerComponent.h">
       <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\SpriteShakeComponent.h">
+      <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp">
@@ -847,6 +850,9 @@
       <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\SpriteFadeControllerComponent.cpp">
+      <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpriteShakeComponent.cpp">
       <Filter>Source\Component\Sprite\SpriteAnimation</Filter>
     </ClCompile>
   </ItemGroup>
