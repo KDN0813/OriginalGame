@@ -41,8 +41,10 @@ public:
     // 優先度
     const PRIORITY GetPriority()const noexcept  override { return PRIORITY::DEFAULT; };
 
-    // スコアが変化した時に実行する
-    void OnChangeScore();
+    // スコアが加算した時に実行する
+    void OnScoreAdded();
+    // スコアが直接設定されたとき
+    void OnScoreSet();
 private:
     Param param;
 

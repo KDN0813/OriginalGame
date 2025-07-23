@@ -60,7 +60,8 @@ public:
     GameStatus GetGameStatus()const { return this->param.game_status; }
     void SetScore(int score) { this->param.score.SetScore(score); }
     void AddScore(int score) { this->param.score.AddScore(score); }
-    void AddOnChangeScore(const std::function<void()>& function) { this->param.score.AddOnChangeScore(function); }
+    void AddOnScoreAdded(const std::function<void()>& function) { this->param.score.AddOnScoreAdded(function); }
+    void AddOnScoreSet(const std::function<void()>& function) { this->param.score.AddOnScoreSet(function); }
     void RestGameTime() { this->param.game_end_timer = GameParam().game_end_timer; }
     void SetGameElapsedTime(float game_elapsed_time) { this->param.game_end_timer = game_elapsed_time; }
     void SetIsLoading(bool is_loading) { this->param.is_loading = is_loading; }

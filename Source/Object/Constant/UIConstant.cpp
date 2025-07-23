@@ -533,13 +533,23 @@ const std::shared_ptr<Object>& UIConstant::CreateScoreUIs(const std::shared_ptr<
 	}
 
 	// =========================================
-	//  スコアの値が変化した時のコールバック変数を設定
+	//  スコアの値が加算時のコールバック変数を設定
 	// =========================================
 	std::weak_ptr<ScoreUIValueAnimatorComponent> score_UI_value_animator_Wptr = score_UI_value_animator;
-	GameData::GetInstance()->AddOnChangeScore(
+	GameData::GetInstance()->AddOnScoreAdded(
 		[score_UI_value_animator_Wptr]()
 		{
-			CallIfValid(score_UI_value_animator_Wptr, [](auto& com) { com.OnChangeScore(); });
+			CallIfValid(score_UI_value_animator_Wptr, [](auto& com) { com.OnScoreAdded(); });
+		}
+	);
+
+	// =========================================
+	//  スコアの値が直接変更した時のコールバック変数を設定
+	// =========================================
+	GameData::GetInstance()->AddOnScoreSet(
+		[score_UI_value_animator_Wptr]()
+		{
+			CallIfValid(score_UI_value_animator_Wptr, [](auto& com) { com.OnScoreSet(); });
 		}
 	);
 
