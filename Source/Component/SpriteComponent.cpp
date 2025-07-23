@@ -74,7 +74,8 @@ void SpriteComponent::AdjustDisplaySizeToSprite()
     this->sprite_param.display_size.x = SPRITE_WIDTH / SCREEN_WIDTH;
     this->sprite_param.display_size.y = SPRITE_HEIGHT / SCREEN_HEIGHT;
 
-    this->sprite_param.display_size = this->sprite_param.display_size;
+    // デフォルト値を書き換える
+    this->default_sprite_param.display_size = this->sprite_param.display_size;
 }
 
 #ifdef _DEBUG
