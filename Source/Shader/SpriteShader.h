@@ -19,7 +19,7 @@ public:
     const char* GetName() { return "SpriteShader"; }
 
     // スプライトの追加
-    void AddSprite(std::shared_ptr<BaseSpriteComponent> sprite);
+    void AddSprite(const std::shared_ptr<BaseSpriteComponent>& sprite);
 
     void SetShouldSort(bool flag) { this->should_sort = flag; }
 private:

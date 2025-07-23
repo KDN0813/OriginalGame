@@ -42,6 +42,7 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 				sprite_param.display_size = { 0.1f,0.1f };
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 0.7f };
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
+				sprite_param.draw_priority = PRIORITY::LOW;
 				const auto& sprite = bg_sprite->AddComponent<SpriteComponent>(sprite_param);
 			}
 
@@ -52,7 +53,7 @@ const std::shared_ptr<Object>& UIConstant::CreateGameTimerUI(const std::shared_p
 			}
 		}
 
-		// テキスト
+		// 数字
 		{
 			const auto& text_sprite = sprite_shader->CreateChildObject("Text");
 
@@ -96,8 +97,8 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 		BaseSpriteComponent::SpriteParam sprite_param{};
 		sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 		sprite_param.filename = "Data/Sprite/Pause.png";
-		sprite_param.draw_priority = PRIORITY::DEFAULT;
-		auto sprite = pause_object->AddComponent<SpriteComponent>(sprite_param);
+		sprite_param.draw_priority = PRIORITY::VERY_HIGH;
+		pause_object->AddComponent<SpriteComponent>(sprite_param);
 	}
 
 	// transform
@@ -117,7 +118,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.filename = "Data/Sprite/PauseUI.png";
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
-				sprite_param.draw_priority = PRIORITY::LOW;
+				sprite_param.draw_priority = PRIORITY::CRITICAL;
 				auto sprite = pause_ui->AddComponent<SpriteComponent>(sprite_param);
 			}
 

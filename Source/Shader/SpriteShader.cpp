@@ -115,7 +115,7 @@ void SpriteShader::Render()
 			{
 				std::shared_ptr<BaseSpriteComponent> lhs = lhs_Wptr.lock();
 				std::shared_ptr<BaseSpriteComponent> rhs = rhs_Wptr.lock();
-				return ((lhs->GetDrawPriority() > rhs->GetDrawPriority()));
+				return ((lhs->GetDrawPriority() < rhs->GetDrawPriority()));
 			};
 		std::sort(sprite_pool.begin(), sprite_pool.end(), sortFunc);
 		this->should_sort = false;
@@ -132,7 +132,7 @@ void SpriteShader::Render()
     }
 }
 
-void SpriteShader::AddSprite(std::shared_ptr<BaseSpriteComponent> sprite)
+void SpriteShader::AddSprite(const std::shared_ptr<BaseSpriteComponent>& sprite)
 {
     this->sprite_pool.emplace_back(sprite);
 
