@@ -84,7 +84,6 @@ void TextNumberComponent::Render(ID3D11DeviceContext* dc)
     // Œ…”•ª•`‰æ‚ğs‚¤
     for (int i = 0; i < Digits; ++i)
     {        
-
         int n = std::stoi(numeral_str.substr(i, 1));
         this->sprite_param.clip_pos = { FONT_WIGTH * static_cast<float>(n),0.0f};
 

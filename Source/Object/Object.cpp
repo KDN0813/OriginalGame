@@ -61,7 +61,7 @@ void Object::Update(float elapsedTime)
     }
 
     // 子オブジェクト更新
-    for (auto chilled : this->children)
+    for (const auto& chilled : this->children)
     {
         chilled->Update(elapsedTime);
     }
@@ -72,11 +72,11 @@ void Object::Start()
     for (std::shared_ptr<Component>& component : this->component_vec)
     {
         component->Start();
-        // 子オブジェクト更新
-        for (auto chilled : this->children)
-        {
-            chilled->Start();
-        }
+    }
+    // 子オブジェクト開始処理
+    for (const auto& chilled : this->children)
+    {
+        chilled->Start();
     }
 }
 
@@ -85,11 +85,11 @@ void Object::End()
     for (std::shared_ptr<Component>& component : this->component_vec)
     {
         component->End();
-        // 子オブジェクト更新
-        for (auto chilled : this->children)
-        {
-            chilled->End();
-        }
+    }
+    // 子オブジェクト終了処理
+    for (const auto& chilled : this->children)
+    {
+        chilled->End();
     }
 }
 
@@ -99,6 +99,11 @@ void Object::ReStart()
     {
         component->SetIsActive(true);
         component->ReStart();
+    }
+    // 子オブジェクトの初期化処理
+    for (const auto& chilled : this->children)
+    {
+        chilled->ReStart();
     }
 }
 

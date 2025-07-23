@@ -217,6 +217,9 @@
     <Filter Include="Source\Score">
       <UniqueIdentifier>{d72fd9dc-d134-4a95-9c0c-0851aa027387}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\Sprite\Animation">
+      <UniqueIdentifier>{678a87fd-28b2-4c6a-9995-2f9947222351}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\DirectXTex\WICTextureLoader.h">
@@ -550,15 +553,6 @@
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Source\Component\SpriteScalerComponent.h">
-      <Filter>Source\Component\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\FadeControllerComponent.h">
-      <Filter>Source\Component\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\SpriteMoverComponent.h">
-      <Filter>Source\Component\Sprite</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\ScoreUIValueAnimatorComponent.h">
       <Filter>Source\Component\UI</Filter>
     </ClInclude>
@@ -567,6 +561,15 @@
     </ClInclude>
     <ClInclude Include="Source\Score\TotalScoreCounter.h">
       <Filter>Source\Score</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\SpriteScalerComponent.h">
+      <Filter>Source\Component\Sprite\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\SpriteMoverComponent.h">
+      <Filter>Source\Component\Sprite\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\FadeControllerComponent.h">
+      <Filter>Source\Component\Sprite\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -828,15 +831,6 @@
     <ClCompile Include="Source\Component\EnemySpawnerComponent.cpp">
       <Filter>Source\Component\Enemy\Spawner</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\SpriteScalerComponent.cpp">
-      <Filter>Source\Component\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\FadeControllerComponent.cpp">
-      <Filter>Source\Component\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\SpriteMoverComponent.cpp">
-      <Filter>Source\Component\Sprite</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\ScoreUIValueAnimatorComponent.cpp">
       <Filter>Source\Component\UI</Filter>
     </ClCompile>
@@ -845,6 +839,15 @@
     </ClCompile>
     <ClCompile Include="Source\Score\TotalScoreCounter.cpp">
       <Filter>Source\Score</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpriteScalerComponent.cpp">
+      <Filter>Source\Component\Sprite\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\SpriteMoverComponent.cpp">
+      <Filter>Source\Component\Sprite\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\FadeControllerComponent.cpp">
+      <Filter>Source\Component\Sprite\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -21,7 +21,7 @@ public:
     ~Transform3DComponent() {};
 
     // リスタート処理
-    void ReStart() override { this->world_dirty_flag = true; this->local_dirty_flag = true;  this->param = this->default_param; };      // パラメータの初期化
+    void ReStart() override;
     void Update(float elapsed_time)override;
     const char* GetName()const override { return "TransformComponent"; }
     const PRIORITY GetPriority()const noexcept { return PRIORITY::MEDIUM; };

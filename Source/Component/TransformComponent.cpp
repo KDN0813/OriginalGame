@@ -16,6 +16,29 @@ Transform3DComponent::Transform3DComponent(Transform3DParam param)
 #endif // _DEBUG
 }
 
+void Transform3DComponent::ReStart()
+{
+	this->world_dirty_flag = true; this->local_dirty_flag = true;  this->param = this->default_param;
+
+	// ワールドおよびローカルパラメータの更新が必要なフラグを立てる
+	this->world_dirty_flag = true;
+	this->local_dirty_flag = true;
+
+	// 子オブジェクトのトランスフォームに値更新が必要なフラグを立てる
+	{
+		if (const auto& owner = GetOwner())
+		{
+			for (const auto& chilled : owner->GetChildren())
+			{
+				if (auto chilled_transform = chilled->GetComponent<Transform3DComponent>())
+				{
+					chilled_transform->SetWorldDirtyFlag();
+				}
+			}
+		}
+	}
+};
+
 void Transform3DComponent::Update(float elapsed_time)
 {
 	// ローカルトランスフォームの更新
