@@ -36,6 +36,7 @@ void TextNumberComponent::Start()
 
     // 切り抜きサイズ設定
     this->sprite_param.clip_size = { FONT_WIGTH,1.0f };
+    this->default_sprite_param.clip_size = this->sprite_param.clip_size;
 
 #ifdef _DEBUG
     // CENTER_TYPE 列挙型の各値に対応する名前を取得して格納する
@@ -49,6 +50,7 @@ void TextNumberComponent::Start()
 void TextNumberComponent::ReStart()
 {
     this->sprite_param = this->default_sprite_param;
+    int a = 0;
 }
 
 void TextNumberComponent::Render(ID3D11DeviceContext* dc)
@@ -123,7 +125,6 @@ void TextNumberComponent::DrawDebugGUI()
     {
         SetDrawValue(value);
     }
-    ImGui::ColorEdit4("Sprite Color", &this->sprite_param.color.x);
 
     // 中心位置の設定
     int center_type_index = static_cast<int>(this->sprite_param.center_type);
