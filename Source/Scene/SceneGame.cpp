@@ -445,6 +445,9 @@ void SceneGame::ReStart()
 		CameraManager::Instance camera_manager = CameraManager::GetInstance();
 		camera_manager->Reset();
 	}
+
+	// エフェクト削除
+	EffekseerSystem::GetInstance()->AllStopEffect();
 }
 
 void SceneGame::ProcessGameState()
