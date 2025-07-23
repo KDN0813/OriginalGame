@@ -172,7 +172,11 @@ void SceneGame::Finalize()
 	SceneManager::Instance scene_manager = SceneManager::GetInstance();;
 	scene_manager->GetPauseObject()->SetIsActive(false);
 
+	// エフェクトを削除する
 	EffekseerSystem::GetInstance()->AllStopEffect();
+
+	// パーティクルを削除する
+	ParticleSystem::GetInstance()->AllClear();
 }
 
 void SceneGame::Update(float elapsed_time)
@@ -448,6 +452,9 @@ void SceneGame::ReStart()
 
 	// エフェクト削除
 	EffekseerSystem::GetInstance()->AllStopEffect();
+
+	// パーティクル削除する
+	ParticleSystem::GetInstance()->AllClear();
 }
 
 void SceneGame::ProcessGameState()

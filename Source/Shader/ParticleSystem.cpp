@@ -650,6 +650,14 @@ void ParticleSystem::PlayEffect(
 	this->free_particle_count -= particle_pool.size();	// 空きパーティクルの数を減らす
 }
 
+void ParticleSystem::AllClear()
+{
+	for (size_t i = 0; i < this->particle_data_pool.size(); ++i)
+	{
+		this->particle_data_pool[i].is_busy = 0;
+	}
+}
+
 #ifdef _DEBUG
 
 void ParticleSystem::DebugDrawGUI()

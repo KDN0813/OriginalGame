@@ -111,6 +111,8 @@ public:
 	void SetElapsedTime(float time) { this->particle_data.elapsed_time = time; }
 	size_t GetFreeParticleCount()const { return this->free_particle_count; }
 
+	// 全てのeffectを削除する
+	void AllClear();
 private:
 	/**
 	 * エフェクト再生
