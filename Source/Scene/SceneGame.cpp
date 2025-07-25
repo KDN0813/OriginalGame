@@ -223,6 +223,9 @@ void SceneGame::Update(float elapsed_time)
 						// ポーズオブジェクトを非アクティブに設定
 						SceneManager::Instance scene_manager = SceneManager::GetInstance();
 						scene_manager->GetPauseObject()->SetIsActive(false);
+
+						// ゲーム時間を戻す
+						GameTimer::GetInstance()->ResetGameSpeed();
 						return;
 					}
 					// (Y)リトライ
@@ -234,6 +237,9 @@ void SceneGame::Update(float elapsed_time)
 						// ポーズオブジェクトを非アクティブに設定
 						SceneManager::Instance scene_manager = SceneManager::GetInstance();
 						scene_manager->GetPauseObject()->SetIsActive(false);
+
+						// ゲーム時間を戻す
+						GameTimer::GetInstance()->ResetGameSpeed();
 						return;
 					}
 					// (B)タイトルに戻る
@@ -245,6 +251,9 @@ void SceneGame::Update(float elapsed_time)
 						// ポーズオブジェクトを非アクティブに設定
 						SceneManager::Instance scene_manager = SceneManager::GetInstance();
 						scene_manager->GetPauseObject()->SetIsActive(false);
+
+						// ゲーム時間を戻す
+						GameTimer::GetInstance()->ResetGameSpeed();
 						return;
 					}
 					// (A)ゲーム終了

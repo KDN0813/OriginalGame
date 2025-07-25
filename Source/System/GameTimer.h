@@ -108,6 +108,7 @@ public:
 		}
 	}
 
+	void ResetGameSpeed() { this->game_speed = 1.0f; }
 	void SetGameSpeed(const float speed) { this->game_speed = speed; }
 	float GetGameSpeed() const { return this->game_speed; }
 
