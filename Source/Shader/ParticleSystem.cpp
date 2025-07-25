@@ -496,14 +496,14 @@ void ParticleSystem::Render()
 	//定数バッファの更新
 	{
 		// シーン定数更新・設定
-		SceneConstantsBuffer cbScene{};
+		SceneConstantsBuffer cb_scene{};
 		MYMATRIX View = rc.view;
 		MYMATRIX Projection = rc.projection;
 		MYMATRIX View_projection = View * Projection;
-		cbScene.view_matrix = rc.view;
-		cbScene.projection_matrix = rc.projection;
-		View_projection.GetFlaot4x4(cbScene.view_projection);
-		immediate_context->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cbScene, 0, 0);
+		cb_scene.view_matrix = rc.view;
+		cb_scene.projection_matrix = rc.projection;
+		View_projection.GetFlaot4x4(cb_scene.view_projection);
+		immediate_context->UpdateSubresource(this->scene_constant_buffer.Get(), 0, 0, &cb_scene, 0, 0);
 		immediate_context->VSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
 		immediate_context->GSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());
 		immediate_context->PSSetConstantBuffers(0, 1, scene_constant_buffer.GetAddressOf());

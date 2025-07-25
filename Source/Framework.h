@@ -32,8 +32,6 @@ private:
 
 	// ウィンドウ終了指示がきているか
 	bool IsWindowClose();
-	// ポーズキーが押されているか
-	bool IsPressedPauseKey();
 private:
 	const HWND						hWnd;
 	HDC								hDC;

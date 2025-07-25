@@ -5,6 +5,7 @@
 #include "System/Misc.h"
 #include "Camera/CameraManager.h"
 #include "Effekseer\EffekseerSystem.h"
+#include "System\GameTimer.h"
 
 // シーン
 #include "Scene/SceneManager.h"
@@ -183,6 +184,28 @@ void SceneGame::Update(float elapsed_time)
 {
 	// ポーズ処理
 	{
+		// ポーズのOnOff
+		{
+			GamePad& game_pad = Input::GetInstance()->GetGamePad();
+			if (GamePad::BTN_START & game_pad.GetButtonDown())
+			{
+				GameData::Instance game_data = GameData::GetInstance();
+				if (game_data->GetGameStatus() == GameData::GameStatus::GAME)
+				{
+					const bool set_is_pause = !game_data->GetIsPause();
+					game_data->SetIsPause(set_is_pause);
+					
+					// ポーズ中なら経過時間を停止する
+					GameTimer::GetInstance()->SetGameSpeed(set_is_pause ? 0.0f : 1.0f);
+
+					// pause用オブジェクトの(非)アクティブ化
+					SceneManager::Instance scene_manager = SceneManager::GetInstance();
+					scene_manager->GetPauseObject()->SetIsActive(game_data->GetIsPause());
+				}
+			}
+		}
+
+		// ポーズ処理
 		{
 			GameData::Instance game_data = GameData::GetInstance();
 			if (game_data->GetIsPause())
@@ -231,7 +254,6 @@ void SceneGame::Update(float elapsed_time)
 						return;
 					}
 				}
-				return;
 			}
 		}
 	}

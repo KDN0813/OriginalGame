@@ -101,12 +101,6 @@ bool Framework::IsWindowClose()
 	return (game_data->GetIsCloseWindow());
 }
 
-bool Framework::IsPressedPauseKey()
-{
-	GamePad& game_pad = input.GetGamePad();
-	return (GamePad::BTN_START & game_pad.GetButtonDown());
-}
-
 int Framework::Run()
 {
 	MSG msg = {};
@@ -121,17 +115,6 @@ int Framework::Run()
 		else
 		{
 			game_timer.Tick();
-			if (!IsWindowActive(hWnd)) continue;
-
-			if (IsPressedPauseKey())
-			{
-				GameData::Instance game_data = GameData::GetInstance();
-				if (game_data->GetGameStatus() == GameData::GameStatus::GAME)
-				{
-					game_data->SetIsPause(!game_data->GetIsPause());
-					this->scene_manager.GetPauseObject()->SetIsActive(game_data->GetIsPause());	// pause用オブジェクトの(非)アクティブ化
-				}
-			}
 
 			float elapsed_time = game_timer.GetDeltaTime();
 			Update(elapsed_time);
