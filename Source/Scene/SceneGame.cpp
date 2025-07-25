@@ -97,7 +97,9 @@ void SceneGame::Initialize()
 
 		// エネミースポナー作成
 		const auto& enemy_spwner = EnemyConstant::CreateEnemySpawner(object_manager->Create("EnemySpawner"), this->object_manager);
-
+#ifdef _DEBUG
+		this->enemy_spwner_Wptr = enemy_spwner;
+#endif // _DEBUG
 
 		// ステージ(床)
 		const auto& stage_floor = StageConstant::CreateStageFloor(object_manager->Create("StageFloor"));
