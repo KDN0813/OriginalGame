@@ -21,7 +21,7 @@ EnemySpawnerComponent::EnemySpawnerComponent(Param param)
     auto& enemy_type1 = this->enemy_config_pool.at(EyemyType::Normal);
     enemy_type1.spawn_point = {};
     enemy_type1.base_color = { 1.0f,1.0f, 1.0f, 1.0f };
-    enemy_type1.move_speed = 8.0f;
+    enemy_type1.move_speed = 4.0f;
 }
 
 void EnemySpawnerComponent::Start()

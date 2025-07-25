@@ -156,14 +156,14 @@ const std::shared_ptr<Object>& EnemyConstant::CreateEnemySpawner(const std::shar
 	{
 		EnemySpawnerComponent::Param param{};
 		param.create_cool_timer = 0.0f;
-		param.create_cool_time_max = 0.2f;
-		param.create_cool_time_min = 0.1f;
+		param.create_cool_time_max = 0.5f;
+		param.create_cool_time_min = 0.2f;
 
 		param.max_spawn_dist = 70.0f;
-		param.min_spawn_dist = 15.0f;
+		param.min_spawn_dist = 25.0f;
 
 		param.min_enemies_per_spawn = 5;
-		param.max_enemies_per_spawn = 15;
+		param.max_enemies_per_spawn = 12;
 
 		const auto& enemy_spawner = object->AddComponent<EnemySpawnerComponent>(param);
 		enemy_spawner->SetObjectManager(object_manager);

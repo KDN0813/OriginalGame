@@ -92,7 +92,7 @@ const std::shared_ptr<Object>& PlayerConstant::CreatePlayer(const std::shared_pt
 		PlayerComponent::PlayerParam param{};
 		param.move_speed = 15.0f;
 		param.special_point_max = 40.0f;
-		param.spin_attack_time = 2.0f;
+		param.spin_attack_time = 1.5f;
 		param.spin_attack_use_gage_count = 1;
 		param.gauge_count_max = SPECIAL_GAGE_MAX;
 		param.attack_move_rate = 0.3f;
