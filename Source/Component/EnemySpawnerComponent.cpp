@@ -121,6 +121,9 @@ void EnemySpawnerComponent::DrawDebugGUI()
     ImGui::InputInt("Max Enemies Per Spawn", &this->param.max_enemies_per_spawn);
 
 
+    ImGui::InputInt("Debug Spawn Count", &this->debug_spawn_count);
+    ImGui::InputFloat("Spawn Offset Interval", &this->param.spawn_offset_interval);
+
     if (ImGui::Button("Create Enemy"))
     {
         EnemyConfig config = this->enemy_config_pool.at(EyemyType::Normal);
