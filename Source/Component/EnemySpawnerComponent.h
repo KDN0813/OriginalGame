@@ -92,7 +92,6 @@ public:
 private:
     CylinderParam min_spawn_area;
     CylinderParam max_spawn_area;
-    CylinderParam spawn_area;
     int debug_spawn_count = 0;      // ImGui‚Å“G‚ğ¶¬‚·‚é‚Ì”
 #endif // DEBUG
 };

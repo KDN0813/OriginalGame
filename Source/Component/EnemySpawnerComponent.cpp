@@ -34,9 +34,6 @@ void EnemySpawnerComponent::Start()
     this->max_spawn_area.SetHeight(4.0f);
     this->max_spawn_area.SetColor(DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 
-    this->spawn_area.SetColor(DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
-    this->spawn_area.SetRadius(this->param.spawn_offset_interval * this->debug_spawn_count);
-    this->spawn_area.SetHeight(4.0f);
 #endif // _DEBUG
 }
 
@@ -124,16 +121,6 @@ void EnemySpawnerComponent::DrawDebugGUI()
     ImGui::InputInt("Max Enemies Per Spawn", &this->param.max_enemies_per_spawn);
 
 
-    if (ImGui::InputInt("Debug Spawn Count", &this->debug_spawn_count))
-    {
-        this->spawn_area.SetRadius(this->param.spawn_offset_interval * this->debug_spawn_count);
-    }
-
-    if(ImGui::InputFloat("Spawn Offset Interval", &this->param.spawn_offset_interval))
-    {
-        this->spawn_area.SetRadius(this->param.spawn_offset_interval * this->debug_spawn_count);
-    }
-
     if (ImGui::Button("Create Enemy"))
     {
         EnemyConfig config = this->enemy_config_pool.at(EyemyType::Normal);
@@ -155,12 +142,10 @@ void EnemySpawnerComponent::DrawDebugPrimitive()
     const auto& debug_primitive_render = DebugManager::GetInstance()->GetDebugPrimitiveRenderer();
     debug_primitive_render->DrawCylinder(this->min_spawn_area);
     debug_primitive_render->DrawCylinder(this->max_spawn_area);
-    debug_primitive_render->DrawCylinder(this->spawn_area);
 }
 
 void EnemySpawnerComponent::DrawDebugPrimitiveGUI()
 {
-    this->spawn_area.DrawDebugGUI("Spawn Area");
     this->min_spawn_area.DrawDebugGUI("Min Spawn Area");
     this->max_spawn_area.DrawDebugGUI("Max Spawn Area");
 }
