@@ -97,7 +97,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 		BaseSpriteComponent::SpriteParam sprite_param{};
 		sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 		sprite_param.filename = "Data/Sprite/Pause.png";
-		sprite_param.draw_priority = PRIORITY::VERY_HIGH;
+		sprite_param.draw_priority = PRIORITY::HIGH;
 		pause_object->AddComponent<SpriteComponent>(sprite_param);
 	}
 
@@ -118,7 +118,7 @@ const std::shared_ptr<Object>& UIConstant::CreatePause(const std::shared_ptr<Obj
 				sprite_param.color = { 1.0f,1.0f, 1.0f, 1.0f };
 				sprite_param.filename = "Data/Sprite/PauseUI.png";
 				sprite_param.center_type = Sprite::CENTER_TYPE::CENTER;
-				sprite_param.draw_priority = PRIORITY::CRITICAL;
+				sprite_param.draw_priority = PRIORITY::VERY_HIGH;
 				auto sprite = pause_ui->AddComponent<SpriteComponent>(sprite_param);
 			}
 
@@ -141,7 +141,7 @@ const std::shared_ptr<Object>& UIConstant::CreateFadeObject(const std::shared_pt
 	{
 		BaseSpriteComponent::SpriteParam sprite_param{};
 		sprite_param.color = { 0.0f,0.0f, 0.0f, 0.0f };
-		sprite_param.draw_priority = PRIORITY::LOWEST;
+		sprite_param.draw_priority = PRIORITY::CRITICAL;
 		auto sprite = fade_object->AddComponent<SpriteComponent>(sprite_param);
 	}
 
