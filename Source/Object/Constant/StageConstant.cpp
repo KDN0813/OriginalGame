@@ -9,8 +9,8 @@
 
 const std::shared_ptr<Object>& StageConstant::CreateStageFloor(const std::shared_ptr<Object>& stage)
 {
-	auto model = stage->AddComponent<ModelComponent>("Data/Model/Stage/Floor/StageFloor.mdl");
-	model->SetTileCount(20.0f);
+	const auto& model = stage->AddComponent<ModelComponent>("Data/Model/Stage/Floor/StageFloor.mdl");
+	model->SetTileCount(70.0f);
 	// トランスフォーム設定
 	{
 		Transform3DComponent::Transform3DParam param{};
@@ -31,7 +31,7 @@ const std::shared_ptr<Object>& StageConstant::CreateStageFloor(const std::shared
 
 const std::shared_ptr<Object>& StageConstant::CreateStageWall(const std::shared_ptr<Object>& object)
 {
-	auto model = object->AddComponent<ModelComponent>("Data/Model/Stage/Wall/StageWall.mdl");
+	const auto& model = object->AddComponent<ModelComponent>("Data/Model/Stage/Wall/StageWall.mdl");
 	// トランスフォーム設定
 	{
 		Transform3DComponent::Transform3DParam param{};
