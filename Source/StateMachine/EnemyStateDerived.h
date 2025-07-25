@@ -153,7 +153,7 @@ private:
 class EnemySpawnState : public State
 {
 public:
-	const float IDLE_TIME = 1.0f;
+	const float IDLE_TIME = 0.5f;
 public:
 	// コンストラクタ
 	EnemySpawnState();
