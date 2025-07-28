@@ -95,7 +95,7 @@ Effekseer::Handle EffekseerSystem::PlayEffect(const char* filename, const Direct
     return handle;
 }
 
-void EffekseerSystem::AllStopEffect()
+void EffekseerSystem::StopAllEffects()
 {
     this->effekseer_manager->StopAllEffects();
 }
