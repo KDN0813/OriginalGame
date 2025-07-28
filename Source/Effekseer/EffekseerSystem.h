@@ -38,7 +38,7 @@ public:
 
     // エフェクト再生
     Effekseer::Handle PlayEffect(const char* filename, const DirectX::XMFLOAT3& position, float scale = 1.0f, DirectX::XMFLOAT3 rotation = { 0.0f,0.0f,0.0f });
-    void AllStopEffect();
+    void StopAllEffects();
     void StopEffect(Effekseer::Handle handle);
     void SetPositionEffect(Effekseer::Handle handle, const DirectX::XMFLOAT3& position);
     void SetScaleEffect(Effekseer::Handle, const DirectX::XMFLOAT3& scale);

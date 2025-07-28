@@ -176,7 +176,7 @@ void SceneGame::Finalize()
 	scene_manager->GetPauseObject()->SetIsActive(false);
 
 	// エフェクトを削除する
-	EffekseerSystem::GetInstance()->AllStopEffect();
+	EffekseerSystem::GetInstance()->StopAllEffects();
 
 	// パーティクルを削除する
 	ParticleSystem::GetInstance()->AllClear();
@@ -484,7 +484,7 @@ void SceneGame::ReStart()
 	}
 
 	// エフェクト削除
-	EffekseerSystem::GetInstance()->AllStopEffect();
+	EffekseerSystem::GetInstance()->StopAllEffects();
 
 	// パーティクル削除する
 	ParticleSystem::GetInstance()->AllClear();
